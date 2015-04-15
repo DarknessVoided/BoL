@@ -1,3 +1,16 @@
+--[[
+
+             _               _               _   
+     /\     (_)             | |             | |  
+    /  \     _   _ __ ___   | |__     ___   | |_ 
+   / /\ \   | | | '_ ` _ \  | '_ \   / _ \  | __|
+  / ____ \  | | | | | | | | | |_) | | (_) | | |_ 
+ /_/    \_\ |_| |_| |_| |_| |_.__/   \___/   \__|
+                                                 
+                                                  
+
+]]--
+
 if not VIP_USER then return end -- VIP only since we use packets everywhere
 
 --[[ Skillshot list start ]]--
