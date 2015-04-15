@@ -8,4 +8,95 @@
                                                    | |                
                                                    |_|                
 ]]--
-load(Base64Decode("aWYgbXlIZXJvLmNoYXJOYW1lIH49ICJOaWRhbGVlIiB0aGVuIHJldHVybiBlbmQNCg0KaWYgRmlsZUV4aXN0KExJQl9QQVRIIC4uICIvVlByZWRpY3Rpb24ubHVhIikgdGhlbg0KICByZXF1aXJlKCJWUHJlZGljdGlvbiIpDQogIFZQID0gVlByZWRpY3Rpb24oKQ0KZW5kDQppZiBWSVBfVVNFUiBhbmQgRmlsZUV4aXN0KExJQl9QQVRIIC4uICIvUHJvZGljdGlvbi5sdWEiKSB0aGVuDQogIHJlcXVpcmUoIlByb2RpY3Rpb24iKQ0KICBwcm9kc3RhdHVzID0gdHJ1ZQ0KZW5kDQppZiBWSVBfVVNFUiBhbmQgRmlsZUV4aXN0KExJQl9QQVRIIC4uICIvRGl2aW5lUHJlZC5sdWEiKSB0aGVuIA0KICByZXF1aXJlICJEaXZpbmVQcmVkIiANCiAgRFAgPSBEaXZpbmVQcmVkKCkNCmVuZA0KDQpsb2NhbCBRID0ge25hbWUgPSAiSmF2ZWxpbiBUb3NzIiwgcmFuZ2UgPSAxNTAwLCBzcGVlZCA9IDEzMDAsIGRlbGF5ID0gMC4xMjUsIHdpZHRoID0gMzcsIFJlYWR5ID0gZnVuY3Rpb24oKSByZXR1cm4gbXlIZXJvOkNhblVzZVNwZWxsKF9RKSA9PSBSRUFEWSBlbmR9DQpsb2NhbCBRVGFyZ2V0U2VsZWN0b3IgPSBUYXJnZXRTZWxlY3RvcihUQVJHRVRfTkVBUl9NT1VTRSwgUS5yYW5nZSwgREFNQUdFX01BR0lDKQ0KDQoNCmZ1bmN0aW9uIE9uTG9hZCgpDQogIENvbmZpZyA9IHNjcmlwdENvbmZpZygiTmlkYSBRIEhlbHBlciAiLCAiIE5pZGEgUSBIZWxwZXIgIikNCiAgQ29uZmlnOmFkZFN1Yk1lbnUoIltNaXNjXTogU2V0dGluZ3MiLCAicHJDb25maWciKQ0KICBDb25maWcucHJDb25maWc6YWRkUGFyYW0oInBjIiwgIlVzZSBQYWNrZXRzIFRvIENhc3QgU3BlbGxzKFZJUCkiLCBTQ1JJUFRfUEFSQU1fT05PRkYsIGZhbHNlKQ0KICBDb25maWcucHJDb25maWc6YWRkUGFyYW0oInFxcSIsICItLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSIsIFNDUklQVF9QQVJBTV9JTkZPLCIiKQ0KICBDb25maWcucHJDb25maWc6YWRkUGFyYW0oInBybyIsICJQcm9kaWN0aW9uIFRvIFVzZToiLCBTQ1JJUFRfUEFSQU1fTElTVCwgMSwgeyJWUHJlZGljdGlvbiIsIlByb2RpY3Rpb24iLCJEaXZpbmVQcmVkIn0pDQogIENvbmZpZy5wckNvbmZpZzphZGRQYXJhbSgicXFxIiwgIi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIiwgU0NSSVBUX1BBUkFNX0lORk8sIiIpDQogIENvbmZpZy5wckNvbmZpZzphZGRQYXJhbSgibWFuYSIsICJNaW4gbWFuYSBmb3IgaGFyYXNzOiIsIFNDUklQVF9QQVJBTV9TTElDRSwgMzAsIDAsIDEwMSwgMCkNCiAgQ29uZmlnOmFkZFBhcmFtKCJ0aHJvd1FoIiwgIlRocm93IFEgKHRvZ2dsZSkiLCBTQ1JJUFRfUEFSQU1fT05LRVlUT0dHTEUsIGZhbHNlLCBzdHJpbmcuYnl0ZSgiVCIpKQ0KICBDb25maWc6YWRkUGFyYW0oInRocm93USIsICJUaHJvdyBRIiwgU0NSSVBUX1BBUkFNX09OS0VZRE9XTiwgZmFsc2UsIHN0cmluZy5ieXRlKCIgIikpDQogIENvbmZpZzpwZXJtYVNob3coInRocm93UWgiKQ0KICBDb25maWc6YWRkVFMoUVRhcmdldFNlbGVjdG9yKQ0KICBwcmludCgiTmlkYSBRIEhlbHBlciBsb2FkZWQhIikNCmVuZA0KDQpmdW5jdGlvbiBHZXRDdXN0b21UYXJnZXQoKQ0KICBUYXJnZXRTZWxlY3Rvcjp1cGRhdGUoKSANCiAgaWYgX0cuTU1BX1RhcmdldCBhbmQgX0cuTU1BX1RhcmdldC50eXBlID09IG15SGVyby50eXBlIHRoZW4NCiAgICByZXR1cm4gX0cuTU1BX1RhcmdldA0KICBlbmQNCiAgaWYgX0cuQXV0b0NhcnJ5IGFuZCBfRy5BdXRvQ2FycnkuQ3Jvc3NoYWlyIGFuZCBfRy5BdXRvQ2FycnkuQXR0YWNrX0Nyb3NzaGFpciBhbmQgX0cuQXV0b0NhcnJ5LkF0dGFja19Dcm9zc2hhaXIudGFyZ2V0IGFuZCBfRy5BdXRvQ2FycnkuQXR0YWNrX0Nyb3NzaGFpci50YXJnZXQudHlwZSA9PSBteUhlcm8udHlwZSB0aGVuIA0KICAgIHJldHVybiBfRy5BdXRvQ2FycnkuQXR0YWNrX0Nyb3NzaGFpci50YXJnZXQgDQogIGVuZA0KICByZXR1cm4gVGFyZ2V0U2VsZWN0b3IudGFyZ2V0DQplbmQNCg0KDQpmdW5jdGlvbiBDaGVjaygpDQogIFFUYXJnZXRTZWxlY3Rvcjp1cGRhdGUoKQ0KICBpZiBTZWxlY3RlZFRhcmdldCB+PSBuaWwgYW5kIFZhbGlkVGFyZ2V0KFNlbGVjdGVkVGFyZ2V0LCBRLnJhbmdlKSB0aGVuDQogICAgUUNlbCA9IFNlbGVjdGVkVGFyZ2V0DQogIGVsc2UNCiAgICBRQ2VsID0gUVRhcmdldFNlbGVjdG9yLnRhcmdldA0KICBlbmQNCmVuZA0KDQpmdW5jdGlvbiBPblRpY2soKQ0KICBDaGVjaygpDQogIGlmIENvbmZpZy50aHJvd1FoIGFuZCBteUhlcm8ubWFuYSA+PSBDb25maWcucHJDb25maWcubWFuYSBhbmQgbm90IHJlY2FsbCB0aGVuDQogICAgaWYgUUNlbCB+PSBuaWwgdGhlbg0KICAgICAgVGhyb3dRKFFDZWwpDQogICAgZW5kDQogIGVuZA0KICBpZiBDb25maWcudGhyb3dRIGFuZCBub3QgcmVjYWxsIHRoZW4NCiAgICBpZiBRQ2VsIH49IG5pbCB0aGVuDQogICAgICBUaHJvd1EoUUNlbCkNCiAgICBlbmQNCiAgZW5kDQplbmQNCg0KZnVuY3Rpb24gVGhyb3dRKHVuaXQpDQogIGlmIHVuaXQgYW5kIFEuUmVhZHkoKSBhbmQgVmFsaWRUYXJnZXQodW5pdCkgdGhlbg0KICAgIGlmIENvbmZpZy5wckNvbmZpZy5wcm8gPT0gMSB0aGVuDQogICAgICBsb2NhbCBDYXN0UG9zaXRpb24sIEhpdENoYW5jZSwgUG9zaXRpb24gPSBWUDpHZXRMaW5lQ2FzdFBvc2l0aW9uKHVuaXQsIFEuZGVsYXksIFEud2lkdGgsIFEucmFuZ2UsIFEuc3BlZWQsIG15SGVybywgdHJ1ZSkNCiAgICAgIGlmIEhpdENoYW5jZSA+PSAyIHRoZW4NCiAgICAgICAgaWYgVklQX1VTRVIgYW5kIENvbmZpZy5wckNvbmZpZy5wYyB0aGVuDQogICAgICAgICAgUGFja2V0KCJTX0NBU1QiLCB7c3BlbGxJZCA9IF9RLCBmcm9tWCA9IENhc3RQb3NpdGlvbi54LCBmcm9tWSA9IENhc3RQb3NpdGlvbi56LCB0b1ggPSBDYXN0UG9zaXRpb24ueCwgdG9ZID0gQ2FzdFBvc2l0aW9uLnp9KTpzZW5kKCkNCiAgICAgICAgZWxzZQ0KICAgICAgICAgIENhc3RTcGVsbChfUSwgQ2FzdFBvc2l0aW9uLngsIENhc3RQb3NpdGlvbi56KQ0KICAgICAgICBlbmQNCiAgICAgIGVuZA0KICAgIGVuZA0KICAgIGlmIENvbmZpZy5wckNvbmZpZy5wcm8gPT0gMiBhbmQgVklQX1VTRVIgYW5kIHByb2RzdGF0dXMgdGhlbg0KICAgICAgbG9jYWwgUG9zaXRpb24sIGluZm8gPSBQcm9kaWN0aW9uLkdldFByZWRpY3Rpb24odW5pdCwgUS5yYW5nZSwgUS5zcGVlZCwgUS5kZWxheSwgUS53aWR0aCwgbXlIZXJvKQ0KICAgICAgaWYgUG9zaXRpb24gfj0gbmlsIGFuZCBub3QgaW5mby5tQ29sbGlzaW9uKCkgdGhlbg0KICAgICAgICBpZiBWSVBfVVNFUiBhbmQgQ29uZmlnLnByQ29uZmlnLnBjIHRoZW4NCiAgICAgICAgICBQYWNrZXQoIlNfQ0FTVCIsIHtzcGVsbElkID0gX1EsIGZyb21YID0gUG9zaXRpb24ueCwgZnJvbVkgPSBQb3NpdGlvbi56LCB0b1ggPSBQb3NpdGlvbi54LCB0b1kgPSBQb3NpdGlvbi56fSk6c2VuZCgpDQogICAgICAgIGVsc2UNCiAgICAgICAgICBDYXN0U3BlbGwoX1EsIFBvc2l0aW9uLngsIFBvc2l0aW9uLnopDQogICAgICAgIGVuZCANCiAgICAgIGVuZA0KICAgIGVuZA0KICAgIGlmIENvbmZpZy5wckNvbmZpZy5wcm8gPT0gMyBhbmQgVklQX1VTRVIgdGhlbg0KICAgICAgbG9jYWwgdW5pdCA9IERQVGFyZ2V0KHVuaXQpDQogICAgICBsb2NhbCBOaWRhUSA9IExpbmVTUyhRLnNwZWVkLCBRLnJhbmdlLCBRLndpZHRoLCBRLmRlbGF5KjEwMDAsIDApDQogICAgICBsb2NhbCBTdGF0ZSwgUG9zaXRpb24sIHBlcmMgPSBEUDpwcmVkaWN0KHVuaXQsIE5pZGFRLCAyKQ0KICAgICAgaWYgU3RhdGUgPT0gU2tpbGxTaG90LlNUQVRVUy5TVUNDRVNTX0hJVCB0aGVuIA0KICAgICAgICBpZiBWSVBfVVNFUiBhbmQgQ29uZmlnLnByQ29uZmlnLnBjIHRoZW4NCiAgICAgICAgICBQYWNrZXQoIlNfQ0FTVCIsIHtzcGVsbElkID0gX1EsIGZyb21YID0gUG9zaXRpb24ueCwgZnJvbVkgPSBQb3NpdGlvbi56LCB0b1ggPSBQb3NpdGlvbi54LCB0b1kgPSBQb3NpdGlvbi56fSk6c2VuZCgpDQogICAgICAgIGVsc2UNCiAgICAgICAgICBDYXN0U3BlbGwoX1EsIFBvc2l0aW9uLngsIFBvc2l0aW9uLnopDQogICAgICAgIGVuZA0KICAgICAgZW5kDQogICAgZW5kDQogIGVuZA0KZW5k"),nil,"bt",_ENV)()
+if myHero.charName ~= "Nidalee" then return end
+
+if FileExist(LIB_PATH .. "/VPrediction.lua") then
+  require("VPrediction")
+  VP = VPrediction()
+end
+if VIP_USER and FileExist(LIB_PATH .. "/Prodiction.lua") then
+  require("Prodiction")
+  prodstatus = true
+end
+if VIP_USER and FileExist(LIB_PATH .. "/DivinePred.lua") then 
+  require "DivinePred" 
+  DP = DivinePred()
+end
+
+local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 37, Ready = function() return myHero:CanUseSpell(_Q) == READY end}
+local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
+
+function OnLoad()
+  Config = scriptConfig("Nida Q Helper ", " Nida Q Helper ")
+  Config:addSubMenu("[Misc]: Settings", "prConfig")
+  Config.prConfig:addParam("pc", "Use Packets To Cast Spells(VIP)", SCRIPT_PARAM_ONOFF, false)
+  Config.prConfig:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
+  Config.prConfig:addParam("pro", "Prodiction To Use:", SCRIPT_PARAM_LIST, 1, {"VPrediction","Prodiction","DivinePred"})
+  Config.prConfig:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
+  Config.prConfig:addParam("mana", "Min mana for harass:", SCRIPT_PARAM_SLICE, 30, 0, 101, 0)
+  Config:addParam("throwQh", "Throw Q (toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+  Config:addParam("throwQ", "Throw Q", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
+  Config:permaShow("throwQh")
+  Config:addTS(QTargetSelector)
+  print("Nida Q Helper loaded!")
+end
+
+function Check()
+  QTargetSelector:update()
+  if SelectedTarget ~= nil and ValidTarget(SelectedTarget, Q.range) then
+    QCel = SelectedTarget
+  else
+    QCel = QTargetSelector.target
+  end
+end
+
+function OnTick()
+  Check()
+  if Config.throwQh and myHero.mana >= Config.prConfig.mana and not recall then
+    if QCel ~= nil then
+      ThrowQ(QCel)
+    end
+  end
+  if Config.throwQ and not recall then
+    if QCel ~= nil then
+      ThrowQ(QCel)
+    end
+  end
+end
+
+function ThrowQ(unit)
+  if unit and Q.Ready() and ValidTarget(unit) then
+    if Config.prConfig.pro == 1 then
+      local CastPosition, HitChance, Position = VP:GetLineCastPosition(unit, Q.delay, Q.width, Q.range, Q.speed, myHero, true)
+      if HitChance >= 2 then
+        if VIP_USER and Config.prConfig.pc then
+          Packet("S_CAST", {spellId = _Q, fromX = CastPosition.x, fromY = CastPosition.z, toX = CastPosition.x, toY = CastPosition.z}):send()
+        else
+          CastSpell(_Q, CastPosition.x, CastPosition.z)
+        end
+      end
+    end
+    if Config.prConfig.pro == 2 and VIP_USER and prodstatus then
+      local Position, info = Prodiction.GetPrediction(unit, Q.range, Q.speed, Q.delay, Q.width, myHero)
+      if Position ~= nil and not info.mCollision() then
+        if VIP_USER and Config.prConfig.pc then
+          Packet("S_CAST", {spellId = _Q, fromX = Position.x, fromY = Position.z, toX = Position.x, toY = Position.z}):send()
+        else
+          CastSpell(_Q, Position.x, Position.z)
+        end 
+      end
+    end
+    if Config.prConfig.pro == 3 and VIP_USER then
+      local unit = DPTarget(unit)
+      local NidaQ = LineSS(Q.speed, Q.range, Q.width, Q.delay*1000, 0)
+      local State, Position, perc = DP:predict(unit, NidaQ, 2)
+      if State == SkillShot.STATUS.SUCCESS_HIT then 
+        if VIP_USER and Config.prConfig.pc then
+          Packet("S_CAST", {spellId = _Q, fromX = Position.x, fromY = Position.z, toX = Position.x, toY = Position.z}):send()
+        else
+          CastSpell(_Q, Position.x, Position.z)
+        end
+      end
+    end
+  end
+end
