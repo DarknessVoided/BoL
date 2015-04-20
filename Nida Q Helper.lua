@@ -39,7 +39,7 @@ function OnLoad()
   Config.misc:addParam("hc", "Hitchance:", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("mana", "Min mana for harass:", SCRIPT_PARAM_SLICE, 30, 0, 101, 0)
-  Config:addParam("throwQh", "Throw Q (toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+  Config:addParam("throwQh", "Harass with Q (toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
   Config:addParam("throwQ", "Throw Q", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
   Config:permaShow("throwQh")
   Config:addTS(QTargetSelector)
@@ -64,7 +64,7 @@ end
 
 function OnTick()
   Check()
-  if Config.throwQh and myHero.mana >= Config.misc.mana and not recall then
+  if Config.throwQh and myHero.mana >= Config.misc.mana and not recall and not myHero.dead then
     if QCel ~= nil then
       ThrowQ(QCel)
     end
