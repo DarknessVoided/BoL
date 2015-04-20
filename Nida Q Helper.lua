@@ -89,9 +89,7 @@ function ThrowQ(unit)
       end
     end
     if Config.misc.pro == 2 then
-      PrintChat("Attempt to aim!")
       local CastPosition, HitChance = HP:GetPredict("Q", unit, myHero)
-      PrintChat("HitChance "..HitChance)
       if HitChance >= Config.misc.hc then
         if VIP_USER and Config.misc.pc then
           Packet("S_CAST", {spellId = _Q, fromX = CastPosition.x, fromY = CastPosition.z, toX = CastPosition.x, toY = CastPosition.z}):send()
