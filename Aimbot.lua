@@ -285,7 +285,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.35
+local version = 0.36
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/scripts/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -668,13 +668,6 @@ function GetNextCustomTarget(i, Target)
         return unit
       end
     end
-    enemyMinions:update()
-    for i, minion in pairs(enemyMinions.objects) do
-      if minion ~= nil and ValidTarget(minion) and GetDistance(minion) <= data[i].range then
-        PrintChat("No good target - shoot a minion")
-        return minion
-      end
-    end   
     return Target
 end
 
