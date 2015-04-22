@@ -285,7 +285,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.37
+local version = 0.38
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -528,7 +528,7 @@ function OnTick()
               elseif spell.type == "cone" then
                 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
               end
-              local State, Position, perc = DP:predict(unit, Spell, Config.misc.hitchance, myHero)
+              local State, Position, perc = DP:predict(unit, Spell, Config.misc.hitchance)
               if Config.misc.debug then PrintChat("Attempt to aim!") end
               if State == SkillShot.STATUS.SUCCESS_HIT then 
                   if Config.misc.debug then PrintChat("Aimed skill! Precision: "..perc) end
