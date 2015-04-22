@@ -288,7 +288,7 @@ _G.Champs = {
 local version = 0.37
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/scripts/master/Aimbot.lua".."?rand="..math.random(1,10000)
+local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
 local UPDATE_FILE_PATH = SCRIPT_PATH.."Aimbot.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
 local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>Aimbot:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
