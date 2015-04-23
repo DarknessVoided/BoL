@@ -552,7 +552,7 @@ function DPredict(Target, spell)
 	Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
 	Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  else
+  elseif spell.type == "targeted" then
 	return SkillShot.STATUS.SUCCESS_HIT, Target, 125
   end
   return DP:predict(unit, Spell)
@@ -577,7 +577,7 @@ function VPredict(Target, spell)
 	else
 		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
 	end
-  else
+  elseif spell.type == "targeted" then
 		return Vector(Target), 4, myHero --CastPosition, HitChance, Position
   end
 end
