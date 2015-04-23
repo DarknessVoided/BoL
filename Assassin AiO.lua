@@ -100,7 +100,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.16
+local version = 0.17
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -137,6 +137,13 @@ if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."D
   DP = DivinePred() 
 end
 
+iOrb = nil
+if FileExist(LIB_PATH.."iSAC.lua") then
+  require "iSAC"
+  iOrb = iOrbWalker(myHero.range) 
+  iOrb:addAA()
+end
+
 --[[ Script start ]]--
 if not Champs[myHero.charName] then return end -- not supported :(
 if VIP_USER then HookPackets() end
@@ -146,9 +153,12 @@ local Target
 local sts
 local predictions = {}
 local combos = {}
+local orbDisabled
+local orbLast
 
 function OnLoad()
-
+  orbDisabled = false
+  orbLast = 0
   Config = scriptConfig("Assassin AiO", "Assassin AiO")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
@@ -179,6 +189,7 @@ function OnLoad()
   Config.comboConfig:addParam("so",  "Skill Order", SCRIPT_PARAM_LIST, 1, combos)
   Config.comboConfig:addParam("aa",  "Autoattack in between skills", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("move",  "Move to mouse", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("items",  "Use items in combo", SCRIPT_PARAM_ONOFF, true)
   
 	Config:addSubMenu("Killsteal Settings", "KS")
 	Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, false)
@@ -186,7 +197,7 @@ function OnLoad()
 	Config.KS:addParam("killstealW", "Use W", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
-	Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+	--Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
 			
     Config:addSubMenu("Draw Settings", "Drawing")
 	Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, false)
@@ -246,7 +257,7 @@ function killsteal()
 		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
 		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
 		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
-		local iDmg = 50 + (20 * myHero.level)
+		--local iDmg = 50 + (20 * myHero.level)
 		if ValidTarget(enemy) and enemy ~= nil and Config.KS.enableKS and not enemy.dead and enemy.visible then
 			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, qRange) then
 				CastSpell(_Q, enemy)
@@ -256,8 +267,8 @@ function killsteal()
 				CastSpell(_E, enemy)
 			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, rRange) then
 				CastSpell(_R, enemy)
-			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
-				CastSpell(SSpells:GetSlot("summonerdot"), enemy)
+			--elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+			--	CastSpell(SSpells:GetSlot("summonerdot"), enemy)
 			end
 		end
 	end
@@ -344,14 +355,9 @@ function Combo()
 					end
 				end
 			end
-			if orbDisabled then return end
-			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
-				if timeToShoot() then
-					myHero:Attack(sts.target)
-				elseif heroCanMove() and Config.comboConfig.move then
-					moveToCursor()
-				end
-			elseif heroCanMove() and Config.comboConfig.move and Config.combo then
+			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
+				iOrb:Orbwalk(mousePos, Target)
+			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 				moveToCursor()
 			end
 		end
@@ -451,49 +457,23 @@ function Combo()
 					end
 				end
 			end
-			if orbDisabled then return end
-			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
-				if timeToShoot() then
-					myHero:Attack(sts.target)
-				elseif heroCanMove() and Config.comboConfig.move then
-					moveToCursor()
-				end
-			elseif heroCanMove() and Config.comboConfig.move and Config.combo then
+			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
+				iOrb:Orbwalk(mousePos, Target)
+			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 				moveToCursor()
 			end
 		end
 	end
 end
 
-local lastAttack, lastWindUpTime, lastAttackCD = 0, 0, 0
-local myTrueRange = myHero.range + GetDistance(myHero.minBBox)
-local orbDisabled = false
-local orbLast = 0
-function heroCanMove()
-	return (GetTickCount() + GetLatency()/2 > lastAttack + lastWindUpTime + 20 and not orbDisabled)
-end
-function timeToShoot()
-	return (GetTickCount() + GetLatency()/2 > lastAttack + lastAttackCD and not orbDisabled)
-end
 function moveToCursor()
 	if GetDistance(mousePos) > 1 and not orbDisabled then
-		myHero:MoveTo(mousePos.x, mousePos.z)
-		--local moveToPos = myHero + (Vector(mousePos) - myHero):normalized()*300
-		--myHero:MoveTo(moveToPos.x, moveToPos.z)
+		iOrb:Move(mousePos)
 	end
 end
 function OnProcessSpell(object, spell)
 	if object == myHero then
-		if spell.name:lower():find("attack") then
-			lastAttack = GetTickCount() - GetLatency()/2
-			lastWindUpTime = spell.windUpTime*1000
-			lastAttackCD = spell.animationTime*1000
-		end
-		if spell.name:lower():find(myHero.charName:lower().."q") or spell.name:lower():find(myHero.charName:lower().."w") or spell.name:lower():find(myHero.charName:lower().."e") or spell.name:lower():find(myHero.charName:lower().."r") then
-			lastAttack = GetTickCount() - GetLatency()/2
-			lastWindUpTime = spell.windUpTime*1000
-			lastAttackCD = spell.animationTime*1000
-		end
+		iOrb:OnProcessSpell(object, spell)
 		--PrintChat(spell.name)
 		if spell.name:lower():find("katarinar") and Config.combo then
 			PrintChat("WAIT! Casted "..spell.name.." "..os.clock())
