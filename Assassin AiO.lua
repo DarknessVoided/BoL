@@ -103,7 +103,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.18
+local version = 0.19
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -215,6 +215,19 @@ function OnLoad()
   Config:permaShow("combo")
   sts = TargetSelector(TARGET_NEAR_MOUSE, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
+  
+  if data[0].aareset then
+	iOrb:addReset(myHero.charName:lower().."Q")
+  end
+  if data[1].aareset then
+	iOrb:addReset(myHero.charName:lower().."W")
+  end
+  if data[2].aareset then
+	iOrb:addReset(myHero.charName:lower().."E")
+  end
+  if data[3].aareset then
+	iOrb:addReset(myHero.charName:lower().."R")
+  end
 end
 
 function shuffle(a, n)
