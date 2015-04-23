@@ -285,7 +285,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.40
+local version = 0.41
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -317,12 +317,14 @@ if FileExist(LIB_PATH .. "/VPrediction.lua") then
   VP = VPrediction()
 end
 
+
+--[[ 
+
 if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
   require "DivinePred"
   DP = DivinePred() 
 end
 
---[[ VPred & DivinePred only!
 if FileExist(LIB_PATH .. "/HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
@@ -330,7 +332,8 @@ end
 if VIP_USER and FileExist(LIB_PATH .. "/Prodiction.lua") then
   require("Prodiction")
   prodstatus = true
-end]]
+end
+]]--
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
@@ -358,9 +361,9 @@ function OnLoad()
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
   
   local predToUse = {"", ""} --, "", ""
-  if FileExist(LIB_PATH.."VPrediction.lua") then predToUse[1] = "VPrediction" end
+  if VP ~= nil then predToUse[1] = "VPrediction" end
   if VIP_USER then
-    if FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then predToUse[2] = "DivinePred" end
+    if DP ~= nil then predToUse[2] = "DivinePred" end
     --if prodstatus then predToUse[2] = "Prodiction" end
   end
   --if FileExist(LIB_PATH.."HPrediction.lua") then predToUse[2] = "HPrediction" end
@@ -373,7 +376,7 @@ function OnLoad()
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
   if Config.misc.pro == 1 then 
 	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  else
+  elseif Config.misc.pro == 2 then
 	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
   end
     
