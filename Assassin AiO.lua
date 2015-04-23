@@ -100,7 +100,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.15
+local version = 0.16
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -221,10 +221,11 @@ end
 function OnTick()
 	Target = GetCustomTarget()
 	if orbDisabled then
-		local channelDur = myHero.charName == "Katarina" and 2.5 or 0
-		if (os.clock() - orbLast) > channelDur then
+		PrintChat("WAITING! ")
+		if (os.clock() - orbLast) > 2.5 then
 			orbDisabled = false
 			orbLast  = 0
+			PrintChat("WAIT finished! "..os.clock())
 		end
 	else
 		Combo()
@@ -272,6 +273,7 @@ function Combo()
 	--PrintChat(skillOrder[1]) --combos[Config.comboConfig.so]
 	if Config.comboConfig.so < 7 then
 		for i=1,3 do
+			if orbDisabled then return end
 			if skillOrder[i] == "Q" then
 				if (sts.target ~= nil) and QReady then
 					if ValidTarget(sts.target, data[0].range) and Config.combo then
@@ -342,6 +344,7 @@ function Combo()
 					end
 				end
 			end
+			if orbDisabled then return end
 			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
 				if timeToShoot() then
 					myHero:Attack(sts.target)
@@ -354,6 +357,7 @@ function Combo()
 		end
 	else
 		for i=1,4 do
+			if orbDisabled then return end
 			if skillOrder[i] == "Q" then
 				if (sts.target ~= nil) and QReady then
 					if ValidTarget(sts.target, data[0].range) and Config.combo then
@@ -447,6 +451,7 @@ function Combo()
 					end
 				end
 			end
+			if orbDisabled then return end
 			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
 				if timeToShoot() then
 					myHero:Attack(sts.target)
@@ -465,10 +470,10 @@ local myTrueRange = myHero.range + GetDistance(myHero.minBBox)
 local orbDisabled = false
 local orbLast = 0
 function heroCanMove()
-	return (GetTickCount() + GetLatency()/2 > lastAttack + lastWindUpTime + 20 and orb)
+	return (GetTickCount() + GetLatency()/2 > lastAttack + lastWindUpTime + 20 and not orbDisabled)
 end
 function timeToShoot()
-	return (GetTickCount() + GetLatency()/2 > lastAttack + lastAttackCD)
+	return (GetTickCount() + GetLatency()/2 > lastAttack + lastAttackCD and not orbDisabled)
 end
 function moveToCursor()
 	if GetDistance(mousePos) > 1 and not orbDisabled then
@@ -484,16 +489,17 @@ function OnProcessSpell(object, spell)
 			lastWindUpTime = spell.windUpTime*1000
 			lastAttackCD = spell.animationTime*1000
 		end
-		if spell.name:lower():find("viktordeathray") then
-			runCD = 0
+		if spell.name:lower():find(myHero.charName:lower().."q") or spell.name:lower():find(myHero.charName:lower().."w") or spell.name:lower():find(myHero.charName:lower().."e") or spell.name:lower():find(myHero.charName:lower().."r") then
+			lastAttack = GetTickCount() - GetLatency()/2
+			lastWindUpTime = spell.windUpTime*1000
+			lastAttackCD = spell.animationTime*1000
 		end
-	end
-end
-function OnCastSpell(iSpell,startPos,endPos,targetUnit)
-	if iSpell == 3 and myHero.charName == "Katarina" then
-		--PrintChat("WAIT! Casted"..iSpell)
-		orbDisabled = true
-		orbLast = os.clock()
+		--PrintChat(spell.name)
+		if spell.name:lower():find("katarinar") and Config.combo then
+			PrintChat("WAIT! Casted "..spell.name.." "..os.clock())
+			orbDisabled = true
+			orbLast = os.clock()
+		end
 	end
 end
 
@@ -582,7 +588,7 @@ function VPredict(Target, spell)
 		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
 	end
   elseif spell.type == "targeted" then
-		return Vector(Target), 4, myHero --CastPosition, HitChance, Position
+		return Target, 4, myHero --CastPosition, HitChance, Position
   end
 end
 
