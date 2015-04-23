@@ -290,7 +290,7 @@ function Combo()
 				if (sts.target ~= nil) and WReady then
 					if ValidTarget(sts.target, data[1].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[1].range then
-							if data[1].type == "notarget" then CastSpell(_Q) return end
+							if data[1].type == "notarget" then CastSpell(_W) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
@@ -313,7 +313,7 @@ function Combo()
 				if (sts.target ~= nil) and EReady then
 					if ValidTarget(sts.target, data[2].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[2].range then
-							if data[2].type == "notarget" then CastSpell(_Q) return end
+							if data[2].type == "notarget" then CastSpell(_E) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
@@ -372,7 +372,7 @@ function Combo()
 				if (sts.target ~= nil) and WReady then
 					if ValidTarget(sts.target, data[1].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[1].range then
-							if data[1].type == "notarget" then CastSpell(_Q) return end
+							if data[1].type == "notarget" then CastSpell(_W) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
@@ -395,7 +395,7 @@ function Combo()
 				if (sts.target ~= nil) and EReady then
 					if ValidTarget(sts.target, data[2].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[2].range then
-							if data[2].type == "notarget" then CastSpell(_Q) return end
+							if data[2].type == "notarget" then CastSpell(_E) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
@@ -418,7 +418,7 @@ function Combo()
 				if (sts.target ~= nil) and RReady then
 					if ValidTarget(sts.target, data[3].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[3].range then
-							if data[3].type == "notarget" then CastSpell(_Q) return end
+							if data[3].type == "notarget" then CastSpell(_R) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
 								if HitChance >= 2 and HitChance < 4 then
