@@ -100,7 +100,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.14
+local version = 0.15
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -220,21 +220,22 @@ end
 
 function OnTick()
 	Target = GetCustomTarget()
-	Combo()
-	if Config.KS.enableKS then
-		killsteal()
-	end
-	DmgCalculations()
-	if Config.comboConfig.move and Config.combo and not Config.comboConfig.aa then
-		moveToCursor()
-	end
 	if orbDisabled then
 		local channelDur = myHero.charName == "Katarina" and 2.5 or 0
 		if (os.clock() - orbLast) > channelDur then
 			orbDisabled = false
 			orbLast  = 0
 		end
+	else
+		Combo()
+		if Config.KS.enableKS then
+			killsteal()
+		end
+		if Config.comboConfig.move and Config.combo and not Config.comboConfig.aa then
+			moveToCursor()
+		end
 	end
+	DmgCalculations()
 end   
 
 function killsteal()
@@ -262,6 +263,7 @@ function killsteal()
 end
 
 function Combo()
+	if orbDisabled then return end
 	local skillOrder = {}
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 1, 1))
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 2, 2))
@@ -489,8 +491,8 @@ function OnProcessSpell(object, spell)
 end
 function OnCastSpell(iSpell,startPos,endPos,targetUnit)
 	if iSpell == 3 and myHero.charName == "Katarina" then
-		PrintChat("WAIT!")
-		orbisabled = true
+		--PrintChat("WAIT! Casted"..iSpell)
+		orbDisabled = true
 		orbLast = os.clock()
 	end
 end
