@@ -58,7 +58,7 @@ _G.Champs = {
         [_R] = { speed = math.huge, delay = 0.535, range = 850, width = 350, collision = false, aoe = false, type = "linear"}
     },
         ["Chogath"] = {
-        [_Q] = { speed = 950, delay = 0, range = 950, width = 0, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = math.huge, delay = 0.625, range = 950, width = 175, collision = false, aoe = true, type = "circular"},
         [_W] = { speed = math.huge, delay = 0.25, range = 700, width = 0, collision = false, aoe = false, type = "linear"},
         },
         ["Corki"] = {

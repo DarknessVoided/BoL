@@ -68,7 +68,10 @@ _G.Champs = {
 	["Shaco"] = {
     },
 	["Talon"] = {
-        [_W] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"}
+        [_Q] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
+        [_W] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
+        [_E] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
+        [_R] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"}
     },
 	["Teemo"] = {
     },
@@ -208,7 +211,7 @@ function OnLoad()
   Config:addParam("combo", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   
   Config:permaShow("combo")
-  sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, true)
+  sts = TargetSelector(TARGET_NEAR_MOUSE, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
 end
 
@@ -235,9 +238,6 @@ function OnTick()
 		killsteal()
 	end
 	DmgCalculations()
-	if Config.comboConfig.move and Config.combo then
-		myHero:MoveTo(mousePos.x, mousePos.z)
-	end
 end   
 
 function killsteal()
@@ -266,72 +266,177 @@ end
 
 function Combo()
 	local skillOrder = {}
-	table.insert(skillOrder, string.sub(Config.comboConfig.so, 1, 1))
-	table.insert(skillOrder, string.sub(Config.comboConfig.so, 2, 2))
-	table.insert(skillOrder, string.sub(Config.comboConfig.so, 3, 3))
-	table.insert(skillOrder, string.sub(Config.comboConfig.so, 4, 4))
-	for i=1,4 do
-		if skillOrder[i] == "Q" then
-			if (sts.target ~= nil) and QReady then
-				if ValidTarget(sts.target, data[0].range) and Config.KB.ComboKey then
-					if GetDistance(sts.target, myHero) <= data[0].range and Config.CS.comboQ then
-						CastSpell(_Q, sts.target)
+	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 1, 1))
+	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 2, 2))
+	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 3, 3))
+	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 4, 4))
+	--PrintChat(skillOrder[1]) --combos[Config.comboConfig.so]
+	if Config.comboConfig.so < 7 then
+		for i=1,3 do
+			if skillOrder[i] == "Q" then
+				if (sts.target ~= nil) and QReady then
+					if ValidTarget(sts.target, data[0].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[0].range then
+							CastSpell(_Q, sts.target)
+						end
+					end
+				end
+			elseif skillOrder[i] == "W" then
+				if (sts.target ~= nil) and WReady then
+					if ValidTarget(sts.target, data[1].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[1].range then
+							CastSpell(_W, sts.target)
+						end
+					end
+				end
+			elseif skillOrder[i] == "E" then
+				if (sts.target ~= nil) and EReady then
+					if ValidTarget(sts.target, data[2].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[2].range then
+							CastSpell(_E, sts.target)
+						end
 					end
 				end
 			end
-		elseif skillOrder[i] == "W" then
-			if (sts.target ~= nil) and WReady then
-				if ValidTarget(sts.target, data[1].range) and Config.KB.ComboKey then
-					if GetDistance(sts.target, myHero) <= data[1].range and Config.CS.comboW then
-						CastSpell(_W, sts.target)
-					end
+			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
+				if timeToShoot() then
+					myHero:Attack(sts.target)
+				elseif heroCanMove() and Config.comboConfig.move then
+					moveToCursor()
 				end
-			end
-		elseif skillOrder[i] == "E" then
-			if (sts.target ~= nil) and EReady then
-				if ValidTarget(sts.target, data[2].range) and Config.KB.ComboKey then
-					if GetDistance(sts.target, myHero) <= data[2].range and Config.CS.comboE then
-						CastSpell(_E, sts.target)
-					end
-				end
-			end
-		elseif skillOrder[i] == "R" then
-			if (sts.target ~= nil) and RReady then
-				if ValidTarget(sts.target, data[3].range) and Config.KB.ComboKey then
-					if GetDistance(sts.target, myHero) <= data[3].range and Config.CS.comboR then
-						CastSpell(_R, sts.target)
-					end
-				end
+			elseif heroCanMove() and Config.comboConfig.move and Config.combo then
+				moveToCursor()
 			end
 		end
-		if Config.comboConfig.aa then
-			
+	else
+		for i=1,4 do
+			if skillOrder[i] == "Q" then
+				if (sts.target ~= nil) and QReady then
+					if ValidTarget(sts.target, data[0].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[0].range then
+							if Config.misc.pro == 1 then
+								local CastPosition, HitChance, Position = VPredict(Target, data[0])
+								if HitChance >= 2 and < 4 then
+									CCastSpell(_Q, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[0])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_Q, sts.target)
+								end
+							end
+						end
+					end
+				end
+			elseif skillOrder[i] == "W" then
+				if (sts.target ~= nil) and WReady then
+					if ValidTarget(sts.target, data[1].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[1].range then
+							if Config.misc.pro == 1 then
+								local CastPosition, HitChance, Position = VPredict(Target, data[1])
+								if HitChance >= 2 and < 4 then
+									CCastSpell(_W, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[1])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_W, sts.target)
+								end
+							end
+						end
+					end
+				end
+			elseif skillOrder[i] == "E" then
+				if (sts.target ~= nil) and EReady then
+					if ValidTarget(sts.target, data[2].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[2].range then
+							if Config.misc.pro == 1 then
+								local CastPosition, HitChance, Position = VPredict(Target, data[2])
+								if HitChance >= 2 and < 4 then
+									CCastSpell(_E, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[2])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_E, sts.target)
+								end
+							end
+						end
+					end
+				end
+			elseif skillOrder[i] == "R" then
+				if (sts.target ~= nil) and RReady then
+					if ValidTarget(sts.target, data[3].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[3].range then
+							if Config.misc.pro == 1 then
+								local CastPosition, HitChance, Position = VPredict(Target, data[3])
+								if HitChance >= 2 and < 4 then
+									CCastSpell(_R, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_R, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[3])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_R, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_R, sts.target)
+								end
+							end
+						end
+					end
+				end
+			end
+			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
+				if timeToShoot() then
+					myHero:Attack(sts.target)
+				elseif heroCanMove() and Config.comboConfig.move then
+					moveToCursor()
+				end
+			elseif heroCanMove() and Config.comboConfig.move and Config.combo then
+				moveToCursor()
+			end
 		end
 	end
 end
-
-function VPredict(Target, spell)
-  if spell.type == "linear" then
-	if spell.aoe then
-		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+local lastAttack, lastWindUpTime, lastAttackCD = 0, 0, 0
+local myTrueRange = myHero.range + GetDistance(myHero.minBBox)
+function heroCanMove()
+	return (GetTickCount() + GetLatency()/2 > lastAttack + lastWindUpTime + 20 and orb)
+end
+function timeToShoot()
+	return (GetTickCount() + GetLatency()/2 > lastAttack + lastAttackCD)
+end
+function moveToCursor()
+	if GetDistance(mousePos) > 1 then
+		--myHero:MoveTo(mousePos.x, mousePos.z)
+		local moveToPos = myHero + (Vector(mousePos) - myHero):normalized()*300
+		myHero:MoveTo(moveToPos.x, moveToPos.z)
 	end
-  elseif spell.type == "circular" then
-	if spell.aoe then
-		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+end
+function OnProcessSpell(object, spell)
+	if object == myHero then
+		if spell.name:lower():find("attack") then
+			lastAttack = GetTickCount() - GetLatency()/2
+			lastWindUpTime = spell.windUpTime*1000
+			lastAttackCD = spell.animationTime*1000
+		end
+		if spell.name:lower():find("viktordeathray") then
+			runCD = 0
+		end
 	end
-  elseif spell.type == "cone" then
-	if spell.aoe then
-		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
-  else
-		return Vector(Target), 2, myHero --CastPosition, HitChance, Position
-  end
 end
 
 local KillText = {}
@@ -393,8 +498,10 @@ function DPredict(Target, spell)
 	Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
 	Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  else
+	return SkillShot.STATUS.SUCCESS_HIT, Target, 125
   end
-  return DP:predict(unit, Spell, Config.misc.hitchance)
+  return DP:predict(unit, Spell)
 end
 
 function VPredict(Target, spell)
@@ -416,6 +523,8 @@ function VPredict(Target, spell)
 	else
 		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
 	end
+  else
+		return Vector(Target), 4, myHero --CastPosition, HitChance, Position
   end
 end
 
@@ -433,25 +542,4 @@ function CCastSpell(Spell, xPos, zPos)
   else
     CastSpell(Spell, xPos, zPos)
   end
-end
-
-class 'SumSpells'
-function SumSpells:__init()
-	names = {"summonerdot", "summonerflash", "summonerexhaust", "summonerheal", "summonersmite"}
-end
-
-function SumSpells:Ready(name)
-	local Ready = false
-	local Spel = self:GetSlot(name)
-	Ready = (Spel ~= nil and myHero:CanUseSpell(Spel) == READY)
-	return Ready
-end
-
-function SumSpells:GetSlot(name)
-	if myHero:GetSpellData(SUMMONER_1).name == name then 
-		return SUMMONER_1 
-	end
-	if myHero:GetSpellData(SUMMONER_2).name == name then 
-		return SUMMONER_2 
-	end
 end
