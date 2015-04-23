@@ -457,6 +457,7 @@ function Combo()
 		end
 	end
 end
+
 local lastAttack, lastWindUpTime, lastAttackCD = 0, 0, 0
 local myTrueRange = myHero.range + GetDistance(myHero.minBBox)
 local orbDisabled = false
@@ -488,6 +489,7 @@ function OnProcessSpell(object, spell)
 end
 function OnCastSpell(iSpell,startPos,endPos,targetUnit)
 	if iSpell == 3 and myHero.charName == "Katarina" then
+		PrintChat("WAIT!")
 		orbisabled = true
 		orbLast = os.clock()
 	end
