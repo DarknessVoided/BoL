@@ -33,6 +33,10 @@ _G.Champs = {
 	["Kassadin"] = {
     },
 	["Katarina"] = {
+		[_Q] = { range = 675, type = "targeted"},
+		[_W] = { range = 375, type = "notarget"},
+		[_E] = { range = 700, type = "targeted"},
+		[_R] = { range = 550, type = "notarget"},
     },
 	["Khazix"] = {
         [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"}
@@ -65,10 +69,10 @@ _G.Champs = {
 	["Shaco"] = {
     },
 	["Talon"] = {
-        [_Q] = { range = 200, type = "click"},
+        [_Q] = { range = 200, type = "targeted"},
         [_W] = { speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
-        [_E] = { range = 700, type = "click"},
-        [_R] = { speed = 2200, delay = 0, range = 0, width = 650, collision = false, aoe = true, type = "circular"}
+        [_E] = { range = 700, type = "targeted"},
+        [_R] = { range = 650, type = "notarget"}
     },
 	["Teemo"] = {
     },
@@ -96,7 +100,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.12
+local version = 0.13
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -145,7 +149,7 @@ local combos = {}
 
 function OnLoad()
 
-  Config = scriptConfig("[Freelo Series] Assassin AiO", "Aimbot")
+  Config = scriptConfig("Assassin AiO", "Assassin AiO")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -260,44 +264,8 @@ function Combo()
 				if (sts.target ~= nil) and QReady then
 					if ValidTarget(sts.target, data[0].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[0].range then
-							CastSpell(_Q, sts.target)
-						end
-					end
-				end
-			elseif skillOrder[i] == "W" then
-				if (sts.target ~= nil) and WReady then
-					if ValidTarget(sts.target, data[1].range) and Config.combo then
-						if GetDistance(sts.target, myHero) <= data[1].range then
-							CastSpell(_W, sts.target)
-						end
-					end
-				end
-			elseif skillOrder[i] == "E" then
-				if (sts.target ~= nil) and EReady then
-					if ValidTarget(sts.target, data[2].range) and Config.combo then
-						if GetDistance(sts.target, myHero) <= data[2].range then
-							CastSpell(_E, sts.target)
-						end
-					end
-				end
-			end
-			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
-				if timeToShoot() then
-					myHero:Attack(sts.target)
-				elseif heroCanMove() and Config.comboConfig.move then
-					moveToCursor()
-				end
-			elseif heroCanMove() and Config.comboConfig.move and Config.combo then
-				moveToCursor()
-			end
-		end
-	else
-		for i=1,4 do
-			if skillOrder[i] == "Q" then
-				if (sts.target ~= nil) and QReady then
-					if ValidTarget(sts.target, data[0].range) and Config.combo then
-						if GetDistance(sts.target, myHero) <= data[0].range then
-							if Config.misc.pro == 1 then
+							if data[0].type == "notarget" then CastSpell(_Q) return end
+							if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
@@ -319,6 +287,7 @@ function Combo()
 				if (sts.target ~= nil) and WReady then
 					if ValidTarget(sts.target, data[1].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[1].range then
+							if data[1].type == "notarget" then CastSpell(_Q) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
@@ -341,6 +310,89 @@ function Combo()
 				if (sts.target ~= nil) and EReady then
 					if ValidTarget(sts.target, data[2].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[2].range then
+							if data[2].type == "notarget" then CastSpell(_Q) return end
+							if Config.misc.pro == 1 then
+								local CastPosition, HitChance, Position = VPredict(Target, data[2])
+								if HitChance >= 2 and HitChance < 4 then
+									CCastSpell(_E, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[2])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_E, sts.target)
+								end
+							end
+						end
+					end
+				end
+			end
+			if sts.target ~=nil and Config.comboConfig.aa and Config.combo then	
+				if timeToShoot() then
+					myHero:Attack(sts.target)
+				elseif heroCanMove() and Config.comboConfig.move then
+					moveToCursor()
+				end
+			elseif heroCanMove() and Config.comboConfig.move and Config.combo then
+				moveToCursor()
+			end
+		end
+	else
+		for i=1,4 do
+			if skillOrder[i] == "Q" then
+				if (sts.target ~= nil) and QReady then
+					if ValidTarget(sts.target, data[0].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[0].range then
+							if data[0].type == "notarget" then CastSpell(_Q) return end
+							if Config.misc.pro == 1 then 
+								local CastPosition, HitChance, Position = VPredict(Target, data[0])
+								if HitChance >= 2 and HitChance < 4 then
+									CCastSpell(_Q, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[0])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_Q, sts.target)
+								end
+							end
+						end
+					end
+				end
+			elseif skillOrder[i] == "W" then
+				if (sts.target ~= nil) and WReady then
+					if ValidTarget(sts.target, data[1].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[1].range then
+							if data[1].type == "notarget" then CastSpell(_Q) return end
+							if Config.misc.pro == 1 then
+								local CastPosition, HitChance, Position = VPredict(Target, data[1])
+								if HitChance >= 2 and HitChance < 4 then
+									CCastSpell(_W, CastPosition.x, CastPosition.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, sts.target)
+								end
+							elseif Config.misc.pro == 2 then
+								local State, Position, perc = DPredict(unit, data[1])
+								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif perc == 125 then
+									CastSpell(_W, sts.target)
+								end
+							end
+						end
+					end
+				end
+			elseif skillOrder[i] == "E" then
+				if (sts.target ~= nil) and EReady then
+					if ValidTarget(sts.target, data[2].range) and Config.combo then
+						if GetDistance(sts.target, myHero) <= data[2].range then
+							if data[2].type == "notarget" then CastSpell(_Q) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
@@ -363,6 +415,7 @@ function Combo()
 				if (sts.target ~= nil) and RReady then
 					if ValidTarget(sts.target, data[3].range) and Config.combo then
 						if GetDistance(sts.target, myHero) <= data[3].range then
+							if data[3].type == "notarget" then CastSpell(_Q) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
 								if HitChance >= 2 and HitChance < 4 then
