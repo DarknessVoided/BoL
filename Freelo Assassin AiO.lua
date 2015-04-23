@@ -123,13 +123,13 @@ if AUTO_UPDATE then
   end
 end
 --[[ Auto updater end ]]--
-
+VP = nil
 --[[ Libraries start ]]--
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
 end
-
+DP = nil
 --if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
 --  require "DivinePred"
 --  DP = DivinePred() 
@@ -173,9 +173,11 @@ function OnLoad()
   local combo = ""
   local keys = {"Q","W","E"}
   shuffle(keys, #keys)
+  keys = {"Q","W","E","R"}
+  shuffle(keys, #keys)
   Config.comboConfig:addParam("so",  "Skill Order", SCRIPT_PARAM_LIST, 1, combos)
   
-  Config:addParam("combo", "Combo on/off", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  Config:addParam("combo", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   
   Config:permaShow("combo")
   sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, true)
@@ -184,18 +186,11 @@ end
 
 function shuffle(a, n)
 	if n == 0 then
-		local str = ""
-		local lasti = 0
-		for i,v in ipairs(a) do
-			if i-lasti == 0 then
-				str = v
-			elseif i-lasti < 3 then 
-				str = str..v
-			else
-				table.insert(combos, str)
-				lasti = i
-			end
-		end
+	  local c = ""
+	  for i,v in ipairs(a) do
+		c = v..c
+	  end
+	  combos[#combos+1] = c
 	else
 		for i=1,n do
 			a[n], a[i] = a[i], a[n]

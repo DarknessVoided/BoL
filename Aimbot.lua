@@ -312,6 +312,9 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
+VP = nil
+DP = nil
+HP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
