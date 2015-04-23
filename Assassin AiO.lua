@@ -1,11 +1,11 @@
 --[[
 
-  ______             _                                        _                  _  ____  
- |  ____|           | |           /\                         (_)           /\   (_)/ __ \ 
- | |__ _ __ ___  ___| | ___      /  \   ___ ___  __ _ ___ ___ _ _ __      /  \   _| |  | |
- |  __| '__/ _ \/ _ \ |/ _ \    / /\ \ / __/ __|/ _` / __/ __| | '_ \    / /\ \ | | |  | |
- | |  | | |  __/  __/ | (_) |  / ____ \\__ \__ \ (_| \__ \__ \ | | | |  / ____ \| | |__| |
- |_|  |_|  \___|\___|_|\___/  /_/    \_\___/___/\__,_|___/___/_|_| |_| /_/    \_\_|\____/ 
+                                  _                  _  ____  
+      /\                         (_)           /\   (_)/ __ \ 
+     /  \   ___ ___  __ _ ___ ___ _ _ __      /  \   _| |  | |
+    / /\ \ / __/ __|/ _` / __/ __| | '_ \    / /\ \ | | |  | |
+   / ____ \\__ \__ \ (_| \__ \__ \ | | | |  / ____ \| | |__| |
+  /_/    \_\___/___/\__,_|___/___/_|_| |_| /_/    \_\_|\____/ 
  
  
 ]]--
@@ -49,9 +49,6 @@ _G.Champs = {
     },
 	["MasterYi"] = {
     },
-	["Nidalee"] = {
-		[_Q] = { speed = 1300, delay = 0.125, range = 1500, width = 60, collision = true, aoe = false, type = "linear"},
-    },
 	["Nocturne"] = {
         [_Q] = { speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
     },
@@ -68,28 +65,14 @@ _G.Champs = {
 	["Shaco"] = {
     },
 	["Talon"] = {
-        [_Q] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
-        [_W] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
-        [_E] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
-        [_R] = { speed = 2200, delay = 0.5, range = 600, width = 200, collision = false, aoe = false, type = "cone"}
+        [_Q] = { range = 200, type = "click"},
+        [_W] = { speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
+        [_E] = { range = 700, type = "click"},
+        [_R] = { speed = 2200, delay = 0, range = 0, width = 650, collision = false, aoe = true, type = "circular"}
     },
 	["Teemo"] = {
     },
-	["Tristana"] = {
-    },
 	["Tryndamere"] = {
-    },
-	["Twitch"] = {
-        [_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
-    },
-	["Vayne"] = {
-    },
-	["Vi"] = {
-    }, 
-	["Xerath"] = {
-        [_W] = { speed = math.huge, delay = 0.5, range = 1100, width = 325, collision = false, aoe = true, type = "circular"},
-        [_E] = { speed = 1600, delay = 0.25, range = 1050, width = 125, collision = true, aoe = false, type = "linear"},
-        [_R] = { speed = 300, delay = 0.25, range = 5600, width = 265, collision = false, aoe = true, type = "circular"}
     },
 	["XinZhao"] = {
     },
@@ -113,15 +96,15 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 0.11
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/Freelo Assassin AiO.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."Freelo Assassin AiO.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."Assassin AiO.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Freelo Series] Assassin AiO:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Assassin AiO]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Freelo Assassin AiO.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Assassin AiO.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
