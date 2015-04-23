@@ -497,7 +497,7 @@ function OnTick()
                   if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, CastPosition.x, CastPosition.z)
               else
-                  local enemies = EnemiesAround(Target, 100) -- Maybe needs some adjustment
+                  local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
                   if enemies > 0 then
                     if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
@@ -535,7 +535,7 @@ function OnTick()
                 if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..perc) end
                 CCastSpell(i, Position.x, Position.z)
               else
-                local enemies = EnemiesAround(Target, 100) -- Maybe needs some adjustment
+                local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
                 if enemies > 0 then
                   if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
 				  GetNextCustomTarget(i, Target)
