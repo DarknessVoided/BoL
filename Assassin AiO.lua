@@ -100,7 +100,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.13
+local version = 0.14
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -227,6 +227,13 @@ function OnTick()
 	DmgCalculations()
 	if Config.comboConfig.move and Config.combo and not Config.comboConfig.aa then
 		moveToCursor()
+	end
+	if orbDisabled then
+		local channelDur = myHero.charName == "Katarina" and 2.5 or 0
+		if (os.clock() - orbLast) > channelDur then
+			orbDisabled = false
+			orbLast  = 0
+		end
 	end
 end   
 
@@ -452,6 +459,8 @@ function Combo()
 end
 local lastAttack, lastWindUpTime, lastAttackCD = 0, 0, 0
 local myTrueRange = myHero.range + GetDistance(myHero.minBBox)
+local orbDisabled = false
+local orbLast
 function heroCanMove()
 	return (GetTickCount() + GetLatency()/2 > lastAttack + lastWindUpTime + 20 and orb)
 end
@@ -459,7 +468,7 @@ function timeToShoot()
 	return (GetTickCount() + GetLatency()/2 > lastAttack + lastAttackCD)
 end
 function moveToCursor()
-	if GetDistance(mousePos) > 1 then
+	if GetDistance(mousePos) > 1 and not orbDisabled then
 		myHero:MoveTo(mousePos.x, mousePos.z)
 		--local moveToPos = myHero + (Vector(mousePos) - myHero):normalized()*300
 		--myHero:MoveTo(moveToPos.x, moveToPos.z)
@@ -475,6 +484,12 @@ function OnProcessSpell(object, spell)
 		if spell.name:lower():find("viktordeathray") then
 			runCD = 0
 		end
+	end
+end
+function OnCastSpell(iSpell,startPos,endPos,targetUnit)
+	if iSpell == 3 and myHero.charName == "Katarina" then
+		orbDisabled
+		orbLast  = os.clock()
 	end
 end
 
