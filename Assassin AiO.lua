@@ -103,7 +103,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.19
+local version = 0.20
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -196,7 +196,7 @@ function OnLoad()
   Config.comboConfig:addParam("items",  "Use items in combo", SCRIPT_PARAM_ONOFF, true)
   
 	Config:addSubMenu("Killsteal Settings", "KS")
-	Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, false)
+	Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealW", "Use W", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -373,7 +373,7 @@ function Combo()
 				end
 			end
 			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
+				iOrb:Orbwalk()
 			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 				moveToCursor()
 			end
@@ -474,12 +474,18 @@ function Combo()
 					end
 				end
 			end
+			UseItems(Target) --wtb logic
 			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
+				iOrb:Orbwalk()
 			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 				moveToCursor()
 			end
 		end
+	end
+	if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
+		iOrb:Orbwalk()
+	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
+		moveToCursor()
 	end
 end
 
@@ -603,4 +609,19 @@ function CCastSpell(Spell, xPos, zPos)
   else
     CastSpell(Spell, xPos, zPos)
   end
+end
+
+-- Credits: Da Vinci
+function UseItems(unit)
+    if unit ~= nil then
+        for _, item in pairs(CastableItems) do
+            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
+                if item.reqTarget then
+                    CastSpell(item.Slot(), unit)
+                else
+                    CastSpell(item.Slot())
+                end
+            end
+        end
+    end
 end
