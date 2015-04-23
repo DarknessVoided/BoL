@@ -96,7 +96,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.11
+local version = 0.12
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -128,10 +128,10 @@ if FileExist(LIB_PATH .. "/VPrediction.lua") then
   VP = VPrediction()
 end
 DP = nil
---if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
---  require "DivinePred"
---  DP = DivinePred() 
---end
+if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+  require "DivinePred"
+  DP = DivinePred() 
+end
 
 --[[ Script start ]]--
 if not Champs[myHero.charName] then return end -- not supported :(
@@ -299,7 +299,7 @@ function Combo()
 						if GetDistance(sts.target, myHero) <= data[0].range then
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
-								if HitChance >= 2 and < 4 then
+								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_Q, sts.target)
@@ -321,7 +321,7 @@ function Combo()
 						if GetDistance(sts.target, myHero) <= data[1].range then
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
-								if HitChance >= 2 and < 4 then
+								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_W, sts.target)
@@ -343,7 +343,7 @@ function Combo()
 						if GetDistance(sts.target, myHero) <= data[2].range then
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
-								if HitChance >= 2 and < 4 then
+								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_E, sts.target)
@@ -365,7 +365,7 @@ function Combo()
 						if GetDistance(sts.target, myHero) <= data[3].range then
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
-								if HitChance >= 2 and < 4 then
+								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_R, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_R, sts.target)
