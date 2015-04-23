@@ -235,7 +235,7 @@ _G.Champs = {
         [_E] = { speed = 1600, delay = 0.25, range = 920, width = 100, collision = false, aoe = true, type = "circular"}
     },
         ["Varus"] = {
-       --[_Q] = { speed = 1850, delay = 0.1, range = 1475, width = 0},
+        --[_Q] = { speed = 1850, delay = 0.1, range = 1475, width = 55, collision = false, aoe = false, type = "linear"},
         [_E] = { speed = 1500, delay = 0.25, range = 925, width = 240, collision = false, aoe = true, type = "circular"},
         [_R] = { speed = 1950, delay = 0.5, range = 800, width = 100, collision = false, aoe = false, type = "linear"}
     },
@@ -285,7 +285,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.39
+local version = 0.40
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -485,6 +485,7 @@ function OnTick()
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)
           if Target == nil then return end
+		  if IsChargable(i) and not secondCast then return end
           if (toCast[i] == true or Config[str[i]]) and myHero:CanUseSpell(i) then
             if Config.misc.pro == 1 then -- VPrediction
               local CastPosition, HitChance, Position = VPredict(Target, spell)
@@ -529,13 +530,28 @@ function OnTick()
                 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
               end
               local State, Position, perc = DP:predict(unit, Spell, Config.misc.hitchance)
-              if Config.misc.debug then PrintChat("Attempt to aim!") end
+              if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if State == SkillShot.STATUS.SUCCESS_HIT then 
-                  if Config.misc.debug then PrintChat("Aimed skill! Precision: "..perc) end
-                  CCastSpell(i, Position.x, Position.z)
+                if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..perc) end
+                CCastSpell(i, Position.x, Position.z)
               else
-                  if Config.misc.debug then PrintChat("To mouse :/") end
-                  CCastSpell(i, mousePos.x, mousePos.z)
+                local enemies = EnemiesAround(Target, 100) -- Maybe needs some adjustment
+                if enemies > 0 then
+                  if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
+				  GetNextCustomTarget(i, Target)
+				  unit = DPTarget(Target)
+				  State, Position, perc = DP:predict(unit, Spell, Config.misc.hitchance)
+				  if State == SkillShot.STATUS.SUCCESS_HIT then 
+                  if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..perc.."%") end
+					CCastSpell(i, Position.x, Position.z)
+				  else
+					if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end
+					CCastSpell(i, mousePos.x, mousePos.z)
+				  end
+				else
+				  if Config.misc.debug then PrintChat("2 - To mouse :/") end
+				  CCastSpell(i, mousePos.x, mousePos.z)
+				end
               end toCast[i] = false
             --[[elseif Config.misc.pro == 3 then -- HPrediction
               local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
@@ -584,7 +600,7 @@ function VPredict(Target, spell)
 end
 
 function OnWndMsg(msg, key)
-   if msg == KEY_UP and key == GetKey("Q") and toAim[0] then
+   if msg == KEY_UP and key == GetKey("Q") and toAim[0] and not secondCast then
      toCast[0] = false
    elseif msg == KEY_UP and key == GetKey("W") and toAim[1] then 
      toCast[1] = false
@@ -613,17 +629,36 @@ function IsVeigarLuxQ(i)
   end
 end
 
+function IsChargable(i)
+  if myHero.charName == 'Varus' then
+    if i == 1 then
+      return true
+    else
+      return false
+    end
+  elseif myHero.charName == 'Xerath' then
+    if i == 1 then
+      return true
+    else
+      return false
+    end 
+  else
+    return false
+  end
+end
+
 function OnSendPacket(p)
   if Config.tog and not myHero.dead and not recall then
     if p.header == 0x00E9 then -- Credits to PewPewPew
         p.pos=27
         local opc = p:Decode1()
+		if Config.misc.debug then print(('0x%02X'):format(opc)) end
         if opc == 0x02 and not toCast[0] and toAim[0] then 
           Target = GetCustomTarget(0)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
-            toCast[0] = true
+			toCast[0] = true
           end
         elseif opc == 0xD8 and not toCast[1] and toAim[1] then 
           Target = GetCustomTarget(1)
@@ -671,13 +706,18 @@ function GetCustomTarget(i)
     end
 end
 
-function GetNextCustomTarget(i, Target)
-    for _, unit in pairs(GetEnemyHeroes()) do
-      if ValidTarget(unit) and unit ~= Target then
-        return unit
-      end
-    end
-    return Target
+function GetNextCustomTarget(i, tar)
+	local targ = nil
+	for _, unit in pairs(GetEnemyHeroes()) do
+		if targ and targ.valid and unit and unit.valid and unit ~= tar then
+			if GetDistance(unit, mousePos) < GetDistance(targ, mousePos) then
+				targ = unit
+			end
+		else
+			targ = unit
+		end
+	end
+	return targ
 end
 
 --[[ Packet Cast Helper ]]--
