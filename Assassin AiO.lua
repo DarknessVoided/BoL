@@ -61,7 +61,10 @@ _G.Champs = {
 	["Poppy"] = {
     },
 	["Rengar"] = {
-        [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"}
+		[_Q] = { range = 125, type = "notarget", aareset = true},
+		[_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = false, type = "circular"},
+        [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
+        [_R] = { range = 4000, type = "notarget"}
     },
 	["Riven"] = {
         [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
@@ -69,7 +72,7 @@ _G.Champs = {
 	["Shaco"] = {
     },
 	["Talon"] = {
-        [_Q] = { range = 200, type = "targeted"},
+        [_Q] = { range = 200, type = "targeted", aareset = true},
         [_W] = { speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
         [_E] = { range = 700, type = "targeted"},
         [_R] = { range = 650, type = "notarget"}
@@ -100,7 +103,7 @@ TwinShadows = { Range = 1000, Slot   = function() return FindItemSlot("ItemWrait
 }
 
 --[[ Auto updater start ]]--
-local version = 0.17
+local version = 0.18
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -125,8 +128,9 @@ if AUTO_UPDATE then
   end
 end
 --[[ Auto updater end ]]--
-VP = nil
+
 --[[ Libraries start ]]--
+VP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
@@ -136,13 +140,13 @@ if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."D
   require "DivinePred"
   DP = DivinePred() 
 end
-
 iOrb = nil
 if FileExist(LIB_PATH.."iSAC.lua") then
   require "iSAC"
   iOrb = iOrbWalker(myHero.range) 
   iOrb:addAA()
 end
+--[[ Libraries end ]]--
 
 --[[ Script start ]]--
 if not Champs[myHero.charName] then return end -- not supported :(
