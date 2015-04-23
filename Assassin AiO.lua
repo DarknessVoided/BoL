@@ -460,7 +460,7 @@ end
 local lastAttack, lastWindUpTime, lastAttackCD = 0, 0, 0
 local myTrueRange = myHero.range + GetDistance(myHero.minBBox)
 local orbDisabled = false
-local orbLast
+local orbLast = 0
 function heroCanMove()
 	return (GetTickCount() + GetLatency()/2 > lastAttack + lastWindUpTime + 20 and orb)
 end
@@ -488,8 +488,8 @@ function OnProcessSpell(object, spell)
 end
 function OnCastSpell(iSpell,startPos,endPos,targetUnit)
 	if iSpell == 3 and myHero.charName == "Katarina" then
-		orbDisabled
-		orbLast  = os.clock()
+		orbisabled = true
+		orbLast = os.clock()
 	end
 end
 
