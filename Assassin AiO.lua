@@ -232,11 +232,11 @@ end
 function OnTick()
 	Target = GetCustomTarget()
 	if orbDisabled then
-		PrintChat("WAITING! ")
+		--PrintChat("WAITING! ")
 		if (os.clock() - orbLast) > 2.5 then
 			orbDisabled = false
 			orbLast  = 0
-			PrintChat("WAIT finished! "..os.clock())
+			--PrintChat("WAIT finished! "..os.clock())
 		end
 	else
 		Combo()
@@ -476,16 +476,11 @@ function OnProcessSpell(object, spell)
 		iOrb:OnProcessSpell(object, spell)
 		--PrintChat(spell.name)
 		if spell.name:lower():find("katarinar") and Config.combo then
-			PrintChat("WAIT! Casted "..spell.name.." "..os.clock())
+			--PrintChat("WAIT! Casted "..spell.name.." "..os.clock())
 			orbDisabled = true
 			orbLast = os.clock()
 		end
 	end
-end
-
-function OnSendPacket(p)
-	iOrb:ManualOrbwalk(p)
-	iOrb:ManualBlock(p)
 end
 
 local KillText = {}
