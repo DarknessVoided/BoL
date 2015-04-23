@@ -483,6 +483,11 @@ function OnProcessSpell(object, spell)
 	end
 end
 
+function OnSendPacket(p)
+	iOrb:ManualOrbwalk(p)
+	iOrb:ManualBlock(p)
+end
+
 local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
