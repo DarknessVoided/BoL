@@ -285,7 +285,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.41
+local version = 0.42
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -320,13 +320,13 @@ if FileExist(LIB_PATH .. "/VPrediction.lua") then
   VP = VPrediction()
 end
 
-
---[[ 
-
 if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
   require "DivinePred"
   DP = DivinePred() 
 end
+
+
+--[[ 
 
 if FileExist(LIB_PATH .. "/HPrediction.lua") then
   require("HPrediction")
@@ -363,15 +363,14 @@ function OnLoad()
   Config.misc:addParam("debug", "Debug mode", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
   
-  local predToUse = {"", ""} --, "", ""
-  if VP ~= nil then predToUse[1] = "VPrediction" end
+  local predToUse = {} --, "", ""
+  if VP ~= nil then table.insert(predToUse, "VPrediction") end
   if VIP_USER then
-    if DP ~= nil then predToUse[2] = "DivinePred" end
-    --if prodstatus then predToUse[2] = "Prodiction" end
+    if DP ~= nil then table.insert(predToUse, "DivinePred") end
   end
   --if FileExist(LIB_PATH.."HPrediction.lua") then predToUse[2] = "HPrediction" end
   
-  if predToUse == {"", ""} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
+  if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   
   Config.misc:addParam("rangeoffset", "Range Decrease Offset", SCRIPT_PARAM_SLICE, 0, 0, 200, 0)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
