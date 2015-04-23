@@ -225,6 +225,9 @@ function OnTick()
 		killsteal()
 	end
 	DmgCalculations()
+	if Config.comboConfig.move and Config.combo and not Config.comboConfig.aa then
+		moveToCursor()
+	end
 end   
 
 function killsteal()
@@ -457,9 +460,9 @@ function timeToShoot()
 end
 function moveToCursor()
 	if GetDistance(mousePos) > 1 then
-		--myHero:MoveTo(mousePos.x, mousePos.z)
-		local moveToPos = myHero + (Vector(mousePos) - myHero):normalized()*300
-		myHero:MoveTo(moveToPos.x, moveToPos.z)
+		myHero:MoveTo(mousePos.x, mousePos.z)
+		--local moveToPos = myHero + (Vector(mousePos) - myHero):normalized()*300
+		--myHero:MoveTo(moveToPos.x, moveToPos.z)
 	end
 end
 function OnProcessSpell(object, spell)
