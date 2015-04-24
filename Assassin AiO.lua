@@ -325,6 +325,8 @@ function Combo()
 								CastSpell(_Q, myHero:Attack(Target))
 							elseif data[0].type == "notarget" then 
 								CastSpell(_Q)
+							elseif data[0].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
@@ -353,6 +355,8 @@ function Combo()
 								CastSpell(_W, myHero:Attack(Target))
 							elseif data[1].type == "notarget" then 
 								CastSpell(_W)
+							elseif data[1].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
@@ -381,6 +385,8 @@ function Combo()
 								CastSpell(_E, myHero:Attack(Target))
 							elseif data[2].type == "notarget" then 
 								CastSpell(_E)
+							elseif data[2].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
@@ -419,6 +425,8 @@ function Combo()
 								CastSpell(_Q, myHero:Attack(Target))
 							elseif data[0].type == "notarget" then 
 								CastSpell(_Q)
+							elseif data[0].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
@@ -447,6 +455,8 @@ function Combo()
 								CastSpell(_W, myHero:Attack(Target))
 							elseif data[1].type == "notarget" then 
 								CastSpell(_W)
+							elseif data[1].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
@@ -475,6 +485,8 @@ function Combo()
 								CastSpell(_E, myHero:Attack(Target))
 							elseif data[2].type == "notarget" then 
 								CastSpell(_E)
+							elseif data[2].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
@@ -503,6 +515,8 @@ function Combo()
 								CastSpell(_R, myHero:Attack(Target))
 							elseif data[3].type == "notarget" then 
 								CastSpell(_R)
+							elseif data[3].type == "dontuse" then 
+								return
 							else
 							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
