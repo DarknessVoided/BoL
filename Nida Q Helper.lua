@@ -43,13 +43,15 @@ function OnLoad()
   Config:addParam("throwQ", "Throw Q", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
   Config:permaShow("throwQh")
   Config:addTS(QTargetSelector)
-  Spell_Q.collisionM['Nidalee'] = true
-  Spell_Q.collisionH['Nidalee'] = true --or false
-  Spell_Q.delay['Nidalee'] = Q.delay
-  Spell_Q.range['Nidalee'] = Q.range
-  Spell_Q.speed['Nidalee'] = Q.speed
-  Spell_Q.type['Nidalee'] = "DelayLine"
-  Spell_Q.width['Nidalee'] = Q.width
+  if HP then
+	Spell_Q.collisionM['Nidalee'] = true
+	Spell_Q.collisionH['Nidalee'] = true --or false
+	Spell_Q.delay['Nidalee'] = Q.delay
+	Spell_Q.range['Nidalee'] = Q.range
+	Spell_Q.speed['Nidalee'] = Q.speed
+	Spell_Q.type['Nidalee'] = "DelayLine"
+	Spell_Q.width['Nidalee'] = Q.width
+  end
   print("Nida Q Helper loaded!")
 end
 

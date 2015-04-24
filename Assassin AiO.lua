@@ -62,6 +62,10 @@ _G.Champs = {
         [_W] = { speed = math.huge, delay = 0.125, range = 800, width = 250, collision = false, aoe = true, type = "circular"}
     },
 	["MasterYi"] = {
+		[_Q] = { range = 675, type = "targeted"},
+		[_W] = { range = 375, type = "notarget"},
+		[_E] = { range = 700, type = "notarget", aareset = true},
+		[_R] = { range = 2500, type = "notarget"}
     },
 	["Nocturne"] = {
         [_Q] = { speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
