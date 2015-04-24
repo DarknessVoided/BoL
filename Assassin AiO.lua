@@ -63,8 +63,8 @@ _G.Champs = {
     },
 	["MasterYi"] = {
 		[_Q] = { range = 675, type = "targeted"},
-		[_W] = { range = 375, type = "notarget"},
-		[_E] = { range = 700, type = "notarget", aareset = true},
+		[_W] = { range = 375, type = "dontuse"},
+		[_E] = { range = 700, type = "notarget"},
 		[_R] = { range = 2500, type = "notarget"}
     },
 	["Nocturne"] = {
