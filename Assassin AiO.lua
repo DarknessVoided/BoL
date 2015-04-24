@@ -114,7 +114,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.27
+local version = 0.28
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -318,9 +318,7 @@ function Combo()
 					if ValidTarget(Target, data[0].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _Q)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_Q, myHero:Attack(Target))
 							elseif data[0].type == "notarget" then 
 								CastSpell(_Q)
 							else
@@ -348,9 +346,7 @@ function Combo()
 					if ValidTarget(Target, data[1].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _W)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_W, myHero:Attack(Target))
 							elseif data[1].type == "notarget" then 
 								CastSpell(_W)
 							else
@@ -378,9 +374,7 @@ function Combo()
 					if ValidTarget(Target, data[2].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _E)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_E, myHero:Attack(Target))
 							elseif data[2].type == "notarget" then 
 								CastSpell(_E)
 							else
@@ -418,9 +412,7 @@ function Combo()
 					if ValidTarget(Target, data[0].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _Q)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_Q, myHero:Attack(Target))
 							elseif data[0].type == "notarget" then 
 								CastSpell(_Q)
 							else
@@ -448,9 +440,7 @@ function Combo()
 					if ValidTarget(Target, data[1].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _W)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_W, myHero:Attack(Target))
 							elseif data[1].type == "notarget" then 
 								CastSpell(_W)
 							else
@@ -478,9 +468,7 @@ function Combo()
 					if ValidTarget(Target, data[2].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _E)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_E, myHero:Attack(Target))
 							elseif data[2].type == "notarget" then 
 								CastSpell(_E)
 							else
@@ -508,9 +496,7 @@ function Combo()
 					if ValidTarget(Target, data[3].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[3].range then
 							if data[3].aareset then
-								iOrb:Attack(Target)
-								DelayAction(CastSpell, 0.15, _R)
-								DelayAction(iOrb:Attack, 0.15, Target)
+								CastSpell(_R, myHero:Attack(Target))
 							elseif data[3].type == "notarget" then 
 								CastSpell(_R)
 							else
@@ -553,6 +539,14 @@ function moveToCursor()
 	if GetDistance(mousePos) > 1 and not orbDisabled then
 		iOrb:Move(mousePos)
 	end
+end
+function attack(targ)
+	if orbDisabled then
+		iOrb:Attack(targ)
+	end
+end
+function CastQ()
+	CastSpell(_Q)
 end
 function OnProcessSpell(object, spell)
 	if object == myHero then
