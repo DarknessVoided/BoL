@@ -82,7 +82,7 @@ _G.Champs = {
 	["Shaco"] = {
     },
 	["Talon"] = {
-        [_Q] = { range = 200, type = "targeted", aareset = true},
+        [_Q] = { range = 200, type = "notarget", aareset = true},
         [_W] = { speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
         [_E] = { range = 700, type = "targeted"},
         [_R] = { range = 650, type = "notarget"}
@@ -114,7 +114,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.26
+local version = 0.27
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -319,7 +319,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_Q)
+								DelayAction(CastSpell, 0.15, _Q)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[0].type == "notarget" then 
 								CastSpell(_Q)
 							else
@@ -348,7 +349,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_W)
+								DelayAction(CastSpell, 0.15, _W)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[1].type == "notarget" then 
 								CastSpell(_W)
 							else
@@ -377,7 +379,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_E)
+								DelayAction(CastSpell, 0.15, _E)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[2].type == "notarget" then 
 								CastSpell(_E)
 							else
@@ -416,7 +419,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_Q)
+								DelayAction(CastSpell, 0.15, _Q)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[0].type == "notarget" then 
 								CastSpell(_Q)
 							else
@@ -445,7 +449,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_W)
+								DelayAction(CastSpell, 0.15, _W)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[1].type == "notarget" then 
 								CastSpell(_W)
 							else
@@ -474,7 +479,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_E)
+								DelayAction(CastSpell, 0.15, _E)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[2].type == "notarget" then 
 								CastSpell(_E)
 							else
@@ -503,7 +509,8 @@ function Combo()
 						if GetDistance(Target, myHero) <= data[3].range then
 							if data[3].aareset then
 								iOrb:Attack(Target)
-								CastSpell(_R)
+								DelayAction(CastSpell, 0.15, _R)
+								DelayAction(iOrb:Attack, 0.15, Target)
 							elseif data[3].type == "notarget" then 
 								CastSpell(_R)
 							else
