@@ -104,7 +104,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.21
+local version = 0.22
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -285,7 +285,7 @@ function Combo()
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 2, 2))
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 3, 3))
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 4, 4))
-	--PrintChat(skillOrder[1]) --combos[Config.comboConfig.so]
+	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
 	if Config.comboConfig.so < 7 then
 		for i=1,3 do
 			if orbDisabled then return end
@@ -296,24 +296,24 @@ function Combo()
 							if data[0].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_Q)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[0].type == "notarget" then CastSpell(_Q) return end
-							if Config.misc.pro == 1 then 
+							elseif data[0].type == "notarget" then 
+								CastSpell(_Q)
+							else
+							  if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_Q, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_Q, sts.target)
 								end
+							  end
 							end
 						end
 					end
@@ -325,24 +325,24 @@ function Combo()
 							if data[1].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_W)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[1].type == "notarget" then CastSpell(_W) return end
-							if Config.misc.pro == 1 then
+							elseif data[1].type == "notarget" then 
+								CastSpell(_W)
+							else
+							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_W, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_W, sts.target)
 								end
+							  end
 							end
 						end
 					end
@@ -354,24 +354,24 @@ function Combo()
 							if data[2].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_E)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[2].type == "notarget" then CastSpell(_E) return end
-							if Config.misc.pro == 1 then
+							elseif data[2].type == "notarget" then 
+								CastSpell(_E)
+							else
+							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_E, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_E, sts.target)
 								end
+							  end
 							end
 						end
 					end
@@ -393,24 +393,24 @@ function Combo()
 							if data[0].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_Q)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[0].type == "notarget" then CastSpell(_Q) return end
-							if Config.misc.pro == 1 then 
+							elseif data[0].type == "notarget" then 
+								CastSpell(_Q)
+							else
+							  if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_Q, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_Q, sts.target)
 								end
+							  end
 							end
 						end
 					end
@@ -422,24 +422,24 @@ function Combo()
 							if data[1].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_W)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[1].type == "notarget" then CastSpell(_W) return end
-							if Config.misc.pro == 1 then
+							elseif data[1].type == "notarget" then 
+								CastSpell(_W)
+							else
+							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_W, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_W, sts.target)
 								end
+							  end
 							end
 						end
 					end
@@ -451,24 +451,24 @@ function Combo()
 							if data[2].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_E)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[2].type == "notarget" then CastSpell(_E) return end
-							if Config.misc.pro == 1 then
+							elseif data[2].type == "notarget" then 
+								CastSpell(_E)
+							else
+							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_E, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_E, sts.target)
 								end
+							  end
 							end
 						end
 					end
@@ -480,24 +480,24 @@ function Combo()
 							if data[3].aareset then
 								iOrb:Attack(Target)
 								CastSpell(_R)
-								iOrb:Attack(Target)
-								return
-							end
-							if data[3].type == "notarget" then CastSpell(_R) return end
-							if Config.misc.pro == 1 then
+							elseif data[3].type == "notarget" then 
+								CastSpell(_R)
+							else
+							  if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_R, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
 									CastSpell(_R, sts.target)
 								end
-							elseif Config.misc.pro == 2 then
+							  elseif Config.misc.pro == 2 then
 								local State, Position, perc = DPredict(unit, data[3])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_R, Position.x, Position.z)
 								elseif perc == 125 then
 									CastSpell(_R, sts.target)
 								end
+							  end
 							end
 						end
 					end
