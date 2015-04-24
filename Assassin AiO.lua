@@ -114,7 +114,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.25
+local version = 0.26
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -685,6 +685,12 @@ function DmgCalculations()
  
 end
 
+local colorRangeReady        = ARGB(255, 200, 0,   200)
+local colorRangeComboReady   = ARGB(255, 255, 128, 0)
+local colorRangeNotReady     = ARGB(255, 50,  50,  50)
+local colorIndicatorReady    = ARGB(255, 0,   255, 0)
+local colorIndicatorNotReady = ARGB(255, 255, 220, 0)
+local colorInfo              = ARGB(255, 255, 50,  0)
 function OnDraw()
 	if Config.Drawing.QRange then
 		DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
