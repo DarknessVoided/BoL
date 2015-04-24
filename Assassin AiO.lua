@@ -39,7 +39,7 @@ _G.Champs = {
 	["Kassadin"] = {
 		[_Q] = { range = 650, type = "targeted"},
 		[_W] = { range = 250, type = "notarget", aareset = true},
-        [_E] = { speed = 2200, delay = 0, range = 400, width = 200, collision = false, aoe = false, type = "cone"},
+        [_E] = { speed = 2200, delay = 0, range = 650, width = 80, collision = false, aoe = false, type = "cone"},
         [_R] = { speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
     },
 	["Katarina"] = {
