@@ -114,7 +114,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.24
+local version = 0.25
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -576,11 +576,13 @@ function DmgCalculations()
            
             -- Skills damage
             local damageQ  = getDmg("Q", enemy, player)
+            local damageW  = getDmg("W", enemy, player)
             local damageE  = getDmg("E", enemy, player)
             local damageR  = getDmg("R", enemy, player)
        
             -- Update enemy table
             enemyTable[i].damageQ = damageQ
+            enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageR = damageR
            
@@ -588,37 +590,77 @@ function DmgCalculations()
             if enemy.health < damageR then
  
                 enemyTable[i].indicatorText = "R Kill"
-                enemyTable[i].ready = spells[R].ready and spells[R].manaUsage <= currentMana
+                enemyTable[i].ready = RReady
  
             elseif enemy.health < damageQ then
  
                 enemyTable[i].indicatorText = "Q Kill"
-                enemyTable[i].ready = spells[Q].ready and spells[Q].manaUsage <= currentMana
+                enemyTable[i].ready = QReady
  
             elseif enemy.health < damageE then
  
                 enemyTable[i].indicatorText = "E Kill"
-                enemyTable[i].ready = spells[E].ready and spells[E].manaUsage <= currentMana
+                enemyTable[i].ready = EReady
+ 
+            elseif enemy.health < damageW then
+ 
+                enemyTable[i].indicatorText = "W Kill"
+                enemyTable[i].ready = WReady
+ 
+            elseif enemy.health < damageE + damageQ then
+ 
+                enemyTable[i].indicatorText = "Q + E Kill"
+                enemyTable[i].ready = EReady and QReady
+ 
+            elseif enemy.health < damageQ + damageW then
+ 
+                enemyTable[i].indicatorText = "Q + W Kill"
+                enemyTable[i].ready = QReady and WReady
+ 
+            elseif enemy.health < damageW + damageE then
+ 
+                enemyTable[i].indicatorText = "W + E Kill"
+                enemyTable[i].ready = WReady and EReady
  
             elseif enemy.health < damageR + damageQ then
  
                 enemyTable[i].indicatorText = "R + Q Kill"
-                enemyTable[i].ready = spells[R].ready and spells[Q].ready and spells[R].manaUsage + spells[Q].manaUsage <= currentMana
+                enemyTable[i].ready = RReady and QReady
  
             elseif enemy.health < damageR + damageE then
  
                 enemyTable[i].indicatorText = "R + E Kill"
-                enemyTable[i].ready = spells[R].ready and spells[E].ready and spells[R].manaUsage + spells[E].manaUsage <= currentMana
+                enemyTable[i].ready = RReady and EReady
  
-            elseif enemy.health < damageR + damageQ + damageE then
+            elseif enemy.health < damageR + damageW then
  
-                enemyTable[i].indicatorText = "R + Q + E Kill"
-                enemyTable[i].ready = spells[R].ready and spells[Q].ready and spells[E].ready and spells[R].manaUsage + spells[Q].manaUsage + spells[E].manaUsage <= currentMana
+                enemyTable[i].indicatorText = "R + W Kill"
+                enemyTable[i].ready = RReady and WReady
+ 
+            elseif enemy.health < damageQ + damageW + damageE then
+ 
+                enemyTable[i].indicatorText = "Q + W + E Kill"
+                enemyTable[i].ready = QReady and WReady and EReady
  
             elseif enemy.health < damageQ + damageE + damageR then
  
+                enemyTable[i].indicatorText = "Q + E + R Kill"
+                enemyTable[i].ready = QReady and EReady and EReady
+ 
+            elseif enemy.health < damageQ + damageW + damageR then
+ 
+                enemyTable[i].indicatorText = "Q + W + R Kill"
+                enemyTable[i].ready = QReady and WReady and EReady
+				
+            elseif enemy.health < damageR + damageW + damageE then
+ 
+                enemyTable[i].indicatorText = "W + E + R Kill"
+                enemyTable[i].ready = RReady and WReady and EReady
+ 
+            elseif enemy.health < damageQ + damageW + damageE + damageR then
+ 
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = spells[Q].ready and spells[E].ready and spells[R].ready and spells[Q].manaUsage + spells[E].manaUsage + spells[R].manaUsage <= currentMana
+                enemyTable[i].ready = QReady and WReady and EReady and RReady
  
             else
  
@@ -627,7 +669,7 @@ function DmgCalculations()
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
  
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = spells[Q].ready or spells[E].ready or spells[R].ready
+                enemyTable[i].ready = QReady or EReady or RReady
  
             end
  
