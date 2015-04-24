@@ -217,18 +217,6 @@ function OnLoad()
   sts = TargetSelector(TARGET_NEAR_MOUSE, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
   
-  if data[0].aareset then
-	iOrb:addReset(myHero.charName:lower().."Q")
-  end
-  if data[1].aareset then
-	iOrb:addReset(myHero.charName:lower().."W")
-  end
-  if data[2].aareset then
-	iOrb:addReset(myHero.charName:lower().."E")
-  end
-  if data[3].aareset then
-	iOrb:addReset(myHero.charName:lower().."R")
-  end
 end
 
 function shuffle(a, n)
@@ -305,6 +293,12 @@ function Combo()
 				if (Target ~= nil) and QReady then
 					if ValidTarget(Target, data[0].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[0].range then
+							if data[0].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_Q)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[0].type == "notarget" then CastSpell(_Q) return end
 							if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
@@ -328,6 +322,12 @@ function Combo()
 				if (Target ~= nil) and WReady then
 					if ValidTarget(Target, data[1].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[1].range then
+							if data[1].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_W)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[1].type == "notarget" then CastSpell(_W) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
@@ -351,6 +351,12 @@ function Combo()
 				if (Target ~= nil) and EReady then
 					if ValidTarget(Target, data[2].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[2].range then
+							if data[2].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_E)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[2].type == "notarget" then CastSpell(_E) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
@@ -384,6 +390,12 @@ function Combo()
 				if (Target ~= nil) and QReady then
 					if ValidTarget(Target, data[0].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[0].range then
+							if data[0].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_Q)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[0].type == "notarget" then CastSpell(_Q) return end
 							if Config.misc.pro == 1 then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
@@ -407,6 +419,12 @@ function Combo()
 				if (Target ~= nil) and WReady then
 					if ValidTarget(Target, data[1].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[1].range then
+							if data[1].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_W)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[1].type == "notarget" then CastSpell(_W) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
@@ -430,6 +448,12 @@ function Combo()
 				if (Target ~= nil) and EReady then
 					if ValidTarget(Target, data[2].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[2].range then
+							if data[2].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_E)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[2].type == "notarget" then CastSpell(_E) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
@@ -453,6 +477,12 @@ function Combo()
 				if (Target ~= nil) and RReady then
 					if ValidTarget(Target, data[3].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[3].range then
+							if data[3].aareset then
+								iOrb:Attack(Target)
+								CastSpell(_R)
+								iOrb:Attack(Target)
+								return
+							end
 							if data[3].type == "notarget" then CastSpell(_R) return end
 							if Config.misc.pro == 1 then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
