@@ -114,7 +114,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.23
+local version = 0.24
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -287,13 +287,13 @@ function killsteal()
 		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
 		--local iDmg = 50 + (20 * myHero.level)
 		if ValidTarget(enemy) and enemy ~= nil and Config.KS.enableKS and not enemy.dead and enemy.visible then
-			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, qRange) then
+			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
 				CastSpell(_Q, enemy)
-			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, wRange) then
+			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
 				CastSpell(_W, enemy)
-			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, eRange) then
+			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
 				CastSpell(_E, enemy)
-			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, rRange) then
+			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
 				CastSpell(_R, enemy)
 			--elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
 			--	CastSpell(SSpells:GetSlot("summonerdot"), enemy)
