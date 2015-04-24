@@ -14,9 +14,15 @@
 _G.Champs = {
 	["Ahri"] = {
 		[_Q] = { speed = 2500, delay = 0.25, range = 900, width = 100, collision = false, aoe = false, type = "linear"},
-		[_E] = { speed = 1000, delay = 0.25, range = 1000, width = 60, collision = true, aoe = false, type = "linear"}
+		[_W] = { range = 800, type = "notarget"},
+		[_E] = { speed = 1000, delay = 0.25, range = 1000, width = 60, collision = true, aoe = false, type = "linear"},
+		[_R] = { range = 100, type = "notarget"}
     },
 	["Akali"] = {
+		[_Q] = { range = 600, type = "targeted"},
+		[_W] = { speed = math.huge, delay = 0.1, range = 700, width = 400, collision = false, aoe = true, type = "circular"},
+		[_E] = { range = 325, type = "notarget"},
+		[_R] = { range = 700, type = "targeted"}
     },
 	["Evelynn"] = {
     },
@@ -31,12 +37,16 @@ _G.Champs = {
 	["Jax"] = {
     },
 	["Kassadin"] = {
+		[_Q] = { range = 650, type = "targeted"},
+		[_W] = { range = 250, type = "notarget", aareset = true},
+        [_E] = { speed = 2200, delay = 0, range = 400, width = 200, collision = false, aoe = false, type = "cone"},
+        [_R] = { speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
     },
 	["Katarina"] = {
 		[_Q] = { range = 675, type = "targeted"},
 		[_W] = { range = 375, type = "notarget"},
 		[_E] = { range = 700, type = "targeted"},
-		[_R] = { range = 550, type = "notarget"},
+		[_R] = { range = 550, type = "notarget"}
     },
 	["Khazix"] = {
         [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"}
@@ -104,7 +114,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.22
+local version = 0.23
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -160,6 +170,8 @@ local predictions = {}
 local combos = {}
 local orbDisabled
 local orbLast
+local enemyCount = 0
+local enemyTable = {}
 
 function OnLoad()
   orbDisabled = false
@@ -217,6 +229,18 @@ function OnLoad()
   sts = TargetSelector(TARGET_NEAR_MOUSE, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
   
+    -- Create enemy table structure
+    for i = 1, heroManager.iCount do
+   
+        local champ = heroManager:GetHero(i)
+       
+        if champ.team ~= player.team then
+       
+            enemyCount = enemyCount + 1
+            enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
+ 
+        end
+    end
 end
 
 function shuffle(a, n)
@@ -537,23 +561,86 @@ local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function DmgCalculations()
-	for i=1, heroManager.iCount do
-		local enemy = heroManager:GetHero(i)
-		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)	
-		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
-		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
-		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
-		local aaDmg = ((getDmg("AD", enemy, myHero)))
-		if ValidTarget(enemy) and enemy ~= nil then
-			if Config.Drawing.DmgCalcs then
-			if enemy.health <= (aaDmg + qDmg + wDmg + eDmg + rDmg) then
-				KillText[i] = 2
-			elseif enemy.health > (aaDmg + wDmg + eDmg + rDmg) then
-				KillText[i] = 1
-			end
-		end
-		end
-	end
+ 
+    -- Don't calculate this if not wanted
+    if not Config.Drawing.DmgCalcs then return end
+ 
+    for i = 1, enemyCount do
+ 
+        local enemy = enemyTable[i].player
+ 
+                if ValidTarget(enemy) and enemy.visible then
+ 
+            -- Auto attack damage
+            local damageAA = getDmg("AD", enemy, player)
+           
+            -- Skills damage
+            local damageQ  = getDmg("Q", enemy, player)
+            local damageE  = getDmg("E", enemy, player)
+            local damageR  = getDmg("R", enemy, player)
+       
+            -- Update enemy table
+            enemyTable[i].damageQ = damageQ
+            enemyTable[i].damageE = damageE
+            enemyTable[i].damageR = damageR
+           
+            -- Make combos, highest range to lowest
+            if enemy.health < damageR then
+ 
+                enemyTable[i].indicatorText = "R Kill"
+                enemyTable[i].ready = spells[R].ready and spells[R].manaUsage <= currentMana
+ 
+            elseif enemy.health < damageQ then
+ 
+                enemyTable[i].indicatorText = "Q Kill"
+                enemyTable[i].ready = spells[Q].ready and spells[Q].manaUsage <= currentMana
+ 
+            elseif enemy.health < damageE then
+ 
+                enemyTable[i].indicatorText = "E Kill"
+                enemyTable[i].ready = spells[E].ready and spells[E].manaUsage <= currentMana
+ 
+            elseif enemy.health < damageR + damageQ then
+ 
+                enemyTable[i].indicatorText = "R + Q Kill"
+                enemyTable[i].ready = spells[R].ready and spells[Q].ready and spells[R].manaUsage + spells[Q].manaUsage <= currentMana
+ 
+            elseif enemy.health < damageR + damageE then
+ 
+                enemyTable[i].indicatorText = "R + E Kill"
+                enemyTable[i].ready = spells[R].ready and spells[E].ready and spells[R].manaUsage + spells[E].manaUsage <= currentMana
+ 
+            elseif enemy.health < damageR + damageQ + damageE then
+ 
+                enemyTable[i].indicatorText = "R + Q + E Kill"
+                enemyTable[i].ready = spells[R].ready and spells[Q].ready and spells[E].ready and spells[R].manaUsage + spells[Q].manaUsage + spells[E].manaUsage <= currentMana
+ 
+            elseif enemy.health < damageQ + damageE + damageR then
+ 
+                enemyTable[i].indicatorText = "All-In Kill"
+                enemyTable[i].ready = spells[Q].ready and spells[E].ready and spells[R].ready and spells[Q].manaUsage + spells[E].manaUsage + spells[R].manaUsage <= currentMana
+ 
+            else
+ 
+                local damageTotal = damageQ + damageE + damageR
+                local healthLeft = math.round(enemy.health - damageTotal)
+                local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
+ 
+                enemyTable[i].indicatorText = percentLeft .. "% Harass"
+                enemyTable[i].ready = spells[Q].ready or spells[E].ready or spells[R].ready
+ 
+            end
+ 
+            -- Calculate damage we could receive
+            local enemyDamageAA = getDmg("AD", player, enemy)
+ 
+            -- Number of needed auto attacks for us to die
+            local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
+            enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+ 
+        end
+    end
+ 
 end
 
 function OnDraw()
@@ -570,16 +657,20 @@ function OnDraw()
 		DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
 	end
 	if Config.Drawing.DmgCalcs then
-	for i = 1, heroManager.iCount do
-		local enemy = heroManager:GetHero(i)
-			if ValidTarget(enemy) and enemy ~= nil then
-				local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
-				local PosX = barPos.x - 60
-				local PosY = barPos.y - 10
-				DrawText(KillTextList[KillText[i]], 15, PosX, PosY, KillTextColor)
-			end
-		end
-	end
+        for i = 1, enemyCount do
+            local enemy = enemyTable[i].player
+            if ValidTarget(enemy) then
+                local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+                local posX = barPos.x - 35
+                local posY = barPos.y - 50
+                -- Doing damage
+                DrawText(enemyTable[i].indicatorText, 15, posX, posY, (enemyTable[i].ready and colorIndicatorReady or colorIndicatorNotReady))
+               
+                -- Taking damage
+                DrawText(enemyTable[i].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
+            end
+        end
+    end
 end
 
 function DPredict(Target, spell)
