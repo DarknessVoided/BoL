@@ -58,7 +58,7 @@ _G.Champs = {
     },
 	["Khazix"] = {
 		[_Q] = { range = 325, type = "targeted"},
-        [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"}
+        [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"},
 		[_E] = { speed = 400, delay = 0.25, range = 600, width = 325, collision = false, aoe = true, type = "circular"},
 		[_R] = { range = 0, type = "dontuse"}
     },
