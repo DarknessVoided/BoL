@@ -65,7 +65,7 @@ _G.Champs = {
 	["Leblanc"] = {
 		[_Q] = { range = 700, type = "targeted"},
 		[_W] = { speed = 2000, delay = 0.250, range =600, width = 300, collision = false, aoe = false, type = "circular"},
-        [_E] = { speed = 1600, delay = 0.250, range = 950, width = 70, collision = true, aoe = false, type = "linear"}
+        [_E] = { speed = 1600, delay = 0.250, range = 950, width = 70, collision = true, aoe = false, type = "linear"},
 		[_R] = { range = 0, type = "mimikri"}
     },
 	["LeeSin"] = {
