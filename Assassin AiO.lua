@@ -539,7 +539,7 @@ function Combo()
 				end
 			elseif skillOrder[i] == "R" then
 				if (Target ~= nil) and RReady then
-					if myHero.charName == "LeBlanc" then
+					if myHero.charName:lower() == "leblanc" then
 						if lastUsedSpell == _Q then
 							data[3] = data[0]
 						elseif lastUsedSpell == _W then
