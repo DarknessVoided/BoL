@@ -25,6 +25,10 @@ _G.Champs = {
 		[_R] = { range = 700, type = "targeted"}
     },
 	["Evelynn"] = {
+		[_Q] = { range = 500, type = "notarget"},
+		[_W] = { range = 650, type = "notarget"},
+		[_E] = { range = 275, type = "targeted"},
+		[_R] = { speed = 1300, delay = 0.250, range = 650, width = 500, collision = false, aoe = true, type = "circular"}
     },
 	["Fiora"] = {
     },
@@ -35,6 +39,10 @@ _G.Champs = {
         [_R] = { speed = 1700, delay = 0.250, range = 1200, width = 10, collision = false, aoe = false, type = "linear"}
     },
 	["Jax"] = {
+		[_Q] = { range = 6700, type = "targeted"},
+		[_W] = { range = myHero.range, type = "notarget", aareset = true},
+		[_E] = { range = 250, type = "notarget"},
+		[_R] = { range = 700, type = "notarget"}
     },
 	["Kassadin"] = {
 		[_Q] = { range = 650, type = "targeted"},
@@ -49,10 +57,16 @@ _G.Champs = {
 		[_R] = { range = 550, type = "notarget"}
     },
 	["Khazix"] = {
+		[_Q] = { range = 325, type = "targeted"},
         [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"}
+		[_E] = { speed = 400, delay = 0.25, range = 600, width = 325, collision = false, aoe = true, type = "circular"},
+		[_R] = { range = 0, type = "dontuse"}
     },
 	["Leblanc"] = {
-        [_E] = { speed = 1600, delay = 0.250, range = 960, width = 70, collision = true, aoe = false, type = "linear"}
+		[_Q] = { range = 700, type = "targeted"},
+		[_W] = { speed = 2000, delay = 0.250, range =600, width = 300, collision = false, aoe = false, type = "circular"},
+        [_E] = { speed = 1600, delay = 0.250, range = 950, width = 70, collision = true, aoe = false, type = "linear"}
+		[_R] = { range = 0, type = "mimikri"}
     },
 	["LeeSin"] = {
         [_Q] = { speed = 1800, delay = 0.250, range = 1100, width = 100, collision = true, aoe = false, type = "linear"}
@@ -82,6 +96,12 @@ _G.Champs = {
     },
 	["Riven"] = {
         [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
+    },
+	["Ryze"] = {
+		[_Q] = { range = 600, type = "targeted"},
+		[_W] = { range = 600, type = "targeted"},
+		[_E] = { range = 600, type = "targeted"},
+		[_R] = { range = 125, type = "notarget"}
     },
 	["Shaco"] = {
     },
@@ -230,7 +250,7 @@ function OnLoad()
   Config:addParam("combo", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   
   Config:permaShow("combo")
-  sts = TargetSelector(TARGET_NEAR_MOUSE, 1500, DAMAGE_MAGIC, true)
+  sts = TargetSelector(TARGET_LESS_CAST, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
   
     -- Create enemy table structure
@@ -306,6 +326,7 @@ function killsteal()
 	end
 end
 
+local lastUsedSpell = nil
 function Combo()
 	if orbDisabled then return end
 	local skillOrder = {}
@@ -344,6 +365,7 @@ function Combo()
 								end
 							  end
 							end
+							lastUsedSpell = _Q
 						end
 					end
 				end
@@ -374,6 +396,7 @@ function Combo()
 								end
 							  end
 							end
+							lastUsedSpell = _W
 						end
 					end
 				end
@@ -404,9 +427,13 @@ function Combo()
 								end
 							  end
 							end
+							lastUsedSpell = _E
 						end
 					end
 				end
+			end
+			if Config.comboConfig.items then
+				UseItems(Target) --wtb logic
 			end
 			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
@@ -444,6 +471,7 @@ function Combo()
 								end
 							  end
 							end
+							lastUsedSpell = _Q
 						end
 					end
 				end
@@ -474,6 +502,7 @@ function Combo()
 								end
 							  end
 							end
+							lastUsedSpell = _W
 						end
 					end
 				end
@@ -504,11 +533,21 @@ function Combo()
 								end
 							  end
 							end
+							lastUsedSpell = _E
 						end
 					end
 				end
 			elseif skillOrder[i] == "R" then
 				if (Target ~= nil) and RReady then
+					if myHero.charName == "LeBlanc" then
+						if lastUsedSpell == _Q
+							data[3] = data[0]
+						elseif lastUsedSpell == _W
+							data[3] = data[1]
+						elseif lastUsedSpell == _E
+							data[3] = data[2]
+						end
+					end
 					if ValidTarget(Target, data[3].range) and Config.combo then
 						if GetDistance(Target, myHero) <= data[3].range then
 							if data[3].aareset then
@@ -538,7 +577,9 @@ function Combo()
 					end
 				end
 			end
-			UseItems(Target) --wtb logic
+			if Config.comboConfig.items then
+				UseItems(Target) --wtb logic
+			end
 			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
 			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
@@ -573,6 +614,18 @@ function OnProcessSpell(object, spell)
 			orbDisabled = true
 			orbLast = os.clock()
 		end
+	end
+end
+
+speed = myHero.ms
+old_speed = myHero.ms
+function EveAntiSlow()
+	if myHero.charName = "Evelynn" then
+		speed = myHero.ms
+		if speed < old_speed and (100-(speed*100/old_speed)) > 15 then
+				CastSpell(_W)
+		end
+		old_speed = speed
 	end
 end
 
