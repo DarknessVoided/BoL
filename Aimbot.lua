@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.45
+local version = 0.46
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -415,7 +415,7 @@ end
 
 function SetupHPred()
 
- if toAim[0] then 
+ if toAim[0] and Spell_Q.type[myHero.charName] = nil then 
   Spell_Q.collisionM[myHero.charName] = data[0].collision
   Spell_Q.collisionH[myHero.charName] = data[0].collision
   Spell_Q.delay[myHero.charName] = data[0].delay
@@ -434,7 +434,7 @@ function SetupHPred()
   end
  end
  
- if toAim[1] then 
+ if toAim[1] and Spell_W.type[myHero.charName] = nil then 
   Spell_W.collisionM[myHero.charName] = data[1].collision
   Spell_W.collisionH[myHero.charName] = data[1].collision
   Spell_W.delay[myHero.charName] = data[1].delay
@@ -453,7 +453,7 @@ function SetupHPred()
   end
  end
  
- if toAim[2] then 
+ if toAim[2] and Spell_E.type[myHero.charName] = nil then 
   Spell_E.collisionM[myHero.charName] = data[2].collision
   Spell_E.collisionH[myHero.charName] = data[2].collision
   Spell_E.delay[myHero.charName] = data[2].delay
@@ -472,7 +472,7 @@ function SetupHPred()
   end
  end
  
- if toAim[3] then 
+ if toAim[3] and Spell_R.type[myHero.charName] = nil then 
   Spell_R.collisionM[myHero.charName] = data[3].collision
   Spell_R.collisionH[myHero.charName] = data[3].collision
   Spell_R.delay[myHero.charName] = data[3].delay
@@ -516,6 +516,10 @@ function OnTick()
                    if ValidTarget(unit) then
                     local CastPosition, HitChance, Position = VPredict(Target, spell)
                     if HitChance >= Config.misc.hitchance then
+                      if not myHero:CanUseSpell(i) then return end
+                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+                      CCastSpell(i, CastPosition.x, CastPosition.z)
+                    elseif HitChance >= Config.misc.hitchance-1 then
                       if not myHero:CanUseSpell(i) then return end
                       if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       CCastSpell(i, CastPosition.x, CastPosition.z)
@@ -580,6 +584,10 @@ function OnTick()
                    if ValidTarget(unit) then
                     local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
                     if HitChance >= Config.misc.hitchance then
+                      if not myHero:CanUseSpell(i) then return end
+                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+					  CCastSpell(i, Position.x, Position.z)
+                    elseif HitChance >= Config.misc.hitchance-1 then
                       if not myHero:CanUseSpell(i) then return end
                       if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
 					  CCastSpell(i, Position.x, Position.z)
