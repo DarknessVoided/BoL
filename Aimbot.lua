@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.44
+local version = 0.45
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -391,7 +391,7 @@ function OnLoad()
     predictions[str[i]] = {spell.range, spell.speed, spell.delay, spell.width, i}
     toAim[i] = true
   end
-  --SetupHPred()
+  if ActivePred() == "HPrediction" then SetupHPred() end
   
   --Config:addSubMenu("Additional keys", "kConfig")
   --for i, spell in pairs(data) do
