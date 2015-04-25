@@ -540,11 +540,11 @@ function Combo()
 			elseif skillOrder[i] == "R" then
 				if (Target ~= nil) and RReady then
 					if myHero.charName == "LeBlanc" then
-						if lastUsedSpell == _Q
+						if lastUsedSpell == _Q then
 							data[3] = data[0]
-						elseif lastUsedSpell == _W
+						elseif lastUsedSpell == _W then
 							data[3] = data[1]
-						elseif lastUsedSpell == _E
+						elseif lastUsedSpell == _E then
 							data[3] = data[2]
 						end
 					end
@@ -620,7 +620,7 @@ end
 speed = myHero.ms
 old_speed = myHero.ms
 function EveAntiSlow()
-	if myHero.charName = "Evelynn" then
+	if myHero.charName == "Evelynn" then
 		speed = myHero.ms
 		if speed < old_speed and (100-(speed*100/old_speed)) > 15 then
 				CastSpell(_W)
