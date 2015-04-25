@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.47
+local version = 0.48
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -400,7 +400,7 @@ function OnLoad()
   
   --Config:addTS(ts2)
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
-  Config:addParam("alwaysPred", "Only shoot predicted", SCRIPT_PARAM_ONOFF, false)
+  Config:addParam("alwaysPred", "Only shoot when predicted", SCRIPT_PARAM_ONOFF, false)
   
   Config:permaShow("tog")
   if toAim[0] then QSel = TargetSelector(TARGET_NEAR_MOUSE, data[0].range, DAMAGE_MAGIC, true) end
