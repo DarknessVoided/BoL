@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.46
+local version = 0.47
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -415,7 +415,7 @@ end
 
 function SetupHPred()
 
- if toAim[0] and Spell_Q.type[myHero.charName] = nil then 
+ if toAim[0] and Spell_Q.type[myHero.charName] == nil then 
   Spell_Q.collisionM[myHero.charName] = data[0].collision
   Spell_Q.collisionH[myHero.charName] = data[0].collision
   Spell_Q.delay[myHero.charName] = data[0].delay
@@ -434,7 +434,7 @@ function SetupHPred()
   end
  end
  
- if toAim[1] and Spell_W.type[myHero.charName] = nil then 
+ if toAim[1] and Spell_W.type[myHero.charName] == nil then 
   Spell_W.collisionM[myHero.charName] = data[1].collision
   Spell_W.collisionH[myHero.charName] = data[1].collision
   Spell_W.delay[myHero.charName] = data[1].delay
@@ -453,7 +453,7 @@ function SetupHPred()
   end
  end
  
- if toAim[2] and Spell_E.type[myHero.charName] = nil then 
+ if toAim[2] and Spell_E.type[myHero.charName] == nil then 
   Spell_E.collisionM[myHero.charName] = data[2].collision
   Spell_E.collisionH[myHero.charName] = data[2].collision
   Spell_E.delay[myHero.charName] = data[2].delay
@@ -472,7 +472,7 @@ function SetupHPred()
   end
  end
  
- if toAim[3] and Spell_R.type[myHero.charName] = nil then 
+ if toAim[3] and Spell_R.type[myHero.charName] == nil then 
   Spell_R.collisionM[myHero.charName] = data[3].collision
   Spell_R.collisionH[myHero.charName] = data[3].collision
   Spell_R.delay[myHero.charName] = data[3].delay
@@ -713,6 +713,39 @@ function IsChargable(i)
   else
     return false
   end
+end
+
+function OnDraw()
+  if not Config.misc.debug or myHero.dead then
+    return
+  end
+  if myHero.hasMovePath and myHero.pathCount >= 2 then
+      local IndexPath = myHero:GetPath(myHero.pathIndex)
+      if IndexPath then
+        DrawLine3D(myHero.x, myHero.y, myHero.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(255, 255, 255, 255))
+      end
+      for i=myHero.pathIndex, myHero.pathCount-1 do
+        local Path = myHero:GetPath(i)
+        local Path2 = myHero:GetPath(i+1)
+        DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(255, 255, 255, 255))
+      end
+    end
+    for i, enemy in ipairs(EnemyHeroes) do
+      if enemy == nil then
+        return
+      end
+      if enemy.hasMovePath and enemy.pathCount >= 2 then
+        local IndexPath = enemy:GetPath(enemy.pathIndex)
+        if IndexPath then
+          DrawLine3D(enemy.x, enemy.y, enemy.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(255, 255, 255, 255))
+        end
+        for i=enemy.pathIndex, enemy.pathCount-1 do
+          local Path = enemy:GetPath(i)
+          local Path2 = enemy:GetPath(i+1)
+          DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(255, 255, 255, 255))
+        end
+      end
+    end
 end
 
 function OnSendPacket(p)
