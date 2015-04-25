@@ -513,7 +513,7 @@ function OnTick()
                   if enemies > 0 then
                     if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
-                   if ValidTarget(unit) then
+                   if ValidTarget(Target) then
                     local CastPosition, HitChance, Position = VPredict(Target, spell)
                     if HitChance >= Config.misc.hitchance then
                       if not myHero:CanUseSpell(i) then return end
@@ -581,7 +581,7 @@ function OnTick()
                   if enemies > 0 then
                     if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
-                   if ValidTarget(unit) then
+                   if ValidTarget(Target) then
                     local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
                     if HitChance >= Config.misc.hitchance then
                       if not myHero:CanUseSpell(i) then return end
