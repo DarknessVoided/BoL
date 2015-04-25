@@ -118,6 +118,9 @@ _G.Champs = {
         [_E] = { speed = 887, delay = 0.500, range = 830, width = 0, collision = false, aoe = true, type = "circular"},
         [_R] = { speed = 1700, delay = 0.600, range = 20000, width = 120, collision = false, aoe = true, type = "circular"}
     },
+        ["Kalista"] = {
+        [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"}
+    },
         ["Karma"] = {
         [_Q] = { speed = 1700, delay = 0.250, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
     },
@@ -285,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.42
+local version = 0.43
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -312,17 +315,20 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
+local predToUse = {}
 VP = nil
 DP = nil
 HP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
+  table.insert(predToUse, "VPrediction")
 end
 
 if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
   require "DivinePred"
   DP = DivinePred() 
+  table.insert(predToUse, "DivinePred")
 end
 
 
@@ -362,14 +368,7 @@ function OnLoad()
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("debug", "Debug mode", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
-  
-  local predToUse = {} --, "", ""
-  if VP ~= nil then table.insert(predToUse, "VPrediction") end
-  if VIP_USER then
-    if DP ~= nil then table.insert(predToUse, "DivinePred") end
-  end
-  --if FileExist(LIB_PATH.."HPrediction.lua") then predToUse[2] = "HPrediction" end
-  
+ 
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   
   Config.misc:addParam("rangeoffset", "Range Decrease Offset", SCRIPT_PARAM_SLICE, 0, 0, 200, 0)
@@ -380,6 +379,7 @@ function OnLoad()
 	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   elseif Config.misc.pro == 2 then
 	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
+	Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
     
  
@@ -524,17 +524,15 @@ function OnTick()
                   end
               end toCast[i] = false
             elseif Config.misc.pro == 2 and VIP_USER then -- DivinePrediction
-              local unit = DPTarget(Target)
-              local col = (spell.aoe and spell.collision) and 0 or math.huge
-              if IsVeigarLuxQ(i) then col = 1 end
-              if spell.type == "linear" then
-                Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-              elseif spell.type == "circular" then
-                Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-              elseif spell.type == "cone" then
-                Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-              end
-              local State, Position, perc = DP:predict(unit, Spell, Config.misc.hitchance)
+			  local State, Position, perc
+              if Config.misc.debug then PrintChat("0 - Request Pred!") end
+			  if not ValidRequest() then
+				if Config.misc.debug then PrintChat("- - Delay Pred!") end
+				State, Position, perc = DelayAction(DPredict, TimeRequest(), {Target, spell})
+			  else
+				if Config.misc.debug then PrintChat("+ - Use Pred!") end
+				State, Position, perc = DPredict(Target, spell)
+			  end
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if State == SkillShot.STATUS.SUCCESS_HIT then 
                 if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..perc) end
@@ -580,6 +578,38 @@ end
 function EnemiesAround(Unit, range)
   local c=0
   for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
+end
+
+local LastRequest = 0
+function ValidRequest()
+    if os.clock() - LastRequest < TimeRequest() then
+        return false
+    else
+        LastRequest = os.clock()
+        return true
+    end
+end
+
+function TimeRequest()
+    if Config.misc.pro == 1 then
+        return 0.001
+    elseif Config.misc.pro == 2 then
+        return Config.misc~=nil and Config.misc.time or 0.2
+    end
+end
+
+function DPredict(Target, spell)
+  local unit = DPTarget(Target)
+  local col = (spell.aoe and spell.collision) and 0 or math.huge
+  if IsVeigarLuxQ(i) then col = 1 end
+  if spell.type == "linear" then
+	Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  elseif spell.type == "circular" then
+	Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  elseif spell.type == "cone" then
+	Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  end
+  return DP:predict(unit, Spell)
 end
 
 function VPredict(Target, spell)

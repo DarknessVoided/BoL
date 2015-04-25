@@ -796,7 +796,6 @@ end
 function DPredict(Target, spell)
   local unit = DPTarget(Target)
   local col = (spell.aoe and spell.collision) and 0 or math.huge
-  if IsVeigarLuxQ(i) then col = 1 end
   if spell.type == "linear" then
 	Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
