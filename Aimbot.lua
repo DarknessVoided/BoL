@@ -400,6 +400,7 @@ function OnLoad()
   
   --Config:addTS(ts2)
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
+  Config:addParam("alwaysPred", "Only shoot predicted", SCRIPT_PARAM_ONOFF, false)
   
   Config:permaShow("tog")
   if toAim[0] then QSel = TargetSelector(TARGET_NEAR_MOUSE, data[0].range, DAMAGE_MAGIC, true) end
@@ -526,23 +527,21 @@ function OnTick()
                     end
                    end
                    if myHero:CanUseSpell(i) then
-                    if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end
-                    CCastSpell(i, mousePos.x, mousePos.z)
+                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                    end
                   else
-                    if Config.misc.debug then PrintChat("2 - To mouse") end
-                    CCastSpell(i, mousePos.x, mousePos.z)
+                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                   end
               end toCast[i] = false
             elseif ActivePred() == "DivinePred" and VIP_USER then -- DivinePrediction
 			  local State, Position, perc
               if Config.misc.debug then PrintChat("0 - Request Pred!") end
-			  if not ValidRequest() then
-				if Config.misc.debug then PrintChat("- - Delay Pred!") end
-				State, Position, perc = DelayAction(DPredict, TimeRequest(), {Target, spell})
-			  else
+			  if ValidRequest() then
 				if Config.misc.debug then PrintChat("+ - Use Pred!") end
 				State, Position, perc = DPredict(Target, spell)
+			  else
+				if Config.misc.debug then PrintChat("- - Delay Pred!") end
+				State, Position, perc = DelayAction(DPredict, TimeRequest(), {Target, spell})
 			  end
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if State == SkillShot.STATUS.SUCCESS_HIT then 
@@ -559,16 +558,19 @@ function OnTick()
                   if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..perc.."%") end
 					CCastSpell(i, Position.x, Position.z)
 				  else
-					if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end
-					CCastSpell(i, mousePos.x, mousePos.z)
+                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
 				  end
 				else
-				  if Config.misc.debug then PrintChat("2 - To mouse :/") end
-				  CCastSpell(i, mousePos.x, mousePos.z)
+                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
 				end
               end toCast[i] = false
             elseif ActivePred() == "HPrediction" then -- HPrediction
-              local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
+              local Position, HitChance
+			  if ValidRequest() then
+				Position, HitChance = HPredict(Target, str[i])
+			  else
+				Position, HitChance = DelayAction(HPredict, TimeRequest(), {str[i], Target})
+			  end
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if HitChance >= Config.misc.hitchance then
                   if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
@@ -594,14 +596,12 @@ function OnTick()
                     end
                    end
                    if myHero:CanUseSpell(i) then
-                    if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end
-                    CCastSpell(i, mousePos.x, mousePos.z)
+                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                    end
                   else
-                    if Config.misc.debug then PrintChat("2 - To mouse") end
-                    CCastSpell(i, mousePos.x, mousePos.z)
+                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                   end
-              end toCast[i] = false
+              end if not myHero:CanUseSpell(i) then toCast[i] = false end
             end
           end
       end 
@@ -624,11 +624,15 @@ function ValidRequest()
 end
 
 function TimeRequest()
-    if Config.misc.pro == 1 then
+    if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then
         return 0.001
-    elseif Config.misc.pro == 2 then
+    elseif ActivePred() == "DivinePred" then
         return Config.misc~=nil and Config.misc.time or 0.2
     end
+end
+
+function HPredict(Target, spell)
+	return HP:GetPredict(spell, Target, myHero)
 end
 
 function DPredict(Target, spell)
