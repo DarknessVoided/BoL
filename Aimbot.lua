@@ -730,7 +730,7 @@ function OnDraw()
         DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(255, 255, 255, 255))
       end
     end
-    for i, enemy in ipairs(EnemyHeroes) do
+    for i, enemy in ipairs(GetEnemyHeroes()) do
       if enemy == nil then
         return
       end
