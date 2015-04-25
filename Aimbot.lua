@@ -134,9 +134,9 @@ _G.Champs = {
         [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"}
     },
         ["KogMaw"] = {
-        [_Q] = { speed = 1050, delay = 0.250, range = 1000, width = 10, collision = true, aoe = false, type = "linear"},
-        [_E] = { speed = 500, delay = 0.250, range = 1000, width = 180, collision = false, aoe = false, type = "linear"},
-        [_R] = { speed = 1050, delay = 0.250, range = 2200, width = 225, collision = false, aoe = true, type = "circular"}
+        [_Q] = { speed = 900, delay = 0.4, range = 1000, width = 70, collision = true, aoe = false, type = "linear"},
+        [_E] = { speed = 500, delay = 0.5, range = 1000, width = 120, collision = false, aoe = false, type = "linear"},
+        [_R] = { speed = math.huge, delay = 1.1, range = 2200, width = 65, collision = false, aoe = true, type = "circular"}
     },
         ["Leblanc"] = {
         [_E] = { speed = 1600, delay = 0.250, range = 960, width = 70, collision = true, aoe = false, type = "linear"}
