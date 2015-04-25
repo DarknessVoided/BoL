@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.43
+local version = 0.44
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -331,13 +331,14 @@ if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."D
   table.insert(predToUse, "DivinePred")
 end
 
-
---[[ 
-
 if FileExist(LIB_PATH .. "/HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
+  table.insert(predToUse, "HPrediction")
 end
+
+--[[ 
+
 if VIP_USER and FileExist(LIB_PATH .. "/Prodiction.lua") then
   require("Prodiction")
   prodstatus = true
@@ -375,9 +376,10 @@ function OnLoad()
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-  if Config.misc.pro == 1 then 
+  if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
 	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  elseif Config.misc.pro == 2 then
+  elseif ActivePred() == "DivinePred" then
+    if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
 	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
 	Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
@@ -404,6 +406,11 @@ function OnLoad()
   if toAim[1] then WSel = TargetSelector(TARGET_NEAR_MOUSE, data[1].range, DAMAGE_MAGIC, true) end
   if toAim[2] then ESel = TargetSelector(TARGET_NEAR_MOUSE, data[2].range, DAMAGE_MAGIC, true) end
   if toAim[3] then RSel = TargetSelector(TARGET_NEAR_MOUSE, data[3].range, DAMAGE_MAGIC, true) end
+end
+
+function ActivePred()
+    local int = Config.misc and Config.misc.pro or 1
+    return predToUse[int] ~= nil and tostring(predToUse[int]) or "VPrediction"
 end
 
 function SetupHPred()
@@ -492,7 +499,7 @@ function OnTick()
           if Target == nil then return end
 		  if IsChargable(i) and not secondCast then return end
           if (toCast[i] == true or Config[str[i]]) and myHero:CanUseSpell(i) then
-            if Config.misc.pro == 1 then -- VPrediction
+            if ActivePred() == "VPrediction" then
               local CastPosition, HitChance, Position = VPredict(Target, spell)
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if HitChance >= Config.misc.hitchance then
@@ -523,7 +530,7 @@ function OnTick()
                     CCastSpell(i, mousePos.x, mousePos.z)
                   end
               end toCast[i] = false
-            elseif Config.misc.pro == 2 and VIP_USER then -- DivinePrediction
+            elseif ActivePred() == "DivinePred" and VIP_USER then -- DivinePrediction
 			  local State, Position, perc
               if Config.misc.debug then PrintChat("0 - Request Pred!") end
 			  if not ValidRequest() then
@@ -556,19 +563,37 @@ function OnTick()
 				  CCastSpell(i, mousePos.x, mousePos.z)
 				end
               end toCast[i] = false
-            --[[elseif Config.misc.pro == 3 then -- HPrediction
+            elseif ActivePred() == "HPrediction" then -- HPrediction
               local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
-              if Config.misc.debug then PrintChat("Attempt to aim! ") end
+              if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if HitChance >= Config.misc.hitchance then
-                  if Config.misc.debug then PrintChat("Aimed skill! Precision: "..HitChance) end
+                  if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, Position.x, Position.z)
               elseif HitChance >= Config.misc.hitchance-1 then
-                  if Config.misc.debug then PrintChat("Aimed skill! Precision: "..Config.misc.hitchance-1) end
+                  if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..Config.misc.hitchance-1) end
                   CCastSpell(i, Position.x, Position.z)
               else
-                  if Config.misc.debug then PrintChat("To mouse :/ "..HitChance) end
-                  CCastSpell(i, mousePos.x, mousePos.z)
-              end toCast[i] = false]]
+                  local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
+                  if enemies > 0 then
+                    if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
+                    Target = GetNextCustomTarget(i, Target)
+                   if ValidTarget(unit) then
+                    local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
+                    if HitChance >= Config.misc.hitchance then
+                      if not myHero:CanUseSpell(i) then return end
+                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+					  CCastSpell(i, Position.x, Position.z)
+                    end
+                   end
+                   if myHero:CanUseSpell(i) then
+                    if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end
+                    CCastSpell(i, mousePos.x, mousePos.z)
+                   end
+                  else
+                    if Config.misc.debug then PrintChat("2 - To mouse") end
+                    CCastSpell(i, mousePos.x, mousePos.z)
+                  end
+              end toCast[i] = false
             end
           end
       end 
