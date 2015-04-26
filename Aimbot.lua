@@ -526,6 +526,7 @@ function SetupHPred()
     Spell_R.width[myHero.charName] = data[3].width
     Spell_R.speed[myHero.charName] = data[3].speed
   end
+ end
 end
 
 function OnTick()
