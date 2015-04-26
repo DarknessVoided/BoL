@@ -298,7 +298,6 @@ function shuffle(a, n, whur)
 end
 
 function OnTick()
-	if orbDisabled or recall or myHero.dead then return end
 	Target = GetCustomTarget()
 	if orbDisabled then
 		if (os.clock() - orbLast) > 2.5 then
@@ -306,7 +305,7 @@ function OnTick()
 			orbLast  = 0
 		end
 	else
-	  if not myHero.dead then
+	  if not myHero.dead and not recall then 
 		Combo()
 		Harrass()
 		EveAntiSlow()
