@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.50
+local version = 0.51
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -410,123 +410,53 @@ function OnLoad()
 end
 
 function ActivePred()
-    local int = Config.misc and Config.misc.pro or 1
-    return predToUse[int] ~= nil and tostring(predToUse[int]) or "VPrediction"
+    local int = Config.misc.pro
+    return tostring(predToUse[int])
 end
 
 function SetupHPred()
+  for i = 0, 3 do
+    if i == 0 and toAim[0] then 
+        Spell_Q = MakeHPred(Spell_Q, i) 
+    elseif i == 0 and toAim[0] then 
+        Spell_W = MakeHPred(Spell_W, i) 
+    elseif i == 0 and toAim[0] then 
+        Spell_E = MakeHPred(Spell_E, i) 
+    elseif i == 0 and toAim[0] then 
+        Spell_R = MakeHPred(Spell_R, i) 
+    end
+  end
+end
 
- if toAim[0] and Spell_Q.type[myHero.charName] == nil then 
-  Spell_Q.collisionM[myHero.charName] = data[0].collision
-  Spell_Q.collisionH[myHero.charName] = data[0].collision
-  Spell_Q.delay[myHero.charName] = data[0].delay
-  Spell_Q.range[myHero.charName] = data[0].range
-  if data[0].type == "linear" then
-    Spell_Q.width[myHero.charName] = 2*data[0].width
-    if data[0].speed ~= math.huge then 
-        Spell_Q.type[myHero.charName] = "DelayLine"
-        Spell_Q.speed[myHero.charName] = data[0].speed
+function MakeHPred(hspell, i)
+ if hspell == nil then 
+  hspell.collisionM[myHero.charName] = data[i].collision
+  hspell.collisionH[myHero.charName] = data[i].collision
+  hspell.delay[myHero.charName] = data[i].delay
+  hspell.range[myHero.charName] = data[i].range
+  if data[i].type == "linear" then
+    hspell.width[myHero.charName] = 2*data[i].width
+    if data[i].speed ~= math.huge then 
+        hspell.type[myHero.charName] = "DelayLine"
+        hspell.speed[myHero.charName] = data[i].speed
     else
-        Spell_Q.type[myHero.charName] = "PromptLine"
+        hspell.type[myHero.charName] = "PromptLine"
     end
-  elseif data[0].type == "circular" then
-    Spell_Q.radius[myHero.charName] = data[0].width
-    if data[0].speed ~= math.huge then 
-        Spell_Q.type[myHero.charName] = "DelayCircle"
-        Spell_Q.speed[myHero.charName] = data[0].speed
+  elseif data[i].type == "circular" then
+    hspell.radius[myHero.charName] = data[i].width
+    if data[i].speed ~= math.huge then 
+        hspell.type[myHero.charName] = "DelayCircle"
+        hspell.speed[myHero.charName] = data[i].speed
     else
-        Spell_Q.type[myHero.charName] = "PromptCircle"
-    end
-  else --Cone!
-    Spell_Q.type[myHero.charName] = "DelayLine"
-    Spell_Q.width[myHero.charName] = data[0].width
-    Spell_Q.speed[myHero.charName] = data[0].speed
-  end
- end
- 
- if toAim[1] and Spell_W.type[myHero.charName] == nil then 
-  Spell_W.collisionM[myHero.charName] = data[1].collision
-  Spell_W.collisionH[myHero.charName] = data[1].collision
-  Spell_W.delay[myHero.charName] = data[1].delay
-  Spell_W.range[myHero.charName] = data[1].range
-  if data[1].type == "linear" then
-    Spell_W.width[myHero.charName] = 2*data[1].width
-    if data[1].speed ~= math.huge then 
-        Spell_W.type[myHero.charName] = "DelayLine"
-        Spell_W.speed[myHero.charName] = data[1].speed
-    else
-        Spell_W.type[myHero.charName] = "PromptLine"
-    end
-  elseif data[1].type == "circular" then
-    Spell_W.radius[myHero.charName] = data[1].width
-    if data[1].speed ~= math.huge then 
-        Spell_W.type[myHero.charName] = "DelayCircle"
-        Spell_W.speed[myHero.charName] = data[1].speed
-    else
-        Spell_W.type[myHero.charName] = "PromptCircle"
+        hspell.type[myHero.charName] = "PromptCircle"
     end
   else --Cone!
-    Spell_W.type[myHero.charName] = "DelayLine"
-    Spell_W.width[myHero.charName] = data[1].width
-    Spell_W.speed[myHero.charName] = data[1].speed
+    hspell.type[myHero.charName] = "DelayLine"
+    hspell.width[myHero.charName] = data[i].width
+    hspell.speed[myHero.charName] = data[i].speed
   end
  end
- 
- if toAim[2] and Spell_E.type[myHero.charName] == nil then 
-  Spell_E.collisionM[myHero.charName] = data[2].collision
-  Spell_E.collisionH[myHero.charName] = data[2].collision
-  Spell_E.delay[myHero.charName] = data[2].delay
-  Spell_E.range[myHero.charName] = data[2].range
-  if data[2].type == "linear" then
-    Spell_E.width[myHero.charName] = 2*data[2].width
-    if data[2].speed ~= math.huge then 
-        Spell_E.type[myHero.charName] = "DelayLine"
-        Spell_E.speed[myHero.charName] = data[2].speed
-    else
-        Spell_E.type[myHero.charName] = "PromptLine"
-    end
-  elseif data[2].type == "circular" then
-    Spell_E.radius[myHero.charName] = data[2].width
-    if data[2].speed ~= math.huge then 
-        Spell_E.type[myHero.charName] = "DelayCircle"
-        Spell_E.speed[myHero.charName] = data[2].speed
-    else
-        Spell_E.type[myHero.charName] = "PromptCircle"
-    end
-  else --Cone!
-    Spell_E.type[myHero.charName] = "DelayLine"
-    Spell_E.width[myHero.charName] = data[2].width
-    Spell_E.speed[myHero.charName] = data[2].speed
-  end
- end
- 
- if toAim[3] and Spell_R.type[myHero.charName] == nil then 
-  Spell_R.collisionM[myHero.charName] = data[3].collision
-  Spell_R.collisionH[myHero.charName] = data[3].collision
-  Spell_R.delay[myHero.charName] = data[3].delay
-  Spell_R.range[myHero.charName] = data[3].range
-  if data[3].type == "linear" then
-    Spell_R.width[myHero.charName] = 2*data[3].width
-    if data[3].speed ~= math.huge then 
-        Spell_R.type[myHero.charName] = "DelayLine"
-        Spell_R.speed[myHero.charName] = data[3].speed
-    else
-        Spell_R.type[myHero.charName] = "PromptLine"
-    end
-  elseif data[3].type == "circular" then
-    Spell_R.radius[myHero.charName] = data[3].width
-    if data[3].speed ~= math.huge then 
-        Spell_R.type[myHero.charName] = "DelayCircle"
-        Spell_R.speed[myHero.charName] = data[3].speed
-    else
-        Spell_R.type[myHero.charName] = "PromptCircle"
-    end
-  else --Cone!
-    Spell_R.type[myHero.charName] = "DelayLine"
-    Spell_R.width[myHero.charName] = data[3].width
-    Spell_R.speed[myHero.charName] = data[3].speed
-  end
- end
+ return hspell
 end
 
 function OnTick()
