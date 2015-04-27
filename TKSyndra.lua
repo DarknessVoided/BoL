@@ -144,13 +144,16 @@ function OnGapclose(unit, data)
   if GetDistanceSqr(unit.visionPos, myHero.visionPos) < E.rangeSqr and E.IsReady() then
     if Q.IsReady() then
       Qdistance = 300
-      DoEQCombo(unit)
+      --DoEQCombo(unit)
+      CastSpell(_E, unit.visionPos.x, unit.visionPos.z)
+    if debugMode then PrintChat("Casted QE on Gapcloser") end
     else
       CastSpell(_E, unit.visionPos.x, unit.visionPos.z)
       if debugMode then PrintChat("Casted E on Gapcloser") end
     end
   elseif GetDistanceSqr(unit.visionPos,  myHero.visionPos) < QE.rangeSqr and Q.IsReady() and E.IsReady() then
-    DoEQCombo(unit)
+      --DoEQCombo(unit)
+      CastSpell(_E, unit.visionPos.x, unit.visionPos.z)
     if debugMode then PrintChat("Casted QE on Gapcloser") end
   end 
 end
