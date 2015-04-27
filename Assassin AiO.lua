@@ -1316,16 +1316,18 @@ function HPredict(Target, spell)
 end
 
 function DPredict(Target, spell)
+  if spell.type == "targeted" then
+   return SkillShot.STATUS.SUCCESS_HIT, Target, 125
+  end
   local unit = DPTarget(Target)
-  local col = (spell.aoe and spell.collision) and 0 or math.huge
+  local col = spell.collision and 0 or math.huge
+  local Spell = nil
   if spell.type == "linear" then
-	Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+	 Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
-	Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+	 Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
-	Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "targeted" then
-	return SkillShot.STATUS.SUCCESS_HIT, Target, 125
+	 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
   return DP:predict(unit, Spell)
 end

@@ -60,12 +60,15 @@ if FileExist(LIB_PATH .. "/HPrediction.lua") then
 end
 --[[ Libraries end ]]--
 
+--[[ Skill list start ]]--
 local Q = {range = 790, rangeSqr = math.pow(790, 2), width = 125, delay = 0.6, speed = math.huge, LastCastTime = 0, IsReady = function() return myHero:CanUseSpell(_Q) == READY end, type = "circular"}
 local W = {range = 925, rangeSqr = math.pow(925, 2), width = 190, delay = 0.8, speed = math.huge, LastCastTime = 0, IsReady = function() return myHero:CanUseSpell(_W) == READY end, status = 0, type = "cone"}
 local E = {range = 700, rangeSqr = math.pow(700, 2), width = 45 * 0.5, delay = 0.25, speed = 2500, LastCastTime = 0, IsReady = function() return myHero:CanUseSpell(_E) == READY end, type = "circular"}
 local R = {range = 725, rangeSqr = math.pow(725, 2), delay = 0.25, IsReady = function() return myHero:CanUseSpell(_R) == READY end, type = "targeted"}
 local QE = {range = 1280, rangeSqr = math.pow(1280, 2), width = 60, delay = 0, speed = 1600}
+--[[ Skill list end ]]--
 
+local debugMode = true
 local Balls = {}
 local BallDuration = 6.9
 enemyMinions = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
@@ -80,6 +83,13 @@ function OnLoad()
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
 
+  Config:addSubMenu("Misc", "casual")
+  Config.casual:addSubMenu("Anti-Gapclosers", "AG")
+  AntiGapcloser(Config.casual.AG, OnGapclose)
+  Config.casual:addSubMenu("Zhonya's settings", "Zhonya")
+  Config.casual.zhg:addParam("enabled", "Use Auto Zhonya's", SCRIPT_PARAM_ONOFF, true)
+  Config.casual.zhg:addParam("zhonyapls", "Min. % health for Zhonya's", SCRIPT_PARAM_SLICE, 15, 1, 50, 0)
+
   if ActivePred() == "HPrediction" then SetupHPred() end
   Config:addParam("combo", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config:addParam("stun", "Stun target", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
@@ -89,18 +99,60 @@ end
 
 function OnTick()
   Target = GetCustomTarget()
+  zhg()
   if myHero.dead or recall then return end
   if Config.combo then 
   elseif Config.har or Config.harr then 
   elseif Config.stun
-    if (Qtarget or QEtarget) and E.IsReady() and Q.IsReady() then
-      if Qtarget then
-        StartEQCombo(Qtarget)
-      else
-        StartEQCombo(QEtarget)
-      end   
+    if Target and E.IsReady() and Q.IsReady() then
+      if debugMode then PrintChat("Attempting to QE Target") end
+      DoEQCombo(Target)
     end
   end
+end
+
+function DoEQCombo(Target) 
+
+end
+
+function zhg()
+  if Config.casual.zhg.enabled then
+    if GetInventoryHaveItem(3157) and GetInventoryItemIsCastable(3157) then
+      if myHero.health <=  myHero.maxHealth * (Config.casual.zhg.zhonyapls / 100) then
+        CastItem(3157)
+      end 
+    end 
+  end 
+end
+
+function OnInterruptSpell(unit, spell)
+  if GetDistanceSqr(unit.visionPos, myHero.visionPos) < E.rangeSqr and E.IsReady() then
+    
+    if Q.IsReady() then
+      StartEQCombo(unit)
+    else
+      CastSpell(_E, unit.visionPos.x, unit.visionPos.z)
+      if Menu.debug.Edebug.ECastPrint then PrintChat("Casted E to Interrupt") end
+    end
+
+  elseif GetDistanceSqr(unit.visionPos,  myHero.visionPos) < QE.rangeSqr and Q.IsReady() and E.IsReady() then
+    StartEQCombo(unit)
+  end 
+end
+
+function OnGapclose(unit, data)
+  if GetDistanceSqr(unit.visionPos, myHero.visionPos) < E.rangeSqr and E.IsReady() then
+    if Q.IsReady() then
+      Qdistance = 300
+      DoEQCombo(unit)
+    else
+      CastSpell(_E, unit.visionPos.x, unit.visionPos.z)
+      if debugMode then PrintChat("Casted E on Gapcloser") end
+    end
+  elseif GetDistanceSqr(unit.visionPos,  myHero.visionPos) < QE.rangeSqr and Q.IsReady() and E.IsReady() then
+    DoEQCombo(unit)
+    if debugMode then PrintChat("Casted QE on Gapcloser") end
+  end 
 end
 
 function GetCustomTarget()
@@ -110,6 +162,16 @@ function GetCustomTarget()
     sts.target
 end
 
+--[[ Packet Cast Helper ]]--
+function CCastSpell(Spell, xPos, zPos)
+  if VIP_USER and Config.misc.pc then
+    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+  else
+    CastSpell(Spell, xPos, zPos)
+  end
+end
+
+-- [[ After here only prediction stuff ]]--
 function ActivePred()
     local int = Config.misc.pro
     return tostring(predToUse[int])
@@ -149,7 +211,6 @@ function MakeHPred(hspell, i)
  end
  return hspell
 end
-
 
 local LastRequest = 0
 function ValidRequest()
@@ -206,14 +267,5 @@ function VPredict(Target, spell)
   else
     return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
   end
-  end
-end
-
---[[ Packet Cast Helper ]]--
-function CCastSpell(Spell, xPos, zPos)
-  if VIP_USER and Config.misc.pc then
-    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-  else
-    CastSpell(Spell, xPos, zPos)
   end
 end
