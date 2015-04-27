@@ -164,7 +164,7 @@ function TimeRequest()
 end
 
 function HPredict(Target, spell)
-	return HP:GetPredict(spell, Target, myHero)
+  return HP:GetPredict(spell, Target, myHero)
 end
 
 function DPredict(Target, spell)
@@ -172,33 +172,33 @@ function DPredict(Target, spell)
   local col = (spell.aoe and spell.collision) and 0 or math.huge
   if IsVeigarLuxQ(i) then col = 1 end
   if spell.type == "linear" then
-	Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
-	Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
-	Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
   return DP:predict(unit, Spell)
 end
 
 function VPredict(Target, spell)
   if spell.type == "linear" then
-	if spell.aoe then
-		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  if spell.aoe then
+    return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  else
+    return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  end
   elseif spell.type == "circular" then
-	if spell.aoe then
-		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  if spell.aoe then
+    return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  else
+    return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  end
   elseif spell.type == "cone" then
-	if spell.aoe then
-		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  if spell.aoe then
+    return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  else
+    return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  end
   end
 end
