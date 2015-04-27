@@ -538,7 +538,7 @@ function Harrass()
 			end
 			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
+			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
 				moveToCursor()
 			end
 		end
@@ -662,7 +662,7 @@ function Harrass()
 			end
 			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
+			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
 				moveToCursor()
 			end
 		end
@@ -786,7 +786,7 @@ function Harrass()
 			end
 			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
+			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
 				moveToCursor()
 			end
 		end
