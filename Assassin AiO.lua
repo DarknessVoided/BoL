@@ -141,7 +141,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.34
+local version = 0.35
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -275,9 +275,12 @@ function OnLoad()
 	Config.Drawing:addParam("DmgCalcs", "Killable Text", SCRIPT_PARAM_ONOFF, true)
   
   Config:addParam("combo", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  Config:addParam("har", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config:addParam("harr", "Harrass (TOGGLE)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
   
   Config:permaShow("combo")
+  Config:permaShow("har")
+  Config:permaShow("harr")
   sts = TargetSelector(TARGET_LESS_CAST, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
   
@@ -420,7 +423,7 @@ function Harrass()
 			if orbDisabled or recall or myHero.dead then return end
 			if skillOrder[i] == "Q" then
 				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and Config.harr then
+					if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
 								CastSpell(_Q, myHero:Attack(Target))
@@ -458,7 +461,7 @@ function Harrass()
 				end
 			elseif skillOrder[i] == "W" then
 				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and Config.harr then
+					if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
 								CastSpell(_W, myHero:Attack(Target))
@@ -496,7 +499,7 @@ function Harrass()
 				end
 			elseif skillOrder[i] == "E" then
 				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and Config.harr then
+					if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
 								CastSpell(_E, myHero:Attack(Target))
@@ -533,9 +536,9 @@ function Harrass()
 					end
 				end
 			end
-			if Target ~=nil and Config.harrConfig.aa and Config.harr and not orbDisabled then	
+			if Target ~=nil and (Config.harr or Config.har)Config.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and Config.harr then
+			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
 				moveToCursor()
 			end
 		end
@@ -544,7 +547,7 @@ function Harrass()
 			if orbDisabled or recall or myHero.dead then return end
 			if skillOrder[i] == "Q" then
 				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and Config.harr then
+					if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
 								CastSpell(_Q, myHero:Attack(Target))
@@ -582,7 +585,7 @@ function Harrass()
 				end
 			elseif skillOrder[i] == "W" then
 				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and Config.harr then
+					if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
 								CastSpell(_W, myHero:Attack(Target))
@@ -620,7 +623,7 @@ function Harrass()
 				end
 			elseif skillOrder[i] == "E" then
 				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and Config.harr then
+					if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
 								CastSpell(_E, myHero:Attack(Target))
@@ -657,9 +660,9 @@ function Harrass()
 					end
 				end
 			end
-			if Target ~=nil and Config.harrConfig.aa and Config.harr and not orbDisabled then	
+			if Target ~=nil and (Config.harr or Config.har)Config.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and Config.harr then
+			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
 				moveToCursor()
 			end
 		end
@@ -668,7 +671,7 @@ function Harrass()
 			if orbDisabled or recall or myHero.dead then return end
 			if skillOrder[i] == "Q" then
 				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and Config.harr then
+					if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[0].range then
 							if data[0].aareset then
 								CastSpell(_Q, myHero:Attack(Target))
@@ -706,7 +709,7 @@ function Harrass()
 				end
 			elseif skillOrder[i] == "W" then
 				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and Config.harr then
+					if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[1].range then
 							if data[1].aareset then
 								CastSpell(_W, myHero:Attack(Target))
@@ -744,7 +747,7 @@ function Harrass()
 				end
 			elseif skillOrder[i] == "E" then
 				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and Config.harr then
+					if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
 						if GetDistance(Target, myHero) <= data[2].range then
 							if data[2].aareset then
 								CastSpell(_E, myHero:Attack(Target))
@@ -781,9 +784,9 @@ function Harrass()
 					end
 				end
 			end
-			if Target ~=nil and Config.harrConfig.aa and Config.harr and not orbDisabled then	
+			if Target ~=nil and (Config.harr or Config.har)Config.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and Config.harr then
+			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
 				moveToCursor()
 			end
 		end
