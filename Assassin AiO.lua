@@ -121,7 +121,10 @@ _G.Champs = {
         [_Q] =  { speed = math.huge, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"},
     },
 	["Zed"] = {
-        [_Q] = { speed = 1700, delay = 0.25, range = 925, width = 50, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 1700, delay = 0.25, range = 900, width = 48, collision = false, aoe = false, type = "linear"},
+        [_W] = { speed = 1600, delay = 0.5, range = 550, width = 40, collision = false, aoe = false, type = "dontuse"}, --aim yourself.. wut?
+        [_E] = { speed = math.huge, delay = 0, range = 0, width = 300, collision = false, aoe = true, type = "circular"},
+        [_R] = { range = 850, type = "targeted"}
     }
 }
 
@@ -138,7 +141,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.32
+local version = 0.33
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -165,16 +168,28 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
+local predToUse = {}
 VP = nil
+DP = nil
+HP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
+  table.insert(predToUse, "VPrediction")
 end
-DP = nil
+
 if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
   require "DivinePred"
   DP = DivinePred() 
+  table.insert(predToUse, "DivinePred")
 end
+
+if FileExist(LIB_PATH .. "/HPrediction.lua") then
+  require("HPrediction")
+  HP = HPrediction()
+  table.insert(predToUse, "HPrediction")
+end
+
 iOrb = nil
 if FileExist(LIB_PATH.."iSAC.lua") then
   require "iSAC"
@@ -206,20 +221,19 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
-  local predToUse = {} --, "", ""
-  if VP ~= nil then table.insert(predToUse, "VPrediction") end
-  if VIP_USER then
-    if DP ~= nil then table.insert(predToUse, "DivinePred") end
-  end
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-  if Config.misc.pro == 1 then 
+  if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
 	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  else
+  elseif ActivePred() == "DivinePred" then
+    if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
 	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
+	Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
+
+  if ActivePred() == "HPrediction" then SetupHPred() end
   
   Config:addSubMenu("Combo Settings", "comboConfig")
   
@@ -279,6 +293,56 @@ function OnLoad()
  
         end
     end
+end
+
+function ActivePred()
+    local int = Config.misc.pro
+    return tostring(predToUse[int])
+end
+
+function SetupHPred()
+  for i = 0, 3 do
+    if i == 0 then 
+        Spell_Q = MakeHPred(Spell_Q, i) 
+    elseif i == 0 then 
+        Spell_W = MakeHPred(Spell_W, i) 
+    elseif i == 0 then 
+        Spell_E = MakeHPred(Spell_E, i) 
+    elseif i == 0 then 
+        Spell_R = MakeHPred(Spell_R, i) 
+    end
+  end
+end
+
+function MakeHPred(hspell, i)
+ if hspell == nil and data[i].type ~= "dontuse" and data[i].type ~= "targeted" and data[i].type ~= "notarget" then 
+  hspell.collisionM[myHero.charName] = data[i].collision
+  hspell.collisionH[myHero.charName] = data[i].collision
+  hspell.delay[myHero.charName] = data[i].delay
+  hspell.range[myHero.charName] = data[i].range
+  if data[i].type == "linear" then
+    hspell.width[myHero.charName] = 2*data[i].width
+    if data[i].speed ~= math.huge then 
+        hspell.type[myHero.charName] = "DelayLine"
+        hspell.speed[myHero.charName] = data[i].speed
+    else
+        hspell.type[myHero.charName] = "PromptLine"
+    end
+  elseif data[i].type == "circular" then
+    hspell.radius[myHero.charName] = data[i].width
+    if data[i].speed ~= math.huge then 
+        hspell.type[myHero.charName] = "DelayCircle"
+        hspell.speed[myHero.charName] = data[i].speed
+    else
+        hspell.type[myHero.charName] = "PromptCircle"
+    end
+  else --Cone!
+    hspell.type[myHero.charName] = "DelayLine"
+    hspell.width[myHero.charName] = data[i].width
+    hspell.speed[myHero.charName] = data[i].speed
+  end
+ end
+ return hspell
 end
 
 function shuffle(a, n, whur)
@@ -365,19 +429,26 @@ function Harrass()
 							elseif data[0].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then 
+							  if ActivePred() == "VPrediction" then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
 								end
-							  elseif Config.misc.pro == 2 then
-								local State, Position, perc = DPredict(unit, data[0])
+							  elseif ActivePred() == "DivinePred" then
+								local State, Position, perc = DPredict(Target, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "Q")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, Target)
 								end
 							  end
 							end
@@ -396,19 +467,26 @@ function Harrass()
 							elseif data[1].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "W")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, Target)
 								end
 							  end
 							end
@@ -427,19 +505,26 @@ function Harrass()
 							elseif data[2].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "E")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, Target)
 								end
 							  end
 							end
@@ -468,19 +553,26 @@ function Harrass()
 							elseif data[0].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then 
+							  if ActivePred() == "VPrediction" then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
 								end
-							  elseif Config.misc.pro == 2 then
-								local State, Position, perc = DPredict(unit, data[0])
+							  elseif ActivePred() == "DivinePred" then
+								local State, Position, perc = DPredict(Target, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "Q")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, Target)
 								end
 							  end
 							end
@@ -499,19 +591,26 @@ function Harrass()
 							elseif data[1].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "W")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, Target)
 								end
 							  end
 							end
@@ -530,19 +629,26 @@ function Harrass()
 							elseif data[2].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "E")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, Target)
 								end
 							  end
 							end
@@ -571,19 +677,26 @@ function Harrass()
 							elseif data[0].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then 
+							  if ActivePred() == "VPrediction" then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
 								end
-							  elseif Config.misc.pro == 2 then
-								local State, Position, perc = DPredict(unit, data[0])
+							  elseif ActivePred() == "DivinePred" then
+								local State, Position, perc = DPredict(Target, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "Q")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, Target)
 								end
 							  end
 							end
@@ -602,19 +715,26 @@ function Harrass()
 							elseif data[1].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "W")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, Target)
 								end
 							  end
 							end
@@ -633,19 +753,26 @@ function Harrass()
 							elseif data[2].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "E")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, Target)
 								end
 							  end
 							end
@@ -686,19 +813,26 @@ function Combo()
 							elseif data[0].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then 
+							  if ActivePred() == "VPrediction" then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
 								end
-							  elseif Config.misc.pro == 2 then
-								local State, Position, perc = DPredict(unit, data[0])
+							  elseif ActivePred() == "DivinePred" then
+								local State, Position, perc = DPredict(Target, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "Q")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, Target)
 								end
 							  end
 							end
@@ -717,19 +851,26 @@ function Combo()
 							elseif data[1].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "W")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, Target)
 								end
 							  end
 							end
@@ -748,19 +889,26 @@ function Combo()
 							elseif data[2].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "E")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, Target)
 								end
 							  end
 							end
@@ -792,19 +940,26 @@ function Combo()
 							elseif data[0].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then 
+							  if ActivePred() == "VPrediction" then 
 								local CastPosition, HitChance, Position = VPredict(Target, data[0])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_Q, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
 								end
-							  elseif Config.misc.pro == 2 then
-								local State, Position, perc = DPredict(unit, data[0])
+							  elseif ActivePred() == "DivinePred" then
+								local State, Position, perc = DPredict(Target, data[0])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_Q, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_Q, sts.target)
+									CastSpell(_Q, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "Q")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_Q, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_Q, Target)
 								end
 							  end
 							end
@@ -823,19 +978,26 @@ function Combo()
 							elseif data[1].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[1])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_W, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[1])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_W, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_W, sts.target)
+									CastSpell(_W, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "W")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_W, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_W, Target)
 								end
 							  end
 							end
@@ -854,19 +1016,26 @@ function Combo()
 							elseif data[2].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[2])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_E, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[2])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_E, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_E, sts.target)
+									CastSpell(_E, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "E")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_E, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_E, Target)
 								end
 							  end
 							end
@@ -894,19 +1063,26 @@ function Combo()
 							elseif data[3].type == "dontuse" then 
 								return
 							else
-							  if Config.misc.pro == 1 then
+							  if ActivePred() == "VPrediction" then
 								local CastPosition, HitChance, Position = VPredict(Target, data[3])
 								if HitChance >= 2 and HitChance < 4 then
 									CCastSpell(_R, CastPosition.x, CastPosition.z)
 								elseif HitChance == 4 then
-									CastSpell(_R, sts.target)
+									CastSpell(_R, Target)
 								end
-							  elseif Config.misc.pro == 2 then
+							  elseif ActivePred() == "DivinePred" then
 								local State, Position, perc = DPredict(unit, data[3])
 								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
 									CCastSpell(_R, Position.x, Position.z)
 								elseif perc == 125 then
-									CastSpell(_R, sts.target)
+									CastSpell(_R, Target)
+								end
+							  elseif ActivePred() == "HPrediction" then
+								local Position, HitChance = HPredict(Target, "R")
+								if HitChance >= Config.misc.hitchance and HitChance <4 then 
+									CCastSpell(_R, Position.x, Position.z)
+								elseif HitChance == 4 then
+									CastSpell(_R, Target)
 								end
 							  end
 							end
@@ -1121,6 +1297,19 @@ function OnDraw()
             end
         end
     end
+end
+
+function HPredict(Target, spell)
+	if spell == "Q" and data[0].type == "targeted" then
+		return Target, 4
+	elseif spell == "W" and data[1].type == "targeted" then
+		return Target, 4
+	elseif spell == "E" and data[2].type == "targeted" then
+		return Target, 4
+	elseif spell == "R" and data[3].type == "targeted" then
+		return Target, 4
+	end
+	return HP:GetPredict(spell, Target, myHero)
 end
 
 function DPredict(Target, spell)
