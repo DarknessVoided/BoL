@@ -141,7 +141,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.35
+local version = 0.36
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -379,7 +379,7 @@ function OnTick()
 		if Config.KS.enableKS then
 			killsteal()
 		end
-		if (Config.comboConfig.move or Config.harrConfig.move) and Config.combo and not Config.comboConfig.aa then
+		if ((Config.comboConfig.move and Config.combo) or ((Config.har or Config.harr) and Config.harrConfig.move)) and not Config.comboConfig.aa then
 			moveToCursor()
 		end
 	  end
@@ -536,7 +536,7 @@ function Harrass()
 					end
 				end
 			end
-			if Target ~=nil and (Config.harr or Config.har)Config.aa and (Config.harr or Config.har) and not orbDisabled then	
+			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
 			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
 				moveToCursor()
@@ -660,7 +660,7 @@ function Harrass()
 					end
 				end
 			end
-			if Target ~=nil and (Config.harr or Config.har)Config.aa and (Config.harr or Config.har) and not orbDisabled then	
+			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
 			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
 				moveToCursor()
@@ -784,7 +784,7 @@ function Harrass()
 					end
 				end
 			end
-			if Target ~=nil and (Config.harr or Config.har)Config.aa and (Config.harr or Config.har) and not orbDisabled then	
+			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
 				iOrb:Orbwalk(mousePos, Target)
 			elseif iOrb:GetStage() == STAGE_NONE and (Config.harr or Config.har)Config.move and (Config.harr or Config.har) then
 				moveToCursor()

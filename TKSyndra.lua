@@ -93,7 +93,13 @@ function OnTick()
   if Config.combo then 
   elseif Config.har or Config.harr then 
   elseif Config.stun
-
+    if (Qtarget or QEtarget) and E.IsReady() and Q.IsReady() then
+      if Qtarget then
+        StartEQCombo(Qtarget)
+      else
+        StartEQCombo(QEtarget)
+      end   
+    end
   end
 end
 
@@ -200,5 +206,14 @@ function VPredict(Target, spell)
   else
     return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
   end
+  end
+end
+
+--[[ Packet Cast Helper ]]--
+function CCastSpell(Spell, xPos, zPos)
+  if VIP_USER and Config.misc.pc then
+    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+  else
+    CastSpell(Spell, xPos, zPos)
   end
 end
