@@ -225,7 +225,7 @@ _G.Champs = {
         [_E] = { speed = 2500, delay = 0.250, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
     },
         ["Thresh"] = {
-        [_Q] = { speed = 1200, delay = 0.500, range = 1050, width = 150, collision = true, aoe = false, type = "linear"}
+        [_Q] = { speed = 1200, delay = 0.500, range = 1050, width = 50, collision = true, aoe = false, type = "linear"}
     },
         ["Twitch"] = {
         [_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
