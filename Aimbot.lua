@@ -235,8 +235,8 @@ _G.Champs = {
         [_Q] = { speed = 1500, delay = 0.250, range = 1200, width = 80, collision = false, aoe = false, type = "cone"}
     },
         ["Urgot"] = {
-        [_Q] = { speed = 1600, delay = 0.2, range = 1000, width = 80, collision = true, aoe = false, type = "linear"},
-        [_E] = { speed = 1750, delay = 0.25, range = 900, width = 250, collision = false, aoe = true, type = "circular"}
+        [_Q] = { speed = 1600, delay = 0.2, range = 1400, width = 80, collision = true, aoe = false, type = "linear"},
+        [_E] = { speed = 1750, delay = 0.3, range = 920, width = 200, collision = false, aoe = true, type = "circular"}
     },
         ["Varus"] = {
         [_Q] = { speed = 1500, delay = 0.5, range = 1475, width = 100, collision = false, aoe = false, type = "linear"},
