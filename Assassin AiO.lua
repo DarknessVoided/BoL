@@ -24,19 +24,35 @@ _G.Champs = {
 		[_E] = { range = 325, type = "notarget"},
 		[_R] = { range = 700, type = "targeted"}
     },
-	["Evelynn"] = {
-		[_Q] = { range = 500, type = "notarget"},
-		[_W] = { range = 650, type = "notarget"},
-		[_E] = { range = 275, type = "targeted"},
-		[_R] = { speed = 1300, delay = 0.250, range = 650, width = 500, collision = false, aoe = true, type = "circular"}
+  ["Diana"] = {
+    [_Q] = { speed = math.huge, delay = 0.25, range = 900, width = 195, collision = false, aoe = true, type = "linear"}, --wat
+    [_W] = { range = 450, type = "notarget"},
+    [_E] = { speed = math.huge, delay = 0.5, range = 0, width = 450, collision = false, aoe = true, type = "linear"},
+    [_R] = { speed = 825, type = "targeted"}
+    },
+  ["Evelynn"] = {
+    [_Q] = { range = 500, type = "notarget"},
+    [_W] = { range = 650, type = "notarget"},
+    [_E] = { range = 275, type = "targeted"},
+    [_R] = { speed = 1300, delay = 0.250, range = 650, width = 500, collision = false, aoe = true, type = "circular"}
     },
 	["Fiora"] = {
+    [_Q] = { range = 600, type = "targeted"},
+    [_W] = { range = 20, type = "notarget"},
+    [_E] = { range = 500, type = "notarget"},
+    [_R] = { range = 400, type = "targeted"}
     },
 	["Fizz"] = {
-        [_R] = { speed = 1350, delay = 0.250, range = 1275, width = 80, collision = false, aoe = false, type = "linear"}
+    [_Q] = { range = 550, type = "targeted"},
+    [_W] = { range = 600, type = "notarget"},
+    [_E] = { speed = math.huge, delay = 0.302, range = 600, width = 75, collision = false, aoe = true, type = "circular"},
+    [_R] = { speed = 1350, delay = 0.250, range = 1275, width = 80, collision = false, aoe = false, type = "linear"}
     },
 	["Irelia"] = {
-        [_R] = { speed = 1700, delay = 0.250, range = 1200, width = 10, collision = false, aoe = false, type = "linear"}
+    [_Q] = { range = 650, type = "targeted"},
+    [_W] = { range = myHero.range, type = "notarget"},
+    [_E] = { range = 325, type = "targeted"},
+    [_R] = { speed = 900, delay = 0.250, range = 1000, width = 80, collision = false, aoe = false, type = "linear"}
     },
 	["Jax"] = {
 		[_Q] = { range = 6700, type = "targeted"},
@@ -47,8 +63,8 @@ _G.Champs = {
 	["Kassadin"] = {
 		[_Q] = { range = 650, type = "targeted"},
 		[_W] = { range = 250, type = "notarget", aareset = true},
-        [_E] = { speed = 2200, delay = 0, range = 650, width = 80, collision = false, aoe = false, type = "cone"},
-        [_R] = { speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
+    [_E] = { speed = 2200, delay = 0, range = 650, width = 80, collision = false, aoe = false, type = "cone"},
+    [_R] = { speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
     },
 	["Katarina"] = {
 		[_Q] = { range = 675, type = "targeted"},
@@ -58,22 +74,27 @@ _G.Champs = {
     },
 	["Khazix"] = {
 		[_Q] = { range = 325, type = "targeted"},
-        [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"},
+    [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"},
 		[_E] = { speed = 400, delay = 0.25, range = 600, width = 325, collision = false, aoe = true, type = "circular"},
 		[_R] = { range = 0, type = "dontuse"}
     },
 	["Leblanc"] = {
 		[_Q] = { range = 700, type = "targeted"},
 		[_W] = { speed = 2000, delay = 0.250, range =600, width = 300, collision = false, aoe = false, type = "circular"},
-        [_E] = { speed = 1600, delay = 0.250, range = 950, width = 70, collision = true, aoe = false, type = "linear"},
+    [_E] = { speed = 1600, delay = 0.250, range = 950, width = 70, collision = true, aoe = false, type = "linear"},
 		[_R] = { range = 0, type = "mimikri"}
     },
 	["LeeSin"] = {
-        [_Q] = { speed = 1800, delay = 0.250, range = 1100, width = 100, collision = true, aoe = false, type = "linear"}
+    [_Q] = { speed = 1500, delay = 0.250, range = 1000, width = 60, collision = true, aoe = false, type = "linear"},
+    [_W] = { range = 700, type = "notarget"},
+    [_E] = { speed = math.huge, delay = 0.125, range = 0, width = 425, collision = false, aoe = true, type = "circular"},
+    [_R] = { range = 375, type = "targeted"}
     },
 	["Malzahar"] = {
-        [_Q] = { speed = 1170, delay = 0.600, range = 900, width = 50, collision = false, aoe = false, type = "linear"},
-        [_W] = { speed = math.huge, delay = 0.125, range = 800, width = 250, collision = false, aoe = true, type = "circular"}
+    [_Q] = { speed = 1170, delay = 0.600, range = 900, width = 50, collision = false, aoe = false, type = "linear"},
+    [_W] = { speed = math.huge, delay = 0.125, range = 800, width = 250, collision = false, aoe = true, type = "circular"},
+    [_E] = { range = 650, type = "targeted"},
+    [_R] = { range = 700, type = "targeted"}
     },
 	["MasterYi"] = {
 		[_Q] = { range = 600, type = "targeted"},
@@ -82,20 +103,34 @@ _G.Champs = {
 		[_R] = { range = 125, type = "notarget"}
     },
 	["Nocturne"] = {
-        [_Q] = { speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
+    [_Q] = { speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"},
+    [_W] = { range = 20, type = "notarget"},
+    [_E] = { range = 425, type = "targeted"},
+    [_R] = { range = 3500, type = "targeted"}
     },
 	["Pantheon"] = {
+    [_Q] = { range = 600, type = "targeted" },
+    [_W] = { range = 600, type = "targeted"},
+    [_E] = { speed = math.huge, delay = 0.250, range = 400, width = 100, collision = false, aoe = true, type = "cone"},
+    [_R] = { speed = 3000, delay = 1, range = 5500, width = 1000, collision = false, aoe = true, type = "circular"}
     },
 	["Poppy"] = {
+    [_Q] =  { range = 600, type = "targeted"},
+    [_W] = { range = 600, type = "targeted"},
+    [_E] = { range = 525, type = "targeted"},
+    [_R] = { range = 900, type = "targeted"}
     },
 	["Rengar"] = {
 		[_Q] = { range = 125, type = "notarget", aareset = true},
 		[_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = false, type = "circular"},
-        [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
-        [_R] = { range = 4000, type = "notarget"}
+    [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
+    [_R] = { range = 4000, type = "notarget"}
     },
-	["Riven"] = {
-        [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
+	["Riven"] = {--blergh
+    [_Q] = { speed = math.huge, delay = 0.250, range = 0, width = 225, collision = false, aoe = true, type = "circular"},
+    [_W] = { speed = math.huge, delay = 0.250, range = 0, width = 250, collision = false, aoe = true, type = "circular"},
+    [_E] = { range = 325, type = "notarget"},
+    [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
     },
 	["Ryze"] = {
 		[_Q] = { range = 600, type = "targeted"},
@@ -104,27 +139,46 @@ _G.Champs = {
 		[_R] = { range = 125, type = "notarget"}
     },
 	["Shaco"] = {
+    [_Q] = { range = 400, type = "notarget"},
+    [_W] = { range = 425, type = "notarget"},
+    [_E] = { range = 625, type = "targeted"},
+    [_R] = { range = 500, type = "notarget"}
     },
 	["Talon"] = {
-        [_Q] = { range = 200, type = "notarget", aareset = true},
-        [_W] = { speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
-        [_E] = { range = 700, type = "targeted"},
-        [_R] = { range = 650, type = "notarget"}
+    [_Q] = { range = 200, type = "notarget", aareset = true},
+    [_W] = { speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"},
+    [_E] = { range = 700, type = "targeted"},
+    [_R] = { range = 650, type = "notarget"}
     },
-	["Teemo"] = {
+	["Teemo"] = {--
+    [_Q] = { range = myHero.range, type = "targeted"},
+    [_W] = { range = 750, type = "notarget"},
+    [_E] = { range = myHero.range, type = "dontuse"},
+    [_R] = { range = 230, type = "notarget"}
     },
-	["Tryndamere"] = {
+	["Tryndamere"] = {--
+    [_Q] = { range = 20, type = "notarget"},
+    [_W] = { range = 850, type = "notarget"},
+    [_E] = { speed = 700, delay = 0.250, range = 650, width = 160, collision = false, aoe = false, type = "linear"},
+    [_R] = { range = 400, type = "dontuse"}
     },
-	["XinZhao"] = {
+	["XinZhao"] = {--
+    [_Q] = { range = 375, type = "notarget"},
+    [_W] = { range = 20, type = "notarget"},
+    [_E] = { range = 650, type = "targeted"},
+    [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 375, collision = false, aoe = true, type = "circular"}
     },
 	["Yasuo"] = {
-        [_Q] =  { speed = math.huge, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"},
+    [_Q] = { speed = math.huge, delay = 0.250, range = 475, width = 40, collision = false, aoe = false, type = "linear"},
+    [_W] = { range = 600, type = "targeted"},
+    [_E] = { range = 20, type = "notarget"},
+    [_R] = { range = 500, type = "notarget"}
     },
 	["Zed"] = {
-        [_Q] = { speed = 1700, delay = 0.25, range = 900, width = 48, collision = false, aoe = false, type = "linear"},
-        [_W] = { speed = 1600, delay = 0.5, range = 550, width = 40, collision = false, aoe = false, type = "dontuse"}, --aim yourself.. wut?
-        [_E] = { speed = math.huge, delay = 0, range = 0, width = 300, collision = false, aoe = true, type = "circular"},
-        [_R] = { range = 850, type = "targeted"}
+    [_Q] = { speed = 1700, delay = 0.25, range = 900, width = 48, collision = false, aoe = false, type = "linear"},
+    [_W] = { speed = 1600, delay = 0.5, range = 550, width = 40, collision = false, aoe = false, type = "dontuse"}, --aim yourself.. wut?
+    [_E] = { speed = math.huge, delay = 0, range = 0, width = 300, collision = false, aoe = true, type = "circular"},
+    [_R] = { range = 850, type = "targeted"}
     }
 }
 
@@ -141,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.37
+local version = 0.38
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -172,7 +226,7 @@ local predToUse = {}
 VP = nil
 DP = nil
 HP = nil
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
+if FileExist(LIB_PATH .. "VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
   table.insert(predToUse, "VPrediction")
@@ -184,7 +238,7 @@ if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."D
   table.insert(predToUse, "DivinePred")
 end
 
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
+if FileExist(LIB_PATH .. "HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
   table.insert(predToUse, "HPrediction")
@@ -212,6 +266,7 @@ local orbDisabled
 local orbLast
 local enemyCount = 0
 local enemyTable = {}
+local lastUsedSpell = nil
 
 function OnLoad()
   orbDisabled = false
@@ -226,11 +281,11 @@ function OnLoad()
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
   if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
-	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
+	 Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   elseif ActivePred() == "DivinePred" then
-    if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
-	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
-	Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
+	 Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
+   if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
+	 Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
 
   if ActivePred() == "HPrediction" then SetupHPred() end
@@ -284,16 +339,11 @@ function OnLoad()
   sts = TargetSelector(TARGET_LESS_CAST, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
   
-    -- Create enemy table structure
     for i = 1, heroManager.iCount do
-   
         local champ = heroManager:GetHero(i)
-       
         if champ.team ~= player.team then
-       
             enemyCount = enemyCount + 1
             enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
- 
         end
     end
 end
@@ -318,7 +368,7 @@ function SetupHPred()
 end
 
 function MakeHPred(hspell, i)
- if hspell == nil and data[i].type ~= "dontuse" and data[i].type ~= "targeted" and data[i].type ~= "notarget" then 
+ if data[i].type == "linear" or data[i].type == "cone" or data[i].type ~= "circular" then 
   hspell.collisionM[myHero.charName] = data[i].collision
   hspell.collisionH[myHero.charName] = data[i].collision
   hspell.delay[myHero.charName] = data[i].delay
@@ -339,9 +389,9 @@ function MakeHPred(hspell, i)
     else
         hspell.type[myHero.charName] = "PromptCircle"
     end
-  else --Cone!
+  elseif data[i].type == "cone" then --Cone!
     hspell.type[myHero.charName] = "DelayLine"
-    hspell.width[myHero.charName] = data[i].width
+    hspell.width[myHero.charName] = 2*data[i].width
     hspell.speed[myHero.charName] = data[i].speed
   end
  end
@@ -418,382 +468,49 @@ function Harrass()
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 2, 2))
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 3, 3))
 	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
-	if Config.harrConfig.so < 4 then
-		for i=1,1 do
-			if orbDisabled or recall or myHero.dead then return end
-			if skillOrder[i] == "Q" then
-				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[0].range then
-							if data[0].aareset then
-								CastSpell(_Q, myHero:Attack(Target))
-							elseif data[0].type == "notarget" then 
-								CastSpell(_Q)
-							elseif data[0].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then 
-								local CastPosition, HitChance, Position = VPredict(Target, data[0])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_Q, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[0])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "Q")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _Q
-						end
-					end
-				end
-			elseif skillOrder[i] == "W" then
-				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[1].range then
-							if data[1].aareset then
-								CastSpell(_W, myHero:Attack(Target))
-							elseif data[1].type == "notarget" then 
-								CastSpell(_W)
-							elseif data[1].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[1])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_W, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[1])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "W")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _W
-						end
-					end
-				end
-			elseif skillOrder[i] == "E" then
-				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[2].range then
-							if data[2].aareset then
-								CastSpell(_E, myHero:Attack(Target))
-							elseif data[2].type == "notarget" then 
-								CastSpell(_E)
-							elseif data[2].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[2])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_E, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[2])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "E")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _E
-						end
+	for i=1,3 do
+		if orbDisabled or recall or myHero.dead then return end
+		if skillOrder[i] == "Q" then
+			if (Target ~= nil) and QReady then
+				if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
+					if GetDistance(Target, myHero) <= data[0].range then
+            CastQ(Target)
+						lastUsedSpell = _Q
 					end
 				end
 			end
-			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
-				moveToCursor()
-			end
-		end
-	elseif Config.harrConfig.so < 10 then
-		for i=1,2 do
-			if orbDisabled or recall or myHero.dead then return end
-			if skillOrder[i] == "Q" then
-				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[0].range then
-							if data[0].aareset then
-								CastSpell(_Q, myHero:Attack(Target))
-							elseif data[0].type == "notarget" then 
-								CastSpell(_Q)
-							elseif data[0].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then 
-								local CastPosition, HitChance, Position = VPredict(Target, data[0])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_Q, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[0])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "Q")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _Q
-						end
-					end
-				end
-			elseif skillOrder[i] == "W" then
-				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[1].range then
-							if data[1].aareset then
-								CastSpell(_W, myHero:Attack(Target))
-							elseif data[1].type == "notarget" then 
-								CastSpell(_W)
-							elseif data[1].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[1])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_W, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[1])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "W")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _W
-						end
-					end
-				end
-			elseif skillOrder[i] == "E" then
-				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[2].range then
-							if data[2].aareset then
-								CastSpell(_E, myHero:Attack(Target))
-							elseif data[2].type == "notarget" then 
-								CastSpell(_E)
-							elseif data[2].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[2])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_E, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[2])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "E")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _E
-						end
+		elseif skillOrder[i] == "W" then
+			if (Target ~= nil) and WReady then
+				if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
+					if GetDistance(Target, myHero) <= data[1].range then
+            CastW(Target)
+						lastUsedSpell = _W
 					end
 				end
 			end
-			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
-				moveToCursor()
-			end
-		end
-	else
-		for i=1,3 do
-			if orbDisabled or recall or myHero.dead then return end
-			if skillOrder[i] == "Q" then
-				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[0].range then
-							if data[0].aareset then
-								CastSpell(_Q, myHero:Attack(Target))
-							elseif data[0].type == "notarget" then 
-								CastSpell(_Q)
-							elseif data[0].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then 
-								local CastPosition, HitChance, Position = VPredict(Target, data[0])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_Q, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[0])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "Q")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _Q
-						end
-					end
-				end
-			elseif skillOrder[i] == "W" then
-				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[1].range then
-							if data[1].aareset then
-								CastSpell(_W, myHero:Attack(Target))
-							elseif data[1].type == "notarget" then 
-								CastSpell(_W)
-							elseif data[1].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[1])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_W, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[1])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "W")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _W
-						end
-					end
-				end
-			elseif skillOrder[i] == "E" then
-				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
-						if GetDistance(Target, myHero) <= data[2].range then
-							if data[2].aareset then
-								CastSpell(_E, myHero:Attack(Target))
-							elseif data[2].type == "notarget" then 
-								CastSpell(_E)
-							elseif data[2].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[2])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_E, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[2])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "E")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _E
-						end
+		elseif skillOrder[i] == "E" then
+			if (Target ~= nil) and EReady then
+				if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
+					if GetDistance(Target, myHero) <= data[2].range then
+            CastE(Target)
+						lastUsedSpell = _E
 					end
 				end
 			end
-			if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
-				moveToCursor()
-			end
+		end
+		if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
+			iOrb:Orbwalk(mousePos, Target)
+		elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
+			moveToCursor()
 		end
 	end
+  if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then 
+    iOrb:Orbwalk(mousePos, Target)
+  elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
+    moveToCursor()
+  end
 end
 
-local lastUsedSpell = nil
 function Combo()
 	if orbDisabled or recall or myHero.dead then return end
 	local skillOrder = {}
@@ -802,305 +519,62 @@ function Combo()
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 3, 3))
 	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 4, 4))
 	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
-	if Config.comboConfig.so < 7 then
-		for i=1,3 do
-			if orbDisabled or recall or myHero.dead then return end
-			if skillOrder[i] == "Q" then
-				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[0].range then
-							if data[0].aareset then
-								CastSpell(_Q, myHero:Attack(Target))
-							elseif data[0].type == "notarget" then 
-								CastSpell(_Q)
-							elseif data[0].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then 
-								local CastPosition, HitChance, Position = VPredict(Target, data[0])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_Q, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[0])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "Q")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _Q
-						end
-					end
-				end
-			elseif skillOrder[i] == "W" then
-				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[1].range then
-							if data[1].aareset then
-								CastSpell(_W, myHero:Attack(Target))
-							elseif data[1].type == "notarget" then 
-								CastSpell(_W)
-							elseif data[1].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[1])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_W, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[1])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "W")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _W
-						end
-					end
-				end
-			elseif skillOrder[i] == "E" then
-				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[2].range then
-							if data[2].aareset then
-								CastSpell(_E, myHero:Attack(Target))
-							elseif data[2].type == "notarget" then 
-								CastSpell(_E)
-							elseif data[2].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[2])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_E, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[2])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "E")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _E
-						end
+	for i=1,4 do
+		if orbDisabled or recall or myHero.dead then return end
+		if skillOrder[i] == "Q" then
+			if (Target ~= nil) and QReady then
+				if ValidTarget(Target, data[0].range) and Config.combo then
+					if GetDistance(Target, myHero) <= data[0].range then
+            CastQ(Target)
+						lastUsedSpell = _Q
 					end
 				end
 			end
-			if Config.comboConfig.items and Config.combo then
-				UseItems(Target) --wtb logic
+		elseif skillOrder[i] == "W" then
+			if (Target ~= nil) and WReady then
+				if ValidTarget(Target, data[1].range) and Config.combo then
+					if GetDistance(Target, myHero) <= data[1].range then
+            CastW(Target)
+						lastUsedSpell = _W
+					end
+				end
 			end
-			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
-				moveToCursor()
+		elseif skillOrder[i] == "E" then
+			if (Target ~= nil) and EReady then
+				if ValidTarget(Target, data[2].range) and Config.combo then
+					if GetDistance(Target, myHero) <= data[2].range then
+            CastE(Target)
+						lastUsedSpell = _E
+					end
+				end
 			end
+		elseif skillOrder[i] == "R" then
+			if (Target ~= nil) and RReady then
+				if myHero.charName:lower() == "leblanc" then
+					if lastUsedSpell == _Q then
+						data[3] = data[0]
+					elseif lastUsedSpell == _W then
+						data[3] = data[1]
+					elseif lastUsedSpell == _E then
+						data[3] = data[2]
+					end
+          if ActivePred() == "HPrediction" then SetupHPred() end -- kanker
+				end
+				if ValidTarget(Target, data[3].range) and Config.combo then
+					if GetDistance(Target, myHero) <= data[3].range then
+            CastR(Target)
+            lastUsedSpell = _R
+					end
+				end
+			end
+		end
+		if Config.comboConfig.items and Config.combo then
+			UseItems(Target) --wtb logic
 		end
-	else
-		for i=1,4 do
-			if orbDisabled or recall or myHero.dead then return end
-			if skillOrder[i] == "Q" then
-				if (Target ~= nil) and QReady then
-					if ValidTarget(Target, data[0].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[0].range then
-							if data[0].aareset then
-								CastSpell(_Q, myHero:Attack(Target))
-							elseif data[0].type == "notarget" then 
-								CastSpell(_Q)
-							elseif data[0].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then 
-								local CastPosition, HitChance, Position = VPredict(Target, data[0])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_Q, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[0])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_Q, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "Q")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_Q, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_Q, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _Q
-						end
-					end
-				end
-			elseif skillOrder[i] == "W" then
-				if (Target ~= nil) and WReady then
-					if ValidTarget(Target, data[1].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[1].range then
-							if data[1].aareset then
-								CastSpell(_W, myHero:Attack(Target))
-							elseif data[1].type == "notarget" then 
-								CastSpell(_W)
-							elseif data[1].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[1])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_W, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[1])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_W, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "W")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_W, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_W, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _W
-						end
-					end
-				end
-			elseif skillOrder[i] == "E" then
-				if (Target ~= nil) and EReady then
-					if ValidTarget(Target, data[2].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[2].range then
-							if data[2].aareset then
-								CastSpell(_E, myHero:Attack(Target))
-							elseif data[2].type == "notarget" then 
-								CastSpell(_E)
-							elseif data[2].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[2])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_E, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[2])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_E, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "E")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_E, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_E, Target)
-								end
-							  end
-							end
-							lastUsedSpell = _E
-						end
-					end
-				end
-			elseif skillOrder[i] == "R" then
-				if (Target ~= nil) and RReady then
-					if myHero.charName:lower() == "leblanc" then
-						if lastUsedSpell == _Q then
-							data[3] = data[0]
-						elseif lastUsedSpell == _W then
-							data[3] = data[1]
-						elseif lastUsedSpell == _E then
-							data[3] = data[2]
-						end
-					end
-					if ValidTarget(Target, data[3].range) and Config.combo then
-						if GetDistance(Target, myHero) <= data[3].range then
-							if data[3].aareset then
-								CastSpell(_R, myHero:Attack(Target))
-							elseif data[3].type == "notarget" then 
-								CastSpell(_R)
-							elseif data[3].type == "dontuse" then 
-								return
-							else
-							  if ActivePred() == "VPrediction" then
-								local CastPosition, HitChance, Position = VPredict(Target, data[3])
-								if HitChance >= Config.misc.hitchance and HitChance < 4 then
-									CCastSpell(_R, CastPosition.x, CastPosition.z)
-								elseif HitChance == 4 then
-									CastSpell(_R, Target)
-								end
-							  elseif ActivePred() == "DivinePred" then
-								local State, Position, perc = DPredict(Target, data[3])
-								if State == SkillShot.STATUS.SUCCESS_HIT and perc <= 100 then 
-									CCastSpell(_R, Position.x, Position.z)
-								elseif perc == 125 then
-									CastSpell(_R, Target)
-								end
-							  elseif ActivePred() == "HPrediction" then
-								local Position, HitChance = HPredict(Target, "R")
-								if HitChance >= Config.misc.hitchance and HitChance <4 then 
-									CCastSpell(_R, Position.x, Position.z)
-								elseif HitChance == 4 then
-									CastSpell(_R, Target)
-								end
-							  end
-							end
-						end
-					end
-				end
-			end
-			if Config.comboConfig.items and Config.combo then
-				UseItems(Target) --wtb logic
-			end
-			if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
-				iOrb:Orbwalk(mousePos, Target)
-			elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
-				moveToCursor()
-			end
+		if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
+			iOrb:Orbwalk(mousePos, Target)
+		elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
+			moveToCursor()
 		end
 	end
 	if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled and not recall and not myHero.dead then	
@@ -1108,6 +582,119 @@ function Combo()
 	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 		moveToCursor()
 	end
+end
+
+function CastQ(Target) 
+  if data[0].aareset then
+    CastSpell(_Q, myHero:Attack(Target))
+  elseif data[0].type == "notarget" then 
+    CastSpell(_Q)
+  elseif data[0].type == "targeted" then 
+    CastSpell(_Q, Target)
+  elseif data[0].type == "dontuse" then 
+    return
+  else
+    if ActivePred() == "VPrediction" then 
+      local CastPosition, HitChance, Position = VPredict(Target, data[0])
+      if HitChance >= Config.misc.hitchance then
+        CCastSpell(_Q, CastPosition.x, CastPosition.z)
+      end
+    elseif ActivePred() == "DivinePred" then
+      local State, Position, perc = DPredict(Target, data[0])
+      if State == SkillShot.STATUS.SUCCESS_HIT then 
+        CCastSpell(_Q, Position.x, Position.z)
+      end
+    elseif ActivePred() == "HPrediction" then
+      local Position, HitChance = HPredict(Target, "Q")
+      if HitChance >= Config.misc.hitchance then 
+        CCastSpell(_Q, Position.x, Position.z)
+      end
+    end
+  end
+end
+function CastW(Target) 
+  if data[1].aareset then
+    CastSpell(_W, myHero:Attack(Target))
+  elseif data[1].type == "notarget" then 
+    CastSpell(_W)
+  elseif data[1].type == "targeted" then 
+    CastSpell(_W, Target)
+  elseif data[1].type == "dontuse" then 
+    return
+  else
+    if ActivePred() == "VPrediction" then
+      local CastPosition, HitChance, Position = VPredict(Target, data[1])
+      if HitChance >= Config.misc.hitchance then
+        CCastSpell(_W, CastPosition.x, CastPosition.z)
+      end
+    elseif ActivePred() == "DivinePred" then
+      local State, Position, perc = DPredict(Target, data[1])
+      if State == SkillShot.STATUS.SUCCESS_HIT then 
+        CCastSpell(_W, Position.x, Position.z)
+      end
+    elseif ActivePred() == "HPrediction" then
+      local Position, HitChance = HPredict(Target, "W")
+      if HitChance >= Config.misc.hitchance then 
+        CCastSpell(_W, Position.x, Position.z)
+      end
+    end
+  end
+end
+function CastE(Target) 
+  if data[2].aareset then
+    CastSpell(_E, myHero:Attack(Target))
+  elseif data[2].type == "notarget" then 
+    CastSpell(_E)
+  elseif data[2].type == "targeted" then 
+    CastSpell(_E, Target)
+  elseif data[2].type == "dontuse" then 
+    return
+  else
+    if ActivePred() == "VPrediction" then
+      local CastPosition, HitChance, Position = VPredict(Target, data[2])
+      if HitChance >= Config.misc.hitchance then
+        CCastSpell(_E, CastPosition.x, CastPosition.z)
+      end
+    elseif ActivePred() == "DivinePred" then
+      local State, Position, perc = DPredict(Target, data[2])
+      if State == SkillShot.STATUS.SUCCESS_HIT then 
+        CCastSpell(_E, Position.x, Position.z)
+      end
+    elseif ActivePred() == "HPrediction" then
+      local Position, HitChance = HPredict(Target, "E")
+      if HitChance >= Config.misc.hitchance then 
+        CCastSpell(_E, Position.x, Position.z)
+      end
+    end
+  end
+end
+function CastR(Target) 
+  if data[3].aareset then
+    CastSpell(_R, myHero:Attack(Target))
+  elseif data[3].type == "notarget" then 
+    CastSpell(_R)
+  elseif data[3].type == "targeted" then 
+    CastSpell(_R, Target)
+  elseif data[3].type == "dontuse" then 
+    return
+  else
+    if ActivePred() == "VPrediction" then
+      local CastPosition, HitChance, Position = VPredict(Target, data[3])
+      if HitChance >= Config.misc.hitchance then
+        CCastSpell(_R, CastPosition.x, CastPosition.z)
+      end
+    elseif ActivePred() == "DivinePred" then
+      local State, Position, perc = DPredict(Target, data[3])
+      if State == SkillShot.STATUS.SUCCESS_HIT then 
+        CCastSpell(_R, Position.x, Position.z)
+      end
+    elseif ActivePred() == "HPrediction" then
+      local Position, HitChance = HPredict(Target, "R")
+      if HitChance >= Config.misc.hitchance then 
+        CCastSpell(_R, Position.x, Position.z)
+      end
+    end
+  end
 end
 
 function moveToCursor()
@@ -1142,128 +729,76 @@ local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function DmgCalculations()
- 
-    -- Don't calculate this if not wanted
     if not Config.Drawing.DmgCalcs then return end
- 
     for i = 1, enemyCount do
- 
         local enemy = enemyTable[i].player
- 
-                if ValidTarget(enemy) and enemy.visible then
- 
-            -- Auto attack damage
+          if ValidTarget(enemy) and enemy.visible then
             local damageAA = getDmg("AD", enemy, player)
-           
-            -- Skills damage
             local damageQ  = getDmg("Q", enemy, player)
             local damageW  = getDmg("W", enemy, player)
             local damageE  = getDmg("E", enemy, player)
             local damageR  = getDmg("R", enemy, player)
-       
-            -- Update enemy table
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageR = damageR
-           
-            -- Make combos, highest range to lowest
             if enemy.health < damageR then
- 
                 enemyTable[i].indicatorText = "R Kill"
                 enemyTable[i].ready = RReady
- 
             elseif enemy.health < damageQ then
- 
                 enemyTable[i].indicatorText = "Q Kill"
                 enemyTable[i].ready = QReady
- 
             elseif enemy.health < damageE then
- 
                 enemyTable[i].indicatorText = "E Kill"
                 enemyTable[i].ready = EReady
- 
             elseif enemy.health < damageW then
- 
                 enemyTable[i].indicatorText = "W Kill"
                 enemyTable[i].ready = WReady
- 
             elseif enemy.health < damageE + damageQ then
- 
                 enemyTable[i].indicatorText = "Q + E Kill"
                 enemyTable[i].ready = EReady and QReady
- 
             elseif enemy.health < damageQ + damageW then
- 
                 enemyTable[i].indicatorText = "Q + W Kill"
                 enemyTable[i].ready = QReady and WReady
- 
             elseif enemy.health < damageW + damageE then
- 
                 enemyTable[i].indicatorText = "W + E Kill"
                 enemyTable[i].ready = WReady and EReady
- 
             elseif enemy.health < damageR + damageQ then
- 
                 enemyTable[i].indicatorText = "R + Q Kill"
                 enemyTable[i].ready = RReady and QReady
- 
             elseif enemy.health < damageR + damageE then
- 
                 enemyTable[i].indicatorText = "R + E Kill"
                 enemyTable[i].ready = RReady and EReady
- 
             elseif enemy.health < damageR + damageW then
- 
                 enemyTable[i].indicatorText = "R + W Kill"
                 enemyTable[i].ready = RReady and WReady
- 
             elseif enemy.health < damageQ + damageW + damageE then
- 
                 enemyTable[i].indicatorText = "Q + W + E Kill"
                 enemyTable[i].ready = QReady and WReady and EReady
- 
             elseif enemy.health < damageQ + damageE + damageR then
- 
                 enemyTable[i].indicatorText = "Q + E + R Kill"
                 enemyTable[i].ready = QReady and EReady and EReady
- 
             elseif enemy.health < damageQ + damageW + damageR then
- 
                 enemyTable[i].indicatorText = "Q + W + R Kill"
                 enemyTable[i].ready = QReady and WReady and EReady
-				
             elseif enemy.health < damageR + damageW + damageE then
- 
                 enemyTable[i].indicatorText = "W + E + R Kill"
                 enemyTable[i].ready = RReady and WReady and EReady
- 
             elseif enemy.health < damageQ + damageW + damageE + damageR then
- 
                 enemyTable[i].indicatorText = "All-In Kill"
                 enemyTable[i].ready = QReady and WReady and EReady and RReady
- 
             else
- 
-                local damageTotal = damageQ + damageE + damageR
+                local damageTotal = damageQ + damageW + damageE + damageR
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
- 
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
                 enemyTable[i].ready = QReady or EReady or RReady
- 
             end
- 
-            -- Calculate damage we could receive
             local enemyDamageAA = getDmg("AD", player, enemy)
- 
-            -- Number of needed auto attacks for us to die
             local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
             enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
- 
         end
     end
- 
 end
 
 local colorRangeReady        = ARGB(255, 200, 0,   200)
@@ -1303,22 +838,10 @@ function OnDraw()
 end
 
 function HPredict(Target, spell)
-	if spell == "Q" and data[0].type == "targeted" then
-		return Target, 4
-	elseif spell == "W" and data[1].type == "targeted" then
-		return Target, 4
-	elseif spell == "E" and data[2].type == "targeted" then
-		return Target, 4
-	elseif spell == "R" and data[3].type == "targeted" then
-		return Target, 4
-	end
-	return HP:GetPredict(spell, Target, myHero)
+	return Target, 2--HP:GetPredict(spell, Target, myHero) 10/10 would "predict" again
 end
 
 function DPredict(Target, spell)
-  if spell.type == "targeted" then
-   return SkillShot.STATUS.SUCCESS_HIT, Target, 125
-  end
   local unit = DPTarget(Target)
   local col = spell.collision and 0 or math.huge
   local Spell = nil
@@ -1334,25 +857,23 @@ end
 
 function VPredict(Target, spell)
   if spell.type == "linear" then
-	if spell.aoe then
-		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  	if spell.aoe then
+  		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  	else
+  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  	end
   elseif spell.type == "circular" then
-	if spell.aoe then
-		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  	if spell.aoe then
+  		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  	else
+  		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  	end
   elseif spell.type == "cone" then
-	if spell.aoe then
-		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
-  elseif spell.type == "targeted" then
-		return Target, 4, myHero --CastPosition, HitChance, Position
+  	if spell.aoe then
+  		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  	else
+  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  	end
   end
 end
 
