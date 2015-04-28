@@ -10,7 +10,7 @@
                                                  
 ]]--
 
-if not VIP_USER then return end -- VIP only since we use packets everywhere
+if not VIP_USER then return end -- VIP only since we use packets
 
 --[[ Skillshot list start ]]--
 _G.Champs = {
@@ -114,7 +114,7 @@ _G.Champs = {
         [_E] = { speed = 200, delay = 0.2, range = 850, width = 0, collision = false, aoe = false, type = "linear"}
     },
         ["Jinx"] = {
-        [_W] = { speed = 3300, delay = 0.600, range = 1450, width = 70, collision = false, aoe = false, type = "linear"},
+        [_W] = { speed = 3000, delay = 0.600, range = 1400, width = 60, collision = true, aoe = false, type = "linear"},
         [_E] = { speed = 887, delay = 0.500, range = 830, width = 0, collision = false, aoe = true, type = "circular"},
         [_R] = { speed = 1700, delay = 0.600, range = 20000, width = 120, collision = false, aoe = true, type = "circular"}
     },
@@ -134,8 +134,8 @@ _G.Champs = {
         [_W] = { speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"}
     },
         ["KogMaw"] = {
-        [_Q] = { speed = 900, delay = 0.4, range = 1000, width = 70, collision = true, aoe = false, type = "linear"},
-        [_E] = { speed = 500, delay = 0.5, range = 1000, width = 120, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 1550, delay = 0.3667, range = 975, width = 60, collision = true, aoe = false, type = "linear"},
+        [_E] = { speed = 1200, delay = 0.5, range = 1200, width = 120, collision = false, aoe = false, type = "linear"},
         [_R] = { speed = math.huge, delay = 1.1, range = 2200, width = 65, collision = false, aoe = true, type = "circular"}
     },
         ["Leblanc"] = {
@@ -225,7 +225,7 @@ _G.Champs = {
         [_E] = { speed = 2500, delay = 0.250, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
     },
         ["Thresh"] = {
-        [_Q] = { speed = 1900, delay = 0.500, range = 1100, width = 65, collision = true, aoe = false, type = "linear"}
+        [_Q] = { speed = 1200, delay = 0.500, range = 1050, width = 150, collision = true, aoe = false, type = "linear"}
     },
         ["Twitch"] = {
         [_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
@@ -288,7 +288,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.51
+local version = 0.52
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
