@@ -204,7 +204,7 @@ _G.Champs = {
         [_E] = { speed = 2000, delay = 0.250, range = 950, width = 80, collision = false, aoe = false, type = "linear"}
     },
         ["Ryze"] = {
-        [_Q] = { speed = 900, delay = 0.5, range = 900, width = 50, collision = true, aoe = false, type = "linear"}
+        [_Q] = { speed = 900, delay = 0.25, range = 900, width = 50, collision = true, aoe = false, type = "linear"}
     },
         ["Sejuani"] = {
         [_R] = { speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
@@ -398,6 +398,8 @@ function OnLoad()
     toAim[i] = true
   end
   if ActivePred() == "HPrediction" then SetupHPred() end
+
+  Config:addSubMenu("Lasthit config", "lhConfig")
   
   --Config:addSubMenu("Additional keys", "kConfig")
   --for i, spell in pairs(data) do
@@ -406,6 +408,7 @@ function OnLoad()
   
   --Config:addTS(ts2)
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
+  Config:addParam("lh", "Last Hit (hold)", SCRIPT_PARAM_ONKEYDOWN, true, string.byte("x"))
   Config:addParam("alwaysPred", "Only shoot when predicted", SCRIPT_PARAM_ONOFF, false)
   
   Config:permaShow("tog")
@@ -464,6 +467,10 @@ function MakeHPred(hspell, i)
 end
 
 function OnTick()
+  -- [[ Last hitter part ]] --
+  if Config.lh and not myHero.dead and not recall then 
+  end
+  -- [[ Real aimbot part ]] --
   if Config.tog and not myHero.dead and not recall then 
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)

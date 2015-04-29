@@ -133,7 +133,7 @@ _G.Champs = {
     [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
     },
 	["Ryze"] = {
-    [_Q] = { speed = 900, delay = 0.5, range = 900, width = 50, collision = true, aoe = false, type = "linear"},
+    [_Q] = { speed = 900, delay = 0.25, range = 900, width = 50, collision = true, aoe = false, type = "linear"},
 		[_W] = { range = 600, type = "targeted"},
 		[_E] = { range = 600, type = "targeted"},
 		[_R] = { range = 125, type = "notarget"}
