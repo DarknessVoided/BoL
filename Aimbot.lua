@@ -203,6 +203,9 @@ _G.Champs = {
         ["Rumble"] = {
         [_E] = { speed = 2000, delay = 0.250, range = 950, width = 80, collision = false, aoe = false, type = "linear"}
     },
+        ["Ryze"] = {
+        [_Q] = { speed = 900, delay = 0.5, range = 900, width = 50, collision = true, aoe = false, type = "linear"}
+    },
         ["Sejuani"] = {
         [_R] = { speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
     },
@@ -226,7 +229,7 @@ _G.Champs = {
         [_E] = { speed = 2500, delay = 0.250, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
     },
         ["Thresh"] = {
-        [_Q] = { speed = 1200, delay = 0.500, range = 1050, width = 50, collision = true, aoe = false, type = "linear"}
+        [_Q] = { speed = 1900, delay = 0.500, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
     },
         ["Twitch"] = {
         [_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
@@ -291,7 +294,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.53
+local version = 0.54
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -432,12 +435,11 @@ function SetupHPred()
 end
 
 function MakeHPred(hspell, i)
- if hspell == nil then 
-  hspell.collisionM[myHero.charName] = data[i].collision
-  hspell.collisionH[myHero.charName] = data[i].collision
-  hspell.delay[myHero.charName] = data[i].delay
-  hspell.range[myHero.charName] = data[i].range
-  if data[i].type == "linear" then
+    hspell.collisionM[myHero.charName] = data[i].collision
+    hspell.collisionH[myHero.charName] = data[i].collision
+    hspell.delay[myHero.charName] = data[i].delay
+    hspell.range[myHero.charName] = data[i].range
+    if data[i].type == "linear" then
     hspell.width[myHero.charName] = 2*data[i].width
     if data[i].speed ~= math.huge then 
         hspell.type[myHero.charName] = "DelayLine"
@@ -445,7 +447,7 @@ function MakeHPred(hspell, i)
     else
         hspell.type[myHero.charName] = "PromptLine"
     end
-  elseif data[i].type == "circular" then
+    elseif data[i].type == "circular" then
     hspell.radius[myHero.charName] = data[i].width
     if data[i].speed ~= math.huge then 
         hspell.type[myHero.charName] = "DelayCircle"
@@ -453,13 +455,12 @@ function MakeHPred(hspell, i)
     else
         hspell.type[myHero.charName] = "PromptCircle"
     end
-  else --Cone!
+    else --Cone!
     hspell.type[myHero.charName] = "DelayLine"
     hspell.width[myHero.charName] = data[i].width
     hspell.speed[myHero.charName] = data[i].speed
-  end
- end
- return hspell
+    end
+    return hspell
 end
 
 function OnTick()

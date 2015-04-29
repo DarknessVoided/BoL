@@ -133,7 +133,7 @@ _G.Champs = {
     [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
     },
 	["Ryze"] = {
-		[_Q] = { range = 600, type = "targeted"},
+    [_Q] = { speed = 900, delay = 0.5, range = 900, width = 50, collision = true, aoe = false, type = "linear"},
 		[_W] = { range = 600, type = "targeted"},
 		[_E] = { range = 600, type = "targeted"},
 		[_R] = { range = 125, type = "notarget"}
@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.38
+local version = 0.39
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
