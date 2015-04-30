@@ -294,7 +294,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.54
+local version = 0.55
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -364,7 +364,9 @@ local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 local predictions = {}
 local toCast = {false, false, false, false}
 local toAim = {false, false, false, false}
-enemyMinions = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
+enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
+jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
+otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
 
 function OnLoad()
 
@@ -729,34 +731,37 @@ function OnDraw()
     end
 end
 
+local dontPrintHeaders = {[0x15] = {}, [0x29] = {}, [0x54] = {}, [0x55] = {}, [0x110] = {}, [0x114] = {}, [0x6D] = {}, [0x8F] = {}}
 function OnSendPacket(p)
   if Config.tog and not myHero.dead and not recall then
-    if p.header == 0x00E9 then -- Credits to PewPewPew
-        p.pos=27
+    local head = p.header
+    if Config.misc.debug and not dontPrintHeaders[head] then print("Header: "..('0x%02X'):format(head)) end
+    if head == 0x87 then -- old: 0x00E9
+        p.pos=23
         local opc = p:Decode1()
-		if Config.misc.debug then print(('0x%02X'):format(opc)) end
-        if opc == 0x02 and not toCast[0] and toAim[0] then 
+		if Config.misc.debug then print("Opcode "..('0x%02X'):format(opc)) end
+        if opc == 0xEC and not toCast[0] and toAim[0] then -- old: 0x02
           Target = GetCustomTarget(0)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
 			toCast[0] = true
           end
-        elseif opc == 0xD8 and not toCast[1] and toAim[1] then 
+        elseif opc == 0x6C and not toCast[1] and toAim[1] then -- old: 0xD8
           Target = GetCustomTarget(1)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
             toCast[1] = true
           end
-        elseif opc == 0xB3 and not toCast[2] and toAim[2] then 
+        elseif opc == 0x74 and not toCast[2] and toAim[2] then -- old: 0xB3
           Target = GetCustomTarget(2)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
             toCast[2] = true
           end
-        elseif opc == 0xE7 and not toCast[3] and toAim[3] then
+        elseif opc == 0x98 and not toCast[3] and toAim[3] then -- old: 0xE7
           Target = GetCustomTarget(3)
           if Target ~= nil then
             p:Block()
@@ -809,4 +814,119 @@ function CCastSpell(Spell, xPos, zPos)
   else
     CastSpell(Spell, xPos, zPos)
   end
+end
+
+--[[ Lasthitter from SOW! ]]--
+function BonusDamage(minion)
+    local AD = myHero:CalcDamage(minion, myHero.totalDamage)
+    local BONUS = 0
+    if myHero.charName == 'Vayne' then
+        if myHero:GetSpellData(_Q).level > 0 and myHero:CanUseSpell(_Q) == SUPRESSED then
+            BONUS = BONUS + myHero:CalcDamage(minion, ((0.05 * myHero:GetSpellData(_Q).level) + 0.25 ) * myHero.totalDamage)
+        end
+        if not VayneCBAdded then
+            VayneCBAdded = true
+            function VayneParticle(obj)
+                if GetDistance(obj) < 1000 and obj.name:lower():find("vayne_w_ring2.troy") then
+                    VayneWParticle = obj
+                end
+            end
+            AddCreateObjCallback(VayneParticle)
+        end
+        if VayneWParticle and VayneWParticle.valid and GetDistance(VayneWParticle, minion) < 10 then
+            BONUS = BONUS + 10 + 10 * myHero:GetSpellData(_W).level + (0.03 + (0.01 * myHero:GetSpellData(_W).level)) * minion.maxHealth
+        end
+    elseif myHero.charName == 'Teemo' and myHero:GetSpellData(_E).level > 0 then
+        BONUS = BONUS + myHero:CalcMagicDamage(minion, (myHero:GetSpellData(_E).level * 10) + (myHero.ap * 0.3) )
+    elseif myHero.charName == 'Corki' then
+        BONUS = BONUS + myHero.totalDamage/10
+    elseif myHero.charName == 'MissFortune' and myHero:GetSpellData(_W).level > 0 then
+        BONUS = BONUS + myHero:CalcMagicDamage(minion, (4 + 2 * myHero:GetSpellData(_W).level) + (myHero.ap/20))
+    elseif myHero.charName == 'Varus' and myHero:GetSpellData(_W).level > 0 then
+        BONUS = BONUS + (6 + (myHero:GetSpellData(_W).level * 4) + (myHero.ap * 0.25))
+    elseif myHero.charName == 'Caitlyn' then
+            if not CallbackCaitlynAdded then
+                function CaitlynParticle(obj)
+                    if GetDistance(obj) < 100 and obj.name:lower():find("caitlyn_headshot_rdy") then
+                            HeadShotParticle = obj
+                    end
+                end
+                AddCreateObjCallback(CaitlynParticle)
+                CallbackCaitlynAdded = true
+            end
+            if HeadShotParticle and HeadShotParticle.valid then
+                BONUS = BONUS + AD * 1.5
+            end
+    elseif myHero.charName == 'Orianna' then
+        BONUS = BONUS + myHero:CalcMagicDamage(minion, 10 + 8 * ((myHero.level - 1) % 3))
+    elseif myHero.charName == 'TwistedFate' then
+            if not TFCallbackAdded then
+                function TFParticle(obj)
+                    if GetDistance(obj) < 100 and obj.name:lower():find("cardmaster_stackready.troy") then
+                        TFEParticle = obj
+                    elseif GetDistance(obj) < 100 and obj.name:lower():find("card_blue.troy") then
+                        TFWParticle = obj
+                    end
+                end
+                AddCreateObjCallback(TFParticle)
+                TFCallbackAdded = true
+            end
+            if TFEParticle and TFEParticle.valid then
+                BONUS = BONUS + myHero:CalcMagicDamage(minion, myHero:GetSpellData(_E).level * 15 + 40 + 0.5 * myHero.ap)  
+            end
+            if TFWParticle and TFWParticle.valid then
+                BONUS = BONUS + math.max(myHero:CalcMagicDamage(minion, myHero:GetSpellData(_W).level * 20 + 20 + 0.5 * myHero.ap) - 40, 0) 
+            end
+    elseif myHero.charName == 'Draven' then
+            if not CallbackDravenAdded then
+                function DravenParticle(obj)
+                    if GetDistance(obj) < 100 and obj.name:lower():find("draven_q_buf") then
+                            DravenParticleo = obj
+                    end
+                end
+                AddCreateObjCallback(DravenParticle)
+                CallbackDravenAdded = true
+            end
+            if DravenParticleo and DravenParticleo.valid then
+                BONUS = BONUS + AD * (0.3 + (0.10 * myHero:GetSpellData(_Q).level))
+            end
+    elseif myHero.charName == 'Nasus' and VIP_USER then
+        if myHero:GetSpellData(_Q).level > 0 and myHero:CanUseSpell(_Q) == SUPRESSED then
+            local Qdamage = {30, 50, 70, 90, 110}
+            NasusQStacks = NasusQStacks or 0
+            BONUS = BONUS + myHero:CalcDamage(minion, 10 + 20 * (myHero:GetSpellData(_Q).level) + NasusQStacks)
+            if not RecvPacketNasusAdded then
+                function NasusOnRecvPacket(p)
+                    if p.header == 0xFE and p.size == 0xC then
+                        p.pos = 1
+                        pNetworkID = p:DecodeF()
+                        unk01 = p:Decode2()
+                        unk02 = p:Decode1()
+                        stack = p:Decode4()
+                        if pNetworkID == myHero.networkID then
+                            NasusQStacks = stack
+                        end
+                    end
+                end
+                RecvPacketNasusAdded = true
+                AddRecvPacketCallback(NasusOnRecvPacket)
+            end
+        end
+    elseif myHero.charName == "Ziggs" then
+        if not CallbackZiggsAdded then
+            function ZiggsParticle(obj)
+                if GetDistance(obj) < 100 and obj.name:lower():find("ziggspassive") then
+                        ZiggsParticleObj = obj
+                end
+            end
+            AddCreateObjCallback(ZiggsParticle)
+            CallbackZiggsAdded = true
+        end
+        if ZiggsParticleObj and ZiggsParticleObj.valid then
+            local base = {20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160}
+            BONUS = BONUS + myHero:CalcMagicDamage(minion, base[myHero.level] + (0.25 + 0.05 * (myHero.level % 7)) * myHero.ap)  
+        end
+    end
+
+    return BONUS
 end
