@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.57
+local version = 0.58
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -476,7 +476,7 @@ function OnTick()
   if Config.lh and not myHero.dead and not recall then 
   end
   -- [[ Real aimbot part ]] --
-  if Config.tog and not myHero.dead and not recall and (toCast[0] or toCast[1] or toCast[2] or toCast[3]) then 
+  if Config.tog and not myHero.dead and not recall and (toCast[0] or toCast[1] or toCast[2] or toCast[3] or Config[str[0]] or Config[str[1]] or Config[str[2]] or Config[str[3]]) then 
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)
           if Target == nil then return end
