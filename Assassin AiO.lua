@@ -27,7 +27,7 @@ _G.Champs = {
   ["Diana"] = {
     [_Q] = { speed = math.huge, delay = 0.25, range = 900, width = 195, collision = false, aoe = true, type = "linear"}, --wat
     [_W] = { range = 450, type = "notarget"},
-    [_E] = { speed = math.huge, delay = 0.5, range = 0, width = 450, collision = false, aoe = true, type = "linear"},
+    [_E] = { speed = math.huge, delay = 0.5, range = 0, width = 450, collision = false, aoe = true, type = "circular"},
     [_R] = { speed = 825, type = "targeted"}
     },
   ["Evelynn"] = {
