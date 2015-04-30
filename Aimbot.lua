@@ -448,25 +448,25 @@ function MakeHPred(hspell, i)
     hspell.delay[myHero.charName] = data[i].delay
     hspell.range[myHero.charName] = data[i].range
     if data[i].type == "linear" then
-    hspell.width[myHero.charName] = 2*data[i].width
-    if data[i].speed ~= math.huge then 
-        hspell.type[myHero.charName] = "DelayLine"
-        hspell.speed[myHero.charName] = data[i].speed
-    else
-        hspell.type[myHero.charName] = "PromptLine"
-    end
+        hspell.width[myHero.charName] = 2*data[i].width
+        if data[i].speed ~= math.huge then 
+            hspell.type[myHero.charName] = "DelayLine"
+            hspell.speed[myHero.charName] = data[i].speed
+        else
+            hspell.type[myHero.charName] = "PromptLine"
+        end
     elseif data[i].type == "circular" then
-    hspell.radius[myHero.charName] = data[i].width
-    if data[i].speed ~= math.huge then 
-        hspell.type[myHero.charName] = "DelayCircle"
-        hspell.speed[myHero.charName] = data[i].speed
-    else
-        hspell.type[myHero.charName] = "PromptCircle"
-    end
+        hspell.radius[myHero.charName] = data[i].width
+        if data[i].speed ~= math.huge then 
+            hspell.type[myHero.charName] = "DelayCircle"
+            hspell.speed[myHero.charName] = data[i].speed
+        else
+            hspell.type[myHero.charName] = "PromptCircle"
+        end
     else --Cone!
-    hspell.type[myHero.charName] = "DelayLine"
-    hspell.width[myHero.charName] = data[i].width
-    hspell.speed[myHero.charName] = data[i].speed
+        hspell.type[myHero.charName] = "DelayLine"
+        hspell.width[myHero.charName] = data[i].width
+        hspell.speed[myHero.charName] = data[i].speed
     end
     return hspell
 end
