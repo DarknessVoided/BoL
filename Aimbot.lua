@@ -115,7 +115,7 @@ _G.Champs = {
         [_E] = { speed = 200, delay = 0.2, range = 850, width = 0, collision = false, aoe = false, type = "linear"}
     },
         ["Jayce"] = {
-        [_Q] = { speed = 2000, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
+        [_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
     },
         ["Jinx"] = {
         [_W] = { speed = 3000, delay = 0.600, range = 1400, width = 60, collision = true, aoe = false, type = "linear"},
