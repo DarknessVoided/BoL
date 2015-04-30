@@ -112,14 +112,8 @@ function OnLoad()
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-  if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
-	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  elseif ActivePred() == "DivinePred" then
-    if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
-	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
-	Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
-  end
 
+  if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1) end
   if ActivePred() == "HPrediction" then SetupHPred() end
   
   Config:addSubMenu("Combo Settings", "comboConfig")
@@ -305,7 +299,7 @@ end
 function CastQ(Target) 
     if ActivePred() == "VPrediction" then 
       local CastPosition, HitChance, Position = VPredict(Target, data[0])
-      if HitChance >= Config.misc.hitchance then
+      if HitChance >= 2 then
         CCastSpell(_Q, CastPosition.x, CastPosition.z)
       end
     elseif ActivePred() == "DivinePred" then
@@ -315,7 +309,7 @@ function CastQ(Target)
       end
     elseif ActivePred() == "HPrediction" then
       local Position, HitChance = HPredict(Target, "Q")
-      if HitChance >= Config.misc.hitchance then 
+      if HitChance >= 2 then 
         CCastSpell(_Q, Position.x, Position.z)
       end
     end
@@ -323,7 +317,7 @@ end
 function CastW(Target) 
 	if ActivePred() == "VPrediction" then
 	  local CastPosition, HitChance, Position = VPredict(Target, data[1])
-	  if HitChance >= Config.misc.hitchance then
+	  if HitChance >= 2 then
 	    CCastSpell(_W, CastPosition.x, CastPosition.z)
 	  end
 	elseif ActivePred() == "DivinePred" then
@@ -333,7 +327,7 @@ function CastW(Target)
 	  end
 	elseif ActivePred() == "HPrediction" then
 	  local Position, HitChance = HPredict(Target, "W")
-	  if HitChance >= Config.misc.hitchance then 
+	  if HitChance >= 2 then 
 	    CCastSpell(_W, Position.x, Position.z)
 	  end
 	end
