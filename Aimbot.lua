@@ -727,7 +727,7 @@ function OnDraw()
   if not Config.misc.debug or myHero.dead then
     return
   end
-  if myHero.hasMovePath and myHero.pathCount >= 2 then
+    if myHero.hasMovePath and myHero.pathCount >= 2 then
       local IndexPath = myHero:GetPath(myHero.pathIndex)
       if IndexPath then
         DrawLine3D(myHero.x, myHero.y, myHero.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(255, 255, 255, 255))
