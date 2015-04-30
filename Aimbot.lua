@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.60
+local version = 0.61
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -484,7 +484,7 @@ function OnTick()
   if Config.lh and not myHero.dead and not recall then 
   end
   -- [[ Real aimbot part ]] --
-  if Config.tog and not myHero.dead and not recall and (toCast[0] or toCast[1] or toCast[2] or toCast[3] or Config[str[0]] or Config[str[1]] or Config[str[2]] or Config[str[3]]) then 
+  if Config.tog and not myHero.dead and ValidRequest() and not recall and (toCast[0] or toCast[1] or toCast[2] or toCast[3] or Config[str[0]] or Config[str[1]] or Config[str[2]] or Config[str[3]]) then 
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)
           if Target == nil then return end
@@ -535,14 +535,7 @@ function OnTick()
               end toCast[i] = false
             elseif ActivePred() == "DivinePred" and VIP_USER then -- DivinePrediction
 			  local State, Position, perc
-              if Config.misc.debug then PrintChat("0 - Request Pred!") end
-			  if ValidRequest() then
-				if Config.misc.debug then PrintChat("+ - Use Pred!") end
-				State, Position, perc = DPredict(Target, spell)
-			  else
-				if Config.misc.debug then PrintChat("- - Delay Pred!") end
-				State, Position, perc = DelayAction(DPredict, TimeRequest(), {Target, spell})
-			  end
+			  State, Position, perc = DPredict(Target, spell)
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if State == SkillShot.STATUS.SUCCESS_HIT then 
                 if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..perc) end
@@ -566,11 +559,7 @@ function OnTick()
               end toCast[i] = false
             elseif ActivePred() == "HPrediction" then -- HPrediction
               local Position, HitChance
-			  if ValidRequest() then
-				Position, HitChance = HPredict(Target, str[i])
-			  else
-				Position, HitChance = DelayAction(HPredict, TimeRequest(), {str[i], Target})
-			  end
+			  Position, HitChance = HPredict(Target, str[i])
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
               if HitChance >= Config.misc.hitchance then
                   if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
