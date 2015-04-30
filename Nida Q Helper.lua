@@ -10,21 +10,30 @@
 ]]--
 if myHero.charName ~= "Nidalee" then return end
 
+
+local predToUse = {}
+VP = nil
+DP = nil
+HP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
+  table.insert(predToUse, "VPrediction")
+end
+if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+  require "DivinePred"
+  DP = DivinePred() 
+  table.insert(predToUse, "DivinePred")
 end
 if FileExist(LIB_PATH .. "/HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
+  table.insert(predToUse, "HPrediction")
 end
 if VIP_USER and FileExist(LIB_PATH .. "/Prodiction.lua") then
   require("Prodiction")
   prodstatus = true
-end
-if VIP_USER and FileExist(LIB_PATH .. "/DivinePred.lua") then 
-  require "DivinePred" 
-  DP = DivinePred()
+  table.insert(predToUse, "Prodiction")
 end
 
 local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 37, Ready = function() return myHero:CanUseSpell(_Q) == READY end}
@@ -32,10 +41,11 @@ local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
 
 function OnLoad()
   Config = scriptConfig("Nida Q Helper ", " Nida Q Helper ")
+  if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config:addSubMenu("[Misc]: Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells(VIP)", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("pro", "Prediction To Use:", SCRIPT_PARAM_LIST, 1, {"VPrediction","HPrediction","Prodiction","DivinePred"})
+  Config.misc:addParam("pro", "Prediction To Use:", SCRIPT_PARAM_LIST, 1, predToUse) 
   Config.misc:addParam("hc", "Hitchance:", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("mana", "Min mana for harass:", SCRIPT_PARAM_SLICE, 30, 0, 101, 0)
@@ -53,6 +63,10 @@ function OnLoad()
 	Spell_Q.width['Nidalee'] = Q.width
   end
   print("Nida Q Helper loaded!")
+end
+
+function ActivePred()
+    return tostring(predToUse[Config.misc.pro])
 end
 
 function Check()
@@ -80,7 +94,7 @@ end
 
 function ThrowQ(unit)
   if unit and Q.Ready() and ValidTarget(unit) then
-    if Config.misc.pro == 1 then
+    if ActivePred() == "VPrediction" then
       local CastPosition, HitChance, Position = VP:GetLineCastPosition(unit, Q.delay, Q.width, Q.range, Q.speed, myHero, true)
       if HitChance >= Config.misc.hc then
         if VIP_USER and Config.misc.pc then
@@ -90,7 +104,7 @@ function ThrowQ(unit)
         end
       end
     end
-    if Config.misc.pro == 2 then
+    if ActivePred() == "HPrediction" then
       local CastPosition, HitChance = HP:GetPredict("Q", unit, myHero)
       if HitChance >= Config.misc.hc then
         if VIP_USER and Config.misc.pc then
@@ -100,7 +114,7 @@ function ThrowQ(unit)
         end
       end
     end
-    if Config.misc.pro == 3 and VIP_USER and prodstatus then
+    if ActivePred() == "Prodiction" and VIP_USER and prodstatus then
       local Position, info = Prodiction.GetPrediction(unit, Q.range, Q.speed, Q.delay, Q.width, myHero)
       if Position ~= nil and not info.mCollision() then
         if VIP_USER and Config.misc.pc then
@@ -110,7 +124,7 @@ function ThrowQ(unit)
         end 
       end
     end
-    if Config.misc.pro == 4 and VIP_USER then
+    if ActivePred() == "DivinePred" and VIP_USER then
       local unit = DPTarget(unit)
       local NidaQ = LineSS(Q.speed, Q.range, Q.width, Q.delay*1000, 0)
       local State, Position, perc = DP:predict(unit, NidaQ, Config.misc.hc)
