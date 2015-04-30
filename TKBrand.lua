@@ -340,7 +340,7 @@ function CastR(Target)
 end
 
 function HPredict(Target, spell)
-	return Target, 2--HP:GetPredict(spell, Target, myHero) 10/10 would "predict" again
+	return HP:GetPredict(spell, Target, myHero) 
 end
 
 function DPredict(Target, spell)
