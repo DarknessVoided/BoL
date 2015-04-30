@@ -162,9 +162,9 @@ _G.Champs = {
         [_Q] = { speed = 1400, delay = 0.250, range = 925, width = 80, collision = false, aoe = false, type = "linear"}
     },
         ["Lux"] = {
-        [_Q] = { speed = 1200, delay = 0.245, range = 1175, width = 50, collision = true, aoe = false, type = "linear"},
-        [_E] = { speed = 1300, delay = 0.245, range = 1100, width = 275, collision = false, aoe = true, type = "circular"},
-        [_R] = { speed = math.huge, delay = 0.245, range = 3340, width = 190, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 1200, delay = 0.25, range = 1175, width = 80, collision = true, aoe = false, type = "linear"},
+        [_E] = { speed = 1300, delay = 0.25, range = 1100, width = 275, collision = false, aoe = true, type = "circular"},
+        [_R] = { speed = math.huge, delay = 0.25, range = 3340, width = 190, collision = false, aoe = false, type = "linear"},
     },
         ["Malphite"] = {
         [_R] = { speed = 550, delay = 0.0, range = 1000, width = 300, collision = false, aoe = true, type = "circular"}
@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.58
+local version = 0.59
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -363,6 +363,7 @@ local QReady, WReady, EReady, RReady = nil, nil, nil, nil
 local Target 
 local QSel, WSel, ESel, RSel
 local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
+local keke = { [_Q] = "AimQ", [_W] = "AimW", [_E] = "AimE", [_R] = "AimR" }
 --local key = { [_Q] = "Y", [_W] = "X", [_E] = "C", [_R] = "V" } soon
 local predictions = {}
 local toCast = {false, false, false, false}
@@ -397,8 +398,10 @@ function OnLoad()
     
  
   Config:addSubMenu("Supported skills", "skConfig")
+  Config:addSubMenu("Toggle skills", "tConfig")
   for i, spell in pairs(data) do
     Config.skConfig:addParam(str[i], "", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(str[i]))
+    Config.tConfig:addParam(keke[i], keke[i], SCRIPT_PARAM_ONOFF, true)
     predictions[str[i]] = {spell.range, spell.speed, spell.delay, spell.width, i}
     toAim[i] = true
   end
@@ -472,6 +475,9 @@ function MakeHPred(hspell, i)
 end
 
 function OnTick()
+  for i=1,4 do
+    toAim[i] = Config[keke[i]]
+  end
   -- [[ Last hitter part ]] --
   if Config.lh and not myHero.dead and not recall then 
   end
@@ -763,6 +769,7 @@ function OnSendPacket(p)
         local opc = p:Decode1()
 		if Config.misc.debug then print("Opcode "..('0x%02X'):format(opc)) end
         if opc == 0xEC and not toCast[0] and toAim[0] then -- old: 0x02
+            print("blok")
           Target = GetCustomTarget(0)
           if Target ~= nil then
             p:Block()
