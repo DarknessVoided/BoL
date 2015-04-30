@@ -36,7 +36,7 @@ if VIP_USER and FileExist(LIB_PATH .. "/Prodiction.lua") then
   table.insert(predToUse, "Prodiction")
 end
 
-local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 37, Ready = function() return myHero:CanUseSpell(_Q) == READY end}
+local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.15, width = 50, Ready = function() return myHero:CanUseSpell(_Q) == READY end}
 local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
 
 function OnLoad()
