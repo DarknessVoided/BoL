@@ -1,1 +1,3 @@
-function OnLoad() print("Username: " .. GetUser()) end
+function OnLoad() 
+  print("Username: "..myHero.name) 
+end
