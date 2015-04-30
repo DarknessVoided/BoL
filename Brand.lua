@@ -17,13 +17,11 @@ _G.Champs = {
     [_Q] = { speed = 1600, delay = 0.25, range = 900, width = 50, collision = true, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 0.625, range = 900, width = 175, collision = false, aoe = true, type = "circular"},
     [_E] = { range = 625, type = "targeted"},
-		[_R] = { range = 750, type = "targeted"}
+	[_R] = { range = 750, type = "targeted"}
     }
 }
 
 local CastableItems = {
-Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", Target, myHero) end},
-Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", Target, myHero) end},
 Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", Target, myHero) end},
 Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", Target, myHero) end},
 Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", Target, myHero) end},
@@ -31,7 +29,7 @@ Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188)
 Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
 Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
 TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
-}
+}--[[ Tank AD Brand inc! ]]--
 
 --[[ Libraries start ]]--
 local predToUse = {}
@@ -80,10 +78,9 @@ function OnLoad()
   Config = scriptConfig("Brand", "Brand")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
-  Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
-  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
+  if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
+  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
-  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
   if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
@@ -140,7 +137,7 @@ function SetupHPred()
 end
 
 function MakeHPred(hspell, i)
- if hspell == nil and data[i].type ~= "dontuse" and data[i].type ~= "targeted" and data[i].type ~= "notarget" then 
+ if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
   hspell.collisionM[myHero.charName] = data[i].collision
   hspell.collisionH[myHero.charName] = data[i].collision
   hspell.delay[myHero.charName] = data[i].delay
@@ -161,9 +158,9 @@ function MakeHPred(hspell, i)
     else
         hspell.type[myHero.charName] = "PromptCircle"
     end
-  else --Cone!
+  elseif data[i].type == "cone" then --Cone!
     hspell.type[myHero.charName] = "DelayLine"
-    hspell.width[myHero.charName] = data[i].width
+    hspell.width[myHero.charName] = 2*data[i].width
     hspell.speed[myHero.charName] = data[i].speed
   end
  end

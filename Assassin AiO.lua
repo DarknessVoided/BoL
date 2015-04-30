@@ -368,7 +368,7 @@ function SetupHPred()
 end
 
 function MakeHPred(hspell, i)
- if data[i].type == "linear" or data[i].type == "cone" or data[i].type ~= "circular" then 
+ if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
   hspell.collisionM[myHero.charName] = data[i].collision
   hspell.collisionH[myHero.charName] = data[i].collision
   hspell.delay[myHero.charName] = data[i].delay
