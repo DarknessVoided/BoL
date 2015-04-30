@@ -46,21 +46,27 @@ function OnLoad()
   Config.misc:addParam("pc", "Use Packets To Cast Spells(VIP)", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro", "Prediction To Use:", SCRIPT_PARAM_LIST, 1, predToUse) 
-  Config.misc:addParam("hc", "Hitchance:", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
+  if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
+   Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
+  elseif ActivePred() == "DivinePred" then
+   Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
+   if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
+   Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
+  end
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("mana", "Min mana for harass:", SCRIPT_PARAM_SLICE, 30, 0, 101, 0)
   Config:addParam("throwQh", "Harass with Q (toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
   Config:addParam("throwQ", "Throw Q", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
   Config:permaShow("throwQh")
   Config:addTS(QTargetSelector)
-  if HP then
-	Spell_Q.collisionM['Nidalee'] = true
-	Spell_Q.collisionH['Nidalee'] = true --or false
-	Spell_Q.delay['Nidalee'] = Q.delay
-	Spell_Q.range['Nidalee'] = Q.range
-	Spell_Q.speed['Nidalee'] = Q.speed
-	Spell_Q.type['Nidalee'] = "DelayLine"
-	Spell_Q.width['Nidalee'] = Q.width
+  if ActivePred() == "HPrediction" then
+  	Spell_Q.collisionM['Nidalee'] = true
+  	Spell_Q.collisionH['Nidalee'] = true --or false
+  	Spell_Q.delay['Nidalee'] = Q.delay
+  	Spell_Q.range['Nidalee'] = Q.range
+  	Spell_Q.speed['Nidalee'] = Q.speed
+  	Spell_Q.type['Nidalee'] = "DelayLine"
+  	Spell_Q.width['Nidalee'] = Q.width
   end
   print("Nida Q Helper loaded!")
 end
@@ -127,7 +133,11 @@ function ThrowQ(unit)
     if ActivePred() == "DivinePred" and VIP_USER then
       local unit = DPTarget(unit)
       local NidaQ = LineSS(Q.speed, Q.range, Q.width, Q.delay*1000, 0)
-      local State, Position, perc = DP:predict(unit, NidaQ, Config.misc.hc)
+      if ValidRequest() then
+        State, Position, perc = DPredict(unit, NidaQ)
+      else
+        State, Position, perc = DelayAction(DPredict, TimeRequest(), {unit, NidaQ})
+      end
       if State == SkillShot.STATUS.SUCCESS_HIT then 
         if VIP_USER and Config.misc.pc then
           Packet("S_CAST", {spellId = _Q, fromX = Position.x, fromY = Position.z, toX = Position.x, toY = Position.z}):send()
@@ -137,4 +147,26 @@ function ThrowQ(unit)
       end
     end
   end
+end
+
+function DPredict(Target, spell)
+  return DP:predict(unit, Spell, Config.misc.hc)
+end
+
+local LastRequest = 0
+function ValidRequest()
+    if os.clock() - LastRequest < TimeRequest() then
+        return false
+    else
+        LastRequest = os.clock()
+        return true
+    end
+end
+
+function TimeRequest()
+    if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" or ActivePred() == "Prodiction" then
+        return 0.001
+    elseif ActivePred() == "DivinePred" then
+        return Config.misc~=nil and Config.misc.time or 0.2
+    end
 end
