@@ -297,13 +297,13 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.59
+local version = 0.60
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
 local UPDATE_FILE_PATH = SCRIPT_PATH.."Aimbot.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>Aimbot:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Aimbot]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
   local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Aimbot.version")
   if ServerData then
@@ -374,7 +374,7 @@ otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
 
 function OnLoad()
 
-  Config = scriptConfig("Aimbot", "Aimbot")
+  Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot"..myHero.charName)
   
   
   Config:addSubMenu("Settings", "misc")
@@ -408,6 +408,8 @@ function OnLoad()
   if ActivePred() == "HPrediction" then SetupHPred() end
 
   Config:addSubMenu("Lasthit config", "lhConfig")
+
+  Config.misc:addParam("info", "Active Version: ", SCRIPT_PARAM_INFO, ""..version)
   
   --Config:addSubMenu("Additional keys", "kConfig")
   --for i, spell in pairs(data) do
