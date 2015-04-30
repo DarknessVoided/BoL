@@ -476,7 +476,7 @@ function OnTick()
   if Config.lh and not myHero.dead and not recall then 
   end
   -- [[ Real aimbot part ]] --
-  if Config.tog and not myHero.dead and not recall then 
+  if Config.tog and not myHero.dead and not recall and (toCast[0] or toCast[1] or toCast[2] or toCast[3]) then 
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)
           if Target == nil then return end
