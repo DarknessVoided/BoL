@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.56
+local version = 0.57
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -482,6 +482,16 @@ function OnTick()
           if Target == nil then return end
 		  if IsChargable(i) and not secondCast then return end
           if (toCast[i] == true or Config[str[i]]) and myHero:CanUseSpell(i) then
+            if IsJayceQ(i) then 
+                if myHero:CanUseSpell(_E) then 
+                    data[0] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
+                    if ActivePred() == "HPrediction" then SetupHPred() end
+                    CCastSpell(_E, myHero.x, myHero.z) DelayAction(function() end, 0.15) 
+                else 
+                    data[0] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"}
+                    if ActivePred() == "HPrediction" then SetupHPred() end
+                end 
+            end
             if ActivePred() == "VPrediction" then
               local CastPosition, HitChance, Position = VPredict(Target, spell)
               if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
@@ -667,13 +677,13 @@ end
 
 function IsVeigarLuxQ(i)
   if myHero.charName == 'Lux' then
-    if i == 1 then
+    if i == 0 then
       return true
     else
       return false
     end
   elseif myHero.charName == 'Veigar' then
-    if i == 1 then
+    if i == 0 then
       return true
     else
       return false
@@ -683,15 +693,27 @@ function IsVeigarLuxQ(i)
   end
 end
 
+function IsJayceQ(i)
+  if myHero.charName == 'Jayce' then
+    if i == 0 then
+      return true
+    else
+      return false
+    end
+  else
+    return false
+  end
+end
+
 function IsChargable(i)
   if myHero.charName == 'Varus' then
-    if i == 1 then
+    if i == 0 then
       return true
     else
       return false
     end
   elseif myHero.charName == 'Xerath' then
-    if i == 1 then
+    if i == 0 then
       return true
     else
       return false
@@ -734,12 +756,9 @@ function OnDraw()
     end
 end
 
-local dontPrintHeaders = {[0x15] = {}, [0x29] = {}, [0x54] = {}, [0x55] = {}, [0x110] = {}, [0x114] = {}, [0x6D] = {}, [0x8F] = {}}
 function OnSendPacket(p)
   if Config.tog and not myHero.dead and not recall then
-    local head = p.header
-    if Config.misc.debug and not dontPrintHeaders[head] then print("Header: "..('0x%02X'):format(head)) end
-    if head == 0x87 then -- old: 0x00E9
+    if p.header == 0x87 then -- old: 0x00E9
         p.pos=23
         local opc = p:Decode1()
 		if Config.misc.debug then print("Opcode "..('0x%02X'):format(opc)) end
