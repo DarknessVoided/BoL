@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.63
+local version = 0.64
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -514,7 +514,7 @@ function OnTick()
                   else
                     if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                   end
-              end if not myHero:CanUseSpell(i) then toCast[i] = false end
+              end toCast[i] = false
             elseif ActivePred() == "DivinePred" and VIP_USER then -- DivinePrediction
 			  local State, Position, perc
 			  State, Position, perc = DPredict(Target, spell)
@@ -538,7 +538,7 @@ function OnTick()
 				else
                     if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
 				end
-              end if not myHero:CanUseSpell(i) then toCast[i] = false end
+              end toCast[i] = false
             elseif ActivePred() == "HPrediction" then -- HPrediction
               local Position, HitChance
 			  Position, HitChance = HPredict(Target, str[i])
@@ -572,7 +572,7 @@ function OnTick()
                   else
                     if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                   end
-              end if not myHero:CanUseSpell(i) then toCast[i] = false end
+              end toCast[i] = false
             end
           end
       end 
@@ -643,13 +643,13 @@ function VPredict(Target, spell)
 end
 
 function OnWndMsg(msg, key)
-   if msg == KEY_UP and key == GetKey("Q") and toAim[0] and Config.skConfig[str[0]] > 0 then
+   if msg == KEY_UP and key == GetKey("Q") and toAim[0] then
      toCast[0] = false
-   elseif msg == KEY_UP and key == GetKey("W") and toAim[1] and Config.skConfig[str[1]] > 0 then 
+   elseif msg == KEY_UP and key == GetKey("W") and toAim[1] then 
      toCast[1] = false
-   elseif msg == KEY_UP and key == GetKey("E") and toAim[2] and Config.skConfig[str[2]] > 0 then 
+   elseif msg == KEY_UP and key == GetKey("E") and toAim[2] then 
      toCast[2] = false
-   elseif msg == KEY_UP and key == GetKey("R") and toAim[3] and Config.skConfig[str[3]] > 0 then
+   elseif msg == KEY_UP and key == GetKey("R") and toAim[3] then
      toCast[3] = false
    end
 end
