@@ -387,7 +387,7 @@ function OnLoad()
     
   if ActivePred() == "HPrediction" then SetupHPred() end
  
-  Config:addSubMenu("Supported skills", "skConfig")
+  Config:addSubMenu("Supported skill settings", "skConfig")
   Config.skConfig:addParam("nfo", "0 = Off, 1 = Predict/Mouse, 2 = Predict Only", SCRIPT_PARAM_INFO,"")
   for i=0,3 do
     if data[i] ~= nil then
