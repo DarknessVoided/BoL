@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.61
+local version = 0.62
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -328,7 +328,7 @@ local predToUse = {}
 VP = nil
 DP = nil
 HP = nil
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
+if FileExist(LIB_PATH .. "VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
   table.insert(predToUse, "VPrediction")
@@ -340,7 +340,7 @@ if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."D
   table.insert(predToUse, "DivinePred")
 end
 
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
+if FileExist(LIB_PATH .. "HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
   table.insert(predToUse, "HPrediction")
@@ -363,63 +363,49 @@ local QReady, WReady, EReady, RReady = nil, nil, nil, nil
 local Target 
 local QSel, WSel, ESel, RSel
 local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-local keke = { [_Q] = "AimQ", [_W] = "AimW", [_E] = "AimE", [_R] = "AimR" }
 --local key = { [_Q] = "Y", [_W] = "X", [_E] = "C", [_R] = "V" } soon
-local predictions = {}
 local toCast = {false, false, false, false}
 local toAim = {false, false, false, false}
+local debugMode = false
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
 
 function OnLoad()
 
-  Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot"..myHero.charName)
-  
+  Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot"..version..myHero.charName)
   
   Config:addSubMenu("Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
-  Config.misc:addParam("debug", "Debug mode", SCRIPT_PARAM_ONOFF, false)
-  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
- 
+  Config.misc:addParam("qq", " ", SCRIPT_PARAM_INFO,"")
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
-  
-  Config.misc:addParam("rangeoffset", "Range Decrease Offset", SCRIPT_PARAM_SLICE, 0, 0, 200, 0)
-  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-  if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
-	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  elseif ActivePred() == "DivinePred" then
-    if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
-	Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
+  if ActivePred() == "DivinePred" then
 	Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
     
+  if ActivePred() == "HPrediction" then SetupHPred() end
  
   Config:addSubMenu("Supported skills", "skConfig")
-  Config:addSubMenu("Toggle skills", "tConfig")
-  for i, spell in pairs(data) do
-    Config.skConfig:addParam(str[i], "", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(str[i]))
-    Config.tConfig:addParam(keke[i], keke[i], SCRIPT_PARAM_ONOFF, true)
-    predictions[str[i]] = {spell.range, spell.speed, spell.delay, spell.width, i}
-    toAim[i] = true
+  Config.skConfig:addParam("nfo", "0 = Off, 1 = Predict/Mouse, 2 = Predict Only", SCRIPT_PARAM_INFO,"")
+  for i=0,3 do
+    if data[i] ~= nil then
+        Config.skConfig:addParam(str[i], ""..str[i], SCRIPT_PARAM_SLICE, 1, 0, 2, 0)
+        toAim[i] = true
+    end
   end
-  if ActivePred() == "HPrediction" then SetupHPred() end
 
-  Config:addSubMenu("Lasthit config", "lhConfig")
+  --Config:addSubMenu("Lasthit config", "lhConfig")
 
-  Config.misc:addParam("info", "Active Version: ", SCRIPT_PARAM_INFO, ""..version)
   
   --Config:addSubMenu("Additional keys", "kConfig")
   --for i, spell in pairs(data) do
   --  Config.kConfig:addParam(key[i], "Aim "..str[i], ConfigType, false, string.byte(key[i]))
-  --end soon
+  --end soon; for free users
   
-  --Config:addTS(ts2)
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
-  Config:addParam("lh", "Last Hit (hold)", SCRIPT_PARAM_ONKEYDOWN, true, string.byte("x"))
-  Config:addParam("alwaysPred", "Only shoot when predicted", SCRIPT_PARAM_ONOFF, false)
+  --Config:addParam("lh", "Last Hit (hold)", SCRIPT_PARAM_ONKEYDOWN, true, string.byte("X"))
   
   Config:permaShow("tog")
   if toAim[0] then QSel = TargetSelector(TARGET_NEAR_MOUSE, data[0].range, DAMAGE_MAGIC, true) end
@@ -477,19 +463,15 @@ function MakeHPred(hspell, i)
 end
 
 function OnTick()
-  for i=1,4 do
-    toAim[i] = Config[keke[i]]
-  end
   -- [[ Last hitter part ]] --
-  if Config.lh and not myHero.dead and not recall then 
-  end
+  --if Config.lh and not myHero.dead and not recall then 
+  --end
   -- [[ Real aimbot part ]] --
-  if Config.tog and not myHero.dead and ValidRequest() and not recall and (toCast[0] or toCast[1] or toCast[2] or toCast[3] or Config[str[0]] or Config[str[1]] or Config[str[2]] or Config[str[3]]) then 
+  if Config.tog and not myHero.dead and not recall and IsLeeThreshNidaJayceQ() and ValidRequest() and (toCast[0] or toCast[1] or toCast[2] or toCast[3]) then -- 
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)
           if Target == nil then return end
-		  if IsChargable(i) and not secondCast then return end
-          if (toCast[i] == true or Config[str[i]]) and myHero:CanUseSpell(i) then
+          if (toCast[i] and Config.skConfig[str[i]] > 0) and myHero:CanUseSpell(i) then
             if IsJayceQ(i) then 
                 if myHero:CanUseSpell(_E) then 
                     data[0] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
@@ -502,93 +484,93 @@ function OnTick()
             end
             if ActivePred() == "VPrediction" then
               local CastPosition, HitChance, Position = VPredict(Target, spell)
-              if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
-              if HitChance >= Config.misc.hitchance then
-                  if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              if debugMode then PrintChat("1 - Attempt to aim!") end
+              if HitChance >= 2 then
+                  if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, CastPosition.x, CastPosition.z)
-              elseif HitChance >= Config.misc.hitchance-1 then
-                  if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              elseif HitChance >= 1 then
+                  if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, CastPosition.x, CastPosition.z)
               else
                   local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
                   if enemies > 0 then
-                    if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
+                    if debugMode then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
                    if ValidTarget(Target) then
                     local CastPosition, HitChance, Position = VPredict(Target, spell)
-                    if HitChance >= Config.misc.hitchance then
+                    if HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
-                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+                      if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       CCastSpell(i, CastPosition.x, CastPosition.z)
-                    elseif HitChance >= Config.misc.hitchance-1 then
+                    elseif HitChance >= 1 then
                       if not myHero:CanUseSpell(i) then return end
-                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+                      if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       CCastSpell(i, CastPosition.x, CastPosition.z)
                     end
                    end
                    if myHero:CanUseSpell(i) then
-                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
+                    if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                    end
                   else
-                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
+                    if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                   end
-              end toCast[i] = false
+              end if not myHero:CanUseSpell(i) then toCast[i] = false end
             elseif ActivePred() == "DivinePred" and VIP_USER then -- DivinePrediction
 			  local State, Position, perc
 			  State, Position, perc = DPredict(Target, spell)
-              if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
+              if debugMode then PrintChat("1 - Attempt to aim!") end
               if State == SkillShot.STATUS.SUCCESS_HIT then 
-                if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..perc) end
+                if debugMode then PrintChat("2 - Aimed skill! Precision: "..perc) end
                 CCastSpell(i, Position.x, Position.z)
               else
                 local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
                 if enemies > 0 then
-                  if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
+                  if debugMode then PrintChat("2 - Checking other enemies around target...") end
 				  GetNextCustomTarget(i, Target)
 				  unit = DPTarget(Target)
-				  State, Position, perc = DP:predict(unit, Spell, Config.misc.hitchance)
+				  State, Position, perc = DP:predict(unit, Spell, 1.2)
 				  if State == SkillShot.STATUS.SUCCESS_HIT then 
-                  if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..perc.."%") end
+                  if debugMode then PrintChat("3 - Aimed skill! Precision: "..perc.."%") end
 					CCastSpell(i, Position.x, Position.z)
 				  else
-                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
+                    if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
 				  end
 				else
-                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
+                    if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
 				end
-              end toCast[i] = false
+              end if not myHero:CanUseSpell(i) then toCast[i] = false end
             elseif ActivePred() == "HPrediction" then -- HPrediction
               local Position, HitChance
 			  Position, HitChance = HPredict(Target, str[i])
-              if Config.misc.debug then PrintChat("1 - Attempt to aim!") end
-              if HitChance >= Config.misc.hitchance then
-                  if Config.misc.debug then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              if debugMode then PrintChat("1 - Attempt to aim!") end
+              if HitChance >= 2 then
+                  if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, Position.x, Position.z)
-              elseif HitChance >= Config.misc.hitchance-1 then
-                  if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..Config.misc.hitchance-1) end
+              elseif HitChance >= 1.5 then
+                  if debugMode then PrintChat("3 - Aimed skill! Precision: "..Config.misc.hitchance-1) end
                   CCastSpell(i, Position.x, Position.z)
               else
                   local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
                   if enemies > 0 then
-                    if Config.misc.debug then PrintChat("2 - Checking other enemies around target...") end
+                    if debugMode then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
                    if ValidTarget(Target) then
                     local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
-                    if HitChance >= Config.misc.hitchance then
+                    if HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
-                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+                      if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
 					  CCastSpell(i, Position.x, Position.z)
-                    elseif HitChance >= Config.misc.hitchance-1 then
+                    elseif HitChance >= 1.5 then
                       if not myHero:CanUseSpell(i) then return end
-                      if Config.misc.debug then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
+                      if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
 					  CCastSpell(i, Position.x, Position.z)
                     end
                    end
                    if myHero:CanUseSpell(i) then
-                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
+                    if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                    end
                   else
-                    if not Config.alwaysPred then if Config.misc.debug then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
+                    if Config.skConfig[str[i]] == 1 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.z) end
                   end
               end if not myHero:CanUseSpell(i) then toCast[i] = false end
             end
@@ -616,7 +598,7 @@ function TimeRequest()
     if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then
         return 0.001
     elseif ActivePred() == "DivinePred" then
-        return Config.misc~=nil and Config.misc.time or 0.2
+        return Config.misc.time~=nil and Config.misc.time or 0.2
     end
 end
 
@@ -661,13 +643,13 @@ function VPredict(Target, spell)
 end
 
 function OnWndMsg(msg, key)
-   if msg == KEY_UP and key == GetKey("Q") and toAim[0] and not secondCast then
+   if msg == KEY_UP and key == GetKey("Q") and toAim[0] and Config.skConfig[str[0]] > 0 then
      toCast[0] = false
-   elseif msg == KEY_UP and key == GetKey("W") and toAim[1] then 
+   elseif msg == KEY_UP and key == GetKey("W") and toAim[1] and Config.skConfig[str[1]] > 0 then 
      toCast[1] = false
-   elseif msg == KEY_UP and key == GetKey("E") and toAim[2] then 
+   elseif msg == KEY_UP and key == GetKey("E") and toAim[2] and Config.skConfig[str[2]] > 0 then 
      toCast[2] = false
-   elseif msg == KEY_UP and key == GetKey("R") and toAim[3] then
+   elseif msg == KEY_UP and key == GetKey("R") and toAim[3] and Config.skConfig[str[3]] > 0 then
      toCast[3] = false
    end
 end
@@ -690,6 +672,36 @@ function IsVeigarLuxQ(i)
   end
 end
 
+function IsLeeThreshNidaJayceQ()
+    if myHero.charName == 'LeeSin' then
+        if myHero:GetSpellData(_Q).name == 'BlindMonkQOne' then
+            return true
+        else
+            return false
+        end
+    elseif myHero.charName == 'Thresh' then
+        if myHero:GetSpellData(_Q).name == 'ThreshQ' then
+            return true
+        else
+            return false
+        end 
+    elseif myHero.charName == 'Jayce' then
+        if myHero:GetSpellData(_Q).name == 'jayceshockblast' then
+            return true
+        else
+            return false
+        end 
+    elseif myHero.charName == 'Nidalee' then
+        if myHero:GetSpellData(_Q).name == 'JavelinToss' then
+            return true
+        else
+            return false
+        end 
+    else 
+        return true
+    end
+end
+
 function IsJayceQ(i)
   if myHero.charName == 'Jayce' then
     if i == 0 then
@@ -702,26 +714,8 @@ function IsJayceQ(i)
   end
 end
 
-function IsChargable(i)
-  if myHero.charName == 'Varus' then
-    if i == 0 then
-      return true
-    else
-      return false
-    end
-  elseif myHero.charName == 'Xerath' then
-    if i == 0 then
-      return true
-    else
-      return false
-    end 
-  else
-    return false
-  end
-end
-
 function OnDraw()
-  if not Config.misc.debug or myHero.dead then
+  if not debugMode or myHero.dead then
     return
   end
     if myHero.hasMovePath and myHero.pathCount >= 2 then
@@ -754,34 +748,33 @@ function OnDraw()
 end
 
 function OnSendPacket(p)
-  if Config.tog and not myHero.dead and not recall then
+  if Config.tog and not myHero.dead and IsLeeThreshNidaJayceQ() then
     if p.header == 0x87 then -- old: 0x00E9
         p.pos=23
         local opc = p:Decode1()
-		if Config.misc.debug then print("Opcode "..('0x%02X'):format(opc)) end
-        if opc == 0xEC and not toCast[0] and toAim[0] then -- old: 0x02
-            print("blok")
+		if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
+        if opc == 0xEC and not toCast[0] and toAim[0] and Config.skConfig[str[0]] > 0 then -- old: 0x02
           Target = GetCustomTarget(0)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
 			toCast[0] = true
           end
-        elseif opc == 0x6C and not toCast[1] and toAim[1] then -- old: 0xD8
+        elseif opc == 0x6C and not toCast[1] and toAim[1] and Config.skConfig[str[1]] > 0 then -- old: 0xD8
           Target = GetCustomTarget(1)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
             toCast[1] = true
           end
-        elseif opc == 0x74 and not toCast[2] and toAim[2] then -- old: 0xB3
+        elseif opc == 0x74 and not toCast[2] and toAim[2] and Config.skConfig[str[2]] > 0 then -- old: 0xB3
           Target = GetCustomTarget(2)
           if Target ~= nil then
             p:Block()
             p.skip(p, 1)
             toCast[2] = true
           end
-        elseif opc == 0x98 and not toCast[3] and toAim[3] then -- old: 0xE7
+        elseif opc == 0x98 and not toCast[3] and toAim[3] and Config.skConfig[str[3]] > 0 then -- old: 0xE7
           Target = GetCustomTarget(3)
           if Target ~= nil then
             p:Block()
@@ -834,119 +827,4 @@ function CCastSpell(Spell, xPos, zPos)
   else
     CastSpell(Spell, xPos, zPos)
   end
-end
-
---[[ Lasthitter from SOW! ]]--
-function BonusDamage(minion)
-    local AD = myHero:CalcDamage(minion, myHero.totalDamage)
-    local BONUS = 0
-    if myHero.charName == 'Vayne' then
-        if myHero:GetSpellData(_Q).level > 0 and myHero:CanUseSpell(_Q) == SUPRESSED then
-            BONUS = BONUS + myHero:CalcDamage(minion, ((0.05 * myHero:GetSpellData(_Q).level) + 0.25 ) * myHero.totalDamage)
-        end
-        if not VayneCBAdded then
-            VayneCBAdded = true
-            function VayneParticle(obj)
-                if GetDistance(obj) < 1000 and obj.name:lower():find("vayne_w_ring2.troy") then
-                    VayneWParticle = obj
-                end
-            end
-            AddCreateObjCallback(VayneParticle)
-        end
-        if VayneWParticle and VayneWParticle.valid and GetDistance(VayneWParticle, minion) < 10 then
-            BONUS = BONUS + 10 + 10 * myHero:GetSpellData(_W).level + (0.03 + (0.01 * myHero:GetSpellData(_W).level)) * minion.maxHealth
-        end
-    elseif myHero.charName == 'Teemo' and myHero:GetSpellData(_E).level > 0 then
-        BONUS = BONUS + myHero:CalcMagicDamage(minion, (myHero:GetSpellData(_E).level * 10) + (myHero.ap * 0.3) )
-    elseif myHero.charName == 'Corki' then
-        BONUS = BONUS + myHero.totalDamage/10
-    elseif myHero.charName == 'MissFortune' and myHero:GetSpellData(_W).level > 0 then
-        BONUS = BONUS + myHero:CalcMagicDamage(minion, (4 + 2 * myHero:GetSpellData(_W).level) + (myHero.ap/20))
-    elseif myHero.charName == 'Varus' and myHero:GetSpellData(_W).level > 0 then
-        BONUS = BONUS + (6 + (myHero:GetSpellData(_W).level * 4) + (myHero.ap * 0.25))
-    elseif myHero.charName == 'Caitlyn' then
-            if not CallbackCaitlynAdded then
-                function CaitlynParticle(obj)
-                    if GetDistance(obj) < 100 and obj.name:lower():find("caitlyn_headshot_rdy") then
-                            HeadShotParticle = obj
-                    end
-                end
-                AddCreateObjCallback(CaitlynParticle)
-                CallbackCaitlynAdded = true
-            end
-            if HeadShotParticle and HeadShotParticle.valid then
-                BONUS = BONUS + AD * 1.5
-            end
-    elseif myHero.charName == 'Orianna' then
-        BONUS = BONUS + myHero:CalcMagicDamage(minion, 10 + 8 * ((myHero.level - 1) % 3))
-    elseif myHero.charName == 'TwistedFate' then
-            if not TFCallbackAdded then
-                function TFParticle(obj)
-                    if GetDistance(obj) < 100 and obj.name:lower():find("cardmaster_stackready.troy") then
-                        TFEParticle = obj
-                    elseif GetDistance(obj) < 100 and obj.name:lower():find("card_blue.troy") then
-                        TFWParticle = obj
-                    end
-                end
-                AddCreateObjCallback(TFParticle)
-                TFCallbackAdded = true
-            end
-            if TFEParticle and TFEParticle.valid then
-                BONUS = BONUS + myHero:CalcMagicDamage(minion, myHero:GetSpellData(_E).level * 15 + 40 + 0.5 * myHero.ap)  
-            end
-            if TFWParticle and TFWParticle.valid then
-                BONUS = BONUS + math.max(myHero:CalcMagicDamage(minion, myHero:GetSpellData(_W).level * 20 + 20 + 0.5 * myHero.ap) - 40, 0) 
-            end
-    elseif myHero.charName == 'Draven' then
-            if not CallbackDravenAdded then
-                function DravenParticle(obj)
-                    if GetDistance(obj) < 100 and obj.name:lower():find("draven_q_buf") then
-                            DravenParticleo = obj
-                    end
-                end
-                AddCreateObjCallback(DravenParticle)
-                CallbackDravenAdded = true
-            end
-            if DravenParticleo and DravenParticleo.valid then
-                BONUS = BONUS + AD * (0.3 + (0.10 * myHero:GetSpellData(_Q).level))
-            end
-    elseif myHero.charName == 'Nasus' and VIP_USER then
-        if myHero:GetSpellData(_Q).level > 0 and myHero:CanUseSpell(_Q) == SUPRESSED then
-            local Qdamage = {30, 50, 70, 90, 110}
-            NasusQStacks = NasusQStacks or 0
-            BONUS = BONUS + myHero:CalcDamage(minion, 10 + 20 * (myHero:GetSpellData(_Q).level) + NasusQStacks)
-            if not RecvPacketNasusAdded then
-                function NasusOnRecvPacket(p)
-                    if p.header == 0xFE and p.size == 0xC then
-                        p.pos = 1
-                        pNetworkID = p:DecodeF()
-                        unk01 = p:Decode2()
-                        unk02 = p:Decode1()
-                        stack = p:Decode4()
-                        if pNetworkID == myHero.networkID then
-                            NasusQStacks = stack
-                        end
-                    end
-                end
-                RecvPacketNasusAdded = true
-                AddRecvPacketCallback(NasusOnRecvPacket)
-            end
-        end
-    elseif myHero.charName == "Ziggs" then
-        if not CallbackZiggsAdded then
-            function ZiggsParticle(obj)
-                if GetDistance(obj) < 100 and obj.name:lower():find("ziggspassive") then
-                        ZiggsParticleObj = obj
-                end
-            end
-            AddCreateObjCallback(ZiggsParticle)
-            CallbackZiggsAdded = true
-        end
-        if ZiggsParticleObj and ZiggsParticleObj.valid then
-            local base = {20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160}
-            BONUS = BONUS + myHero:CalcMagicDamage(minion, base[myHero.level] + (0.25 + 0.05 * (myHero.level % 7)) * myHero.ap)  
-        end
-    end
-
-    return BONUS
 end
