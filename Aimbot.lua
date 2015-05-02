@@ -297,7 +297,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.64
+local version = 0.65
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -370,13 +370,16 @@ local debugMode = false
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
+local opcs = {{0x87, 0xEC, 0x6C, 0x74, 0x98}, {0x00E9, 0x02, 0xD8, 0xB3, 0xE7}}
+local opcpos = {23, 27}
 
 function OnLoad()
 
-  Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot"..version..myHero.charName)
+  Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot1"..myHero.charName)
   
   Config:addSubMenu("Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
+  Config.misc:addParam("ser",  "Which LoL version?", SCRIPT_PARAM_LIST, 1, {"5.8", "5.7"})
   Config.misc:addParam("qq", " ", SCRIPT_PARAM_INFO,"")
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
@@ -420,17 +423,18 @@ function ActivePred()
 end
 
 function SetupHPred()
-  for i = 0, 3 do
-    if i == 0 and toAim[0] then 
+    if toAim[0] then 
         Spell_Q = MakeHPred(Spell_Q, i) 
-    elseif i == 0 and toAim[0] then 
+    end
+    if toAim[1] then 
         Spell_W = MakeHPred(Spell_W, i) 
-    elseif i == 0 and toAim[0] then 
+    end
+    if toAim[2] then 
         Spell_E = MakeHPred(Spell_E, i) 
-    elseif i == 0 and toAim[0] then 
+    end
+    if toAim[3] then 
         Spell_R = MakeHPred(Spell_R, i) 
     end
-  end
 end
 
 function MakeHPred(hspell, i)
@@ -457,7 +461,6 @@ function MakeHPred(hspell, i)
     else --Cone!
         hspell.type[myHero.charName] = "DelayLine"
         hspell.width[myHero.charName] = data[i].width
-        hspell.speed[myHero.charName] = data[i].speed
     end
     return hspell
 end
@@ -547,7 +550,7 @@ function OnTick()
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, Position.x, Position.z)
               elseif HitChance >= 1.5 then
-                  if debugMode then PrintChat("3 - Aimed skill! Precision: "..Config.misc.hitchance-1) end
+                  if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                   CCastSpell(i, Position.x, Position.z)
               else
                   local enemies = EnemiesAround(Target, 500) -- Maybe needs some adjustment
@@ -555,7 +558,7 @@ function OnTick()
                     if debugMode then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
                    if ValidTarget(Target) then
-                    local Position, HitChance = HP:GetPredict(str[i], Target, myHero)
+                    local Position, HitChance = HPredict(Target, str[i])
                     if HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
@@ -749,38 +752,19 @@ end
 
 function OnSendPacket(p)
   if Config.tog and not myHero.dead and IsLeeThreshNidaJayceQ() then
-    if p.header == 0x87 then -- old: 0x00E9
-        p.pos=23
+    if p.header == opcs[Config.misc.ser][1] then -- old: 0x00E9
+        p.pos=opcpos[Config.misc.ser]
         local opc = p:Decode1()
-		if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
-        if opc == 0xEC and not toCast[0] and toAim[0] and Config.skConfig[str[0]] > 0 then -- old: 0x02
-          Target = GetCustomTarget(0)
-          if Target ~= nil then
-            p:Block()
-            p.skip(p, 1)
-			toCast[0] = true
-          end
-        elseif opc == 0x6C and not toCast[1] and toAim[1] and Config.skConfig[str[1]] > 0 then -- old: 0xD8
-          Target = GetCustomTarget(1)
-          if Target ~= nil then
-            p:Block()
-            p.skip(p, 1)
-            toCast[1] = true
-          end
-        elseif opc == 0x74 and not toCast[2] and toAim[2] and Config.skConfig[str[2]] > 0 then -- old: 0xB3
-          Target = GetCustomTarget(2)
-          if Target ~= nil then
-            p:Block()
-            p.skip(p, 1)
-            toCast[2] = true
-          end
-        elseif opc == 0x98 and not toCast[3] and toAim[3] and Config.skConfig[str[3]] > 0 then -- old: 0xE7
-          Target = GetCustomTarget(3)
-          if Target ~= nil then
-            p:Block()
-            p.skip(p, 1)
-            toCast[3] = true
-          end
+		if debugMode then print("Opcode "..opc.." "..('0x%02X'):format(opc)) end
+        for i=0,3 do
+            if opc == opcs[Config.misc.ser][i+2] and not toCast[i] and toAim[i] and Config.skConfig[str[i]] > 0 then -- old: 0x02
+              Target = GetCustomTarget(i)
+              if Target ~= nil then
+                p:Block()
+                p.skip(p, 1)
+    			toCast[i] = true
+              end
+            end
         end
     end
   end

@@ -40,7 +40,7 @@ if AUTO_UPDATE then
 end
 --[[ Auto updater end ]]--
 
---[[ Assassin list start ]]--
+--[[ Skill list start ]]--
 _G.Champs = {
 	["Brand"] = {
     [_Q] = { speed = 1600, delay = 0.25, range = 900, width = 50, collision = true, aoe = false, type = "linear"},
@@ -50,6 +50,7 @@ _G.Champs = {
     }
 }
 
+--[[ Castable itemlist start ]]--
 local CastableItems = {
 Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", Target, myHero) end},
 Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", Target, myHero) end},
@@ -58,7 +59,8 @@ Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188)
 Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
 Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
 TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
-}--[[ Tank AD Brand inc! ]]--
+}
+--[[ Castable itemlist end ]]--
 
 --[[ Libraries start ]]--
 local predToUse = {}
