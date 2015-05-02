@@ -47,10 +47,10 @@ function OnLoad()
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro", "Prediction To Use:", SCRIPT_PARAM_LIST, 1, predToUse) 
   if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
-   Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
+   Config.misc:addParam("hc", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   elseif ActivePred() == "DivinePred" then
-   Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
-   if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
+   Config.misc:addParam("hc", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
+   if Config.misc.hc > 1.5 then Config.misc.hitchance = 1.2 end
    Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
