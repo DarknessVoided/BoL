@@ -354,17 +354,10 @@ function ActivePred()
 end
 
 function SetupHPred()
-  for i = 0, 3 do
-    if i == 0 then 
-        Spell_Q = MakeHPred(Spell_Q, i) 
-    elseif i == 0 then 
-        Spell_W = MakeHPred(Spell_W, i) 
-    elseif i == 0 then 
-        Spell_E = MakeHPred(Spell_E, i) 
-    elseif i == 0 then 
-        Spell_R = MakeHPred(Spell_R, i) 
-    end
-  end
+  Spell_Q = MakeHPred(Spell_Q, 0) 
+  Spell_W = MakeHPred(Spell_W, 1) 
+  Spell_E = MakeHPred(Spell_E, 2) 
+  Spell_R = MakeHPred(Spell_R, 3) 
 end
 
 function MakeHPred(hspell, i)
