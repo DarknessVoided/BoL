@@ -47,7 +47,13 @@ if FileExist(LIB_PATH .. "HPrediction.lua") then
   HP = HPrediction()
   table.insert(predToUse, "HPrediction")
 end
-require("SourceLib")
+
+if FileExist(LIB_PATH .. "SourceLib.lua") then
+  require("SourceLib")
+else
+  AutoupdaterMsg("Please download SourceLib.")
+  return
+end
 --[[ Libraries end ]]--
 
 --[[ Castable itemlist start ]]--
