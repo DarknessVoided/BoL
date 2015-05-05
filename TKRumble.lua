@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
@@ -282,9 +282,15 @@ function OnTick()
       	UseItems(target)
       end
     end
+    
+    DoSomeUltLogic()
 
     if VIP_USER and Config.kConfig.r then
-    	DoSomeUltLogic()
+    	local spell = ActivePred()=="HPrediction" and "R" or 3
+    	local CastPosition, HitChance, Position = Predict(target, spell)
+    	if HitChance >= 2 then
+    		CastR(CastPosition, target)
+    	end
     end
 end
 
