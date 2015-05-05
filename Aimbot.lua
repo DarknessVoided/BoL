@@ -205,7 +205,7 @@ _G.Champs = {
         [_R] = { speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
     },
         ["Rumble"] = {
-        [_E] = { speed = 2000, delay = 0.250, range = 950, width = 80, collision = false, aoe = false, type = "linear"}
+        [_E] = { speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear"}
     },
         ["Ryze"] = {
         [_Q] = { speed = 1700, delay = 0.25, range = 900, width = 50, collision = true, aoe = false, type = "linear"}
@@ -246,7 +246,7 @@ _G.Champs = {
         [_E] = { speed = 1750, delay = 0.3, range = 920, width = 200, collision = false, aoe = true, type = "circular"}
     },
         ["Varus"] = {
-        --[_Q] = { speed = 1500, delay = 0.5, range = 1475, width = 100, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 1500, delay = 0.5, range = 1475, width = 100, collision = false, aoe = false, type = "linear"},
         [_E] = { speed = 1750, delay = 0.25, range = 925, width = 235, collision = false, aoe = true, type = "circular"},
         [_R] = { speed = 1200, delay = 0.5, range = 800, width = 100, collision = false, aoe = false, type = "linear"}
     },
@@ -266,7 +266,7 @@ _G.Champs = {
         [_R] = { speed = math.huge, delay = 0.333, range = 1550, width = 50, collision = false, aoe = false, type = "linear"}
     },    
         ["Xerath"] = {
-        --[_Q] = { speed = 500, delay = 1.75, range = 750, width = 100, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 500, delay = 1.75, range = 750, width = 100, collision = false, aoe = false, type = "linear"},
         [_W] = { speed = math.huge, delay = 0.25, range = 1100, width = 100, collision = false, aoe = true, type = "circular"},
         [_E] = { speed = 1600, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"},
         [_R] = { speed = 500, delay = 0.75, range = 3200, width = 245, collision = false, aoe = true, type = "circular"}
@@ -298,7 +298,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.66
+local version = 0.67
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -410,9 +410,11 @@ function OnLoad()
   --end soon; for free users
   
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
+  Config:addParam("off", "Aimbot disabled", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
   --Config:addParam("lh", "Last Hit (hold)", SCRIPT_PARAM_ONKEYDOWN, true, string.byte("X"))
   
   Config:permaShow("tog")
+  Config:permaShow("off")
   if toAim[0] then QSel = TargetSelector(TARGET_NEAR_MOUSE, data[0].range, DAMAGE_MAGIC, true) end
   if toAim[1] then WSel = TargetSelector(TARGET_NEAR_MOUSE, data[1].range, DAMAGE_MAGIC, true) end
   if toAim[2] then ESel = TargetSelector(TARGET_NEAR_MOUSE, data[2].range, DAMAGE_MAGIC, true) end
@@ -472,7 +474,7 @@ function OnTick()
   --if Config.lh and not myHero.dead and not recall then 
   --end
   -- [[ Real aimbot part ]] --
-  if Config.tog and not myHero.dead and not recall and IsFirstCast() and ValidRequest() and (toCast[0] or toCast[1] or toCast[2] or toCast[3]) then -- 
+  if Config.tog and not Config.off and not myHero.dead and not recall and IsFirstCast() and ValidRequest() and (toCast[0] or toCast[1] or toCast[2] or toCast[3]) then -- 
       for i, spell in pairs(data) do
           Target = GetCustomTarget(i)
           if Target == nil then return end
@@ -641,6 +643,30 @@ function IsVeigarLuxQ(i)
   end
 end
 
+function IsChargeable(i)
+  if myHero.charName == 'Varus' then
+    if i == 0 then
+      return true
+    else
+      return false
+    end
+  elseif myHero.charName == 'Vi' then
+    if i == 0 then
+      return true
+    else
+      return false
+    end 
+  elseif myHero.charName == 'Xerath' then
+    if i == 0 then
+      return true
+    else
+      return false
+    end 
+  else
+    return false
+  end
+end
+
 function IsFirstCast()
     if myHero.charName == 'LeeSin' then
         if myHero:GetSpellData(_Q).name == 'BlindMonkQOne' then
@@ -723,11 +749,11 @@ function OnDraw()
 end
 
 function OnSendPacket(p)
-  if Config.tog and not myHero.dead and IsFirstCast() then
+  if Config.tog and not Config.off and not myHero.dead and IsFirstCast() then
     if p.header == opcs[Config.misc.ser][1] then -- old: 0x00E9
         p.pos=opcpos[Config.misc.ser]
         local opc = p:Decode1()
-		if debugMode then print("Opcode "..opc.." "..('0x%02X'):format(opc)) end
+		if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
         for i=0,3 do
             if opc == opcs[Config.misc.ser][i+2] and not toCast[i] and toAim[i] and Config.skConfig[str[i]] > 0 then -- old: 0x02
               Target = GetCustomTarget(i)
@@ -778,7 +804,9 @@ end
 
 --[[ Packet Cast Helper ]]--
 function CCastSpell(Spell, xPos, zPos)
-  if VIP_USER and Config.misc.pc then
+  if IsChargeable(Spell) then
+    CastSpell2(Spell, xPos, zPos)
+  elseif VIP_USER and Config.misc.pc then
     Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
   else
     CastSpell(Spell, xPos, zPos)
