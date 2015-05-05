@@ -157,7 +157,6 @@ function OnLoad()
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("V"))
-  Config.kConfig:addParam("r", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")

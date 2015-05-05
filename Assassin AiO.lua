@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.40
+local version = 0.41
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -296,7 +296,10 @@ function OnLoad()
   shuffle(keys, #keys, combos)
   keys = {"Q","W","E","R"}
   shuffle(keys, #keys, combos)
-  Config.comboConfig:addParam("so",  "Skill Order", SCRIPT_PARAM_LIST, 1, combos)
+  Config.comboConfig:addSubMenu("Combo Key Settings", "cConfig")
+  Config.comboConfig.cConfig:addParam("s1",  "Skill Order Key 1", SCRIPT_PARAM_LIST, 1, combos)
+  Config.comboConfig.cConfig:addParam("s2",  "Skill Order Key 2", SCRIPT_PARAM_LIST, 1, combos)
+  Config.comboConfig.cConfig:addParam("s3",  "Skill Order Key 3", SCRIPT_PARAM_LIST, 1, combos)
   Config.comboConfig:addParam("aa",  "Autoattack in between skills", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("move",  "Move to mouse", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items",  "Use items in combo", SCRIPT_PARAM_ONOFF, true)
@@ -329,11 +332,15 @@ function OnLoad()
 	Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, false)
 	Config.Drawing:addParam("DmgCalcs", "Killable Text", SCRIPT_PARAM_ONOFF, true)
   
-  Config:addParam("combo", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  Config:addParam("combo1", "Combokey1 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  Config:addParam("combo2", "Combokey2 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("I"))
+  Config:addParam("combo3", "Combokey3 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("O"))
   Config:addParam("har", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config:addParam("harr", "Harrass (TOGGLE)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
   
-  Config:permaShow("combo")
+  Config:permaShow("combo1")
+  Config:permaShow("combo2")
+  Config:permaShow("combo3")
   Config:permaShow("har")
   Config:permaShow("harr")
   sts = TargetSelector(TARGET_LESS_CAST, 1500, DAMAGE_MAGIC, true)
@@ -507,10 +514,22 @@ end
 function Combo()
 	if orbDisabled or recall or myHero.dead then return end
 	local skillOrder = {}
-	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 1, 1))
-	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 2, 2))
-	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 3, 3))
-	table.insert(skillOrder, string.sub(combos[Config.comboConfig.so], 4, 4))
+  if Config.combo1 then
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 1, 1))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 2, 2))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 3, 3))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 4, 4))
+  elseif Config.combo2 then
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 1, 1))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 2, 2))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 3, 3))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 4, 4))
+  elseif Config.combo3 then
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 1, 1))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 2, 2))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 3, 3))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 4, 4))
+  end
 	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
 	for i=1,4 do
 		if orbDisabled or recall or myHero.dead then return end
