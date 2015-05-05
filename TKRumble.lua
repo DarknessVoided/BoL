@@ -14,28 +14,28 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
 local UPDATE_FILE_PATH = SCRIPT_PATH.."TKRumble.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Rumble - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Rumble - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
   local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKRumble.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
       if tonumber(version) < ServerVersion then
-        AutoupdaterMsg("New version available v"..ServerVersion)
-        AutoupdaterMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () AutoupdaterMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
+        TopKekMsg("New version available v"..ServerVersion)
+        TopKekMsg("Updating, please don't press F9")
+        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
       else
-        AutoupdaterMsg("Loaded the latest version (v"..ServerVersion..")")
+        TopKekMsg("Loaded the latest version (v"..ServerVersion..")")
       end
     end
   else
-    AutoupdaterMsg("Error downloading version info")
+    TopKekMsg("Error downloading version info")
   end
 end
 --[[ Auto updater end ]]--
@@ -64,14 +64,14 @@ if FileExist(LIB_PATH .. "HPrediction.lua") then
 end
 
 if predToUse == {} then 
-	AutoupdaterMsg("Please download a Prediction.") 
+	TopKekMsg("Please download a Prediction.") 
 	return 
 end
 
 if FileExist(LIB_PATH .. "SourceLib.lua") then
   require("SourceLib")
 else
-  AutoupdaterMsg("Please download SourceLib.")
+  TopKekMsg("Please download SourceLib.")
   return
 end
 --[[ Libraries end ]]--
@@ -105,8 +105,6 @@ local data = {
 }
 
 function OnLoad()
-  orbDisabled = false
-  orbLast = 0
   Config = scriptConfig("Top Kek Rumble", "TKRumble")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
@@ -134,8 +132,8 @@ function OnLoad()
   	Config:addSubMenu("Ult Settings", "rConfig")
   	Config.rConfig:addParam("r", "Auto-R", SCRIPT_PARAM_ONOFF, true)
   	Config.rConfig:addParam("toomanyenemies", "Min. enemies for auto-r", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+    Config.misc:addParam("SPACE", " ", SCRIPT_PARAM_INFO,"")
   	Config.rConfig:addParam("omgisteamfight", "Auto-R in teamfights", SCRIPT_PARAM_ONOFF, true)
-  	Config.misc:addParam("SPACE", " ", SCRIPT_PARAM_INFO,"")
   	Config.rConfig:addParam("teamfightallies", "Min. allies in teamfight", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
   	Config.rConfig:addParam("teamfightenemies", "Min. enemies in teamfight", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
   end
@@ -181,29 +179,30 @@ function OnLoad()
         end
     end
 end
+
 function SetupOrbwalk()
   if _G.AutoCarry then
     if _G.Reborn_Initialised then
       RebornLoaded = true
-      AutoupdaterMsg("Found SAC: Reborn.")
+      TopKekMsg("Found SAC: Reborn.")
       Config.oConfig:addParam("Info", "SAC: Reborn detected!", SCRIPT_PARAM_INFO, "")
     else
       RevampedLoaded = true
-      AutoupdaterMsg("Found SAC: Revamped.")
+      TopKekMsg("Found SAC: Revamped.")
       Config.oConfig:addParam("Info", "SAC: Revamped detected!", SCRIPT_PARAM_INFO, "")
     end
   elseif _G.Reborn_Loaded then
     DelayAction(function() SetupOrbwalk() end, 1)
   elseif _G.MMA_Loaded then
     MMALoaded = true
-    AutoupdaterMsg("Found MMA.")
+    TopKekMsg("Found MMA.")
       Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
   elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
     require 'SxOrbWalk'
     SxOrb = SxOrbWalk()
     SxOrb:LoadToMenu(Config.oConfig)
     SxOrbLoaded = true
-    AutoupdaterMsg("Found SxOrb.")
+    TopKekMsg("Found SxOrb.")
   elseif FileExist(LIB_PATH .. "SOW.lua") then
     require 'SOW'
     require 'VPrediction'
@@ -212,16 +211,15 @@ function SetupOrbwalk()
      Config.oConfig:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
     SOWVP:LoadToMenu(Config.oConfig)
     SOWLoaded = true
-    AutoupdaterMsg("Found SOW.")
+    TopKekMsg("Found SOW.")
   else
-    AutoupdaterMsg("No valid Orbwalker found. :/")
+    TopKekMsg("No valid Orbwalker found. :/")
   end
-  
 end
 
 function OnTick()
   	local target
-  	target = sts:GetTarget(data[3].range)
+  	target = GetCustomTarget()
 
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
@@ -234,7 +232,7 @@ function OnTick()
     if (Config.kConfig.harr or Config.kConfig.har) and ValidTarget(target, data[2].range) then
       if Config.harrConfig.Q then
     	local spell = ActivePred()=="HPrediction" and "Q" or 0
-       	local CastPosition, HitChance, Position = Predict(target, spell)
+      local CastPosition, HitChance, Position = Predict(target, spell)
     	if HitChance >= 2 then
     		CCastSpell(_Q, CastPosition.x, CastPosition.z)
     	end
@@ -462,10 +460,9 @@ function VPredict(Target, spell)
 end
 
 function GetCustomTarget()
-    sts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts.target
+    return sts:GetTarget(data[3].range)
 end
 
 function zhg()
