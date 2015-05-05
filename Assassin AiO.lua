@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.42
+local version = 0.43
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -298,7 +298,7 @@ function OnLoad()
 	 Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
 
-  if ActivePred() == "HPrediction" then SetupHPred() end
+  --if ActivePred() == "HPrediction" then SetupHPred() end
   
   Config:addSubMenu("Combo Settings", "comboConfig")
   
@@ -307,9 +307,9 @@ function OnLoad()
   keys = {"Q","W","E","R"}
   shuffle(keys, #keys, combos)
   Config.comboConfig:addSubMenu("Combo Key Settings", "cConfig")
-  Config.comboConfig.cConfig:addParam("s1",  "Skill Order Key 1", SCRIPT_PARAM_LIST, 1, combos)
-  Config.comboConfig.cConfig:addParam("s2",  "Skill Order Key 2", SCRIPT_PARAM_LIST, 1, combos)
-  Config.comboConfig.cConfig:addParam("s3",  "Skill Order Key 3", SCRIPT_PARAM_LIST, 1, combos)
+  Config.comboConfig.cConfig:addParam("so",  "Skill Order Key 1", SCRIPT_PARAM_LIST, 1, combos)
+  Config.comboConfig.cConfig:addParam("st",  "Skill Order Key 2", SCRIPT_PARAM_LIST, 1, combos)
+  Config.comboConfig.cConfig:addParam("sz",  "Skill Order Key 3", SCRIPT_PARAM_LIST, 1, combos)
   Config.comboConfig:addParam("aa",  "Autoattack in between skills", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("move",  "Move to mouse", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items",  "Use items in combo", SCRIPT_PARAM_ONOFF, true)
@@ -342,15 +342,15 @@ function OnLoad()
 	Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, false)
 	Config.Drawing:addParam("DmgCalcs", "Killable Text", SCRIPT_PARAM_ONOFF, true)
   
-  Config:addParam("combo1", "Combokey1 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-  Config:addParam("combo2", "Combokey2 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("I"))
-  Config:addParam("combo3", "Combokey3 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("O"))
+  Config:addParam("comboo", "Combokey1 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  Config:addParam("combot", "Combokey2 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("I"))
+  Config:addParam("comboz", "Combokey3 (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("O"))
   Config:addParam("har", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config:addParam("harr", "Harrass (TOGGLE)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
   
-  Config:permaShow("combo1")
-  Config:permaShow("combo2")
-  Config:permaShow("combo3")
+  Config:permaShow("comboo")
+  Config:permaShow("combot")
+  Config:permaShow("comboz")
   Config:permaShow("har")
   Config:permaShow("harr")
   sts = TargetSelector(TARGET_LESS_CAST, 1500, DAMAGE_MAGIC, true)
@@ -524,28 +524,32 @@ end
 function Combo()
 	if orbDisabled or recall or myHero.dead then return end
 	local skillOrder = {}
-  if Config.combo1 then
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 1, 1))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 2, 2))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 3, 3))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s1], 4, 4))
-  elseif Config.combo2 then
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 1, 1))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 2, 2))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 3, 3))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s2], 4, 4))
-  elseif Config.combo3 then
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 1, 1))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 2, 2))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 3, 3))
-  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.s3], 4, 4))
+ local comboOn = false
+  if Config.comboo then
+  comboOn = true
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.so], 1, 1))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.so], 2, 2))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.so], 3, 3))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.so], 4, 4))
+  elseif Config.combot then
+  comboOn = true
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.st], 1, 1))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.st], 2, 2))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.st], 3, 3))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.st], 4, 4))
+  elseif Config.comboz then
+  comboOn = true
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.sz], 1, 1))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.sz], 2, 2))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.sz], 3, 3))
+  table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.sz], 4, 4))
   end
 	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
 	for i=1,4 do
 		if orbDisabled or recall or myHero.dead then return end
 		if skillOrder[i] == "Q" then
 			if (Target ~= nil) and QReady then
-				if ValidTarget(Target, data[0].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
+				if ValidTarget(Target, data[0].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[0].range then
             CastQ(Target)
 						lastUsedSpell = _Q
@@ -554,7 +558,7 @@ function Combo()
 			end
 		elseif skillOrder[i] == "W" then
 			if (Target ~= nil) and WReady then
-				if ValidTarget(Target, data[1].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
+				if ValidTarget(Target, data[1].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[1].range then
             CastW(Target)
 						lastUsedSpell = _W
@@ -563,7 +567,7 @@ function Combo()
 			end
 		elseif skillOrder[i] == "E" then
 			if (Target ~= nil) and EReady then
-				if ValidTarget(Target, data[2].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
+				if ValidTarget(Target, data[2].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[2].range then
             CastE(Target)
 						lastUsedSpell = _E
@@ -582,7 +586,7 @@ function Combo()
 					end
           if ActivePred() == "HPrediction" then SetupHPred() end -- kanker
 				end
-				if ValidTarget(Target, data[3].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
+				if ValidTarget(Target, data[3].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[3].range then
             CastR(Target)
             lastUsedSpell = _R
@@ -590,18 +594,18 @@ function Combo()
 				end
 			end
 		end
-		if Config.comboConfig.items and (Config.combo1 or Combo.config2 or Combo.config3) then
+		if Config.comboConfig.items and comboOn then
 			UseItems(Target) --wtb logic
 		end
-		if Target ~=nil and Config.comboConfig.aa and (Config.combo1 or Combo.config2 or Combo.config3) and not orbDisabled then	
+		if Target ~=nil and Config.comboConfig.aa and comboOn and not orbDisabled then	
 			iOrb:Orbwalk(mousePos, Target)
 		elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 			moveToCursor()
 		end
 	end
-	if Target ~=nil and Config.comboConfig.aa and (Config.combo1 or Combo.config2 or Combo.config3) and not orbDisabled and not recall and not myHero.dead then	
+	if Target ~=nil and Config.comboConfig.aa and comboOn and not orbDisabled and not recall and not myHero.dead then	
 		iOrb:Orbwalk(mousePos, Target)
-	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and (Config.combo1 or Combo.config2 or Combo.config3) then
+	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and comboOn then
 		moveToCursor()
 	end
 end
