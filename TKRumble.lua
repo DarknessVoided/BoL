@@ -47,6 +47,7 @@ if FileExist(LIB_PATH .. "HPrediction.lua") then
   HP = HPrediction()
   table.insert(predToUse, "HPrediction")
 end
+require("SourceLib")
 --[[ Libraries end ]]--
 
 --[[ Castable itemlist start ]]--
@@ -65,10 +66,12 @@ local CastableItems = {
 if myHero.charName ~= "Rumble" then return end -- not supported :(
 if VIP_USER then HookPackets() end
 local QReady, WReady, EReady, RReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end
+local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
 local predictions = {}
 local enemyTable = {}
+local enemyCount = 0
 local data = {
 [_Q] = { speed = 5000, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone"},
 [_E] = { speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear"},
@@ -94,27 +97,44 @@ function OnLoad()
   Config.casual:addSubMenu("Zhonya's settings", "zhg")
   Config.casual.zhg:addParam("enabled", "Use Auto Zhonya's", SCRIPT_PARAM_ONOFF, true)
   Config.casual.zhg:addParam("zhonyapls", "Min. % health for Zhonya's", SCRIPT_PARAM_SLICE, 15, 1, 50, 0)
-  --Config.casual:addSubMenu("Item's settings", "item")
 
-  Config:addSubMenu("Spacebar Settings", "comboConfig")
+  Config:addSubMenu("Combo Settings", "comboConfig")
+  Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  if VIP_USER then Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, false) end
+  Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
+
   Config:addSubMenu("Harrass Settings", "harrConfig")
+  Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  
+  Config:addSubMenu("Farm Settings", "farmConfig")
+  Config.farmConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
 			
   Config:addSubMenu("Draw Settings", "Drawing")
-	Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, false)
-	Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, false)
-	Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, false)
-	Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, false)
+  Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
   
-  Config:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-  Config:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-  Config:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+  Config:addSubMenu("Key Settings", "kConfig")
+  Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+  Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("V"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
-  Config:permaShow("combo")
-  Config:permaShow("harr")
-  Config:permaShow("har")
-  sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1700, DAMAGE_MAGIC, true)
-  Config:addTS(sts)
+  Config:addSubMenu("Orbwalk Settings", "oConfig")
+  SetupOrbwalk()
+
+  Config.kConfig:permaShow("combo")
+  Config.kConfig:permaShow("harr")
+  Config.kConfig:permaShow("har")
+  Config.kConfig:permaShow("lc")
+  sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
+  Config:addSubMenu("Target Selector", "sts")
+  sts:AddToMenu(Config.sts)
 
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
@@ -124,12 +144,140 @@ function OnLoad()
         end
     end
 end
+function SetupOrbwalk()
+  if _G.AutoCarry then
+    if _G.Reborn_Initialised then
+      RebornLoaded = true
+      AutoupdaterMsg("Found SAC: Reborn.")
+      Config.oConfig:addParam("Info", "SAC: Reborn detected!", SCRIPT_PARAM_INFO, "")
+    else
+      RevampedLoaded = true
+      AutoupdaterMsg("Found SAC: Revamped.")
+      Config.oConfig:addParam("Info", "SAC: Revamped detected!", SCRIPT_PARAM_INFO, "")
+    end
+  elseif _G.Reborn_Loaded then
+    DelayAction(function() SetupOrbwalk() end, 1)
+  elseif _G.MMA_Loaded then
+    MMALoaded = true
+    AutoupdaterMsg("Found MMA.")
+      Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
+  elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+    require 'SxOrbWalk'
+    SxOrb = SxOrbWalk()
+    SxOrb:LoadToMenu(Config.oConfig)
+    SxOrbLoaded = true
+    AutoupdaterMsg("Found SxOrb.")
+  elseif FileExist(LIB_PATH .. "SOW.lua") then
+    require 'SOW'
+    require 'VPrediction'
+    SOWVP = SOW(VP)
+    Config.oConfig:addParam("Info", "SOW settings", SCRIPT_PARAM_INFO, "")
+     Config.oConfig:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
+    SOWVP:LoadToMenu(Config.oConfig)
+    SOWLoaded = true
+    AutoupdaterMsg("Found SOW.")
+  else
+    AutoupdaterMsg("No valid Orbwalker found. :/")
+  end
+  
+end
 
 function OnTick()
-    if Config.ragequit then Target=myHero.isWindingUp end
-    if Config.combo then
-    	CCastSpell()
+  	local target
+  	target = sts:GetTarget(data[3].range)
+
+    if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+
+    if (Config.kConfig.harr or Config.kConfig.har) and ValidTarget(target, data[2].range) then
+      if Config.harrConfig.Q then
+    	local spell = ActivePred()=="HPrediction" and "Q" or 0
+       	local CastPosition, HitChance, Position = Predict(target, spell)
+    	if HitChance >= 2 then
+    		CCastSpell(_Q, CastPosition.x, CastPosition.z)
+    	end
+      end
+      if Config.harrConfig.E then
+    	local spell = ActivePred()=="HPrediction" and "E" or 2
+       	local CastPosition, HitChance, Position = Predict(target, spell)
+    	if HitChance >= 2 then
+    		CCastSpell(_E, CastPosition.x, CastPosition.z)
+    	end
+      end
     end
+
+    if Config.kConfig.lc then
+		FarmQ()
+		FarmE()
+    end
+
+    if Config.kConfig.combo and ValidTarget(target, 1500) then
+      if Config.comboConfig.Q then
+    	local spell = ActivePred()=="HPrediction" and "Q" or 0
+    	local CastPosition, HitChance, Position = Predict(target, spell)
+    	if HitChance >= 2 then
+    		CCastSpell(_Q, CastPosition.x, CastPosition.z)
+    	end
+      end
+      if Config.comboConfig.W and WReady then
+		CastSpell(_W)
+      end
+      if Config.comboConfig.E then
+    	local spell = ActivePred()=="HPrediction" and "E" or 2
+    	local CastPosition, HitChance, Position = Predict(target, spell)
+    	if HitChance >= 2 then
+    		CCastSpell(_E, CastPosition.x, CastPosition.z)
+    	end
+      end
+      if Config.comboConfig.R then
+    	local spell = ActivePred()=="HPrediction" and "R" or 3
+    	local CastPosition, HitChance, Position = Predict(target, spell)
+    	if HitChance >= 2 then
+    		CastR(CastPosition, target)
+    	end
+      end
+      if Config.comboConfig.items then
+      	UseItems(target)
+      end
+    end
+end
+
+function FarmQ()
+	if Config.farmConfig.FarmQ and QReady then
+		for index, minion in pairs(minionManager(MINION_ENEMY, 600, player, MINION_SORT_HEALTH_ASC).objects) do
+			local mhp = minion.health
+			local qDmg = getDmg("Q", minion, GetMyHero())
+			if qDmg >= mhp then
+            	CCastSpell(_Q, minion.x, minion.z)
+			end
+		end
+    end
+end
+
+function FarmE()
+	if Config.farmConfig.FarmE and EReady then
+		for index, minion in pairs(minionManager(MINION_ENEMY, 850, player, MINION_SORT_HEALTH_ASC).objects) do
+			local mhp = minion.health
+			local eDmg = getDmg("E", minion, GetMyHero())
+	    	local spell = ActivePred()=="HPrediction" and "E" or 2
+	    	local CastPosition, HitChance, Position = Predict(minion, spell)
+			if eDmg >= mhp and HitChance > 1.5 then
+    			CCastSpell(_E, CastPosition.x, CastPosition.z)
+			end
+		end
+    end
+end
+
+--[[ Packet Cast Helper ]]--
+function CCastSpell(Spell, xPos, zPos)
+  if VIP_USER and Config.misc.pc then
+    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+  else
+    CastSpell(Spell, xPos, zPos)
+  end
+end
+function CastR(Target, target)
+	Pos = Target + (Vector(target) - Target):normalized()*(GetDistance(Target)) --myHero+(Vector(Target)-myHero):normalized()*GetDistance(Target)
+	Packet("S_CAST", {spellId = _R, fromX = Pos.x, fromY = Pos.z, toX = Target.x, toY = Target.z}):send()
 end
 
 function ActivePred()
@@ -174,14 +322,15 @@ end
 
 function Predict(Target, spell)
     if ActivePred() == "VPrediction" then
-        return VPredict(Target, spell)
+        return VPredict(Target, data[spell])
     elseif ActivePred() == "Prodiction" then
         return nil
     elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, spell)
+        local State, Position, perc = DPredict(Target, data[spell])
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
-        return HPredict(Target, spell)
+    	local Position, HitChance = HPredict(Target, spell)
+        return Position, HitChance, Position
     end
 end
 
@@ -230,18 +379,6 @@ function GetCustomTarget()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
     return sts.target
-end
-
---[[ Packet Cast Helper ]]--
-function CCastSpell(Spell, xPos, zPos)
-  if VIP_USER and Config.misc.pc then
-    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-  else
-    CastSpell(Spell, xPos, zPos)
-  end
-end
-function CCastSpell()
-	Packet("S_CAST", {spellId = _R, fromX = mousePos.x, fromY = mousePos.z, toX = mousePos.x, toY = mousePos.z}):send()
 end
 
 function zhg()

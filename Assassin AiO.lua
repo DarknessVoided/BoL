@@ -831,7 +831,7 @@ function OnDraw()
 end
 
 function HPredict(Target, spell)
-	return Target, 2--HP:GetPredict(spell, Target, myHero) 10/10 would "predict" again
+	return THP:GetPredict(spell, Target, myHero) --10/10 would "predict" again
 end
 
 function DPredict(Target, spell)
