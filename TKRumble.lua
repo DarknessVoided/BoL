@@ -1,5 +1,20 @@
+--[[
+
+  _______            _  __    _      _____                 _     _      
+ |__   __|          | |/ /   | |    |  __ \               | |   | |     
+    | | ___  _ __   | ' / ___| | __ | |__) |   _ _ __ ___ | |__ | | ___ 
+    | |/ _ \| '_ \  |  < / _ \ |/ / |  _  / | | | '_ ` _ \| '_ \| |/ _ \
+    | | (_) | |_) | | . \  __/   <  | | \ \ |_| | | | | | | |_) | |  __/
+    |_|\___/| .__/  |_|\_\___|_|\_\ |_|  \_\__,_|_| |_| |_|_.__/|_|\___|
+            | |                                                         
+            |_|                                                         
+
+		By Nebelwolfi
+
+]]--
+
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
@@ -48,6 +63,11 @@ if FileExist(LIB_PATH .. "HPrediction.lua") then
   table.insert(predToUse, "HPrediction")
 end
 
+if predToUse == {} then 
+	AutoupdaterMsg("Please download a Prediction.") 
+	return 
+end
+
 if FileExist(LIB_PATH .. "SourceLib.lua") then
   require("SourceLib")
 else
@@ -92,23 +112,33 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
 
   if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.03, 0, 0.3, 2) end
   if ActivePred() == "HPrediction" then SetupHPred() end
   
-  Config:addSubMenu("Item's settings", "casual")
+  Config:addSubMenu("Misc settings", "casual")
   Config.casual:addSubMenu("Zhonya's settings", "zhg")
   Config.casual.zhg:addParam("enabled", "Use Auto Zhonya's", SCRIPT_PARAM_ONOFF, true)
   Config.casual.zhg:addParam("zhonyapls", "Min. % health for Zhonya's", SCRIPT_PARAM_SLICE, 15, 1, 50, 0)
+  Config.casual:addParam("leW", "Use W to kee passive 50+", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   if VIP_USER then Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, false) end
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
+
+  if VIP_USER then 
+  	Config:addSubMenu("Ult Settings", "rConfig")
+  	Config.rConfig:addParam("r", "Auto-R", SCRIPT_PARAM_ONOFF, true)
+  	Config.rConfig:addParam("toomanyenemies", "Min. enemies for auto-r", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+  	Config.rConfig:addParam("omgisteamfight", "Auto-R in teamfights", SCRIPT_PARAM_ONOFF, true)
+  	Config.misc:addParam("SPACE", " ", SCRIPT_PARAM_INFO,"")
+  	Config.rConfig:addParam("teamfightallies", "Min. allies in teamfight", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
+  	Config.rConfig:addParam("teamfightenemies", "Min. enemies in teamfight", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+  end
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -127,8 +157,9 @@ function OnLoad()
   Config:addSubMenu("Key Settings", "kConfig")
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-  Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+  Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("V"))
+  if VIP_USER then Config.kConfig:addParam("r", "Use R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T")) end
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -194,6 +225,12 @@ function OnTick()
 
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
+    if Config.casual.leW and WReady then 
+    	if myHero.mana < 40 then
+    		CastSpell(_W)
+    	end
+    end
+
     if (Config.kConfig.harr or Config.kConfig.har) and ValidTarget(target, data[2].range) then
       if Config.harrConfig.Q then
     	local spell = ActivePred()=="HPrediction" and "Q" or 0
@@ -234,7 +271,7 @@ function OnTick()
     		CCastSpell(_E, CastPosition.x, CastPosition.z)
     	end
       end
-      if Config.comboConfig.R then
+      if VIP_USER and Config.comboConfig.R then
     	local spell = ActivePred()=="HPrediction" and "R" or 3
     	local CastPosition, HitChance, Position = Predict(target, spell)
     	if HitChance >= 2 then
@@ -245,6 +282,44 @@ function OnTick()
       	UseItems(target)
       end
     end
+
+    if VIP_USER and Config.kConfig.r then
+    	DoSomeUltLogic()
+    end
+end
+
+function DoSomeUltLogic()
+  	if Config.rConfig.r then
+  		local enemies = EnemiesAround(Target, 250)
+  		if enemies >= Config.rConfig.toomanyenemies then
+	    	local spell = ActivePred()=="HPrediction" and "R" or 3
+	    	local CastPosition, HitChance, Position = Predict(target, spell)
+	    	if HitChance >= 2 then
+	    		CastR(CastPosition, target)
+	    	end
+  		end
+  	end
+  	if Config.rConfig.omgisteamfight then
+  		local enemies = EnemiesAround(Target, 250)
+  		local allies = EnemiesAround(myHero, 500)
+  		if enemies >= Config.rConfig.teamfightenemies and allies >= Config.rConfig.teamfightallies then
+	    	local spell = ActivePred()=="HPrediction" and "R" or 3
+	    	local CastPosition, HitChance, Position = Predict(target, spell)
+	    	if HitChance >= 2 then
+	    		CastR(CastPosition, target)
+	    	end
+	    end
+  	end
+end
+
+function EnemiesAround(Unit, range)
+  local c=0
+  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
+end
+
+function AlliesAround(Unit, range)
+  local c=0
+  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
 end
 
 function FarmQ()
