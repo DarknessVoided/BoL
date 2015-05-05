@@ -29,7 +29,7 @@ if AUTO_UPDATE then
       if tonumber(version) < ServerVersion then
         TopKekMsg("New version available v"..ServerVersion)
         TopKekMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
+        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
       else
         TopKekMsg("Loaded the latest version (v"..ServerVersion..")")
       end
@@ -76,14 +76,14 @@ if FileExist(LIB_PATH .. "/HPrediction.lua") then
 end
 
 if predToUse == {} then 
-	TopKekMsg("Please download a Prediction.") 
+	TopKekMsg("Please download a Prediction") 
 	return 
 end
 
 if FileExist(LIB_PATH .. "SourceLib.lua") then
   require("SourceLib")
 else
-  TopKekMsg("Please download SourceLib.")
+  TopKekMsg("Please download SourceLib")
   return
 end
 --[[ Libraries end ]]--
@@ -101,9 +101,9 @@ local enemyTable = {}
 local enemyCount = 0
 local data = {
 	[_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0.250, range = 825, width = 225, collision = true, aoe = false, type = "circular"},
+	[_W] = { speed = math.huge, delay = 0.250, range = 825, width = 225, collision = true, aoe = true, type = "circular"},
 	[_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = true, aoe = false, type = "targeted"},
-	[_R] = { speed = math.huge, delay = 0.250, range = 825, width = 410, collision = false, aoe = false, type = "circular"}
+	[_R] = { speed = math.huge, delay = 0.250, range = 825, width = 410, collision = false, aoe = true, type = "circular"}
 }
 local Ball = myHero
 
@@ -147,20 +147,13 @@ function OnLoad()
   Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
 			
-  Config:addSubMenu("KillSteal Settings", "KillSteal")
-  Config.KillSteal:addParam("On", "KillSteal", SCRIPT_PARAM_ONOFF, true)
-  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
-  Config.KillSteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
-  Config.KillSteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
-  Config.KillSteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
-  Config.KillSteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-  if Ignite ~= nil then
-    Config.KillSteal:addParam("Blank3", "", SCRIPT_PARAM_INFO, "")
-    Config.KillSteal:addParam("I", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
-  end
+  Config:addSubMenu("Killsteal Settings", "KS")
+  Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
+  Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.KS:addParam("killstealW", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
+  if Ignite ~= nil then Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 
   Config:addSubMenu("Draw Settings", "Drawing")
   Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
@@ -198,18 +191,18 @@ function SetupOrbwalk()
   if _G.AutoCarry then
     if _G.Reborn_Initialised then
       RebornLoaded = true
-      TopKekMsg("Found SAC: Reborn.")
+      TopKekMsg("Found SAC: Reborn")
       Config.oConfig:addParam("Info", "SAC: Reborn detected!", SCRIPT_PARAM_INFO, "")
     else
       RevampedLoaded = true
-      TopKekMsg("Found SAC: Revamped.")
+      TopKekMsg("Found SAC: Revamped")
       Config.oConfig:addParam("Info", "SAC: Revamped detected!", SCRIPT_PARAM_INFO, "")
     end
   elseif _G.Reborn_Loaded then
     DelayAction(function() SetupOrbwalk() end, 1)
   elseif _G.MMA_Loaded then
     MMALoaded = true
-    TopKekMsg("Found MMA.")
+    TopKekMsg("Found MMA")
       Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
   elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
     require 'SxOrbWalk'
@@ -225,17 +218,36 @@ function SetupOrbwalk()
      Config.oConfig:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
     SOWVP:LoadToMenu(Config.oConfig)
     SOWLoaded = true
-    TopKekMsg("Found SOW.")
+    TopKekMsg("Found SOW")
   else
-    TopKekMsg("No valid Orbwalker found. :/")
+    TopKekMsg("No valid Orbwalker found")
   end
 end
 
 function OnTick()
   	local target
-  	target = sts:GetTarget(data[3].range)
+  	target = GetCustomTarget()
     
     zhg()
+
+    if Config.rConfig.r then
+  		local enemies = EnemiesAround(Ball, data[3].width)
+  		if enemies >= Config.rConfig.toomanyenemies then
+	    	CastR(CastPosition, target)
+  		end
+    end
+
+	if Config.KS.enableKS then 
+		Killsteal()
+	end
+
+    if Config.kConfig.har or Config.kConfig.harr then
+    	Harrass()
+	end
+
+    if Config.kConfig.combo then
+    	Combo()
+	end
 
     if Config.kConfig.lc then
     	Farm()
@@ -253,7 +265,6 @@ function Farm()
       end
     end
   end
-  
   if WReady and Config.farmConfig.W and Config.farmConfig.mana <= myHero.mana then
     for i, minion in pairs(minionManager(MINION_ENEMY, 1250, player, MINION_SORT_HEALTH_ASC).objects) do
       local WMinionDmg = getDmg("W", minion, GetMyHero())
@@ -261,16 +272,85 @@ function Farm()
         CastW(minion)
       end
     end    
+    if WReady and QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
+	    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
+	      local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
+	      local WMinionDmg = getDmg("W", minion, GetMyHero())
+	      if WMinionDmg+QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
+	        CastQ(minion)
+	        DelayAction(CastW, 0.25, {minion})
+	      end
+	    end 
+	end   
   end
-  
   if EReady and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = getDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        CastE(minion)
+        --CastE(minion)
       end      
     end    
   end  
+end
+
+function Combo()
+  target = GetCustomTarget()
+  if target == nil then return end
+  if QReady and Config.comboConfig.Q then
+  	CastQ(target)
+  end
+  if WReady and Config.comboConfig.W then
+  	CastW(target)
+  end
+  if EReady and Config.comboConfig.E then
+  	CastE(myhero)
+  end
+  if RReady and Config.comboConfig.R then
+  	CastR(target)
+  end
+end
+
+function Harrass()
+  target = GetCustomTarget()
+  if target == nil then return end
+  if QReady and Config.harrConfig.Q and Config.harrConfig.mana <= myHero.mana then
+  	CastQ(target)
+  end
+  if WReady and Config.harrConfig.W and Config.harrConfig.mana <= myHero.mana then
+  	CastW(target)
+  end
+  if EReady and Config.harrConfig.E and Config.harrConfig.mana <= myHero.mana then
+  	CastE(myhero)
+  end
+end
+
+function EnemiesAround(Unit, range)
+  local c=0
+  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
+end
+
+function Killsteal()
+	for i=1, heroManager.iCount do
+		local enemy = heroManager:GetHero(i)
+		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)	
+		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
+		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
+		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
+		local iDmg = 50 + (20 * myHero.level) / 5
+		if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
+				CastQ(enemy)
+			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
+				CastW(enemy)
+			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
+				CastEl(enemy)
+			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
+				CastR(enemy)
+			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+				CCastSpell(Ignite, enemy)
+			end
+		end
+	end
 end
 
 function zhg()
@@ -284,13 +364,65 @@ function zhg()
 end
 
 function CastQ(unit)
-  if myHero.dead or recall or Ball == nil then
-    return
-  end  
-  CastPosition, HitChance, Position = Predict("Q", unit)  
+  if myHero.dead or recall or Ball == nil then return end  
+  local spell = ActivePred()=="HPrediction" and "Q" or 0
+  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
   if HitChance >= 1.5 then  
-    CCastSpell(_Q, CastPosition, CastPosition)
+    CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end  
+end
+
+function CastW(unit)
+  if myHero.dead or Ball == nil then return end
+  local spell = ActivePred()=="HPrediction" and "W" or 1
+  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
+  if HitChance >= 2 and GetDistance(unit, Ball) < data[1].width then
+      CCastSpell(_W)
+  end
+end
+
+function CastE(unit)
+  if myHero.dead or Ball == nil then return end
+    CCastSpell(_E, unit) -- soon(tm)
+end
+
+function CastR(unit)
+  if myHero.dead or Ball == nil then return end
+  local spell = ActivePred()=="HPrediction" and "R" or 3
+  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
+  if HitChance >= 2 and GetDistance(unit, Ball) < data[3].width then
+      CCastSpell(_R)
+  end
+end
+
+function CCastSpell(Spell)
+  if VIP_USER and Config.misc.pc then
+      Packet("S_CAST", {spellId = Spell}):send()
+  else
+      CastSpell(Spell)
+  end
+end
+
+function CCastSpell(Spell, target)
+  if VIP_USER and Config.misc.pc then
+      Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
+  else
+      CastSpell(Spell, target)
+  end
+end
+
+function CCastSpell(Spell, xPos, zPos)
+  if VIP_USER and Config.misc.pc then
+    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+  else
+    CastSpell(Spell, xPos, zPos)
+  end
+end
+
+function GetCustomTarget()
+    if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
+    if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
+    return sts:GetTarget(data[1].range)
 end
 
 function ActivePred()
