@@ -244,11 +244,21 @@ if FileExist(LIB_PATH .. "HPrediction.lua") then
   table.insert(predToUse, "HPrediction")
 end
 
+if predToUse == {} then 
+	AutoupdaterMsg("Please download a Prediction") 
+	return 
+end
+
 iOrb = nil
 if FileExist(LIB_PATH.."iSAC.lua") then
   require "iSAC"
   iOrb = iOrbWalker(myHero.range) 
   iOrb:addAA()
+end
+
+if iOrb == nil then 
+	AutoupdaterMsg("Please download iSAC") 
+	return 
 end
 --[[ Libraries end ]]--
 
