@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.41
+local version = 0.42
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -545,7 +545,7 @@ function Combo()
 		if orbDisabled or recall or myHero.dead then return end
 		if skillOrder[i] == "Q" then
 			if (Target ~= nil) and QReady then
-				if ValidTarget(Target, data[0].range) and Config.combo then
+				if ValidTarget(Target, data[0].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
 					if GetDistance(Target, myHero) <= data[0].range then
             CastQ(Target)
 						lastUsedSpell = _Q
@@ -554,7 +554,7 @@ function Combo()
 			end
 		elseif skillOrder[i] == "W" then
 			if (Target ~= nil) and WReady then
-				if ValidTarget(Target, data[1].range) and Config.combo then
+				if ValidTarget(Target, data[1].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
 					if GetDistance(Target, myHero) <= data[1].range then
             CastW(Target)
 						lastUsedSpell = _W
@@ -563,7 +563,7 @@ function Combo()
 			end
 		elseif skillOrder[i] == "E" then
 			if (Target ~= nil) and EReady then
-				if ValidTarget(Target, data[2].range) and Config.combo then
+				if ValidTarget(Target, data[2].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
 					if GetDistance(Target, myHero) <= data[2].range then
             CastE(Target)
 						lastUsedSpell = _E
@@ -582,7 +582,7 @@ function Combo()
 					end
           if ActivePred() == "HPrediction" then SetupHPred() end -- kanker
 				end
-				if ValidTarget(Target, data[3].range) and Config.combo then
+				if ValidTarget(Target, data[3].range) and (Config.combo1 or Combo.config2 or Combo.config3) then
 					if GetDistance(Target, myHero) <= data[3].range then
             CastR(Target)
             lastUsedSpell = _R
@@ -590,18 +590,18 @@ function Combo()
 				end
 			end
 		end
-		if Config.comboConfig.items and Config.combo then
+		if Config.comboConfig.items and (Config.combo1 or Combo.config2 or Combo.config3) then
 			UseItems(Target) --wtb logic
 		end
-		if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled then	
+		if Target ~=nil and Config.comboConfig.aa and (Config.combo1 or Combo.config2 or Combo.config3) and not orbDisabled then	
 			iOrb:Orbwalk(mousePos, Target)
 		elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
 			moveToCursor()
 		end
 	end
-	if Target ~=nil and Config.comboConfig.aa and Config.combo and not orbDisabled and not recall and not myHero.dead then	
+	if Target ~=nil and Config.comboConfig.aa and (Config.combo1 or Combo.config2 or Combo.config3) and not orbDisabled and not recall and not myHero.dead then	
 		iOrb:Orbwalk(mousePos, Target)
-	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and Config.combo then
+	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and (Config.combo1 or Combo.config2 or Combo.config3) then
 		moveToCursor()
 	end
 end
