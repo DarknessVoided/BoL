@@ -17,12 +17,12 @@
 local version = 0.01
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/TKBrand.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."TKBrand.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."TKOrianna.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Brand - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Orianna - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKBrand.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKOrianna.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
@@ -91,7 +91,8 @@ end
 --[[ Script start ]]--
 if myHero.charName ~= "Orianna" then return end -- not supported :(
 if VIP_USER then HookPackets() end
-local QReady, WReady, EReady, RReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
@@ -100,10 +101,11 @@ local enemyTable = {}
 local enemyCount = 0
 local data = {
 	[_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0.250, range = 0, width = 225, collision = true, aoe = false, type = "circular"},,
-	[_E] = { speed = 1800, delay = 0.250, range = 1250, width = 80, collision = true, aoe = false, type = "targeted"},
-	[_R] = { speed = math.huge, delay = 0.250, range = 1250, width = 410, collision = false, aoe = false, type = "circular"}
+	[_W] = { speed = math.huge, delay = 0.250, range = 825, width = 225, collision = true, aoe = false, type = "circular"},
+	[_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = true, aoe = false, type = "targeted"},
+	[_R] = { speed = math.huge, delay = 0.250, range = 825, width = 410, collision = false, aoe = false, type = "circular"}
 }
+local Ball = myHero
 
 function OnLoad()
   Config = scriptConfig("Top Kek Orianna", "TKOrianna")
@@ -137,26 +139,39 @@ function OnLoad()
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.rConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+  Config.harrConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
   Config.farmConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.rConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+  Config.farmConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
 			
+  Config:addSubMenu("KillSteal Settings", "KillSteal")
+  Config.KillSteal:addParam("On", "KillSteal", SCRIPT_PARAM_ONOFF, true)
+  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
+  Config.KillSteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
+  Config.KillSteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
+  Config.KillSteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.KillSteal:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
+  Config.KillSteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+  if Ignite ~= nil then
+    Config.KillSteal:addParam("Blank3", "", SCRIPT_PARAM_INFO, "")
+    Config.KillSteal:addParam("I", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+  end
+
   Config:addSubMenu("Draw Settings", "Drawing")
   Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
-  Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, false)
-  Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, false)
-  Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, false)
+  Config.Drawing:addParam("Ball", "Ball", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Key Settings", "kConfig")
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("V"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -216,6 +231,68 @@ function SetupOrbwalk()
   end
 end
 
+function OnTick()
+  	local target
+  	target = sts:GetTarget(data[3].range)
+    
+    zhg()
+
+    if Config.kConfig.lc then
+    	Farm()
+	end
+
+    if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+end
+
+function Farm()
+  if QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
+      local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
+      if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
+        CastQ(minion)
+      end
+    end
+  end
+  
+  if WReady and Config.farmConfig.W and Config.farmConfig.mana <= myHero.mana then
+    for i, minion in pairs(minionManager(MINION_ENEMY, 1250, player, MINION_SORT_HEALTH_ASC).objects) do
+      local WMinionDmg = getDmg("W", minion, GetMyHero())
+      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+        CastW(minion)
+      end
+    end    
+  end
+  
+  if EReady and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
+      local EMinionDmg = getDmg("E", minion, GetMyHero())      
+      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        CastE(minion)
+      end      
+    end    
+  end  
+end
+
+function zhg()
+  if Config.casual.zhg.enabled then
+    if GetInventoryHaveItem(3157) and GetInventoryItemIsCastable(3157) then
+      if myHero.health <=  myHero.maxHealth * (Config.casual.zhg.zhonyapls / 100) then
+        CastItem(3157)
+      end 
+    end 
+  end 
+end
+
+function CastQ(unit)
+  if myHero.dead or recall or Ball == nil then
+    return
+  end  
+  CastPosition, HitChance, Position = Predict("Q", unit)  
+  if HitChance >= 1.5 then  
+    CCastSpell(_Q, CastPosition, CastPosition)
+  end  
+end
+
 function ActivePred()
     local int = Config.misc.pro
     return tostring(predToUse[int])
@@ -254,25 +331,25 @@ function MakeHPred(hspell, i)
     return hspell
 end
 
-function Predict(Target, spell)
+function Predict(Target, spell, source)
     if ActivePred() == "VPrediction" then
-        return VPredict(Target, data[spell])
+        return VPredict(Target, data[spell], source)
     elseif ActivePred() == "Prodiction" then
         return nil
     elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, data[spell])
+        local State, Position, perc = DPredict(Target, data[spell], source)
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
-    	local Position, HitChance = HPredict(Target, spell)
+    	local Position, HitChance = HPredict(Target, spell, source)
         return Position, HitChance, Position
     end
 end
 
-function HPredict(Target, spell)
-	return HP:GetPredict(spell, Target, myHero) 
+function HPredict(Target, spell, source)
+	return HP:GetPredict(spell, Target, source) 
 end
 
-function DPredict(Target, spell)
+function DPredict(Target, spell, source)
   local unit = DPTarget(Target)
   local col = spell.collision and 0 or math.huge
   local Spell = nil
@@ -283,34 +360,156 @@ function DPredict(Target, spell)
   elseif spell.type == "cone" then
 	 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
-  return DP:predict(unit, Spell)
+  return DP:predict(unit, Spell, 1.2, source)
 end
 
-function VPredict(Target, spell)
+function VPredict(Target, spell, source)
   if spell.type == "linear" then
   	if spell.aoe then
-  		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
   	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
   	end
   elseif spell.type == "circular" then
   	if spell.aoe then
-  		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
   	else
-  		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
   	end
   elseif spell.type == "cone" then
   	if spell.aoe then
-  		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
   	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
   	end
   end
 end
 
-function OnTick()
-  	local target
-  	target = sts:GetTarget(data[3].range)
+function OnCreateObj(object)
+  if object.team ~= myHero.team then
+    return
+  end  
+  if object.name == "TheDoomBall" then
+    Ball = object
+  end  
+end
 
-    if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+function OnProcessSpell(unit, spell)  
+  if not unit.isMe then
+    return
+  end
+  if spell.name == "OrianaIzunaCommand" then
+    Ball = nil
+  end  
+  if spell.name == "OrianaRedactCommand" then
+    Ball = spell.target
+  end  
+end
+
+function OnDraw()
+	if Config.Drawing.QRange then
+		DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/4, 0x111111)
+	end
+  	if Ball ~= nil then  
+		if Config.Drawing.Ball and Ball ~= nil then
+		  DrawCircle(Ball.x, Ball.y, Ball.z, data[0].width, 0x111111)
+		end
+  	end
+	if Config.Drawing.DmgCalcs then
+        for i = 1, enemyCount do
+            local enemy = enemyTable[i].player
+            if ValidTarget(enemy) then
+                local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+                local posX = barPos.x - 35
+                local posY = barPos.y - 50
+                -- Doing damage
+                DrawText(enemyTable[i].indicatorText, 15, posX, posY, (enemyTable[i].ready and colorIndicatorReady or colorIndicatorNotReady))
+               
+                -- Taking damage
+                DrawText(enemyTable[i].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
+            end
+        end
+    end      
+end
+
+local colorRangeReady        = ARGB(255, 200, 0,   200)
+local colorRangeComboReady   = ARGB(255, 255, 128, 0)
+local colorRangeNotReady     = ARGB(255, 50,  50,  50)
+local colorIndicatorReady    = ARGB(255, 0,   255, 0)
+local colorIndicatorNotReady = ARGB(255, 255, 220, 0)
+local colorInfo              = ARGB(255, 255, 50,  0)
+local KillText = {}
+local KillTextColor = ARGB(255, 216, 247, 8)
+local KillTextList = {"Harass Him", "Combo Kill"}
+function DmgCalculations()
+    if not Config.Drawing.DmgCalcs then return end
+    for i = 1, enemyCount do
+        local enemy = enemyTable[i].player
+          if ValidTarget(enemy) and enemy.visible then
+            local damageAA = getDmg("AD", enemy, player)
+            local damageQ  = getDmg("Q", enemy, player)
+            local damageW  = getDmg("W", enemy, player)
+            local damageE  = getDmg("E", enemy, player)
+            local damageR  = getDmg("R", enemy, player)
+            enemyTable[i].damageQ = damageQ
+            enemyTable[i].damageW = damageW
+            enemyTable[i].damageE = damageE
+            enemyTable[i].damageR = damageR
+            if enemy.health < damageR then
+                enemyTable[i].indicatorText = "R Kill"
+                enemyTable[i].ready = RReady
+            elseif enemy.health < damageQ then
+                enemyTable[i].indicatorText = "Q Kill"
+                enemyTable[i].ready = QReady
+            elseif enemy.health < damageE then
+                enemyTable[i].indicatorText = "E Kill"
+                enemyTable[i].ready = EReady
+            elseif enemy.health < damageW then
+                enemyTable[i].indicatorText = "W Kill"
+                enemyTable[i].ready = WReady
+            elseif enemy.health < damageE + damageQ then
+                enemyTable[i].indicatorText = "Q + E Kill"
+                enemyTable[i].ready = EReady and QReady
+            elseif enemy.health < damageQ + damageW then
+                enemyTable[i].indicatorText = "Q + W Kill"
+                enemyTable[i].ready = QReady and WReady
+            elseif enemy.health < damageW + damageE then
+                enemyTable[i].indicatorText = "W + E Kill"
+                enemyTable[i].ready = WReady and EReady
+            elseif enemy.health < damageR + damageQ then
+                enemyTable[i].indicatorText = "R + Q Kill"
+                enemyTable[i].ready = RReady and QReady
+            elseif enemy.health < damageR + damageE then
+                enemyTable[i].indicatorText = "R + E Kill"
+                enemyTable[i].ready = RReady and EReady
+            elseif enemy.health < damageR + damageW then
+                enemyTable[i].indicatorText = "R + W Kill"
+                enemyTable[i].ready = RReady and WReady
+            elseif enemy.health < damageQ + damageW + damageE then
+                enemyTable[i].indicatorText = "Q + W + E Kill"
+                enemyTable[i].ready = QReady and WReady and EReady
+            elseif enemy.health < damageQ + damageE + damageR then
+                enemyTable[i].indicatorText = "Q + E + R Kill"
+                enemyTable[i].ready = QReady and EReady and EReady
+            elseif enemy.health < damageQ + damageW + damageR then
+                enemyTable[i].indicatorText = "Q + W + R Kill"
+                enemyTable[i].ready = QReady and WReady and EReady
+            elseif enemy.health < damageR + damageW + damageE then
+                enemyTable[i].indicatorText = "W + E + R Kill"
+                enemyTable[i].ready = RReady and WReady and EReady
+            elseif enemy.health < damageQ + damageW + damageE + damageR then
+                enemyTable[i].indicatorText = "All-In Kill"
+                enemyTable[i].ready = QReady and WReady and EReady and RReady
+            else
+                local damageTotal = damageQ + damageW + damageE + damageR
+                local healthLeft = math.round(enemy.health - damageTotal)
+                local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
+                enemyTable[i].indicatorText = percentLeft .. "% Harass"
+                enemyTable[i].ready = QReady or EReady or RReady
+            end
+            local enemyDamageAA = getDmg("AD", player, enemy)
+            local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
+            enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+        end
+    end
 end

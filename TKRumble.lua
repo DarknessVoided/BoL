@@ -156,7 +156,7 @@ function OnLoad()
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("V"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   if VIP_USER then Config.kConfig:addParam("r", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T")) end
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
@@ -220,7 +220,9 @@ end
 function OnTick()
   	local target
   	target = GetCustomTarget()
-
+    
+    zhg()
+    
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
     if Config.casual.leW and WReady then 
