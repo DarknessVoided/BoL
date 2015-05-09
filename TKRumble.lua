@@ -218,8 +218,6 @@ function SetupOrbwalk()
 end
 
 function OnTick()
-    if recall then return end
-    
   	local target
   	target = GetCustomTarget()
     
@@ -227,7 +225,7 @@ function OnTick()
     
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
-    if Config.casual.leW and WReady then 
+    if Config.casual.leW and WReady and not recall then 
     	if myHero.mana < 40 then
     		CastSpell(_W)
     	end
