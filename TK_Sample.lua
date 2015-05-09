@@ -357,6 +357,9 @@ end
 
 function SetupHPred()
   MakeHPred("Q", 0) 
+  MakeHPred("W", 0) 
+  MakeHPred("E", 0) 
+  MakeHPred("R", 0) 
 end
 
 function MakeHPred(hspell, i)

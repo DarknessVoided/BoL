@@ -1,28 +1,28 @@
 --[[
 
-  _______            _  __    _                    _      
- |__   __|          | |/ /   | |        /\        (_)     
-    | | ___  _ __   | ' / ___| | __    /  \    _____ _ __ 
-    | |/ _ \| '_ \  |  < / _ \ |/ /   / /\ \  |_  / | '__|
-    | | (_) | |_) | | . \  __/   <   / ____ \  / /| | |   
-    |_|\___/| .__/  |_|\_\___|_|\_\ /_/    \_\/___|_|_|   
-            | |                                           
-            |_|                                                                                                     
+  _______            _  __    _                       
+ |__   __|          | |/ /   | |                        
+    | | ___  _ __   | ' / ___| | __ 
+    | |/ _ \| '_ \  |  < / _ \ |/ /
+    | | (_) | |_) | | . \  __/   <  
+    |_|\___/| .__/  |_|\_\___|_|\_\  
+            | |                                                            
+            |_|                                                            
 
     By Nebelwolfi
 
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.01
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAzir.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."TKAzir.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."TKRengar.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Azir - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Rengar - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKAzir.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKRengar.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
@@ -100,10 +100,10 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local data = {
-	[_Q] = { speed = 500, delay = 0.250, range = 1400, width = 100, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0, range = 1300, width = 100, collision = false, aoe = false, type = "circular"},
-	[_E] = { speed = 800, delay = 0, range = 1300, width = 0, collision = false, aoe = false, type = "linear"},
-	[_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone"}
+  [_Q] = { range = 125, type = "notarget", aareset = true},
+  [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = false, type = "circular"},
+  [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
+  [_R] = { range = 4000, type = "notarget"}
 }
 local soldiers = {}
 table.insert(soldiers, myHero)
@@ -356,10 +356,8 @@ function ActivePred()
 end
 
 function SetupHPred()
-  MakeHPred("Q", 0) 
   MakeHPred("W", 0) 
   MakeHPred("E", 0) 
-  MakeHPred("R", 0) 
 end
 
 function MakeHPred(hspell, i)
