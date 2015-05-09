@@ -367,7 +367,7 @@ local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 --local key = { [_Q] = "Y", [_W] = "X", [_E] = "C", [_R] = "V" } soon
 local toCast = {false, false, false, false}
 local toAim = {false, false, false, false}
-local debugMode = true
+local debugMode = false
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
