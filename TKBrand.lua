@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKBrand.lua".."?rand="..math.random(1,10000)
@@ -149,46 +149,30 @@ function ActivePred()
 end
 
 function SetupHPred()
-  for i = 0, 3 do
-    if i == 0 then 
-        Spell_Q = MakeHPred(Spell_Q, i) 
-    elseif i == 0 then 
-        Spell_W = MakeHPred(Spell_W, i) 
-    elseif i == 0 then 
-        Spell_E = MakeHPred(Spell_E, i) 
-    elseif i == 0 then 
-        Spell_R = MakeHPred(Spell_R, i) 
-    end
-  end
+  MakeHPred("Q", 0) 
+  MakeHPred("W", 1) 
+  MakeHPred("E", 2) 
+  MakeHPred("R", 3) 
 end
 
 function MakeHPred(hspell, i)
-    hspell.collisionM[myHero.charName] = data[i].collision
-    hspell.collisionH[myHero.charName] = data[i].collision
-    hspell.delay[myHero.charName] = data[i].delay
-    hspell.range[myHero.charName] = data[i].range
+ if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
     if data[i].type == "linear" then
-        hspell.width[myHero.charName] = 2*data[i].width
         if data[i].speed ~= math.huge then 
-            hspell.type[myHero.charName] = "DelayLine"
-            hspell.speed[myHero.charName] = data[i].speed
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         else
-            hspell.type[myHero.charName] = "PromptLine"
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         end
     elseif data[i].type == "circular" then
-        hspell.radius[myHero.charName] = data[i].width
         if data[i].speed ~= math.huge then 
-            hspell.type[myHero.charName] = "DelayCircle"
-            hspell.speed[myHero.charName] = data[i].speed
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         else
-            hspell.type[myHero.charName] = "PromptCircle"
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         end
     else --Cone!
-        hspell.type[myHero.charName] = "DelayLine"
-        hspell.width[myHero.charName] = data[i].width
-        hspell.speed[myHero.charName] = data[i].speed
+        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
     end
-    return hspell
+ end
 end
 
 function shuffle(a, n, whur)

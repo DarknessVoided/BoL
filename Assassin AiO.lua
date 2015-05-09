@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.41
+local version = 0.42
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -222,6 +222,7 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
+if not Champs[myHero.charName] then champions = nil CastableItems = nil collectgarbage() return end -- not supported :(
 local predToUse = {}
 VP = nil
 DP = nil
@@ -253,7 +254,6 @@ end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
-if not Champs[myHero.charName] then return end -- not supported :(
 if VIP_USER then HookPackets() end
 local data = Champs[myHero.charName] -- load skills
 local QReady, WReady, EReady, RReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end
@@ -361,41 +361,30 @@ function ActivePred()
 end
 
 function SetupHPred()
-  Spell_Q = MakeHPred(Spell_Q, 0) 
-  Spell_W = MakeHPred(Spell_W, 1) 
-  Spell_E = MakeHPred(Spell_E, 2) 
-  Spell_R = MakeHPred(Spell_R, 3) 
+  MakeHPred("Q", 0) 
+  MakeHPred("W", 1) 
+  MakeHPred("E", 2) 
+  MakeHPred("R", 3) 
 end
 
 function MakeHPred(hspell, i)
  if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-  hspell.collisionM[myHero.charName] = data[i].collision
-  hspell.collisionH[myHero.charName] = data[i].collision
-  hspell.delay[myHero.charName] = data[i].delay
-  hspell.range[myHero.charName] = data[i].range
-  if data[i].type == "linear" then
-    hspell.width[myHero.charName] = 2*data[i].width
-    if data[i].speed ~= math.huge then 
-        hspell.type[myHero.charName] = "DelayLine"
-        hspell.speed[myHero.charName] = data[i].speed
-    else
-        hspell.type[myHero.charName] = "PromptLine"
+    if data[i].type == "linear" then
+        if data[i].speed ~= math.huge then 
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        else
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        end
+    elseif data[i].type == "circular" then
+        if data[i].speed ~= math.huge then 
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        else
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        end
+    else --Cone!
+        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
     end
-  elseif data[i].type == "circular" then
-    hspell.radius[myHero.charName] = data[i].width
-    if data[i].speed ~= math.huge then 
-        hspell.type[myHero.charName] = "DelayCircle"
-        hspell.speed[myHero.charName] = data[i].speed
-    else
-        hspell.type[myHero.charName] = "PromptCircle"
-    end
-  elseif data[i].type == "cone" then --Cone!
-    hspell.type[myHero.charName] = "DelayLine"
-    hspell.width[myHero.charName] = 2*data[i].width
-    hspell.speed[myHero.charName] = data[i].speed
-  end
  end
- return hspell
 end
 
 function shuffle(a, n, whur)

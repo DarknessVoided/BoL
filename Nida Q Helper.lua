@@ -36,6 +36,11 @@ if VIP_USER and FileExist(LIB_PATH .. "/Prodiction.lua") then
   table.insert(predToUse, "Prodiction")
 end
 
+if predToUse == {} then 
+  PrintChat("Please download a Prediction") 
+  return 
+end
+
 local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 40, Ready = function() return myHero:CanUseSpell(_Q) == READY end}
 local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
 
@@ -60,13 +65,7 @@ function OnLoad()
   Config:permaShow("throwQh")
   Config:addTS(QTargetSelector)
   if ActivePred() == "HPrediction" then
-  	Spell_Q.collisionM['Nidalee'] = true
-  	Spell_Q.collisionH['Nidalee'] = true --or false
-  	Spell_Q.delay['Nidalee'] = Q.delay
-  	Spell_Q.range['Nidalee'] = Q.range
-  	Spell_Q.speed['Nidalee'] = Q.speed
-  	Spell_Q.type['Nidalee'] = "DelayLine"
-  	Spell_Q.width['Nidalee'] = Q.width*2
+    HP:AddSpell("Q", 'Nidalee', {type = "DelayLine", range = Q.range, speed = Q.speed, width = 2*Q.width, delay = Q.delay, collisionM = true, collisionH = true})
   end
   print("Nida Q Helper loaded!")
 end
