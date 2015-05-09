@@ -195,11 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-<<<<<<< HEAD
-local version = 0.42
-=======
-local version = 0.43
->>>>>>> origin/master
+local version = 0.44
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -302,7 +298,7 @@ function OnLoad()
 	 Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
 
-  --if ActivePred() == "HPrediction" then SetupHPred() end
+  if ActivePred() == "HPrediction" then SetupHPred() end
   
   Config:addSubMenu("Combo Settings", "comboConfig")
   
@@ -517,7 +513,7 @@ end
 function Combo()
 	if orbDisabled or recall or myHero.dead then return end
 	local skillOrder = {}
- local comboOn = false
+  local comboOn = false
   if Config.comboo then
   comboOn = true
   table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.so], 1, 1))
@@ -544,7 +540,7 @@ function Combo()
 			if (Target ~= nil) and QReady then
 				if ValidTarget(Target, data[0].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[0].range then
-            CastQ(Target)
+            Castspell(Target, _Q)
 						lastUsedSpell = _Q
 					end
 				end
@@ -553,7 +549,7 @@ function Combo()
 			if (Target ~= nil) and WReady then
 				if ValidTarget(Target, data[1].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[1].range then
-            CastW(Target)
+            Castspell(Target, _W)
 						lastUsedSpell = _W
 					end
 				end
@@ -562,7 +558,7 @@ function Combo()
 			if (Target ~= nil) and EReady then
 				if ValidTarget(Target, data[2].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[2].range then
-            CastE(Target)
+            Castspell(Target, _E)
 						lastUsedSpell = _E
 					end
 				end
@@ -581,7 +577,7 @@ function Combo()
 				end
 				if ValidTarget(Target, data[3].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[3].range then
-            CastR(Target)
+            Castspell(Target, _R)
             lastUsedSpell = _R
 					end
 				end
@@ -603,115 +599,19 @@ function Combo()
 	end
 end
 
-function CastQ(Target) 
-  if data[0].aareset then
-    CastSpell(_Q, myHero:Attack(Target))
-  elseif data[0].type == "notarget" then 
-    CastSpell(_Q)
-  elseif data[0].type == "targeted" then 
-    CastSpell(_Q, Target)
-  elseif data[0].type == "dontuse" then 
+function Castspell(Target, spell) 
+  if data[spell].aareset then
+    CastSpell(spell, myHero:Attack(Target))
+  elseif data[spell].type == "notarget" then 
+    CastSpell(spell)
+  elseif data[spell].type == "targeted" then 
+    CastSpell(spell, Target)
+  elseif data[spell].type == "dontuse" then 
     return
   else
-    if ActivePred() == "VPrediction" then 
-      local CastPosition, HitChance, Position = VPredict(Target, data[0])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_Q, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[0])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_Q, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "Q")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_Q, Position.x, Position.z)
-      end
-    end
-  end
-end
-function CastW(Target) 
-  if data[1].aareset then
-    CastSpell(_W, myHero:Attack(Target))
-  elseif data[1].type == "notarget" then 
-    CastSpell(_W)
-  elseif data[1].type == "targeted" then 
-    CastSpell(_W, Target)
-  elseif data[1].type == "dontuse" then 
-    return
-  else
-    if ActivePred() == "VPrediction" then
-      local CastPosition, HitChance, Position = VPredict(Target, data[1])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_W, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[1])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_W, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "W")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_W, Position.x, Position.z)
-      end
-    end
-  end
-end
-function CastE(Target) 
-  if data[2].aareset then
-    CastSpell(_E, myHero:Attack(Target))
-  elseif data[2].type == "notarget" then 
-    CastSpell(_E)
-  elseif data[2].type == "targeted" then 
-    CastSpell(_E, Target)
-  elseif data[2].type == "dontuse" then 
-    return
-  else
-    if ActivePred() == "VPrediction" then
-      local CastPosition, HitChance, Position = VPredict(Target, data[2])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_E, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[2])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_E, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "E")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_E, Position.x, Position.z)
-      end
-    end
-  end
-end
-function CastR(Target) 
-  if data[3].aareset then
-    CastSpell(_R, myHero:Attack(Target))
-  elseif data[3].type == "notarget" then 
-    CastSpell(_R)
-  elseif data[3].type == "targeted" then 
-    CastSpell(_R, Target)
-  elseif data[3].type == "dontuse" then 
-    return
-  else
-    if ActivePred() == "VPrediction" then
-      local CastPosition, HitChance, Position = VPredict(Target, data[3])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_R, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[3])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_R, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "R")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_R, Position.x, Position.z)
-      end
+    local CastPosition, HitChance, Position = Predict(Target, spell)
+    if HitChance >= Config.misc.hitchance then
+      CCastSpell(spell, CastPosition.x, CastPosition.z)
     end
   end
 end
@@ -856,8 +756,22 @@ function OnDraw()
     end
 end
 
+local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
+function Predict(Target, spell)
+    if ActivePred() == "VPrediction" then
+        return VPredict(Target, spell)
+    elseif ActivePred() == "Prodiction" then
+        return nil
+    elseif ActivePred() == "DivinePred" then
+        local State, Position, perc = DPredict(Target, spell)
+        return Position, perc*3/100, Position
+    elseif ActivePred() == "HPrediction" then
+        return HPredict(Target, str[spell])
+    end
+end
+
 function HPredict(Target, spell)
-	return THP:GetPredict(spell, Target, myHero) --10/10 would "predict" again
+	return HP:GetPredict(spell, Target, myHero)
 end
 
 function DPredict(Target, spell)
