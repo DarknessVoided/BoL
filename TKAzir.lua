@@ -100,16 +100,17 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local data = {
-	[_Q] = { speed = 500, delay = 0.250, range = 1400, width = 100, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0, range = 1300, width = 100, collision = false, aoe = false, type = "circular"},
-	[_E] = { speed = 800, delay = 0, range = 1300, width = 0, collision = false, aoe = false, type = "linear"},
-	[_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone"}
+	[_Q] = { speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear"},
+	[_W] = { speed = math.huge, delay = 0, range = 450, width = 100, collision = false, aoe = false, type = "circular"},
+	[_E] = { range = 1300, type = "targeted"},
+  [_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone"},
+  [4] = { range = 350, type = "soldier"}
 }
 local soldiers = {}
-table.insert(soldiers, myHero)
+--table.insert(soldiers, myHero)
 
-function OnLoad()
-  Config = scriptConfig("Top Kek Azir", "TKAzir")
+function OnLoad(
+)  Config = scriptConfig("Top Kek Azir", "TKAzir")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -269,6 +270,63 @@ end
 function Harrass()
 end
 
+function CastQ(unit)
+end
+
+function CastW(unit)
+end
+
+function CastE(unit)
+end
+
+function CastR(unit)
+end
+
+function UseItems(unit)
+    if unit ~= nil then
+        for _, item in pairs(CastableItems) do
+            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
+                if item.reqTarget then
+                    CastSpell(item.Slot(), unit)
+                else
+                    CastSpell(item.Slot())
+                end
+            end
+        end
+    end
+end
+
+local LastSoldier = {0, 0, 0, 0}
+function OnCreateObj(object)
+  if object.team ~= myHero.team then
+    return
+  end  
+  if object.name == "AzirSoldier" then
+    table.insert(soldiers, object)
+    LastSoldier[#soldiers] = os.clock()
+  end  
+end
+
+function OnDeleteObj(object)
+  if object.name == "AzirSoldier" then
+    table.remove(soldiers, 1)
+  end  
+end
+
+function ValidSoldier(kek)
+    if os.clock() - LastSoldier[kek] < 9 then
+        return true
+    else
+        return false
+    end
+end
+
+function OnProcessSpell(unit, spell)  
+  if not unit.isMe then
+    return
+  end
+end
+
 function EnemiesAround(Unit, range)
   local c=0
   for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
@@ -306,18 +364,6 @@ function zhg()
       end 
     end 
   end 
-end
-
-function CastQ(unit)
-end
-
-function CastW(unit)
-end
-
-function CastE(unit)
-end
-
-function CastR(unit)
 end
 
 function CCastSpell(Spell)
@@ -438,20 +484,22 @@ end
 
 function OnDraw()
   if Config.Drawing.QRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/4, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/2, 0x111111)
   end
   if Config.Drawing.WRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[0].width/4, 0x111111)
   end
   if Config.Drawing.ERange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range+data[2].width/4, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
   end
   if Config.Drawing.RRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range+data[3].width/4, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
   end
   if Config.Drawing.Soldier and soldiers ~= nil then
-    for _,unit in pairs(soldiers) do
-      DrawCircle(unit.x, unit.y, unit.z, unit.range, 0x111111)
+    for i=1,#soldiers do
+      if ValidSoldier(i) then
+        DrawCircle(soldiers[i].x, soldiers[i].y, soldiers[i].z, data[4].range, 0x111111)
+      end
     end
   end
   if Config.Drawing.DmgCalcs then
