@@ -269,6 +269,32 @@ end
 function Harrass()
 end
 
+function CastQ(unit)
+end
+
+function CastW(unit)
+end
+
+function CastE(unit)
+end
+
+function CastR(unit)
+end
+
+function UseItems(unit)
+    if unit ~= nil then
+        for _, item in pairs(CastableItems) do
+            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
+                if item.reqTarget then
+                    CastSpell(item.Slot(), unit)
+                else
+                    CastSpell(item.Slot())
+                end
+            end
+        end
+    end
+end
+
 function EnemiesAround(Unit, range)
   local c=0
   for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
@@ -306,18 +332,6 @@ function zhg()
       end 
     end 
   end 
-end
-
-function CastQ(unit)
-end
-
-function CastW(unit)
-end
-
-function CastE(unit)
-end
-
-function CastR(unit)
 end
 
 function CCastSpell(Spell)
