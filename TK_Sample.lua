@@ -1,28 +1,28 @@
 --[[
 
-  _______            _  __    _                    _      
- |__   __|          | |/ /   | |        /\        (_)     
-    | | ___  _ __   | ' / ___| | __    /  \    _____ _ __ 
-    | |/ _ \| '_ \  |  < / _ \ |/ /   / /\ \  |_  / | '__|
-    | | (_) | |_) | | . \  __/   <   / ____ \  / /| | |   
-    |_|\___/| .__/  |_|\_\___|_|\_\ /_/    \_\/___|_|_|   
-            | |                                           
-            |_|                                                                                                     
+  _______            _  __    _                       
+ |__   __|          | |/ /   | |                        
+    | | ___  _ __   | ' / ___| | __ 
+    | |/ _ \| '_ \  |  < / _ \ |/ /
+    | | (_) | |_) | | . \  __/   <  
+    |_|\___/| .__/  |_|\_\___|_|\_\  
+            | |                                                            
+            |_|                                                            
 
     By Nebelwolfi
 
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.01
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAzir.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."TKAzir.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/TKSample.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."TKSample.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Azir - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Sample - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKAzir.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKSample.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then

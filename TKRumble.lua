@@ -218,6 +218,8 @@ function SetupOrbwalk()
 end
 
 function OnTick()
+    if recall then return end
+    
   	local target
   	target = GetCustomTarget()
     
