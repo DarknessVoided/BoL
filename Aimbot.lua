@@ -479,7 +479,6 @@ function OnTick()
                     if ActivePred() == "HPrediction" then SetupHPred() end
                 end 
             end
-              if ActivePred() == "HPrediction" then spell = str[i] end
               local CastPosition, HitChance, Position = Predict(Target, spell)
               if debugMode then PrintChat("1 - Attempt to aim!") end
               if HitChance >= 3 then
@@ -559,7 +558,7 @@ function Predict(Target, spell)
         local State, Position, perc = DPredict(Target, spell)
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
-        return HPredict(Target, spell)
+        return HPredict(Target, str[spell])
     end
 end
 
