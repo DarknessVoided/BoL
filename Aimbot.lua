@@ -301,7 +301,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.69
+local version = 0.70
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -432,34 +432,34 @@ end
 
 function SetupHPred()
     if toAim[0] then 
-        MakeHPred("Q", 0) 
+        MakeHPred(0) 
     end
     if toAim[1] then 
-        MakeHPred("W", 1) 
+        MakeHPred(1) 
     end
     if toAim[2] then 
-        MakeHPred("E", 2) 
+        MakeHPred(2) 
     end
     if toAim[3] then 
-        MakeHPred("R", 3) 
+        MakeHPred(3) 
     end
 end
 
-function MakeHPred(hspell, i)
+function MakeHPred(i)
     if data[i].type == "linear" then
         if data[i].speed ~= math.huge then 
-            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+            HP:AddSpell(str[i], myHero.charName, {collisionM = data[i].collision, collisionH = data[i].collision, delay = data[i].delay, range = data[i].range, speed = data[i].speed, type = "DelayLine", width = 2*data[i].width})
         else
-            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+            HP:AddSpell(str[i], myHero.charName, {collisionM = data[i].collision, collisionH = data[i].collision, delay = data[i].delay, range = data[i].range, type = "PromptLine", width = 2*data[i].width})
         end
     elseif data[i].type == "circular" then
         if data[i].speed ~= math.huge then 
-            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+            HP:AddSpell(str[i], myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         else
-            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+            HP:AddSpell(str[i], myHero.charName, {type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         end
     else --Cone!
-        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        HP:AddSpell(str[i], myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
     end
 end
 
@@ -483,7 +483,7 @@ function OnTick()
                     if ActivePred() == "HPrediction" then SetupHPred() end
                 end 
               end
-              local CastPosition, HitChance, Position = Predict(Target, spell)
+              local CastPosition, HitChance, Position = Predict(Target, i)
               if debugMode then PrintChat("1 - Attempt to aim!") end
               if HitChance >= 3 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
@@ -503,7 +503,7 @@ function OnTick()
                     if debugMode then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
                    if ValidTarget(Target) then
-                    local CastPosition, HitChance, Position = Predict(Target, spell)
+                    local CastPosition, HitChance, Position = Predict(Target, i)
                     if HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
@@ -554,12 +554,13 @@ function TimeRequest()
 end
 
 function Predict(Target, spell)
+    print("Spell: "..spell.." "..myHero.charName)
     if ActivePred() == "VPrediction" then
-        return VPredict(Target, spell)
+        return VPredict(Target, data[spell])
     elseif ActivePred() == "Prodiction" then
         return nil
     elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, spell)
+        local State, Position, perc = DPredict(Target, data[spell])
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
         return HPredict(Target, str[spell])

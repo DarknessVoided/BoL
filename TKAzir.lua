@@ -295,7 +295,9 @@ function UseItems(unit)
         end
     end
 end
-
+--[[
+  3 soldiers := closest to maus -> maus; others in a cone towards mouse with waypoint before target
+]]
 local LastSoldier = {0, 0, 0, 0}
 function OnCreateObj(object)
   if object.team ~= myHero.team then
