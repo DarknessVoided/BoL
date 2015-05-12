@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.45
+local version = 0.46
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -266,7 +266,8 @@ end
 --[[ Script start ]]--
 if VIP_USER then HookPackets() end
 local data = Champs[myHero.charName] -- load skills
-local QReady, WReady, EReady, RReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
 local Target 
 local sts
 local predictions = {}
@@ -333,9 +334,9 @@ function OnLoad()
 	Config.KS:addParam("killstealW", "Use W", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
-	--Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+  if Ignite ~= nil then Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 			
-    Config:addSubMenu("Draw Settings", "Drawing")
+  Config:addSubMenu("Draw Settings", "Drawing")
 	Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, false)
 	Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, false)
 	Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, false)
@@ -439,22 +440,22 @@ end
 function killsteal()
 	for i=1, heroManager.iCount do
 		local enemy = heroManager:GetHero(i)
-		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)	
-		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
-		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
+		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)
+		local wDmg = ((getDmg("W", enemy, myHero)) or 0)
+		local eDmg = ((getDmg("E", enemy, myHero)) or 0)
 		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
-		--local iDmg = 50 + (20 * myHero.level)
+		local iDmg = 50 + (20 * myHero.level)
 		if ValidTarget(enemy) and enemy ~= nil and Config.KS.enableKS and not enemy.dead and enemy.visible then
 			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
-				CastSpell(_Q, enemy)
+				Castspell(Target, _Q)
 			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
-				CastSpell(_W, enemy)
+				Castspell(Target, _W)
 			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
-				CastSpell(_E, enemy)
+				Castspell(Target, _E)
 			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
-				CastSpell(_R, enemy)
-			--elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
-			--	CastSpell(SSpells:GetSlot("summonerdot"), enemy)
+				Castspell(Target, _R)
+			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+				CCastSpell(Ignite, enemy)
 			end
 		end
 	end
@@ -462,6 +463,8 @@ end
 
 function Harrass()
 	if orbDisabled or Config.combo then return end
+  harrEnabled = false
+  if Config.harr or Config.har then harrEnabled = true end
 	local skillOrder = {}
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 1, 1))
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 2, 2))
@@ -471,39 +474,39 @@ function Harrass()
 		if orbDisabled or recall or myHero.dead then return end
 		if skillOrder[i] == "Q" then
 			if (Target ~= nil) and QReady then
-				if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
+				if ValidTarget(Target, data[0].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[0].range then
-            CastQ(Target)
+            Castspell(Target, _Q)
 						lastUsedSpell = _Q
 					end
 				end
 			end
 		elseif skillOrder[i] == "W" then
 			if (Target ~= nil) and WReady then
-				if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
+				if ValidTarget(Target, data[1].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[1].range then
-            CastW(Target)
+            Castspell(Target, _W)
 						lastUsedSpell = _W
 					end
 				end
 			end
 		elseif skillOrder[i] == "E" then
 			if (Target ~= nil) and EReady then
-				if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
+				if ValidTarget(Target, data[2].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[2].range then
-            CastE(Target)
+            Castspell(Target, _E)
 						lastUsedSpell = _E
 					end
 				end
 			end
 		end
-		if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
+		if Target ~=nil and Config.harrConfig.aa and harrEnabled and not orbDisabled then	
 			iOrb:Orbwalk(mousePos, Target)
-		elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
+		elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and harrEnabled then
 			moveToCursor()
 		end
 	end
-  if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then 
+  if Target ~=nil and Config.harrConfig.aa and harrEnabled and not orbDisabled then 
     iOrb:Orbwalk(mousePos, Target)
   elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
     moveToCursor()
