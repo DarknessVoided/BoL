@@ -195,7 +195,7 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 }
 
 --[[ Auto updater start ]]--
-local version = 0.44
+local version = 0.45
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -759,11 +759,11 @@ end
 local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 function Predict(Target, spell)
     if ActivePred() == "VPrediction" then
-        return VPredict(Target, spell)
+        return VPredict(Target, data[spell])
     elseif ActivePred() == "Prodiction" then
         return nil
     elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, spell)
+        local State, Position, perc = DPredict(Target, data[spell])
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
         return HPredict(Target, str[spell])
