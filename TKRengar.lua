@@ -1,20 +1,20 @@
 --[[
 
-  _______            _  __    _                       
- |__   __|          | |/ /   | |                        
-    | | ___  _ __   | ' / ___| | __ 
-    | |/ _ \| '_ \  |  < / _ \ |/ /
-    | | (_) | |_) | | . \  __/   <  
-    |_|\___/| .__/  |_|\_\___|_|\_\  
-            | |                                                            
-            |_|                                                            
+  _______            _  __    _      _____                             
+ |__   __|          | |/ /   | |    |  __ \                            
+    | | ___  _ __   | ' / ___| | __ | |__) |___ _ __   __ _  __ _ _ __ 
+    | |/ _ \| '_ \  |  < / _ \ |/ / |  _  // _ \ '_ \ / _` |/ _` | '__|
+    | | (_) | |_) | | . \  __/   <  | | \ \  __/ | | | (_| | (_| | |   
+    |_|\___/| .__/  |_|\_\___|_|\_\ |_|  \_\___|_| |_|\__, |\__,_|_|   
+            | |                                        __/ |           
+            |_|                                       |___/                                                                      
 
     By Nebelwolfi
 
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -79,7 +79,7 @@ end
 --[[ Script start ]]--
 if  myHero.charName ~= "Rengar" then return end -- not supported :(
 if VIP_USER then HookPackets() end
-if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("smite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("smite") then Smite = SUMMONER_2 end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
 local QReady, WReady, EReady, RReady, IReady, SReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) end end
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
@@ -89,7 +89,8 @@ local predictions = {}
 local combos = {}
 local enemyTable = {}
 local enemyCount = 0
-local ultOn = false
+local ultOn, oneShot, fullStacked = false, false, false
+local osTarget = nil
 data = {
     [_Q] = { range = 125, type = "notarget", aareset = true},
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = false, type = "circular"},
@@ -112,9 +113,12 @@ function OnLoad()
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("Whp", "Use W for HP", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("Whpp", "W for HP under X%", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+  --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -122,9 +126,15 @@ function OnLoad()
   Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
-  Config.farmConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addSubMenu("Lane Clear", "lc")
+  Config.farmConfig:addSubMenu("Last Hit", "lh")
+  Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addParam("Whp", "Use W for HP while farming", SCRIPT_PARAM_ONOFF, true)
       
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
@@ -144,7 +154,8 @@ function OnLoad()
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Farm (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -153,6 +164,7 @@ function OnLoad()
   Config.kConfig:permaShow("combo")
   Config.kConfig:permaShow("harr")
   Config.kConfig:permaShow("har")
+  Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
   sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
   Config:addSubMenu("Target Selector", "sts")
@@ -219,7 +231,11 @@ function OnTick()
     end
 
     if Config.kConfig.combo then
-      if ultOn then 
+      if ultOn and not oneShot then 
+        osTarget = Target
+      end
+      if ultOn or oneShot then 
+        oneShot = true
         OneShot()
       else
         Combo()
@@ -227,59 +243,193 @@ function OnTick()
     end
   end
 
+  if not ultOn and Config.kConfig.lh then
+    LastHit()
+  end
   if not ultOn and Config.kConfig.lc then
-    Farm()
+    LaneClear()
   end
 
   if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
-function Farm()
-  if QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
-      local QMinionDmg = GetDmg("Q", minion)
-      if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
-        CastQ(minion)
+function LastHit()
+  if fullStacked and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if WReady and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      CastW(minionTarget)
+    end  
+  else
+    if QReady and Config.farmConfig.lh.Q then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion)
+        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+          CastQ(minion)
+        end
       end
     end
+    if WReady and Config.farmConfig.lh.W then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local WMinionDmg = GetDmg("W", minion)
+        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+          CastW(minion)
+        end
+      end    
+    end  
+    if EReady and Config.farmConfig.lh.E then    
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
+        local EMinionDmg = GetDmg("E", minion)      
+        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range+data[1].width) then
+          CastE(minion)
+        end      
+      end    
+    end  
   end
-  if WReady and Config.farmConfig.W and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
-      local WMinionDmg = GetDmg("W", minion)
-      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
-        CastW(minion)
+end
+
+function LaneClear()
+  if fullStacked and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if WReady and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
       end
-    end    
-  end  
-  if EReady and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
-      local EMinionDmg = GetDmg("E", minion)      
-      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range+data[1].width) then
-        CastE(minion)
-      end      
-    end    
-  end  
+      CastW(minionTarget)
+    end  
+  else
+    --Check for lowlife: Lasthit = priority!
+    if QReady and Config.farmConfig.lc.Q then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion)
+        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+          CastQ(minion)
+        end
+      end
+    end
+    if WReady and Config.farmConfig.lc.W then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local WMinionDmg = GetDmg("W", minion)
+        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+          CastW(minion)
+        end
+      end    
+    end  
+    if EReady and Config.farmConfig.lc.E then    
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
+        local EMinionDmg = GetDmg("E", minion)      
+        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range+data[1].width) then
+          CastE(minion)
+        end      
+      end    
+    end 
+    --Check for lowestlife: Lanceclear - 2nd priority!
+    if QReady and Config.farmConfig.lc.Q then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[0].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastQ(minionTarget)
+      end
+    end
+    if WReady and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastW(minionTarget)
+      end
+    end  
+    if EReady and Config.farmConfig.lc.E then   
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[2].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastE(minionTarget)
+      end
+    end 
+  end
 end
 
 function Combo()
-  if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+  if fullStacked and Config.comboConfig.Whp and (myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp then
+    if ValidTarget(Target, data[1].range) then
+      CastW(Target)
+    else
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      CastW(minionTarget)
+    end  
+  else
+    if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+      CastQ(Target)
+    end
+    if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
+      CastW(Target)
+    end
+    if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+      CastE(Target)
+    end
+  end
+end
+
+function OneShot()
+  if GetDistance(osTarget, myHero) > myHero.range then return end
+  if Smite ~= nil and SReady then CastSpell(Smite, osTarget) end
+  if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then
     CastQ(Target)
   end
-  if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
+  if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
     CastW(Target)
   end
-  if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+  if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
     CastE(Target)
   end
-  if Config.comboConfig.R and Config.comboConfig.Rhp >= Target.health and ValidTarget(Target, data[3].range) then
-    CastR(Target)
+  if Config.comboConfig.item and GetDistance(osTarget, myHero) < data[0].range then
+    UseItems(osTarget)
   end
+  if Ignite ~= nil and IReady then CastSpell(Ignite, osTarget) end
+  if osTarget.dead then oneShot = false end
 end
 
 function OnCreateObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     print("Rengar ult activated! Time: "..os.clock())
     ultOn = true
+  end 
+  if object ~= nil and string.find(object.name, "Rengar_Base_P_Buf_Max") then
+    fullStacked = true
   end
 end
  
@@ -287,6 +437,9 @@ function OnDeleteObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     print("Rengar ult deactivated! Time: "..os.clock())
     ultOn = false
+  end
+  if object ~= nil and string.find(object.name, "Rengar_Base_P_Buf_Max") then
+    fullStacked = false
   end
 end
 
@@ -303,7 +456,7 @@ function Harrass()
 end
 
 function CastQ(Target) 
-  if QReady then CastSpell(_Q, Target) end
+  if QReady then CastSpell(_Q, myHero:Attack(Target)) end
 end
 function CastW(Target) 
   local CastPosition, HitChance, Position = Predict(Target, 1, myHero)
@@ -334,6 +487,7 @@ function Killsteal()
     local wDmg = ((GetDmg("W", enemy)) or 0)  
     local eDmg = ((GetDmg("E", enemy)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
+    local sDmg = 20 + 8 * myHero.level
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
         CastQ(enemy)
@@ -343,6 +497,8 @@ function Killsteal()
         CastE(enemy)
       elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
         CCastSpell(Ignite, enemy)
+      elseif enemy.health < sDmg and Config.KS.killstealI and ValidTarget(enemy, 760) and SReady then
+        CCastSpell(Smite, enemy)
       end
     end
   end
@@ -446,15 +602,15 @@ end
 local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 function Predict(Target, spell, source)
     if ActivePred() == "VPrediction" then
-        return VPredict(Target, data[spell], source)
+      return VPredict(Target, data[spell], source)
     elseif ActivePred() == "Prodiction" then
-        return nil
+      return nil
     elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, data[spell], source)
-        return Position, perc*3/100, Position
+      local State, Position, perc = DPredict(Target, data[spell], source)
+      return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
       local Position, HitChance = HPredict(Target, spell, source)
-        return Position, HitChance, Position
+      return Position, HitChance, Position
     end
 end
 
@@ -543,11 +699,13 @@ function DmgCalculations()
             local damageQ  = GetDmg("Q", enemy)
             local damageW  = GetDmg("W", enemy)
             local damageE  = GetDmg("E", enemy)
-            local damageI  = GetDmg("IGNITE", enemy)
+            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
+            local damageS  = Smite and (20 + 8 * myHero.level) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageI = damageI
+            enemyTable[i].damageS = damageS
             if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
                 enemyTable[i].ready = QReady
@@ -569,7 +727,7 @@ function DmgCalculations()
             elseif enemy.health < damageQ + damageW + damageE then
                 enemyTable[i].indicatorText = "Q + W + E Kill"
                 enemyTable[i].ready = QReady and WReady and EReady
-            elseif enemy.health < damageAA + damageQ + damageW + damageE + damageI then
+            elseif enemy.health < damageAA + damageQ + damageW + damageE + damageI + damageS then
                 enemyTable[i].indicatorText = "All-In Kill"
                 enemyTable[i].ready = QReady and WReady and EReady and IReady
             else
