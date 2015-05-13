@@ -77,7 +77,7 @@ end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
-if  myHero.charName ~= "Brand" then return end -- not supported :(
+if  myHero.charName ~= "Rengar" then return end -- not supported :(
 if VIP_USER then HookPackets() end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
@@ -89,6 +89,7 @@ local predictions = {}
 local combos = {}
 local enemyTable = {}
 local enemyCount = 0
+local ultOn = false
 data = {
     [_Q] = { range = 125, type = "notarget", aareset = true},
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = false, type = "circular"},
@@ -213,16 +214,20 @@ function OnTick()
       Killsteal()
     end
 
-    if Config.kConfig.har or Config.kConfig.harr then
+    if not ultOn and (Config.kConfig.har or Config.kConfig.harr) then
       Harrass()
     end
 
     if Config.kConfig.combo then
-      Combo()
+      if ultOn then 
+        OneShot()
+      else
+        Combo()
+      end
     end
   end
 
-  if Config.kConfig.lc then
+  if not ultOn and Config.kConfig.lc then
     Farm()
   end
 
@@ -245,8 +250,7 @@ function Farm()
         CastW(minion)
       end
     end    
-  end   
-  end
+  end  
   if EReady and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
     for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion)      
@@ -273,24 +277,16 @@ function Combo()
 end
 
 function OnCreateObj(object)
-  if object ~= nil and string.find(object.name, "BrandFireMark") then
-    for i = 1, enemyCount do
-      if GetDistance(object,enemyTable[i].player) < 80 then
-        --print(enemyTable[i].name.." is now blazed! Time: "..os.clock())
-        enemyTable[i].blazed = true
-      end
-    end
+  if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
+    print("Rengar ult activated! Time: "..os.clock())
+    ultOn = true
   end
 end
  
 function OnDeleteObj(object)
-  if string.find(object.name, "BrandFireMark") then
-    for i = 1, enemyCount do
-      if GetDistance(object,enemyTable[i].player) < 80 then
-        --print(enemyTable[i].name.." is no longer blazed! Time: "..os.clock())
-        enemyTable[i].blazed = false
-      end
-    end
+  if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
+    print("Rengar ult deactivated! Time: "..os.clock())
+    ultOn = false
   end
 end
 
@@ -513,16 +509,13 @@ local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
   if Config.Drawing.QRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/4, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
   end
   if Config.Drawing.WRange then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
   end
   if Config.Drawing.ERange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
-  end
-  if Config.Drawing.RRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range+data[2].width/4, 0x111111)
   end
   if Config.Drawing.dmgCalc then
         for i = 1, enemyCount do
