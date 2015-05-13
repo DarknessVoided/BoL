@@ -477,7 +477,7 @@ function OnTick()
                 if myHero:CanUseSpell(_E) then 
                     data[0] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
                     if ActivePred() == "HPrediction" then SetupHPred() end
-                    CCastSpell(_E, myHero.x, myHero.y, myHero.z) DelayAction(function() end, 0.15) 
+                    CCastSpell(_E, myHero.x, myHero.y, myHero.z) DelayAction(function() end, 0.25) 
                 else 
                     data[0] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"}
                     if ActivePred() == "HPrediction" then SetupHPred() end

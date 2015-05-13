@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.05
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
@@ -295,6 +295,7 @@ function OnTick()
 end
 
 function DoSomeUltLogic()
+  if not VIP_USER then return end
   	if Config.rConfig.r then
   		local enemies = EnemiesAround(Target, 250)
   		if enemies >= Config.rConfig.toomanyenemies then
