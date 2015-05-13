@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -118,7 +118,7 @@ function OnLoad()
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true)
+  if Smite ~= nil then Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -174,7 +174,7 @@ function OnLoad()
         local champ = heroManager:GetHero(i)
         if champ.team ~= player.team then
             enemyCount = enemyCount + 1
-            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageI = 0, indicatorText = "", damageGettingText = "", ready = true}
+            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
     end
 end
@@ -408,13 +408,13 @@ function OneShot()
   if GetDistance(osTarget, myHero) > myHero.range then return end
   if Smite ~= nil and SReady then CastSpell(Smite, osTarget) end
   if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then
-    CastQ(Target)
+    CastQ(osTarget)
   end
   if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
-    CastW(Target)
+    CastW(osTarget)
   end
   if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
-    CastE(Target)
+    CastE(osTarget)
   end
   if Config.comboConfig.item and GetDistance(osTarget, myHero) < data[0].range then
     UseItems(osTarget)
@@ -455,22 +455,22 @@ function Harrass()
   end
 end
 
-function CastQ(Target) 
-  if QReady then CastSpell(_Q, myHero:Attack(Target)) end
+function CastQ(Targ) 
+  if QReady then CastSpell(_Q, myHero:Attack(Targ)) end
 end
-function CastW(Target) 
-  local CastPosition, HitChance, Position = Predict(Target, 1, myHero)
+function CastW(Targ) 
+  local CastPosition, HitChance, Position = Predict(Targ, 1, myHero)
   if HitChance >= 2 and WReady then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end
-function CastE(Target) 
-  local CastPosition, HitChance, Position = Predict(Target, 2, myHero)
-  if HitChance >= 2 and WReady then
+function CastE(Targ) 
+  local CastPosition, HitChance, Position = Predict(Targ, 2, myHero)
+  if HitChance >= 2 and EReady then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
   end
 end
-function CastR(Target) 
+function CastR(Targ) 
   if RReady then CastSpell(_R) end
 end
 
