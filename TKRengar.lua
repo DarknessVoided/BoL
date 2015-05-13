@@ -671,13 +671,13 @@ local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
-  if Config.Drawing.QRange then
+  if Config.Drawing.QRange and QReady then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
   end
-  if Config.Drawing.WRange then
+  if Config.Drawing.WRange and WQReady then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
   end
-  if Config.Drawing.ERange then
+  if Config.Drawing.ERange and EReady then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range+data[2].width/4, 0x111111)
   end
   if Config.Drawing.dmgCalc then
