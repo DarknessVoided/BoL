@@ -380,7 +380,6 @@ function Combo()
   if fullStacked and Config.comboConfig.Whp and ((myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp) then
     if ValidTarget(Target, data[1].range) then
       CastW(Target)
-      fullStacked = false
     else
       local minionTarget = nil
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
@@ -392,7 +391,6 @@ function Combo()
       end
       if minionTarget ~= nil then
         CastW(minionTarget)
-        fullStacked = false
       end
     end  
   else
