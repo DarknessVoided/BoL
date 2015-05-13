@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -377,9 +377,10 @@ function LaneClear()
 end
 
 function Combo()
-  if fullStacked and Config.comboConfig.Whp and (myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp then
+  if fullStacked and Config.comboConfig.Whp and ((myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp) then
     if ValidTarget(Target, data[1].range) then
       CastW(Target)
+      fullStacked = false
     else
       local minionTarget = nil
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
@@ -389,7 +390,10 @@ function Combo()
           minionTarget = minion
         end
       end
-      CastW(minionTarget)
+      if minionTarget ~= nil then
+        CastW(minionTarget)
+        fullStacked = false
+      end
     end  
   else
     if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
@@ -407,17 +411,23 @@ end
 function OneShot()
   if GetDistance(osTarget, myHero) > myHero.range then return end
   if Smite ~= nil and SReady then CastSpell(Smite, osTarget) end
-  if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then
-    CastQ(osTarget)
-  end
-  if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
-    CastW(osTarget)
-  end
-  if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
-    CastE(osTarget)
-  end
-  if Config.comboConfig.item and GetDistance(osTarget, myHero) < data[0].range then
-    UseItems(osTarget)
+  if fullStacked then 
+    if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
+      CastE(osTarget)
+    end
+  else
+    if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then
+      CastQ(osTarget)
+    end
+    if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
+      CastW(osTarget)
+    end
+    if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
+      CastE(osTarget)
+    end
+    if Config.comboConfig.item and GetDistance(osTarget, myHero) < data[0].range then
+      UseItems(osTarget)
+    end
   end
   if Ignite ~= nil and IReady then CastSpell(Ignite, osTarget) end
   if osTarget.dead then oneShot = false end
@@ -425,7 +435,6 @@ end
 
 function OnCreateObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
-    print("Rengar ult activated! Time: "..os.clock())
     ultOn = true
   end 
   if object ~= nil and string.find(object.name, "Rengar_Base_P_Buf_Max") then
@@ -435,7 +444,6 @@ end
  
 function OnDeleteObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
-    print("Rengar ult deactivated! Time: "..os.clock())
     ultOn = false
   end
   if object ~= nil and string.find(object.name, "Rengar_Base_P_Buf_Max") then
@@ -460,13 +468,13 @@ function CastQ(Targ)
 end
 function CastW(Targ) 
   local CastPosition, HitChance, Position = Predict(Targ, 1, myHero)
-  if HitChance >= 2 and WReady then
+  if HitChance and HitChance >= 2 and WReady then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end
 function CastE(Targ) 
   local CastPosition, HitChance, Position = Predict(Targ, 2, myHero)
-  if HitChance >= 2 and EReady then
+  if HitChance and HitChance >= 2 and EReady then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
   end
 end
@@ -601,17 +609,18 @@ end
 
 local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 function Predict(Target, spell, source)
-    if ActivePred() == "VPrediction" then
-      return VPredict(Target, data[spell], source)
-    elseif ActivePred() == "Prodiction" then
-      return nil
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[spell], source)
-      return Position, perc*3/100, Position
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, spell, source)
-      return Position, HitChance, Position
-    end
+  if Target == nil then return end
+  if ActivePred() == "VPrediction" then
+    return VPredict(Target, data[spell], source)
+  elseif ActivePred() == "Prodiction" then
+    return nil
+  elseif ActivePred() == "DivinePred" then
+    local State, Position, perc = DPredict(Target, data[spell], source)
+    return Position, perc*3/100, Position
+  elseif ActivePred() == "HPrediction" then
+    local Position, HitChance = HPredict(Target, spell, source)
+    return Position, HitChance, Position
+  end
 end
 
 function HPredict(Target, spell, source)
