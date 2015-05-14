@@ -95,8 +95,9 @@ local sts
 local enemyTable = {}
 local enemyCount = 0
 local osTarget = nil
-local MobsK = {}
+local MobsK    = {}
 local EnemiesK = {}
+local Enemies  = GetEnemyHeroes()
 data = {
     [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 1.5, range = 5500, type = "dontuse"},
@@ -114,7 +115,7 @@ function OnLoad()
   for _, minion in pairs(minionManager(MINION_OTHER, 25000, myHero, MINION_SORT_MAXHEALTH_DEC).objects) do
     table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
   end
-  for _, unit in pairs(GetEnemyHeroes()) do
+  for _, unit in pairs(Enemies) do
     table.insert(EnemiesK, {unit = unit, stacks = 0, createTime = 0})
   end
 
@@ -347,7 +348,7 @@ function OnCreateObj(obj)
   if obj == nil then return end
   rendTable = {["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
                ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }}
-  for i, unit in pairs(EnemiesK.unit) do
+  for i, unit in pairs(Enemies.unit) do
     if GetDistance(unit,obj) < 80 then
       if rendTable[obj.name] then
         EnemiesK.stacks[i] = rendTable[obj.name].rend
@@ -695,7 +696,7 @@ function GetDmg(spell, enemy) --Partially from HTTF
     return 0
   elseif spell == "E" then
     local stacks = -1
-    for i, unit in pairs(EnemiesK.unit) do
+    for i, unit in pairs(Enemies.unit) do
       if unit == target then
         if EnemiesK.createTime[i] + 4 < os.clock() then
           stacks = EnemiesK.stacks[i]
