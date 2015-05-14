@@ -119,7 +119,7 @@ function OnLoad()
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, ´false)
+  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, false)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
