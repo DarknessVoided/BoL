@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -117,14 +117,14 @@ function OnLoad()
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("Qs","Focus stacks to Q", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+  Config.comboConfig:addParam("Qs","Focus stacks to Q", SCRIPT_PARAM_SLICE, 5, 1, 5, 0)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("Qs","Focus stacks to Q", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+  Config.harrConfig:addParam("Qs","Focus stacks to Q", SCRIPT_PARAM_SLICE, 5, 1, 5, 0)
   Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
@@ -172,7 +172,7 @@ function OnLoad()
         local champ = heroManager:GetHero(i)
         if champ.team ~= player.team then
             enemyCount = enemyCount + 1
-            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
+            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageR = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
     end
 end
@@ -309,7 +309,7 @@ function LaneClear()
 end
 
 function Combo()
-  if Config.comboConfig.Q and Config.comboConfig.Qs > focusStacks and ValidTarget(Target, data[0].range) then
+  if Config.comboConfig.Q and Config.comboConfig.Qs >= focusStacks and ValidTarget(Target, data[0].range) then
     CastQ(Target)
   end
   if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
@@ -322,6 +322,9 @@ end
 
 --[[ NOT DONE YET ]]--
 function OnCreateObj(object)
+  --if string.find(string.lower(object.name), string.lower("Ashe")) then
+  --  print(object.name)
+  --end
   if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQ")) then
     focusStacks = focusStacks +1
   end 
@@ -619,7 +622,7 @@ function DmgCalculations()
             elseif enemy.health < damageQ + damageW + damageR then
                 enemyTable[i].indicatorText = "Q + W + R Kill"
                 enemyTable[i].ready = QReady and WReady and RReady
-            elseif enemy.health < damageAA + damageQ + damageW + damageE + damageI then
+            elseif enemy.health < damageAA + damageQ + damageW + damageR + damageI then
                 enemyTable[i].indicatorText = "All-In Kill"
                 enemyTable[i].ready = QReady and WReady and RReady and IReady
             else
