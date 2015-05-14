@@ -301,7 +301,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.70
+local version = 0.71
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -333,6 +333,7 @@ local predToUse = {}
 VP = nil
 DP = nil
 HP = nil
+TKP = nil
 if FileExist(LIB_PATH .. "VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
@@ -349,6 +350,12 @@ if FileExist(LIB_PATH .. "HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
   table.insert(predToUse, "HPrediction")
+end
+
+if FileExist(LIB_PATH .. "/TKPrediction.lua") then
+  require("TKPrediction")
+  TKP = TKPrediction()
+  table.insert(predToUse, "TKPrediction")
 end
 
 --[[ 
@@ -374,8 +381,8 @@ local debugMode = false
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
-local opcs = {{0x87, 0xEC, 0x6C, 0x74, 0x98}, {0x00E9, 0x02, 0xD8, 0xB3, 0xE7}}
-local opcpos = {23, 27}
+local opcs = {{0x10B, 0x68, 0xEE, 0xB1, 0xCE}, {0x87, 0xEC, 0x6C, 0x74, 0x98}, {0x00E9, 0x02, 0xD8, 0xB3, 0xE7}}
+local opcpos = {27, 23, 27}
 local secondCast = false
 
 function OnLoad()
@@ -384,7 +391,7 @@ function OnLoad()
   
   Config:addSubMenu("Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
-  Config.misc:addParam("ser",  "Which LoL version?", SCRIPT_PARAM_LIST, 1, {"5.8", "5.7"})
+  Config.misc:addParam("ser",  "Which LoL version?", SCRIPT_PARAM_LIST, 1, {"5.9", "5.8", "5.7"})
   Config.misc:addParam("qq", " ", SCRIPT_PARAM_INFO,"")
   if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
@@ -477,7 +484,7 @@ function OnTick()
                 if myHero:CanUseSpell(_E) then 
                     data[0] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
                     if ActivePred() == "HPrediction" then SetupHPred() end
-                    CCastSpell(_E, myHero.x, myHero.y, myHero.z) DelayAction(function() end, 0.25) 
+                    DelayAction(function() CCastSpell(_E, myHero.x, myHero.y, myHero.z) end, 0.25) 
                 else 
                     data[0] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"}
                     if ActivePred() == "HPrediction" then SetupHPred() end
@@ -546,7 +553,7 @@ function ValidRequest()
 end
 
 function TimeRequest()
-    if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then
+    if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" or ActivePred() == "TKPrediction" then
         return 0.001
     elseif ActivePred() == "DivinePred" then
         return Config.misc.time~=nil and Config.misc.time or 0.2
@@ -564,6 +571,8 @@ function Predict(Target, spell)
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
         return HPredict(Target, str[spell])
+    elseif ActivePred() == "TKPrediction" then
+        return TKP:Predict(spell, Target, source) 
     end
 end
 
