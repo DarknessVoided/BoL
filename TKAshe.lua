@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.04
+local version = 0.05
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -117,14 +117,14 @@ function OnLoad()
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("Qs","Focus stacks to Q", SCRIPT_PARAM_SLICE, 5, 1, 5, 0)
+  Config.comboConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("Qs","Focus stacks to Q", SCRIPT_PARAM_SLICE, 5, 1, 5, 0)
+  Config.harrConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF)
   Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
@@ -309,8 +309,14 @@ function LaneClear()
 end
 
 function Combo()
-  if Config.comboConfig.Q and Config.comboConfig.Qs >= focusStacks and ValidTarget(Target, data[0].range) then
-    CastQ(Target)
+  if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+    if Config.comboConfig.Qs then 
+      if focusStacks == 5 then
+        CastQ(Target)
+      end
+    else
+      CastQ(Target)
+    end
   end
   if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
     CastW(Target)
@@ -320,32 +326,27 @@ function Combo()
   end
 end
 
---[[ NOT DONE YET ]]--
 function OnCreateObj(object)
-  --if string.find(string.lower(object.name), string.lower("Ashe")) then
-  --  print(object.name)
-  --end
-  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQ")) then
-    focusStacks = focusStacks +1
-  end 
-  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQReady")) then
+  if object ~= nil and string.find(string.lower(object.name), string.lower("Ashe_Base_Q_Ready")) then
     focusStacks = 5
   end 
 end
  
 function OnDeleteObj(object)
-  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQ")) then
-    focusStacks = 0
-  end 
-  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQReady")) then
+  if object ~= nil and string.find(string.lower(object.name), string.lower("Ashe_Base_Q_Ready")) then
     focusStacks = 0
   end 
 end
---[[ NOT DONE YET ]]--
 
 function Harrass()
-  if Config.harrConfig.Q and Config.harrConfig.Qs > focusStacks and ValidTarget(Target, data[0].range) then
-    CastQ(Target)
+  if Config.harrConfig.Q and ValidTarget(Target, data[0].range) then
+    if Config.harrConfig.Qs then 
+      if focusStacks == 5 then
+        CastQ(Target)
+      end
+    else
+      CastQ(Target)
+    end
   end
   if Config.harrConfig.W and ValidTarget(Target, data[1].range) then
     CastW(Target)
