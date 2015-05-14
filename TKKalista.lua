@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -347,7 +347,7 @@ function OnCreateObj(obj)
   if obj == nil then return end
   rendTable = {["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
                ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }}
-  for i, unit in pairs(Enemies.unit) do
+  for i, unit in pairs(EnemiesK.unit) do
     if GetDistance(unit,obj) < 80 then
       if rendTable[obj.name] then
         EnemiesK.stacks[i] = rendTable[obj.name].rend
@@ -695,7 +695,7 @@ function GetDmg(spell, enemy) --Partially from HTTF
     return 0
   elseif spell == "E" then
     local stacks = -1
-    for i, unit in pairs(Enemies.unit) do
+    for i, unit in pairs(EnemiesK.unit) do
       if unit == target then
         if EnemiesK.createTime[i] + 4 < os.clock() then
           stacks = EnemiesK.stacks[i]
