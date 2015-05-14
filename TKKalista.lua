@@ -141,17 +141,17 @@ function OnLoad()
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 10, 0)
+  Config.harrConfig:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
   Config.farmConfig:addSubMenu("Lane Clear", "lc")
   Config.farmConfig:addSubMenu("Last Hit", "lh")
   Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig.lc:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 10, 0)
+  Config.farmConfig.lc:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
   Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig.lh:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 10, 0)
+  Config.farmConfig.lh:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
       
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
@@ -243,7 +243,7 @@ function OnTick()
       Killsteal()
     end
 
-    if not ultOn and (Config.kConfig.har or Config.kConfig.harr) then
+    if (Config.kConfig.har or Config.kConfig.harr) then
       Harrass()
     end
 
@@ -264,22 +264,22 @@ end
 
 function LastHit()
     if QReady and Config.farmConfig.lh.Q then
-      for i, mob in pairs(MobsK) do
-        local QMinionDmg = GetDmg("Q", mob.unit)
-        if QMinionDmg >= minion.health and ValidTarget(mob.unit, data[0].range) then
-          CastQ(mob.unit)
+      for i, unit in pairs(MobsK) do
+        local QMinionDmg = GetDmg("Q", unit)
+        if QMinionDmg >= unit.health and ValidTarget(unit, data[0].range) then
+          CastQ(unit)
         end
       end
     end
     if EReady and Config.farmConfig.lh.E then  
       local killableUnit = {}  
-      for i, mob in pairs(MobsK) do    
-        local EMinionDmg = GetDmg("E", mob.unit)      
-        if EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
-        	table.insert(killableUnit, mob.unit)
+      for i, unit in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", unit)      
+        if EMinionDmg >= unit.health and ValidTarget(unit, data[2].range) then
+        	table.insert(killableUnit, unit)
         end      
       end    
-      if #killableUnit > Config.farmConfig.lh.Ea then
+      if #killableUnit >= Config.farmConfig.lh.Ea then
           CastE()
       end
     end  
@@ -288,33 +288,33 @@ end
 function LaneClear()
     --Check for lowlife: Lasthit = priority!
     if QReady and Config.farmConfig.lc.Q then
-      for i, mob in pairs(MobsK) do
-        local QMinionDmg = GetDmg("Q", mob.unit)
-        if QMinionDmg >= minion.health and ValidTarget(mob.unit, data[0].range) then
-          CastQ(mob.unit)
+      for i, unit in pairs(MobsK) do
+        local QMinionDmg = GetDmg("Q", unit)
+        if QMinionDmg >= unit.health and ValidTarget(unit, data[0].range) then
+          CastQ(unit)
         end
       end
     end
     if EReady and Config.farmConfig.lc.E then   
       local killableUnit = {}  
-      for i, mob in pairs(MobsK) do    
-        local EMinionDmg = GetDmg("E", mob.unit)      
-        if EMinionDmg >= minion.health and ValidTarget(mob.unit, data[2].range) then
-        	table.insert(killableUnit, mob.unit)
+      for i, unit in pairs(MobsK) do 
+        local EMinionDmg = GetDmg("E", unit)      
+        if EMinionDmg >= unit.health and ValidTarget(unit, data[2].range) then
+        	table.insert(killableUnit, unit)
         end      
       end    
-      if #killableUnit > Config.farmConfig.lc.Ea then
+      if #killableUnit >= Config.farmConfig.lc.Ea then
           CastE()
       end
     end 
     --Check for lowestlife: Lanceclear - 2nd priority!
     if QReady and Config.farmConfig.lc.Q then
       local minionTarget = nil
-      for i, mob in pairs(MobsK) do
+      for i, unit in pairs(MobsK) do
         if minionTarget == nil then 
-          minionTarget = mob.unit
-        elseif minionTarget.health >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
-          minionTarget = mob.unit
+          minionTarget = unit
+        elseif minionTarget.health >= unit.health and ValidTarget(unit, data[0].range) then
+          minionTarget = unit
         end
       end
       if minionTarget ~= nil then
@@ -329,10 +329,10 @@ function Combo()
 	end
 	if Config.comboConfig.E and EReady and ValidTarget(Target, data[2].range) then
       local killableUnit = {}  
-      for i, mob in pairs(MobsK) do    
-        local EMinionDmg = GetDmg("E", mob.unit)      
+      for i, unit in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", unit)      
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        	table.insert(killableUnit, mob.unit)
+        	table.insert(killableUnit, unit)
         end      
       end    
       if #killableUnit >= 1 and Config.comboConfig.Er then
@@ -356,11 +356,11 @@ function OnCreateObj(obj)
 		  end
 		end
 	end
-  for i, mob in pairs(MobsK) do
-    if GetDistance(mob.unit,obj) < 80 then
+  for i, unit in pairs(MobsK) do
+    if GetDistance(unit,obj) < 80 then
       if rendTable[obj.name] then
-        mob.unit.stacks[i] = rendTable[obj.name].rend
-        mob.unit.createTime[i] = os.clock()
+        unit.stacks[i] = rendTable[obj.name].rend
+        unit.createTime[i] = os.clock()
       end
     end
   end
@@ -373,11 +373,11 @@ function Harrass()
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
     if EReady and Config.farmConfig.lc.E then   
       local minionTarget = nil
-      for i, mob in pairs(MobsK) do
+      for i, unit in pairs(MobsK) do
         if minionTarget == nil then 
-          minionTarget = mob.unit
-        elseif minionTarget.health >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
-          minionTarget = mob.unit
+          minionTarget = unit
+        elseif minionTarget.health >= unit.health and ValidTarget(unit, data[2].range) then
+          minionTarget = unit
         end
       end
       if #killableUnit > Config.harrConfig.Ea then
@@ -702,13 +702,14 @@ function GetDmg(spell, enemy) --Partially from HTTF
         end
       end
     end
-    for i, mob in pairs(MobsK) do
-      if mob.unit == target then
+    for i, unit in pairs(MobsK) do
+      if unit == target then
         if mob.createTime + 4 < os.clock() then
           stacks = mob.stacks
         end
       end
     end
+    print("Target "..enemy.name.." has "..stacks.." on him")
     ADDmg = 10 + 10 * ELevel + myHero.totalDamage * 0.6 + stacks * (kalE(ELevel) + (.12 + .03 * ELevel) * myHero.totalDamage )
   elseif spell == "R" then
     return 0
