@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.06
+local version = 0.07
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -709,19 +709,19 @@ function GetDmg(spell, enemy) --Partially from HTTF
         end
       end
     end
-    local function kalE(x) 
-	  if x == 1 then 
-	    return 5 
-	  else 
-	    return kalE(x-1) + 2 + x
-	  end 
-	end
     ADDmg = 10 + 10 * ELevel + myHero.totalDamage * 0.6 + stacks * (kalE(ELevel) + (.12 + .03 * ELevel) * myHero.totalDamage )
   elseif spell == "R" then
     return 0
   end
 
   return ADDmg*(1-ArmorPercent)
+end
+function kalE(x) 
+  if x <= 1 then 
+    return 5 
+  else 
+    return 2 + x + kalE(x-1)
+  end 
 end
 ---------------------------------------
 
