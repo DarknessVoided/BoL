@@ -119,7 +119,7 @@ function OnLoad()
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, ´false)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
@@ -154,6 +154,7 @@ function OnLoad()
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("r", "Cast R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -229,6 +230,10 @@ function OnTick()
 
     if Config.kConfig.combo then
       Combo()
+    end
+
+    if Config.kConfig.r then
+      CastR(Target)
     end
   end
 
