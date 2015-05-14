@@ -322,15 +322,21 @@ end
 
 --[[ NOT DONE YET ]]--
 function OnCreateObj(object)
-  if object ~= nil and string.find(string.lower(object.name), string.lower(myHero.charName)) and string.find(string.lower(object.name), string.lower(myHero.charName)) then
+  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQ")) then
     focusStacks = focusStacks +1
+  end 
+  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQReady")) then
+    focusStacks = 5
   end 
 end
  
 function OnDeleteObj(object)
-  if object ~= nil and string.find(string.lower(object.name), string.lower(myHero.charName)) then
+  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQ")) then
     focusStacks = 0
-  end
+  end 
+  if object ~= nil and string.find(string.lower(object.name), string.lower("AsheQReady")) then
+    focusStacks = 0
+  end 
 end
 --[[ NOT DONE YET ]]--
 
