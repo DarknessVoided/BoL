@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.05
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -98,7 +98,7 @@ local ultOn, oneShot = false, false
 local osTarget = nil
 data = {
     [_Q] = { range = 125, type = "notarget", aareset = true},
-    [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = false, type = "circular"},
+    [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
     [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
     [_R] = { range = 4000, type = "notarget"}
     }
@@ -464,10 +464,7 @@ function CastQ(Targ)
   if QReady then CastSpell(_Q, myHero:Attack(Targ)) end
 end
 function CastW(Targ) 
-  local CastPosition, HitChance, Position = Predict(Targ, 1, myHero)
-  if HitChance and HitChance >= 2 and WReady then
-    CastSpell(_W)
-  end
+  if WReady then CastSpell(_W) end
 end
 function CastE(Targ) 
   local CastPosition, HitChance, Position = Predict(Targ, 2, myHero)
@@ -557,7 +554,6 @@ function ActivePred()
 end
 
 function SetupHPred()
-  MakeHPred("W", 1) 
   MakeHPred("E", 2) 
 end
 
