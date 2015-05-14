@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -604,33 +604,30 @@ function DmgCalculations()
             if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
                 enemyTable[i].ready = QReady
-            elseif enemy.health < damageR then
-                enemyTable[i].indicatorText = "R Kill"
-                enemyTable[i].ready = EReady
             elseif enemy.health < damageW then
                 enemyTable[i].indicatorText = "W Kill"
                 enemyTable[i].ready = WReady
-            elseif enemy.health < damageE + damageQ then
-                enemyTable[i].indicatorText = "Q + E Kill"
-                enemyTable[i].ready = EReady and QReady
+            elseif enemy.health < damageR then
+                enemyTable[i].indicatorText = "R Kill"
+                enemyTable[i].ready = RReady
             elseif enemy.health < damageQ + damageW then
                 enemyTable[i].indicatorText = "Q + W Kill"
                 enemyTable[i].ready = QReady and WReady
             elseif enemy.health < damageW + damageR then
                 enemyTable[i].indicatorText = "W + R Kill"
-                enemyTable[i].ready = WReady and EReady
+                enemyTable[i].ready = WReady and RReady
             elseif enemy.health < damageQ + damageW + damageR then
                 enemyTable[i].indicatorText = "Q + W + R Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
+                enemyTable[i].ready = QReady and WReady and RReady
             elseif enemy.health < damageAA + damageQ + damageW + damageE + damageI then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and WReady and EReady and IReady
+                enemyTable[i].ready = QReady and WReady and RReady and IReady
             else
-                local damageTotal = damageAA + damageQ + damageW + damageE + damageI
+                local damageTotal = damageAA + damageQ + damageW + damageR + damageI
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or WReady or EReady
+                enemyTable[i].ready = QReady or WReady or RReady
             end
             local neededAA = math.ceil(enemy.health / damageAA)    
             enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededAA.." hits"
