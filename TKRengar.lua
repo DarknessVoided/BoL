@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.04
+local version = 0.05
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -42,9 +42,10 @@ end
 
 --[[ Libraries start ]]--
 local predToUse = {}
-VP = nil
-DP = nil
-HP = nil
+VP  = nil
+DP  = nil
+HP  = nil
+TKP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
@@ -61,6 +62,12 @@ if FileExist(LIB_PATH .. "/HPrediction.lua") then
   require("HPrediction")
   HP = HPrediction()
   table.insert(predToUse, "HPrediction")
+end
+
+if FileExist(LIB_PATH .. "/TKPrediction.lua") then
+  require("TKPrediction")
+  TKP = TKPrediction()
+  table.insert(predToUse, "TKPrediction")
 end
 
 if predToUse == {} then 
@@ -85,11 +92,9 @@ local QReady, WReady, EReady, RReady, IReady, SReady = function() return myHero:
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
-local predictions = {}
-local combos = {}
 local enemyTable = {}
 local enemyCount = 0
-local ultOn, oneShot, fullStacked = false, false, false
+local ultOn, oneShot = false, false
 local osTarget = nil
 data = {
     [_Q] = { range = 125, type = "notarget", aareset = true},
@@ -254,7 +259,7 @@ function OnTick()
 end
 
 function LastHit()
-  if fullStacked and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+  if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
     if WReady and Config.farmConfig.lc.W then
       local minionTarget = nil
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
@@ -295,7 +300,7 @@ function LastHit()
 end
 
 function LaneClear()
-  if fullStacked and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+  if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
     if WReady and Config.farmConfig.lc.W then
       local minionTarget = nil
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
@@ -377,7 +382,7 @@ function LaneClear()
 end
 
 function Combo()
-  if fullStacked and Config.comboConfig.Whp and ((myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp) then
+  if myHero.mana == 5 and Config.comboConfig.Whp and ((myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp) then
     if ValidTarget(Target, data[1].range) then
       CastW(Target)
     else
@@ -409,7 +414,7 @@ end
 function OneShot()
   if GetDistance(osTarget, myHero) > myHero.range then return end
   if Smite ~= nil and SReady then CastSpell(Smite, osTarget) end
-  if fullStacked then 
+  if myHero.mana == 5 then 
     if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
       CastE(osTarget)
     end
@@ -435,17 +440,11 @@ function OnCreateObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     ultOn = true
   end 
-  if object ~= nil and string.find(object.name, "Rengar_Base_P_Buf_Max") then
-    fullStacked = true
-  end
 end
  
 function OnDeleteObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     ultOn = false
-  end
-  if object ~= nil and string.find(object.name, "Rengar_Base_P_Buf_Max") then
-    fullStacked = false
   end
 end
 
@@ -467,7 +466,7 @@ end
 function CastW(Targ) 
   local CastPosition, HitChance, Position = Predict(Targ, 1, myHero)
   if HitChance and HitChance >= 2 and WReady then
-    CCastSpell(_W, CastPosition.x, CastPosition.z)
+    CastSpell(_W)
   end
 end
 function CastE(Targ) 
@@ -620,6 +619,8 @@ function Predict(Target, spell, source)
   elseif ActivePred() == "HPrediction" then
     local Position, HitChance = HPredict(Target, spell, source)
     return Position, HitChance, Position
+  elseif ActivePred() == "TKPrediction" then
+    return TKP:Predict(spell, Target, source) 
   end
 end
 
