@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.04
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -264,19 +264,19 @@ end
 
 function LastHit()
     if QReady and Config.farmConfig.lh.Q then
-      for i, minion in pairs(MobsK.unit) do
-        local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
-          CastQ(minion)
+      for i, mob in pairs(MobsK) do
+        local QMinionDmg = GetDmg("Q", mob.unit)
+        if QMinionDmg >= minion.health and ValidTarget(mob.unit, data[0].range) then
+          CastQ(mob.unit)
         end
       end
     end
     if EReady and Config.farmConfig.lh.E then  
       local killableUnit = {}  
-      for i, minion in pairs(MobsK.unit) do    
-        local EMinionDmg = GetDmg("E", minion)      
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        	table.insert(killableUnit, minion)
+      for i, mob in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", mob.unit)      
+        if EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
+        	table.insert(killableUnit, mob.unit)
         end      
       end    
       if #killableUnit > Config.farmConfig.lh.Ea then
@@ -288,19 +288,19 @@ end
 function LaneClear()
     --Check for lowlife: Lasthit = priority!
     if QReady and Config.farmConfig.lc.Q then
-      for i, minion in pairs(MobsK.unit) do
-        local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
-          CastQ(minion)
+      for i, mob in pairs(MobsK) do
+        local QMinionDmg = GetDmg("Q", mob.unit)
+        if QMinionDmg >= minion.health and ValidTarget(mob.unit, data[0].range) then
+          CastQ(mob.unit)
         end
       end
     end
     if EReady and Config.farmConfig.lc.E then   
       local killableUnit = {}  
-      for i, minion in pairs(MobsK.unit) do    
-        local EMinionDmg = GetDmg("E", minion)      
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        	table.insert(killableUnit, minion)
+      for i, mob in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", mob.unit)      
+        if EMinionDmg >= minion.health and ValidTarget(mob.unit, data[2].range) then
+        	table.insert(killableUnit, mob.unit)
         end      
       end    
       if #killableUnit > Config.farmConfig.lc.Ea then
@@ -310,11 +310,11 @@ function LaneClear()
     --Check for lowestlife: Lanceclear - 2nd priority!
     if QReady and Config.farmConfig.lc.Q then
       local minionTarget = nil
-      for i, minion in pairs(MobsK.unit) do
+      for i, mob in pairs(MobsK) do
         if minionTarget == nil then 
-          minionTarget = minion
-        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[0].range) then
-          minionTarget = minion
+          minionTarget = mob.unit
+        elseif minionTarget.health >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
+          minionTarget = mob.unit
         end
       end
       if minionTarget ~= nil then
@@ -329,10 +329,10 @@ function Combo()
 	end
 	if Config.comboConfig.E and EReady and ValidTarget(Target, data[2].range) then
       local killableUnit = {}  
-      for i, minion in pairs(MobsK.unit) do    
-        local EMinionDmg = GetDmg("E", minion)      
+      for i, mob in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", mob.unit)      
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        	table.insert(killableUnit, minion)
+        	table.insert(killableUnit, mob.unit)
         end      
       end    
       if #killableUnit >= 1 and Config.comboConfig.Er then
@@ -344,23 +344,23 @@ function Combo()
 end
 
 function OnCreateObj(obj)
-  if myHero.charName ~= "Kalista" and myHero.charName ~= "Twitch" then return end
+  if myHero.charName ~= "Kalista" then return end
   if obj == nil then return end
   rendTable = {["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
                ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }}
-  for i, unit in pairs(Enemies.unit) do
-    if GetDistance(unit,obj) < 80 then
+	for i, unit in pairs(Enemies) do
+		if GetDistance(unit,obj) < 80 then
+		  if rendTable[obj.name] then
+		    EnemiesK.stacks[i] = rendTable[obj.name].rend
+		    EnemiesK.createTime[i] = os.clock()
+		  end
+		end
+	end
+  for i, mob in pairs(MobsK) do
+    if GetDistance(mob.unit,obj) < 80 then
       if rendTable[obj.name] then
-        EnemiesK.stacks[i] = rendTable[obj.name].rend
-        EnemiesK.createTime[i] = os.clock()
-      end
-    end
-  end
-  for i, unit in pairs(MobsK.unit) do
-    if GetDistance(unit,obj) < 80 then
-      if rendTable[obj.name] then
-        MobsK.stacks[i] = rendTable[obj.name].rend
-        MobsK.createTime[i] = os.clock()
+        mob.unit.stacks[i] = rendTable[obj.name].rend
+        mob.unit.createTime[i] = os.clock()
       end
     end
   end
@@ -373,11 +373,11 @@ function Harrass()
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
     if EReady and Config.farmConfig.lc.E then   
       local minionTarget = nil
-      for i, minion in pairs(MobsK.unit) do
+      for i, mob in pairs(MobsK) do
         if minionTarget == nil then 
-          minionTarget = minion
-        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[2].range) then
-          minionTarget = minion
+          minionTarget = mob.unit
+        elseif minionTarget.health >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
+          minionTarget = mob.unit
         end
       end
       if #killableUnit > Config.harrConfig.Ea then
@@ -634,7 +634,6 @@ function DmgCalculations()
             local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
             local damageS  = Smite and (20 + 8 * myHero.level) or 0
             enemyTable[i].damageQ = damageQ
-            enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageI = damageI
             enemyTable[i].damageS = damageS
@@ -647,15 +646,15 @@ function DmgCalculations()
             elseif enemy.health < damageE + damageQ then
                 enemyTable[i].indicatorText = "Q + E Kill"
                 enemyTable[i].ready = EReady and QReady
-            elseif enemy.health < damageAA + damageQ + damageW + damageE + damageI + damageS then
+            elseif enemy.health < damageAA + damageQ + damageE + damageI + damageS then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and WReady and EReady and IReady
+                enemyTable[i].ready = QReady and EReady and IReady
             else
-                local damageTotal = damageAA + damageQ + damageW + damageE + damageI
+                local damageTotal = damageAA + damageQ + damageE + damageI
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or WReady or EReady
+                enemyTable[i].ready = QReady or EReady
             end
             local neededAA = math.ceil(enemy.health / damageAA)    
             enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededAA.." hits"
@@ -695,22 +694,21 @@ function GetDmg(spell, enemy) --Partially from HTTF
   elseif spell == "W" then
     return 0
   elseif spell == "E" then
-    local stacks = -1
-    for i, unit in pairs(Enemies.unit) do
+    local stacks = 0
+    for i, unit in pairs(Enemies) do
       if unit == target then
         if EnemiesK.createTime[i] + 4 < os.clock() then
           stacks = EnemiesK.stacks[i]
         end
       end
     end
-    for i, unit in pairs(MobsK.unit) do
-      if unit == target then
-        if MobsK.createTime[i] + 4 < os.clock() then
-          stacks = MobsK.stacks[i]
+    for i, mob in pairs(MobsK) do
+      if mob.unit == target then
+        if mob.createTime + 4 < os.clock() then
+          stacks = mob.stacks
         end
       end
     end
-    if stacks < 0 then print("Target not found.") end
     local function kalE(x) 
 	  if x == 1 then 
 	    return 5 
@@ -723,7 +721,7 @@ function GetDmg(spell, enemy) --Partially from HTTF
     return 0
   end
 
-  return ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
+  return ADDmg*(1-ArmorPercent)
 end
 ---------------------------------------
 
