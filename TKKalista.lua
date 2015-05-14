@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -95,6 +95,8 @@ local sts
 local enemyTable = {}
 local enemyCount = 0
 local osTarget = nil
+local MobsK = {}
+local EnemiesK = {}
 data = {
     [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 1.5, range = 5500, type = "dontuse"},
@@ -103,8 +105,6 @@ data = {
     }
 
 function OnLoad()
-  MobsK     = {}
-  EnemiesK  = {}
   for _, minion in pairs(minionManager(MINION_JUNGLE, 25000, myHero, MINION_SORT_MAXHEALTH_DEC).objects) do
     table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
   end
