@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -105,16 +105,16 @@ data = {
 function OnLoad()
   MobsK     = {}
   EnemiesK  = {}
-  for _, minion in pairs(minionManager(MINION_JUNGLE, 25000, myHero, MINION_SORT_MAXHEALTH_DEC)) do
+  for _, minion in pairs(minionManager(MINION_JUNGLE, 25000, myHero, MINION_SORT_MAXHEALTH_DEC).objects) do
     table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
   end
-  for _, minion in pairs(minionManager(MINION_ENEMY, 25000, myHero, MINION_SORT_MAXHEALTH_DEC)) do
+  for _, minion in pairs(minionManager(MINION_ENEMY, 25000, myHero, MINION_SORT_MAXHEALTH_DEC).objects) do
     table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
   end
-  for _, minion in pairs(minionManager(MINION_OTHER, 25000, myHero, MINION_SORT_MAXHEALTH_DEC)) do
+  for _, minion in pairs(minionManager(MINION_OTHER, 25000, myHero, MINION_SORT_MAXHEALTH_DEC).objects) do
     table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
   end
-  for _, unit in pairs(Enemies) do
+  for _, unit in pairs(GetEnemyHeroes()) do
     table.insert(EnemiesK, {unit = unit, stacks = 0, createTime = 0})
   end
 
