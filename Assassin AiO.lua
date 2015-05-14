@@ -347,7 +347,7 @@ function OnLoad()
   
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
-        if champ.team ~= player.team then
+        if champ.team ~= myHero.team then
             enemyCount = enemyCount + 1
             enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
