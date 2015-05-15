@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.04
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
@@ -156,7 +156,7 @@ function OnLoad()
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("lc", "Last Hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   if VIP_USER then Config.kConfig:addParam("r", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T")) end
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
@@ -225,7 +225,7 @@ function OnTick()
     
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
-    if Config.casual.leW and WReady then 
+    if Config.casual.leW and WReady and not recall then 
     	if myHero.mana < 40 then
     		CastSpell(_W)
     	end
@@ -295,6 +295,7 @@ function OnTick()
 end
 
 function DoSomeUltLogic()
+  if not VIP_USER then return end
   	if Config.rConfig.r then
   		local enemies = EnemiesAround(Target, 250)
   		if enemies >= Config.rConfig.toomanyenemies then
@@ -373,38 +374,29 @@ function ActivePred()
 end
 
 function SetupHPred()
-    Spell_Q = MakeHPred(Spell_Q, 0) 
-    Spell_E = MakeHPred(Spell_E, 2) 
-    Spell_R = MakeHPred(Spell_R, 3) 
+  MakeHPred("Q", 0) 
+  MakeHPred("E", 2) 
+  MakeHPred("R", 3) 
 end
 
 function MakeHPred(hspell, i)
-    hspell.collisionM[myHero.charName] = data[i].collision
-    hspell.collisionH[myHero.charName] = data[i].collision
-    hspell.delay[myHero.charName] = data[i].delay
-    hspell.range[myHero.charName] = data[i].range
+ if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
     if data[i].type == "linear" then
-        hspell.width[myHero.charName] = 2*data[i].width
         if data[i].speed ~= math.huge then 
-            hspell.type[myHero.charName] = "DelayLine"
-            hspell.speed[myHero.charName] = data[i].speed
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         else
-            hspell.type[myHero.charName] = "PromptLine"
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         end
     elseif data[i].type == "circular" then
-        hspell.radius[myHero.charName] = data[i].width
         if data[i].speed ~= math.huge then 
-            hspell.type[myHero.charName] = "DelayCircle"
-            hspell.speed[myHero.charName] = data[i].speed
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         else
-            hspell.type[myHero.charName] = "PromptCircle"
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
         end
     else --Cone!
-        hspell.type[myHero.charName] = "DelayLine"
-        hspell.width[myHero.charName] = data[i].width
-        hspell.speed[myHero.charName] = data[i].speed
+        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
     end
-    return hspell
+ end
 end
 
 function Predict(Target, spell)

@@ -1,35 +1,35 @@
 --[[
 
-  _______            _  __    _      ____                      _ 
- |__   __|          | |/ /   | |    |  _ \                    | |
-    | | ___  _ __   | ' / ___| | __ | |_) |_ __ __ _ _ __   __| |
-    | |/ _ \| '_ \  |  < / _ \ |/ / |  _ <| '__/ _` | '_ \ / _` |
-    | | (_) | |_) | | . \  __/   <  | |_) | | | (_| | | | | (_| |
-    |_|\___/| .__/  |_|\_\___|_|\_\ |____/|_|  \__,_|_| |_|\__,_|
-            | |                                                  
-            |_|                                                  
+  _______            _  __    _      _____                             
+ |__   __|          | |/ /   | |    |  __ \                            
+    | | ___  _ __   | ' / ___| | __ | |__) |___ _ __   __ _  __ _ _ __ 
+    | |/ _ \| '_ \  |  < / _ \ |/ / |  _  // _ \ '_ \ / _` |/ _` | '__|
+    | | (_) | |_) | | . \  __/   <  | | \ \  __/ | | | (_| | (_| | |   
+    |_|\___/| .__/  |_|\_\___|_|\_\ |_|  \_\___|_| |_|\__, |\__,_|_|   
+            | |                                        __/ |           
+            |_|                                       |___/                                                                      
 
-  By Nebelwolfi                             
- 
+    By Nebelwolfi
+
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/TKBrand.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."TKBrand.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."TKRengar.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Brand - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Rengar - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKBrand.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKRengar.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
       if tonumber(version) < ServerVersion then
         TopKekMsg("New version available v"..ServerVersion)
         TopKekMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
+        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
       else
         TopKekMsg("Loaded the latest version (v"..ServerVersion..")")
       end
@@ -42,9 +42,10 @@ end
 
 --[[ Libraries start ]]--
 local predToUse = {}
-VP = nil
-DP = nil
-HP = nil
+VP  = nil
+DP  = nil
+HP  = nil
+TKP = nil
 if FileExist(LIB_PATH .. "/VPrediction.lua") then
   require("VPrediction")
   VP = VPrediction()
@@ -63,6 +64,12 @@ if FileExist(LIB_PATH .. "/HPrediction.lua") then
   table.insert(predToUse, "HPrediction")
 end
 
+if FileExist(LIB_PATH .. "/TKPrediction.lua") then
+  require("TKPrediction")
+  TKP = TKPrediction()
+  table.insert(predToUse, "TKPrediction")
+end
+
 if predToUse == {} then 
   TopKekMsg("Please download a Prediction") 
   return 
@@ -77,26 +84,27 @@ end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
-if  myHero.charName ~= "Brand" then return end -- not supported :(
+if  myHero.charName ~= "Rengar" then return end -- not supported :(
 if VIP_USER then HookPackets() end
+if myHero:GetSpellData(SUMMONER_1).name:find("smite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("smite") then Smite = SUMMONER_2 end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
-local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
+local QReady, WReady, EReady, RReady, IReady, SReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) end end
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
-local predictions = {}
-local combos = {}
 local enemyTable = {}
 local enemyCount = 0
+local ultOn, oneShot = false, false
+local osTarget = nil
 data = {
-    [_Q] = { speed = 1200, delay = 0.5, range = 1050, width = 80, collision = true, aoe = false, type = "linear"},
-    [_W] = { speed = 900, delay = 0.25, range = 1050, width = 275, collision = false, aoe = true, type = "circular"},
-    [_E] = { range = 625, type = "targeted"},
-    [_R] = { range = 750, type = "targeted"}
+    [_Q] = { range = 125, type = "notarget", aareset = true},
+    [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
+    [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
+    [_R] = { range = 4000, type = "notarget"}
     }
 
 function OnLoad()
-  Config = scriptConfig("Top Kek Brand", "TKBrand1")
+  Config = scriptConfig("Top Kek Rengar", "TKRengar")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -106,58 +114,53 @@ function OnLoad()
 
   if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.03, 0, 0.3, 2) end
   if ActivePred() == "HPrediction" then SetupHPred() end
-  
-  Config:addSubMenu("Misc settings", "casual")
-  Config.casual:addSubMenu("Zhonya's settings", "zhg")
-  Config.casual.zhg:addParam("enabled", "Use Auto Zhonya's", SCRIPT_PARAM_ONOFF, true)
-  Config.casual.zhg:addParam("zhghp", "Min. % health for Zhonya's", SCRIPT_PARAM_SLICE, 15, 1, 50, 0)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("Qs", "Q only for stun", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("Whp", "Use W for HP", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("Whpp", "W for HP under X%", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("Rhp", "R under enemy HP", SCRIPT_PARAM_SLICE, 30, 1, 100, 0)
+  --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
-
-  Config:addSubMenu("Ult Settings", "rConfig")
-  Config.rConfig:addParam("r", "Auto-R", SCRIPT_PARAM_ONOFF, true)
-  Config.rConfig:addParam("toomanyenemies", "Min. enemies for auto-r", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+  if Smite ~= nil then Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("Qs", "Q only for stun", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
-  Config.farmConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+  Config.farmConfig:addSubMenu("Lane Clear", "lc")
+  Config.farmConfig:addSubMenu("Last Hit", "lh")
+  Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addParam("Whp", "Use W for HP while farming", SCRIPT_PARAM_ONOFF, true)
       
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
   Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.KS:addParam("killstealW", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
   if Ignite ~= nil then Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
+  if Smite ~= nil then Config.KS:addParam("killstealS", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
 
   Config:addSubMenu("Draw Settings", "Drawing")
   Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
-  Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Key Settings", "kConfig")
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Farm (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -166,6 +169,7 @@ function OnLoad()
   Config.kConfig:permaShow("combo")
   Config.kConfig:permaShow("harr")
   Config.kConfig:permaShow("har")
+  Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
   sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
   Config:addSubMenu("Target Selector", "sts")
@@ -175,7 +179,7 @@ function OnLoad()
         local champ = heroManager:GetHero(i)
         if champ.team ~= player.team then
             enemyCount = enemyCount + 1
-            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
+            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
     end
 end
@@ -219,126 +223,234 @@ end
 
 function OnTick()
   Target = GetCustomTarget()
-  
-  zhg()
 
   DmgCalculations()
 
   if Target ~= nil then
-    if Config.rConfig.r then
-      local enemies = EnemiesAround(myHero, 250)
-      if enemies >= Config.rConfig.toomanyenemies then
-        CastR(Target)
-      end
-    end
-
     if Config.KS.enableKS then 
       Killsteal()
     end
 
-    if Config.kConfig.har or Config.kConfig.harr then
+    if not ultOn and (Config.kConfig.har or Config.kConfig.harr) then
       Harrass()
     end
 
     if Config.kConfig.combo then
-      Combo()
+      if ultOn and not oneShot then 
+        osTarget = Target
+      end
+      if ultOn or oneShot then 
+        oneShot = true
+        OneShot()
+      else
+        Combo()
+      end
     end
   end
 
-  if Config.kConfig.lc then
-    Farm()
+  if not ultOn and Config.kConfig.lh then
+    LastHit()
+  end
+  if not ultOn and Config.kConfig.lc then
+    LaneClear()
   end
 
   if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
-function Farm()
-  if QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
-      local QMinionDmg = GetDmg("Q", minion)
-      if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
-        CastQ(minion)
+function LastHit()
+  if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if WReady and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      CastW(minionTarget)
+    end  
+  else
+    if QReady and Config.farmConfig.lh.Q then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion)
+        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+          CastQ(minion)
+        end
       end
     end
+    if WReady and Config.farmConfig.lh.W then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local WMinionDmg = GetDmg("W", minion)
+        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+          CastW(minion)
+        end
+      end    
+    end  
+    if EReady and Config.farmConfig.lh.E then    
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
+        local EMinionDmg = GetDmg("E", minion)      
+        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range+data[1].width) then
+          CastE(minion)
+        end      
+      end    
+    end  
   end
-  if WReady and Config.farmConfig.W and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
-      local WMinionDmg = GetDmg("W", minion)
-      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
-        CastW(minion)
+end
+
+function LaneClear()
+  if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if WReady and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
       end
-    end    
-  end  
-  if EReady and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
-      local EMinionDmg = GetDmg("E", minion)      
-      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        CastE(minion)
-      end      
-    end    
-  end  
+      CastW(minionTarget)
+    end  
+  else
+    --Check for lowlife: Lasthit = priority!
+    if QReady and Config.farmConfig.lc.Q then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion)
+        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+          CastQ(minion)
+        end
+      end
+    end
+    if WReady and Config.farmConfig.lc.W then
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local WMinionDmg = GetDmg("W", minion)
+        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+          CastW(minion)
+        end
+      end    
+    end  
+    if EReady and Config.farmConfig.lc.E then    
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
+        local EMinionDmg = GetDmg("E", minion)      
+        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range+data[1].width) then
+          CastE(minion)
+        end      
+      end    
+    end 
+    --Check for lowestlife: Lanceclear - 2nd priority!
+    if QReady and Config.farmConfig.lc.Q then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[0].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastQ(minionTarget)
+      end
+    end
+    if WReady and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastW(minionTarget)
+      end
+    end  
+    if EReady and Config.farmConfig.lc.E then   
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[2].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastE(minionTarget)
+      end
+    end 
+  end
 end
 
 function Combo()
-  if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
-    if Config.comboConfig.Qs then
-      for i = 1, enemyCount do
-        if enemyTable[i].player == Target then
-          if enemyTable[i].blazed then
-            CastQ(Target)
-          end
+  if myHero.mana == 5 and Config.comboConfig.Whp and ((myHero.health / myHero.maxHealth) * 100 <= Config.comboConfig.Whpp) then
+    if ValidTarget(Target, data[1].range) then
+      CastW(Target)
+    else
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
         end
       end
-    else
+      if minionTarget ~= nil then
+        CastW(minionTarget)
+      end
+    end  
+  else
+    if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
       CastQ(Target)
     end
-  end
-  if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
-    CastW(Target)
-  end
-  if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-    CastE(Target)
-  end
-  if Config.comboConfig.R and Config.comboConfig.Rhp >= Target.health and ValidTarget(Target, data[3].range) then
-    CastR(Target)
+    if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
+      CastW(Target)
+    end
+    if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+      CastE(Target)
+    end
   end
 end
 
-function OnCreateObj(object)
-  if object ~= nil and string.find(object.name, "BrandFireMark") then
-    for i = 1, enemyCount do
-      if GetDistance(object,enemyTable[i].player) < 80 then
-        --print(enemyTable[i].name.." is now blazed! Time: "..os.clock())
-        enemyTable[i].blazed = true
-      end
+function OneShot()
+  if GetDistance(osTarget, myHero) > myHero.range then return end
+  if Smite ~= nil and SReady then CastSpell(Smite, osTarget) end
+  if myHero.mana == 5 then 
+    if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
+      CastE(osTarget)
+    end
+  else
+    if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then
+      CastQ(osTarget)
+    end
+    if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
+      CastW(osTarget)
+    end
+    if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
+      CastE(osTarget)
+    end
+    if Config.comboConfig.item and GetDistance(osTarget, myHero) < data[0].range then
+      UseItems(osTarget)
     end
   end
+  if Ignite ~= nil and IReady then CastSpell(Ignite, osTarget) end
+  if osTarget.dead then oneShot = false end
+end
+
+function OnCreateObj(object)
+  if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
+    ultOn = true
+  end 
 end
  
 function OnDeleteObj(object)
-  if string.find(object.name, "BrandFireMark") then
-    for i = 1, enemyCount do
-      if GetDistance(object,enemyTable[i].player) < 80 then
-        --print(enemyTable[i].name.." is no longer blazed! Time: "..os.clock())
-        enemyTable[i].blazed = false
-      end
-    end
+  if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
+    ultOn = false
   end
 end
 
 function Harrass()
   if Config.harrConfig.Q and ValidTarget(Target, data[0].range) then
-    if Config.harrConfig.Qs then
-      for i = 1, enemyCount do
-        if enemyTable[i].player == Target then
-          if enemyTable[i].blazed then
-            CastQ(Target)
-          end
-        end
-      end
-    else
-      CastQ(Target)
-    end
+    CastQ(Target)
   end
   if Config.harrConfig.W and ValidTarget(Target, data[1].range) then
     CastW(Target)
@@ -348,23 +460,20 @@ function Harrass()
   end
 end
 
-function CastQ(Target) 
-  local CastPosition, HitChance, Position = Predict(Target, 0, myHero)
-  if HitChance >= 2 and QReady then
-    CCastSpell(_Q, CastPosition.x, CastPosition.z)
+function CastQ(Targ) 
+  if QReady then CastSpell(_Q, myHero:Attack(Targ)) end
+end
+function CastW(Targ) 
+  if WReady then CastSpell(_W) end
+end
+function CastE(Targ) 
+  local CastPosition, HitChance, Position = Predict(Targ, 2, myHero)
+  if HitChance and HitChance >= 2 and EReady then
+    CCastSpell(_E, CastPosition.x, CastPosition.z)
   end
 end
-function CastW(Target) 
-  local CastPosition, HitChance, Position = Predict(Target, 1, myHero)
-  if HitChance >= 2 and WReady then
-    CCastSpell(_W, CastPosition.x, CastPosition.z)
-  end
-end
-function CastE(Target) 
-	if EReady then CastSpell(_E, Target) end
-end
-function CastR(Target) 
-  if RReady then CastSpell(_R, Target) end
+function CastR(Targ) 
+  if RReady then CastSpell(_R) end
 end
 
 function EnemiesAround(Unit, range)
@@ -379,8 +488,8 @@ function Killsteal()
     local qDmg = ((GetDmg("Q", enemy)) or 0)  
     local wDmg = ((GetDmg("W", enemy)) or 0)  
     local eDmg = ((GetDmg("E", enemy)) or 0)  
-    local rDmg = ((GetDmg("R", enemy)) or 0)
-    local iDmg = 50 + (20 * myHero.level) / 5
+    local iDmg = (50 + 20 * myHero.level) / 5
+    local sDmg = 20 + 8 * myHero.level
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
         CastQ(enemy)
@@ -388,23 +497,13 @@ function Killsteal()
         CastW(enemy)
       elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
         CastE(enemy)
-      elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
-        CastR(enemy)
       elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
         CCastSpell(Ignite, enemy)
+      elseif enemy.health < sDmg and Config.KS.killstealS and ValidTarget(enemy, 760) and SReady then
+        CCastSpell(Smite, enemy)
       end
     end
   end
-end
-
-function zhg()
-  if Config.casual.zhg.enabled then
-    if GetInventoryHaveItem(3157) and GetInventoryItemIsCastable(3157) then
-      if myHero.health <=  myHero.maxHealth * (Config.casual.zhg.zhghp / 100) then
-        CastItem(3157)
-      end 
-    end 
-  end 
 end
 
 function GetCustomTarget()
@@ -424,10 +523,12 @@ end
 
 -- Credits: Da Vinci
 local CastableItems = {
-  Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return GetDmg("RUINEDKING", Target, myHero) end},
-  Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return GetDmg("BWC", Target, myHero) end},
-  Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return GetDmg("HXG", Target, myHero) end},
-  Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return GetDmg("BLACKFIRE", Target, myHero) end},
+  Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", target, myHero) end},
+  Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", target, myHero) end},
+  Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", target, myHero) end},
+  Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", target, myHero) end},
+  Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", target, myHero) end},
+  Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return getDmg("BLACKFIRE", target, myHero) end},
   Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
   Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
   TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
@@ -453,8 +554,7 @@ function ActivePred()
 end
 
 function SetupHPred()
-  MakeHPred("Q", 0) 
-  MakeHPred("W", 1) 
+  MakeHPred("E", 2) 
 end
 
 function MakeHPred(hspell, i)
@@ -504,17 +604,20 @@ end
 
 local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 function Predict(Target, spell, source)
-    if ActivePred() == "VPrediction" then
-        return VPredict(Target, data[spell], source)
-    elseif ActivePred() == "Prodiction" then
-        return nil
-    elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, data[spell], source)
-        return Position, perc*3/100, Position
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, spell, source)
-        return Position, HitChance, Position
-    end
+  if Target == nil then return end
+  if ActivePred() == "VPrediction" then
+    return VPredict(Target, data[spell], source)
+  elseif ActivePred() == "Prodiction" then
+    return nil
+  elseif ActivePred() == "DivinePred" then
+    local State, Position, perc = DPredict(Target, data[spell], source)
+    return Position, perc*3/100, Position
+  elseif ActivePred() == "HPrediction" then
+    local Position, HitChance = HPredict(Target, spell, source)
+    return Position, HitChance, Position
+  elseif ActivePred() == "TKPrediction" then
+    return TKP:Predict(spell, Target, source) 
+  end
 end
 
 function HPredict(Target, spell, source)
@@ -567,17 +670,14 @@ local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
-  if Config.Drawing.QRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/4, 0x111111)
+  if Config.Drawing.QRange and QReady then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
   end
-  if Config.Drawing.WRange then
+  if Config.Drawing.WRange and WReady then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
   end
-  if Config.Drawing.ERange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
-  end
-  if Config.Drawing.RRange then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
+  if Config.Drawing.ERange and EReady then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range+data[2].width/4, 0x111111)
   end
   if Config.Drawing.dmgCalc then
         for i = 1, enemyCount do
@@ -605,15 +705,14 @@ function DmgCalculations()
             local damageQ  = GetDmg("Q", enemy)
             local damageW  = GetDmg("W", enemy)
             local damageE  = GetDmg("E", enemy)
-            local damageR  = GetDmg("R", enemy)
+            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
+            local damageS  = Smite and (20 + 8 * myHero.level) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
-            enemyTable[i].damageR = damageR
-            if enemy.health < damageR then
-                enemyTable[i].indicatorText = "R Kill"
-                enemyTable[i].ready = RReady
-            elseif enemy.health < damageQ then
+            enemyTable[i].damageI = damageI
+            enemyTable[i].damageS = damageS
+            if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
                 enemyTable[i].ready = QReady
             elseif enemy.health < damageE then
@@ -631,36 +730,18 @@ function DmgCalculations()
             elseif enemy.health < damageW + damageE then
                 enemyTable[i].indicatorText = "W + E Kill"
                 enemyTable[i].ready = WReady and EReady
-            elseif enemy.health < damageR + damageQ then
-                enemyTable[i].indicatorText = "R + Q Kill"
-                enemyTable[i].ready = RReady and QReady
-            elseif enemy.health < damageR + damageE then
-                enemyTable[i].indicatorText = "R + E Kill"
-                enemyTable[i].ready = RReady and EReady
-            elseif enemy.health < damageR + damageW then
-                enemyTable[i].indicatorText = "R + W Kill"
-                enemyTable[i].ready = RReady and WReady
             elseif enemy.health < damageQ + damageW + damageE then
                 enemyTable[i].indicatorText = "Q + W + E Kill"
                 enemyTable[i].ready = QReady and WReady and EReady
-            elseif enemy.health < damageQ + damageE + damageR then
-                enemyTable[i].indicatorText = "Q + E + R Kill"
-                enemyTable[i].ready = QReady and EReady and EReady
-            elseif enemy.health < damageQ + damageW + damageR then
-                enemyTable[i].indicatorText = "Q + W + R Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
-            elseif enemy.health < damageR + damageW + damageE then
-                enemyTable[i].indicatorText = "W + E + R Kill"
-                enemyTable[i].ready = RReady and WReady and EReady
-            elseif enemy.health < damageQ + damageW + damageE + damageR then
+            elseif enemy.health < damageAA + damageQ + damageW + damageE + damageI + damageS then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and WReady and EReady and RReady
+                enemyTable[i].ready = QReady and WReady and EReady and IReady
             else
-                local damageTotal = damageQ + damageW + damageE + damageR
+                local damageTotal = damageAA + damageQ + damageW + damageE + damageI
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or WReady or EReady or RReady
+                enemyTable[i].ready = QReady or WReady or EReady
             end
             local enemyDamageAA = getDmg("AD", player, enemy)
             local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
@@ -697,13 +778,13 @@ function GetDmg(spell, enemy) --Partially from HTTF
   elseif spell == "AD" then
     ADDmg = TotalDmg
   elseif spell == "Q" then
-    APDmg = 40*QLevel+40+0.65*AP
+    ADDmg = 30*QLevel+1.2*TotalDmg
   elseif spell == "W" then
-    APDmg = 45*WLevel+30+0.6*AP
+    APDmg = 30*WLevel+20+0.8*AP
   elseif spell == "E" then
-    ADDmg = 30*ELevel+30+0.55*AP
+    ADDmg = 50*ELevel+0.7*TotalDmg
   elseif spell == "R" then
-    APDmg = 100*RLevel+50+0.5*AP
+    return 0
   end
 
   return ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)

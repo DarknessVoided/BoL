@@ -182,20 +182,8 @@ _G.Champs = {
     }
 }
 
-local CastableItems = {
-Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", Target, myHero) end},
-Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", Target, myHero) end},
-Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", Target, myHero) end},
-Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", Target, myHero) end},
-Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", Target, myHero) end},
-Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return getDmg("BLACKFIRE", Target, myHero) end},
-Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
-Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
-TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
-}
-
 --[[ Auto updater start ]]--
-local version = 0.43
+local version = 0.46
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -222,6 +210,7 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
+if not Champs[myHero.charName] then champions = nil CastableItems = nil collectgarbage() return end -- not supported :(
 local predToUse = {}
 VP = nil
 DP = nil
@@ -263,10 +252,10 @@ end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
-if not Champs[myHero.charName] then return end -- not supported :(
 if VIP_USER then HookPackets() end
 local data = Champs[myHero.charName] -- load skills
-local QReady, WReady, EReady, RReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
 local Target 
 local sts
 local predictions = {}
@@ -298,7 +287,7 @@ function OnLoad()
 	 Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
   end
 
-  --if ActivePred() == "HPrediction" then SetupHPred() end
+  if ActivePred() == "HPrediction" then SetupHPred() end
   
   Config:addSubMenu("Combo Settings", "comboConfig")
   
@@ -333,9 +322,9 @@ function OnLoad()
 	Config.KS:addParam("killstealW", "Use W", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
 	Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
-	--Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+  if Ignite ~= nil then Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 			
-    Config:addSubMenu("Draw Settings", "Drawing")
+  Config:addSubMenu("Draw Settings", "Drawing")
 	Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, false)
 	Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, false)
 	Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, false)
@@ -358,7 +347,7 @@ function OnLoad()
   
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
-        if champ.team ~= player.team then
+        if champ.team ~= myHero.team then
             enemyCount = enemyCount + 1
             enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
@@ -371,41 +360,30 @@ function ActivePred()
 end
 
 function SetupHPred()
-  Spell_Q = MakeHPred(Spell_Q, 0) 
-  Spell_W = MakeHPred(Spell_W, 1) 
-  Spell_E = MakeHPred(Spell_E, 2) 
-  Spell_R = MakeHPred(Spell_R, 3) 
+  MakeHPred("Q", 0) 
+  MakeHPred("W", 1) 
+  MakeHPred("E", 2) 
+  MakeHPred("R", 3) 
 end
 
 function MakeHPred(hspell, i)
  if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-  hspell.collisionM[myHero.charName] = data[i].collision
-  hspell.collisionH[myHero.charName] = data[i].collision
-  hspell.delay[myHero.charName] = data[i].delay
-  hspell.range[myHero.charName] = data[i].range
-  if data[i].type == "linear" then
-    hspell.width[myHero.charName] = 2*data[i].width
-    if data[i].speed ~= math.huge then 
-        hspell.type[myHero.charName] = "DelayLine"
-        hspell.speed[myHero.charName] = data[i].speed
-    else
-        hspell.type[myHero.charName] = "PromptLine"
+    if data[i].type == "linear" then
+        if data[i].speed ~= math.huge then 
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        else
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        end
+    elseif data[i].type == "circular" then
+        if data[i].speed ~= math.huge then 
+            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        else
+            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
+        end
+    else --Cone!
+        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
     end
-  elseif data[i].type == "circular" then
-    hspell.radius[myHero.charName] = data[i].width
-    if data[i].speed ~= math.huge then 
-        hspell.type[myHero.charName] = "DelayCircle"
-        hspell.speed[myHero.charName] = data[i].speed
-    else
-        hspell.type[myHero.charName] = "PromptCircle"
-    end
-  elseif data[i].type == "cone" then --Cone!
-    hspell.type[myHero.charName] = "DelayLine"
-    hspell.width[myHero.charName] = 2*data[i].width
-    hspell.speed[myHero.charName] = data[i].speed
-  end
  end
- return hspell
 end
 
 function shuffle(a, n, whur)
@@ -450,22 +428,22 @@ end
 function killsteal()
 	for i=1, heroManager.iCount do
 		local enemy = heroManager:GetHero(i)
-		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)	
-		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
-		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
+		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)
+		local wDmg = ((getDmg("W", enemy, myHero)) or 0)
+		local eDmg = ((getDmg("E", enemy, myHero)) or 0)
 		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
-		--local iDmg = 50 + (20 * myHero.level)
+		local iDmg = 50 + (20 * myHero.level)
 		if ValidTarget(enemy) and enemy ~= nil and Config.KS.enableKS and not enemy.dead and enemy.visible then
 			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
-				CastSpell(_Q, enemy)
+				Castspell(Target, _Q)
 			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
-				CastSpell(_W, enemy)
+				Castspell(Target, _W)
 			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
-				CastSpell(_E, enemy)
+				Castspell(Target, _E)
 			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
-				CastSpell(_R, enemy)
-			--elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
-			--	CastSpell(SSpells:GetSlot("summonerdot"), enemy)
+				Castspell(Target, _R)
+			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+				CCastSpell(Ignite, enemy)
 			end
 		end
 	end
@@ -473,6 +451,8 @@ end
 
 function Harrass()
 	if orbDisabled or Config.combo then return end
+  harrEnabled = false
+  if Config.harr or Config.har then harrEnabled = true end
 	local skillOrder = {}
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 1, 1))
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 2, 2))
@@ -482,39 +462,39 @@ function Harrass()
 		if orbDisabled or recall or myHero.dead then return end
 		if skillOrder[i] == "Q" then
 			if (Target ~= nil) and QReady then
-				if ValidTarget(Target, data[0].range) and (Config.harr or Config.har) then
+				if ValidTarget(Target, data[0].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[0].range then
-            CastQ(Target)
+            Castspell(Target, _Q)
 						lastUsedSpell = _Q
 					end
 				end
 			end
 		elseif skillOrder[i] == "W" then
 			if (Target ~= nil) and WReady then
-				if ValidTarget(Target, data[1].range) and (Config.harr or Config.har) then
+				if ValidTarget(Target, data[1].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[1].range then
-            CastW(Target)
+            Castspell(Target, _W)
 						lastUsedSpell = _W
 					end
 				end
 			end
 		elseif skillOrder[i] == "E" then
 			if (Target ~= nil) and EReady then
-				if ValidTarget(Target, data[2].range) and (Config.harr or Config.har) then
+				if ValidTarget(Target, data[2].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[2].range then
-            CastE(Target)
+            Castspell(Target, _E)
 						lastUsedSpell = _E
 					end
 				end
 			end
 		end
-		if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then	
+		if Target ~=nil and Config.harrConfig.aa and harrEnabled and not orbDisabled then	
 			iOrb:Orbwalk(mousePos, Target)
-		elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
+		elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and harrEnabled then
 			moveToCursor()
 		end
 	end
-  if Target ~=nil and Config.harrConfig.aa and (Config.harr or Config.har) and not orbDisabled then 
+  if Target ~=nil and Config.harrConfig.aa and harrEnabled and not orbDisabled then 
     iOrb:Orbwalk(mousePos, Target)
   elseif iOrb:GetStage() == STAGE_NONE and Config.harrConfig.move and (Config.harr or Config.har) then
     moveToCursor()
@@ -524,7 +504,7 @@ end
 function Combo()
 	if orbDisabled or recall or myHero.dead then return end
 	local skillOrder = {}
- local comboOn = false
+  local comboOn = false
   if Config.comboo then
   comboOn = true
   table.insert(skillOrder, string.sub(combos[Config.comboConfig.cConfig.so], 1, 1))
@@ -551,7 +531,7 @@ function Combo()
 			if (Target ~= nil) and QReady then
 				if ValidTarget(Target, data[0].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[0].range then
-            CastQ(Target)
+            Castspell(Target, _Q)
 						lastUsedSpell = _Q
 					end
 				end
@@ -560,7 +540,7 @@ function Combo()
 			if (Target ~= nil) and WReady then
 				if ValidTarget(Target, data[1].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[1].range then
-            CastW(Target)
+            Castspell(Target, _W)
 						lastUsedSpell = _W
 					end
 				end
@@ -569,7 +549,7 @@ function Combo()
 			if (Target ~= nil) and EReady then
 				if ValidTarget(Target, data[2].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[2].range then
-            CastE(Target)
+            Castspell(Target, _E)
 						lastUsedSpell = _E
 					end
 				end
@@ -588,7 +568,7 @@ function Combo()
 				end
 				if ValidTarget(Target, data[3].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[3].range then
-            CastR(Target)
+            Castspell(Target, _R)
             lastUsedSpell = _R
 					end
 				end
@@ -610,115 +590,19 @@ function Combo()
 	end
 end
 
-function CastQ(Target) 
-  if data[0].aareset then
-    CastSpell(_Q, myHero:Attack(Target))
-  elseif data[0].type == "notarget" then 
-    CastSpell(_Q)
-  elseif data[0].type == "targeted" then 
-    CastSpell(_Q, Target)
-  elseif data[0].type == "dontuse" then 
+function Castspell(Target, spell) 
+  if data[spell].aareset then
+    CastSpell(spell, myHero:Attack(Target))
+  elseif data[spell].type == "notarget" then 
+    CastSpell(spell)
+  elseif data[spell].type == "targeted" then 
+    CastSpell(spell, Target)
+  elseif data[spell].type == "dontuse" then 
     return
   else
-    if ActivePred() == "VPrediction" then 
-      local CastPosition, HitChance, Position = VPredict(Target, data[0])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_Q, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[0])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_Q, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "Q")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_Q, Position.x, Position.z)
-      end
-    end
-  end
-end
-function CastW(Target) 
-  if data[1].aareset then
-    CastSpell(_W, myHero:Attack(Target))
-  elseif data[1].type == "notarget" then 
-    CastSpell(_W)
-  elseif data[1].type == "targeted" then 
-    CastSpell(_W, Target)
-  elseif data[1].type == "dontuse" then 
-    return
-  else
-    if ActivePred() == "VPrediction" then
-      local CastPosition, HitChance, Position = VPredict(Target, data[1])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_W, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[1])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_W, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "W")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_W, Position.x, Position.z)
-      end
-    end
-  end
-end
-function CastE(Target) 
-  if data[2].aareset then
-    CastSpell(_E, myHero:Attack(Target))
-  elseif data[2].type == "notarget" then 
-    CastSpell(_E)
-  elseif data[2].type == "targeted" then 
-    CastSpell(_E, Target)
-  elseif data[2].type == "dontuse" then 
-    return
-  else
-    if ActivePred() == "VPrediction" then
-      local CastPosition, HitChance, Position = VPredict(Target, data[2])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_E, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[2])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_E, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "E")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_E, Position.x, Position.z)
-      end
-    end
-  end
-end
-function CastR(Target) 
-  if data[3].aareset then
-    CastSpell(_R, myHero:Attack(Target))
-  elseif data[3].type == "notarget" then 
-    CastSpell(_R)
-  elseif data[3].type == "targeted" then 
-    CastSpell(_R, Target)
-  elseif data[3].type == "dontuse" then 
-    return
-  else
-    if ActivePred() == "VPrediction" then
-      local CastPosition, HitChance, Position = VPredict(Target, data[3])
-      if HitChance >= Config.misc.hitchance then
-        CCastSpell(_R, CastPosition.x, CastPosition.z)
-      end
-    elseif ActivePred() == "DivinePred" then
-      local State, Position, perc = DPredict(Target, data[3])
-      if State == SkillShot.STATUS.SUCCESS_HIT then 
-        CCastSpell(_R, Position.x, Position.z)
-      end
-    elseif ActivePred() == "HPrediction" then
-      local Position, HitChance = HPredict(Target, "R")
-      if HitChance >= Config.misc.hitchance then 
-        CCastSpell(_R, Position.x, Position.z)
-      end
+    local CastPosition, HitChance, Position = Predict(Target, spell)
+    if HitChance >= Config.misc.hitchance then
+      CCastSpell(spell, CastPosition.x, CastPosition.z)
     end
   end
 end
@@ -863,8 +747,22 @@ function OnDraw()
     end
 end
 
+local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
+function Predict(Target, spell)
+    if ActivePred() == "VPrediction" then
+        return VPredict(Target, data[spell])
+    elseif ActivePred() == "Prodiction" then
+        return nil
+    elseif ActivePred() == "DivinePred" then
+        local State, Position, perc = DPredict(Target, data[spell])
+        return Position, perc*3/100, Position
+    elseif ActivePred() == "HPrediction" then
+        return HPredict(Target, str[spell])
+    end
+end
+
 function HPredict(Target, spell)
-	return THP:GetPredict(spell, Target, myHero) --10/10 would "predict" again
+	return HP:GetPredict(spell, Target, myHero)
 end
 
 function DPredict(Target, spell)
@@ -920,6 +818,17 @@ function CCastSpell(Spell, xPos, zPos)
 end
 
 -- Credits: Da Vinci
+local CastableItems = {
+Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", Target, myHero) end},
+Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", Target, myHero) end},
+Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", Target, myHero) end},
+Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", Target, myHero) end},
+Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", Target, myHero) end},
+Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return getDmg("BLACKFIRE", Target, myHero) end},
+Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
+Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
+TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
+}
 function UseItems(unit)
     if unit ~= nil then
         for _, item in pairs(CastableItems) do

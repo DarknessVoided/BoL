@@ -1,13 +1,13 @@
 --[[
 
-  _______            _  __    _       ____       _                         
- |__   __|          | |/ /   | |     / __ \     (_)                        
-    | | ___  _ __   | ' / ___| | __ | |  | |_ __ _  __ _ _ __  _ __   __ _ 
-    | |/ _ \| '_ \  |  < / _ \ |/ / | |  | | '__| |/ _` | '_ \| '_ \ / _` |
-    | | (_) | |_) | | . \  __/   <  | |__| | |  | | (_| | | | | | | | (_| |
-    |_|\___/| .__/  |_|\_\___|_|\_\  \____/|_|  |_|\__,_|_| |_|_| |_|\__,_|
-            | |                                                            
-            |_|                                                            
+  _______            _  __    _                    _      
+ |__   __|          | |/ /   | |        /\        (_)     
+    | | ___  _ __   | ' / ___| | __    /  \    _____ _ __ 
+    | |/ _ \| '_ \  |  < / _ \ |/ /   / /\ \  |_  / | '__|
+    | | (_) | |_) | | . \  __/   <   / ____ \  / /| | |   
+    |_|\___/| .__/  |_|\_\___|_|\_\ /_/    \_\/___|_|_|   
+            | |                                           
+            |_|                                                                                                     
 
     By Nebelwolfi
 
@@ -17,12 +17,12 @@
 local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."TKOrianna.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAzir.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."TKAzir.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Orianna - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Azir - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKOrianna.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKAzir.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
@@ -89,7 +89,7 @@ end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
-if myHero.charName ~= "Orianna" then return end -- not supported :(
+if myHero.charName ~= "Azir" then return end -- not supported :(
 if VIP_USER then HookPackets() end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
 local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
@@ -100,15 +100,17 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local data = {
-	[_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0.250, range = 825, width = 225, collision = true, aoe = true, type = "circular"},
-	[_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = true, aoe = false, type = "targeted"},
-	[_R] = { speed = math.huge, delay = 0.250, range = 825, width = 410, collision = false, aoe = true, type = "circular"}
+	[_Q] = { speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear"},
+	[_W] = { speed = math.huge, delay = 0, range = 450, width = 100, collision = false, aoe = false, type = "circular"},
+	[_E] = { range = 1300, type = "targeted"},
+  [_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone"},
+  [4] = { range = 350, type = "soldier"}
 }
-local Ball = myHero
+local soldiers = {}
+--table.insert(soldiers, myHero)
 
-function OnLoad()
-  Config = scriptConfig("Top Kek Orianna", "TKOrianna")
+function OnLoad(
+)  Config = scriptConfig("Top Kek Azir", "TKAzir")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -157,14 +159,17 @@ function OnLoad()
 
   Config:addSubMenu("Draw Settings", "Drawing")
   Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
-  Config.Drawing:addParam("Ball", "Ball", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("Soldier", "Soldier", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Key Settings", "kConfig")
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Farm (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -225,102 +230,102 @@ function SetupOrbwalk()
 end
 
 function OnTick()
-  	local target
-  	target = GetCustomTarget()
-    
-    zhg()
+  local target
+  target = GetCustomTarget()
+  
+  zhg()
 
-    if Config.rConfig.r then
-  		local enemies = EnemiesAround(Ball, data[3].width)
-  		if enemies >= Config.rConfig.toomanyenemies then
-	    	CastR(CastPosition, target)
-  		end
+  if Config.rConfig.r then
+    local enemies = EnemiesAround(myHero, data[3].width)
+    if enemies >= Config.rConfig.toomanyenemies then
+      CastR(CastPosition, target)
     end
+  end
 
-	if Config.KS.enableKS then 
-		Killsteal()
-	end
+  if Config.KS.enableKS then 
+    Killsteal()
+  end
 
-    if Config.kConfig.har or Config.kConfig.harr then
-    	Harrass()
-	end
+  if Config.kConfig.har or Config.kConfig.harr then
+    Harrass()
+  end
 
-    if Config.kConfig.combo then
-    	Combo()
-	end
+  if Config.kConfig.combo then
+    Combo()
+  end
 
-    if Config.kConfig.lc then
-    	Farm()
-	end
+  if Config.kConfig.lc then
+    Farm()
+  end
 
-    if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function Farm()
-  if QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
-      local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
-      if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
-        CastQ(minion)
-      end
-    end
-  end
-  if WReady and Config.farmConfig.W and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, 1250, player, MINION_SORT_HEALTH_ASC).objects) do
-      local WMinionDmg = getDmg("W", minion, GetMyHero())
-      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
-        CastW(minion)
-      end
-    end    
-    if WReady and QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
-	    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
-	      local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
-	      local WMinionDmg = getDmg("W", minion, GetMyHero())
-	      if WMinionDmg+QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
-	        CastQ(minion)
-	        DelayAction(CastW, 0.25, {minion})
-	      end
-	    end 
-	end   
-  end
-  if EReady and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
-      local EMinionDmg = getDmg("E", minion, GetMyHero())      
-      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        --CastE(minion)
-      end      
-    end    
-  end  
 end
 
 function Combo()
-  target = GetCustomTarget()
-  if target == nil then return end
-  if QReady and Config.comboConfig.Q then
-  	CastQ(target)
-  end
-  if WReady and Config.comboConfig.W then
-  	CastW(target)
-  end
-  if EReady and Config.comboConfig.E then
-  	CastE(myhero)
-  end
-  if RReady and Config.comboConfig.R then
-  	CastR(target)
-  end
 end
 
 function Harrass()
-  target = GetCustomTarget()
-  if target == nil then return end
-  if QReady and Config.harrConfig.Q and Config.harrConfig.mana <= myHero.mana then
-  	CastQ(target)
-  end
-  if WReady and Config.harrConfig.W and Config.harrConfig.mana <= myHero.mana then
-  	CastW(target)
-  end
-  if EReady and Config.harrConfig.E and Config.harrConfig.mana <= myHero.mana then
-  	CastE(myhero)
+end
+
+function CastQ(unit)
+end
+
+function CastW(unit)
+end
+
+function CastE(unit)
+end
+
+function CastR(unit)
+end
+
+function UseItems(unit)
+    if unit ~= nil then
+        for _, item in pairs(CastableItems) do
+            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
+                if item.reqTarget then
+                    CastSpell(item.Slot(), unit)
+                else
+                    CastSpell(item.Slot())
+                end
+            end
+        end
+    end
+end
+--[[
+  3 soldiers := closest to maus -> maus; others in a cone towards mouse with waypoint before target
+]]
+local LastSoldier = {0, 0, 0, 0}
+function OnCreateObj(object)
+  if object.team ~= myHero.team then
+    return
+  end  
+  if object.name == "AzirSoldier" then
+    table.insert(soldiers, object)
+    LastSoldier[#soldiers] = os.clock()
+  end  
+end
+
+function OnDeleteObj(object)
+  if object.name == "AzirSoldier" then
+    table.remove(soldiers, 1)
+  end  
+end
+
+function ValidSoldier(kek)
+    if os.clock() - LastSoldier[kek] < 9 then
+        return true
+    else
+        return false
+    end
+end
+
+function OnProcessSpell(unit, spell)  
+  if not unit.isMe then
+    return
   end
 end
 
@@ -330,27 +335,27 @@ function EnemiesAround(Unit, range)
 end
 
 function Killsteal()
-	for i=1, heroManager.iCount do
-		local enemy = heroManager:GetHero(i)
-		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)	
-		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
-		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
-		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
-		local iDmg = 50 + (20 * myHero.level) / 5
-		if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
-				CastQ(enemy)
-			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
-				CastW(enemy)
-			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
-				CastE(enemy)
-			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
-				CastR(enemy)
-			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
-				CCastSpell(Ignite, enemy)
-			end
-		end
-	end
+  for i=1, heroManager.iCount do
+    local enemy = heroManager:GetHero(i)
+    local qDmg = ((getDmg("Q", enemy, myHero)) or 0)  
+    local wDmg = ((getDmg("W", enemy, myHero)) or 0)  
+    local eDmg = ((getDmg("E", enemy, myHero)) or 0)  
+    local rDmg = ((getDmg("R", enemy, myHero)) or 0)
+    local iDmg = 50 + (20 * myHero.level) / 5
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
+        CastQ(enemy)
+      elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
+        CastW(enemy)
+      elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
+        CastE(enemy)
+      elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
+        CastR(enemy)
+      elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+        CCastSpell(Ignite, enemy)
+      end
+    end
+  end
 end
 
 function zhg()
@@ -361,38 +366,6 @@ function zhg()
       end 
     end 
   end 
-end
-
-function CastQ(unit)
-  if myHero.dead or recall or Ball == nil then return end  
-  local spell = ActivePred()=="HPrediction" and "Q" or 0
-  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
-  if HitChance >= 1.5 then  
-    CCastSpell(_Q, CastPosition.x, CastPosition.z)
-  end  
-end
-
-function CastW(unit)
-  if myHero.dead or Ball == nil then return end
-  local spell = ActivePred()=="HPrediction" and "W" or 1
-  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
-  if HitChance >= 2 and GetDistance(unit, Ball) < data[1].width then
-      CCastSpell(_W)
-  end
-end
-
-function CastE(unit)
-  if myHero.dead or Ball == nil then return end
-    CCastSpell(_E, unit) -- soon(tm)
-end
-
-function CastR(unit)
-  if myHero.dead or Ball == nil then return end
-  local spell = ActivePred()=="HPrediction" and "R" or 3
-  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
-  if HitChance >= 2 and GetDistance(unit, Ball) < data[3].width then
-      CCastSpell(_R)
-  end
 end
 
 function CCastSpell(Spell)
@@ -432,6 +405,9 @@ end
 
 function SetupHPred()
   MakeHPred("Q", 0) 
+  MakeHPred("W", 0) 
+  MakeHPred("E", 0) 
+  MakeHPred("R", 0) 
 end
 
 function MakeHPred(hspell, i)
@@ -463,13 +439,13 @@ function Predict(Target, spell, source)
         local State, Position, perc = DPredict(Target, data[spell], source)
         return Position, perc*3/100, Position
     elseif ActivePred() == "HPrediction" then
-    	local Position, HitChance = HPredict(Target, spell, source)
+      local Position, HitChance = HPredict(Target, spell, source)
         return Position, HitChance, Position
     end
 end
 
 function HPredict(Target, spell, source)
-	return HP:GetPredict(spell, Target, source) 
+  return HP:GetPredict(spell, Target, source) 
 end
 
 function DPredict(Target, spell, source)
@@ -477,68 +453,58 @@ function DPredict(Target, spell, source)
   local col = spell.collision and 0 or math.huge
   local Spell = nil
   if spell.type == "linear" then
-	 Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+   Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
-	 Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+   Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
-	 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+   Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
   return DP:predict(unit, Spell, 1.2, source)
 end
 
 function VPredict(Target, spell, source)
   if spell.type == "linear" then
-  	if spell.aoe then
-  		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-  	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-  	end
+    if spell.aoe then
+      return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
+    else
+      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
+    end
   elseif spell.type == "circular" then
-  	if spell.aoe then
-  		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-  	else
-  		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-  	end
+    if spell.aoe then
+      return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
+    else
+      return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
+    end
   elseif spell.type == "cone" then
-  	if spell.aoe then
-  		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-  	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-  	end
+    if spell.aoe then
+      return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
+    else
+      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
+    end
   end
-end
-
-function OnCreateObj(object)
-  if object.team ~= myHero.team then
-    return
-  end  
-  if object.name == "TheDoomBall" then
-    Ball = object
-  end  
-end
-
-function OnProcessSpell(unit, spell)  
-  if not unit.isMe then
-    return
-  end
-  if spell.name == "OrianaIzunaCommand" then
-    Ball = nil
-  end  
-  if spell.name == "OrianaRedactCommand" then
-    Ball = spell.target
-  end  
 end
 
 function OnDraw()
-	if Config.Drawing.QRange then
-		DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/4, 0x111111)
-	end
-  	if Ball ~= nil then  
-		if Config.Drawing.Ball and Ball ~= nil then
-		  DrawCircle(Ball.x, Ball.y, Ball.z, data[0].width, 0x111111)
-		end
-  	end
-	if Config.Drawing.DmgCalcs then
+  if Config.Drawing.QRange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[0].width/2, 0x111111)
+  end
+  if Config.Drawing.WRange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[0].width/4, 0x111111)
+  end
+  if Config.Drawing.ERange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
+  end
+  if Config.Drawing.RRange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
+  end
+  if Config.Drawing.Soldier and soldiers ~= nil then
+    for i=1,#soldiers do
+      if ValidSoldier(i) then
+        DrawCircle(soldiers[i].x, soldiers[i].y, soldiers[i].z, data[4].range, 0x111111)
+      end
+    end
+  end
+  if Config.Drawing.DmgCalcs then
         for i = 1, enemyCount do
             local enemy = enemyTable[i].player
             if ValidTarget(enemy) then
