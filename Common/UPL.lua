@@ -36,12 +36,12 @@ class "UPL"
 local version = 59.01
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/UPL.lua".."?rand="..math.random(1,10000)
+local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
 local UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
 local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\">[UnifiedPredictionLibrary] "..msg.."</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/UPL.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
