@@ -1,7 +1,39 @@
+--[[
+  _    _       _  __ _          _   _____              _ _      _   _               _      _ _                          
+ | |  | |     (_)/ _(_)        | | |  __ \            | (_)    | | (_)             | |    (_) |                         
+ | |  | |_ __  _| |_ _  ___  __| | | |__) | __ ___  __| |_  ___| |_ _  ___  _ __   | |     _| |__  _ __ __ _ _ __ _   _ 
+ | |  | | '_ \| |  _| |/ _ \/ _` | |  ___/ '__/ _ \/ _` | |/ __| __| |/ _ \| '_ \  | |    | | '_ \| '__/ _` | '__| | | |
+ | |__| | | | | | | | |  __/ (_| | | |   | | |  __/ (_| | | (__| |_| | (_) | | | | | |____| | |_) | | | (_| | |  | |_| |
+  \____/|_| |_|_|_| |_|\___|\__,_| |_|   |_|  \___|\__,_|_|\___|\__|_|\___/|_| |_| |______|_|_.__/|_|  \__,_|_|   \__, |
+                                                                                                                   __/ |
+                                                                                                                  |___/ 
+  By Nebelwolfi
+
+
+  How To Use:
+
+    require("UPL")
+    UPL = UPL()
+
+    UPL:AddToMenu(Menu)
+    Will add prediction selector to the given scriptConfig
+
+    UPL:AddSpell(_Q, { speed = 1800, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear" })
+    Will add the spell to all predictions
+
+    CastPosition, HitChance, HeroPosition = UPL:Predict(_Q, myHero, Target)
+    if HitChance >= X then
+      CastSpell(_Q, CastPosition.x, CastPosition.y)
+    end
+  
+  Supports and auto-detects: VPrediction, Prodiction, DivinePrediction, HPrediction, TKPrediction
+
+]]--
+
 class "UPL"
 
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 59.01
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/UPL.lua".."?rand="..math.random(1,10000)
@@ -47,6 +79,11 @@ function UPL:__init()
     require("VPrediction")
     self.VP = VPrediction()
     table.insert(self.predTable, "VPrediction")
+  end
+
+  if FileExist(LIB_PATH .. "Prodiction.lua") then
+    require("Prodiction")
+    table.insert(self.predTable, "Prodiction")
   end
 
   if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
@@ -116,7 +153,7 @@ function UPL:GetSpellData(spell)
 end
 
 function UPL:HPredict(Target, spell, source)
-	return self.HP:GetPredict(spell, Target, source)
+  return self.HP:GetPredict(spell, Target, source)
 end
 
 function UPL:SetupHPred()
@@ -156,34 +193,34 @@ function UPL:DPredict(Target, spell)
   local unit = DPTarget(Target)
   local col = spell.collision and 0 or math.huge
   if spell.type == "linear" then
-	Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
-	Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
-	Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+  Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
   return self.DP:predict(unit, Spell)
 end
 
 function UPL:VPredict(Target, spell)
   if spell.type == "linear" then
-	if spell.aoe then
-		return self.VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return self.VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  if spell.aoe then
+    return self.VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  else
+    return self.VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  end
   elseif spell.type == "circular" then
-	if spell.aoe then
-		return self.VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return self.VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  if spell.aoe then
+    return self.VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  else
+    return self.VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  end
   elseif spell.type == "cone" then
-	if spell.aoe then
-		return self.VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-	else
-		return self.VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-	end
+  if spell.aoe then
+    return self.VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
+  else
+    return self.VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
+  end
   end
 end
 
