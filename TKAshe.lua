@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.05
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -117,14 +117,14 @@ function OnLoad()
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF)
+  Config.comboConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, false)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF)
+  Config.harrConfig:addParam("Qs","Only Q with 5 stacks", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
