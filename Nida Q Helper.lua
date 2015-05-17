@@ -19,8 +19,7 @@ if UPL == nil then
   PrintChat("Please download the UPLib.") 
   return 
 end
-
-local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 30, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
+local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 25, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
 local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
 
 function OnLoad()
@@ -29,6 +28,7 @@ function OnLoad()
   Config:addSubMenu("[Misc]: Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells(VIP)", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
+	UPL:AddSpell(_Q, { speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear" })
   UPL:AddToMenu(Config.misc)
     if UPL:ActivePred() == "VPrediction" or UPL:ActivePred() == "HPrediction" then 
      Config.misc:addParam("hc", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
@@ -48,10 +48,8 @@ end
 function OnTick()
   QTargetSelector:update()
   QCel = QTargetSelector.target
-  if Config.throwQ or (Config.throwQh and myHero.mana >= Config.misc.mana) and not myHero.dead and not recall then
-    if QCel ~= nil then
-      ThrowQ(QCel)
-    end
+  if Config.throwQ or (Config.throwQh and myHero.mana >= Config.misc.mana) and not myHero.dead and not recall and QCel ~= nil and Q.Ready() == READY then
+    ThrowQ(QCel)
   end
 end
 
