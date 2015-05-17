@@ -301,7 +301,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.71
+local version = 0.72
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -561,7 +561,7 @@ function TimeRequest()
 end
 
 function Predict(Target, spell)
-    print("Spell: "..spell.." "..myHero.charName)
+    --print("Spell: "..spell.." "..myHero.charName)
     if ActivePred() == "VPrediction" then
         return VPredict(Target, data[spell])
     elseif ActivePred() == "Prodiction" then
