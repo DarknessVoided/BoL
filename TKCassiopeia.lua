@@ -83,6 +83,8 @@ function OnLoad()
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
   UPL:AddSpell(_Q, data[0])
+  UPL:AddSpell(_W, data[1])
+  UPL:AddSpell(_R, data[3])
   UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Misc settings", "casual")
@@ -254,7 +256,7 @@ function OnTick()
 end
 
 function LastHitSomethingPoisonedWithE()
-  if EReady then    
+  if EReady() then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
@@ -303,7 +305,7 @@ function AlliesAround(Unit, range)
 end
 
 function LastHit()
-  if QReady and Config.farmConfig.lh.Q then
+  if QReady() and Config.farmConfig.lh.Q then
     for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
       local QMinionDmg = GetDmg("Q", minion)
       if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
@@ -311,7 +313,7 @@ function LastHit()
       end
     end
   end
-  if WReady and Config.farmConfig.lh.W then
+  if WReady() and Config.farmConfig.lh.W then
     for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
       local WMinionDmg = GetDmg("W", minion)
       if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
@@ -319,7 +321,7 @@ function LastHit()
       end
     end    
   end  
-  if EReady and Config.farmConfig.lh.E then    
+  if EReady() and Config.farmConfig.lh.E then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
@@ -332,47 +334,44 @@ end
 
 function LaneClear()
   --Check for lowlife: Lasthit = priority!
-  if QReady and Config.farmConfig.lc.Q then
+  if QReady() and Config.farmConfig.lc.Q then
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
       local QMinionDmg = GetDmg("Q", minion, GetMyHero())
       if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
         CastQ(minion)
-        return
       end
     end
   end
-  if WReady and Config.farmConfig.lc.W then
+  if WReady() and Config.farmConfig.lc.W then
     for i, minion in pairs(minionManager(MINION_ENEMY, 1250, player, MINION_SORT_HEALTH_ASC).objects) do
       local WMinionDmg = GetDmg("W", minion, GetMyHero())
       if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
         CastW(minion)
-        return
       end
     end    
   end  
-  if EReady and Config.farmConfig.lc.E then    
+  if EReady() and Config.farmConfig.lc.E then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
         CastE(minion)
-        return
       end      
     end    
   end  
   --Check for lowestlife: Lanceclear - 2nd priority!
-  if QReady and Config.farmConfig.lc.Q then
+  if QReady() and Config.farmConfig.lc.Q then
     local minionTarget = GetLowestMinion(data[0].range)
     if minionTarget ~= nil then
       CastQ(minionTarget)
     end
   end
-  if WReady and Config.farmConfig.lc.W then
+  if WReady() and Config.farmConfig.lc.W then
     local minionTarget = GetLowestMinion(data[1].range)
     if minionTarget ~= nil then
       CastW(minionTarget)
     end
   end  
-  if EReady and Config.farmConfig.lc.E then
+  if EReady() and Config.farmConfig.lc.E then
     local minionTarget = GetLowestMinion(data[2].range)
     if minionTarget ~= nil and isPoisoned(minionTarget) then
       CastE(minionTarget)
@@ -393,9 +392,10 @@ function GetLowestMinion(range)
 end
 
 function isPoisoned(unit)
+  if unit == nil then return end
   for i = 1 , unit.buffCount do
-   local buff = unit:GetBuff(i)
-   if buff and (buff.name == "cassiopeianoxiousblastpoison" or buff.name == "endcassiopeiamiasmapoison") and (buff.endT - GetGameTimer()) >= 0.5 then return true end
+   local buff = unit:getBuff(i)
+   if buff and (buff.name == "cassiopeianoxiousblastpoison" or buff.name == "endcassiopeiamiasmapoison") then return true end
   end
   return false
 end
@@ -429,22 +429,22 @@ end
 
 function CastQ(unit) 
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
-  if HitChance and HitChance >= 2 and QReady then
+  if HitChance and HitChance >= 2 and QReady() then
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
 function CastW(unit) 
   local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, unit)
-  if HitChance and HitChance >= 2 and WReady then
+  if HitChance and HitChance >= 2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end
 function CastE(unit) 
-  CastSpell(_E, CastPosition.x, CastPosition.z)
+  CastSpell(_E, unit)
 end
 function CastR(unit) 
   local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, unit)
-  if HitChance and HitChance >= 2 and RReady then
+  if HitChance and HitChance >= 2 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
   end
 end
@@ -469,7 +469,7 @@ function Killsteal()
         DelayAction(CastE, 0.5, {enemy})
       elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
         CastR(enemy)
-      elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+      elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
         CastSpell(Ignite, enemy)
       end
     end
@@ -498,16 +498,16 @@ local colorIndicatorReady    = ARGB(255, 0,   255, 0)
 local colorIndicatorNotReady = ARGB(255, 255, 220, 0)
 local colorInfo              = ARGB(255, 255, 50,  0)
 function OnDraw()
-  if Config.Drawing.QRange and QReady then
+  if Config.Drawing.QRange and QReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range+data[1].width/4, 0x111111)
   end
-  if Config.Drawing.WRange and WReady then
+  if Config.Drawing.WRange and WReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
   end
-  if Config.Drawing.ERange and EReady then
+  if Config.Drawing.ERange and EReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
   end
-  if Config.Drawing.RRange and RReady then
+  if Config.Drawing.RRange and RReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
   end
   if Config.Drawing.dmgCalc then
@@ -553,55 +553,55 @@ function DmgCalculations()
             enemyTable[i].damageR = damageR
             if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
-                enemyTable[i].ready = QReady
+                enemyTable[i].ready = QReady()
             elseif enemy.health < damageW then
                 enemyTable[i].indicatorText = "W Kill"
-                enemyTable[i].ready = WReady
+                enemyTable[i].ready = WReady()
             elseif enemy.health < damageE then
                 enemyTable[i].indicatorText = "E Kill"
-                enemyTable[i].ready = EReady
+                enemyTable[i].ready = EReady()
             elseif enemy.health < damageR then
                 enemyTable[i].indicatorText = "R Kill"
-                enemyTable[i].ready = RReady
+                enemyTable[i].ready = RReady()
             elseif enemy.health < damageQ + damageW then
                 enemyTable[i].indicatorText = "Q + W Kill"
-                enemyTable[i].ready = QReady and WReady
+                enemyTable[i].ready = QReady() and WReady()
             elseif enemy.health < damageE + damageQ then
                 enemyTable[i].indicatorText = "Q + E Kill"
-                enemyTable[i].ready = EReady and QReady
+                enemyTable[i].ready = EReady() and QReady()
             elseif enemy.health < damageW + damageE then
                 enemyTable[i].indicatorText = "W + E Kill"
-                enemyTable[i].ready = WReady and EReady
+                enemyTable[i].ready = WReady() and EReady()
             elseif enemy.health < damageR + damageQ then
                 enemyTable[i].indicatorText = "Q + R Kill"
-                enemyTable[i].ready = RReady and QReady
+                enemyTable[i].ready = RReady() and QReady()
             elseif enemy.health < damageR + damageE then
                 enemyTable[i].indicatorText = "E + R Kill"
-                enemyTable[i].ready = RReady and EReady
+                enemyTable[i].ready = RReady() and EReady()
             elseif enemy.health < damageR + damageW then
                 enemyTable[i].indicatorText = "W + R Kill"
-                enemyTable[i].ready = RReady and WReady
+                enemyTable[i].ready = RReady() and WReady()
             elseif enemy.health < damageQ + damageW + damageE then
                 enemyTable[i].indicatorText = "Q + W + E Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
+                enemyTable[i].ready = QReady() and WReady() and EReady()
             elseif enemy.health < damageQ + damageW + damageR then
                 enemyTable[i].indicatorText = "Q + W + R Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
+                enemyTable[i].ready = QReady() and WReady() and EReady()
             elseif enemy.health < damageQ + damageE + damageR then
                 enemyTable[i].indicatorText = "Q + E + R Kill"
-                enemyTable[i].ready = QReady and EReady and EReady
+                enemyTable[i].ready = QReady() and EReady() and EReady()
             elseif enemy.health < damageR + damageW + damageE then
                 enemyTable[i].indicatorText = "W + E + R Kill"
-                enemyTable[i].ready = RReady and WReady and EReady
+                enemyTable[i].ready = RReady() and WReady() and EReady()
             elseif enemy.health < damageQ + damageW + damageE + damageR + damageAA + damageI then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and WReady and EReady and RReady
+                enemyTable[i].ready = QReady() and WReady() and EReady() and RReady()
             else
                 local damageTotal = damageQ + damageW + damageE + damageR
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or WReady or EReady or RReady
+                enemyTable[i].ready = QReady() or WReady() or EReady() or RReady()
             end
             local neededE = math.ceil(enemy.health / damageE)    
             enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededE.." E's"
