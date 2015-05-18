@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local uplversion = 0.03
+local uplversion = 1.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
