@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.05
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
@@ -402,10 +402,10 @@ end
 function Killsteal()
 	for i=1, heroManager.iCount do
 		local enemy = heroManager:GetHero(i)
-		local qDmg = ((getDmg("Q", enemy, myHero)) or 0)	
-		local wDmg = ((getDmg("W", enemy, myHero)) or 0)	
-		local eDmg = ((getDmg("E", enemy, myHero)) or 0)	
-		local rDmg = ((getDmg("R", enemy, myHero)) or 0)
+		local qDmg = ((GetDmg("Q", enemy, myHero)) or 0)	
+		local wDmg = ((GetDmg("W", enemy, myHero)) or 0)	
+		local eDmg = ((GetDmg("E", enemy, myHero)) or 0)	
+		local rDmg = ((GetDmg("R", enemy, myHero)) or 0)
 		local iDmg = 50 + (20 * myHero.level) / 5
 		if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
 			if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
