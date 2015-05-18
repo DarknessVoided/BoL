@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.14
+local version = 0.15
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -97,7 +97,7 @@ local enemyCount = 0
 local ultOn, oneShot = false, false
 local osTarget = nil
 data = {
-    [_Q] = { range = 125*2, type = "notarget", aareset = true},
+    [_Q] = { range = myHer.range, type = "notarget", aareset = true},
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
     [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
     [_R] = { range = 4000, type = "notarget"}
@@ -266,7 +266,7 @@ function OnTick()
       LaneClear()
       JungleClear()
     end
-  elseif Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and myHero.mana == 5 and EnemiesAround(myHero, data[0].range) > 0 then
+  elseif Target ~= nil and Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and Config.kConfig.lc and Config.kConfig.lh and myHero.mana == 5 and EnemiesAround(myHero, data[0].range) > 0 then
     if Config.farmConfig.Qh and ValidTarget(Target, data[0].range) then
       UseQ(Target)
     elseif Config.farmConfig.Wh and ValidTarget(Target, data[1].range) then
