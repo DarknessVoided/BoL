@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.12
+local version = 0.13
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -291,15 +291,15 @@ function OnSendPacket(p)
       if p:Decode1() == 0x68 and Config.comboConfig.fero ~= 0 then
         p:Block()
         p.skip(p, 1)
-        Config.comboConfig.fero == 0
+        Config.comboConfig.fero = 0
       elseif p:Decode1() == 0xEE and Config.comboConfig.fero ~= 1 then
         p:Block()
         p.skip(p, 1)
-        Config.comboConfig.fero == 1
+        Config.comboConfig.fero = 1
       elseif p:Decode1() == 0xB1 and Config.comboConfig.fero ~= 2 then
         p:Block()
         p.skip(p, 1)
-        Config.comboConfig.fero == 2
+        Config.comboConfig.fero = 2
       end
     end
   end
