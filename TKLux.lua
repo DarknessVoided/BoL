@@ -220,12 +220,12 @@ function OnTick()
 
   zhg()
 
-  if toCastR then
-    CastR(unit)
-    DelayAction(function() toCastR = false end, 1.5)
-  end
-
   if Target ~= nil then
+    if toCastR then
+      CastR(Target)
+      DelayAction(function() toCastR = false end, 1.5)
+    end
+
     if (Config.kConfig.har or Config.kConfig.harr) and Config.harrConfig.mana <= myHero.mana then
       Harrass()
     end
@@ -240,7 +240,6 @@ function OnTick()
 
     DoSomeUltLogic()
   end
-
 
   if Config.kConfig.lh and not (Config.kConfig.har or Config.kConfig.harr) and not Config.kConfig.combo and Config.farmConfig.lh.mana <= myHero.mana then
     LastHit()
@@ -267,7 +266,7 @@ function DoSomeUltLogic()
   if Config.rConfig.r then
     local enemies = EnemiesAround(Target, data[3].width)
     if enemies >= Config.rConfig.toomanyenemies then
-      CastR(CastPosition, target)
+      CastR(CastPosition, Target)
     end
   end
 end
