@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.09
+local version = 0.10
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -122,6 +122,7 @@ function OnLoad()
   Config.comboConfig:addParam("Whpp", "W for HP under X%", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+  Config.comboConfig:addParam("fero", "Q=0, W=1, E=2 use at 5 stacks", SCRIPT_PARAM_SLICE, 2, 0, 5, 0)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
   if Smite ~= nil then Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
 
@@ -498,8 +499,18 @@ function OneShot()
   if GetDistance(osTarget, myHero) > myHero.range then return end
   if Smite ~= nil and SReady() then CastSpell(Smite, osTarget) end
   if myHero.mana == 5 then 
-    if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
-      CastE(osTarget)
+    if Config.comboConfig.fero == 0 then
+      if GetDistance(osTarget, myHero) < data[0].range then
+        CastQ(osTarget)
+      end
+    elseif Config.comboConfig.fero == 1 then
+      if GetDistance(osTarget, myHero) < data[1].range then
+        CastW(osTarget)
+      end
+    elseif Config.comboConfig.fero == 2 then
+      if GetDistance(osTarget, myHero) < data[2].range then
+        CastE(osTarget)
+      end
     end
   else
     if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then

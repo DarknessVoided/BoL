@@ -19,16 +19,15 @@ if UPL == nil then
   PrintChat("Please download the UPLib.") 
   return 
 end
-local Q = {name = "Javelin Toss", range = 1500, speed = 1300, delay = 0.125, width = 25, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
+local Q = {name = "Javelin Toss", speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
 local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
 
 function OnLoad()
   Config = scriptConfig("Nida Q Helper ", " Nida Q Helper ")
-  if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
   Config:addSubMenu("[Misc]: Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells(VIP)", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
-	UPL:AddSpell(_Q, { speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear" })
+	UPL:AddSpell(_Q, Q)
   UPL:AddToMenu(Config.misc)
     if UPL:ActivePred() == "VPrediction" or UPL:ActivePred() == "HPrediction" then 
      Config.misc:addParam("hc", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)

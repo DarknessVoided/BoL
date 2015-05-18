@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local uplversion = 1.03
+local uplversion = 1.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -137,8 +137,7 @@ function UPL:AddToMenu(Config)
 end
 
 function UPL:AddSpell(spell, array)
-  self.spellData[spell]       = array
-  self.spellData[spell].aoe   = self.spellData[spell].collision
+  self.spellData[spell] = array
   self:SetupHPred()
 end
 
