@@ -434,7 +434,7 @@ function zhg()
 end
 
 function CastQ(unit)
-  if myHero.dead or recall or Ball == nil then return end  
+  if not QReady() or unit == nil or myHero.dead or recall or Ball == nil then return end  
   local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
   if HitChance >= 1.5 then  
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
@@ -442,8 +442,11 @@ function CastQ(unit)
 end
 
 function CastW(unit)
-  if myHero.dead or Ball == nil then return end
-  if WReady() and unit ~= nil and GetDistance(unit, Ball) < data[1].width/2 then CastSpell(_W) end
+  if not WReady() or unit == nil or myHero.dead or Ball == nil then return end
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
+  if HitChance >= 1.5 and GetDistance(unit, Ball) < data[1].width then  
+    CCastSpell(_W, CastPosition.x, CastPosition.z)
+  end  
 end
 
 function CastE(unit)
@@ -452,8 +455,11 @@ function CastE(unit)
 end
 
 function CastR(unit)
-  if myHero.dead or Ball == nil then return end
-  if RReady() and unit ~= nil and GetDistance(unit, Ball) < data[3].width/2 then CastSpell(_R) end
+  if not RReady() or unit == nil or myHero.dead or Ball == nil then return end
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
+  if HitChance >= 1.5 and GetDistance(unit, Ball) < data[3].width then  
+    CCastSpell(_R, CastPosition.x, CastPosition.z)
+  end  
 end
 
 function CCastSpell(Spell)
