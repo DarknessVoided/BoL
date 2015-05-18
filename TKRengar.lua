@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.13
+local version = 0.14
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -167,7 +167,7 @@ function OnLoad()
   Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config.kConfig:addParam("stop", "Stop farm at 5 stacks", SCRIPT_PARAM_ONOFF, true, string.byte("N"))
-  Config.kConfig:addParam("t", "Toggle 5 stack useage", SCRIPT_PARAM_ONOFF, true, string.byte("T"))
+  Config.kConfig:addParam("t", "Toggle 5 stack useage", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
   Config.kConfig:addParam("qqq", "Will only stop farming if enemy in range", SCRIPT_PARAM_INFO,"")
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
@@ -277,6 +277,7 @@ function OnTick()
   end
 
   if Config.kConfig.t then
+    Config.kConfig.t = false
     Config.comboConfig.fero = Config.comboConfig.fero + 1
     if Config.comboConfig.fero > 2 then Config.comboConfig.fero = 0 end
   end
