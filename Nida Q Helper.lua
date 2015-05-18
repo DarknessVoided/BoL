@@ -29,12 +29,7 @@ function OnLoad()
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
 	UPL:AddSpell(_Q, Q)
   UPL:AddToMenu(Config.misc)
-    if UPL:ActivePred() == "VPrediction" or UPL:ActivePred() == "HPrediction" then 
-     Config.misc:addParam("hc", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-    elseif UPL:ActivePred() == "DivinePred" then
-     Config.misc:addParam("hc", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
-     if Config.misc.hc > 1.5 then Config.misc.hc = 1.2 end
-    end
+  Config.misc:addParam("hc", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   Config.misc:addParam("qqq", "--------------------------------------------------------", SCRIPT_PARAM_INFO,"")
   Config.misc:addParam("mana", "Min mana for harass:", SCRIPT_PARAM_SLICE, 30, 0, 101, 0)
   Config:addParam("throwQh", "Harass with Q (toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
