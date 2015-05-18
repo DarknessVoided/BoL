@@ -112,14 +112,14 @@ function UPL:Predict(spell, source, Target)
   if self:ActivePred() == "VPrediction" then
       return self:VPredict(Target, self.spellData[spell], source)
   elseif self:ActivePred() == "Prodiction" then
-      local Position, info = Prodiction.GetPrediction(Target, self.spellData[spell].range, self.spellData[spell].speed, self.spellData[spell].delay, self.spellData[spell].width, myHero)
+      local Position, info = Prodiction.GetPrediction(Target, self.spellData[spell].range, self.spellData[spell].speed, self.spellData[spell].delay, self.spellData[spell].width, source)
       if Position ~= nil and not info.mCollision() then
         return Position, 2, Vector(Target)
       else
         return Vector(Target), 0, Vector(Target)
       end
   elseif self:ActivePred() == "DivinePred" then
-      local State, Position, perc = self:DPredict(Target, self.spellData[spell])
+      local State, Position, perc = self:DPredict(Target, self.spellData[spell], 1.2, source)
       return Position, perc ~= nil and perc*3/100 or 0, Vector(Target)
   elseif self:ActivePred() == "HPrediction" then
       local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
