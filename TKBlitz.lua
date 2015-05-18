@@ -32,8 +32,9 @@ local Menu = nil
 function OnLoad()
 	Menu = scriptConfig("TKBlitz", "TKBlitz")
 	Menu:addParam("Grab", "Grab!", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-	Menu:addParam("Grab2", "Grab Stunned/Dashing!", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-	Menu:addParam("Move", "Move to mouse", SCRIPT_PARAM_ONOFF, false)
+	Menu:addParam("Grab2", "Grab Stunned/Dashing!", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+	Menu:addParam("UseE", "Instant E after pull", SCRIPT_PARAM_ONOFF, true)
+	Menu:addParam("Move", "Move to mouse", SCRIPT_PARAM_ONOFF, true)
 	Menu:addParam("DrawQ", "Draw Q range", SCRIPT_PARAM_ONOFF, true)
 	Menu:addParam("DrawP", "Draw predicted position", SCRIPT_PARAM_ONOFF, false)
 	
@@ -85,6 +86,12 @@ function OnTick()
 	if Forcetarget ~= nil and ValidTarget(Forcetarget, Q.range) then
 		target = Forcetarget	
 	end
+
+	if target and (myHero:CanUseSpell(_E) == READY) and Menu.UseE then
+		if GetDistance(target, myHero) <= myHero.range  then
+			CastSpell(_E, myHero:Attack(target))
+		end
+	end
 	
 	if target and (myHero:CanUseSpell(_Q) == READY) and (Menu.Grab or Menu.Grab2) then
 		MinHitChance = Menu.Grab and 1 or 2
@@ -104,7 +111,7 @@ function OnTick()
 
 	if Menu.AutoR then
 		for _,unit in pairs(GetEnemyHeroes()) do
-			if unit ~= nil and GetDistance(myHero, unit) < 550 and unit.health < GetRDmg(unit) then
+			if unit ~= nil and not unit.dead and GetDistance(myHero, unit) < 500 and unit.health < GetRDmg(unit) then
 				CastSpell(_R)
 			end
 		end
