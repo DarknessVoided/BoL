@@ -142,7 +142,7 @@ function UPL:AddSpell(spell, array)
 end
 
 function UPL:GetSpellData(spell)
-  return {self.spellData[spell].range, self.spellData[spell].delay, self.spellData[spell].type, self.spellData[spell].width, self.spellData[spell].speed, self.spellData[spell].collision}
+  return self.spellData[spell]
 end
 
 function UPL:HPredict(Target, spell, source)
