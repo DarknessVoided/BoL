@@ -14,6 +14,6 @@ function OnTick()
     if sts.target == nil or not Config.shoot then return end
     CastPosition, HitChance, HeroPosition = UPL:Predict(_Q, myHero, sts.target)
     if HitChance >= 2 then
-      CastSpell(_Q, CastPosition.x, CastPosition.y)
+      CastSpell(_Q, CastPosition.x, CastPosition.z)
     end
 end
