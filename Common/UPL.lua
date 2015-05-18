@@ -120,7 +120,7 @@ function UPL:Predict(spell, source, Target)
       end
   elseif self:ActivePred() == "DivinePred" then
       local State, Position, perc = self:DPredict(Target, self.spellData[spell])
-      return Position, perc*3/100, Vector(Target)
+      return Position, perc ~= nil and perc*3/100 or 0, Vector(Target)
   elseif self:ActivePred() == "HPrediction" then
       local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
       return self:HPredict(Target, str[spell], source)
