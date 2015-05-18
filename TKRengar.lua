@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.10
+local version = 0.11
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -123,6 +123,7 @@ function OnLoad()
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("fero", "Q=0, W=1, E=2 use at 5 stacks", SCRIPT_PARAM_SLICE, 2, 0, 5, 0)
+  Config.comboConfig:addParam("qqq", "You can press skill buttons to change this at 5 stacks!", SCRIPT_PARAM_INFO,"")
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
   if Smite ~= nil then Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
 
@@ -141,6 +142,9 @@ function OnLoad()
   Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("Whp", "Use W for HP while farming", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addParam("Qh", "Use Q at 5 stacks on enemy while farming", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addParam("Wh", "Use W at 5 stacks on enemy while farming", SCRIPT_PARAM_ONOFF, false)
+  Config.farmConfig:addParam("Eh", "Use E at 5 stacks on enemy while farming", SCRIPT_PARAM_ONOFF, false)
       
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
@@ -162,6 +166,8 @@ function OnLoad()
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("stop", "Stop farm at 5 stacks", SCRIPT_PARAM_ONOFF, true, string.byte("N"))
+  Config.kConfig:addParam("qqq", "Will only stop farming if enemy in range", SCRIPT_PARAM_INFO,"")
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -172,6 +178,8 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
+  Config.kConfig:permaShow("stop")
+  Config.comboConfig:permaShow("fero")
   sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
   Config:addSubMenu("Target Selector", "sts")
   sts:AddToMenu(Config.sts)
@@ -249,15 +257,46 @@ function OnTick()
     end
   end
 
-  if not ultOn and Config.kConfig.lh then
-    LastHit()
-  end
-  if not ultOn and Config.kConfig.lc then
-    LaneClear()
-    JungleClear()
+  if Config.kConfig.stop and myHero.mana == 5 and EnemiesAround(myHero, data[0].range) == 0 then
+    if not ultOn and Config.kConfig.lh then
+      LastHit()
+    end
+    if not ultOn and Config.kConfig.lc then
+      LaneClear()
+      JungleClear()
+    end
+  elseif Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and myHero.mana == 5 and EnemiesAround(myHero, data[0].range) > 0 then
+    if Config.farmConfig.Qh and ValidTarget(Target, data[0].range) then
+      UseQ(Target)
+    elseif Config.farmConfig.Wh and ValidTarget(Target, data[1].range) then
+      UseW(Target)
+    elseif Config.farmConfig.Eh and ValidTarget(Target, data[2].range) then
+      UseE(Target)
+    end
   end
 
-  if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
+end
+
+function OnSendPacket(p)
+  if myHero.mana == 5 and not myHero.dead then
+    if p.header == 0x10B then -- old: 0x00E9
+      p.pos=27
+      if p:Decode1() == 0x68 and Config.comboConfig.fero ~= 0 then
+        p:Block()
+        p.skip(p, 1)
+        Config.comboConfig.fero == 0
+      elseif p:Decode1() == 0xEE and Config.comboConfig.fero ~= 1 then
+        p:Block()
+        p.skip(p, 1)
+        Config.comboConfig.fero == 1
+      elseif p:Decode1() == 0xB1 and Config.comboConfig.fero ~= 2 then
+        p:Block()
+        p.skip(p, 1)
+        Config.comboConfig.fero == 2
+      end
+    end
+  end
 end
 
 function LastHit()

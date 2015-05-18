@@ -440,7 +440,11 @@ function CastW(unit)
   end
 end
 function CastE(unit) 
-  CastSpell(_E, unit)
+  if VIP_USER and Config.misc.pc then
+    Packet("S_CAST", {spellId = _E, targetNetworkId = myHero.networkID}):send()
+  else
+    CastSpell(_E, myHero)
+  end
 end
 function CastR(unit) 
   local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, unit)

@@ -138,30 +138,22 @@ end
 
 function UPL:AddSpell(spell, array)
   self.spellData[spell] = array
-  self:SetupHPred()
+  self:SetupHPred(spell)
 end
 
 function UPL:GetSpellData(spell)
-  return self.spellData[spell].range, self.spellData[spell].delay, self.spellData[spell].type, self.spellData[spell].width, self.spellData[spell].speed, self.spellData[spell].collision
+  return {self.spellData[spell].range, self.spellData[spell].delay, self.spellData[spell].type, self.spellData[spell].width, self.spellData[spell].speed, self.spellData[spell].collision}
 end
 
 function UPL:HPredict(Target, spell, source)
   return self.HP:GetPredict(spell, Target, source)
 end
 
-function UPL:SetupHPred()
-if self.spellData[0].range > 0 then
-  self:MakeHPred("Q", 0) 
-end
-if self.spellData[1].range > 0 then
-  self:MakeHPred("W", 1) 
-end
-if self.spellData[2].range > 0 then
-  self:MakeHPred("E", 2) 
-end
-if self.spellData[3].range > 0 then
-  self:MakeHPred("R", 3) 
-end
+function UPL:SetupHPred(spell)
+  local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
+  if self.spellData[spell].type ~= "" then
+    self:MakeHPred(str[spell], spell) 
+  end
 end
 
 function UPL:MakeHPred(hspell, i)
