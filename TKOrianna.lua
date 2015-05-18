@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
@@ -53,31 +53,13 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 --[[ Castable itemlist end ]]--
 
 --[[ Libraries start ]]--
-local predToUse = {}
-VP = nil
-DP = nil
-HP = nil
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
-  require("VPrediction")
-  VP = VPrediction()
-  table.insert(predToUse, "VPrediction")
-end
-
-if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-  require "DivinePred"
-  DP = DivinePred() 
-  table.insert(predToUse, "DivinePred")
-end
-
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
-  require("HPrediction")
-  HP = HPrediction()
-  table.insert(predToUse, "HPrediction")
-end
-
-if predToUse == {} then 
-	TopKekMsg("Please download a Prediction") 
-	return 
+UPL = nil
+if FileExist(LIB_PATH .. "/UPL.lua") then
+  require("UPL")
+  UPL = UPL()
+else 
+  PrintChat("Please download the UPLib.") 
+  return 
 end
 
 if FileExist(LIB_PATH .. "SourceLib.lua") then
@@ -113,11 +95,10 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-
-  if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.03, 0, 0.3, 2) end
-  if ActivePred() == "HPrediction" then SetupHPred() end
+  UPL:AddSpell(_Q, data[0])
+  UPL:AddSpell(_W, data[1])
+  UPL:AddSpell(_R, data[3])
+  UPL:AddToMenu(Config.misc)
   
   Config:addSubMenu("Misc settings", "casual")
   Config.casual:addSubMenu("Zhonya's settings", "zhg")
@@ -142,10 +123,16 @@ function OnLoad()
   Config.harrConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
-  Config.farmConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.farmConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+  Config.farmConfig:addSubMenu("Lane Clear", "lc")
+  Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 40, 0, 100, 0)
+  Config.farmConfig:addSubMenu("Last Hit", "lh")
+  Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 40, 0, 100, 0)
 			
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
@@ -164,7 +151,8 @@ function OnLoad()
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
-  Config.kConfig:addParam("lc", "Farm (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+  Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -173,6 +161,7 @@ function OnLoad()
   Config.kConfig:permaShow("combo")
   Config.kConfig:permaShow("harr")
   Config.kConfig:permaShow("har")
+  Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
   sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
   Config:addSubMenu("Target Selector", "sts")
@@ -249,51 +238,129 @@ function OnTick()
     	Combo()
 	end
 
-    if Config.kConfig.lc then
-    	Farm()
-	end
+  if Config.kConfig.lh and not (Config.kConfig.har or Config.kConfig.harr) and not Config.kConfig.combo and Config.farmConfig.lh.mana <= myHero.mana then
+    LastHit()
+  end
+
+  if Config.kConfig.lc and not (Config.kConfig.har or Config.kConfig.harr) and not Config.kConfig.combo and Config.farmConfig.lc.mana <= myHero.mana then
+    LaneClear()
+  end
 
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
-function Farm()
-  if QReady() and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
-      local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
+function LastHit()
+  if QReady() and Config.farmConfig.lh.Q then
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      local QMinionDmg = GetDmg("Q", minion, GetMyHero())
       if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
         CastQ(minion)
         return
       end
     end
   end
-  if WReady() and Config.farmConfig.W and Config.farmConfig.mana <= myHero.mana then
-    for i, minion in pairs(minionManager(MINION_ENEMY, 1250, player, MINION_SORT_HEALTH_ASC).objects) do
-      local WMinionDmg = getDmg("W", minion, GetMyHero())
+  if WReady() and Config.farmConfig.lh.W then
+    for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      local WMinionDmg = GetDmg("W", minion, GetMyHero())
       if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
         CastW(minion)
         return
       end
     end    
-    if WReady() and QReady() and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
-	    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
-	      local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
-	      local WMinionDmg = getDmg("W", minion, GetMyHero())
-	      if WMinionDmg+QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
-	        CastQ(minion)
-	        DelayAction(CastW, 0.25, {minion})
+    if WReady() and QReady() and Config.farmConfig.lh.Q then
+      for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion, GetMyHero())
+        local WMinionDmg = GetDmg("W", minion, GetMyHero())
+        if WMinionDmg+QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
+          CastQ(minion)
+          DelayAction(CastW, 0.25, {minion})
           return
-	      end
-	    end 
-	end   
+        end
+      end 
+  end   
   end
-  if EReady() and Config.farmConfig.E and Config.farmConfig.mana <= myHero.mana then    
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
-      local EMinionDmg = getDmg("E", minion, GetMyHero())      
+  if EReady() and Config.farmConfig.lh.E then    
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
+      local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
         --CastE(minion)
       end      
     end    
   end  
+end
+
+function LaneClear()
+  if QReady() and Config.farmConfig.lc.Q then
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      local QMinionDmg = GetDmg("Q", minion, GetMyHero())
+      if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
+        CastQ(minion)
+        return
+      end
+    end
+  end
+  if WReady() and Config.farmConfig.lc.W then
+    for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      local WMinionDmg = GetDmg("W", minion, GetMyHero())
+      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+        CastW(minion)
+        return
+      end
+    end    
+    if WReady() and QReady() and Config.farmConfig.lc.Q then
+      for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion, GetMyHero())
+        local WMinionDmg = GetDmg("W", minion, GetMyHero())
+        if WMinionDmg+QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
+          CastQ(minion)
+          DelayAction(CastW, 0.25, {minion})
+          return
+        end
+      end 
+    end   
+  end
+  if EReady() and Config.farmConfig.lc.E then    
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
+      local EMinionDmg = GetDmg("E", minion, GetMyHero())      
+      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        --CastE(minion)
+      end      
+    end    
+  end  
+  if WReady() and QReady() and Config.farmConfig.lc.Q then
+    local minionTarget = GetLowestMinion(data[0].range, myHero)
+    if minionTarget ~= nil then
+      CastQ(minionTarget)
+      DelayAction(CastW, 0.25, {minionTarget})
+      return
+    end
+  end   
+  if QReady() and Config.farmConfig.lc.Q then
+    local minionTarget = GetLowestMinion(data[0].range, myHero)
+    if minionTarget ~= nil then
+      CastQ(minionTarget)
+      return
+    end
+  end
+  if WReady() and Config.farmConfig.lc.W then
+    local minionTarget = GetLowestMinion(data[1].width, Ball)
+    if minionTarget ~= nil then
+      CastW(minionTarget)
+      return
+    end
+  end
+end
+
+function GetLowestMinion(range, unit)
+  local minionTarget = nil
+  for i, minion in pairs(minionManager(MINION_ENEMY, range, unit, MINION_SORT_HEALTH_ASC).objects) do
+    if minionTarget == nil then 
+      minionTarget = minion
+    elseif minionTarget.health >= minion.health and ValidTarget(minion, range) then
+      minionTarget = minion
+    end
+  end
+  return minionTarget
 end
 
 function Combo()
@@ -368,8 +435,7 @@ end
 
 function CastQ(unit)
   if myHero.dead or recall or Ball == nil then return end  
-  local spell = ActivePred()=="HPrediction" and "Q" or 0
-  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
   if HitChance >= 1.5 then  
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end  
@@ -377,8 +443,7 @@ end
 
 function CastW(unit)
   if myHero.dead or Ball == nil then return end
-  local spell = ActivePred()=="HPrediction" and "W" or 1
-  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
+  local CastPosition, HitChance, Position = UPL:Predict(_W, Ball, unit)
   if HitChance >= 2 and GetDistance(unit, Ball) < data[1].width then
       CCastSpell(_W)
   end
@@ -391,8 +456,7 @@ end
 
 function CastR(unit)
   if myHero.dead or Ball == nil then return end
-  local spell = ActivePred()=="HPrediction" and "R" or 3
-  CastPosition, HitChance, Position = Predict(unit, spell, Ball)
+  local CastPosition, HitChance, Position = UPL:Predict(_R, Ball, unit)
   if HitChance >= 2 and GetDistance(unit, Ball) < data[3].width then
       CCastSpell(_R)
   end
@@ -426,89 +490,6 @@ function GetCustomTarget()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
     return sts:GetTarget(data[1].range)
-end
-
-function ActivePred()
-    local int = Config.misc.pro
-    return tostring(predToUse[int])
-end
-
-function SetupHPred()
-  MakeHPred("Q", 0) 
-end
-
-function MakeHPred(hspell, i)
- if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-    if data[i].type == "linear" then
-        if data[i].speed ~= math.huge then 
-            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    elseif data[i].type == "circular" then
-        if data[i].speed ~= math.huge then 
-            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    else --Cone!
-        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-    end
- end
-end
-
-function Predict(Target, spell, source)
-    if ActivePred() == "VPrediction" then
-        return VPredict(Target, data[spell], source)
-    elseif ActivePred() == "Prodiction" then
-        return nil
-    elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, data[spell], source)
-        return Position, perc*3/100, Position
-    elseif ActivePred() == "HPrediction" then
-    	local Position, HitChance = HPredict(Target, spell, source)
-        return Position, HitChance, Position
-    end
-end
-
-function HPredict(Target, spell, source)
-	return HP:GetPredict(spell, Target, source) 
-end
-
-function DPredict(Target, spell, source)
-  local unit = DPTarget(Target)
-  local col = spell.collision and 0 or math.huge
-  local Spell = nil
-  if spell.type == "linear" then
-	 Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "circular" then
-	 Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "cone" then
-	 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  end
-  return DP:predict(unit, Spell, 1.2, source)
-end
-
-function VPredict(Target, spell, source)
-  if spell.type == "linear" then
-  	if spell.aoe then
-  		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-  	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-  	end
-  elseif spell.type == "circular" then
-  	if spell.aoe then
-  		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-  	else
-  		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-  	end
-  elseif spell.type == "cone" then
-  	if spell.aoe then
-  		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-  	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-  	end
-  end
 end
 
 function OnCreateObj(object)
@@ -556,6 +537,46 @@ function OnDraw()
             end
         end
     end      
+end
+
+function GetDmg(spell, enemy, source) --Partially from HTTF
+  if enemy == nil then
+    return
+  end
+  
+  local ADDmg = 0
+  local APDmg = 0
+
+  local Level = myHero.level
+  local TotalDmg = myHero.totalDamage
+  local AP = myHero.ap
+  local ArmorPen = myHero.armorPen
+  local ArmorPenPercent = myHero.armorPenPercent
+  local MagicPen = myHero.magicPen
+  local MagicPenPercent = myHero.magicPenPercent
+  
+  local Armor = math.max(0, enemy.armor*ArmorPenPercent-ArmorPen)
+  local ArmorPercent = Armor/(100+Armor)
+  local MagicArmor = math.max(0, enemy.magicArmor*MagicPenPercent-MagicPen)
+  local MagicArmorPercent = MagicArmor/(100+MagicArmor)
+
+  local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
+
+  if spell == "IGNITE" then
+    return 50+20*Level
+  elseif spell == "AD" then
+    ADDmg = TotalDmg+0.15*AP
+  elseif spell == "Q" then
+    APDmg = 30+30*QLevel+0.5*AP
+  elseif spell == "W" then
+    APDmg = 25+45*WLevel+0.7*AP
+  elseif spell == "E" then
+    APDmg = 30+30*ELevel+0.3*AP
+  elseif spell == "R" then
+    APDmg = 75+75*RLevel+0.7*AP
+  end
+
+  return ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
 end
 
 local colorRangeReady        = ARGB(255, 200, 0,   200)
