@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local uplversion = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -41,16 +41,16 @@ local UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
 local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\">[UnifiedPredictionLibrary] "..msg.."</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
-  if ServerData then
-    ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
-    if ServerVersion then
-      if tonumber(version) < ServerVersion then
-        AutoupdaterMsg("New version available v"..ServerVersion)
+  local uplServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
+  if uplServerData then
+    uplServerVersion = type(tonumber(uplServerData)) == "number" and tonumber(uplServerData) or nil
+    if uplServerVersion then
+      if tonumber(uplversion) < uplServerVersion then
+        AutoupdaterMsg("New version available v"..uplServerVersion)
         AutoupdaterMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () AutoupdaterMsg("Updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
+        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () AutoupdaterMsg("Updated. ("..uplversion.." => "..uplServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
       else
-        AutoupdaterMsg("Loaded the latest version (v"..ServerVersion..")")
+        AutoupdaterMsg("Loaded the latest version (v"..uplServerVersion..")")
       end
     end
   else
