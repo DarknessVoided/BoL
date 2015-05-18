@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local uplversion = 1.04
+local uplversion = 1.05
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -150,16 +150,16 @@ function UPL:HPredict(Target, spell, source)
 end
 
 function UPL:SetupHPred()
-if self.spellData[0] ~= nil then
+if self.spellData[0].range > 0 then
   self:MakeHPred("Q", 0) 
 end
-if self.spellData[1] ~= nil then
+if self.spellData[1].range > 0 then
   self:MakeHPred("W", 1) 
 end
-if self.spellData[2] ~= nil then
+if self.spellData[2].range > 0 then
   self:MakeHPred("E", 2) 
 end
-if self.spellData[3] ~= nil then
+if self.spellData[3].range > 0 then
   self:MakeHPred("R", 3) 
 end
 end
