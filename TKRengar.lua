@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.07
+local version = 0.08
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -131,7 +131,7 @@ function OnLoad()
   Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
-  Config.farmConfig:addSubMenu("Lane Clear", "lc")
+  Config.farmConfig:addSubMenu("Lane/Jungle Clear", "lc")
   Config.farmConfig:addSubMenu("Last Hit", "lh")
   Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
@@ -253,6 +253,7 @@ function OnTick()
   end
   if not ultOn and Config.kConfig.lc then
     LaneClear()
+    JungleClear()
   end
 
   if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
@@ -371,6 +372,88 @@ function LaneClear()
         if minionTarget == nil then 
           minionTarget = minion
         elseif minionTarget.health >= minion.health and ValidTarget(minion, data[2].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastE(minionTarget)
+      end
+    end 
+  end
+end
+
+function JungleClear()
+  if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if WReady() and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      CastW(minionTarget)
+    end  
+  else
+    --Check for lowlife: Lasthit = priority!
+    if QReady() and Config.farmConfig.lc.Q then
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local QMinionDmg = GetDmg("Q", minion)
+        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+          CastQ(minion)
+        end
+      end
+    end
+    if WReady() and Config.farmConfig.lc.W then
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        local WMinionDmg = GetDmg("W", minion)
+        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+          CastW(minion)
+        end
+      end    
+    end  
+    if EReady() and Config.farmConfig.lc.E then    
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do    
+        local EMinionDmg = GetDmg("E", minion)      
+        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range+data[1].width) then
+          CastE(minion)
+        end      
+      end    
+    end 
+    --Check for lowestlife: Lanceclear - 2nd priority!
+    if QReady() and Config.farmConfig.lc.Q then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[0].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastQ(minionTarget)
+      end
+    end
+    if WReady() and Config.farmConfig.lc.W then
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[1].range) then
+          minionTarget = minion
+        end
+      end
+      if minionTarget ~= nil then
+        CastW(minionTarget)
+      end
+    end  
+    if EReady() and Config.farmConfig.lc.E then   
+      local minionTarget = nil
+      for i, minion in pairs(minionManager(MINION_JUNGLE, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[2].range) then
           minionTarget = minion
         end
       end
