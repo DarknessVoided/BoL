@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.08
+local version = 0.09
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -97,7 +97,7 @@ local enemyCount = 0
 local ultOn, oneShot = false, false
 local osTarget = nil
 data = {
-    [_Q] = { range = 125, type = "notarget", aareset = true},
+    [_Q] = { range = 125*2, type = "notarget", aareset = true},
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
     [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
     [_R] = { range = 4000, type = "notarget"}
@@ -389,7 +389,7 @@ function JungleClear()
       for i, minion in pairs(minionManager(MINION_JUNGLE, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[1].range) then
+        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, data[1].range) then
           minionTarget = minion
         end
       end
@@ -427,7 +427,7 @@ function JungleClear()
       for i, minion in pairs(minionManager(MINION_JUNGLE, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[0].range) then
+        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, data[0].range) then
           minionTarget = minion
         end
       end
@@ -440,7 +440,7 @@ function JungleClear()
       for i, minion in pairs(minionManager(MINION_JUNGLE, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[1].range) then
+        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, data[1].range) then
           minionTarget = minion
         end
       end
@@ -453,7 +453,7 @@ function JungleClear()
       for i, minion in pairs(minionManager(MINION_JUNGLE, data[2].range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.maxHealth <= minion.maxHealth and ValidTarget(minion, data[2].range) then
+        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, data[2].range) then
           minionTarget = minion
         end
       end
