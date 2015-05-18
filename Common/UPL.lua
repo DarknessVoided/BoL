@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local version = 0.01
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -137,14 +137,8 @@ function UPL:AddToMenu(Config)
 end
 
 function UPL:AddSpell(spell, array)
-  range, delay, typef, width, speed, aoe, collision = array.range , array.delay , array.type , array.width , array.speed , array.aoe , array.collision
-  self.spellData[spell].range = range and range or 0
-  self.spellData[spell].delay = delay and delay or 0
-  self.spellData[spell].type  = typef and typef or ""
-  self.spellData[spell].width = width and width or 0
-  self.spellData[spell].speed = speed and speed or 0
-  self.spellData[spell].aoe   = aoe and aoe or false
-  self.spellData[spell].collision = collision and true or false
+  self.spellData[spell]       = array
+  self.spellData[spell].aoe   = self.spellData[spell].collision
   self:SetupHPred()
 end
 
@@ -178,8 +172,8 @@ function UPL:MakeHPred(hspell, i)
       else
           self.HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = self.spellData[i].range, width = 2*self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})
       end
-  elseif data[i].type == "circular" then
-      if data[i].speed ~= math.huge then 
+  elseif self.spellData[i].type == "circular" then
+      if self.spellData[i].speed ~= math.huge then 
           self.HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = self.spellData[i].range, speed = self.spellData[i].speed, radius = self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})
       else
           self.HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = self.spellData[i].range, radius = self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})

@@ -262,6 +262,7 @@ function Farm()
       local QMinionDmg = 0.7*getDmg("Q", minion, GetMyHero())
       if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
         CastQ(minion)
+        return
       end
     end
   end
@@ -270,6 +271,7 @@ function Farm()
       local WMinionDmg = getDmg("W", minion, GetMyHero())
       if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
         CastW(minion)
+        return
       end
     end    
     if WReady and QReady and Config.farmConfig.Q and Config.farmConfig.mana <= myHero.mana then
@@ -279,6 +281,7 @@ function Farm()
 	      if WMinionDmg+QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
 	        CastQ(minion)
 	        DelayAction(CastW, 0.25, {minion})
+          return
 	      end
 	    end 
 	end   

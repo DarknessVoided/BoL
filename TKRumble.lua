@@ -308,7 +308,7 @@ function DoSomeUltLogic()
   	end
   	if Config.rConfig.omgisteamfight then
   		local enemies = EnemiesAround(Target, 250)
-  		local allies = EnemiesAround(myHero, 500)
+  		local allies = AlliesAround(myHero, 500)
   		if enemies >= Config.rConfig.teamfightenemies and allies >= Config.rConfig.teamfightallies then
 	    	local spell = ActivePred()=="HPrediction" and "R" or 3
 	    	local CastPosition, HitChance, Position = Predict(target, spell)
