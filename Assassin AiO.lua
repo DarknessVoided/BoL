@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.47
+local version = 0.48
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -266,6 +266,7 @@ local orbLast
 local enemyCount = 0
 local enemyTable = {}
 local lastUsedSpell = nil
+local ForceTarget = nil
 
 function OnLoad()
   orbDisabled = false
@@ -404,6 +405,9 @@ end
 
 function OnTick()
 	Target = GetCustomTarget()
+  if Forcetarget ~= nil and ValidTarget(Forcetarget, Q.range) then
+    Target = Forcetarget  
+  end
 	if orbDisabled then
 		if (os.clock() - orbLast) > 2.5 then
 			orbDisabled = false
@@ -623,6 +627,30 @@ function OnProcessSpell(object, spell)
 	end
 end
 
+function OnWndMsg(Msg, Key)
+  if Msg == WM_LBUTTONDOWN then
+    local minD = 0
+    local starget = nil
+    for i, enemy in ipairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) then
+        if GetDistance(enemy, mousePos) <= minD or starget == nil then
+          minD = GetDistance(enemy, mousePos)
+          starget = enemy
+        end
+      end
+    end
+    
+    if starget and minD < 500 then
+      if Forcetarget and starget.charName == Forcetarget.charName then
+        Forcetarget = nil
+      else
+        Forcetarget = starget
+        print("<font color=\"#FF0000\">Assassin AiO: New target selected: "..starget.charName.."</font>")
+      end
+    end
+  end
+end
+
 speed = myHero.ms
 old_speed = myHero.ms
 function EveAntiSlow()
@@ -729,6 +757,9 @@ function OnDraw()
 	if Config.Drawing.RRange then
 		DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
 	end
+  if Forcetarget ~= nil then
+    DrawCircle(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius, ARGB(255, 0, 255, 0))
+  end
 	if Config.Drawing.DmgCalcs then
         for i = 1, enemyCount do
             local enemy = enemyTable[i].player
