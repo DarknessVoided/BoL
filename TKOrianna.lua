@@ -587,11 +587,11 @@ function DmgCalculations()
     for i = 1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
-            local damageAA = getDmg("AD", enemy, player)
-            local damageQ  = getDmg("Q", enemy, player)
-            local damageW  = getDmg("W", enemy, player)
-            local damageE  = getDmg("E", enemy, player)
-            local damageR  = getDmg("R", enemy, player)
+            local damageAA = GetDmg("AD", enemy, player)
+            local damageQ  = GetDmg("Q", enemy, player)
+            local damageW  = GetDmg("W", enemy, player)
+            local damageE  = GetDmg("E", enemy, player)
+            local damageR  = GetDmg("R", enemy, player)
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
