@@ -443,7 +443,7 @@ end
 
 function CastW(unit)
   if myHero.dead or Ball == nil then return end
-  if WReady() and GetDistance(unit, Ball) < data[1].width/2 then CastSpell(_W) end
+  if WReady() and unit ~= nil and GetDistance(unit, Ball) < data[1].width/2 then CastSpell(_W) end
 end
 
 function CastE(unit)
@@ -453,7 +453,7 @@ end
 
 function CastR(unit)
   if myHero.dead or Ball == nil then return end
-  if RReady() and GetDistance(unit, Ball) < data[3].width/2 then CastSpell(_R) end
+  if RReady() and unit ~= nil and GetDistance(unit, Ball) < data[3].width/2 then CastSpell(_R) end
 end
 
 function CCastSpell(Spell)
