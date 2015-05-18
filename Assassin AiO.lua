@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.48
+local version = 0.49
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -668,11 +668,11 @@ function DmgCalculations()
     for i = 1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
-            local damageAA = GetDmg("AD", enemy, player)
-            local damageQ  = GetDmg("Q", enemy, player)
-            local damageW  = GetDmg("W", enemy, player)
-            local damageE  = GetDmg("E", enemy, player)
-            local damageR  = GetDmg("R", enemy, player)
+            local damageAA = getDmg("AD", enemy, player)
+            local damageQ  = getDmg("Q", enemy, player)
+            local damageW  = getDmg("W", enemy, player)
+            local damageE  = getDmg("E", enemy, player)
+            local damageR  = getDmg("R", enemy, player)
             local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
