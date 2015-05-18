@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.06
+local version = 0.07
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
@@ -225,7 +225,7 @@ function OnTick()
     
     if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
-    if Config.casual.leW and WReady and not recall then 
+    if Config.casual.leW and WReady() and not recall then 
     	if myHero.mana < 40 then
     		CastSpell(_W)
     	end
@@ -261,7 +261,7 @@ function OnTick()
     		CCastSpell(_Q, CastPosition.x, CastPosition.z)
     	end
       end
-      if Config.comboConfig.W and WReady then
+      if Config.comboConfig.W and WReady() then
 		CastSpell(_W)
       end
       if Config.comboConfig.E then
@@ -330,7 +330,7 @@ function AlliesAround(Unit, range)
 end
 
 function FarmQ()
-	if Config.farmConfig.FarmQ and QReady then
+	if Config.farmConfig.FarmQ and QReady() then
 		for index, minion in pairs(minionManager(MINION_ENEMY, 600, player, MINION_SORT_HEALTH_ASC).objects) do
 			local mhp = minion.health
 			local qDmg = getDmg("Q", minion, GetMyHero())
@@ -342,7 +342,7 @@ function FarmQ()
 end
 
 function FarmE()
-	if Config.farmConfig.FarmE and EReady then
+	if Config.farmConfig.FarmE and EReady() then
 		for index, minion in pairs(minionManager(MINION_ENEMY, 850, player, MINION_SORT_HEALTH_ASC).objects) do
 			local mhp = minion.health
 			local eDmg = getDmg("E", minion, GetMyHero())
@@ -533,62 +533,66 @@ function DmgCalculations()
             local damageW  = getDmg("W", enemy, player)
             local damageE  = getDmg("E", enemy, player)
             local damageR  = getDmg("R", enemy, player)
+            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageR = damageR
-            if enemy.health < damageR then
-                enemyTable[i].indicatorText = "R Kill"
-                enemyTable[i].ready = RReady
-            elseif enemy.health < damageQ then
+            if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
-                enemyTable[i].ready = QReady
-            elseif enemy.health < damageE then
-                enemyTable[i].indicatorText = "E Kill"
-                enemyTable[i].ready = EReady
+                enemyTable[i].ready = QReady()
             elseif enemy.health < damageW then
                 enemyTable[i].indicatorText = "W Kill"
-                enemyTable[i].ready = WReady
-            elseif enemy.health < damageE + damageQ then
-                enemyTable[i].indicatorText = "Q + E Kill"
-                enemyTable[i].ready = EReady and QReady
+                enemyTable[i].ready = WReady()
+            elseif enemy.health < damageE then
+                enemyTable[i].indicatorText = "E Kill"
+                enemyTable[i].ready = EReady()
+            elseif enemy.health < damageR then
+                enemyTable[i].indicatorText = "R Kill"
+                enemyTable[i].ready = RReady()
             elseif enemy.health < damageQ + damageW then
                 enemyTable[i].indicatorText = "Q + W Kill"
-                enemyTable[i].ready = QReady and WReady
+                enemyTable[i].ready = QReady() and WReady()
+            elseif enemy.health < damageE + damageQ then
+                enemyTable[i].indicatorText = "Q + E Kill"
+                enemyTable[i].ready = EReady() and QReady()
             elseif enemy.health < damageW + damageE then
                 enemyTable[i].indicatorText = "W + E Kill"
-                enemyTable[i].ready = WReady and EReady
+                enemyTable[i].ready = WReady() and EReady()
             elseif enemy.health < damageR + damageQ then
-                enemyTable[i].indicatorText = "R + Q Kill"
-                enemyTable[i].ready = RReady and QReady
+                enemyTable[i].indicatorText = "Q + R Kill"
+                enemyTable[i].ready = RReady() and QReady()
             elseif enemy.health < damageR + damageE then
-                enemyTable[i].indicatorText = "R + E Kill"
-                enemyTable[i].ready = RReady and EReady
+                enemyTable[i].indicatorText = "E + R Kill"
+                enemyTable[i].ready = RReady() and EReady()
             elseif enemy.health < damageR + damageW then
-                enemyTable[i].indicatorText = "R + W Kill"
-                enemyTable[i].ready = RReady and WReady
+                enemyTable[i].indicatorText = "W + R Kill"
+                enemyTable[i].ready = RReady() and WReady()
             elseif enemy.health < damageQ + damageW + damageE then
                 enemyTable[i].indicatorText = "Q + W + E Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
-            elseif enemy.health < damageQ + damageE + damageR then
-                enemyTable[i].indicatorText = "Q + E + R Kill"
-                enemyTable[i].ready = QReady and EReady and EReady
+                enemyTable[i].ready = QReady() and WReady() and EReady()
             elseif enemy.health < damageQ + damageW + damageR then
                 enemyTable[i].indicatorText = "Q + W + R Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
+                enemyTable[i].ready = QReady() and WReady() and EReady()
+            elseif enemy.health < damageQ + damageE + damageR then
+                enemyTable[i].indicatorText = "Q + E + R Kill"
+                enemyTable[i].ready = QReady() and EReady() and EReady()
             elseif enemy.health < damageR + damageW + damageE then
                 enemyTable[i].indicatorText = "W + E + R Kill"
-                enemyTable[i].ready = RReady and WReady and EReady
-            elseif enemy.health < damageQ + damageW + damageE + damageR then
+                enemyTable[i].ready = RReady() and WReady() and EReady()
+            elseif enemy.health < damageQ + damageW + damageE + damageR + damageAA + damageI then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and WReady and EReady and RReady
+                enemyTable[i].ready = QReady() and WReady() and EReady() and RReady()
             else
                 local damageTotal = damageQ + damageW + damageE + damageR
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or EReady or RReady
+                enemyTable[i].ready = QReady() or WReady() or EReady() or RReady()
             end
+            local neededE = math.ceil(enemy.health / damageE)    
+            enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededE.." E's"
+
             local enemyDamageAA = getDmg("AD", player, enemy)
             local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
             enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"

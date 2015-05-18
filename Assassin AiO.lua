@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.46
+local version = 0.47
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -442,7 +442,7 @@ function killsteal()
 				Castspell(Target, _E)
 			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
 				Castspell(Target, _R)
-			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
 				CCastSpell(Ignite, enemy)
 			end
 		end
@@ -461,7 +461,7 @@ function Harrass()
 	for i=1,3 do
 		if orbDisabled or recall or myHero.dead then return end
 		if skillOrder[i] == "Q" then
-			if (Target ~= nil) and QReady then
+			if (Target ~= nil) and QReady() then
 				if ValidTarget(Target, data[0].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[0].range then
             Castspell(Target, _Q)
@@ -470,7 +470,7 @@ function Harrass()
 				end
 			end
 		elseif skillOrder[i] == "W" then
-			if (Target ~= nil) and WReady then
+			if (Target ~= nil) and WReady() then
 				if ValidTarget(Target, data[1].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[1].range then
             Castspell(Target, _W)
@@ -479,7 +479,7 @@ function Harrass()
 				end
 			end
 		elseif skillOrder[i] == "E" then
-			if (Target ~= nil) and EReady then
+			if (Target ~= nil) and EReady() then
 				if ValidTarget(Target, data[2].range) and harrEnabled then
 					if GetDistance(Target, myHero) <= data[2].range then
             Castspell(Target, _E)
@@ -528,7 +528,7 @@ function Combo()
 	for i=1,4 do
 		if orbDisabled or recall or myHero.dead then return end
 		if skillOrder[i] == "Q" then
-			if (Target ~= nil) and QReady then
+			if (Target ~= nil) and QReady() then
 				if ValidTarget(Target, data[0].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[0].range then
             Castspell(Target, _Q)
@@ -537,7 +537,7 @@ function Combo()
 				end
 			end
 		elseif skillOrder[i] == "W" then
-			if (Target ~= nil) and WReady then
+			if (Target ~= nil) and WReady() then
 				if ValidTarget(Target, data[1].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[1].range then
             Castspell(Target, _W)
@@ -546,7 +546,7 @@ function Combo()
 				end
 			end
 		elseif skillOrder[i] == "E" then
-			if (Target ~= nil) and EReady then
+			if (Target ~= nil) and EReady() then
 				if ValidTarget(Target, data[2].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[2].range then
             Castspell(Target, _E)
@@ -555,7 +555,7 @@ function Combo()
 				end
 			end
 		elseif skillOrder[i] == "R" then
-			if (Target ~= nil) and RReady then
+			if (Target ~= nil) and RReady() then
 				if myHero.charName:lower() == "leblanc" then
 					if lastUsedSpell == _Q then
 						data[3] = data[0]
@@ -635,75 +635,74 @@ function EveAntiSlow()
 	end
 end
 
-local KillText = {}
-local KillTextColor = ARGB(255, 216, 247, 8)
-local KillTextList = {"Harass Him", "Combo Kill"}
 function DmgCalculations()
     if not Config.Drawing.DmgCalcs then return end
     for i = 1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
-            local damageAA = getDmg("AD", enemy, player)
-            local damageQ  = getDmg("Q", enemy, player)
-            local damageW  = getDmg("W", enemy, player)
-            local damageE  = getDmg("E", enemy, player)
-            local damageR  = getDmg("R", enemy, player)
+            local damageAA = GetDmg("AD", enemy, player)
+            local damageQ  = GetDmg("Q", enemy, player)
+            local damageW  = GetDmg("W", enemy, player)
+            local damageE  = GetDmg("E", enemy, player)
+            local damageR  = GetDmg("R", enemy, player)
+            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageR = damageR
-            if enemy.health < damageR then
-                enemyTable[i].indicatorText = "R Kill"
-                enemyTable[i].ready = RReady
-            elseif enemy.health < damageQ then
+            if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
-                enemyTable[i].ready = QReady
-            elseif enemy.health < damageE then
-                enemyTable[i].indicatorText = "E Kill"
-                enemyTable[i].ready = EReady
+                enemyTable[i].ready = QReady()
             elseif enemy.health < damageW then
                 enemyTable[i].indicatorText = "W Kill"
-                enemyTable[i].ready = WReady
-            elseif enemy.health < damageE + damageQ then
-                enemyTable[i].indicatorText = "Q + E Kill"
-                enemyTable[i].ready = EReady and QReady
+                enemyTable[i].ready = WReady()
+            elseif enemy.health < damageE then
+                enemyTable[i].indicatorText = "E Kill"
+                enemyTable[i].ready = EReady()
+            elseif enemy.health < damageR then
+                enemyTable[i].indicatorText = "R Kill"
+                enemyTable[i].ready = RReady()
             elseif enemy.health < damageQ + damageW then
                 enemyTable[i].indicatorText = "Q + W Kill"
-                enemyTable[i].ready = QReady and WReady
+                enemyTable[i].ready = QReady() and WReady()
+            elseif enemy.health < damageE + damageQ then
+                enemyTable[i].indicatorText = "Q + E Kill"
+                enemyTable[i].ready = EReady() and QReady()
             elseif enemy.health < damageW + damageE then
                 enemyTable[i].indicatorText = "W + E Kill"
-                enemyTable[i].ready = WReady and EReady
+                enemyTable[i].ready = WReady() and EReady()
             elseif enemy.health < damageR + damageQ then
-                enemyTable[i].indicatorText = "R + Q Kill"
-                enemyTable[i].ready = RReady and QReady
+                enemyTable[i].indicatorText = "Q + R Kill"
+                enemyTable[i].ready = RReady() and QReady()
             elseif enemy.health < damageR + damageE then
-                enemyTable[i].indicatorText = "R + E Kill"
-                enemyTable[i].ready = RReady and EReady
+                enemyTable[i].indicatorText = "E + R Kill"
+                enemyTable[i].ready = RReady() and EReady()
             elseif enemy.health < damageR + damageW then
-                enemyTable[i].indicatorText = "R + W Kill"
-                enemyTable[i].ready = RReady and WReady
+                enemyTable[i].indicatorText = "W + R Kill"
+                enemyTable[i].ready = RReady() and WReady()
             elseif enemy.health < damageQ + damageW + damageE then
                 enemyTable[i].indicatorText = "Q + W + E Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
-            elseif enemy.health < damageQ + damageE + damageR then
-                enemyTable[i].indicatorText = "Q + E + R Kill"
-                enemyTable[i].ready = QReady and EReady and EReady
+                enemyTable[i].ready = QReady() and WReady() and EReady()
             elseif enemy.health < damageQ + damageW + damageR then
                 enemyTable[i].indicatorText = "Q + W + R Kill"
-                enemyTable[i].ready = QReady and WReady and EReady
+                enemyTable[i].ready = QReady() and WReady() and EReady()
+            elseif enemy.health < damageQ + damageE + damageR then
+                enemyTable[i].indicatorText = "Q + E + R Kill"
+                enemyTable[i].ready = QReady() and EReady() and EReady()
             elseif enemy.health < damageR + damageW + damageE then
                 enemyTable[i].indicatorText = "W + E + R Kill"
-                enemyTable[i].ready = RReady and WReady and EReady
-            elseif enemy.health < damageQ + damageW + damageE + damageR then
+                enemyTable[i].ready = RReady() and WReady() and EReady()
+            elseif enemy.health < damageQ + damageW + damageE + damageR + damageAA + damageI then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and WReady and EReady and RReady
+                enemyTable[i].ready = QReady() and WReady() and EReady() and RReady()
             else
                 local damageTotal = damageQ + damageW + damageE + damageR
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or EReady or RReady
+                enemyTable[i].ready = QReady() or WReady() or EReady() or RReady()
             end
+
             local enemyDamageAA = getDmg("AD", player, enemy)
             local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
             enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"

@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.08
+local version = 0.10
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -280,7 +280,7 @@ function OnTick()
 end
 
 function LastHit()
-    if QReady and Config.farmConfig.lh.Q then
+    if QReady() and Config.farmConfig.lh.Q then
       for i, mob in pairs(MobsK) do
         local QMinionDmg = GetDmg("Q", mob.unit)
         if QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
@@ -288,7 +288,7 @@ function LastHit()
         end
       end
     end
-    if EReady and Config.farmConfig.lh.E then  
+    if EReady() and Config.farmConfig.lh.E then  
       local killableUnit = {}  
       for i, mob in pairs(MobsK) do    
         local EMinionDmg = GetDmg("E", mob.unit)      
@@ -304,7 +304,7 @@ end
 
 function LaneClear()
     --Check for lowlife: Lasthit = priority!
-    if QReady and Config.farmConfig.lc.Q then
+    if QReady() and Config.farmConfig.lc.Q then
       for i, mob in pairs(MobsK) do
         local QMinionDmg = GetDmg("Q", mob.unit)
         if QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
@@ -312,7 +312,7 @@ function LaneClear()
         end
       end
     end
-    if EReady and Config.farmConfig.lc.E then   
+    if EReady() and Config.farmConfig.lc.E then   
       local killableUnit = {}  
       for i, mob in pairs(MobsK) do 
         local EMinionDmg = GetDmg("E", mob.unit)      
@@ -325,7 +325,7 @@ function LaneClear()
       end
     end 
     --Check for lowestlife: Lanceclear - 2nd priority!
-    if QReady and Config.farmConfig.lc.Q then
+    if QReady() and Config.farmConfig.lc.Q then
       local minionTarget = nil
       for i, mob in pairs(MobsK) do
         if minionTarget == nil then 
@@ -344,7 +344,7 @@ function Combo()
   if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
     CastQ(Target)
   end
-  if Config.comboConfig.E and EReady and ValidTarget(Target, data[2].range) then
+  if Config.comboConfig.E and EReady() and ValidTarget(Target, data[2].range) then
       local killableUnit = {}  
       for i, unit in pairs(MobsK) do    
         local EMinionDmg = GetDmg("E", unit)      
@@ -388,7 +388,7 @@ function Harrass()
     CastQ(Target)
   end
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
-    if EReady and Config.farmConfig.lc.E then   
+    if EReady() and Config.farmConfig.lc.E then   
       local minionTarget = nil
       for i, unit in pairs(MobsK) do
         if minionTarget == nil then 
@@ -406,18 +406,18 @@ end
 
 function CastQ(Targ) 
   local CastPosition, HitChance, Position = Predict(Targ, 0, myHero)
-  if HitChance and HitChance >= 2 and WReady then
+  if HitChance and HitChance >= 2 and WReady() then
     CastSpell(_Q)
   end
 end
 function CastW(Targ) 
-  if WReady then CastSpell(_W) end
+  if WReady() then CastSpell(_W) end
 end
 function CastE() 
-  if EReady then CastSpell(_E) end
+  if EReady() then CastSpell(_E) end
 end
 function CastR(Targ) 
-  if RReady then CastSpell(_R) end
+  if RReady() then CastSpell(_R) end
 end
 
 function EnemiesAround(Unit, range)
@@ -438,9 +438,9 @@ function Killsteal()
         CastQ(enemy)
       elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
         CastE()
-      elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady then
+      elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
         CastSpell(Ignite, enemy)
-      elseif enemy.health < sDmg and Config.KS.killstealS and ValidTarget(enemy, 760) and SReady then
+      elseif enemy.health < sDmg and Config.KS.killstealS and ValidTarget(enemy, 760) and SReady() then
         CastSpell(Smite, enemy)
       end
     end
@@ -611,16 +611,16 @@ local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
-  if Config.Drawing.QRange and QReady then
+  if Config.Drawing.QRange and QReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
   end
-  if Config.Drawing.WRange and WReady then
+  if Config.Drawing.WRange and WReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range, 0x111111)
   end
-  if Config.Drawing.ERange and EReady then
+  if Config.Drawing.ERange and EReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
   end
-  if Config.Drawing.RRange and RReady then
+  if Config.Drawing.RRange and RReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
   end
   if Config.Drawing.dmgCalc then
@@ -656,22 +656,22 @@ function DmgCalculations()
             enemyTable[i].damageS = damageS
             if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
-                enemyTable[i].ready = QReady
+                enemyTable[i].ready = QReady()
             elseif enemy.health < damageE then
                 enemyTable[i].indicatorText = "E Kill"
-                enemyTable[i].ready = EReady
+                enemyTable[i].ready = EReady()
             elseif enemy.health < damageE + damageQ then
                 enemyTable[i].indicatorText = "Q + E Kill"
-                enemyTable[i].ready = EReady and QReady
+                enemyTable[i].ready = EReady() and QReady()
             elseif enemy.health < damageAA + damageQ + damageE + damageI + damageS then
                 enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady and EReady and IReady
+                enemyTable[i].ready = QReady() and EReady() and IReady()
             else
                 local damageTotal = damageAA + damageQ + damageE + damageI
                 local healthLeft = math.round(enemy.health - damageTotal)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
                 enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady or EReady
+                enemyTable[i].ready = QReady() or EReady()
             end
             local neededAA = math.ceil(enemy.health / damageAA)    
             enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededAA.." hits"
