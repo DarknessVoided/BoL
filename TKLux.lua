@@ -77,7 +77,7 @@ local data = {
 local toCastR = false
 
 function OnLoad()
-  Config = scriptConfig("Top Kek Cassiopeia", "TKCassiopeia")
+  Config = scriptConfig("Top Kek Lux", "TKLux")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -237,9 +237,10 @@ function OnTick()
     if Config.kConfig.r then
       CastR(Target)
     end
+
+    DoSomeUltLogic()
   end
 
-  DoSomeUltLogic()
 
   if Config.kConfig.lh and not (Config.kConfig.har or Config.kConfig.harr) and not Config.kConfig.combo and Config.farmConfig.lh.mana <= myHero.mana then
     LastHit()
@@ -269,6 +270,12 @@ function DoSomeUltLogic()
       CastR(CastPosition, target)
     end
   end
+end
+
+function EnemiesAround(Unit, range)
+  local c=0
+  if Unit == nil then return 0 end
+  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
 end
 
 function LastHit()
