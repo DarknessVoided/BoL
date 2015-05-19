@@ -90,7 +90,7 @@ function OnTick()
 	
 	if target and (myHero:CanUseSpell(_Q) == READY) and (Menu.Grab or Menu.Grab2) then
 		MinHitChance = Menu.Grab and 1 or 2
-		CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
+		local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
 		if HitChance > MinHitChance and GetDistance(CastPosition) <= Q.range  then
 			local Mcol = Col:GetMinionCollision(myHero, CastPosition)
 			local Mcol2 = Col:GetMinionCollision(myHero, target)
@@ -130,6 +130,11 @@ function GetRDmg(target)
 end
 
 function OnDraw()
+	local target = GetBestTarget(Q.range)
+	if Forcetarget ~= nil and ValidTarget(Forcetarget, Q.range) then
+		target = Forcetarget	
+	end
+
 	if Menu.DrawQ then
 		DrawCircle2(myHero.x, myHero.y, myHero.z, Q.range, ARGB(255, 0, 255, 0), 18)
 	end
@@ -138,8 +143,13 @@ function OnDraw()
 		DrawCircle2(Forcetarget.x, Forcetarget.y, Forcetarget.z, Q.width, ARGB(255, 0, 255, 0), 8)
 	end
 	
-	if Menu.DrawP and CastPosition and myHero:CanUseSpell(_Q) then
-		DrawCircle2(CastPosition.x, CastPosition.y, CastPosition.z, Q.width, ARGB(255, 255, 0, 0), 8)
+	if Menu.DrawP and myHero:CanUseSpell(_Q) and target ~= nil then
+		local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
+		if CastPosition then
+			DrawCircle2(CastPosition.x, CastPosition.y, CastPosition.z, Q.width, ARGB(255, 255, 0, 0), 8)
+			DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
+			DrawLine3D(myHero.x, myHero.y, myHero.z, target.x,		 target.y,		 target.z, 1,		ARGB(255,55,55,255))
+		end
 	end
 end
 
