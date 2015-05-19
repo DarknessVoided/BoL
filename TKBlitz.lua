@@ -86,12 +86,6 @@ function OnTick()
 	if Forcetarget ~= nil and ValidTarget(Forcetarget, Q.range) then
 		target = Forcetarget	
 	end
-
-	if target and (myHero:CanUseSpell(_E) == READY) and Menu.UseE then
-		if GetDistance(target, myHero) <= myHero.range+target.boundingRadius  then
-			CastSpell(_E, myHero:Attack(target))
-		end
-	end
 	
 	if target and (myHero:CanUseSpell(_Q) == READY) and (Menu.Grab or Menu.Grab2) then
 		MinHitChance = Menu.Grab and 1 or 2
@@ -105,7 +99,11 @@ function OnTick()
 		end
 	end
 	
-	if Menu.Move and (Menu.Grab or Menu.Grab2) then
+	if target and (myHero:CanUseSpell(_E) == READY) and Menu.UseE then
+		if GetDistance(target, myHero) <= myHero.range+target.boundingRadius  then
+			CastSpell(_E, myHero:Attack(target))
+		end
+	elseif Menu.Move and (Menu.Grab or Menu.Grab2) then
 		myHero:MoveTo(mousePos.x, mousePos.z)
 	end
 
