@@ -60,7 +60,6 @@ end
 --[[ Auto updater end ]]--
 
 function UPL:__init()
-  if _G.UPLloaded then return _G.UPL end
   self.ActiveP = 1
   self.LastRequest = 0
   self.LoadedToMenu = false
@@ -105,8 +104,6 @@ function UPL:__init()
     table.insert(self.predTable, "TKPrediction")
   end
 
-  _G.UPL = self
-  _G.UPLloaded = true
   return self
 end
 

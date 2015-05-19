@@ -65,7 +65,6 @@ local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSp
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
-local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local data = {
@@ -429,18 +428,21 @@ function Harrass()
 end
 
 function CastQ(unit) 
+  if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
   if HitChance and HitChance >= 2 and QReady() then
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
 function CastW(unit) 
+  if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, unit)
   if HitChance and HitChance >= 2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end
 function CastE(unit) 
+  if unit == nil then return end
   if VIP_USER and Config.misc.pc then
     Packet("S_CAST", {spellId = _E, targetNetworkId = myHero.networkID}):send()
   else
@@ -448,6 +450,7 @@ function CastE(unit)
   end
 end
 function CastR(unit) 
+  if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, unit)
   if HitChance and HitChance >= 2 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
