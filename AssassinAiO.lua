@@ -183,15 +183,15 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.50
+local version = 0.51
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."Assassin AiO.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/AssassinAiO.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."AssassinAiO.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
 local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Assassin AiO]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Assassin AiO.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/AssassinAiO.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
@@ -211,33 +211,14 @@ end
 
 --[[ Libraries start ]]--
 if not Champs[myHero.charName] then champions = nil CastableItems = nil collectgarbage() return end -- not supported :(
-local predToUse = {}
-VP = nil
-DP = nil
-HP = nil
-if FileExist(LIB_PATH .. "VPrediction.lua") then
-  require("VPrediction")
-  VP = VPrediction()
-  table.insert(predToUse, "VPrediction")
+UPL = nil
+if FileExist(LIB_PATH .. "/UPL.lua") then
+  require("UPL")
+  UPL = UPL()
+else 
+  AutoupdaterMsg("Please download the UPLib.") 
+  return 
 end
-
-if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-  require "DivinePred"
-  DP = DivinePred() 
-  table.insert(predToUse, "DivinePred")
-end
-
-if FileExist(LIB_PATH .. "HPrediction.lua") then
-  require("HPrediction")
-  HP = HPrediction()
-  table.insert(predToUse, "HPrediction")
-end
-
-if predToUse == {} then 
-	AutoupdaterMsg("Please download a Prediction") 
-	return 
-end
-
 iOrb = nil
 if FileExist(LIB_PATH.."iSAC.lua") then
   require "iSAC"
@@ -258,7 +239,6 @@ if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMON
 local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
 local Target 
 local sts
-local predictions = {}
 local combos = {}
 local harr = {"Q", "W", "E"}
 local orbDisabled
@@ -274,21 +254,15 @@ function OnLoad()
   Config = scriptConfig("Assassin AiO", "Assassin AiO")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
-  Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
-  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
-  if predToUse == {} then PrintChat("PLEASE DOWNLOAD A PREDICTION!") return end
-  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("pro",  "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-  if ActivePred() == "VPrediction" or ActivePred() == "HPrediction" then 
-	 Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  elseif ActivePred() == "DivinePred" then
-	 Config.misc:addParam("hitchance", "Accuracy (Default: 1.2)", SCRIPT_PARAM_SLICE, 1.2, 0, 1.5, 1)
-   if Config.misc.hitchance > 1.5 then Config.misc.hitchance = 1.2 end
-	 Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.13, 0, 1, 1)
+  if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
+  Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
+	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
+  for i=0,3 do
+    if data[i].type == "linear" or data[i].type == "circular" or data[i].type == "cone" then
+      UPL:AddSpell(i, data[i])
+    end
   end
-
-  if ActivePred() == "HPrediction" then SetupHPred() end
+  UPL:AddToMenu(Config.misc)
   
   Config:addSubMenu("Combo Settings", "comboConfig")
   
@@ -353,38 +327,6 @@ function OnLoad()
             enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
     end
-end
-
-function ActivePred()
-    local int = Config.misc.pro
-    return tostring(predToUse[int])
-end
-
-function SetupHPred()
-  MakeHPred("Q", 0) 
-  MakeHPred("W", 1) 
-  MakeHPred("E", 2) 
-  MakeHPred("R", 3) 
-end
-
-function MakeHPred(hspell, i)
- if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-    if data[i].type == "linear" then
-        if data[i].speed ~= math.huge then 
-            HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    elseif data[i].type == "circular" then
-        if data[i].speed ~= math.huge then 
-            HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    else --Cone!
-        HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-    end
- end
 end
 
 function shuffle(a, n, whur)
@@ -568,7 +510,7 @@ function Combo()
 					elseif lastUsedSpell == _E then
 						data[3] = data[2]
 					end
-          if ActivePred() == "HPrediction" then SetupHPred() end -- kanker
+          UPL:AddSpell(3, data[3])
 				end
 				if ValidTarget(Target, data[3].range) and comboOn then
 					if GetDistance(Target, myHero) <= data[3].range then
@@ -604,7 +546,7 @@ function Castspell(Target, spell)
   elseif data[spell].type == "dontuse" then 
     return
   else
-    local CastPosition, HitChance, Position = Predict(Target, spell)
+    local CastPosition, HitChance, Position = UPL:Predict(spell, myHero, Target)
     if HitChance >= Config.misc.hitchance then
       CCastSpell(spell, CastPosition.x, CastPosition.z)
     end
@@ -775,60 +717,6 @@ function OnDraw()
             end
         end
     end
-end
-
-local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-function Predict(Target, spell)
-    if ActivePred() == "VPrediction" then
-        return VPredict(Target, data[spell])
-    elseif ActivePred() == "Prodiction" then
-        return nil
-    elseif ActivePred() == "DivinePred" then
-        local State, Position, perc = DPredict(Target, data[spell])
-        return Position, perc*3/100, Position
-    elseif ActivePred() == "HPrediction" then
-        return HPredict(Target, str[spell])
-    end
-end
-
-function HPredict(Target, spell)
-	return HP:GetPredict(spell, Target, myHero)
-end
-
-function DPredict(Target, spell)
-  local unit = DPTarget(Target)
-  local col = spell.collision and 0 or math.huge
-  local Spell = nil
-  if spell.type == "linear" then
-	 Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "circular" then
-	 Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "cone" then
-	 Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  end
-  return DP:predict(unit, Spell)
-end
-
-function VPredict(Target, spell)
-  if spell.type == "linear" then
-  	if spell.aoe then
-  		return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-  	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-  	end
-  elseif spell.type == "circular" then
-  	if spell.aoe then
-  		return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-  	else
-  		return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-  	end
-  elseif spell.type == "cone" then
-  	if spell.aoe then
-  		return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)
-  	else
-  		return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero, spell.collision)
-  	end
-  end
 end
 
 function GetCustomTarget()
