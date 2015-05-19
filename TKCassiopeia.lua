@@ -395,7 +395,7 @@ function isPoisoned(unit)
   if unit == nil then return end
   for i = 1 , unit.buffCount do
    local buff = unit:getBuff(i)
-   if buff and (buff.name == "cassiopeianoxiousblastpoison" or buff.name == "endcassiopeiamiasmapoison") then return true end
+   if buff and buff.valid and buff.name ~= nil and (buff.name == "cassiopeianoxiousblastpoison" or buff.name == "endcassiopeiamiasmapoison") and buff.endT > GetInGameTimer() then return true end
   end
   return false
 end

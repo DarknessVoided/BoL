@@ -423,6 +423,23 @@ function Killsteal()
 	end
 end
 
+function GetBestCircularFarmPosition(range, radius, objects)
+    local BestPos 
+    local BestHit = 0
+    for i, object in ipairs(objects) do
+        local hit = CountObjectsNearPos(object.pos or object, range, radius, objects)
+        if hit > BestHit then
+            BestHit = hit
+            BestPos = Vector(object)
+            if BestHit == #objects then
+               break
+            end
+         end
+    end
+
+    return BestPos, BestHit
+end
+
 function zhg()
   if Config.casual.zhg.enabled then
     if GetInventoryHaveItem(3157) and GetInventoryItemIsCastable(3157) then

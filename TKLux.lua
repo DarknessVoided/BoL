@@ -69,7 +69,9 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local doR = false
+local doE = false
 local rTarget = nil
+local eTarget = nil
 local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
@@ -98,7 +100,7 @@ function OnLoad()
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, false)
+  Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Ult Settings", "rConfig")
@@ -204,7 +206,7 @@ function isLight(unit)
   if unit == nil then return end
   for i = 1, unit.buffCount do
    local buff = unit:getBuff(i)
-   if buff and buff.name == "luxilluminationpassive" then return true end
+   if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "lux") and buff.endT > GetInGameTimer() then return true end
   end
   return false
 end
@@ -221,11 +223,19 @@ function OnTick()
   zhg()
 
   if Target ~= nil then
-    if doR then
+    if doR and rTarget ~= nil then
       if RReady() then
         CastR(rTarget)
       else
         doR = false
+      end
+    end
+
+    if doE and eTarget ~= nil then
+      if EReady() then
+        CastE(ETarget)
+      else
+        doE = false
       end
     end
 
@@ -355,10 +365,13 @@ function Combo()
       CastE(Target)
     end
   end
-  if Config.comboConfig.W and myHero.health/myHero.maxHealth > 50 and ValidTarget(Target, data[1].range) then
+  if Config.comboConfig.W and myHero.health/myHero.maxHealth <= 50 then
     CastW(Target)
   end
   if isLight(Target) and Config.comboConfig.R and Target.health < GetDmg("Rl", Target, myHero) and ValidTarget(Target, data[3].range) then
+    local doR = true rTarget = Target
+    CastR(Target)
+  elseif Config.comboConfig.R and Target.health < GetDmg("R", Target, myHero) and ValidTarget(Target, data[3].range) then
     local doR = true rTarget = Target
     CastR(Target)
   end
@@ -380,12 +393,15 @@ function CastQ(unit)
   end
 end
 function CastW(unit) 
-  CCastSpell(_W, myHero.y, myHero.y)
+  CCastSpell(_W, myHero.x, myHero.z)
 end
 function CastE(unit) 
   local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, unit)
   if HitChance and HitChance >= 2 and EReady() then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
+  end
+  if doE and eTarget ~= nil then
+    CCastSpell(_E, eTarget.x, eTarget.z)
   end
 end
 function CastR(unit) 
@@ -409,6 +425,7 @@ function Killsteal()
       if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
         CastQ(enemy)
       elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
+        doE = true eTarget = enemy
         CastE(enemy)
       elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
         doR = true rTarget = enemy
@@ -421,12 +438,14 @@ function Killsteal()
         doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < eDmg+rlDmg+pDmg and Config.KS.killstealE and Config.KS.killstealR and EReady() and RReady() and ValidTarget(enemy, data[2].range) then
+        doE = true eTarget = enemy
         CastE(enemy)
         CastE(enemy) 
         doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < qDmg+eDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealE and Config.KS.killstealR and QReady() and EReady() and RReady() and ValidTarget(enemy, data[2].range) then
         CastQ(enemy)
+        doE = true eTarget = enemy
         CastE(enemy)
         CastE(enemy)
         doR = true rTarget = enemy
