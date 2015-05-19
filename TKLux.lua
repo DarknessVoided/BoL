@@ -443,7 +443,7 @@ function Killsteal()
     local rDmg = ((GetDmg("R", enemy, myHero)) or 0)  
     local rlDmg = ((GetDmg("Rl", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if enemy ~= nil and ValidTarget(enemy) and not enemy.dead and enemy.visible then
       if enemy.health < qDmg and Config.KS.killstealQ and GetDistance(enemy, myHero) <= data[0].range then
         CastQ(enemy)
       elseif enemy.health < eDmg and Config.KS.killstealE and GetDistance(enemy, myHero) <= data[2].range then
@@ -472,7 +472,7 @@ function Killsteal()
         CastE(enemy)
         doR = true rTarget = enemy
         CastR(enemy)
-      elseif enemy.health < iDmg and Config.KS.killstealI and GetDistance(enemy, myHero) 600 and IReady() then
+      elseif enemy.health < iDmg and Config.KS.killstealI and GetDistance(enemy, myHero) <= 600 and IReady() then
         CastSpell(Ignite, enemy)
       end
     end
