@@ -92,7 +92,7 @@ function OnTick()
 		if GetDistance(target, myHero) <= myHero.range+target.boundingRadius  then
 			CastSpell(_E)
 		end
-	else
+	end
 	
 	if target and (myHero:CanUseSpell(_Q) == READY) and (Menu.Grab or Menu.Grab2) then
 		MinHitChance = Menu.Grab and 1 or 2
