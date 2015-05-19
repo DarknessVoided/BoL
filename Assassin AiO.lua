@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.49
+local version = 0.50
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Assassin AiO.lua".."?rand="..math.random(1,10000)
@@ -673,7 +673,7 @@ function DmgCalculations()
             local damageW  = getDmg("W", enemy, player)
             local damageE  = getDmg("E", enemy, player)
             local damageR  = getDmg("R", enemy, player)
-            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
+            local damageI  = Ignite and (50+20*myHero.level) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
