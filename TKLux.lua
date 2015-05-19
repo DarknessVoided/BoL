@@ -232,6 +232,7 @@ function OnTick()
     end
 
     if doE and eTarget ~= nil then
+      print("Forcecast E")
       if EReady() then
         CastE(ETarget)
       else
@@ -304,6 +305,7 @@ function LastHit()
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        doE = true eTarget = minion
         CastE(minion)
         return
       end      
@@ -325,6 +327,7 @@ function LaneClear()
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
+        doE = true eTarget = minion
         CastE(minion)
       end      
     end    
@@ -339,6 +342,7 @@ function LaneClear()
   if EReady() and Config.farmConfig.lc.E then
     local minionTarget = GetLowestMinion(data[2].range)
     if minionTarget ~= nil and isPoisoned(minionTarget) then
+      doE = true eTarget = minionTarget
       CastE(minionTarget)
     end
   end  
@@ -357,14 +361,34 @@ function GetLowestMinion(range)
 end
 
 function Combo()
-  --if not isLight(Target) then
+  if not isLight(Target) and QReady() and EReady() then
+    if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+      doE = true eTarget = Target
+      CastE(Target)
+    end
+  elseif not isLight(Target) and QReady() and not EReady() then
     if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
       CastQ(Target)
     end
+  elseif not isLight(Target) and EReady() and not QReady() then
     if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+      doE = true eTarget = Target
       CastE(Target)
     end
-  --end
+  elseif isLight(Target) and QReady() then
+    myHero:Attack(Target)
+    DelayAction(function () if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+                              CastQ(Target)
+                            end
+                          end, 0.15)
+  elseif isLight(Target) and EReady() then
+    myHero:Attack(Target)
+    DelayAction(function () if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+                              doE = true eTarget = Target
+                              CastE(Target)
+                            end
+                          end, 0.15)
+  end
   if Config.comboConfig.W and myHero.health/myHero.maxHealth <= 50 then
     CastW(Target)
   end
@@ -382,6 +406,7 @@ function Harrass()
     CastQ(Target)
   end
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
+    doE = true eTarget = Target
     CastE(Target)
   end
 end
@@ -399,9 +424,6 @@ function CastE(unit)
   local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, unit)
   if HitChance and HitChance >= 2 and EReady() then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
-  end
-  if doE and eTarget ~= nil then
-    CCastSpell(_E, eTarget.x, eTarget.z)
   end
 end
 function CastR(unit) 
@@ -422,35 +444,35 @@ function Killsteal()
     local rlDmg = ((GetDmg("Rl", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
+      if enemy.health < qDmg and Config.KS.killstealQ and GetDistance(enemy, myHero) <= data[0].range then
         CastQ(enemy)
-      elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
+      elseif enemy.health < eDmg and Config.KS.killstealE and GetDistance(enemy, myHero) <= data[2].range then
         doE = true eTarget = enemy
         CastE(enemy)
-      elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
+      elseif enemy.health < rDmg and Config.KS.killstealR and GetDistance(enemy, myHero) <= data[3].range then
         doR = true rTarget = enemy
         CastR(enemy)
-      elseif enemy.health < rlDmg+pDmg and isLight(enemy) and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
+      elseif enemy.health < rlDmg+pDmg and isLight(enemy) and Config.KS.killstealR and GetDistance(enemy, myHero) <= data[3].range then
         doR = true rTarget = enemy
         CastR(enemy)
-      elseif enemy.health < qDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealR and QReady() and RReady() and ValidTarget(enemy, data[1].range) then
+      elseif enemy.health < qDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealR and QReady() and RReady() and GetDistance(enemy, myHero) <= data[1].range then
         CastQ(enemy)
         doR = true rTarget = enemy
         CastR(enemy)
-      elseif enemy.health < eDmg+rlDmg+pDmg and Config.KS.killstealE and Config.KS.killstealR and EReady() and RReady() and ValidTarget(enemy, data[2].range) then
+      elseif enemy.health < eDmg+rlDmg+pDmg and Config.KS.killstealE and Config.KS.killstealR and EReady() and RReady() and GetDistance(enemy, myHero) <= data[2].range then
         doE = true eTarget = enemy
         CastE(enemy)
         CastE(enemy) 
         doR = true rTarget = enemy
         CastR(enemy)
-      elseif enemy.health < qDmg+eDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealE and Config.KS.killstealR and QReady() and EReady() and RReady() and ValidTarget(enemy, data[2].range) then
+      elseif enemy.health < qDmg+eDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealE and Config.KS.killstealR and QReady() and EReady() and RReady() and GetDistance(enemy, myHero) <= data[2].range then
         CastQ(enemy)
         doE = true eTarget = enemy
         CastE(enemy)
         CastE(enemy)
         doR = true rTarget = enemy
         CastR(enemy)
-      elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
+      elseif enemy.health < iDmg and Config.KS.killstealI and GetDistance(enemy, myHero) 600 and IReady() then
         CastSpell(Ignite, enemy)
       end
     end
@@ -515,7 +537,7 @@ local KillText = {}
 local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function DmgCalculations()
-    if not Config.Drawing.DmgCalcs then return end
+    if not Config.Drawing.DmgCalc then return end
     for i = 1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
