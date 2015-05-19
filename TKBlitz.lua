@@ -9,7 +9,8 @@
             | |                                        
             |_|                                                                                     
 
-  By Nebelwolfi                             
+  By Nebelwolfi  
+  Some of the logic by -unknown-                           
  
 ]]--
 
