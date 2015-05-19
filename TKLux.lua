@@ -206,7 +206,7 @@ function isLight(unit)
   if unit == nil then return end
   for i = 1, unit.buffCount do
    local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "lux") and buff.endT > GetInGameTimer() then return true end
+   if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "luxilluminati") and buff.endT > GetInGameTimer() then return true end
   end
   return false
 end
@@ -357,14 +357,14 @@ function GetLowestMinion(range)
 end
 
 function Combo()
-  if not isLight(Target) then
+  --if not isLight(Target) then
     if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
       CastQ(Target)
     end
     if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
       CastE(Target)
     end
-  end
+  --end
   if Config.comboConfig.W and myHero.health/myHero.maxHealth <= 50 then
     CastW(Target)
   end
