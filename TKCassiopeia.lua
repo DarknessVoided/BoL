@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -68,8 +68,8 @@ local sts
 local enemyTable = {}
 local enemyCount = 0
 local data = {
-  [_Q] = { speed = math.huge, delay = 0.250, range = 850, width = 100, collision = false, aoe = true, type = "circular"},
-  [_W] = { speed = math.huge, delay = 0.250, range = 850, width = 75, collision = false, aoe = true, type = "circular"},
+  [_Q] = { speed = math.huge, delay = 0.25, range = 850, width = 100, collision = false, aoe = true, type = "circular"},
+  [_W] = { speed = 2500, delay = 0.5, range = 925, width = 90, collision = false, aoe = true, type = "circular"},
   [_E] = { range = 700, type = "targeted"},
   [_R] = { speed = math.huge, delay = 0.5, range = 825, width = 410, collision = false, aoe = true, type = "cone"}
 }
@@ -395,7 +395,7 @@ function isPoisoned(unit)
   if unit == nil then return end
   for i = 1 , unit.buffCount do
    local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name ~= nil and (buff.name == "cassiopeianoxiousblastpoison" or buff.name == "endcassiopeiamiasmapoison") and buff.endT > GetInGameTimer() then return true end
+   if buff and buff.valid and buff.name and string.find(buff.name, "cassiopeia") and string.find(buff.name, "poison") and (buff.endT - GetInGameTimer()) >= 0.5 then return true end
   end
   return false
 end
@@ -410,7 +410,7 @@ function Combo()
   if Config.comboConfig.E and isPoisoned(Target) and ValidTarget(Target, data[2].range) then
     CastE(Target)
   end
-  if Config.comboConfig.R and Target.health < (GetDmg("R", Target, myHero) + GetDmg("Q", Target, myHero) + 4*GetDmg("E", Target, myHero)) and ValidTarget(Target, data[3].range) then
+  if Config.comboConfig.R and Target.health < (GetDmg("R", Target, myHero) + 2*GetDmg("E", Target, myHero)) and ValidTarget(Target, data[3].range) then
     CastR(Target)
   end
 end
@@ -444,9 +444,9 @@ end
 function CastE(unit) 
   if unit == nil then return end
   if VIP_USER and Config.misc.pc then
-    Packet("S_CAST", {spellId = _E, targetNetworkId = myHero.networkID}):send()
+    Packet("S_CAST", {spellId = _E, targetNetworkId = unit.networkID}):send()
   else
-    CastSpell(_E, myHero)
+    CastSpell(_E, unit)
   end
 end
 function CastR(unit) 
@@ -474,7 +474,7 @@ function Killsteal()
         CastE(enemy)
       elseif enemy.health < eDmg*2 and isPoisoned(enemy) and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
         CastE(enemy)
-        DelayAction(CastE, 0.5, {enemy})
+        DelayAction(CastE, 0.65, {enemy})
       elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
         CastR(enemy)
       elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
@@ -626,16 +626,7 @@ function GetDmg(spell, enemy, source) --Partially from HTTF
     return
   end
   
-  local ADDmg = 0
-  local APDmg = 0
-
-  local Level = myHero.level
-  local TotalDmg = myHero.totalDamage
-  local AP = myHero.ap
-  local ArmorPen = myHero.armorPen
-  local ArmorPenPercent = myHero.armorPenPercent
-  local MagicPen = myHero.magicPen
-  local MagicPenPercent = myHero.magicPenPercent
+  local ADDmg, APDmg, Level, TotalDmg, AP, ArmorPen, ArmorPenPercent, MagicPen, MagicPenPercent = 0, 0, myHero.level, myHero.totalDamage, myHero.ap, myHero.armorPen, myHero.armorPenPercent, myHero.magicPen, myHero.magicPenPercent
   
   local Armor = math.max(0, enemy.armor*ArmorPenPercent-ArmorPen)
   local ArmorPercent = Armor/(100+Armor)
