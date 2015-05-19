@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -281,14 +281,14 @@ function DoSomeUltLogic()
   if Config.rConfig.r then
     local enemies = EnemiesAround(Target, data[3].width)
     if enemies >= Config.rConfig.toomanyenemies then
-      CastR(CastPosition, target)
+      CastR(CastPosition, Target)
     end
   end
   if Config.rConfig.omgisteamfight then
     local enemies = EnemiesAround(Target, data[3].width)
     local allies = AlliesAround(myHero, 500)
     if enemies >= Config.rConfig.teamfightenemies and allies >= Config.rConfig.teamfightallies then
-      CastR(CastPosition, target)
+      CastR(CastPosition, Target)
     end
   end
 end
@@ -301,6 +301,7 @@ end
 
 function AlliesAround(Unit, range)
   local c=0
+  if Unit == nil then return 0 end
   for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
 end
 
