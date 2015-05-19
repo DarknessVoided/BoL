@@ -61,20 +61,21 @@ end
 if  myHero.charName ~= "Lux" then return end -- not supported :(
 if VIP_USER then HookPackets() end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
-local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
+local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) == READY end, function() return myHero:CanUseSpell(_W) == READY end, function() return myHero:CanUseSpell(_E) == READY end, function() return myHero:CanUseSpell(_R) == READY end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) == READY end end
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
 local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
+local doR = false
+local rTarget = nil
 local data = {
-  [_Q] = { speed = 1250, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
+  [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
   [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
   [_R] = { speed = math.huge, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
 }
-local toCastR = false
 
 function OnLoad()
   Config = scriptConfig("Top Kek Lux", "TKLux")
@@ -101,7 +102,6 @@ function OnLoad()
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Ult Settings", "rConfig")
-  if VIP_USER then Config.rConfig:addParam("blokr", "Block manual R", SCRIPT_PARAM_ONOFF, true) end
   Config.rConfig:addParam("r", "Auto-R", SCRIPT_PARAM_ONOFF, true)
   Config.rConfig:addParam("toomanyenemies", "Min. enemies for auto-r", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
 
@@ -221,9 +221,12 @@ function OnTick()
   zhg()
 
   if Target ~= nil then
-    if toCastR then
-      CastR(Target)
-      DelayAction(function() toCastR = false end, 1.5)
+    if doR then
+      if RReady() then
+        CastR(rTarget)
+      else
+        doR = false
+      end
     end
 
     if (Config.kConfig.har or Config.kConfig.harr) and Config.harrConfig.mana <= myHero.mana then
@@ -266,7 +269,8 @@ function DoSomeUltLogic()
   if Config.rConfig.r then
     local enemies = EnemiesAround(Target, data[3].width)
     if enemies >= Config.rConfig.toomanyenemies then
-      CastR(CastPosition, Target)
+      doR = true rTarget = Target
+      CastR(Target)
     end
   end
 end
@@ -351,10 +355,11 @@ function Combo()
       CastE(Target)
     end
   end
-  if Config.comboConfig.W and myHero.health < 50 and ValidTarget(Target, data[1].range) then
+  if Config.comboConfig.W and myHero.health/myHero.maxHealth > 50 and ValidTarget(Target, data[1].range) then
     CastW(Target)
   end
-  if isLight(Target) and Config.comboConfig.R and Target.health < GetDmg("R", Target, myHero) and ValidTarget(Target, data[3].range) then
+  if isLight(Target) and Config.comboConfig.R and Target.health < GetDmg("Rl", Target, myHero) and ValidTarget(Target, data[3].range) then
+    local doR = true rTarget = Target
     CastR(Target)
   end
 end
@@ -393,10 +398,12 @@ end
 function Killsteal()
   for i=1, heroManager.iCount do
     local enemy = heroManager:GetHero(i)
+    local pDmg = ((GetDmg("PASSIVE", enemy, myHero)) or 0) 
     local qDmg = ((GetDmg("Q", enemy, myHero)) or 0)  
     local wDmg = ((GetDmg("W", enemy, myHero)) or 0)  
     local eDmg = ((GetDmg("E", enemy, myHero)) or 0)  
     local rDmg = ((GetDmg("R", enemy, myHero)) or 0)  
+    local rlDmg = ((GetDmg("Rl", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
@@ -404,6 +411,25 @@ function Killsteal()
       elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
         CastE(enemy)
       elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
+        doR = true rTarget = enemy
+        CastR(enemy)
+      elseif enemy.health < rlDmg+pDmg and isLight(enemy) and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
+        doR = true rTarget = enemy
+        CastR(enemy)
+      elseif enemy.health < qDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealR and QReady() and RReady() and ValidTarget(enemy, data[1].range) then
+        CastQ(enemy)
+        doR = true rTarget = enemy
+        CastR(enemy)
+      elseif enemy.health < eDmg+rlDmg+pDmg and Config.KS.killstealE and Config.KS.killstealR and EReady() and RReady() and ValidTarget(enemy, data[2].range) then
+        CastE(enemy)
+        CastE(enemy) 
+        doR = true rTarget = enemy
+        CastR(enemy)
+      elseif enemy.health < qDmg+eDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealE and Config.KS.killstealR and QReady() and EReady() and RReady() and ValidTarget(enemy, data[2].range) then
+        CastQ(enemy)
+        CastE(enemy)
+        CastE(enemy)
+        doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
         CastSpell(Ignite, enemy)
@@ -474,10 +500,10 @@ function DmgCalculations()
     for i = 1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
-            local damageAA = GetDmg("AD", enemy, player)
+            local damageAA = GetDmg("PASSIVE", enemy, player)
             local damageQ  = GetDmg("Q", enemy, player)
             local damageE  = GetDmg("E", enemy, player)
-            local damageR  = GetDmg("R", enemy, player)
+            local damageR  = GetDmg("Rl", enemy, player)
             local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageE = damageE
@@ -539,7 +565,7 @@ function GetDmg(spell, enemy, source) --Partially from HTTF
   
   local Armor = math.max(0, enemy.armor*ArmorPenPercent-ArmorPen)
   local ArmorPercent = Armor/(100+Armor)
-  local MagicArmor = math.max(0, enemy.magicArmor*MagicPenPercent-MagicPen)
+  local MagicArmor    = enemy.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
@@ -548,6 +574,7 @@ function GetDmg(spell, enemy, source) --Partially from HTTF
     return 50+20*Level
   elseif spell == "AD" then
     ADDmg = TotalDmg
+  elseif spell == "PASSIVE" then
     APDmg = 10+8*myHero.level+0.2*AP
   elseif spell == "Q" then
     APDmg = 10+50*QLevel+0.7*AP
@@ -556,21 +583,10 @@ function GetDmg(spell, enemy, source) --Partially from HTTF
   elseif spell == "E" then
     APDmg = 15+45*ELevel+0.6*AP
   elseif spell == "R" then
+    APDmg = 20+100*RLevel+0.75*AP
+  elseif spell == "Rl" then
     APDmg = 220+150*RLevel+0.75*AP
   end
 
   return ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
-end
-
-function OnSendPacket(p)
-  if Config.rConfig.blokr and not toCastR and not myHero.dead then
-    if p.header == 0x10B then -- old: 0x00E9
-      p.pos=27
-      if p:Decode1() == 0xCE then
-        p:Block()
-        p.skip(p, 1)
-        toCastR = true
-      end
-    end
-  end
 end
