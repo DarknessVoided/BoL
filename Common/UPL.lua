@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local uplversion = 1.05
+local uplversion = 1.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -60,6 +60,7 @@ end
 --[[ Auto updater end ]]--
 
 function UPL:__init()
+  if _G.UPLloaded then return _G.UPL end
   self.ActiveP = 1
   self.LastRequest = 0
   self.LoadedToMenu = false
@@ -104,6 +105,8 @@ function UPL:__init()
     table.insert(self.predTable, "TKPrediction")
   end
 
+  _G.UPL = self
+  _G.UPLloaded = true
   return self
 end
 
@@ -146,7 +149,8 @@ function UPL:GetSpellData(spell)
 end
 
 function UPL:HPredict(Target, spell, source)
-  return self.HP:GetPredict(spell, Target, source)
+  local x1, x2, x3 = self.HP:GetPredict(spell, Target, source)
+  return x1, x2*2, x3
 end
 
 function UPL:SetupHPred(spell)
