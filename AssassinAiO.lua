@@ -258,7 +258,7 @@ function OnLoad()
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
 	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
   for i=0,3 do
-    if data[i].type == "linear" or data[i].type == "circular" or data[i].type == "cone" then
+    if data[i] ~= nil and data[i].type == "linear" or data[i].type == "circular" or data[i].type == "cone" then
       UPL:AddSpell(i, data[i])
     end
   end

@@ -412,21 +412,25 @@ function Harrass()
 end
 
 function CastQ(unit) 
+  if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
   if HitChance and HitChance >= 2 and QReady() then
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
 function CastW(unit) 
+  if unit == nil then return end
   CCastSpell(_W, myHero.x, myHero.z)
 end
 function CastE(unit) 
+  if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, unit)
   if HitChance and HitChance >= 2 and EReady() then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
   end
 end
 function CastR(unit) 
+  if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, unit)
   if HitChance and HitChance >= 2 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
