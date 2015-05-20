@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local uplversion = 1.08
+local uplversion = 1.09
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -123,8 +123,7 @@ function UPL:Predict(spell, source, Target)
       local State, Position, perc = self:DPredict(Target, self.spellData[spell], 1.2, source)
       return Position, perc ~= nil and perc*3/100 or 0, Vector(Target)
   elseif self:ActivePred() == "HPrediction" then
-      local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-      return self:HPredict(Target, str[spell], source)
+      return self:HPredict(Target, spell, source)
   elseif self:ActivePred() == "TKPrediction" then
       return self.TKP:Predict(spell, source, Target)
   end
@@ -139,7 +138,7 @@ end
 
 function UPL:AddSpell(spell, array)
   self.spellData[spell] = array
-  if HP ~= nil then self:SetupHPredSpell(spell) end
+  self:SetupHPredSpell(spell)
 end
 
 function UPL:GetSpellData(spell)
@@ -154,18 +153,21 @@ end
 function UPL:SetupHPredSpell(spell)
   local i = spell
   if self.spellData[i].type == "linear" then
+      print("LINEAR")
       if self.spellData[i].speed ~= math.huge then 
         self.HPSpells[spell] = self.HP:NewSkillshot({type = "DelayLine", range = self.spellData[i].range, speed = self.spellData[i].speed, width = 2*self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})
       else
         self.HPSpells[spell] = self.HP:NewSkillshot({type = "PromptLine", range = self.spellData[i].range, width = 2*self.spellData[i].width, delay = self.spellData[i].delay})
       end
   elseif self.spellData[i].type == "circular" then
+      print("CIRC")
       if self.spellData[i].speed ~= math.huge then 
         self.HPSpells[spell] = self.HP:NewSkillshot({Type = "DelayCircle", range = self.spellData[i].range, speed = self.spellData[i].speed, radius = self.spellData[i].width, delay = self.spellData[i].delay})
       else
         self.HPSpells[spell] = self.HP:NewSkillshot({Type = "PromptCircle", range = self.spellData[i].range, radius = self.spellData[i].width, delay = self.spellData[i].delay})
       end
   else --Cone!
+      print("CONE")
     self.HPSpells[spell] = self.HP:NewSkillshot({Type = "DelayLine", range = self.spellData[i].range, speed = self.spellData[i].speed, width = 2*self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})
   end
 end

@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.18
+local version = 0.19
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -78,7 +78,7 @@ data = {
     }
 
 function OnLoad()
-  Config = scriptConfig("Top Kek Rengar", "TKRengar")
+  Config = scriptConfig("Top Kek Rengar", "TKRengar1")
   
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -253,7 +253,7 @@ function OnTick()
     if Config.comboConfig.fero > 2 then Config.comboConfig.fero = 0 end
   end
 
-  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Config.ragequit=false end --trololo ty Hirschmilch Target=myHero.isWindingUp
 end
 
 function OnSendPacket(p)
