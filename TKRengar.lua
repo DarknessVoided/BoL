@@ -93,7 +93,7 @@ function OnLoad()
   Config.comboConfig:addParam("Whpp", "W for HP under X%", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-  Config.comboConfig:addParam("fero", "Q=0, W=1, E=2 use at 5 stacks", SCRIPT_PARAM_SLICE, 2, 0, 5, 0)
+  Config.comboConfig:addParam("fero", "Q=0, W=1, E=2 use at 5 stacks", SCRIPT_PARAM_SLICE, 2, 0, 2, 0)
   Config.comboConfig:addParam("qqq", "You can press skill buttons to change this at 5 stacks!", SCRIPT_PARAM_INFO,"")
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
   if Smite ~= nil then Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
