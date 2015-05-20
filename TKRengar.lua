@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.16
+local version = 0.17
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -97,7 +97,6 @@ local enemyCount = 0
 local ultOn, oneShot = false, false
 local osTarget = nil
 data = {
-    [_Q] = { range = myHero.range, type = "notarget", aareset = true},
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
     [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
     [_R] = { range = 4000, type = "notarget"}
@@ -258,7 +257,7 @@ function OnTick()
     end
   end
 
-  if Config.kConfig.stop and myHero.mana == 5 and EnemiesAround(myHero, data[0].range) == 0 then
+  if Config.kConfig.stop and myHero.mana == 5 and EnemiesAround(myHero, myHero.range) == 0 then
     if not ultOn and Config.kConfig.lh then
       LastHit()
     end
@@ -266,8 +265,8 @@ function OnTick()
       LaneClear()
       JungleClear()
     end
-  elseif Target ~= nil and Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and Config.kConfig.lc and Config.kConfig.lh and myHero.mana == 5 and EnemiesAround(myHero, data[0].range) > 0 then
-    if Config.farmConfig.Qh and ValidTarget(Target, data[0].range) then
+  elseif Target ~= nil and Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and Config.kConfig.lc and Config.kConfig.lh and myHero.mana == 5 and EnemiesAround(myHero, myHero.range) > 0 then
+    if Config.farmConfig.Qh and ValidTarget(Target, myHero.range) then
       UseQ(Target)
     elseif Config.farmConfig.Wh and ValidTarget(Target, data[1].range) then
       UseW(Target)
@@ -321,9 +320,9 @@ function LastHit()
     end  
   else
     if QReady() and Config.farmConfig.lh.Q then
-      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range) then
           CastQ(minion)
         end
       end
@@ -363,9 +362,9 @@ function LaneClear()
   else
     --Check for lowlife: Lasthit = priority!
     if QReady() and Config.farmConfig.lc.Q then
-      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range) then
           CastQ(minion)
         end
       end
@@ -389,10 +388,10 @@ function LaneClear()
     --Check for lowestlife: Lanceclear - 2nd priority!
     if QReady() and Config.farmConfig.lc.Q then
       local minionTarget = nil
-      for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[0].range) then
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, myHero.range) then
           minionTarget = minion
         end
       end
@@ -445,9 +444,9 @@ function JungleClear()
   else
     --Check for lowlife: Lasthit = priority!
     if QReady() and Config.farmConfig.lc.Q then
-      for i, minion in pairs(minionManager(MINION_JUNGLE, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_JUNGLE, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range) then
           CastQ(minion)
         end
       end
@@ -471,10 +470,10 @@ function JungleClear()
     --Check for lowestlife: Lanceclear - 2nd priority!
     if QReady() and Config.farmConfig.lc.Q then
       local minionTarget = nil
-      for i, minion in pairs(minionManager(MINION_JUNGLE, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_JUNGLE, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, data[0].range) then
+        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, myHero.range) then
           minionTarget = minion
         end
       end
@@ -529,7 +528,7 @@ function Combo()
       end
     end  
   else
-    if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+    if Config.comboConfig.Q and ValidTarget(Target, myHero.range) then
       CastQ(Target)
     end
     if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
@@ -546,7 +545,7 @@ function OneShot()
   if Smite ~= nil and SReady() then CastSpell(Smite, osTarget) end
   if myHero.mana == 5 then 
     if Config.comboConfig.fero == 0 then
-      if GetDistance(osTarget, myHero) < data[0].range then
+      if GetDistance(osTarget, myHero) < myHero.range then
         CastQ(osTarget)
       end
     elseif Config.comboConfig.fero == 1 then
@@ -559,7 +558,7 @@ function OneShot()
       end
     end
   else
-    if Config.comboConfig.Q and GetDistance(osTarget, myHero) < data[0].range then
+    if Config.comboConfig.Q and GetDistance(osTarget, myHero) < myHero.range then
       CastQ(osTarget)
     end
     if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
@@ -568,7 +567,7 @@ function OneShot()
     if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
       CastE(osTarget)
     end
-    if Config.comboConfig.item and GetDistance(osTarget, myHero) < data[0].range then
+    if Config.comboConfig.item and GetDistance(osTarget, myHero) < myHero.range then
       UseItems(osTarget)
     end
   end
@@ -589,7 +588,7 @@ function OnDeleteObj(object)
 end
 
 function Harrass()
-  if Config.harrConfig.Q and ValidTarget(Target, data[0].range) then
+  if Config.harrConfig.Q and ValidTarget(Target, myHero.range) then
     CastQ(Target)
   end
   if Config.harrConfig.W and ValidTarget(Target, data[1].range) then
@@ -631,7 +630,7 @@ function Killsteal()
     local iDmg = (50 + 20 * myHero.level) / 5
     local sDmg = 20 + 8 * myHero.level
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, data[0].range) then
+      if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, myHero.range) then
         CastQ(enemy)
       elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
         CastW(enemy)
@@ -811,7 +810,7 @@ local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
   if Config.Drawing.QRange and QReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, myHero.range, 0x111111)
   end
   if Config.Drawing.WRange and WReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
