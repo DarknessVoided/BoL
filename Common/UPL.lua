@@ -33,7 +33,7 @@
 class "UPL"
 
 --[[ Auto updater start ]]--
-local uplversion = 1.07
+local uplversion = 1.08
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
@@ -147,7 +147,7 @@ function UPL:GetSpellData(spell)
 end
 
 function UPL:HPredict(Target, spell, source)
-  local x1, x2, x3 = self.HP:GetPredict(self.Spells[spell], Target, source)
+  local x1, x2, x3 = self.HP:GetPredict(self.HPSpells[spell], Target, source)
   return x1, x2, x3
 end
 

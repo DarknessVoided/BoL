@@ -363,11 +363,6 @@ function OnLoad()
   Config:addSubMenu("Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("ser",  "Which LoL version?", SCRIPT_PARAM_LIST, 1, {"5.9", "5.8", "5.7"})
-  for i=0,3 do
-    if data[i] ~= nil then
-      UPL:AddSpell(i, data[i])
-    end
-  end
   UPL:AddToMenu(Config.misc)
  
   Config:addSubMenu("Supported skill settings", "skConfig")
@@ -375,6 +370,7 @@ function OnLoad()
   Config.skConfig:addParam("nfn", "2 = Rather Predict/Mouse, 3 = Predict Only", SCRIPT_PARAM_INFO,"")
   for i=0,3 do
     if data[i] ~= nil then
+        UPL:AddSpell(i, data[i])
         Config.skConfig:addParam(str[i], ""..str[i], SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
         toAim[i] = true
     end

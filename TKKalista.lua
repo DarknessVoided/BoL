@@ -276,7 +276,7 @@ function OnTick()
     LaneClear()
   end
 
-  if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function LastHit()
@@ -693,14 +693,17 @@ function GetDmg(spell, enemy) --Partially from HTTF
 
   local ADDmg = 0
   local APDmg = 0
-
   local Level = myHero.level
   local TotalDmg = myHero.totalDamage
-  local AP = myHero.ap
-  local ArmorPen = myHero.armorPen
-  local ArmorPenPercent = myHero.armorPenPercent
-  local Armor = math.max(0, enemy.armor*ArmorPenPercent-ArmorPen)
-  local ArmorPercent = Armor/(100+Armor)
+  local ArmorPen         = source.armorPen
+  local ArmorPenPercent  = source.armorPenPercent
+  local MagicPen         = source.magicPen
+  local MagicPenPercent  = source.magicPenPercent
+
+  local Armor           = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent    = Armor/(100+Armor)
+  local MagicArmor      = target.magicArmor*MagicPenPercent-MagicPen
+  local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
 

@@ -251,7 +251,7 @@ function OnTick()
     LastHitSomethingPoisonedWithE()
   end
 
-  if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function LastHitSomethingPoisonedWithE()

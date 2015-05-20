@@ -1,25 +1,28 @@
 --[[
 
-  _______            _  __    _       _____                 _           
- |__   __|          | |/ /   | |     / ____|               | |          
-    | | ___  _ __   | ' / ___| | __ | (___  _   _ _ __   __| |_ __ __ _ 
-    | |/ _ \| '_ \  |  < / _ \ |/ /  \___ \| | | | '_ \ / _` | '__/ _` |
-    | | (_) | |_) | | . \  __/   <   ____) | |_| | | | | (_| | | | (_| |
-    |_|\___/| .__/  |_|\_\___|_|\_\ |_____/ \__, |_| |_|\__,_|_|  \__,_|
-            | |                              __/ |                      
-            |_|                             |___/                       
+  _______            _  __    _                       
+ |__   __|          | |/ /   | |                        
+    | | ___  _ __   | ' / ___| | __ 
+    | |/ _ \| '_ \  |  < / _ \ |/ /
+    | | (_) | |_) | | . \  __/   <  
+    |_|\___/| .__/  |_|\_\___|_|\_\  
+            | |                                                            
+            |_|                                                            
+
+    By Nebelwolfi
+
 ]]--
 
 --[[ Auto updater start ]]--
 local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/TKSyndra.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."TKSyndra.lua"
+local UPDATE_PATH = "/nebelwolfi/BoL/master/TKVictor.lua".."?rand="..math.random(1,10000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."TKVictor.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Syndra - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Victor - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
 if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKSyndra.version")
+  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKVictor.version")
   if ServerData then
     ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
     if ServerVersion then
@@ -79,7 +82,7 @@ JungleMinions = minionManager(MINION_JUNGLE, QE.range, myHero, MINION_SORT_MAXHE
 PosiblePets = minionManager(MINION_OTHER, W.range, myHero, MINION_SORT_MAXHEALTH_DEC)
 
 function OnLoad()
-  Config = scriptConfig("Top Kek Syndra", "TKSyndra")
+  Config = scriptConfig("Top Kek Victor", "TKVictor")
   Config:addSubMenu("Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"")
@@ -129,6 +132,7 @@ function OnTick()
       DoEQCombo(Target)
     end
   end
+  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function Combo()
@@ -453,7 +457,7 @@ function GetPet(dangerous)
 end
 
 function OnDeleteObj(obj)
-  if obj.name:find("Syndra_") and (obj.name:find("_Q_idle.troy") or obj.name:find("_Q_Lv5_idle.troy")) then
+  if obj.name:find("Victor_") and (obj.name:find("_Q_idle.troy") or obj.name:find("_Q_Lv5_idle.troy")) then
     for i = #Balls, 1, -1 do
       if Balls[i].object and Balls[i].object.valid and GetDistanceSqr(Balls[i].object, obj) < 50 * 50 then
         table.remove(Balls, i)
@@ -534,18 +538,18 @@ end
 
 function OnProcessSpell(unit, spell)
   if unit.isMe then
-    if spell.name == "SyndraQ" then
+    if spell.name == "VictorQ" then
       Q.LastCastTime = os.clock()
       OnCastQ(spell)
-    elseif spell.name == "SyndraE" then 
+    elseif spell.name == "VictorE" then 
       E.LastCastTime = os.clock()
-    elseif spell.name == "SyndraW" then
+    elseif spell.name == "VictorW" then
       W.LastCastTime = os.clock()
             Recieved = 0
       RecvCounter = 0
-    elseif spell.name == "syndrawcast" then
+    elseif spell.name == "Victorwcast" then
       Recieved = 1
-    elseif spell.name == "syndrae5" then
+    elseif spell.name == "Victore5" then
       E.LastCastTime = os.clock()
     end
   end

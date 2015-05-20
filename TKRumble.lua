@@ -223,7 +223,7 @@ function OnTick()
     
     zhg()
     
-    if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+    if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 
     if Config.casual.leW and WReady() and not recall then 
     	if myHero.mana < 40 then
