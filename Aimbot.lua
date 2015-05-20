@@ -411,7 +411,7 @@ function OnTick()
                     UPL:AddSpell(0, data[0])
                 end 
               end
-              local CastPosition, HitChance, Position = UPL:Predict(i, myHero, Target)
+              local CastPosition, HitChance, Position = UPL:Predict(i, Target, myHero)
               if debugMode then PrintChat("1 - Attempt to aim!") end
               if HitChance >= 3 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
@@ -431,7 +431,7 @@ function OnTick()
                     if debugMode then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
                    if ValidTarget(Target) then
-                    local CastPosition, HitChance, Position = UPL:Predict(i, myHero, Target)
+                    local CastPosition, HitChance, Position = UPL:Predict(i, Target, myHero)
                     if HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
