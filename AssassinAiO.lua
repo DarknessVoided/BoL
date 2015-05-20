@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.51
+local version = 0.52
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/AssassinAiO.lua".."?rand="..math.random(1,10000)
@@ -347,7 +347,7 @@ end
 
 function OnTick()
 	Target = GetCustomTarget()
-  if Forcetarget ~= nil and ValidTarget(Forcetarget, Q.range) then
+  if Forcetarget ~= nil and ValidTarget(Forcetarget, 1500) then
     Target = Forcetarget  
   end
 	if orbDisabled then
