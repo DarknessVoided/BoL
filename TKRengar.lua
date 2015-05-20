@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.17
+local version = 0.18
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -41,37 +41,12 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
-local predToUse = {}
-VP  = nil
-DP  = nil
-HP  = nil
-TKP = nil
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
-  require("VPrediction")
-  VP = VPrediction()
-  table.insert(predToUse, "VPrediction")
-end
-
-if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-  require "DivinePred"
-  DP = DivinePred() 
-  table.insert(predToUse, "DivinePred")
-end
-
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
-  require("HPrediction")
-  HP = HPrediction()
-  table.insert(predToUse, "HPrediction")
-end
-
-if FileExist(LIB_PATH .. "/TKPrediction.lua") then
-  require("TKPrediction")
-  TKP = TKPrediction()
-  table.insert(predToUse, "TKPrediction")
-end
-
-if predToUse == {} then 
-  TopKekMsg("Please download a Prediction") 
+UPL = nil
+if FileExist(LIB_PATH .. "/UPL.lua") then
+  require("UPL")
+  UPL = UPL()
+else 
+  AutoupdaterMsg("Please download the UPLib.") 
   return 
 end
 
@@ -108,11 +83,8 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("pro", "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-
-  if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.03, 0, 0.3, 2) end
-  if ActivePred() == "HPrediction" then SetupHPred() end
+  UPL:AddSpell(_E, data[_E])
+  UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -257,7 +229,7 @@ function OnTick()
     end
   end
 
-  if Config.kConfig.stop and myHero.mana == 5 and EnemiesAround(myHero, myHero.range) == 0 then
+  if not (Config.kConfig.stop and myHero.mana == 5 and EnemiesAround(myHero, myHero.range+myHero.boundingRadius) > 0) then
     if not ultOn and Config.kConfig.lh then
       LastHit()
     end
@@ -265,8 +237,8 @@ function OnTick()
       LaneClear()
       JungleClear()
     end
-  elseif Target ~= nil and Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and Config.kConfig.lc and Config.kConfig.lh and myHero.mana == 5 and EnemiesAround(myHero, myHero.range) > 0 then
-    if Config.farmConfig.Qh and ValidTarget(Target, myHero.range) then
+  elseif Target ~= nil and Config.kConfig.stop and (Config.farmConfig.Qh or Config.farmConfig.Wh or Config.farmConfig.Eh) and (Config.kConfig.lc or Config.kConfig.lh) and myHero.mana == 5 and EnemiesAround(myHero, myHero.range+myHero.boundingRadius) > 0 then
+    if Config.farmConfig.Qh and ValidTarget(Target, myHero.range+myHero.boundingRadius) then
       UseQ(Target)
     elseif Config.farmConfig.Wh and ValidTarget(Target, data[1].range) then
       UseW(Target)
@@ -320,9 +292,9 @@ function LastHit()
     end  
   else
     if QReady() and Config.farmConfig.lh.Q then
-      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range+myHero.boundingRadius, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range) then
+        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range+myHero.boundingRadius) then
           CastQ(minion)
         end
       end
@@ -362,9 +334,9 @@ function LaneClear()
   else
     --Check for lowlife: Lasthit = priority!
     if QReady() and Config.farmConfig.lc.Q then
-      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range+myHero.boundingRadius, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range) then
+        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range+myHero.boundingRadius) then
           CastQ(minion)
         end
       end
@@ -388,10 +360,10 @@ function LaneClear()
     --Check for lowestlife: Lanceclear - 2nd priority!
     if QReady() and Config.farmConfig.lc.Q then
       local minionTarget = nil
-      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_ENEMY, myHero.range+myHero.boundingRadius, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.health >= minion.health and ValidTarget(minion, myHero.range) then
+        elseif minionTarget.health >= minion.health and ValidTarget(minion, myHero.range+myHero.boundingRadius) then
           minionTarget = minion
         end
       end
@@ -444,9 +416,9 @@ function JungleClear()
   else
     --Check for lowlife: Lasthit = priority!
     if QReady() and Config.farmConfig.lc.Q then
-      for i, minion in pairs(minionManager(MINION_JUNGLE, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_JUNGLE, myHero.range+myHero.boundingRadius, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg("Q", minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range) then
+        if QMinionDmg >= minion.health and ValidTarget(minion, myHero.range+myHero.boundingRadius) then
           CastQ(minion)
         end
       end
@@ -470,10 +442,10 @@ function JungleClear()
     --Check for lowestlife: Lanceclear - 2nd priority!
     if QReady() and Config.farmConfig.lc.Q then
       local minionTarget = nil
-      for i, minion in pairs(minionManager(MINION_JUNGLE, myHero.range, player, MINION_SORT_HEALTH_ASC).objects) do
+      for i, minion in pairs(minionManager(MINION_JUNGLE, myHero.range+myHero.boundingRadius, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, myHero.range) then
+        elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, myHero.range+myHero.boundingRadius) then
           minionTarget = minion
         end
       end
@@ -528,7 +500,7 @@ function Combo()
       end
     end  
   else
-    if Config.comboConfig.Q and ValidTarget(Target, myHero.range) then
+    if Config.comboConfig.Q and ValidTarget(Target, myHero.range+myHero.boundingRadius) then
       CastQ(Target)
     end
     if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
@@ -541,11 +513,11 @@ function Combo()
 end
 
 function OneShot()
-  if GetDistance(osTarget, myHero) > myHero.range then return end
+  if GetDistance(osTarget, myHero) > myHero.range+myHero.boundingRadius then return end
   if Smite ~= nil and SReady() then CastSpell(Smite, osTarget) end
   if myHero.mana == 5 then 
     if Config.comboConfig.fero == 0 then
-      if GetDistance(osTarget, myHero) < myHero.range then
+      if GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
         CastQ(osTarget)
       end
     elseif Config.comboConfig.fero == 1 then
@@ -558,7 +530,7 @@ function OneShot()
       end
     end
   else
-    if Config.comboConfig.Q and GetDistance(osTarget, myHero) < myHero.range then
+    if Config.comboConfig.Q and GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
       CastQ(osTarget)
     end
     if Config.comboConfig.W and GetDistance(osTarget, myHero) < data[1].range then
@@ -567,7 +539,7 @@ function OneShot()
     if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
       CastE(osTarget)
     end
-    if Config.comboConfig.item and GetDistance(osTarget, myHero) < myHero.range then
+    if Config.comboConfig.item and GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
       UseItems(osTarget)
     end
   end
@@ -588,7 +560,7 @@ function OnDeleteObj(object)
 end
 
 function Harrass()
-  if Config.harrConfig.Q and ValidTarget(Target, myHero.range) then
+  if Config.harrConfig.Q and ValidTarget(Target, myHero.range+myHero.boundingRadius) then
     CastQ(Target)
   end
   if Config.harrConfig.W and ValidTarget(Target, data[1].range) then
@@ -606,7 +578,7 @@ function CastW(Targ)
   if WReady() then CastSpell(_W) end
 end
 function CastE(Targ) 
-  local CastPosition, HitChance, Position = Predict(Targ, 2, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(_E, Targ, myHero)
   if HitChance and HitChance >= 2 and EReady() then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
   end
@@ -630,7 +602,7 @@ function Killsteal()
     local iDmg = (50 + 20 * myHero.level) / 5
     local sDmg = 20 + 8 * myHero.level
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, myHero.range) then
+      if enemy.health < qDmg and Config.KS.killstealQ and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
         CastQ(enemy)
       elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
         CastW(enemy)
@@ -687,118 +659,6 @@ function UseItems(unit)
 end
 -- Credits end
 
-function ActivePred()
-    local int = Config.misc.pro
-    return tostring(predToUse[int])
-end
-
-function SetupHPred()
-  MakeHPred("E", 2) 
-end
-
-function MakeHPred(hspell, i)
-  if data[i].type == "linear" then
-      if data[i].speed ~= math.huge then 
-          HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      else
-          HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      end
-  elseif data[i].type == "circular" then
-      if data[i].speed ~= math.huge then 
-          HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      else
-          HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      end
-  else --Cone!
-      HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-  end
-end
-
-local hpSpells = {Spell_Q, Spell_W, Spell_E, Spell_R}
-function SetupHPredNew()
-  for i=0,3 do
-    hpSpells[i] = MakeHPred(i)
-  end
-end
-
-function MakeHPredNew(i)
- if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-    if data[i].type == "linear" then
-        if data[i].speed ~= math.huge then 
-            return HPSkillshot({type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            return HPSkillshot({type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    elseif data[i].type == "circular" then
-        if data[i].speed ~= math.huge then 
-            return HPSkillshot({type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            return HPSkillshotl({type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    else --Cone!
-        return HPSkillshot({type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-    end
- end
-end
-
-local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-function Predict(Target, spell, source)
-  if Target == nil then return end
-  if ActivePred() == "VPrediction" then
-    return VPredict(Target, data[spell], source)
-  elseif ActivePred() == "Prodiction" then
-    return nil
-  elseif ActivePred() == "DivinePred" then
-    local State, Position, perc = DPredict(Target, data[spell], source)
-    return Position, perc*3/100, Position
-  elseif ActivePred() == "HPrediction" then
-    local Position, HitChance = HPredict(Target, spell, source)
-    return Position, HitChance, Position
-  elseif ActivePred() == "TKPrediction" then
-    return TKP:Predict(spell, Target, source) 
-  end
-end
-
-function HPredict(Target, spell, source)
-  return HP:GetPredict(str[spell], Target, source) 
-end
-
-function DPredict(Target, spell, source)
-  local unit = DPTarget(Target)
-  local col = spell.collision and 0 or math.huge
-  local Spell = nil
-  if spell.type == "linear" then
-   Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "circular" then
-   Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "cone" then
-   Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  end
-  return DP:predict(unit, Spell, 1.2, source)
-end
-
-function VPredict(Target, spell, source)
-  if spell.type == "linear" then
-    if spell.aoe then
-      return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  elseif spell.type == "circular" then
-    if spell.aoe then
-      return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  elseif spell.type == "cone" then
-    if spell.aoe then
-      return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  end
-end
-
 local colorRangeReady        = ARGB(255, 200, 0,   200)
 local colorRangeComboReady   = ARGB(255, 255, 128, 0)
 local colorRangeNotReady     = ARGB(255, 50,  50,  50)
@@ -810,7 +670,7 @@ local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
   if Config.Drawing.QRange and QReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, myHero.range, 0x111111)
+    DrawCircle(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, 0x111111)
   end
   if Config.Drawing.WRange and WReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
