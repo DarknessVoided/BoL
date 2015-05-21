@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.43
+_G.UPLversion = 1.5
 
 function UPL:__init()
   self.ActiveP = 1
@@ -120,7 +120,11 @@ function UPL:Predict(spell, source, Target)
       end
   elseif self:ActivePred() == "DivinePrediction" then
       local State, Position, perc = self:DPredict(Target, self.spellData[spell], source)
-      return Position, perc ~= nil and perc*3/100 or 0, Vector(Target)
+      if perc ~= nil
+        return Position, 1.2, Vector(Target)
+      else
+        return Position, 0, Vector(Target)
+      end
   elseif self:ActivePred() == "HPrediction" then
       return self:HPredict(Target, spell, source)
   elseif self:ActivePred() == "TKPrediction" then
