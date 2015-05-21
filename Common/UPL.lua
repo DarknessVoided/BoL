@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.22
+_G.UPLversion = 1.3
 
 function UPL:__init()
   self.ActiveP = 1
@@ -153,7 +153,11 @@ end
 function UPL:SetupHPredSpell(spell)
   if self.spellData[spell].type == "linear" then
       if self.spellData[spell].speed < 10000 then 
-        self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+        if self.spellData[spell].collision then
+          self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+        else
+          self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
+        end
       else
         self.HPSpells[spell] = HPSkillshot({type = "PromptLine", range = self.spellData[spell].range, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
       end

@@ -77,7 +77,7 @@ local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
   [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
-  [_R] = { speed = math.huge, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
+  [_R] = { speed = 10000, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
 }
 
 function OnLoad()
@@ -223,7 +223,11 @@ function OnTick()
   end
 
   zhg()
-
+  for k,v in pairs(GetEnemyHeroes()) do
+    if TargetHaveBuff("LuxLightStrikeKugel", v) then
+      CastSpell(_E)
+    end
+  end
   if Target ~= nil then
     if doR and rTarget ~= nil then
       if RReady() then
@@ -297,7 +301,7 @@ end
 
 function LastHit()
   if QReady() and Config.farmConfig.lh.Q then
-    for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
+    for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, myHero, MINION_SORT_HEALTH_ASC).objects) do
       local QMinionDmg = GetDmg("Q", minion)
       if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
         CastQ(minion)
@@ -305,7 +309,7 @@ function LastHit()
     end
   end
   if EReady() and Config.farmConfig.lh.E then    
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
         doE = true eTarget = minion
@@ -319,7 +323,7 @@ end
 function LaneClear()
   --Check for lowlife: Lasthit = priority!
   if QReady() and Config.farmConfig.lc.Q then
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do
       local QMinionDmg = GetDmg("Q", minion, GetMyHero())
       if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range+data[0].width) then
         CastQ(minion)
@@ -327,7 +331,7 @@ function LaneClear()
     end
   end
   if EReady() and Config.farmConfig.lc.E then    
-    for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
         doE = true eTarget = minion
@@ -343,17 +347,34 @@ function LaneClear()
     end
   end
   if EReady() and Config.farmConfig.lc.E then
-    local minionTarget = GetLowestMinion(data[2].range)
-    if minionTarget ~= nil then
-      doE = true eTarget = minionTarget
-      CastE(minionTarget)
+    local pos, hit = GetEFarmPosition(data[2].range, data[2].width)
+    if pos ~= nil then
+      doE = true eTarget = pos
+      CastE(pos)
     end
   end  
 end
 
+function GetEFarmPosition(range, radius)
+    local BestPos 
+    local BestHit = 0
+    local objects = minionManager(MINION_ENEMY, data[2].range, myHero, MINION_SORT_HEALTH_ASC).objects
+    for i, object in ipairs(objects) do
+        local hit = CountObjectsNearPos(object.pos or object, range, radius, objects)
+        if hit > BestHit then
+            BestHit = hit
+            BestPos = Vector(object)
+            if BestHit == #objects then
+               break
+            end
+         end
+    end
+    return BestPos, BestHit
+end
+
 function GetLowestMinion(range)
   local minionTarget = nil
-  for i, minion in pairs(minionManager(MINION_ENEMY, range, player, MINION_SORT_HEALTH_ASC).objects) do
+  for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
     if minionTarget == nil then 
       minionTarget = minion
     elseif minionTarget.health >= minion.health and ValidTarget(minion, range) then
