@@ -301,7 +301,7 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.74
+local version = 1.0
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -348,7 +348,7 @@ local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 --local key = { [_Q] = "Y", [_W] = "X", [_E] = "C", [_R] = "V" } soon
 local toCast = {false, false, false, false}
 local toAim = {false, false, false, false}
-local debugMode = false
+local debugMode = true
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
@@ -399,52 +399,52 @@ function OnTick()
                 if myHero:CanUseSpell(_E) then 
                     data[0] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
                     UPL:AddSpell(0, data[0])
-                    CCastSpell(_E, myHero.x, myHero.y, myHero.z)
+                    CCastSpell(_E, myHero)
                 else 
                     data[0] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"}
                     UPL:AddSpell(0, data[0])
                 end 
               end
-              local CastPosition, HitChance, Position = UPL:Predict(i, Target, myHero)
+              local CastPosition, HitChance, Position = UPL:Predict(i, myHero, Target)
               if debugMode then PrintChat("1 - Attempt to aim!") end
               if HitChance >= 3 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
-                  CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                  CCastSpell(i, CastPosition)
               elseif HitChance >= 2 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
-                  CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                  CCastSpell(i, CastPosition)
               elseif HitChance >= 1.5 and Config.skConfig[str[i]] >= 1 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
-                  CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                  CCastSpell(i, CastPosition)
               elseif HitChance >= 1 and Config.skConfig[str[i]] >= 2 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
-                  CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                  CCastSpell(i, CastPosition)
               else
                   local enemies = EnemiesAround(Target, 250) -- Maybe needs some adjustment
                   if enemies > 0 then
                     if debugMode then PrintChat("2 - Checking other enemies around target...") end
                     Target = GetNextCustomTarget(i, Target)
                    if ValidTarget(Target) then
-                    local CastPosition, HitChance, Position = UPL:Predict(i, Target, myHero)
+                    local CastPosition, HitChance, Position = UPL:Predict(i, myHero, Target)
                     if HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
-                      CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                      CCastSpell(i, CastPosition)
                     elseif HitChance >= 1.5 and Config.skConfig[str[i]] >= 1 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
-                      CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                      CCastSpell(i, CastPosition)
                     elseif HitChance >= 1 and Config.skConfig[str[i]] >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
-                      CCastSpell(i, CastPosition.x, CastPosition.y, CastPosition.z)
+                      CCastSpell(i, CastPosition)
                     end
                    end
                    if myHero:CanUseSpell(i) then
-                    if Config.skConfig[str[i]] <= 2 then if debugMode then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos.x, mousePos.y, mousePos.z) end
+                    if Config.skConfig[str[i]] <= 2 then if debugMode then PrintChat("3 - No better target found - to mouse") end CCastSpell(i, mousePos) end
                    end
                   else
-                    if Config.skConfig[str[i]] <= 2 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos.x, mousePos.y, mousePos.z) end
+                    if Config.skConfig[str[i]] <= 2 then if debugMode then PrintChat("2 - To mouse") end CCastSpell(i, mousePos) end
                   end
               end toCast[i] = false
           end
@@ -612,7 +612,7 @@ function OnSendPacket(p)
             end
         end
     end
-    if head == 0xDF then
+    --[[if head == 0xDF then
         p.pos=8
         local opc = p:Decode1()
         if ValidPacketRequest() then
@@ -625,7 +625,7 @@ function OnSendPacket(p)
                 lastopc = opc
             end
         end
-    end
+    end]]--
   end
 end
 
@@ -673,13 +673,17 @@ function GetNextCustomTarget(i, tar)
 end
 
 --[[ Packet Cast Helper ]]--
-function CCastSpell(Spell, xPos, yPos, zPos)
+function CCastSpell(Spell, Pos)
+    print("myHero "..myHero.x.." "..myHero.y.." "..myHero.z)
+    print("casting "..Pos.x.." "..Pos.y.." "..Pos.z)
   if IsChargeable(Spell) and secondCast then
     secondCast = false
-    CastSpell2(Spell, D3DXVECTOR3(xPos, yPos, zPos))
-  elseif VIP_USER and Config.misc.pc and not IsChargeable(Spell) then
-    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-  elseif not IsChargeable(Spell) then
-    CastSpell(Spell, xPos, zPos)
+    CastSpell2(Spell, D3DXVECTOR3(Pos.x, Pos.y, Pos.z))
+  else
+    if VIP_USER and Config.misc.pc then
+        Packet("S_CAST", {spellId = Spell, fromX = Pos.x, fromY = Pos.z, toX = Pos.x, toY = Pos.z}):send()
+    else
+        CastSpell(Spell, Pos.x, Pos.z)
+    end
   end
 end

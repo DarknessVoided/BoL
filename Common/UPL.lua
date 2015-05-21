@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.10
+_G.UPLversion = 1.11
 
 function UPL:__init()
   self.ActiveP = 1
@@ -145,7 +145,8 @@ function UPL:GetSpellData(spell)
 end
 
 function UPL:HPredict(Target, spell, source)
-  local x1, x2, x3 = self.HP:GetPredict(self.HPSpells[spell], Target, source)
+  local col = self:GetSpellData(spell).collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
+  local x1, x2, x3 = self.HP:GetPredict(self.HPSpells[spell], Target, source, col)
   return x1, x2, x3
 end
 
