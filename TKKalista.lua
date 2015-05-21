@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.07
+local version = 1.08
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -558,7 +558,7 @@ function OnDraw()
     for k,v in pairs(MobsK) do
       if v.stacks > 0 and GetDistance(v.unit) <= 1000 and not v.unit.dead then
         dmg = GetDmg("E", v.unit, myHero)
-        if dmg and dmg > 0 then DrawText3D(math.floor(/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
+        if dmg and dmg > 0 then DrawText3D(math.floor(dmg/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
       end
     end
   end 
