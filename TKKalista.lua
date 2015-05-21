@@ -74,7 +74,7 @@ local osTarget = nil
 local EnemiesK = {}
 local Enemies  = GetEnemyHeroes()
 local MobsK = {}
-local Mobs = minionManager(MINION_ALL, 25000, myHero, MINION_SORT_HEALTH_ASC)
+local Mobs = minionManager(MINION_ALL, 2500, myHero, MINION_SORT_HEALTH_ASC)
 data = {
     [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 1.5, range = 5500, type = "dontuse"},
