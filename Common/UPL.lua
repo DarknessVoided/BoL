@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.6
+_G.UPLversion = 1.55
 
 function UPL:__init()
   self.ActiveP = 1
@@ -178,7 +178,7 @@ end
 
 function UPL:DPredict(Target, spell, source)
   local unit = DPTarget(Target)
-  local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or math.huge) or 0
+  local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
   if spell.type == "linear" then
     Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
