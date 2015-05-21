@@ -161,10 +161,6 @@ function OnLoad()
           enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageW = 0, damageE = 0, damageR = 0, damageI = 0, indicatorText = "", damageGettingText = "", ready = true}
       end
   end
-
-  for k,v in pairs(data) do
-    UPL:AddSpell(k, v)
-  end
 end
 
 function SetupOrbwalk()
