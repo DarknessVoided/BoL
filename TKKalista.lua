@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.0
+local version = 1.01
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -159,6 +159,51 @@ function OnLoad()
     if champ.team ~= player.team then
       enemyCount = enemyCount + 1
       enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageI = 0, indicatorText = "", damageGettingText = "", ready = true}
+    end
+  end
+
+  oObject = oObject()
+end
+
+class "oObject"
+
+function oObject:__init()
+  AddCreateObjCallback(function(obj) self:HandleCreateObj(obj) end)
+  return self
+end
+
+function oObject:HandleCreateObj(obj)
+  if obj == nil then return end
+  rendTable = {
+    ["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
+    ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }
+  }
+  rendTableSkin = {
+    ["Kalista_Skin01_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Skin01_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Skin01_E_Spear_tar3.troy"] = { rend = 3 }, 
+    ["Kalista_Skin01_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Skin01_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Skin01_E_Spear_tar6.troy"] = { rend = 6 }
+  }
+  for i, unit in pairs(EnemiesK) do
+    if GetDistance(unit.unit,obj) < 80 then
+      if rendTable[obj.name] or rendTableSkin[obj.name] then
+        unit.stacks = (unit.stacks >= 6 and (unit.stacks+1) or rendTable[obj.name].rend)
+        unit.createTime = GetInGameTimer()
+      end
+      if rendTableSkin[obj.name] then
+        unit.stacks = (unit.stacks >= 6 and (unit.stacks+1) or rendTableSkin[obj.name].rend)
+        unit.createTime = GetInGameTimer()
+      end
+    end
+  end
+  for i, mob in pairs(MobsK) do
+    if GetDistance(mob.unit,obj) < 80 then
+      if rendTable[obj.name] then
+        mob.stacks = (mob.stacks >= 6 and (mob.stacks+1) or rendTable[obj.name].rend)
+        mob.createTime = GetInGameTimer()
+      end
+      if rendTableSkin[obj.name] then
+        mob.stacks = (mob.stacks >= 6 and (mob.stacks+1) or rendTableSkin[obj.name].rend)
+        mob.createTime = GetInGameTimer()
+      end
     end
   end
 end
@@ -335,43 +380,6 @@ function Combo()
   end
 end
 
-function OnCreateObj(obj)
-  print(obj.name)
-  if obj == nil then return end
-  rendTable = {
-    ["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
-    ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }
-  }
-  rendTableSkin = {
-    ["Kalista_Skin01_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Skin01_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Skin01_E_Spear_tar3.troy"] = { rend = 3 }, 
-    ["Kalista_Skin01_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Skin01_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Skin01_E_Spear_tar6.troy"] = { rend = 6 }
-  }
-  for i, unit in pairs(EnemiesK) do
-    if GetDistance(unit.unit,obj) < 80 then
-      if rendTable[obj.name] or rendTableSkin[obj.name] then
-        unit.stacks = (unit.stacks >= 6 and (unit.stacks+1) or rendTable[obj.name].rend)
-        unit.createTime = GetInGameTimer()
-      end
-      if rendTableSkin[obj.name] then
-        unit.stacks = (unit.stacks >= 6 and (unit.stacks+1) or rendTableSkin[obj.name].rend)
-        unit.createTime = GetInGameTimer()
-      end
-    end
-  end
-  for i, mob in pairs(MobsK) do
-    if GetDistance(mob.unit,obj) < 80 then
-      if rendTable[obj.name] then
-        mob.stacks = (mob.stacks >= 6 and (mob.stacks+1) or rendTable[obj.name].rend)
-        mob.createTime = GetInGameTimer()
-      end
-      if rendTableSkin[obj.name] then
-        mob.stacks = (mob.stacks >= 6 and (mob.stacks+1) or rendTableSkin[obj.name].rend)
-        mob.createTime = GetInGameTimer()
-      end
-    end
-  end
-end
-
 function Harrass()
   if Config.harrConfig.Q and ValidTarget(Target, data[0].range) then
     CastQ(Target)
@@ -515,7 +523,7 @@ function OnDraw()
       if v.stacks > 0 and GetDistance(v.unit) <= 1000 then
         dmg = GetDmg("E", v.unit, myHero)
         if dmg and dmg > 0 then
-          DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x, v.unit.y, v.unit.z, 20, TARGB({255,250,250,250}), 0) 
+          DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x-25, v.unit.y, v.unit.z+25, 20, TARGB({255,250,250,250}), 0) 
         end
       end
     end
@@ -560,8 +568,10 @@ function DmgCalculations()
             enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededAA.." hits"
 
             local enemyDamageAA = GetDmg("AD", myHero, enemy)
-            local enemyNeededAA = math.ceil(myHero.health / enemyDamageAA)            
-            enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+            local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+            if enemyNeededAA ~= 0 then         
+              enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+            end
         end
     end
 end

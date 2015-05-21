@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.5
+_G.UPLversion = 1.51
 
 function UPL:__init()
   self.ActiveP = 1
@@ -123,7 +123,7 @@ function UPL:Predict(spell, source, Target)
       if perc ~= nil then
         return Position, 2, Vector(Target)
       else
-        return Position, 0, Vector(Target)
+        return Vector(Target), 0, Vector(Target)
       end
   elseif self:ActivePred() == "HPrediction" then
       return self:HPredict(Target, spell, source)
