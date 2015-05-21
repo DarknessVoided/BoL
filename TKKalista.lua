@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.08
+local version = 1.09
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -385,7 +385,7 @@ function LaneClear()
 end
 
 function Combo()
-  if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+  if Config.comboConfig.Q and GetDistance(Target, myHero) < data[0].range then
     CastQ(Target)
   end
   if Config.comboConfig.E and EReady() and ValidTarget(Target, data[2].range) then
@@ -440,7 +440,7 @@ end
 
 function CastQ(Targ) 
   local CastPosition, HitChance, Position = UPL:Predict(_Q, Targ, myHero)
-  if HitChance and HitChance >= 2 and WReady() then
+  if HitChance and HitChance >= 1 and QReady() then
     CastSpell(_Q)
   end
 end
@@ -555,10 +555,16 @@ function OnDraw()
         DrawText(enemyTable[i].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
       end
     end
-    for k,v in pairs(MobsK) do
-      if v.stacks > 0 and GetDistance(v.unit) <= 1000 and not v.unit.dead then
-        dmg = GetDmg("E", v.unit, myHero)
-        if dmg and dmg > 0 then DrawText3D(math.floor(dmg/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
+    if EReady() then
+      for k,v in pairs(MobsK) do
+        if v.stacks > 0 and GetDistance(v.unit) <= 1000 and not v.unit.dead then
+          dmg = GetDmg("E", v.unit, myHero)
+          if dmg > v.unit.health then
+            if dmg and dmg > 0 then DrawText3D("E Kill", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
+          else
+            if dmg and dmg > 0 then DrawText3D(math.floor(dmg/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
+          end
+        end
       end
     end
   end 
@@ -585,9 +591,10 @@ function DmgCalculations()
                 enemyTable[i].indicatorText = "Q + E Kill"
                 enemyTable[i].ready = EReady() and QReady()
             end
-            local neededAA = math.ceil(enemy.health / (damageAA+(kalE(myHero:GetSpellData(_E).level)+(0.12 + 0.03 * myHero:GetSpellData(_E).level)*myHero.totalDamage)))
-
-            enemyTable[i].indicatorText = neededAA.." hits until E"
+            if EReady() and not (enemy.health > damageE) then
+              local neededAA = math.ceil((enemy.health-damageE) / (damageAA+(kalE(myHero:GetSpellData(_E).level)+(0.12 + 0.03 * myHero:GetSpellData(_E).level)*myHero.totalDamage)))
+              enemyTable[i].indicatorText = neededAA.." aa until E Kill"
+            end
 
             local enemyDamageAA = GetDmg("AD", myHero, enemy)
             local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
@@ -634,6 +641,9 @@ function GetDmg(spell, target, source)
       if unit.unit == target then
         if unit.createTime + 4 > GetInGameTimer() then
           stacks = unit.stacks
+        else
+          stacks = 0
+          unit.stacks = 0
         end
       end
     end
@@ -641,6 +651,9 @@ function GetDmg(spell, target, source)
       if mob.unit == target then
         if mob.createTime + 4 > GetInGameTimer() then
           stacks = mob.stacks
+        else
+          stacks = 0
+          unit.stacks = 0
         end
       end
     end
