@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.4
+_G.UPLversion = 1.41
 
 function UPL:__init()
   self.ActiveP = 1
