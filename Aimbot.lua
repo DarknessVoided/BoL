@@ -28,11 +28,11 @@ _G.Champs = {
     },
         ["Anivia"] = {
         [_Q] = { speed = 850, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"},
-        [_R] = { speed = math.huge, delay = 0.100, range = 615, width = 350, collision = false, aoe = true, type = "circular"}
+        [_R] = { speed = 10000, delay = 0.100, range = 615, width = 350, collision = false, aoe = true, type = "circular"}
     },
         ["Annie"] = {
-        [_W] = { speed = math.huge, delay = 0.25, range = 625, width = 0, collision = false, aoe = true, type = "cone"},
-        [_R] = { speed = math.huge, delay = 0.1, range = 600, width = 300, collision = false, aoe = true, type = "circular"}
+        [_W] = { speed = 10000, delay = 0.25, range = 625, width = 0, collision = false, aoe = true, type = "cone"},
+        [_R] = { speed = 10000, delay = 0.1, range = 600, width = 300, collision = false, aoe = true, type = "circular"}
     },
         ["Ashe"] = {
         [_W] = { speed = 2000, delay = 0.120, range = 1200, width = 85, collision = true, aoe = false, type = "cone"},
@@ -54,13 +54,13 @@ _G.Champs = {
         [_E] = { speed = 2000, delay = 0.400, range = 1000, width = 80, collision = false, aoe = false, type = "linear"}
     },
         ["Cassiopeia"] = {
-        [_Q] = { speed = math.huge, delay = 0.535, range = 850, width = 130, collision = false, aoe = false, type = "circular"},
-        [_W] = { speed = math.huge, delay = 0.350, range = 850, width = 212, collision = false, aoe = false, type = "circular"},
-        [_R] = { speed = math.huge, delay = 0.535, range = 850, width = 350, collision = false, aoe = false, type = "cone"}
+        [_Q] = { speed = 10000, delay = 0.535, range = 850, width = 130, collision = false, aoe = false, type = "circular"},
+        [_W] = { speed = 10000, delay = 0.350, range = 850, width = 212, collision = false, aoe = false, type = "circular"},
+        [_R] = { speed = 10000, delay = 0.535, range = 850, width = 350, collision = false, aoe = false, type = "cone"}
     },
         ["Chogath"] = {
-        [_Q] = { speed = math.huge, delay = 0.625, range = 950, width = 300, collision = false, aoe = true, type = "circular"},
-        [_W] = { speed = math.huge, delay = 0.5, range = 650, width = 275, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 10000, delay = 0.625, range = 950, width = 300, collision = false, aoe = true, type = "circular"},
+        [_W] = { speed = 10000, delay = 0.5, range = 650, width = 275, collision = false, aoe = false, type = "linear"},
     },
         ["Corki"] = {
         [_Q] = { speed = 700, delay = 0.4, range = 825, width = 250, collision = false, aoe = false, type = "circular"},
@@ -96,7 +96,7 @@ _G.Champs = {
     },
         ["Gragas"] = {
         [_Q] = { speed = 1000, delay = 0.250, range = 1000, width = 300, collision = false, aoe = true, type = "circular"},
-        [_E] = { speed = math.huge, delay = 0.250, range = 600, width = 50, collision = true, aoe = true, type = "circular"},
+        [_E] = { speed = 10000, delay = 0.250, range = 600, width = 50, collision = true, aoe = true, type = "circular"},
         [_R] = { speed = 1000, delay = 0.250, range = 1050, width = 400, collision = false, aoe = true, type = "circular"}
     },
         ["Graves"] = {
@@ -141,7 +141,7 @@ _G.Champs = {
         ["KogMaw"] = {
         [_Q] = { speed = 1550, delay = 0.3667, range = 975, width = 60, collision = true, aoe = false, type = "linear"},
         [_E] = { speed = 1200, delay = 0.5, range = 1200, width = 120, collision = false, aoe = false, type = "linear"},
-        [_R] = { speed = math.huge, delay = 1.1, range = 2200, width = 65, collision = false, aoe = true, type = "circular"}
+        [_R] = { speed = 10000, delay = 1.1, range = 2200, width = 65, collision = false, aoe = true, type = "circular"}
     },
         ["Leblanc"] = {
         [_E] = { speed = 1600, delay = 0.250, range = 960, width = 70, collision = true, aoe = false, type = "linear"}
@@ -163,25 +163,25 @@ _G.Champs = {
         [_Q] = { speed = 1400, delay = 0.250, range = 925, width = 80, collision = false, aoe = false, type = "linear"}
     },
         ["Lux"] = {
-        [_Q] = { speed = 1200, delay = 0.25, range = 1175, width = 80, collision = true, aoe = false, type = "linear"},
-        [_E] = { speed = 1300, delay = 0.25, range = 1100, width = 275, collision = false, aoe = true, type = "circular"},
-        [_R] = { speed = math.huge, delay = 0.25, range = 3340, width = 190, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
+        [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
+        [_R] = { speed = 10000, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
     },
         ["Malphite"] = {
         [_R] = { speed = 550, delay = 0.0, range = 1000, width = 300, collision = false, aoe = true, type = "circular"}
     },
         ["Malzahar"] = {
         [_Q] = { speed = 1600, delay = 0.600, range = 900, width = 200, collision = false, aoe = false, type = "linear"},
-        [_W] = { speed = math.huge, delay = 0.25, range = 800, width = 240, collision = false, aoe = true, type = "circular"}
+        [_W] = { speed = 10000, delay = 0.25, range = 800, width = 240, collision = false, aoe = true, type = "circular"}
     },
         ["Mordekaiser"] = {
-        [_E] = { speed = math.huge, delay = 0.25, range = 700, width = 0, collision = false, aoe = true, type = "cone"},
+        [_E] = { speed = 10000, delay = 0.25, range = 700, width = 0, collision = false, aoe = true, type = "cone"},
     },
         ["Morgana"] = {
         [_Q] = { speed = 1200, delay = 0.250, range = 1300, width = 80, collision = true, aoe = false, type = "linear"}
     },
         ["Nami"] = {
-        [_Q] = { speed = math.huge, delay = 0.8, range = 850, width = 0, collision = false, aoe = true, type = "circular"}
+        [_Q] = { speed = 10000, delay = 0.8, range = 850, width = 0, collision = false, aoe = true, type = "circular"}
     },
         ["Nautilus"] = {
         [_Q] = { speed = 2000, delay = 0.250, range = 1080, width = 80, collision = true, aoe = false, type = "linear"}
@@ -226,10 +226,10 @@ _G.Champs = {
         [_R] = { speed = 2400, delay = 0.240, range = 1000, width = 160, collision = true, aoe = false, type = "linear"}
     },
         ["Swain"] = {
-        [_W] = { speed = math.huge, delay = 0.850, range = 900, width = 125, collision = false, aoe = true, type = "circular"}
+        [_W] = { speed = 10000, delay = 0.850, range = 900, width = 125, collision = false, aoe = true, type = "circular"}
     },
         ["Syndra"] = {
-        [_Q] = { speed = math.huge, delay = 0.600, range = 790, width = 125, collision = false, aoe = true, type = "circular"},
+        [_Q] = { speed = 10000, delay = 0.600, range = 790, width = 125, collision = false, aoe = true, type = "circular"},
         [_E] = { speed = 2500, delay = 0.250, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
     },
         ["Thresh"] = {
@@ -266,16 +266,16 @@ _G.Champs = {
         [_Q] = { speed = 1300, delay = 0.066, range = 1050, width = 50, collision = true, aoe = false, type = "linear"},
         [_W] = { speed = 1700, delay = 0.064, range = 1050, width = 80, collision = false, aoe = false, type = "linear"},
         [_E] = { speed = 1500, delay = 0.333, range = 850, width = 225, collision = false, aoe = true, type = "circular"},
-        [_R] = { speed = math.huge, delay = 0.333, range = 1550, width = 50, collision = false, aoe = false, type = "linear"}
+        [_R] = { speed = 10000, delay = 0.333, range = 1550, width = 50, collision = false, aoe = false, type = "linear"}
     },    
         ["Xerath"] = {
         [_Q] = { speed = 500, delay = 1.75, range = 750, width = 100, collision = false, aoe = false, type = "linear"},
-        [_W] = { speed = math.huge, delay = 0.25, range = 1100, width = 100, collision = false, aoe = true, type = "circular"},
+        [_W] = { speed = 10000, delay = 0.25, range = 1100, width = 100, collision = false, aoe = true, type = "circular"},
         [_E] = { speed = 1600, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"},
         [_R] = { speed = 500, delay = 0.75, range = 3200, width = 245, collision = false, aoe = true, type = "circular"}
     },
         ["Yasuo"] = {
-        [_Q] =  { speed = math.huge, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"},
+        [_Q] =  { speed = 10000, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"},
     },
         ["Zac"] = {
         [_Q] = { speed = 2500, delay = 0.110, range = 500, width = 110, collision = false, aoe = false, type = "linear"},
@@ -290,18 +290,18 @@ _G.Champs = {
         [_R] = { speed = 1750, delay = 0.14, range = 5300, width = 525, collision = false, aoe = true, type = "circular"},
     },
         ["Zilean"] = {
-        [_Q] = { speed = math.huge, delay = 0.5, range = 900, width = 150, collision = false, aoe = true, type = "circular"},
+        [_Q] = { speed = 10000, delay = 0.5, range = 900, width = 150, collision = false, aoe = true, type = "circular"},
     },
         ["Zyra"] = {
-        [_Q] = { speed = math.huge, delay = 0.7, range = 800, width = 85, collision = false, aoe = true, type = "circular"},
+        [_Q] = { speed = 10000, delay = 0.7, range = 800, width = 85, collision = false, aoe = true, type = "circular"},
         [_E] = { speed = 1150, delay = 0.25, range = 1100, width = 70, collision = false, aoe = false, type = "linear"},
-        [_R] = { speed = math.huge, delay = 1, range = 1100, width = 500, collision=false, aoe = true, type = "circular" }
+        [_R] = { speed = 10000, delay = 1, range = 1100, width = 500, collision=false, aoe = true, type = "circular" }
     }
 }
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.99
+local version = 1.0
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -348,7 +348,7 @@ local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 --local key = { [_Q] = "Y", [_W] = "X", [_E] = "C", [_R] = "V" } soon
 local toCast = {false, false, false, false}
 local toAim = {false, false, false, false}
-local debugMode = true
+local debugMode = false
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
@@ -674,8 +674,6 @@ end
 
 --[[ Packet Cast Helper ]]--
 function CCastSpell(Spell, Pos)
-    print("myHero "..myHero.x.." "..myHero.y.." "..myHero.z)
-    print("casting "..Pos.x.." "..Pos.y.." "..Pos.z)
   if IsChargeable(Spell) and secondCast then
     secondCast = false
     CastSpell2(Spell, D3DXVECTOR3(Pos.x, Pos.y, Pos.z))
