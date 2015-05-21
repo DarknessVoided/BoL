@@ -559,7 +559,7 @@ function OnDraw()
       if v.stacks > 0 and GetDistance(v.unit) <= 1000 then
         dmg = GetDmg("E", v.unit, myHero)
         if dmg and dmg > 0 then
-          DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) 
+          DrawText3D(math.floor(100/v.unit.health*dmg).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) 
         end
       end
     end
@@ -613,9 +613,9 @@ function GetDmg(spell, target, source)
   local MagicPen         = source.magicPen
   local MagicPenPercent  = source.magicPenPercent
 
-  local Armor         = target.armor*ArmorPenPercent-ArmorPen
+  local Armor         = math.floor((target.armor*ArmorPenPercent-ArmorPen)*100)/100
   local ArmorPercent  = Armor < 0 and Armor/(100+Armor) or Armor/(100+Armor)
-  local MagicArmor    = target.magicArmor*MagicPenPercent-MagicPen
+  local MagicArmor    = math.floor((target.magicArmor*MagicPenPercent-MagicPen)*100)/100
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
@@ -650,7 +650,7 @@ function GetDmg(spell, target, source)
   elseif spell == "R" then
     return 0
   end
-  return ADDmg*(1-ArmorPercent)*0.99
+  return ADDmg*(1-ArmorPercent)*0.9
 end
 
 function kalE(x)
