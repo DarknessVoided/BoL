@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.41
+_G.UPLversion = 1.42
 
 function UPL:__init()
   self.ActiveP = 1
@@ -147,7 +147,7 @@ end
 function UPL:HPredict(Target, spell, source)
   local col = self:GetSpellData(spell).collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
   local x1, x2, x3 = self.HP:GetPredict(self.HPSpells[spell], Target, source, col)
-  return x1, x2, x3
+  return x1, x2*2, x3
 end
 
 function UPL:SetupHPredSpell(spell)
@@ -186,6 +186,9 @@ function UPL:DPredict(Target, spell, source)
 end
 
 function UPL:VPredict(Target, spell, source)
+  if spell.speed > 10000 then 
+    spell.speed = math.huge
+  end
   if spell.type == "linear" then
     if spell.aoe then
       return self.VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, myHero)

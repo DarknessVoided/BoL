@@ -77,7 +77,7 @@ local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
   [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
-  [_R] = { speed = 10000, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
+  [_R] = { speed = 25000, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
 }
 
 function OnLoad()
@@ -87,6 +87,10 @@ function OnLoad()
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
   UPL:AddToMenu(Config.misc)
+
+  for k,v in pairs(data) do
+    UPL:AddSpell(k, v)
+  end
 
   Config:addSubMenu("Misc settings", "casual")
   Config.casual:addSubMenu("Zhonya's settings", "zhg")
@@ -224,20 +228,21 @@ function OnTick()
       CastSpell(_E)
     end
   end
+
+  if doE then
+    if EReady() then
+      CastSpell(_E)
+    else
+      doE = false
+    end
+  end
+  
   if Target ~= nil then
     if doR and rTarget ~= nil then
       if RReady() then
         CastR(rTarget)
       else
         doR = false
-      end
-    end
-
-    if doE and eTarget ~= nil then
-      if EReady() then
-        CastE(ETarget)
-      else
-        doE = false
       end
     end
 
@@ -282,7 +287,7 @@ end
 function DoSomeUltLogic()
   if Config.rConfig.r then
     local enemies = EnemiesAround(Target, data[3].width)
-    if enemies >= Config.rConfig.toomanyenemies then
+    if enemies >= Config.rConfig.toomanyenemies and Config.rConfig.r then
       doR = true rTarget = Target
       CastR(Target)
     end
@@ -308,7 +313,7 @@ function LastHit()
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        doE = true eTarget = minion
+        doE = true
         CastE(minion)
         return
       end      
@@ -345,7 +350,7 @@ function LaneClear()
   if EReady() and Config.farmConfig.lc.E then
     local pos, hit = GetEFarmPosition(data[2].range, data[2].width)
     if pos ~= nil then
-      doE = true eTarget = pos
+      doE = true
       CastE(pos)
     end
   end  
@@ -383,7 +388,7 @@ end
 function Combo()
   if not isLight(Target) and QReady() and EReady() then
     if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-      doE = true eTarget = Target
+      doE = true
       CastE(Target)
     end
   elseif not isLight(Target) and QReady() and not EReady() then
@@ -392,7 +397,7 @@ function Combo()
     end
   elseif not isLight(Target) and EReady() and not QReady() then
     if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-      doE = true eTarget = Target
+      doE = true
       CastE(Target)
     end
   elseif isLight(Target) and QReady() then
@@ -411,10 +416,10 @@ function Combo()
     CastW(Target)
   end
   if isLight(Target) and Config.comboConfig.R and Target.health < GetDmg("Rl", Target, myHero) and ValidTarget(Target, data[3].range) then
-    local doR = true rTarget = Target
+    local doR = true
     CastR(Target)
   elseif Config.comboConfig.R and Target.health < GetDmg("R", Target, myHero) and ValidTarget(Target, data[3].range) then
-    local doR = true rTarget = Target
+    local doR = true
     CastR(Target)
   end
 end
@@ -424,7 +429,7 @@ function Harrass()
     CastQ(Target)
   end
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
-    doE = true eTarget = Target
+    doE = true
     CastE(Target)
   end
 end
