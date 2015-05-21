@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.01
+local version = 1.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -106,10 +106,10 @@ function OnLoad()
   Config:addSubMenu("Harrass Settings", "harrConfig")
   Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.harrConfig:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
+  Config.harrConfig:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 0, 5, 0)
   
   Config:addSubMenu("Farm Settings", "farmConfig")
-  Config.farmConfig:addSubMenu("Lane Clear", "lc")
+  Config.farmConfig:addSubMenu("Lane Clear/Jungle Clear", "lc")
   Config.farmConfig:addSubMenu("Last Hit", "lh")
   Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -117,6 +117,9 @@ function OnLoad()
   Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
+  Config.farmConfig:addParam("E", "Use E always", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig:addParam("Ea", "Min minions for E", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+  Config.farmConfig:addParam("Ej", "Take big one in jungle with E", SCRIPT_PARAM_ONOFF, true)
       
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
@@ -283,6 +286,32 @@ function OnTick()
     end
   end
 
+  if EReady() and Config.farmConfig.Ej then  
+    local killableUnit = {}  
+    for i, mob in pairs(MobsK) do  
+      local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+      if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range and (string.find(mob.unit.charName, "Baron") or string.find(mob.unit.charName, "Dragon") or string.find(mob.unit.charName, "Gromp") or (string.find(mob.unit.charName, "Krug") or string.find(mob.unit.charName, "Murkwolf") or string.find(mob.unit.charName, "Razorbeak")) and not string.find(mob.unit.charName, "Mini")) then
+        table.insert(killableUnit, mob.unit)   
+      end    
+    end
+    if #killableUnit >= 1 then
+        CastE()
+    end
+  end  
+
+  if EReady() and Config.farmConfig.E then  
+    local killableUnit = {}  
+    for i, mob in pairs(MobsK) do  
+      local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+      if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
+        table.insert(killableUnit, mob.unit)   
+      end    
+    end
+    if #killableUnit >= Config.farmConfig.Ea then
+        CastE()
+    end
+  end  
+
   if Config.kConfig.lh then
     LastHit()
   end
@@ -318,32 +347,32 @@ end
 
 function LaneClear()
     --Check for lowlife: Lasthit = priority!
-    if QReady() and Config.farmConfig.lc.Q then
-      for i, mob in pairs(MobsK) do
-        local QMinionDmg = GetDmg("Q", mob.unit, myHero)
-        if QMinionDmg and QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) and GetDistance(mob.unit) < data[0].range then
-          CastQ(mob.unit)
-        end
+  if QReady() and Config.farmConfig.lc.Q then
+    for i, mob in pairs(MobsK) do
+      local QMinionDmg = GetDmg("Q", mob.unit, myHero)
+      if QMinionDmg and QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) and GetDistance(mob.unit) < data[0].range then
+        CastQ(mob.unit)
       end
     end
-    if EReady() and Config.farmConfig.lc.E then   
-      local killableUnit = {}  
-      for i, mob in pairs(MobsK) do
-        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
-        if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
-          table.insert(killableUnit, mob.unit)
-        end
-      end    
-      if #killableUnit >= Config.farmConfig.lc.Ea then
-          CastE()
+  end
+  if EReady() and Config.farmConfig.lc.E then   
+    local killableUnit = {}  
+    for i, mob in pairs(MobsK) do
+      local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+      if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
+        table.insert(killableUnit, mob.unit)
       end
-    end 
-    --Check for lowestlife: Lanceclear - 2nd priority!
-    if QReady() and Config.farmConfig.lc.Q then
-      local minionTarget = nil
-      for i, mob in pairs(MobsK) do
-        if minionTarget == nil then 
-          minionTarget = mob.unit
+    end    
+    if #killableUnit >= Config.farmConfig.lc.Ea then
+        CastE()
+    end
+  end 
+  --Check for lowestlife: Lanceclear - 2nd priority!
+  if QReady() and Config.farmConfig.lc.Q then
+    local minionTarget = nil
+    for i, mob in pairs(MobsK) do
+      if minionTarget == nil then 
+        minionTarget = mob.unit
         if QMinionDmg and QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) and GetDistance(mob.unit) < data[0].range then
           minionTarget = mob.unit
         end
@@ -352,6 +381,7 @@ function LaneClear()
         CastQ(minionTarget)
       end
     end
+  end
 end
 
 function Combo()
@@ -359,24 +389,25 @@ function Combo()
     CastQ(Target)
   end
   if Config.comboConfig.E and EReady() and ValidTarget(Target, data[2].range) then
-      local killableUnit = {}  
-      for i, mob in pairs(MobsK) do    
-        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
-        if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
-          table.insert(killableUnit, unit)
-        end   
-      end  
-      for i, unit in pairs(EnemiesK) do    
-        local EChampDmg = GetDmg("E", unit.unit, myHero)      
-        if EChampDmg and EChampDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
-          table.insert(killableUnit, unit)
-        end      
-      end    
-      if #killableUnit >= 1 and Config.comboConfig.Er then
-        CastE()
-      elseif GetDmg("E", Target, myHero) >= Target.health then
-        CastE()
-      end
+    local killableUnit = {}  
+    local harrassUnit = {} 
+    for i, mob in pairs(MobsK) do    
+      local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+      if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
+        table.insert(killableUnit, unit)
+      end   
+    end  
+    for i, unit in pairs(EnemiesK) do    
+      local EChampDmg = GetDmg("E", unit.unit, myHero)      
+      if EChampDmg and EChampDmg > 0 and ValidTarget(unit.unit, data[2].range) and GetDistance(unit.unit) < data[2].range then
+        table.insert(harrassUnit, unit)
+      end      
+    end    
+    if #killableUnit >= 1 and #harrassUnit > 0 and Config.comboConfig.Er then
+      CastE()
+    elseif GetDmg("E", Target, myHero) >= Target.health then
+      CastE()
+    end
   end
 end
 
@@ -386,16 +417,21 @@ function Harrass()
   end
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
     if EReady() and Config.farmConfig.lc.E then   
-      local minionTarget = nil
-      for i, mob in pairs(MobsK) do
-          if minionTarget == nil then 
-            minionTarget = unit
-          elseif minionTarget.health >= unit.health and ValidTarget(unit, data[2].range) then
-            minionTarget = unit
-          end
-        end
-      end
-      if #killableUnit > Config.harrConfig.Ea then
+      local killableUnit = {} 
+      local harrassUnit = {} 
+      for i, mob in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+        if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
+          table.insert(killableUnit, unit)
+        end   
+      end  
+      for i, unit in pairs(EnemiesK) do    
+        local EChampDmg = GetDmg("E", unit.unit, myHero)      
+        if EChampDmg and EChampDmg > 0 and ValidTarget(unit.unit, data[2].range) and GetDistance(unit.unit) < data[2].range then
+          table.insert(harrassUnit, unit)
+        end      
+      end    
+      if #killableUnit >= Config.harrConfig.Ea and #harrassUnit > 0 then
         CastE()
       end
     end 
@@ -523,7 +559,7 @@ function OnDraw()
       if v.stacks > 0 and GetDistance(v.unit) <= 1000 then
         dmg = GetDmg("E", v.unit, myHero)
         if dmg and dmg > 0 then
-          DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x-25, v.unit.y, v.unit.z+25, 20, TARGB({255,250,250,250}), 0) 
+          DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) 
         end
       end
     end
@@ -626,7 +662,7 @@ function GetDmg(spell, target, source)
   elseif spell == "R" then
     return 0
   end
-  return ADDmg*(1-ArmorPercent)
+  return ADDmg*(1-ArmorPercent)*0.99
 end
 
 function kalE(x)
