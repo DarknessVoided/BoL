@@ -555,7 +555,7 @@ function DmgCalculations()
             local damageE  = GetDmg("E", enemy, player)
             local damageR  = GetDmg("R", enemy, player)
             local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
-            enemyTable[i].damageQ = damageQ
+            enemyTable[i].damageQ = QReady() and damageQ or 0
             enemyTable[i].damageW = damageW
             enemyTable[i].damageE = damageE
             enemyTable[i].damageR = damageR

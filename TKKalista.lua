@@ -559,7 +559,7 @@ function OnDraw()
       for k,v in pairs(MobsK) do
         if v.stacks > 0 and GetDistance(v.unit) <= 1000 and not v.unit.dead then
           dmg = GetDmg("E", v.unit, myHero)
-          if v and not v.unit.dead and dmg and dmg > v.unit.health then
+          if v and v ~= nil and not v.unit.dead and dmg and dmg ~= nil and dmg > v.unit.health then
             if dmg and dmg > 0 then DrawText3D("E Kill", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
           else
             if dmg and dmg > 0 then DrawText3D(math.floor(dmg/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) end
