@@ -653,7 +653,7 @@ function GetDmg(spell, target, source)
           stacks = mob.stacks
         else
           stacks = 0
-          unit.stacks = 0
+          mob.stacks = 0
         end
       end
     end
