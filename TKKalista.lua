@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.02
+local version = 1.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -439,7 +439,7 @@ function Harrass()
 end
 
 function CastQ(Targ) 
-  local CastPosition, HitChance, Position = UPL:Predict(0, myHero, Targ)
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, Targ, myHero)
   if HitChance and HitChance >= 2 and WReady() then
     CastSpell(_Q)
   end
@@ -580,28 +580,16 @@ function DmgCalculations()
             enemyTable[i].damageE = damageE
             enemyTable[i].damageI = damageI
             enemyTable[i].damageS = damageS
-
-            if enemy.health < damageQ then
-                enemyTable[i].indicatorText = "Q Kill"
-                enemyTable[i].ready = QReady()
-            elseif enemy.health < damageE then
+            if enemy.health < damageE then
                 enemyTable[i].indicatorText = "E Kill"
                 enemyTable[i].ready = EReady()
             elseif enemy.health < damageE + damageQ then
                 enemyTable[i].indicatorText = "Q + E Kill"
                 enemyTable[i].ready = EReady() and QReady()
-            elseif enemy.health < damageAA + damageQ + damageE + damageI + damageS then
-                enemyTable[i].indicatorText = "All-In Kill"
-                enemyTable[i].ready = QReady() and EReady() and IReady()
-            else
-                local damageTotal = damageAA + damageQ + damageE + damageI
-                local healthLeft = math.round(enemy.health - damageTotal)
-                local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
-                enemyTable[i].indicatorText = percentLeft .. "% Harass"
-                enemyTable[i].ready = QReady() or EReady()
             end
-            local neededAA = math.ceil(enemy.health / damageAA)    
-            enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededAA.." hits"
+            local neededAA = math.ceil(enemy.health / (damageAA+(kalE(myHero:GetSpellData(_E).level)+(0.12 + 0.03 * myHero:GetSpellData(_E).level)*myHero.totalDamage)))
+
+            enemyTable[i].indicatorText = neededAA.." hits until E"
 
             local enemyDamageAA = GetDmg("AD", myHero, enemy)
             local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
