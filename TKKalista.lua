@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.05
+local version = 1.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -556,9 +556,8 @@ function OnDraw()
       end
     end
     for k,v in pairs(MobsK) do
-      if v.stacks > 0 and GetDistance(v.unit) <= 1000 then
-        dmg = GetDmg("E", v.unit, myHero)
-        DrawText3D(math.floor(dmg/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) 
+      if v.stacks > 0 and GetDistance(v.unit) <= 1000 and not v.unit.dead then
+        DrawText3D(math.floor(GetDmg("E", v.unit, myHero)/v.unit.health*100).."%", v.unit.x-45, v.unit.y-45, v.unit.z+45, 20, TARGB({255,250,250,250}), 0) 
       end
     end
   end 
@@ -606,14 +605,14 @@ function GetDmg(spell, target, source)
   local APDmg            = 0
   local Level            = source.level
   local TotalDmg         = source.totalDamage
-  local ArmorPen         = source.armorPen
-  local ArmorPenPercent  = source.armorPenPercent
-  local MagicPen         = source.magicPen
-  local MagicPenPercent  = source.magicPenPercent
+  local ArmorPen         = math.floor(source.armorPen)
+  local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+  local MagicPen         = math.floor(source.magicPen)
+  local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
 
-  local Armor = math.max(0, target.armor*ArmorPenPercent-ArmorPen)
+  local Armor        = math.max(0, target.armor*ArmorPenPercent-ArmorPen)
   local ArmorPercent = Armor/(100+Armor)
-  local MagicArmor = math.max(0, target.magicArmor*MagicPenPercent-MagicPen)
+  local MagicArmor   = math.max(0, target.magicArmor*MagicPenPercent-MagicPen)
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
