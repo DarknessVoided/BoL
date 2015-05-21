@@ -74,7 +74,7 @@ local osTarget = nil
 local EnemiesK = {}
 local Enemies  = GetEnemyHeroes()
 local MobsK = {}
-local Mobs = minionManager(MINION_ALL, 25000, myHero, MINION_SORT_HEALTH_ASC)
+local Mobs = minionManager(MINION_ALl, 25000, myHero, MINION_SORT_HEALTH_ASC)
 data = {
     [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 1.5, range = 5500, type = "dontuse"},
@@ -131,6 +131,8 @@ function OnLoad()
   Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("lfc", "Lagg Free Circles", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("lfcq", "LFC Quality", SCRIPT_PARAM_SLICE, 32, 8, 64, mlog(8))
   
   Config:addSubMenu("Key Settings", "kConfig")
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
@@ -212,9 +214,9 @@ function OnTick()
         if mob.unit == minion then winion = mob end
       end
       if winion ~= nil then
-        table.insert(MobsK, {unit = minion, stacks = winion.stacks, createTime = winion.createTime})
+        table.insert(MobsK, {unit = minion, stacks = 20, createTime = GetInGameTimer()}) --winion.stacks, createTime = winion.createTime})
       else          
-        table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
+        table.insert(MobsK, {unit = minion, stacks = 20, createTime = GetInGameTimer()}) --0, createTime = 0})
       end
     end
   end
@@ -485,16 +487,16 @@ local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
   if Config.Drawing.QRange and QReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(255, 155, 155, 155))--0x111111)
   end
   if Config.Drawing.WRange and WReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range, 0x111111)
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range, ARGB(255, 155, 155, 155))
   end
   if Config.Drawing.ERange and EReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range, ARGB(255, 155, 155, 155))
   end
   if Config.Drawing.RRange and RReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range, ARGB(255, 155, 155, 155))
   end
   if Config.Drawing.dmgCalc then
     for i = 1, enemyCount do
@@ -511,8 +513,9 @@ function OnDraw()
       end
     end
     for k,v in pairs(MobsK) do
-      if v.stacks > 0 then
-        DrawText3D(math.ceil((v.unit.health-GetDmg("E", v.unit, myHero))/v.unit.maxHealth).."%", v.unit.x, v.unit.y, v.unit.z, 20, TARGB(255,250,250,250), 0) 
+      if v.stacks > 0 and GetDistance(v.unit) <= 1000 then
+        dmg = GetDmg("E", v.unit, myHero)
+        DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x, v.unit.y, v.unit.z, 20, TARGB({255,250,250,250}), 0) 
       end
     end
   end 
@@ -576,7 +579,7 @@ function GetDmg(spell, target, source)
   local MagicPenPercent  = source.magicPenPercent
 
   local Armor         = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent  = Armor/(100+Armor)
+  local ArmorPercent  = Armor < 0 and Armor/(100+Armor) or Armor/(100+Armor)
   local MagicArmor    = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
@@ -608,12 +611,11 @@ function GetDmg(spell, target, source)
         end
       end
     end
-    if stacks > 0 then print("test") end
-    ADDmg = stacks==0 and 0 or (10 + (10 * unit:GetSpellData(_E).level) + (unit.totalDamage * 0.6)) + stacks *(kalE(unit:GetSpellData(_E).level) + (0.12 + 0.03 * unit:GetSpellData(_E).level)*unit.totalDamage)
+    stacks = 20
+    ADDmg = stacks==0 and 0 or (10 + (10 * ELevel) + (TotalDmg * 0.6)) + stacks *(kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg)
   elseif spell == "R" then
     return 0
   end
-
   return ADDmg*(1-ArmorPercent)
 end
 
@@ -632,12 +634,12 @@ end
 function TARGB(colorTable)
     return ARGB(colorTable[1], colorTable[2], colorTable[3], colorTable[4])
 end
-function DrawLFC(x, y, z, radius, width, color, quality)
-    if m.draw.lfc.enable then
-        LagFree(x, y, z, radius, width, color, quality)
+function DrawLFC(x, y, z, radius, color)
+    if Config.Drawing.lfc then
+        LagFree(x, y, z, radius, 1, color, Config.Drawing.lfcq)
     else
         local radius = radius or 300
-        DrawCircle(x, y, z, radius, color)
+        DrawCircle(x, y, z, radius, 0x111111)
     end
 end
 function LagFree(x, y, z, radius, width, color, quality)
