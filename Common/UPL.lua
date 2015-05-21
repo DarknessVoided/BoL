@@ -179,7 +179,7 @@ end
 function UPL:DPredict(Target, spell, source)
   local unit = DPTarget(Target)
   local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
-  if spell.speed > 25000 then
+  if spell.speed > 10000 then
     spell.speed = 25000
   end
   if spell.type == "linear" then
