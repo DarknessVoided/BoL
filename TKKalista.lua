@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.10
+local version = 1.0
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -42,36 +42,12 @@ end
 
 --[[ Libraries start ]]--
 local predToUse = {}
-VP  = nil
-DP  = nil
-HP  = nil
-TKP = nil
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
-  require("VPrediction")
-  VP = VPrediction()
-  table.insert(predToUse, "VPrediction")
-end
-
-if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-  require "DivinePred"
-  DP = DivinePred() 
-  table.insert(predToUse, "DivinePred")
-end
-
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
-  require("HPrediction")
-  HP = HPrediction()
-  table.insert(predToUse, "HPrediction")
-end
-
-if FileExist(LIB_PATH .. "/TKPrediction.lua") then
-  require("TKPrediction")
-  TKP = TKPrediction()
-  table.insert(predToUse, "TKPrediction")
-end
-
-if predToUse == {} then 
-  TopKekMsg("Please download a Prediction") 
+UPL = nil
+if FileExist(LIB_PATH .. "/UPL.lua") then
+  require("UPL")
+  UPL = UPL()
+else 
+  AutoupdaterMsg("Please download the UPLib.") 
   return 
 end
 
@@ -95,12 +71,10 @@ local sts
 local enemyTable = {}
 local enemyCount = 0
 local osTarget = nil
-local MobsK    = {}
 local EnemiesK = {}
 local Enemies  = GetEnemyHeroes()
-local jungleMobs = minionManager(MINION_JUNGLE, 25000, myHero, MINION_SORT_MAXHEALTH_DEC)
-local laneMobs   = minionManager(MINION_ENEMY, 25000, myHero, MINION_SORT_MAXHEALTH_DEC)
-local pets       = minionManager(MINION_OTHER, 25000, myHero, MINION_SORT_MAXHEALTH_DEC)
+local MobsK = {}
+local Mobs = minionManager(MINION_ALL, 25000, myHero, MINION_SORT_HEALTH_ASC)
 data = {
     [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 1.5, range = 5500, type = "dontuse"},
@@ -118,11 +92,8 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("pro", "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-
-  if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.03, 0, 0.3, 2) end
-  if ActivePred() == "HPrediction" then SetupHPred() end
+  UPL:AddSpell(_Q, data[0])
+  UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -181,13 +152,13 @@ function OnLoad()
   Config:addSubMenu("Target Selector", "sts")
   sts:AddToMenu(Config.sts)
 
-    for i = 1, heroManager.iCount do
-        local champ = heroManager:GetHero(i)
-        if champ.team ~= player.team then
-            enemyCount = enemyCount + 1
-            enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
-        end
+  for i = 1, heroManager.iCount do
+    local champ = heroManager:GetHero(i)
+    if champ.team ~= player.team then
+      enemyCount = enemyCount + 1
+      enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageI = 0, indicatorText = "", damageGettingText = "", ready = true}
     end
+  end
 end
 
 function SetupOrbwalk()
@@ -228,33 +199,29 @@ function SetupOrbwalk()
 end
 
 function OnTick()
-
-  jungleMobs:update()
-  laneMobs:update()
-  pets:update()
-
-  MobsK = {}
-  for _, minion in pairs(jungleMobs.objects) do
-    if minion ~= nil then 
-      table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
+  Mobs:update()
+  if #Mobs.objects ~= #MobsK or (#Mobs.objects > 0 and Mobs.objects[1] ~= MobsK[1].unit) then
+    MobsT = {}
+    for k,v in pairs(MobsK) do
+      table.insert(MobsT, v)
+    end   
+    MobsK = {}
+    for _, minion in pairs(Mobs.objects) do
+      local winion = nil
+      for _, mob in pairs(MobsT) do
+        if mob.unit == minion then winion = mob end
+      end
+      if winion ~= nil then
+        table.insert(MobsK, {unit = minion, stacks = winion.stacks, createTime = winion.createTime})
+      else          
+        table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
+      end
     end
   end
-  for _, minion in pairs(laneMobs.objects) do
-    if minion ~= nil then 
-      table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
-    end
-  end
-  for _, minion in pairs(pets.objects) do
-    if minion ~= nil then 
-      table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
-    end
-  end
-  --print(#MobsK)
-
   Target = GetCustomTarget()
 
   DmgCalculations()
-
+  --[[
   if Target ~= nil then
     if Config.KS.enableKS then 
       Killsteal()
@@ -274,15 +241,15 @@ function OnTick()
   end
   if Config.kConfig.lc then
     LaneClear()
-  end
+  end]]
 
-  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  --if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function LastHit()
     if QReady() and Config.farmConfig.lh.Q then
       for i, mob in pairs(MobsK) do
-        local QMinionDmg = GetDmg("Q", mob.unit)
+        local QMinionDmg = GetDmg("Q", mob.unit, myHero)
         if QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
           CastQ(unit)
         end
@@ -290,12 +257,13 @@ function LastHit()
     end
     if EReady() and Config.farmConfig.lh.E then  
       local killableUnit = {}  
-      for i, mob in pairs(MobsK) do    
-        local EMinionDmg = GetDmg("E", mob.unit)      
+      for k, v in pairs(MobsK) do
+        for i, mob in pairs(v) do  
+        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
         if EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
-          table.insert(killableUnit, mob.unit)
-        end      
-      end    
+          table.insert(killableUnit, mob.unit)   
+        end    
+      end
       if #killableUnit >= Config.farmConfig.lh.Ea then
           CastE()
       end
@@ -306,7 +274,7 @@ function LaneClear()
     --Check for lowlife: Lasthit = priority!
     if QReady() and Config.farmConfig.lc.Q then
       for i, mob in pairs(MobsK) do
-        local QMinionDmg = GetDmg("Q", mob.unit)
+        local QMinionDmg = GetDmg("Q", mob.unit, myHero)
         if QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
           CastQ(mob.unit)
         end
@@ -314,11 +282,11 @@ function LaneClear()
     end
     if EReady() and Config.farmConfig.lc.E then   
       local killableUnit = {}  
-      for i, mob in pairs(MobsK) do 
-        local EMinionDmg = GetDmg("E", mob.unit)      
+      for i, mob in pairs(MobsK) do
+        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
         if EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
           table.insert(killableUnit, mob.unit)
-        end      
+        end
       end    
       if #killableUnit >= Config.farmConfig.lc.Ea then
           CastE()
@@ -346,38 +314,58 @@ function Combo()
   end
   if Config.comboConfig.E and EReady() and ValidTarget(Target, data[2].range) then
       local killableUnit = {}  
-      for i, unit in pairs(MobsK) do    
-        local EMinionDmg = GetDmg("E", unit)      
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+      for i, mob in pairs(MobsK) do    
+        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+        if EMinionDmg >= unit.health and ValidTarget(unit, data[2].range) then
+          table.insert(killableUnit, unit)
+        end   
+      end  
+      for i, unit in pairs(EnemiesK) do    
+        local EChampDmg = GetDmg("E", unit.unit, myHero)      
+        if EChampDmg >= unit.health and ValidTarget(unit, data[2].range) then
           table.insert(killableUnit, unit)
         end      
       end    
       if #killableUnit >= 1 and Config.comboConfig.Er then
         CastE()
-      elseif GetDmg("E", Target) >= Target.health then
+      elseif GetDmg("E", Target, myHero) >= Target.health then
         CastE()
       end
   end
 end
 
 function OnCreateObj(obj)
-  if myHero.charName ~= "Kalista" then return end
+  print(obj.name)
   if obj == nil then return end
-  rendTable = {["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
-               ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }}
-  for i, unit in pairs(Enemies) do
-    if GetDistance(unit,obj) < 80 then
-      if rendTable[obj.name] then
-        EnemiesK.stacks[i] = rendTable[obj.name].rend
-        EnemiesK.createTime[i] = os.clock()
+  rendTable = {
+    ["Kalista_Base_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Base_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Base_E_Spear_tar3.troy"] = { rend = 3 }, 
+    ["Kalista_Base_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Base_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Base_E_Spear_tar6.troy"] = { rend = 6 }
+  }
+  rendTableSkin = {
+    ["Kalista_Skin01_E_Spear_tar1.troy"] = { rend = 1 }, ["Kalista_Skin01_E_Spear_tar2.troy"] = { rend = 2 }, ["Kalista_Skin01_E_Spear_tar3.troy"] = { rend = 3 }, 
+    ["Kalista_Skin01_E_Spear_tar4.troy"] = { rend = 4 }, ["Kalista_Skin01_E_Spear_tar5.troy"] = { rend = 5 }, ["Kalista_Skin01_E_Spear_tar6.troy"] = { rend = 6 }
+  }
+  for i, unit in pairs(EnemiesK) do
+    if GetDistance(unit.unit,obj) < 80 then
+      if rendTable[obj.name] or rendTableSkin[obj.name] then
+        unit.stacks = (unit.stacks >= 6 and (unit.stacks+1) or rendTable[obj.name].rend)
+        unit.createTime = GetInGameTimer()
+      end
+      if rendTableSkin[obj.name] then
+        unit.stacks = (unit.stacks >= 6 and (unit.stacks+1) or rendTableSkin[obj.name].rend)
+        unit.createTime = GetInGameTimer()
       end
     end
   end
   for i, mob in pairs(MobsK) do
     if GetDistance(mob.unit,obj) < 80 then
       if rendTable[obj.name] then
-        mob.stacks = rendTable[obj.name].rend
-        mob.createTime = os.clock()
+        mob.stacks = (mob.stacks >= 6 and (mob.stacks+1) or rendTable[obj.name].rend)
+        mob.createTime = GetInGameTimer()
+      end
+      if rendTableSkin[obj.name] then
+        mob.stacks = (mob.stacks >= 6 and (mob.stacks+1) or rendTableSkin[obj.name].rend)
+        mob.createTime = GetInGameTimer()
       end
     end
   end
@@ -390,15 +378,16 @@ function Harrass()
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
     if EReady() and Config.farmConfig.lc.E then   
       local minionTarget = nil
-      for i, unit in pairs(MobsK) do
-        if minionTarget == nil then 
-          minionTarget = unit
-        elseif minionTarget.health >= unit.health and ValidTarget(unit, data[2].range) then
-          minionTarget = unit
+      for i, mob in pairs(MobsK) do
+          if minionTarget == nil then 
+            minionTarget = unit
+          elseif minionTarget.health >= unit.health and ValidTarget(unit, data[2].range) then
+            minionTarget = unit
+          end
         end
       end
       if #killableUnit > Config.harrConfig.Ea then
-          CastE()
+        CastE()
       end
     end 
   end
@@ -429,8 +418,8 @@ end
 function Killsteal()
   for i=1, heroManager.iCount do
     local enemy = heroManager:GetHero(i)
-    local qDmg = ((GetDmg("Q", enemy)) or 0)  
-    local eDmg = ((GetDmg("E", enemy)) or 0)  
+    local qDmg = ((GetDmg("Q", enemy, myHero)) or 0)  
+    local eDmg = ((GetDmg("E", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     local sDmg = 20 + 8 * myHero.level
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
@@ -447,10 +436,33 @@ function Killsteal()
   end
 end
 
+function CCastSpell(Spell, xPos, zPos)
+  if not xPos and not zPos then
+    if VIP_USER and Config.misc.pc then
+        Packet("S_CAST", {spellId = Spell}):send()
+    else
+        CastSpell(Spell)
+    end
+  elseif xPos and not zPos then
+    target = xPos
+    if VIP_USER and Config.misc.pc then
+        Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
+    else
+        CastSpell(Spell, target)
+    end
+  elseif xPos and zPos then
+    if VIP_USER and Config.misc.pc then
+      Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+    else
+      CastSpell(Spell, xPos, zPos)
+    end
+  end
+end
+
 function GetCustomTarget()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts:GetTarget(1000)
+    return sts:GetTarget(data[1].range)
 end
 
 --[[ Packet Cast Helper ]]--
@@ -459,145 +471,6 @@ function CCastSpell(Spell, xPos, zPos)
     Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
   else
     CastSpell(Spell, xPos, zPos)
-  end
-end
-
--- Credits: Da Vinci
-local CastableItems = {
-  Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", target, myHero) end},
-  Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", target, myHero) end},
-  Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", target, myHero) end},
-  Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", target, myHero) end},
-  Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", target, myHero) end},
-  Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return getDmg("BLACKFIRE", target, myHero) end},
-  Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
-  Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
-  TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
-}
-function UseItems(unit)
-    if unit ~= nil then
-        for _, item in pairs(CastableItems) do
-            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
-                if item.reqTarget then
-                    CastSpell(item.Slot(), unit)
-                else
-                    CastSpell(item.Slot())
-                end
-            end
-        end
-    end
-end
--- Credits end
-
-function ActivePred()
-    local int = Config.misc.pro
-    return tostring(predToUse[int])
-end
-
-function SetupHPred()
-  MakeHPred("Q", 0) 
-end
-
-function MakeHPred(hspell, i)
-  if data[i].type == "linear" then
-      if data[i].speed ~= math.huge then 
-          HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      else
-          HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      end
-  elseif data[i].type == "circular" then
-      if data[i].speed ~= math.huge then 
-          HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      else
-          HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      end
-  else --Cone!
-      HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-  end
-end
-
-local hpSpells = {Spell_Q, Spell_W, Spell_E, Spell_R}
-function SetupHPredNew()
-  for i=0,3 do
-    hpSpells[i] = MakeHPred(i)
-  end
-end
-
-function MakeHPredNew(i)
- if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-    if data[i].type == "linear" then
-        if data[i].speed ~= math.huge then 
-            return HPSkillshot({type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            return HPSkillshot({type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    elseif data[i].type == "circular" then
-        if data[i].speed ~= math.huge then 
-            return HPSkillshot({type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            return HPSkillshotl({type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    else --Cone!
-        return HPSkillshot({type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-    end
- end
-end
-
-local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-function Predict(Target, spell, source)
-  if Target == nil then return end
-  if ActivePred() == "VPrediction" then
-    return VPredict(Target, data[spell], source)
-  elseif ActivePred() == "Prodiction" then
-    return nil
-  elseif ActivePred() == "DivinePred" then
-    local State, Position, perc = DPredict(Target, data[spell], source)
-    return Position, perc*3/100, Position
-  elseif ActivePred() == "HPrediction" then
-    local Position, HitChance = HPredict(Target, spell, source)
-    return Position, HitChance, Position
-  elseif ActivePred() == "TKPrediction" then
-    return TKP:Predict(spell, Target, source) 
-  end
-end
-
-function HPredict(Target, spell, source)
-  return HP:GetPredict(str[spell], Target, source) 
-end
-
-function DPredict(Target, spell, source)
-  local unit = DPTarget(Target)
-  local col = spell.collision and 0 or math.huge
-  local Spell = nil
-  if spell.type == "linear" then
-   Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "circular" then
-   Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "cone" then
-   Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  end
-  return DP:predict(unit, Spell, 1.2, source)
-end
-
-function VPredict(Target, spell, source)
-  if spell.type == "linear" then
-    if spell.aoe then
-      return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  elseif spell.type == "circular" then
-    if spell.aoe then
-      return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  elseif spell.type == "cone" then
-    if spell.aoe then
-      return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
   end
 end
 
@@ -624,20 +497,25 @@ function OnDraw()
     DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
   end
   if Config.Drawing.dmgCalc then
-        for i = 1, enemyCount do
-            local enemy = enemyTable[i].player
-            if ValidTarget(enemy) then
-                local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
-                local posX = barPos.x - 35
-                local posY = barPos.y - 50
-                -- Doing damage
-                DrawText(enemyTable[i].indicatorText, 15, posX, posY, (enemyTable[i].ready and colorIndicatorReady or colorIndicatorNotReady))
-               
-                -- Taking damage
-                DrawText(enemyTable[i].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
-            end
-        end
-    end 
+    for i = 1, enemyCount do
+      local enemy = enemyTable[i].player
+      if ValidTarget(enemy) then
+        local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+        local posX = barPos.x - 35
+        local posY = barPos.y - 50
+        -- Doing damage
+        DrawText(enemyTable[i].indicatorText, 15, posX, posY, (enemyTable[i].ready and colorIndicatorReady or colorIndicatorNotReady))
+       
+        -- Taking damage
+        DrawText(enemyTable[i].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
+      end
+    end
+    for k,v in pairs(MobsK) do
+      if v.stacks > 0 then
+        DrawText3D(math.ceil((v.unit.health-GetDmg("E", v.unit, myHero))/v.unit.maxHealth).."%", v.unit.x, v.unit.y, v.unit.z, 20, TARGB(255,250,250,250), 0) 
+      end
+    end
+  end 
 end
 
 function DmgCalculations()
@@ -645,15 +523,16 @@ function DmgCalculations()
     for i = 1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
-            local damageAA = GetDmg("AD", enemy)
-            local damageQ  = GetDmg("Q", enemy)
-            local damageE  = GetDmg("E", enemy)
-            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
+            local damageAA = GetDmg("AD", enemy, myHero)
+            local damageQ  = GetDmg("Q", enemy, myHero)
+            local damageE  = GetDmg("E", enemy, myHero)
+            local damageI  = Ignite and (GetDmg("IGNITE", enemy, myHero)) or 0
             local damageS  = Smite and (20 + 8 * myHero.level) or 0
             enemyTable[i].damageQ = damageQ
             enemyTable[i].damageE = damageE
             enemyTable[i].damageI = damageI
             enemyTable[i].damageS = damageS
+
             if enemy.health < damageQ then
                 enemyTable[i].indicatorText = "Q Kill"
                 enemyTable[i].ready = QReady()
@@ -676,62 +555,61 @@ function DmgCalculations()
             local neededAA = math.ceil(enemy.health / damageAA)    
             enemyTable[i].indicatorText = enemyTable[i].indicatorText.." or "..neededAA.." hits"
 
-            local enemyDamageAA = getDmg("AD", player, enemy)
-            local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
+            local enemyDamageAA = GetDmg("AD", myHero, enemy)
+            local enemyNeededAA = math.ceil(myHero.health / enemyDamageAA)            
             enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
         end
     end
 end
 
-function GetDmg(spell, enemy) --Partially from HTTF
-  if enemy == nil then
+function GetDmg(spell, target, source)
+  if target == nil or source == nil then
     return
   end
-
-  if ValidDmgRequest() then
-  end
-
-  local ADDmg = 0
-  local APDmg = 0
-  local Level = myHero.level
-  local TotalDmg = myHero.totalDamage
+  local ADDmg            = 0
+  local APDmg            = 0
+  local Level            = source.level
+  local TotalDmg         = source.totalDamage
   local ArmorPen         = source.armorPen
   local ArmorPenPercent  = source.armorPenPercent
   local MagicPen         = source.magicPen
   local MagicPenPercent  = source.magicPenPercent
 
-  local Armor           = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent    = Armor/(100+Armor)
-  local MagicArmor      = target.magicArmor*MagicPenPercent-MagicPen
+  local Armor         = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent  = Armor/(100+Armor)
+  local MagicArmor    = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
-
+  if source ~= myHero then
+    return TotalDmg*(1-ArmorPercent)
+  end
   if spell == "IGNITE" then
     return 50+20*Level
   elseif spell == "AD" then
     ADDmg = TotalDmg
   elseif spell == "Q" then
-    ADDmg = 60*QLevel+10+1*TotalDmg
+    ADDmg = 60*QLevel+10+TotalDmg
   elseif spell == "W" then
     return 0
   elseif spell == "E" then
-    local stacks = 0
-    for i, unit in pairs(Enemies) do
-      if unit == target then
-        if EnemiesK.createTime[i] + 4 < os.clock() then
-          stacks = EnemiesK.stacks[i]
+    stacks = 0
+    for i, unit in pairs(EnemiesK) do
+      if unit.unit == target then
+        if unit.createTime + 4 > GetInGameTimer() then
+          stacks = unit.stacks
         end
       end
     end
-    for i, unit in pairs(MobsK) do
-      if unit == target then
-        if mob.createTime + 4 < os.clock() then
+    for i, mob in pairs(MobsK) do
+      if mob.unit == target then
+        if mob.createTime + 4 > GetInGameTimer() then
           stacks = mob.stacks
         end
       end
     end
-    ADDmg = 10 + 10 * ELevel + myHero.totalDamage * 0.6 + stacks * (kalE(ELevel) + (.12 + .03 * ELevel) * myHero.totalDamage )
+    if stacks > 0 then print("test") end
+    ADDmg = stacks==0 and 0 or (10 + (10 * unit:GetSpellData(_E).level) + (unit.totalDamage * 0.6)) + stacks *(kalE(unit:GetSpellData(_E).level) + (0.12 + 0.03 * unit:GetSpellData(_E).level)*unit.totalDamage)
   elseif spell == "R" then
     return 0
   end
@@ -739,22 +617,12 @@ function GetDmg(spell, enemy) --Partially from HTTF
   return ADDmg*(1-ArmorPercent)
 end
 
-function kalE(x) 
+function kalE(x)
   if x <= 1 then 
-    return 5 
+    return 10
   else 
-    return 2 + x + kalE(x-1)
+    return kalE(x-1) + 2 + x
   end 
-end
-
-local LastRequest = 0
-function ValidDmgRequest()
-    if os.clock() - LastRequest < 0.02 then
-        return false
-    else
-        LastRequest = os.clock()
-        return true
-    end
 end
 ---------------------------------------
 
