@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.51
+_G.UPLversion = 1.52
 
 function UPL:__init()
   self.ActiveP = 1
@@ -167,12 +167,12 @@ function UPL:SetupHPredSpell(spell)
       end
   elseif self.spellData[spell].type == "circular" then
       if self.spellData[spell].speed < 10000 then 
-        self.HPSpells[spell] = HPSkillshot({Type = "DelayCircle", range = self.spellData[spell].range, speed = self.spellData[spell].speed, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
+        self.HPSpells[spell] = HPSkillshot({type = "DelayCircle", range = self.spellData[spell].range, speed = self.spellData[spell].speed, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
       else
-        self.HPSpells[spell] = HPSkillshot({Type = "PromptCircle", range = self.spellData[spell].range, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
+        self.HPSpells[spell] = HPSkillshot({type = "PromptCircle", range = self.spellData[spell].range, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
       end
   else --Cone!
-    self.HPSpells[spell] = HPSkillshot({Type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+    self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
   end
 end
 
