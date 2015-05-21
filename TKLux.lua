@@ -72,6 +72,7 @@ local doR = false
 local doE = false
 local rTarget = nil
 local eTarget = nil
+local lastWindup = 0
 local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
@@ -85,10 +86,6 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  UPL:AddSpell(_Q, data[0])
-  UPL:AddSpell(_W, data[1])
-  UPL:AddSpell(_E, data[2])
-  UPL:AddSpell(_R, data[3])
   UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Misc settings", "casual")
@@ -157,13 +154,17 @@ function OnLoad()
   Config:addSubMenu("Target Selector", "sts")
   sts:AddToMenu(Config.sts)
 
-    for i = 1, heroManager.iCount do
-        local champ = heroManager:GetHero(i)
-        if champ.team ~= player.team then
-            enemyCount = enemyCount + 1
-            enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageW = 0, damageE = 0, damageR = 0, damageI = 0, indicatorText = "", damageGettingText = "", ready = true}
-        end
-    end
+  for i = 1, heroManager.iCount do
+      local champ = heroManager:GetHero(i)
+      if champ.team ~= player.team then
+          enemyCount = enemyCount + 1
+          enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageW = 0, damageE = 0, damageR = 0, damageI = 0, indicatorText = "", damageGettingText = "", ready = true}
+      end
+  end
+
+  for k,v in pairs(data) do
+    UPL:AddSpell(k, v)
+  end
 end
 
 function SetupOrbwalk()
@@ -203,7 +204,7 @@ function SetupOrbwalk()
 end
 
 function isLight(unit)
-  if unit == nil then return end
+  --if unit == nil then return end
   for i = 1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "luxilluminati") and buff.endT > GetInGameTimer() then return true end
@@ -212,6 +213,7 @@ function isLight(unit)
 end
 
 function OnTick()
+  if lastWindup > GetInGameTimer() then return end
   Target = GetCustomTarget()
 
   DmgCalculations()
@@ -232,7 +234,6 @@ function OnTick()
     end
 
     if doE and eTarget ~= nil then
-      print("Forcecast E")
       if EReady() then
         CastE(ETarget)
       else
@@ -328,7 +329,7 @@ function LaneClear()
   if EReady() and Config.farmConfig.lc.E then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
-      if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
         doE = true eTarget = minion
         CastE(minion)
       end      
@@ -343,7 +344,7 @@ function LaneClear()
   end
   if EReady() and Config.farmConfig.lc.E then
     local minionTarget = GetLowestMinion(data[2].range)
-    if minionTarget ~= nil and isPoisoned(minionTarget) then
+    if minionTarget ~= nil then
       doE = true eTarget = minionTarget
       CastE(minionTarget)
     end
@@ -378,18 +379,16 @@ function Combo()
       CastE(Target)
     end
   elseif isLight(Target) and QReady() then
-    myHero:Attack(Target)
     DelayAction(function () if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
                               CastQ(Target)
                             end
-                          end, 0.15)
+                          end, lastWindup-GetInGameTimer()+0.25)
   elseif isLight(Target) and EReady() then
-    myHero:Attack(Target)
     DelayAction(function () if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
                               doE = true eTarget = Target
                               CastE(Target)
                             end
-                          end, 0.15)
+                          end, lastWindup-GetInGameTimer()+0.25)
   end
   if Config.comboConfig.W and myHero.health/myHero.maxHealth <= 50 then
     CastW(Target)
@@ -436,6 +435,15 @@ function CastR(unit)
   local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, unit)
   if HitChance and HitChance >= 2 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
+  end
+end
+function OnProcessSpell(unit, spell)  
+  if not unit.isMe then
+    return
+  end
+  if spell.name ~= "LuxPrismaticWave" and not string.find(spell.name, "summoner") then
+    lastWindup = GetInGameTimer()+spell.windUpTime
+    --print(spell.name.." "..spell.windUpTime.." new lastWindup: "..(math.ceil(lastWindup*100)/100))
   end
 end
 

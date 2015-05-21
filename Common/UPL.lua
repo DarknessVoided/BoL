@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.2
+_G.UPLversion = 1.21
 
 function UPL:__init()
   self.ActiveP = 1
@@ -174,9 +174,9 @@ function UPL:DPredict(Target, spell, source)
   if spell.type == "linear" then
     Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
-    Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000)
+    Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "cone" then
-    Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000)
+    Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
   return self.DP:predict(unit, Spell, source)
 end
