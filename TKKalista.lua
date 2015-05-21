@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.03
+local version = 1.04
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -613,9 +613,9 @@ function GetDmg(spell, target, source)
   local MagicPen         = source.magicPen
   local MagicPenPercent  = source.magicPenPercent
 
-  local Armor         = math.floor((target.armor*ArmorPenPercent-ArmorPen)*100)/100
-  local ArmorPercent  = Armor < 0 and Armor/(100+Armor) or Armor/(100+Armor)
-  local MagicArmor    = math.floor((target.magicArmor*MagicPenPercent-MagicPen)*100)/100
+  local Armor         = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent  = Armor/(100+Armor)
+  local MagicArmor    = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
@@ -650,7 +650,7 @@ function GetDmg(spell, target, source)
   elseif spell == "R" then
     return 0
   end
-  return ADDmg*(1-ArmorPercent)*0.9
+  return ADDmg*(1-ArmorPercent)
 end
 
 function kalE(x)
