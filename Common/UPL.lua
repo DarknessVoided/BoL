@@ -32,32 +32,7 @@
 
 class "UPL"
 
---[[ Auto updater start ]]--
-local uplversion = 1.09
-local AUTO_UPDATE = true
-local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
-local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\">[UnifiedPredictionLibrary] "..msg.."</font>") end
-if AUTO_UPDATE then
-  local uplServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
-  if uplServerData then
-    uplServerVersion = type(tonumber(uplServerData)) == "number" and tonumber(uplServerData) or nil
-    if uplServerVersion then
-      if tonumber(uplversion) < uplServerVersion then
-        AutoupdaterMsg("New version available v"..uplServerVersion)
-        AutoupdaterMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () AutoupdaterMsg("Updated. ("..uplversion.." => "..uplServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
-      else
-        AutoupdaterMsg("Loaded the latest version (v"..uplServerVersion..")")
-      end
-    end
-  else
-    AutoupdaterMsg("Error downloading version info")
-  end
-end
---[[ Auto updater end ]]--
+_G.UPLversion = 1.10
 
 function UPL:__init()
   self.ActiveP = 1
@@ -73,7 +48,9 @@ function UPL:__init()
     [_Q] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
     [_W] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
     [_E] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [_R] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0}
+    [_R] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
+    [4] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
+    [5] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0}
   }
   self.predTable = {}
   if FileExist(LIB_PATH .. "VPrediction.lua") then
@@ -83,14 +60,14 @@ function UPL:__init()
   end
 
   if FileExist(LIB_PATH .. "Prodiction.lua") then
-    require("Prodiction")
-    table.insert(self.predTable, "Prodiction")
+    --require("Prodiction")
+    --table.insert(self.predTable, "Prodiction")
   end
 
   if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
     require "DivinePred"
     self.DP = DivinePred() 
-    table.insert(self.predTable, "DivinePred")
+    table.insert(self.predTable, "DivinePrediction")
   end
 
   if FileExist(LIB_PATH .. "HPrediction.lua") then
@@ -105,7 +82,29 @@ function UPL:__init()
     table.insert(self.predTable, "TKPrediction")
   end
 
+  DelayAction(function() self:Loaded() end, 2)
+
   return self
+end
+
+function UPL:Loaded()
+  local uplServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Common/UPL.version")
+  local uplServerVersion = type(tonumber(uplServerData)) == "number" and tonumber(uplServerData)
+  local preds = ""
+  for k,v in pairs(self.predTable) do
+    preds=preds.." "..v
+    if k ~= #self.predTable then preds=preds.."," end
+  end
+  if tonumber(UPLversion) < uplServerVersion then
+    UPL:Msg("New version available v"..uplServerVersion..". Please download manually!")
+  else
+    UPL:Msg("Loaded the latest version (v"..UPLversion..")")
+    UPL:Msg("Detected predictions: "..preds)
+  end
+end
+
+function UPL:Msg(msg)
+  print("<font color=\"#6699ff\">[UnifiedPredictionLibrary]</b></font> <font color=\"#FFFFFF\">"..msg.."</font>") 
 end
 
 function UPL:Predict(spell, source, Target)
@@ -119,7 +118,7 @@ function UPL:Predict(spell, source, Target)
       else
         return Vector(Target), 0, Vector(Target)
       end
-  elseif self:ActivePred() == "DivinePred" then
+  elseif self:ActivePred() == "DivinePrediction" then
       local State, Position, perc = self:DPredict(Target, self.spellData[spell], 1.2, source)
       return Position, perc ~= nil and perc*3/100 or 0, Vector(Target)
   elseif self:ActivePred() == "HPrediction" then
@@ -151,30 +150,26 @@ function UPL:HPredict(Target, spell, source)
 end
 
 function UPL:SetupHPredSpell(spell)
-  local i = spell
-  if self.spellData[i].type == "linear" then
-      print("LINEAR")
-      if self.spellData[i].speed ~= math.huge then 
-        self.HPSpells[spell] = self.HP:NewSkillshot({type = "DelayLine", range = self.spellData[i].range, speed = self.spellData[i].speed, width = 2*self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})
+  if self.spellData[spell].type == "linear" then
+      if self.spellData[spell].speed ~= math.huge then 
+        self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
       else
-        self.HPSpells[spell] = self.HP:NewSkillshot({type = "PromptLine", range = self.spellData[i].range, width = 2*self.spellData[i].width, delay = self.spellData[i].delay})
+        self.HPSpells[spell] = HPSkillshot({type = "PromptLine", range = self.spellData[spell].range, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
       end
-  elseif self.spellData[i].type == "circular" then
-      print("CIRC")
-      if self.spellData[i].speed ~= math.huge then 
-        self.HPSpells[spell] = self.HP:NewSkillshot({Type = "DelayCircle", range = self.spellData[i].range, speed = self.spellData[i].speed, radius = self.spellData[i].width, delay = self.spellData[i].delay})
+  elseif self.spellData[spell].type == "circular" then
+      if self.spellData[spell].speed ~= math.huge then 
+        self.HPSpells[spell] = HPSkillshot({Type = "DelayCircle", range = self.spellData[spell].range, speed = self.spellData[spell].speed, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
       else
-        self.HPSpells[spell] = self.HP:NewSkillshot({Type = "PromptCircle", range = self.spellData[i].range, radius = self.spellData[i].width, delay = self.spellData[i].delay})
+        self.HPSpells[spell] = HPSkillshot({Type = "PromptCircle", range = self.spellData[spell].range, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
       end
   else --Cone!
-      print("CONE")
-    self.HPSpells[spell] = self.HP:NewSkillshot({Type = "DelayLine", range = self.spellData[i].range, speed = self.spellData[i].speed, width = 2*self.spellData[i].width, delay = self.spellData[i].delay, collisionM = self.spellData[i].collision, collisionH = self.spellData[i].collision})
+    self.HPSpells[spell] = HPSkillshot({Type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
   end
 end
 
 function UPL:DPredict(Target, spell, source)
   local unit = DPTarget(Target)
-  local col = spell.collision and 0 or math.huge
+  local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
   if spell.type == "linear" then
     Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   elseif spell.type == "circular" then
@@ -207,6 +202,18 @@ function UPL:VPredict(Target, spell, source)
   end
 end
 
+function UPL:ReturnPred()
+    if self:ActivePred() == "VPrediction" then
+      return self.VP
+    elseif self:ActivePred() == "HPrediction" then
+      return self.HP
+    elseif self:ActivePred() == "TKPrediction" then
+      return self.TKP
+    elseif self:ActivePred() == "DivinePrediction" then
+      return self.DP
+    end
+end
+
 function UPL:ActivePred()
     local int = self.Config.pred and self.Config.pred or self.ActiveP
     return tostring(self.predTable[int])
@@ -232,7 +239,7 @@ end
 function UPL:TimeRequest()
     if self:ActivePred() == "VPrediction" or self:ActivePred() == "HPrediction" or self:ActivePred() == "TKPrediction" then
         return 0.001
-    elseif self:ActivePred() == "DivinePred" then
+    elseif self:ActivePred() == "DivinePrediction" then
         return 0.2
     end
 end

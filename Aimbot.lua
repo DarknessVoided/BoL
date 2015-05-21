@@ -368,12 +368,10 @@ function OnLoad()
   Config:addSubMenu("Supported skill settings", "skConfig")
   Config.skConfig:addParam("nfo", "0 = Off, 1 = Predict/Rather Mouse, ", SCRIPT_PARAM_INFO,"")
   Config.skConfig:addParam("nfn", "2 = Rather Predict/Mouse, 3 = Predict Only", SCRIPT_PARAM_INFO,"")
-  for i=0,3 do
-    if data[i] ~= nil then
-        UPL:AddSpell(i, data[i])
-        Config.skConfig:addParam(str[i], ""..str[i], SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
-        toAim[i] = true
-    end
+  for k,v in pairs(data) do
+    UPL:AddSpell(k, v)
+    Config.skConfig:addParam(str[k], ""..str[k], SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
+    toAim[k] = true
   end
   
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
