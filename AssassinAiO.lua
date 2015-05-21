@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.52
+local version = 0.53
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/AssassinAiO.lua".."?rand="..math.random(1,10000)
@@ -322,10 +322,9 @@ function OnLoad()
           enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
       end
   end
-  print(data)
-  for k,v in pairs(data) do
-    if v.type ~= nil and (v.type == "linear" or v.type == "circular" or v.type == "cone") then
-      UPL:AddSpell(k, v)
+  for i=0,3 do
+    if data[i].type ~= nil and (data[i].type == "linear" or data[i].type == "circular" or data[i].type == "cone") then
+      UPL:AddSpell(i, data[i])
     end
   end
 end
