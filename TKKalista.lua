@@ -214,16 +214,16 @@ function OnTick()
         if mob.unit == minion then winion = mob end
       end
       if winion ~= nil then
-        table.insert(MobsK, {unit = minion, stacks = 20, createTime = GetInGameTimer()}) --winion.stacks, createTime = winion.createTime})
+        table.insert(MobsK, {unit = minion, stacks = winion.stacks, createTime = winion.createTime})
       else          
-        table.insert(MobsK, {unit = minion, stacks = 20, createTime = GetInGameTimer()}) --0, createTime = 0})
+        table.insert(MobsK, {unit = minion, stacks = 0, createTime = 0})
       end
     end
   end
   Target = GetCustomTarget()
 
   DmgCalculations()
-  --[[
+
   if Target ~= nil then
     if Config.KS.enableKS then 
       Killsteal()
@@ -243,33 +243,32 @@ function OnTick()
   end
   if Config.kConfig.lc then
     LaneClear()
-  end]]
+  end
 
-  --if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function LastHit()
-    if QReady() and Config.farmConfig.lh.Q then
-      for i, mob in pairs(MobsK) do
-        local QMinionDmg = GetDmg("Q", mob.unit, myHero)
-        if QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
-          CastQ(unit)
-        end
+  if QReady() and Config.farmConfig.lh.Q then
+    for i, mob in pairs(MobsK) do
+      local QMinionDmg = GetDmg("Q", mob.unit, myHero)
+      if QMinionDmg and QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) and GetDistance(mob.unit) < data[0].range then
+        CastQ(unit)
       end
     end
-    if EReady() and Config.farmConfig.lh.E then  
-      local killableUnit = {}  
-      for k, v in pairs(MobsK) do
-        for i, mob in pairs(v) do  
-        local EMinionDmg = GetDmg("E", mob.unit, myHero)      
-        if EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
-          table.insert(killableUnit, mob.unit)   
-        end    
-      end
-      if #killableUnit >= Config.farmConfig.lh.Ea then
-          CastE()
-      end
-    end  
+  end
+  if EReady() and Config.farmConfig.lh.E then  
+    local killableUnit = {}  
+    for i, mob in pairs(MobsK) do  
+      local EMinionDmg = GetDmg("E", mob.unit, myHero)      
+      if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
+        table.insert(killableUnit, mob.unit)   
+      end    
+    end
+    if #killableUnit >= Config.farmConfig.lh.Ea then
+        CastE()
+    end
+  end  
 end
 
 function LaneClear()
@@ -277,7 +276,7 @@ function LaneClear()
     if QReady() and Config.farmConfig.lc.Q then
       for i, mob in pairs(MobsK) do
         local QMinionDmg = GetDmg("Q", mob.unit, myHero)
-        if QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
+        if QMinionDmg and QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) and GetDistance(mob.unit) < data[0].range then
           CastQ(mob.unit)
         end
       end
@@ -286,7 +285,7 @@ function LaneClear()
       local killableUnit = {}  
       for i, mob in pairs(MobsK) do
         local EMinionDmg = GetDmg("E", mob.unit, myHero)      
-        if EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) then
+        if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
           table.insert(killableUnit, mob.unit)
         end
       end    
@@ -300,7 +299,7 @@ function LaneClear()
       for i, mob in pairs(MobsK) do
         if minionTarget == nil then 
           minionTarget = mob.unit
-        elseif minionTarget.health >= mob.unit.health and ValidTarget(mob.unit, data[0].range) then
+        if QMinionDmg and QMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[0].range) and GetDistance(mob.unit) < data[0].range then
           minionTarget = mob.unit
         end
       end
@@ -318,13 +317,13 @@ function Combo()
       local killableUnit = {}  
       for i, mob in pairs(MobsK) do    
         local EMinionDmg = GetDmg("E", mob.unit, myHero)      
-        if EMinionDmg >= unit.health and ValidTarget(unit, data[2].range) then
+        if EMinionDmg and EMinionDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
           table.insert(killableUnit, unit)
         end   
       end  
       for i, unit in pairs(EnemiesK) do    
         local EChampDmg = GetDmg("E", unit.unit, myHero)      
-        if EChampDmg >= unit.health and ValidTarget(unit, data[2].range) then
+        if EChampDmg and EChampDmg >= mob.unit.health and ValidTarget(mob.unit, data[2].range) and GetDistance(mob.unit) < data[2].range then
           table.insert(killableUnit, unit)
         end      
       end    
@@ -396,7 +395,7 @@ function Harrass()
 end
 
 function CastQ(Targ) 
-  local CastPosition, HitChance, Position = Predict(Targ, 0, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(0, myHero, Targ)
   if HitChance and HitChance >= 2 and WReady() then
     CastSpell(_Q)
   end
@@ -515,7 +514,9 @@ function OnDraw()
     for k,v in pairs(MobsK) do
       if v.stacks > 0 and GetDistance(v.unit) <= 1000 then
         dmg = GetDmg("E", v.unit, myHero)
-        DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x, v.unit.y, v.unit.z, 20, TARGB({255,250,250,250}), 0) 
+        if dmg and dmg > 0 then
+          DrawText3D(math.ceil(100/v.unit.health*dmg).."%", v.unit.x, v.unit.y, v.unit.z, 20, TARGB({255,250,250,250}), 0) 
+        end
       end
     end
   end 
@@ -566,7 +567,7 @@ function DmgCalculations()
 end
 
 function GetDmg(spell, target, source)
-  if target == nil or source == nil then
+  if target == nil or source == nil or target.team == myHero.team then
     return
   end
   local ADDmg            = 0
@@ -611,7 +612,6 @@ function GetDmg(spell, target, source)
         end
       end
     end
-    stacks = 20
     ADDmg = stacks==0 and 0 or (10 + (10 * ELevel) + (TotalDmg * 0.6)) + stacks *(kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg)
   elseif spell == "R" then
     return 0
