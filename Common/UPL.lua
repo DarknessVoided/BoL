@@ -189,7 +189,7 @@ function UPL:DPredict(Target, spell, source)
   elseif spell.type == "cone" then
     Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
-  return self.DP:predict(unit, Spell, 1.2, Vector(source))--, source)
+  return self.DP:predict(unit, Spell, 1.2, Vector(source))
 end
 
 function UPL:VPredict(Target, spell, source)
