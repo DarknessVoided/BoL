@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.42
+_G.UPLversion = 1.43
 
 function UPL:__init()
   self.ActiveP = 1
@@ -182,7 +182,7 @@ function UPL:DPredict(Target, spell, source)
   elseif spell.type == "cone" then
     Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
-  return self.DP:predict(unit, Spell, 1, Vector(source))--, source)
+  return self.DP:predict(unit, Spell, 1.2, Vector(source))--, source)
 end
 
 function UPL:VPredict(Target, spell, source)

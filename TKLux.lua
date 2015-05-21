@@ -68,10 +68,6 @@ local sts
 local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
-local doR = false
-local doE = false
-local rTarget = nil
-local eTarget = nil
 local lastWindup = 0
 local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
@@ -212,6 +208,15 @@ function isLight(unit)
   return false
 end
 
+function isInE(unit)
+  --if unit == nil then return end
+  for i = 1, unit.buffCount do
+   local buff = unit:getBuff(i)
+   if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "LuxLightStrikeKugel") and buff.endT > GetInGameTimer() then return true end
+  end
+  return false
+end
+
 function OnTick()
   if lastWindup > GetInGameTimer() then return end
   Target = GetCustomTarget()
@@ -223,27 +228,10 @@ function OnTick()
   end
 
   zhg()
-  for k,v in pairs(GetEnemyHeroes()) do
-    if TargetHaveBuff("LuxLightStrikeKugel", v) then
-      CastSpell(_E)
-    end
-  end
-
-  if doE then
-    if EReady() then
-      CastSpell(_E)
-    else
-      doE = false
-    end
-  end
   
   if Target ~= nil then
-    if doR and rTarget ~= nil then
-      if RReady() then
-        CastR(rTarget)
-      else
-        doR = false
-      end
+    if myHero:GetSpellData(_E).name == "luxlightstriketoggle" then
+      CastSpell(_E)
     end
 
     if (Config.kConfig.har or Config.kConfig.harr) and Config.harrConfig.mana <= myHero.mana then
@@ -271,7 +259,7 @@ function OnTick()
     LaneClear()
   end
 
-  if Config.ragequit then Target=myHero.isWindingUp end --trololo ty Hirschmilch
+  if Config.ragequit then Config.ragequit=true Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function zhg()
@@ -288,7 +276,6 @@ function DoSomeUltLogic()
   if Config.rConfig.r then
     local enemies = EnemiesAround(Target, data[3].width)
     if enemies >= Config.rConfig.toomanyenemies and Config.rConfig.r then
-      doR = true rTarget = Target
       CastR(Target)
     end
   end
@@ -313,7 +300,6 @@ function LastHit()
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        doE = true
         CastE(minion)
         return
       end      
@@ -335,7 +321,6 @@ function LaneClear()
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-        doE = true eTarget = minion
         CastE(minion)
       end      
     end    
@@ -350,7 +335,6 @@ function LaneClear()
   if EReady() and Config.farmConfig.lc.E then
     local pos, hit = GetEFarmPosition(data[2].range, data[2].width)
     if pos ~= nil then
-      doE = true
       CastE(pos)
     end
   end  
@@ -388,7 +372,6 @@ end
 function Combo()
   if not isLight(Target) and QReady() and EReady() then
     if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-      doE = true
       CastE(Target)
     end
   elseif not isLight(Target) and QReady() and not EReady() then
@@ -397,7 +380,6 @@ function Combo()
     end
   elseif not isLight(Target) and EReady() and not QReady() then
     if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-      doE = true
       CastE(Target)
     end
   elseif isLight(Target) and QReady() then
@@ -407,7 +389,6 @@ function Combo()
                           end, lastWindup-GetInGameTimer()+0.25)
   elseif isLight(Target) and EReady() then
     DelayAction(function () if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-                              doE = true eTarget = Target
                               CastE(Target)
                             end
                           end, lastWindup-GetInGameTimer()+0.25)
@@ -429,7 +410,6 @@ function Harrass()
     CastQ(Target)
   end
   if Config.harrConfig.E and ValidTarget(Target, data[2].range) then
-    doE = true
     CastE(Target)
   end
 end
@@ -437,7 +417,7 @@ end
 function CastQ(unit) 
   if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
-  if HitChance and HitChance >= 2 and QReady() then
+  if HitChance and HitChance >= 1.2 and QReady() then
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
@@ -448,7 +428,7 @@ end
 function CastE(unit) 
   if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, unit)
-  if HitChance and HitChance >= 2 and EReady() then
+  if HitChance and HitChance >= 1.2 and EReady() then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
   end
 end
@@ -460,12 +440,11 @@ function CastR(unit)
   end
 end
 function OnProcessSpell(unit, spell)  
-  if not unit.isMe then
-    return
-  end
-  if spell.name ~= "LuxPrismaticWave" and not string.find(spell.name, "summoner") then
-    lastWindup = GetInGameTimer()+spell.windUpTime
-    --print(spell.name.." "..spell.windUpTime.." new lastWindup: "..(math.ceil(lastWindup*100)/100))
+  if unit == myHero then
+    if not string.find(spell.name, "summoner") then
+      lastWindup = GetInGameTimer()+spell.windUpTime
+      --print(spell.name.." "..spell.windUpTime.." new lastWindup: "..(math.ceil(lastWindup*100)/100))
+    end
   end
 end
 
@@ -483,30 +462,22 @@ function Killsteal()
       if enemy.health < qDmg and Config.KS.killstealQ and GetDistance(enemy, myHero) <= data[0].range then
         CastQ(enemy)
       elseif enemy.health < eDmg and Config.KS.killstealE and GetDistance(enemy, myHero) <= data[2].range then
-        doE = true eTarget = enemy
         CastE(enemy)
       elseif enemy.health < rDmg and Config.KS.killstealR and GetDistance(enemy, myHero) <= data[3].range then
-        doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < rlDmg+pDmg and isLight(enemy) and Config.KS.killstealR and GetDistance(enemy, myHero) <= data[3].range then
-        doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < qDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealR and QReady() and RReady() and GetDistance(enemy, myHero) <= data[1].range then
         CastQ(enemy)
-        doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < eDmg+rlDmg+pDmg and Config.KS.killstealE and Config.KS.killstealR and EReady() and RReady() and GetDistance(enemy, myHero) <= data[2].range then
-        doE = true eTarget = enemy
         CastE(enemy)
         CastE(enemy) 
-        doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < qDmg+eDmg+rlDmg+pDmg and Config.KS.killstealQ and Config.KS.killstealE and Config.KS.killstealR and QReady() and EReady() and RReady() and GetDistance(enemy, myHero) <= data[2].range then
         CastQ(enemy)
-        doE = true eTarget = enemy
         CastE(enemy)
         CastE(enemy)
-        doR = true rTarget = enemy
         CastR(enemy)
       elseif enemy.health < iDmg and Config.KS.killstealI and GetDistance(enemy, myHero) <= 600 and IReady() then
         CastSpell(Ignite, enemy)
@@ -665,5 +636,5 @@ function GetDmg(spell, enemy, source) --Partially from HTTF
     APDmg = 220+150*RLevel+0.75*AP
   end
 
-  return ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
+  return (ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent))*0.9
 end
