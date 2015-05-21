@@ -257,11 +257,6 @@ function OnLoad()
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
 	Config.misc:addParam("hitchance", "Accuracy (Default: 2)", SCRIPT_PARAM_SLICE, 2, 0, 3, 1)
-  for i=0,3 do
-    if data[i] ~= nil and data[i].type == "linear" or data[i].type == "circular" or data[i].type == "cone" then
-      UPL:AddSpell(i, data[i])
-    end
-  end
   UPL:AddToMenu(Config.misc)
   
   Config:addSubMenu("Combo Settings", "comboConfig")
@@ -320,13 +315,19 @@ function OnLoad()
   sts = TargetSelector(TARGET_LESS_CAST, 1500, DAMAGE_MAGIC, true)
   Config:addTS(sts)
   
-    for i = 1, heroManager.iCount do
-        local champ = heroManager:GetHero(i)
-        if champ.team ~= myHero.team then
-            enemyCount = enemyCount + 1
-            enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
-        end
+  for i = 1, heroManager.iCount do
+      local champ = heroManager:GetHero(i)
+      if champ.team ~= myHero.team then
+          enemyCount = enemyCount + 1
+          enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
+      end
+  end
+  print(data)
+  for k,v in pairs(data) do
+    if v.type ~= nil and (v.type == "linear" or v.type == "circular" or v.type == "cone") then
+      UPL:AddSpell(k, v)
     end
+  end
 end
 
 function shuffle(a, n, whur)
