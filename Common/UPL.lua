@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.61
+_G.UPLversion = 1.63
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -91,12 +91,12 @@ function UPL:Update()
   local UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
   local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
   if UPLautoupdate then
-    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
-    if ServerData then
-      ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
-      if ServerVersion then
-        if tonumber(UPLversion) < ServerVersion then
-          self:Msg("New version available v"..ServerVersion)
+    local UPLServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
+    if UPLServerData then
+      UPLServerVersion = type(tonumber(UPLServerData)) == "number" and tonumber(UPLServerData) or nil
+      if UPLServerVersion then
+        if tonumber(UPLversion) < UPLServerVersion then
+          self:Msg("New version available v"..UPLServerVersion)
           self:Msg("Updating, please don't press F9")
           DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () self:Msg("Successfully updated. ("..UPLversion.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
           return true
@@ -162,6 +162,7 @@ end
 
 function UPL:AddToMenu(Config)
   Config:addParam("pred", "Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable)
+  self.Config = Config
 end
 
 function UPL:AddSpell(spell, array)
