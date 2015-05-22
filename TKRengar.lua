@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.192
+local version = 0.193
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -46,7 +46,7 @@ if FileExist(LIB_PATH .. "/UPL.lua") then
   require("UPL")
   UPL = UPL()
 else 
-  AutoupdaterMsg("Please download the UPLib.") 
+  TopKekMsg("Please download the UPLib.") 
   return 
 end
 
