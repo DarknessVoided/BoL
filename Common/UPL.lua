@@ -60,22 +60,20 @@ function UPL:Update()
       ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
       if ServerVersion then
         if tonumber(UPLversion) < ServerVersion then
-          TopKekMsg("New version available v"..ServerVersion)
-          TopKekMsg("Updating, please don't press F9")
-          DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..UPLversion.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
+          self:Msg("New version available v"..ServerVersion)
+          self:Msg("Updating, please don't press F9")
+          DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () self:Msg("Successfully updated. ("..UPLversion.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
           return true
-        else
-          TopKekMsg("Loaded the latest version (v"..ServerVersion..")")
         end
       end
     else
-      TopKekMsg("Error downloading version info")
+      self:Msg("Error downloading version info")
     end
   end
   if FileExist(LIB_PATH .. "/UPL.lua") then
     require("UPL")
   else 
-    TopKekMsg("Downloading UPL, please don't press F9")
+    self:Msg("Downloading UPL, please don't press F9")
     DelayAction(function() DownloadFile("https://"..UPDATE_HOST.."/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
     return true
   end
