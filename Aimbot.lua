@@ -301,29 +301,33 @@ _G.Champs = {
 --[[ Skillshot list end ]]--
 
 --[[ Auto updater start ]]--
-local version = 1.11
-local AUTO_UPDATE = true
-local UPDATE_HOST = "raw.github.com"
-local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
-local UPDATE_FILE_PATH = SCRIPT_PATH.."Aimbot.lua"
-local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
-local function AutoupdaterMsg(msg) print("<font color=\"#6699ff\"><b>[Aimbot]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
-if AUTO_UPDATE then
-  local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Aimbot.version")
-  if ServerData then
-    ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
-    if ServerVersion then
-      if tonumber(version) < ServerVersion then
-        AutoupdaterMsg("New version available v"..ServerVersion)
-        AutoupdaterMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () AutoupdaterMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
+function AutoupdaterMsg(msg) 
+    print("<font color=\"#6699ff\"><b>[Aimbot]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+end
+function Update()
+    local version = 1.12
+    local AUTO_UPDATE = true
+    local UPDATE_HOST = "raw.github.com"
+    local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
+    local UPDATE_FILE_PATH = SCRIPT_PATH.."Aimbot.lua"
+    local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
+    if AUTO_UPDATE then
+      local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Aimbot.version")
+      if ServerData then
+        ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
+        if ServerVersion then
+          if tonumber(version) < ServerVersion then
+            AutoupdaterMsg("New version available v"..ServerVersion)
+            AutoupdaterMsg("Updating, please don't press F9")
+            DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () AutoupdaterMsg("Successfully updated. ("..version.." => "..ServerVersion.."), press F9 twice to load the updated version.") end) end, 3)
+          else
+            AutoupdaterMsg("Loaded the latest version (v"..ServerVersion..")")
+          end
+        end
       else
-        AutoupdaterMsg("Loaded the latest version (v"..ServerVersion..")")
+        AutoupdaterMsg("Error downloading version info")
       end
     end
-  else
-    AutoupdaterMsg("Error downloading version info")
-  end
 end
 --[[ Auto updater end ]]--
 
@@ -374,9 +378,20 @@ function OnLoad()
   Config.skConfig:addParam("nfo", "0 = Off, 1 = Predict/Rather Mouse, ", SCRIPT_PARAM_INFO,"")
   Config.skConfig:addParam("nfn", "2 = Rather Predict/Mouse, 3 = Predict Only", SCRIPT_PARAM_INFO,"")
   for k,v in pairs(data) do
-    UPL:AddSpell(k, v)
     Config.skConfig:addParam(str[k], ""..str[k], SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
     toAim[k] = true
+  end
+  if data[_Q] ~= nil then
+    UPL:AddSpell(_Q, data[_Q])
+  end
+  if data[_W] ~= nil then
+    UPL:AddSpell(_W, data[_W])
+  end
+  if data[_E] ~= nil then
+    UPL:AddSpell(_E, data[_E])
+  end
+  if data[_R] ~= nil then
+    UPL:AddSpell(_R, data[_R])
   end
   
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
