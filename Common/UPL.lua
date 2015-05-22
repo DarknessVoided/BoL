@@ -32,8 +32,9 @@
 
 class "UPL"
 
-_G.UPLversion = 1.6
+_G.UPLversion = 1.61
 _G.UPLautoupdate = true
+_G.UPLloaded = false
 
 --Scriptstatus tracker (usercounter)
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("PCFEDDEJJKJ") 
@@ -41,11 +42,46 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 
 function UPL:__init()
-  if self:Update() then
-    DelayAction(function() self:realInit() end, 5)
-  else
-    self:realInit()
+  self.ActiveP = 1
+  self.LastRequest = 0
+  self.Config = nil
+  self.VP  = nil
+  self.DP  = nil
+  self.HP  = nil
+  self.TKP = nil
+  self.HPSpells  = {}
+  self.spellData = {}
+  self.predTable = {}
+  if FileExist(LIB_PATH .. "VPrediction.lua") then
+    require("VPrediction")
+    self.VP = VPrediction()
+    table.insert(self.predTable, "VPrediction")
   end
+
+  if FileExist(LIB_PATH .. "Prodiction.lua") then
+    --require("Prodiction")
+    --table.insert(self.predTable, "Prodiction")
+  end
+
+  if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+    require "DivinePred"
+    self.DP = DivinePred() 
+    table.insert(self.predTable, "DivinePrediction")
+  end
+
+  if FileExist(LIB_PATH .. "HPrediction.lua") then
+    require("HPrediction")
+    self.HP = HPrediction()
+    table.insert(self.predTable, "HPrediction")
+  end
+
+  if FileExist(LIB_PATH .. "TKPrediction.lua") then
+    require("TKPrediction")
+    self.TKP = TKPrediction()
+    table.insert(self.predTable, "TKPrediction")
+  end
+  self:Update()
+  self:Loaded()
   return self
 end
 
@@ -80,55 +116,6 @@ function UPL:Update()
   return false
 end
 
-function UPL:realInit()
-  self.ActiveP = 1
-  self.LastRequest = 0
-  self.LoadedToMenu = false
-  self.Config = nil
-  self.VP  = nil
-  self.DP  = nil
-  self.HP  = nil
-  self.TKP = nil
-  self.HPSpells = {}
-  self.spellData = { 
-    [_Q] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [_W] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [_E] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [_R] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0}
-  }
-  self.predTable = {}
-  if FileExist(LIB_PATH .. "VPrediction.lua") then
-    require("VPrediction")
-    self.VP = VPrediction()
-    table.insert(self.predTable, "VPrediction")
-  end
-
-  if FileExist(LIB_PATH .. "Prodiction.lua") then
-    --require("Prodiction")
-    --table.insert(self.predTable, "Prodiction")
-  end
-
-  if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-    require "DivinePred"
-    self.DP = DivinePred() 
-    table.insert(self.predTable, "DivinePrediction")
-  end
-
-  if FileExist(LIB_PATH .. "HPrediction.lua") then
-    require("HPrediction")
-    self.HP = HPrediction()
-    table.insert(self.predTable, "HPrediction")
-  end
-
-  if FileExist(LIB_PATH .. "TKPrediction.lua") then
-    require("TKPrediction")
-    self.TKP = TKPrediction()
-    table.insert(self.predTable, "TKPrediction")
-  end
-
-  DelayAction(function() self:Loaded() end, 2)
-end
-
 function UPL:Loaded()
   local preds = ""
   for k,v in pairs(self.predTable) do
@@ -137,6 +124,7 @@ function UPL:Loaded()
   end
   self:Msg("Loaded the latest version (v"..UPLversion..")")
   self:Msg("Detected predictions: "..preds)
+  UPLloaded = true
 end
 
 function UPL:Msg(msg)
@@ -173,15 +161,16 @@ function UPL:Predict(spell, source, Target)
 end
 
 function UPL:AddToMenu(Config)
-  if self.LoadedToMenu then return end
   Config:addParam("pred", "Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable)
-  self.Config = Config
-  self.LoadedToMenu = true
 end
 
 function UPL:AddSpell(spell, array)
-  self.spellData[spell] = array
-  if HP and HP ~= nil then self:SetupHPredSpell(spell) end
+  if not UPLloaded then
+    DelayAction(function() self:AddSpell(spell,array) end, 1)
+  else
+    table.insert(self.spellData, array)
+    if HP and HP ~= nil then self:SetupHPredSpell(spell) end
+  end
 end
 
 function UPL:GetSpellData(spell)
@@ -195,25 +184,27 @@ function UPL:HPredict(Target, spell, source)
 end
 
 function UPL:SetupHPredSpell(spell)
+  Spell = nil
   if self.spellData[spell].type == "linear" then
       if self.spellData[spell].speed ~= math.huge then 
         if self.spellData[spell].collision then
-          self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+          Spell = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
         else
-          self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
+          Spell = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
         end
       else
-        self.HPSpells[spell] = HPSkillshot({type = "PromptLine", range = self.spellData[spell].range, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
+        Spell = HPSkillshot({type = "PromptLine", range = self.spellData[spell].range, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
       end
   elseif self.spellData[spell].type == "circular" then
       if self.spellData[spell].speed ~= math.huge then 
-        self.HPSpells[spell] = HPSkillshot({type = "DelayCircle", range = self.spellData[spell].range, speed = self.spellData[spell].speed, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
+        Spell = HPSkillshot({type = "DelayCircle", range = self.spellData[spell].range, speed = self.spellData[spell].speed, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
       else
-        self.HPSpells[spell] = HPSkillshot({type = "PromptCircle", range = self.spellData[spell].range, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
+        Spell = HPSkillshot({type = "PromptCircle", range = self.spellData[spell].range, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
       end
   else --Cone!
-    self.HPSpells[spell] = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+    Spell = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
   end
+  self.HPSpells[spell] = Spell
 end
 
 function UPL:DPredict(Target, spell, source)
