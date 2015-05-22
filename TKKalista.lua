@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.3
+  local version = 1.41
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -498,7 +498,7 @@ function Kalista:GetDmg(spell, target, source)
     return TotalDmg*(1-ArmorPercent)
   end
   if spell == "IGNITE" then
-    return 50+20*Level
+    return 50+20*Level/2
   elseif spell == "AD" then
     ADDmg = TotalDmg
   elseif spell == "Q" then
