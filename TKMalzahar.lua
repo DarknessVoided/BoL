@@ -75,6 +75,7 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local lastWindup = 0
+local ultOn      = 0
 local data = {
   [_Q] = { speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear"},
   [_W] = { speed = math.huge, delay = 0.5, range = 800, width = 250, collision = false, aoe = false, type = "circular"},
@@ -135,6 +136,8 @@ function OnLoad()
   Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("lfc", "Lagg Free Circles", SCRIPT_PARAM_ONOFF, true)
+  Config.Drawing:addParam("lfcq", "LFC Quality", SCRIPT_PARAM_SLICE, 32, 8, 64, mlog(8))
   
   Config:addSubMenu("Key Settings", "kConfig")
   Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
@@ -145,7 +148,7 @@ function OnLoad()
   Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
-  SetupOrbwalk()
+  Config.oConfig:addParam("move", "Move to mouse", SCRIPT_PARAM_ONOFF, true)
 
   Config.kConfig:permaShow("combo")
   Config.kConfig:permaShow("harr")
@@ -159,45 +162,8 @@ function OnLoad()
     local champ = heroManager:GetHero(i)
     if champ.team ~= player.team then
       enemyCount = enemyCount + 1
-      enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
+      enemyTable[enemyCount] = { player = champ, name = champ.charName, damageQ = 0, damageW = 0, damageE = 0, damageR = 0, indicatorText = "", damageGettingText = "", ready = true}
     end
-  end
-end
-
-function SetupOrbwalk()
-  if _G.AutoCarry then
-    if _G.Reborn_Initialised then
-      RebornLoaded = true
-      TopKekMsg("Found SAC: Reborn")
-      Config.oConfig:addParam("Info", "SAC: Reborn detected!", SCRIPT_PARAM_INFO, "")
-    else
-      RevampedLoaded = true
-      TopKekMsg("Found SAC: Revamped")
-      Config.oConfig:addParam("Info", "SAC: Revamped detected!", SCRIPT_PARAM_INFO, "")
-    end
-  elseif _G.Reborn_Loaded then
-    DelayAction(function() SetupOrbwalk() end, 1)
-  elseif _G.MMA_Loaded then
-    MMALoaded = true
-    TopKekMsg("Found MMA")
-      Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
-  elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-    require 'SxOrbWalk'
-    SxOrb = SxOrbWalk()
-    SxOrb:LoadToMenu(Config.oConfig)
-    SxOrbLoaded = true
-    TopKekMsg("Found SxOrb.")
-  elseif FileExist(LIB_PATH .. "SOW.lua") then
-    require 'SOW'
-    require 'VPrediction'
-    SOWVP = SOW(VP)
-    Config.oConfig:addParam("Info", "SOW settings", SCRIPT_PARAM_INFO, "")
-     Config.oConfig:addParam("Blank", "", SCRIPT_PARAM_INFO, "")
-    SOWVP:LoadToMenu(Config.oConfig)
-    SOWLoaded = true
-    TopKekMsg("Found SOW")
-  else
-    TopKekMsg("No valid Orbwalker found")
   end
 end
 
@@ -206,6 +172,12 @@ function OnTick()
   target = GetCustomTarget()
   
   zhg()
+
+  DmgCalculations()
+
+  if Config.oConfig.move and (Config.kConfig.har or Config.kConfig.harr or Config.kConfig.combo) and ultOn < GetInGameTimer() then
+    myHero:MoveTo(mousePos.x, mousePos.z)
+  end
 
   if Config.KS.enableKS then 
     Killsteal()
@@ -262,7 +234,11 @@ end
 function OnProcessSpell(unit, spell)  
   if unit == myHero then
     if not string.find(spell.name, "summoner") then
+      --print(spell.name.." "..spell.windUpTime)
       lastWindup = GetInGameTimer()+spell.windUpTime
+    end
+    if string.find(spell.name, "NetherGrasp") then
+      ultOn = GetInGameTimer()+2.5
     end
   end
 end
@@ -410,31 +386,48 @@ function zhg()
 end
 
 function CastQ(unit)
-  if unit == nil then return end
+  if unit == nil or GetDistance(unit) > data[0].range then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
   if HitChance and HitChance >= 1.2 and QReady() then
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
 function CastW(unit)
-  if unit == nil then return end
+  if unit == nil or GetDistance(unit) > data[1].range then return end
   local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, unit)
   if HitChance and HitChance >= 1.2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end
 function CastE(unit)
-  --CastSpell(_E, unit)
+  if unit == nil or GetDistance(unit) > data[2].range then return end
+  CCastSpell(_E, unit)
 end
 function CastR(unit)
-  --CastSpell(_R, unit)
+  if unit == nil or GetDistance(unit) > data[3].range then return end
+  CCastSpell(_R, unit)
 end
 
 function CCastSpell(Spell, xPos, zPos)
-  if VIP_USER and Config.misc.pc then
-    Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-  else
-    CastSpell(Spell, xPos, zPos)
+  if not xPos and not zPos then
+    if VIP_USER and Config.misc.pc then
+        Packet("S_CAST", {spellId = Spell}):send()
+    else
+        CastSpell(Spell)
+    end
+  elseif xPos and not zPos then
+    target = xPos
+    if VIP_USER and Config.misc.pc then
+        Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
+    else
+        CastSpell(Spell, target)
+    end
+  elseif xPos and zPos then
+    if VIP_USER and Config.misc.pc then
+      Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+    else
+      CastSpell(Spell, xPos, zPos)
+    end
   end
 end
 
@@ -457,7 +450,7 @@ function OnDraw()
   if Config.Drawing.RRange then
     DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range, ARGB(255, 155, 155, 155))
   end
-  if Config.Drawing.DmgCalcs then
+  if Config.Drawing.dmgCalc then
     for i = 1, enemyCount do
       local enemy = enemyTable[i].player
       if ValidTarget(enemy) then
@@ -465,7 +458,7 @@ function OnDraw()
         local posX = barPos.x - 35
         local posY = barPos.y - 50
         -- Doing damage
-        DrawText(enemyTable[i].indicatorText, 15, posX, posY, (enemyTable[i].ready and colorIndicatorReady or colorIndicatorNotReady))
+        DrawText(enemyTable[i].indicatorText, 15, posX, posY, ARGB(255, 0, 255, 0))
        
         -- Taking damage
         DrawText(enemyTable[i].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
@@ -474,15 +467,9 @@ function OnDraw()
   end      
 end
 
-local colorRangeReady        = ARGB(255, 200, 0,   200)
-local colorRangeComboReady   = ARGB(255, 255, 128, 0)
-local colorRangeNotReady     = ARGB(255, 50,  50,  50)
-local colorIndicatorReady    = ARGB(255, 0,   255, 0)
-local colorIndicatorNotReady = ARGB(255, 255, 220, 0)
-local colorInfo              = ARGB(255, 255, 50,  0)
 function DmgCalculations()
-    if not Config.Drawing.DmgCalcs then return end
-    for i = 1, enemyCount do
+    if not Config.Drawing.dmgCalc then return end
+    for i=1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
             local damageAA = GetDmg("AD", enemy, player)
@@ -492,10 +479,6 @@ function DmgCalculations()
             local damageR  = GetDmg("Rf", enemy, player)
             local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
             local damageT  = 0
-            enemyTable[i].damageQ = damageQ
-            enemyTable[i].damageW = damageW
-            enemyTable[i].damageE = damageE
-            enemyTable[i].damageR = damageR
             enemyTable[i].indicatorText = ""
             if QReady() then
               enemyTable[i].indicatorText=enemyTable[i].indicatorText.."Q"
@@ -511,12 +494,12 @@ function DmgCalculations()
               damageT = damageT + damageR
             end
             if enemy.health < damageT then
-                enemyTable[i].indicatorText=enemyTable[i].indicatorText.." Kill"
+                enemyTable[i].indicatorText=enemyTable[i].indicatorText.."Kill"
                 enemyTable[i].ready = true
             else
                 local healthLeft = math.round(enemy.health - damageT)
                 local percentLeft = math.round(healthLeft / enemy.maxHealth * 100)
-                enemyTable[i].indicatorText = percentLeft .. "% Harass"
+                enemyTable[i].indicatorText = percentLeft .. "%Harass"
                 enemyTable[i].ready = QReady() or WReady() or EReady() or RReady()
             end
 
@@ -568,7 +551,6 @@ function GetDmg(spell, enemy, source)
   elseif spell == "Rf" then
     APDmg = 100+150*RLevel+1.3*AP
   end
-
   return ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
 end
 

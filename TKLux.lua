@@ -252,8 +252,6 @@ function OnTick()
     end
 
     DoSomeUltLogic()
-
-    if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
   end
 
   if Config.kConfig.lh and not (Config.kConfig.har or Config.kConfig.harr) and not Config.kConfig.combo and Config.farmConfig.lh.mana <= myHero.mana then
