@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.2
+  local version = 1.3
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -191,7 +191,7 @@ function Kalista:SetupOrbwalk()
       self.Config.oConfig:addParam("Info", "SAC: Revamped detected!", SCRIPT_PARAM_INFO, "")
     end
   elseif _G.Reborn_Loaded then
-    DelayAction(function() SetupOrbwalk() end, 1)
+    DelayAction(function() self:SetupOrbwalk() end, 1)
   elseif _G.MMA_Loaded then
     TopKekMsg("Found MMA")
     self.Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
