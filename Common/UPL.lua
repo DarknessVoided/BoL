@@ -32,13 +32,57 @@
 
 class "UPL"
 
-_G.UPLversion = 1.57
+_G.UPLversion = 1.6
+_G.UPLautoupdate = true
 
 --Scriptstatus tracker (usercounter)
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("PCFEDDEJJKJ") 
 --Scriptstatus tracker (usercounter)
 
+
 function UPL:__init()
+  if self:Update() then
+    DelayAction(function() self:realInit() end, 5)
+  else
+    self:realInit()
+  end
+  return self
+end
+
+function UPL:Update()
+  local UPDATE_HOST = "raw.github.com"
+  local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
+  local UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
+  local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
+  if UPLautoupdate then
+    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
+    if ServerData then
+      ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
+      if ServerVersion then
+        if tonumber(UPLversion) < ServerVersion then
+          TopKekMsg("New version available v"..ServerVersion)
+          TopKekMsg("Updating, please don't press F9")
+          DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () TopKekMsg("Successfully updated. ("..UPLversion.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
+          return true
+        else
+          TopKekMsg("Loaded the latest version (v"..ServerVersion..")")
+        end
+      end
+    else
+      TopKekMsg("Error downloading version info")
+    end
+  end
+  if FileExist(LIB_PATH .. "/UPL.lua") then
+    require("UPL")
+  else 
+    TopKekMsg("Downloading UPL, please don't press F9")
+    DelayAction(function() DownloadFile("https://"..UPDATE_HOST.."/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
+    return true
+  end
+  return false
+end
+
+function UPL:realInit()
   self.ActiveP = 1
   self.LastRequest = 0
   self.LoadedToMenu = false
@@ -52,9 +96,7 @@ function UPL:__init()
     [_Q] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
     [_W] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
     [_E] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [_R] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [4] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0},
-    [5] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0}
+    [_R] = {range = 0, delay = 0, type = "", width = 0, speed = 0, collision = 0}
   }
   self.predTable = {}
   if FileExist(LIB_PATH .. "VPrediction.lua") then
@@ -87,24 +129,16 @@ function UPL:__init()
   end
 
   DelayAction(function() self:Loaded() end, 2)
-
-  return self
 end
 
 function UPL:Loaded()
-  local uplServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Common/UPL.version")
-  local uplServerVersion = type(tonumber(uplServerData)) == "number" and tonumber(uplServerData)
   local preds = ""
   for k,v in pairs(self.predTable) do
     preds=preds.." "..v
     if k ~= #self.predTable then preds=preds.."," end
   end
-  if tonumber(UPLversion) < uplServerVersion then
-    UPL:Msg("New version available v"..uplServerVersion..". Please download manually!")
-  else
-    UPL:Msg("Loaded the latest version (v"..UPLversion..")")
-    UPL:Msg("Detected predictions: "..preds)
-  end
+  self:Msg("Loaded the latest version (v"..UPLversion..")")
+  self:Msg("Detected predictions: "..preds)
 end
 
 function UPL:Msg(msg)
@@ -112,6 +146,10 @@ function UPL:Msg(msg)
 end
 
 function UPL:Predict(spell, source, Target)
+  if Target == nil then 
+    Target = source 
+    source = myHero
+  end
   if not self:ValidRequest() then return Vector(Target), 0, Vector(Target) end
   if self:ActivePred() == "VPrediction" then
       return self:VPredict(Target, self.spellData[spell], source)
