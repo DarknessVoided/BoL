@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.1
+  local version = 1.2
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -251,11 +251,17 @@ function Kalista:KillSomethingWithE()
     local killableCounter = 0
     for minion,winion in pairs(self.Mobs.objects) do
       local EMinionDmg = self:GetDmg("E", winion, myHero)   
-      if ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range and (self.Config.farmConfig.E or self.Config.farmConfig.lc.E or self.Config.farmConfig.lh.E or (self.Config.farmConfig.Ej and ((string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak")) and not string.find(winion.charName, "Mini")))))) then
-        incr(killableCounter,1)
+      if EMinionDmg > winion.health and GetDistance(winion) < self.data[2].range then
+        if (string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak")))) then
+          if not string.find(winion.charName, "Mini") then       
+            killableCounter = killableCounter +1
+          end
+        else      
+          killableCounter = killableCounter +1
+        end
       end
     end
-    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and killableCounter >= self.Config.farmConfig.lc.Ea) then
+    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and killableCounter >= 1) then
       self:CastE()
     end
   end
@@ -307,7 +313,7 @@ function Kalista:Combo()
     for minion,winion in pairs(self.Mobs.objects) do
       local EMinionDmg = self:GetDmg("E", winion, myHero)      
       if EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range then
-        incr(killableCounter,1)
+        killableCounter = killableCounter +1
       end   
     end   
     if killableCounter > 0 and self.Config.comboConfig.Er then
@@ -327,7 +333,7 @@ function Kalista:Harrass()
       for minion,winion in pairs(self.Mobs.objects) do
         local EMinionDmg = self:GetDmg("E", winion, myHero)      
         if EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range then
-          incr(killableCounter,1)
+          killableCounter = killableCounter +1
         end   
       end 
       for i, unit in pairs(GetEnemyHeroes()) do    
@@ -422,33 +428,29 @@ function Kalista:Draw()
 end
 
 function Kalista:DmgCalc()
-    if not self.Config.Drawing.dmgCalc then return end
-    for k,enemy in pairs(GetEnemyHeroes()) do
-          if ValidTarget(enemy) and enemy.visible then
-            local damageAA = self:GetDmg("AD", enemy, myHero)
-            local damageQ  = self:GetDmg("Q", enemy, myHero)
-            local damageE  = self:GetDmg("E", enemy, myHero)
-            local damageI  = self.Ignite and (GetDmg("IGNITE", enemy, myHero)) or 0
-            local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
-            if enemy.health < damageE then
-                self.killTextTable[enemy.networkID].indicatorText = "E Kill"
-                self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
-            elseif enemy.health < damageE + damageQ then
-                self.killTextTable[enemy.networkID].indicatorText = "Q + E Kill"
-                self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E) and myHero:CanUseSpell(_Q)
-            end
-            if myHero:CanUseSpell(_E) and not (enemy.health > damageE) then
-              local neededAA = math.ceil((enemy.health-damageE) / (damageAA+(self:kalE(myHero:GetSpellData(_E).level)+(0.12 + 0.03 * myHero:GetSpellData(_E).level)*myHero.totalDamage)))
-              self.killTextTable[enemy.networkID].indicatorText = neededAA.." aa until E Kill"
-            end
+  if not self.Config.Drawing.dmgCalc then return end
+  for k,enemy in pairs(GetEnemyHeroes()) do
+    if ValidTarget(enemy) and enemy.visible then
+      local damageAA = self:GetDmg("AD", enemy, myHero)
+      local damageE  = self:GetDmg("E", enemy, myHero)
+      local damageI  = self.Ignite and (GetDmg("IGNITE", enemy, myHero)) or 0
+      local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
+      if enemy.health < damageE then
+          self.killTextTable[enemy.networkID].indicatorText = "E Kill"
+          self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
+      end
+      if myHero:CanUseSpell(_E) and not (enemy.health > damageE) then
+        local neededAA = math.ceil((enemy.health-damageE) / (damageAA+(self:kalE(myHero:GetSpellData(_E).level)+(0.12 + 0.03 * myHero:GetSpellData(_E).level)*myHero.totalDamage)))
+        self.killTextTable[enemy.networkID].indicatorText = neededAA.." aa until E Kill"
+      end
 
-            local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
-            local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
-            if enemyNeededAA ~= 0 then         
-              self.killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
-            end
-        end
+      local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
+      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+      if enemyNeededAA ~= 0 then         
+        self.killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+      end
     end
+  end
 end
 function Kalista:CCastSpell(Spell, xPos, zPos)
   if not xPos and not zPos then
@@ -486,9 +488,9 @@ function Kalista:GetDmg(spell, target, source)
   local MagicPen         = math.floor(source.magicPen)
   local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
 
-  local Armor        = math.max(0, target.armor*ArmorPenPercent-ArmorPen)
-  local ArmorPercent = Armor/(100+Armor)
-  local MagicArmor   = math.max(0, target.magicArmor*MagicPenPercent-MagicPen)
+  local Armor        = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent = Armor > 0 and Armor/(100+Armor) or Armor/(100-Armor)
+  local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
@@ -505,11 +507,12 @@ function Kalista:GetDmg(spell, target, source)
     return 0
   elseif spell == "E" then
     stacks = self:GetStacks(target)
-    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + stacks *(self:kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg) or 0
+    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + (stacks-1) *(self:kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg) or 0
   elseif spell == "R" then
     return 0
   end
-  return ADDmg*(1-ArmorPercent)
+  dmg = ADDmg*(1-ArmorPercent)
+  return dmg
 end
 
 function Kalista:kalE(x)
@@ -549,9 +552,6 @@ end
 
 function mlog(x)
   return -math.log(x)/math.log(10)
-end
-function incr(x,y)
-  x=x+y
 end
 function TARGB(colorTable)
     return ARGB(colorTable[1], colorTable[2], colorTable[3], colorTable[4])
