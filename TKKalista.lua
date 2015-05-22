@@ -346,7 +346,7 @@ end
 function Kalista:CastQ(Targ) 
   if Targ == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, Targ)
-  if HitChance and HitChance >= 1.2 then
+  if HitChance and HitChance >= 1 then
     self:CCastSpell(_Q)
   end
 end
