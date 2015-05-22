@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.3
+  local version = 1.4
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -261,7 +261,7 @@ function Kalista:KillSomethingWithE()
         end
       end
     end
-    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and killableCounter >= 1) then
+    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) then
       self:CastE()
     end
   end
