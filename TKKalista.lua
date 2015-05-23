@@ -441,7 +441,7 @@ function Kalista:DmgCalc()
       local damageE  = self:GetDmg("E", enemy, myHero)
       local damageEx  = self:GetDmg("Ex", enemy, myHero)
       local damageEy  = self:GetDmg("Ey", enemy, myHero)
-      local damageI  = self.Ignite and (GetDmg("IGNITE", enemy, myHero)) or 0
+      local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
       local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
       if enemy.health < damageE then
           self.killTextTable[enemy.networkID].indicatorText = "E Kill"
