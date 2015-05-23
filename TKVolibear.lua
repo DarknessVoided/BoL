@@ -34,11 +34,11 @@ function Update()
   local version = 1.5
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
-  local UPDATE_PATH = "/nebelwolfi/BoL/master/TKVoli.lua".."?rand="..math.random(1,10000)
-  local UPDATE_FILE_PATH = SCRIPT_PATH.."TKVoli.lua"
+  local UPDATE_PATH = "/nebelwolfi/BoL/master/TKVolibear.lua".."?rand="..math.random(1,10000)
+  local UPDATE_FILE_PATH = SCRIPT_PATH.."TKVolibear.lua"
   local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
   if AUTO_UPDATE then
-    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKVoli.version")
+    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKVolibear.version")
     if ServerData then
       ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
       if ServerVersion then
@@ -56,16 +56,16 @@ function Update()
   return false
 end
 
-class "Voli"
+class "Volibear"
 
-function Voli:__init()
+function Volibear:__init()
   self:Vars()
   self:Menu()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
 end
 
-function Voli:Vars()
+function Volibear:Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then self.Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then self.Ignite = SUMMONER_2 end
   self.data = {
     [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
@@ -85,7 +85,7 @@ function Voli:Vars()
   end
 end
 
-function Voli:Menu()
+function Volibear:Menu()
   self.Config = scriptConfig("Top Kek Voli", "TKVoli")
   
   self.Config:addSubMenu("Prediction Settings", "misc")
@@ -149,7 +149,7 @@ function Voli:Menu()
   self.Config.ts:addTS(self.ts)
 end
 
-function Voli:SetupOrbwalk()
+function Volibear:SetupOrbwalk()
   if _G.AutoCarry then
     if _G.Reborn_Initialised then
       TopKekMsg("Found SAC: Reborn")
@@ -181,7 +181,7 @@ function Voli:SetupOrbwalk()
   end
 end
 
-function Voli:Tick()
+function Volibear:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
 
@@ -212,14 +212,14 @@ function Voli:Tick()
   if self.Config.ragequit then self.Config.ragequit=false self.Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
-function Voli:GetCustomTarget()
+function Volibear:GetCustomTarget()
     self.ts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
     return self.ts.target
 end
 
-function Voli:LastHit()
+function Volibear:LastHit()
   if myHero:CanUseSpell(_Q) then
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg = self:GetDmg("Q", winion, myHero)
@@ -246,7 +246,7 @@ function Voli:LastHit()
   end
 end
 
-function Voli:LaneClear()
+function Volibear:LaneClear()
   if myHero:CanUseSpell(_Q) then
     local minionTarget = nil
     for minion,winion in pairs(self.Mobs.objects) do
@@ -288,7 +288,7 @@ function Voli:LaneClear()
   end
 end
 
-function Voli:Combo()
+function Volibear:Combo()
   if self.Config.comboConfig.Q and myHero:CanUseSpell(_Q) and GetDistance(self.Target, myHero) < self.data[0].range then
     self:CastQ(self.Target)
   end
@@ -302,7 +302,7 @@ function Voli:Combo()
   end
 end
 
-function Voli:Harrass()
+function Volibear:Harrass()
   if self.Config.comboConfig.Q and myHero:CanUseSpell(_Q) and GetDistance(self.Target, myHero) < self.data[0].range then
     self:CastQ(self.Target)
   end
@@ -314,7 +314,7 @@ function Voli:Harrass()
   end
 end
 
-function Voli:Killsteal()
+function Volibear:Killsteal()
   for k,v in pairs(GetEnemyHeroes()) do
     local enemy= v
     local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0)  
@@ -335,20 +335,20 @@ function Voli:Killsteal()
   end
 end
 
-function Voli:CastQ(Targ) 
+function Volibear:CastQ(Targ) 
   self:CCastSpell(_Q)
 end
-function Voli:CastW(Targ) 
+function Volibear:CastW(Targ) 
   if Targ == nil then return end
   self:CCastSpell(_W, Targ)
 end
-function Voli:CastE() 
+function Volibear:CastE() 
   self:CCastSpell(_E)
 end
-function Voli:CastR(Targ) 
+function Volibear:CastR(Targ) 
   self:CCastSpell(_R)
 end
-function Voli:Draw()
+function Volibear:Draw()
   if self.Config.Drawing.QRange and myHero:CanUseSpell(_Q) then
     self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[0].range, ARGB(255, 155, 155, 155))
   end
@@ -392,7 +392,7 @@ function Voli:Draw()
   end 
 end
 
-function Voli:DmgCalc()
+function Volibear:DmgCalc()
   if not self.Config.Drawing.dmgCalc then return end
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy.visible then
@@ -423,7 +423,7 @@ function Voli:DmgCalc()
     end
   end
 end
-function Voli:CCastSpell(Spell, xPos, zPos)
+function Volibear:CCastSpell(Spell, xPos, zPos)
   if not xPos and not zPos then
     if VIP_USER and self.Config.misc.pc then
         Packet("S_CAST", {spellId = Spell}):send()
@@ -446,7 +446,7 @@ function Voli:CCastSpell(Spell, xPos, zPos)
   end
 end
 
-function Voli:GetDmg(spell, target, source)
+function Volibear:GetDmg(spell, target, source)
   if target == nil or source == nil then
     return
   end
@@ -484,7 +484,7 @@ function Voli:GetDmg(spell, target, source)
   dmg = ADDmg*(1-ArmorPercent)+APDmg*(1-MagicPercent)
   return math.floor(dmg)
 end
-function Voli:DrawLFC(x, y, z, radius, color)
+function Volibear:DrawLFC(x, y, z, radius, color)
     if self.Config.Drawing.lfc then
         LagFree(x, y, z, radius, 1, color, self.Config.Drawing.lfcq)
     else
