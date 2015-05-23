@@ -343,7 +343,8 @@ if FileExist(LIB_PATH .. "/UPL.lua") then
   require("UPL")
   UPL = UPL()
 else 
-  AutoupdaterMsg("Please download the UPLib.") 
+  AutoupdaterMsg("Downloading UPL, please don't press F9")
+  DelayAction(function() DownloadFile("https://"..UPDATE_HOST.."/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () AutoupdaterMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
   return 
 end
 
