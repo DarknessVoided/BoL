@@ -17,7 +17,7 @@
 if myHero.charName ~= "Volibear" then return end
 
 --Scriptstatus Tracker
-assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("REHGFFIGEKE") 
+assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
 function OnLoad()
@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.5
+  local version = 0.12
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKVolibear.lua".."?rand="..math.random(1,10000)
@@ -87,10 +87,6 @@ end
 
 function Volibear:Menu()
   self.Config = scriptConfig("Top Kek Voli", "TKVoli")
-  
-  self.Config:addSubMenu("Prediction Settings", "misc")
-  UPL:AddSpell(_Q, self.data[_Q])
-  UPL:AddToMenu(self.Config.misc)
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
   self.Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -108,7 +104,7 @@ function Volibear:Menu()
   self.Config.farmConfig:addSubMenu("Last Hit", "lh")
   self.Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  self.Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_SLICE, true)
+  self.Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -289,7 +285,7 @@ function Volibear:LaneClear()
 end
 
 function Volibear:Combo()
-  if self.Config.comboConfig.Q and myHero:CanUseSpell(_Q) and GetDistance(self.Target, myHero) < self.data[0].range then
+  if self.Config.comboConfig.Q and myHero:CanUseSpell(_Q) and ValidTarget(self.Target, self.data[0].range) then
     self:CastQ(self.Target)
   end
   if self.Config.comboConfig.W and myHero:CanUseSpell(_W) and ValidTarget(self.Target, self.data[1].range) then
@@ -303,7 +299,7 @@ function Volibear:Combo()
 end
 
 function Volibear:Harrass()
-  if self.Config.comboConfig.Q and myHero:CanUseSpell(_Q) and GetDistance(self.Target, myHero) < self.data[0].range then
+  if self.Config.comboConfig.Q and myHero:CanUseSpell(_Q) and ValidTarget(self.Target, self.data[0].range) then
     self:CastQ(self.Target)
   end
   if self.Config.comboConfig.W and myHero:CanUseSpell(_W) and ValidTarget(self.Target, self.data[1].range) then
@@ -379,13 +375,13 @@ function Volibear:Draw()
       for minion,winion in pairs(self.Mobs.objects) do
         damageAA = self:GetDmg("AD", winion, myHero)
         damageW  = self:GetDmg("W", winion, myHero)
-        neededAA = math.ceil((winion.health-damageW) / (damageAA))
-        if self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead then
+        neededAA = math.ceil((winion.health-damageW) / damageAA ) --(winion.health/(damageAA)))
+        if GetDistance(winion) <= 1500 and not winion.dead then
           if damageW and damageW ~= nil and damageW > winion.health then
             DrawText3D("W Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+          else
+            DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
           end
-        elseif self:GetStacks(winion) == 0 and GetDistance(winion) <= 1000 and not winion.dead then
-          DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
         end
       end
     end
@@ -410,9 +406,11 @@ function Volibear:DmgCalc()
           self.killTextTable[enemy.networkID].indicatorText = "W Kill"
           self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
       end
-      if myHero:CanUseSpell(_W) and not (enemy.health > damageW) then
+      if myHero:CanUseSpell(_W) and (enemy.health > damageW) then
         local neededAA = math.ceil((enemy.health-damageW) / (damageAA))
-        self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA Kill"
+        if neededAA > 0 then
+          self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA Kill"
+        end
       end
 
       local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
@@ -423,22 +421,23 @@ function Volibear:DmgCalc()
     end
   end
 end
+
 function Volibear:CCastSpell(Spell, xPos, zPos)
   if not xPos and not zPos then
-    if VIP_USER and self.Config.misc.pc then
+    if VIP_USER then
         Packet("S_CAST", {spellId = Spell}):send()
     else
         CastSpell(Spell)
     end
   elseif xPos and not zPos then
     target = xPos
-    if VIP_USER and self.Config.misc.pc then
+    if VIP_USER then
         Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
     else
         CastSpell(Spell, target)
     end
   elseif xPos and zPos then
-    if VIP_USER and self.Config.misc.pc then
+    if VIP_USER then
       Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
     else
       CastSpell(Spell, xPos, zPos)
@@ -452,6 +451,7 @@ function Volibear:GetDmg(spell, target, source)
   end
   local ADDmg            = 0
   local APDmg            = 0
+  local AP               = myHero.ap
   local Level            = source.level
   local TotalDmg         = source.totalDamage
   local ArmorPen         = math.floor(source.armorPen)
@@ -481,7 +481,7 @@ function Volibear:GetDmg(spell, target, source)
   elseif spell == "R" then
     APDmg = 40*RLevel+35+0.3*AP
   end
-  dmg = ADDmg*(1-ArmorPercent)+APDmg*(1-MagicPercent)
+  dmg = ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
   return math.floor(dmg)
 end
 function Volibear:DrawLFC(x, y, z, radius, color)
@@ -508,7 +508,7 @@ function LagFree(x, y, z, radius, width, color, quality)
     end
 end
 function TopKekMsg(msg) 
-  print("<font color=\"#6699ff\"><b>[Top Kek Series]: Kalista - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+  print("<font color=\"#6699ff\"><b>[Top Kek Series]: Volibear - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
 end
 ---------------------------------------
 
