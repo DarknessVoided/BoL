@@ -419,13 +419,13 @@ function Kalista:Draw()
         damageEx  = self:GetDmg("Ex", winion, myHero)
       local damageEy  = self:GetDmg("Ey", winion, myHero)
         neededAA = math.ceil((winion.health-damageEy-damageEx) / (damageAA+damageEx))
-        if self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead then
+        if self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
           if damageE and damageE ~= nil and damageE > winion.health then
             DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           else
             DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           end
-        elseif self:GetStacks(winion) == 0 and GetDistance(winion) <= 1000 and not winion.dead then
+        elseif self:GetStacks(winion) == 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
           DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
         end
       end
