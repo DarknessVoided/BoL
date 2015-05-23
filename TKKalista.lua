@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.41
+  local version = 1.5
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -414,13 +414,20 @@ function Kalista:Draw()
     end
     if myHero:CanUseSpell(_E) then
       for minion,winion in pairs(self.Mobs.objects) do
+        damageAA = self:GetDmg("AD", winion, myHero)
+        damageE  = self:GetDmg("E", winion, myHero)
+        damageEx  = self:GetDmg("Ex", winion, myHero)
+      local damageEy  = self:GetDmg("Ey", winion, myHero)
+        neededAA = math.ceil((winion.health-damageEy-damageEx) / (damageAA+damageEx))
         if self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead then
-          dmg = self:GetDmg("E", winion, myHero)
-          if dmg and dmg ~= nil and dmg > winion.health then
+          if damageE and damageE ~= nil and damageE > winion.health then
             DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           else
-            DrawText3D(math.floor(dmg/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+            DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           end
+          DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
+        elseif self:GetStacks(winion) == 0 and GetDistance(winion) <= 1000 and not winion.dead then
+          DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
         end
       end
     end
@@ -433,6 +440,8 @@ function Kalista:DmgCalc()
     if ValidTarget(enemy) and enemy.visible then
       local damageAA = self:GetDmg("AD", enemy, myHero)
       local damageE  = self:GetDmg("E", enemy, myHero)
+      local damageEx  = self:GetDmg("Ex", enemy, myHero)
+      local damageEy  = self:GetDmg("Ey", enemy, myHero)
       local damageI  = self.Ignite and (GetDmg("IGNITE", enemy, myHero)) or 0
       local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
       if enemy.health < damageE then
@@ -440,8 +449,8 @@ function Kalista:DmgCalc()
           self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
       end
       if myHero:CanUseSpell(_E) and not (enemy.health > damageE) then
-        local neededAA = math.ceil((enemy.health-damageE) / (damageAA+(self:kalE(myHero:GetSpellData(_E).level)+(0.12 + 0.03 * myHero:GetSpellData(_E).level)*myHero.totalDamage)))
-        self.killTextTable[enemy.networkID].indicatorText = neededAA.." aa until E Kill"
+        local neededAA = math.ceil((enemy.health-damageEy-damageEx) / (damageAA+damageEx))
+        self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA Kill"
       end
 
       local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
@@ -489,7 +498,7 @@ function Kalista:GetDmg(spell, target, source)
   local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
 
   local Armor        = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent = Armor > 0 and Armor/(100+Armor) or Armor/(100-Armor)
+  local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
   local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor/(100+MagicArmor)
 
@@ -508,11 +517,17 @@ function Kalista:GetDmg(spell, target, source)
   elseif spell == "E" then
     stacks = self:GetStacks(target)
     ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + (stacks-1) *(self:kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg) or 0
+  elseif spell == "Ex" then
+    stacks = self:GetStacks(target) > 0 and self:GetStacks(target) or 1
+    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) or 0
+  elseif spell == "Ey" then
+    stacks = self:GetStacks(target) > 0 and self:GetStacks(target) or 1
+    ADDmg = stacks > 0 and ((stacks) * (self:kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg)) or 0
   elseif spell == "R" then
     return 0
   end
   dmg = ADDmg*(1-ArmorPercent)
-  return dmg
+  return math.floor(dmg)
 end
 
 function Kalista:kalE(x)
