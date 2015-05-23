@@ -425,7 +425,6 @@ function Kalista:Draw()
           else
             DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           end
-          DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
         elseif self:GetStacks(winion) == 0 and GetDistance(winion) <= 1000 and not winion.dead then
           DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
         end
