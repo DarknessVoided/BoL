@@ -302,7 +302,7 @@ function Kalista:LaneClear()
 end
 
 function Kalista:Combo()
-  if self.Config.comboConfig.Q and GetDistance(self.Target, myHero) < self.data[0].range then
+  if self.Config.comboConfig.Q and ValidTarget(self.Target, self.data[0].range) then
     self:CastQ(self.Target)
   end
   if self.Config.comboConfig.E and myHero:CanUseSpell(_E) and ValidTarget(self.Target, self.data[2].range) then
@@ -353,7 +353,7 @@ function Kalista:CastQ(Targ)
   if Targ == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, Targ)
   if HitChance and HitChance >= 1 then
-    self:CCastSpell(_Q)
+    self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
 function Kalista:CastW(Targ) 
