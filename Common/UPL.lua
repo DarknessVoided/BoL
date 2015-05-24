@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.73
+_G.UPLversion = 1.74
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -208,7 +208,7 @@ function UPL:SetupHPredSpell(spell)
         self.HPSpells[k] = HPSkillshot({type = "PromptCircle", range = spell.range, radius = spell.width, delay = spell.delay})
       end
   else --Cone!
-    self.HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
+    self.HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
   end
 end
 
