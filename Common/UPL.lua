@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.71
+_G.UPLversion = 1.72
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -174,7 +174,7 @@ function UPL:AddSpell(spell, array)
     DelayAction(function() self:AddSpell(spell,array) end, 1)
   else
     self.spellData[spell] = array
-    self:SetupHPredSpell(spell)
+    if self.HP ~= nil then self:SetupHPredSpell(spell) end
   end
 end
 

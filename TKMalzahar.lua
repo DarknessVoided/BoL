@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.011
+local version = 0.012
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKMalzahar.lua".."?rand="..math.random(1,10000)
@@ -393,7 +393,7 @@ function CastQ(unit)
   end
 end
 function CastW(unit)
-  if unit == nil or GetDistance(unit) > data[1].range then return end
+  if unit == nil or GetDistance(unit) > data[1].range+data[1].width then return end
   local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, unit)
   if HitChance and HitChance >= 1.2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
@@ -472,12 +472,12 @@ function DmgCalculations()
     for i=1, enemyCount do
         local enemy = enemyTable[i].player
           if ValidTarget(enemy) and enemy.visible then
-            local damageAA = GetDmg("AD", enemy, player)
-            local damageQ  = GetDmg("Q", enemy, player)
-            local damageW  = GetDmg("Wf", enemy, player)
-            local damageE  = GetDmg("Ef", enemy, player)
-            local damageR  = GetDmg("Rf", enemy, player)
-            local damageI  = Ignite and (GetDmg("IGNITE", enemy)) or 0
+            local damageAA = GetDmg("AD", enemy, myHero)
+            local damageQ  = GetDmg("Q", enemy, myHero)
+            local damageW  = GetDmg("Wf", enemy, myHero)
+            local damageE  = GetDmg("Ef", enemy, myHero)
+            local damageR  = GetDmg("Rf", enemy, myHero)
+            local damageI  = Ignite and (GetDmg("IGNITE", enemy, myHero)) or 0
             local damageT  = 0
             enemyTable[i].indicatorText = ""
             if QReady() then
@@ -503,7 +503,7 @@ function DmgCalculations()
                 enemyTable[i].ready = QReady() or WReady() or EReady() or RReady()
             end
 
-            local enemyDamageAA = GetDmg("AD", player, enemy)
+            local enemyDamageAA = GetDmg("AD", myHero, enemy)
             local enemyNeededAA = math.ceil(player.health / enemyDamageAA)            
             enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
         end
