@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.72
+_G.UPLversion = 1.73
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -158,7 +158,7 @@ function UPL:Predict(spell, source, Target)
         return Vector(Target), 0, Vector(Target)
       end
   elseif self:ActivePred() == "HPrediction" then
-      return self:HPredict(Target, spell, source, spellid)
+      return self:HPredict(Target, spell, source)
   elseif self:ActivePred() == "TKPrediction" then
       return self.TKP:Predict(spell, source, Target)
   end
@@ -170,12 +170,12 @@ function UPL:AddToMenu(Config)
 end
 
 function UPL:AddSpell(spell, array)
-  if not UPLloaded then
-    DelayAction(function() self:AddSpell(spell,array) end, 1)
-  else
-    self.spellData[spell] = array
+  --if not UPLloaded then
+  --  DelayAction(function() self:AddSpell(spell,array) end, 1)
+  --else
+    self.spellData[spell] = {speed = array.speed, delay = array.delay, range = array.range, width = array.width, collision = array.collision, aoe = array.aoe, type = array.type}
     if self.HP ~= nil then self:SetupHPredSpell(spell) end
-  end
+  --end
 end
 
 function UPL:GetSpellData(spell)
@@ -199,7 +199,7 @@ function UPL:SetupHPredSpell(spell)
           self.HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
         end
       else
-        self.HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = self.spellData[spell].delay})
+        self.HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = spell.delay})
       end
   elseif spell.type == "circular" then
       if spell.speed ~= math.huge then 

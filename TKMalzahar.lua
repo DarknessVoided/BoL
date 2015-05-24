@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.012
+local version = 0.013
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKMalzahar.lua".."?rand="..math.random(1,10000)
@@ -115,10 +115,12 @@ function OnLoad()
   Config:addSubMenu("Farm Settings", "farmConfig")
   Config.farmConfig:addSubMenu("Lane Clear", "lc")
   Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lc:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 60, 0, 100, 0)
   Config.farmConfig:addSubMenu("Last Hit", "lh")
   Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 60, 0, 100, 0)
       
@@ -304,7 +306,7 @@ function LaneClear()
     end
   end
   if WReady() and Config.farmConfig.lc.W then
-    local pos, hit = GetEFarmPosition(data[1].range, data[1].width)
+    local pos, hit = GetWFarmPosition(data[1].range, data[1].width)
     if pos ~= nil then
       CastW(pos)
     end
