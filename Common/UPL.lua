@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.75
+_G.UPLversion = 1.76
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -84,7 +84,7 @@ function UPL:__init()
     self.TKP = TKPrediction()
     table.insert(self.predTable, "TKPrediction")
   end
-  DelayAction(function() self:Update() end, 5)
+  self:Update()
   DelayAction(function() self:Loaded() end, 5)
   return self
 end
@@ -109,13 +109,6 @@ function UPL:Update()
     else
       self:Msg("Error downloading version info")
     end
-  end
-  if FileExist(LIB_PATH .. "/UPL.lua") then
-    require("UPL")
-  else 
-    self:Msg("Downloading UPL, please don't press F9")
-    DelayAction(function() DownloadFile("https://"..UPDATE_HOST.."/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
-    return true
   end
   return false
 end
