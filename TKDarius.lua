@@ -322,9 +322,6 @@ function Darius:Harrass()
   if myHero:CanUseSpell(_W) == READY then
     self:CastW(self.Target)
   end
-  if myHero:CanUseSpell(_E) == READY then
-    self:CastE(self.Target)
-  end
 end
 
 function Darius:CastQ(target) 
@@ -362,14 +359,16 @@ function Darius:Killsteal()
     local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 450) then
+      if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
+        self:CastR(enemy)
+      elseif myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 450) then
         self:CastQ(enemy)
       elseif myHero:CanUseSpell(_W) and enemy.health < wDmg and self.Config.KS.killstealW then
         if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
           self:CastW(enemy)
-        elseif ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
+        elseif ValidTarget(enemy, 550) then
           self:CastE(enemy)
-          DelayAction(function() self:CastW(enemy) end, 0.4)
+          DelayAction(function() self:CastW(enemy) end, 0.38)
         end
       elseif myHero:CanUseSpell(_R) and enemy.health < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
         self:CastR(enemy)
