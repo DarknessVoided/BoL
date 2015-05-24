@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.02
+  local version = 0.03
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -214,11 +214,11 @@ function Darius:Tick()
     end
   end
 
-  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.mana > myHero.mana) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.mana > myHero.mana)) then
+  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.mana < myHero.mana) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.mana < myHero.mana)) then
     self:LastHit()
   end
 
-  if (self.Config.kConfig.lc and self.Config.farmConfig.lc.mana > myHero.mana) then
+  if (self.Config.kConfig.lc and self.Config.farmConfig.lc.mana < myHero.mana) then
     self:LaneClear()
   end
 
@@ -241,7 +241,7 @@ function Darius:LastHit()
       local MinionDmg2 = self:GetDmg("Q", winion, myHero)
       if MinionDmg1 and MinionDmg1 >= winion.health and ValidTarget(winion, 450) then
         self:CastQ(target)
-      elseif MinionDmg2 and MinionDmg2 >= winion.health and ValidTarget(winion, 450) and GetDistance(winion) < 450 then
+      elseif MinionDmg2 and MinionDmg2 >= winion.health and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
         self:CastQ1()
       end
     end
@@ -259,7 +259,7 @@ end
 function Darius:LaneClear()
   if self.Config.farmConfig.lc.Q and myHero:CanUseSpell(_Q) == READY then
     BestPos, BestHit = GetQFarmPosition()
-    if BestHit > 1 then 
+    if BestHit > 1 and GetDistance(BestPos) < 150 then 
       self:CastQ1()
     end
   end
@@ -293,6 +293,16 @@ function GetQFarmPosition()
     end
   end
   return BestPos, BestHit
+end
+
+function CountObjectsNearPos(pos, range, radius, objects)
+  local n = 0
+  for i, object in ipairs(objects) do
+    if GetDistance(pos, object) <= radius then
+      n = n + 1
+    end
+  end
+  return n
 end
 
 function Darius:Combo()
