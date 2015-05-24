@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.043
+local version = 0.044
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -86,9 +86,9 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  UPL:AddSpell(_Q, data[0])
-  UPL:AddSpell(_W, data[1])
-  UPL:AddSpell(_R, data[3])
+  UPL:AddSpell(_Q, data[_Q])
+  UPL:AddSpell(_W, data[_W])
+  UPL:AddSpell(_R, data[_R])
   UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Misc settings", "casual")
