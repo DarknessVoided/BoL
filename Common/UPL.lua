@@ -170,12 +170,12 @@ function UPL:AddToMenu(Config)
 end
 
 function UPL:AddSpell(spell, array)
-  --if not UPLloaded then
-  --  DelayAction(function() self:AddSpell(spell,array) end, 1)
-  --else
+  if not UPLloaded then
+    DelayAction(function() self:AddSpell(spell,array) end, 1)
+  else
     self.spellData[spell] = {speed = array.speed, delay = array.delay, range = array.range, width = array.width, collision = array.collision, aoe = array.aoe, type = array.type}
     if self.HP ~= nil then self:SetupHPredSpell(spell) end
-  --end
+  end
 end
 
 function UPL:GetSpellData(spell)
