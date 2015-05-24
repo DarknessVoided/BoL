@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.74
+_G.UPLversion = 1.75
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -84,8 +84,8 @@ function UPL:__init()
     self.TKP = TKPrediction()
     table.insert(self.predTable, "TKPrediction")
   end
-  self:Update()
-  self:Loaded()
+  DelayAction(function() self:Update() end, 5)
+  DelayAction(function() self:Loaded() end, 5)
   return self
 end
 
