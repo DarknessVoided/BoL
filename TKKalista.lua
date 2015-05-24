@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.52
+  local version = 1.53
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -79,7 +79,7 @@ function Kalista:Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then self.Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then self.Ignite = SUMMONER_2 end
   self.QReady, self.WReady, self.EReady, self.RReady, self.IReady, self.SReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) end end
   self.data = {
-    [_Q] = { speed = 1750, delay = 0.25, range = 1450, width = 70, collision = true, aoe = false, type = "linear"},
+    [_Q] = { speed = 1750, delay = 0.25, range = 1375, width = 70, collision = true, aoe = false, type = "linear"},
     [_W] = { delay = 1.5, range = 5500},
     [_E] = { delay = 0.50, range = 1000},
     [_R] = { range = 4000}}
