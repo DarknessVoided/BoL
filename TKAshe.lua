@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.074
+local version = 0.075
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -88,8 +88,6 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  UPL:AddSpell(_W, data[_W])
-  UPL:AddSpell(_R, data[_R])
   UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
@@ -153,6 +151,8 @@ function OnLoad()
             enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageR = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
         end
     end
+  UPL:AddSpell(_W, data[_W])
+  UPL:AddSpell(_R, data[_R])
 end
 
 function SetupOrbwalk()
@@ -340,7 +340,7 @@ function CastQ(Targ)
 end
 function CastW(Targ) 
   local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, Targ)
-  if HitChance and HitChance >= 2 and WReady() then
+  if HitChance and HitChance >= 1.2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end

@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.7
+_G.UPLversion = 1.71
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
@@ -50,7 +50,11 @@ function UPL:__init()
   self.HP  = nil
   self.TKP = nil
   self.HPSpells  = {}
-  self.spellData = {}
+  self.spellData = {
+    [_Q] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
+    [_W] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
+    [_E] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
+    [_R] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"}}
   self.predTable = {}
   if FileExist(LIB_PATH .. "VPrediction.lua") then
     require("VPrediction")
@@ -154,7 +158,7 @@ function UPL:Predict(spell, source, Target)
         return Vector(Target), 0, Vector(Target)
       end
   elseif self:ActivePred() == "HPrediction" then
-      return self:HPredict(Target, spell, source)
+      return self:HPredict(Target, spell, source, spellid)
   elseif self:ActivePred() == "TKPrediction" then
       return self.TKP:Predict(spell, source, Target)
   end
@@ -170,7 +174,7 @@ function UPL:AddSpell(spell, array)
     DelayAction(function() self:AddSpell(spell,array) end, 1)
   else
     self.spellData[spell] = array
-    if HP and HP ~= nil then self:SetupHPredSpell(spell) end
+    self:SetupHPredSpell(spell)
   end
 end
 
@@ -179,33 +183,33 @@ function UPL:GetSpellData(spell)
 end
 
 function UPL:HPredict(Target, spell, source)
-  local col = self:GetSpellData(spell).collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
+  local col = self.spellData[spell].collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
   local x1, x2, x3 = self.HP:GetPredict(self.HPSpells[spell], Target, source, col)
-  return x1, x2*2, x3
+  return x1, x2*3, x3
 end
 
 function UPL:SetupHPredSpell(spell)
-  Spell = nil
-  if self.spellData[spell].type == "linear" then
-      if self.spellData[spell].speed ~= math.huge then 
-        if self.spellData[spell].collision then
-          Spell = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+  k = spell
+  spell = self.spellData[k]
+  if spell.type == "linear" then
+      if spell.speed ~= math.huge then 
+        if spell.collision then
+          self.HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
         else
-          Spell = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
+          self.HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
         end
       else
-        Spell = HPSkillshot({type = "PromptLine", range = self.spellData[spell].range, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay})
+        self.HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = self.spellData[spell].delay})
       end
-  elseif self.spellData[spell].type == "circular" then
-      if self.spellData[spell].speed ~= math.huge then 
-        Spell = HPSkillshot({type = "DelayCircle", range = self.spellData[spell].range, speed = self.spellData[spell].speed, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
+  elseif spell.type == "circular" then
+      if spell.speed ~= math.huge then 
+        self.HPSpells[k] = HPSkillshot({type = "DelayCircle", range = spell.range, speed = spell.speed, radius = spell.width, delay = spell.delay})
       else
-        Spell = HPSkillshot({type = "PromptCircle", range = self.spellData[spell].range, radius = self.spellData[spell].width, delay = self.spellData[spell].delay})
+        self.HPSpells[k] = HPSkillshot({type = "PromptCircle", range = spell.range, radius = spell.width, delay = spell.delay})
       end
   else --Cone!
-    Spell = HPSkillshot({type = "DelayLine", range = self.spellData[spell].range, speed = self.spellData[spell].speed, width = 2*self.spellData[spell].width, delay = self.spellData[spell].delay, collisionM = self.spellData[spell].collision, collisionH = self.spellData[spell].collision})
+    self.HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
   end
-  self.HPSpells[spell] = Spell
 end
 
 function UPL:DPredict(Target, spell, source)
