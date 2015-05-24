@@ -88,6 +88,7 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
+  UPL:AddSpell(_E, data[_E])
   UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
@@ -167,7 +168,6 @@ function OnLoad()
           enemyTable[enemyCount] = { player = champ, name = champ.charName, blazed = false, damageQ = 0, damageW = 0, damageE = 0, damageI = 0, damageS = 0, indicatorText = "", damageGettingText = "", ready = true}
       end
   end
-  UPL:AddSpell(_E, data[_E])
 end
 
 function SetupOrbwalk()

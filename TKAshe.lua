@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.073
+local version = 0.074
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -41,38 +41,12 @@ end
 --[[ Auto updater end ]]--
 
 --[[ Libraries start ]]--
-local predToUse = {}
-VP  = nil
-DP  = nil
-HP  = nil
-TKP = nil
-
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
-  require("VPrediction")
-  VP = VPrediction()
-  table.insert(predToUse, "VPrediction")
-end
-
-if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-  require "DivinePred"
-  DP = DivinePred() 
-  table.insert(predToUse, "DivinePred")
-end
-
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
-  require("HPrediction")
-  HP = HPrediction()
-  table.insert(predToUse, "HPrediction")
-end
-
-if FileExist(LIB_PATH .. "/TKPrediction.lua") then
-  require("TKPrediction")
-  TKP = TKPrediction()
-  table.insert(predToUse, "TKPrediction")
-end
-
-if predToUse == {} then 
-  TopKekMsg("Please download a Prediction") 
+UPL = nil
+if FileExist(LIB_PATH .. "/UPL.lua") then
+  require("UPL")
+  UPL = UPL()
+else 
+  TopKekMsg("Please download the UPLib.") 
   return 
 end
 
@@ -114,11 +88,9 @@ function OnLoad()
   Config:addSubMenu("Pred/Skill Settings", "misc")
   if VIP_USER then Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
   Config.misc:addParam("qqq", " ", SCRIPT_PARAM_INFO,"") end
-  Config.misc:addParam("qqq", "RELOAD AFTER CHANGING PREDICTIONS! (2x F9)", SCRIPT_PARAM_INFO,"")
-  Config.misc:addParam("pro", "Type of prediction", SCRIPT_PARAM_LIST, 1, predToUse)
-
-  if ActivePred() == "DivinePred" then Config.misc:addParam("time","DPred Extra Time", SCRIPT_PARAM_SLICE, 0.03, 0, 0.3, 2) end
-  if ActivePred() == "HPrediction" then SetupHPred() end
+  UPL:AddSpell(_W, data[_W])
+  UPL:AddSpell(_R, data[_R])
+  UPL:AddToMenu(Config.misc)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -367,7 +339,7 @@ function CastQ(Targ)
   if QReady() then CastSpell(_Q, myHero:Attack(Targ)) end
 end
 function CastW(Targ) 
-  local CastPosition, HitChance, Position = Predict(Targ, 1, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(_W, Targ, myHero)
   if HitChance and HitChance >= 2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
@@ -376,7 +348,7 @@ function CastE(Targ)
   if RReady() then CCastSpell(_E, CastPosition.x, CastPosition.z) end
 end
 function CastR(Targ) 
-  local CastPosition, HitChance, Position = Predict(Targ, 3, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(_R, Targ, myHero)
   if HitChance and HitChance >= 2 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
   end
@@ -422,146 +394,6 @@ function CCastSpell(Spell, xPos, zPos)
     Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
   else
     CastSpell(Spell, xPos, zPos)
-  end
-end
-
--- Credits: Da Vinci
-local CastableItems = {
-  Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", target, myHero) end},
-  Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", target, myHero) end},
-  Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", target, myHero) end},
-  Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", target, myHero) end},
-  Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", target, myHero) end},
-  Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return getDmg("BLACKFIRE", target, myHero) end},
-  Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
-  Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
-  TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
-}
-function UseItems(unit)
-    if unit ~= nil then
-        for _, item in pairs(CastableItems) do
-            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
-                if item.reqTarget then
-                    CastSpell(item.Slot(), unit)
-                else
-                    CastSpell(item.Slot())
-                end
-            end
-        end
-    end
-end
--- Credits end
-
-function ActivePred()
-    local int = Config.misc.pro
-    return tostring(predToUse[int])
-end
-
-function SetupHPred()
-  MakeHPred("W", 1) 
-  MakeHPred("R", 3) 
-end
-
-function MakeHPred(hspell, i)
-  if data[i].type == "linear" then
-      if data[i].speed ~= math.huge then 
-          HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      else
-          HP:AddSpell(hspell, myHero.charName, {type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      end
-  elseif data[i].type == "circular" then
-      if data[i].speed ~= math.huge then 
-          HP:AddSpell(hspell, myHero.charName, {type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      else
-          HP:AddSpell(hspell, myHero.charName, {type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-      end
-  else --Cone!
-      HP:AddSpell(hspell, myHero.charName, {type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-  end
-end
-
-local hpSpells = {Spell_Q, Spell_W, Spell_E, Spell_R}
-function SetupHPredNew()
-  for i=0,3 do
-    hpSpells[i] = MakeHPred(i)
-  end
-end
-
-function MakeHPredNew(i)
- if data[i].type == "linear" or data[i].type == "cone" or data[i].type == "circular" then 
-    if data[i].type == "linear" then
-        if data[i].speed ~= math.huge then 
-            return HPSkillshot({type = "DelayLine", range = data[i].range, speed = data[i].speed, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            return HPSkillshot({type = "PromptLine", range = data[i].range, width = 2*data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    elseif data[i].type == "circular" then
-        if data[i].speed ~= math.huge then 
-            return HPSkillshot({type = "DelayCircle", range = data[i].range, speed = data[i].speed, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        else
-            return HPSkillshotl({type = "PromptCircle", range = data[i].range, radius = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-        end
-    else --Cone!
-        return HPSkillshot({type = "DelayLine", range = data[i].range, speed = data[i].speed, width = data[i].width, delay = data[i].delay, collisionM = data[i].collision, collisionH = data[i].collision})
-    end
- end
-end
-
-local str = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-function Predict(Target, spell, source)
-  if Target == nil then return end
-  if ActivePred() == "VPrediction" then
-    return VPredict(Target, data[spell], source)
-  elseif ActivePred() == "Prodiction" then
-    return nil
-  elseif ActivePred() == "DivinePred" then
-    local State, Position, perc = DPredict(Target, data[spell], source)
-    return Position, perc*3/100, Position
-  elseif ActivePred() == "HPrediction" then
-    local Position, HitChance = HPredict(Target, spell, source)
-    return Position, HitChance, Position
-  elseif ActivePred() == "TKPrediction" then
-    return TKP:Predict(spell, Target, source) 
-  end
-end
-
-function HPredict(Target, spell, source)
-  return HP:GetPredict(str[spell], Target, source) 
-end
-
-function DPredict(Target, spell, source)
-  local unit = DPTarget(Target)
-  local col = spell.collision and 0 or math.huge
-  local Spell = nil
-  if spell.type == "linear" then
-   Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "circular" then
-   Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  elseif spell.type == "cone" then
-   Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-  end
-  return DP:predict(unit, Spell, 1.2, source)
-end
-
-function VPredict(Target, spell, source)
-  if spell.type == "linear" then
-    if spell.aoe then
-      return VP:GetLineAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  elseif spell.type == "circular" then
-    if spell.aoe then
-      return VP:GetCircularAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetCircularCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
-  elseif spell.type == "cone" then
-    if spell.aoe then
-      return VP:GetConeAOECastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source)
-    else
-      return VP:GetLineCastPosition(Target, spell.delay, spell.width, spell.range, spell.speed, source, spell.collision)
-    end
   end
 end
 
