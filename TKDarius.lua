@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.03
+  local version = 0.04
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -239,9 +239,9 @@ function Darius:LastHit()
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg1 = self:GetDmg("Q1", winion, myHero)
       local MinionDmg2 = self:GetDmg("Q", winion, myHero)
-      if MinionDmg1 and MinionDmg1 >= winion.health and ValidTarget(winion, 450) then
+      if MinionDmg1 and MinionDmg1 >= winion.health+enemy.shield and ValidTarget(winion, 450) then
         self:CastQ(target)
-      elseif MinionDmg2 and MinionDmg2 >= winion.health and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
+      elseif MinionDmg2 and MinionDmg2 >= winion.health+enemy.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
         self:CastQ1()
       end
     end
@@ -249,7 +249,7 @@ function Darius:LastHit()
   if self.Config.farmConfig.lh.W and myHero:CanUseSpell(_W) == READY then
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg = self:GetDmg("W", winion, myHero)
-      if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
+      if MinionDmg and MinionDmg >= winion.health+enemy.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
         self:CastW(target)
       end
     end
@@ -268,7 +268,7 @@ function Darius:LaneClear()
     for i, minion in pairs(minionManager(MINION_ENEMY, 250, myHero, MINION_SORT_HEALTH_ASC).objects) do
       if minionTarget == nil then 
         minionTarget = minion
-      elseif minionTarget.health >= minion.health and ValidTarget(minion, 250) then
+      elseif minionTarget.health+enemy.shield >= minion.health+enemy.shield and ValidTarget(minion, 250) then
         minionTarget = minion
       end
     end
@@ -319,7 +319,7 @@ function Darius:Combo()
     if myHero:CanUseSpell(_E) == READY then
       self:CastE(self.Target)
     end
-    if myHero:CanUseSpell(_R) == READY and self:GetDmg("R", self.Target, myHero) > self.Target.health and self.Config.comboConfig.R then
+    if myHero:CanUseSpell(_R) == READY and self:GetDmg("R", self.Target, myHero) > self.Target.health+enemy.shield and self.Config.comboConfig.R then
       self:CastR(self.Target)
     end
   end
@@ -369,20 +369,20 @@ function Darius:Killsteal()
     local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
+      if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
         self:CastR(enemy)
-      elseif myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 450) then
+      elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 450) then
         self:CastQ(enemy)
-      elseif myHero:CanUseSpell(_W) and enemy.health < wDmg and self.Config.KS.killstealW then
+      elseif myHero:CanUseSpell(_W) and enemy.health+enemy.shield < wDmg and self.Config.KS.killstealW then
         if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
           self:CastW(enemy)
         elseif ValidTarget(enemy, 550) then
           self:CastE(enemy)
           DelayAction(function() self:CastW(enemy) end, 0.38)
         end
-      elseif myHero:CanUseSpell(_R) and enemy.health < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
+      elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
         self:CastR(enemy)
-      elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
+      elseif enemy.health+enemy.shield < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         self:CCastSpell(Ignite, enemy)
       end
     end
@@ -429,17 +429,17 @@ function Darius:DmgCalc()
       local damageW  = self:GetDmg("W", enemy, myHero)
       local damageR  = self:GetDmg("R", enemy, myHero)
       local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
-      if enemy.health < damageR then
+      if enemy.health+enemy.shield < damageR then
           self.killTextTable[enemy.networkID].indicatorText = "R Kill"
           self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
       end
-      if myHero:CanUseSpell(_E) and not (enemy.health > damageR) then
-        local neededAA = math.ceil((enemy.health-damageR) / (damageAA+damageR))
+      if myHero:CanUseSpell(_E) and not (enemy.health+enemy.shield > damageR) then
+        local neededAA = math.ceil((enemy.health+enemy.shield-damageR) / (damageAA+damageR))
         self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA Kill"
       end
 
       local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
-      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health+enemy.shield / enemyDamageAA)   
       if enemyNeededAA ~= 0 then         
         self.killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
       end
