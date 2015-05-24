@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.51
+  local version = 1.52
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -515,17 +515,17 @@ function Kalista:GetDmg(spell, target, source)
     return 0
   elseif spell == "E" then
     stacks = self:GetStacks(target)
-    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + (stacks-1) *(self:kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg) or 0
+    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + (stacks-1) *(self:kalE(ELevel) + (0.2 + 0.03 * (ELevel-1))*TotalDmg) or 0
   elseif spell == "Ex" then
     stacks = self:GetStacks(target) > 0 and self:GetStacks(target) or 1
     ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) or 0
   elseif spell == "Ey" then
     stacks = self:GetStacks(target) > 0 and self:GetStacks(target) or 1
-    ADDmg = stacks > 0 and ((stacks) * (self:kalE(ELevel) + (0.12 + 0.03 * ELevel)*TotalDmg)) or 0
+    ADDmg = stacks > 0 and ((stacks) * (self:kalE(ELevel) + (0.2 + 0.03 * (ELevel-1))*TotalDmg)) or 0
   elseif spell == "R" then
     return 0
   end
-  dmg = ADDmg*(1-ArmorPercent)
+  dmg = math.floor(ADDmg)*(1-ArmorPercent)
   return math.floor(dmg)
 end
 
