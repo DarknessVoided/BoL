@@ -583,7 +583,7 @@ function CastW(Targ)
   if WReady() then CastSpell(_W) end
 end
 function CastE(Targ) 
-  local CastPosition, HitChance, Position = UPL:Predict(_E, Targ, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, Targ)
   if HitChance and HitChance >= 2 and EReady() then
     CCastSpell(_E, CastPosition.x, CastPosition.z)
   end

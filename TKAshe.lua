@@ -339,7 +339,7 @@ function CastQ(Targ)
   if QReady() then CastSpell(_Q, myHero:Attack(Targ)) end
 end
 function CastW(Targ) 
-  local CastPosition, HitChance, Position = UPL:Predict(_W, Targ, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, Targ)
   if HitChance and HitChance >= 2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
@@ -348,7 +348,7 @@ function CastE(Targ)
   if RReady() then CCastSpell(_E, CastPosition.x, CastPosition.z) end
 end
 function CastR(Targ) 
-  local CastPosition, HitChance, Position = UPL:Predict(_R, Targ, myHero)
+  local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, Targ)
   if HitChance and HitChance >= 2 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
   end
