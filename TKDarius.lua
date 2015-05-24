@@ -22,12 +22,12 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function OnLoad()
   Dari = nil
-  --if Update() then
-  --  return
-  --else
+  if Update() then
+    return
+  else
     Dari = Darius()
-  --  DelayAction(function() TopKekMsg("Loaded the latest version (v"..ServerVersion..")") end, 5)
-  --end
+    DelayAction(function() TopKekMsg("Loaded the latest version (v"..ServerVersion..")") end, 5)
+  end
 end
 
 function Update()
