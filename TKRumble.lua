@@ -239,9 +239,6 @@ function OnTick()
     		CastR(CastPosition, target)
     	end
       end
-      if Config.comboConfig.items then
-      	UseItems(target)
-      end
     end
     
     DoSomeUltLogic()

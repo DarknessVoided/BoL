@@ -90,19 +90,19 @@ function UPL:__init()
 end
 
 function UPL:Update()
-  local UPDATE_HOST = "raw.github.com"
-  local UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
-  local UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
-  local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
+  local UPL_UPDATE_HOST = "raw.github.com"
+  local UPL_UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
+  local UPL_UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
+  local UPL_UPDATE_URL = "https://"..UPL_UPDATE_HOST..UPL_UPDATE_PATH
   if UPLautoupdate then
-    local UPLServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
+    local UPLServerData = GetWebResult(UPL_UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
     if UPLServerData then
       UPLServerVersion = type(tonumber(UPLServerData)) == "number" and tonumber(UPLServerData) or nil
       if UPLServerVersion then
         if tonumber(UPLversion) < UPLServerVersion then
           self:Msg("New version available v"..UPLServerVersion)
           self:Msg("Updating, please don't press F9")
-          DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function () self:Msg("Successfully updated. ("..UPLversion.." => "..ServerVersion.."), press F9 twice to load the updated version") end) end, 3)
+          DelayAction(function() DownloadFile(UPL_UPDATE_URL, UPL_UPDATE_FILE_PATH, function () self:Msg("Successfully updated. ("..UPLversion.." => "..UPLServerVersion.."), press F9 twice to load the updated version") end) end, 3)
           return true
         end
       end
