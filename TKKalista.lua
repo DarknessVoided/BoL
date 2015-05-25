@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.53
+  local version = 1.54
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -151,6 +151,7 @@ function Kalista:Menu()
   self.Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   self.Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   self.Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  self.Config.kConfig:addParam("wj", "Wall Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
   self.Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   self.Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -161,6 +162,7 @@ function Kalista:Menu()
   self.Config.kConfig:permaShow("har")
   self.Config.kConfig:permaShow("lh")
   self.Config.kConfig:permaShow("lc")
+  self.Config.kConfig:permaShow("wj")
   self.Config:addSubMenu("Target Selector", "ts")
   self.Config.ts:addTS(self.ts)
 end
@@ -239,6 +241,11 @@ function Kalista:Tick()
 
   if self.Config.kConfig.lc and self.Config.farmConfig.lc.Q then
     self:LaneClear()
+  end
+
+  if self.Config.kConfig.wj then
+    CastSpell(_Q, mousePos.x, mousePos.z)
+    myHero:MoveTo(mousePos.x, mousePos.z)
   end
 
   self:DmgCalc()
