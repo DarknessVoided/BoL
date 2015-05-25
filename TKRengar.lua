@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.195
+local version = 0.196
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -520,21 +520,25 @@ end
 function OneShot()
   if GetDistance(osTarget, myHero) > myHero.range+myHero.boundingRadius then return end
   if Smite ~= nil and SReady() then CastSpell(Smite, osTarget) end
-  if myHero.mana == 5 then 
-    if Config.comboConfig.fero == 0 then
-      if GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
-        CastQ(osTarget)
+  if myHero.y > 120 then 
+    if myHero.mana == 5 then
+      if Config.comboConfig.fero == 0 then
+        if GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
+          CastQ(osTarget)
+        end
+      elseif Config.comboConfig.fero == 1 then
+        if GetDistance(osTarget, myHero) < data[1].range then
+          CastW(osTarget)
+        end
+      elseif Config.comboConfig.fero == 2 then
+        if GetDistance(osTarget, myHero) < data[2].range then
+          CastE(osTarget)
+        end
       end
-    elseif Config.comboConfig.fero == 1 then
-      if GetDistance(osTarget, myHero) < data[1].range then
-        CastW(osTarget)
-      end
-    elseif Config.comboConfig.fero == 2 then
-      if GetDistance(osTarget, myHero) < data[2].range then
-        CastE(osTarget)
-      end
+    else
+      CastW(osTarget)
     end
-  else
+  elseif myHero.y < 120 then
     if Config.comboConfig.Q and GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
       CastQ(osTarget)
     end
