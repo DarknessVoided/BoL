@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.04
+  local version = 0.05
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -319,10 +319,21 @@ function Darius:Combo()
     if myHero:CanUseSpell(_E) == READY then
       self:CastE(self.Target)
     end
-    if myHero:CanUseSpell(_R) == READY and self:GetDmg("R", self.Target, myHero) > self.Target.health+enemy.shield and self.Config.comboConfig.R then
+    if myHero:CanUseSpell(_R) == READY and not self:isInvinc(self.Target) and self:GetDmg("R", self.Target, myHero) > self.Target.health+enemy.shield and self.Config.comboConfig.R then
       self:CastR(self.Target)
     end
   end
+end
+
+function Darius:isInvinc(unit)
+  if unit == nil then return end
+  for i=1, unit.buffCount do
+   local buff = unit:getBuff(i)
+   if buff and buff.valid and buff.name then 
+    if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
+   end
+  end
+  return false
 end
 
 function Darius:Harrass()
@@ -368,7 +379,7 @@ function Darius:Killsteal()
     local wDmg = ((self:GetDmg("W", enemy, myHero)) or 0)   
     local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and not self:isInvinc(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
         self:CastR(enemy)
       elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 450) then
@@ -380,7 +391,7 @@ function Darius:Killsteal()
           self:CastE(enemy)
           DelayAction(function() self:CastW(enemy) end, 0.38)
         end
-      elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
+      elseif not self:isInvinc(enemy) and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
         self:CastR(enemy)
       elseif enemy.health+enemy.shield < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         self:CCastSpell(Ignite, enemy)
