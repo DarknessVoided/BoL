@@ -1,44 +1,45 @@
 --[[
 
-  _______            _  __    _      _____             _           
- |__   __|          | |/ /   | |    |  __ \           (_)          
-    | | ___  _ __   | ' / ___| | __ | |  | | __ _ _ __ _ _   _ ___ 
-    | |/ _ \| '_ \  |  < / _ \ |/ / | |  | |/ _` | '__| | | | / __|
-    | | (_) | |_) | | . \  __/   <  | |__| | (_| | |  | | |_| \__ \
-    |_|\___/| .__/  |_|\_\___|_|\_\ |_____/ \__,_|_|  |_|\__,_|___/
-            | |                                                    
-            |_|                                                                                                              
-
+  _______            _  __    _      ______ _    _         
+ |__   __|          | |/ /   | |    |  ____| |  | |        
+    | | ___  _ __   | ' / ___| | __ | |__  | | _| | _____  
+    | |/ _ \| '_ \  |  < / _ \ |/ / |  __| | |/ / |/ / _ \ 
+    | | (_) | |_) | | . \  __/   <  | |____|   <|   < (_) |
+    |_|\___/| .__/  |_|\_\___|_|\_\ |______|_|\_\_|\_\___/ 
+            | |                                            
+            |_|                                                                                             
+            
     By Nebelwolfi
 
 ]]--
 
 --[[ Script start ]]--
-if myHero.charName ~= "Darius" then return end
+if myHero.charName ~= "Ekko" then return end
 
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
+TKEkkoVersion = 0.1
 
 function OnLoad()
-  Dari = nil
+  Ek = nil
   if Update() then
     return
   else
-    Dari = Darius()
-    DelayAction(function() TopKekMsg("Loaded the latest version (v"..ServerVersion..")") end, 5)
+    Ek = Ekko()
+    DelayAction(function() TopKekMsg("Loaded the latest version (v"..TKEkkoVersion..")") end, 5)
   end
 end
 
 function Update()
-  local version = 0.05
+  local version = TKEkkoVersion
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
-  local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
-  local UPDATE_FILE_PATH = SCRIPT_PATH.."TKDarius.lua"
+  local UPDATE_PATH = "/nebelwolfi/BoL/master/TKEkko.lua".."?rand="..math.random(1,10000)
+  local UPDATE_FILE_PATH = SCRIPT_PATH.."TKEkko.lua"
   local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
   if AUTO_UPDATE then
-    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKDarius.version")
+    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKEkko.version")
     if ServerData then
       ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
       if ServerVersion then
@@ -53,62 +54,82 @@ function Update()
       TopKekMsg("Error downloading version info")
     end
   end
+  if FileExist(LIB_PATH .. "/UPL.lua") then
+    require("UPL")
+    _G.UPL = UPL()
+  else 
+    TopKekMsg("Downloading UPL, please don't press F9")
+    DelayAction(function() DownloadFile("https://"..UPDATE_HOST.."/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
+    return true
+  end
   return false
 end
 
-class "Darius"
+class "Ekko"
 
-function Darius:__init()
+function Ekko:__init()
   self:Vars()
   self:Menu()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
-  AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-  AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
-  AddRemoveBuffCallback(function(unit, buff) self:RemoveBuff(unit, buff) end)
 end
 
-function Darius:Vars()
+function Ekko:Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then self.Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then self.Ignite = SUMMONER_2 end
   self.QReady, self.WReady, self.EReady, self.RReady, self.IReady, self.SReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) end end
+  self.data = {
+    [_Q] = { speed = 1050, delay = 0.25, range = 1050, width = 50, collision = false, aoe = false, type = "linear"},
+    [_W] = { speed = math.huge, delay = 1, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
+    [_E] = { delay = 0.50, range = 600}}
   self.Target = nil
-  self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+  self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
   self.Mobs = minionManager(MINION_ALL, 2500, myHero, MINION_SORT_HEALTH_ASC)
-  self.stackTable = {}
   self.colorIndicatorReady    = ARGB(255, 0,   255, 0)
   self.colorIndicatorNotReady = ARGB(255, 255, 220, 0)
   self.colorInfo              = ARGB(255, 255, 50,  0)
   self.killTextTable = {}
-  self.lastWindup = 0
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
   end
 end
 
-function Darius:Menu()
-  self.Config = scriptConfig("Top Kek Darius", "TKDarius")
+function Ekko:Menu()
+  self.Config = scriptConfig("Top Kek Ekko", "TKEkko")
   
   self.Config:addSubMenu("Prediction Settings", "misc")
-  self.Config.misc:addParam("a", "Top Kek Hitchance", SCRIPT_PARAM_ONOFF, true)
+  UPL:AddSpell(_Q, self.data[_Q])
+  UPL:AddSpell(_W, self.data[_W])
+  UPL:AddToMenu(self.Config.misc)
+
+  self.Config:addSubMenu("Ult settings", "casual")
+  self.Config.casual:addParam("enabled", "Use Auto Ult", SCRIPT_PARAM_ONOFF, true)
+  self.Config.casual:addParam("saveme", "Ult for lifesave", SCRIPT_PARAM_ONOFF, true)
+  --Config.casual:addParam("killsomething", "Ult for max dmg in teamfight", SCRIPT_PARAM_ONOFF, true)
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
-  self.Config.comboConfig:addParam("R", "Use R to pentakill", SCRIPT_PARAM_ONOFF, true)
+  self.Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  self.Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  self.Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+
+  self.Config:addSubMenu("Harrass Settings", "harrConfig")
+  self.Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  self.Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  self.Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   
   self.Config:addSubMenu("Farm Settings", "farmConfig")
   self.Config.farmConfig:addSubMenu("Lane Clear/Jungle Clear", "lc")
   self.Config.farmConfig:addSubMenu("Last Hit", "lh")
   self.Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  self.Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  self.Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lc:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   self.Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  self.Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  self.Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lh:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
       
   self.Config:addSubMenu("Killsteal Settings", "KS")
   self.Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
   self.Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  self.Config.KS:addParam("killstealEW", "Use EW", SCRIPT_PARAM_ONOFF, true)
-  self.Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
+  self.Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
   if Ignite ~= nil then self.Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 
   self.Config:addSubMenu("Draw Settings", "Drawing")
@@ -140,31 +161,7 @@ function Darius:Menu()
   self.Config.ts:addTS(self.ts)
 end
 
-function Darius:ProcessSpell(unit, spell)  
-  if unit == myHero then
-    if string.find(string.lower(spell.name), "attack") then
-      self.lastWindup = GetInGameTimer()+spell.windUpTime
-    end
-  end
-end
-
-function Darius:UpdateBuff(unit, buff, stacks)
-   if buff.name == "dariushemo" then
-      self.stackTable[unit.networkID] = stacks
-   end
-end
- 
-function Darius:RemoveBuff(unit, buff)
-   if buff.name == "dariushemo" then
-      self.stackTable[unit.networkID] = nil
-   end
-end
-
-function Darius:GetStacks(unit)
-   return self.stackTable[unit.networkID] or 0
-end
-
-function Darius:SetupOrbwalk()
+function Ekko:SetupOrbwalk()
   if _G.AutoCarry then
     if _G.Reborn_Initialised then
       TopKekMsg("Found SAC: Reborn")
@@ -196,7 +193,7 @@ function Darius:SetupOrbwalk()
   end
 end
 
-function Darius:Tick()
+function Ekko:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
 
@@ -214,11 +211,13 @@ function Darius:Tick()
     end
   end
 
-  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.mana < myHero.mana) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.mana < myHero.mana)) then
-    self:LastHit()
+  if self.Config.casual.enabled then
+    self:DoSomeUltLogic()
   end
 
-  if (self.Config.kConfig.lc and self.Config.farmConfig.lc.mana < myHero.mana) then
+  self:LastHit()
+
+  if self.Config.kConfig.lc and self.Config.farmConfig.lc.Q then
     self:LaneClear()
   end
 
@@ -227,53 +226,43 @@ function Darius:Tick()
   if self.Config.ragequit then self.Config.ragequit=false self.Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
-function Darius:GetCustomTarget()
+function Ekko:DoSomeUltLogic()
+  if self.Config.casual.saveme and myHero.health <= myHero.maxHealth * 0.15 then
+    CastR()
+  end 
+end
+
+function Ekko:GetCustomTarget()
     self.ts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
     return self.ts.target
 end
 
-function Darius:LastHit()
-  if self.Config.farmConfig.lh.Q and myHero:CanUseSpell(_Q) == READY then
+function Ekko:LastHit()
+  if myHero:CanUseSpell(_Q) == READY and ((self.Config.kConfig.lh and self.Config.farmConfig.lh.Q) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q)) then
     for minion,winion in pairs(self.Mobs.objects) do
-      local MinionDmg1 = self:GetDmg("Q1", winion, myHero)
-      local MinionDmg2 = self:GetDmg("Q", winion, myHero)
-      if MinionDmg1 and MinionDmg1 >= winion.health+enemy.shield and ValidTarget(winion, 450) then
-        self:CastQ(target)
-      elseif MinionDmg2 and MinionDmg2 >= winion.health+enemy.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
-        self:CastQ1()
+      local QMinionDmg = self:GetDmg("Q", winion, myHero)
+      if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
+        self:CastQ(unit)
       end
     end
   end
-  if self.Config.farmConfig.lh.W and myHero:CanUseSpell(_W) == READY then
+  if myHero:CanUseSpell(_E) == READY and ((self.Config.kConfig.lh and self.Config.farmConfig.lh.E) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.E)) then
     for minion,winion in pairs(self.Mobs.objects) do
-      local MinionDmg = self:GetDmg("W", winion, myHero)
-      if MinionDmg and MinionDmg >= winion.health+enemy.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
-        self:CastW(target)
+      local MinionDmg = self:GetDmg("E", winion, myHero)
+      if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, self.data[2].range+myHero.range+myHero.boundingRadius) and GetDistance(winion) < self.data[2].range+myHero.range+myHero.boundingRadius then
+        self:CastE(unit)
       end
     end
   end
 end
 
-function Darius:LaneClear()
-  if self.Config.farmConfig.lc.Q and myHero:CanUseSpell(_Q) == READY then
-    BestPos, BestHit = GetQFarmPosition()
-    if BestHit > 1 and GetDistance(BestPos) < 150 then 
-      self:CastQ1()
-    end
-  end
-  if self.Config.farmConfig.lc.W and myHero:CanUseSpell(_W) == READY then
-    local minionTarget = nil
-    for i, minion in pairs(minionManager(MINION_ENEMY, 250, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      if minionTarget == nil then 
-        minionTarget = minion
-      elseif minionTarget.health+enemy.shield >= minion.health+enemy.shield and ValidTarget(minion, 250) then
-        minionTarget = minion
-      end
-    end
-    if minionTarget ~= nil then
-      self:CastW(minionTarget)
+function Ekko:LaneClear()
+  if myHero:CanUseSpell(_Q) then
+    pos, hit = GetQFarmPosition()
+    if hit >= 1 then
+      self:CastQ(pos)
     end
   end
 end
@@ -283,7 +272,7 @@ function GetQFarmPosition()
   local BestHit = 0
   local objects = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects
   for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, 100, 450, objects)
+    local hit = CountObjectsNearPos(object.pos or object, 1050, 150, objects)
     if hit > BestHit then
       BestHit = hit
       BestPos = Vector(object)
@@ -295,124 +284,83 @@ function GetQFarmPosition()
   return BestPos, BestHit
 end
 
-function CountObjectsNearPos(pos, range, radius, objects)
-  local n = 0
-  for i, object in ipairs(objects) do
-    if GetDistance(pos, object) <= radius then
-      n = n + 1
-    end
-  end
-  return n
-end
-
-function Darius:Combo()
-  if self.lastWindup+0.25 > GetInGameTimer() then 
-    if myHero:CanUseSpell(_W) == READY then
-      self:CastW(self.Target)
-    end
-  else
-    if myHero:CanUseSpell(_Q) == READY and GetDistance(self.Target) >= 250 then
-      self:CastQ(self.Target)
-    elseif myHero:CanUseSpell(_Q) == READY and GetDistance(self.Target) < 250 then
-      self:CastQ1()
-    end
-    if myHero:CanUseSpell(_E) == READY then
-      self:CastE(self.Target)
-    end
-    if myHero:CanUseSpell(_R) == READY and not self:isInvinc(self.Target) and self:GetDmg("R", self.Target, myHero) > self.Target.health+enemy.shield and self.Config.comboConfig.R then
-      self:CastR(self.Target)
-    end
-  end
-end
-
-function Darius:isInvinc(unit)
-  if unit == nil then return end
-  for i=1, unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name then 
-    if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
-   end
-  end
-  return false
-end
-
-function Darius:Harrass()
-  if myHero:CanUseSpell(_Q) == READY then
+function Ekko:Combo()
+  if self.Config.comboConfig.Q and ValidTarget(self.Target, self.data[0].range) then
     self:CastQ(self.Target)
   end
-  if myHero:CanUseSpell(_W) == READY then
-    self:CastW(self.Target)
+  if self.Config.comboConfig.W and ValidTarget(self.Target, self.data[1].range) then
+    local castPos = Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
+    castPos = castPos * GetDistance(self.Target)/2
+    self:CastW(castPos)
+  end
+  if self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+myHero.range+myHero.boundingRadius) then
+    self:CastE(self.Target)
   end
 end
 
-function Darius:CastQ(target) 
-  if target == nil then return end
-  local dist = target.ms < 350 and 0 or ((Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and self.Config.misc.a) and 15 or 0)
-  if GetDistance(target) < 450-dist and GetDistance(target) >= 250 then
-    self:CCastSpell(_Q)
+function Ekko:Harrass()
+  if self.Config.harrConfig.Q and ValidTarget(self.Target, self.data[0].range) then
+    self:CastQ(self.Target)
   end
-end
-function Darius:CastQ1() 
-  self:CCastSpell(_Q)
-end
-function Darius:CastW(target) 
-  if target == nil then return end
-  if GetDistance(target) < myHero.range+myHero.boundingRadius then
-    self:CCastSpell(_W, myHero:Attack(target))
+  if self.Config.harrConfig.W and ValidTarget(self.Target, self.data[1].range) then
+    local castPos = Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
+    castPos = castPos * GetDistance(self.Target)/2
+    self:CastW(castPos)
   end
-end
-function Darius:CastE(target) 
-  if target == nil then return end
-  local dist = target.ms < 350 and 0 or ((Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and self.Config.misc.a) and 15 or 0)
-  if GetDistance(target) < 550-dist then
-    self:CCastSpell(_E, target.x, target.z)
+  if self.Config.harrConfig.E and ValidTarget(self.Target, self.data[2].range+myHero.range+myHero.boundingRadius) then
+    self:CastE(self.Target)
   end
-end
-function Darius:CastR(target) 
-  if target == nil then return end
-  self:CCastSpell(_R, target)
 end
 
-function Darius:Killsteal()
-  for k,enemy in pairs(GetEnemyHeroes()) do
+function Ekko:CastQ(Targ) 
+  if Targ == nil then return end
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, Targ)
+  if HitChance and HitChance >= 1 then
+    self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
+  end
+end
+function Ekko:CastW(Targ) 
+  if Targ == nil then return end
+  self:CCastSpell(_W, Targ.x, Targ.z)
+end
+function Ekko:CastE(Targ) 
+  if Targ == nil then return end
+  self:CCastSpell(_E, Targ.x, Targ.z)
+end
+function Ekko:CastR() 
+  self:CCastSpell(_R)
+end
+
+function Ekko:Killsteal()
+  for k,v in pairs(GetEnemyHeroes()) do
+    local enemy= v
     local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0)  
-    local wDmg = ((self:GetDmg("W", enemy, myHero)) or 0)   
-    local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
+    local eDmg = ((self:GetDmg("E", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
-    if ValidTarget(enemy) and not self:isInvinc(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
-        self:CastR(enemy)
-      elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 450) then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, self.data[0].range) then
         self:CastQ(enemy)
-      elseif myHero:CanUseSpell(_W) and enemy.health+enemy.shield < wDmg and self.Config.KS.killstealW then
-        if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
-          self:CastW(enemy)
-        elseif ValidTarget(enemy, 550) then
-          self:CastE(enemy)
-          DelayAction(function() self:CastW(enemy) end, 0.38)
-        end
-      elseif not self:isInvinc(enemy) and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 450) then
-        self:CastR(enemy)
-      elseif enemy.health+enemy.shield < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
+      elseif myHero:CanUseSpell(_E) and enemy.health < eDmg and self.Config.KS.killstealE and ValidTarget(enemy, self.data[2].range+myHero.range+myHero.boundingRadius) then
+        self:CastE(enemy)
+      elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         self:CCastSpell(Ignite, enemy)
       end
     end
   end
 end
 
-function Darius:Draw()
+function Ekko:Draw()
   if self.Config.Drawing.QRange and myHero:CanUseSpell(_Q) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 450, ARGB(255, 155, 155, 155))
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 250, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[0].range+self.data[1].width/4, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.WRange and myHero:CanUseSpell(_W) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[1].range+self.data[1].width/2, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.ERange and myHero:CanUseSpell(_E) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 550, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[2].range, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.RRange and myHero:CanUseSpell(_R) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 450, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 1500, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.dmgCalc then
     for i,k in pairs(GetEnemyHeroes()) do
@@ -431,33 +379,48 @@ function Darius:Draw()
   end 
 end
 
-function Darius:DmgCalc()
+function Ekko:DmgCalc()
   if not self.Config.Drawing.dmgCalc then return end
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy.visible then
+      self.killTextTable[enemy.networkID].indicatorText = ""
       local damageAA = self:GetDmg("AD", enemy, myHero)
       local damageQ  = self:GetDmg("Q", enemy, myHero)
       local damageW  = self:GetDmg("W", enemy, myHero)
+      local damageE  = self:GetDmg("E", enemy, myHero)
       local damageR  = self:GetDmg("R", enemy, myHero)
       local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
-      if enemy.health+enemy.shield < damageR then
-          self.killTextTable[enemy.networkID].indicatorText = "R Kill"
-          self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
+      local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
+      if enemy.health < damageQ then
+        self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."Q"
+        self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_Q)
       end
-      if not (enemy.health+enemy.shield > damageR) then
-        local neededAA = math.ceil((enemy.health+enemy.shield-damageR) / (damageAA+damageR))
-        self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA Kill"
+      if enemy.health < damageE then
+        self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."E"
+        self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
+      end
+      if enemy.health < damageR then
+        self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."R"
+        self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
+      end
+      if enemy.health < damageQ+damageE+damageR then
+        self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."Kill"
+        self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
+      end
+      if myHero:CanUseSpell(_E) and not (enemy.health > damageE) then
+        local neededAA = math.ceil((enemy.health-damageQ-damageE-damageR) / (damageAA+damageP/3+damageW))
+        self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
       end
 
       local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
-      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health+enemy.shield / enemyDamageAA)   
+      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
       if enemyNeededAA ~= 0 then         
         self.killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
       end
     end
   end
 end
-function Darius:CCastSpell(Spell, xPos, zPos)
+function Ekko:CCastSpell(Spell, xPos, zPos)
   if not xPos and not zPos then
     if VIP_USER and self.Config.misc.pc then
         Packet("S_CAST", {spellId = Spell}):send()
@@ -480,7 +443,7 @@ function Darius:CCastSpell(Spell, xPos, zPos)
   end
 end
 
-function Darius:GetDmg(spell, target, source)
+function Ekko:GetDmg(spell, target, source)
   if target == nil or source == nil then
     return
   end
@@ -496,7 +459,7 @@ function Darius:GetDmg(spell, target, source)
   local Armor        = target.armor*ArmorPenPercent-ArmorPen
   local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
   local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-  local MagicArmorPercent = MagicArmor/(100+MagicArmor)
+  local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
   if source ~= myHero then
@@ -506,23 +469,22 @@ function Darius:GetDmg(spell, target, source)
     return 50+20*Level/2
   elseif spell == "AD" then
     ADDmg = TotalDmg
+    APDmg = 15 + 12 * Level + 0.7*AP
   elseif spell == "Q" then
-    ADDmg = 35*QLevel+35+0.7*TotalDmg
-  elseif spell == "Q1" then
-    ADDmg = (35*QLevel+35+0.7*TotalDmg)*1.5
+    APDmg = 45 + 15 * QLevel + 0.2*AP
+  elseif spell == "Q2" then
+    APDmg = 45 + 15 * QLevel + ((QLevel%2==0 and QLevel>0) and 10 or 0) + 0.6*AP
   elseif spell == "W" then
-    ADDmg = TotalDmg+0.2*WLevel*TotalDmg
+    APDmg = WLevel > 0 and (target.maxHealth-target.health)*(0.05+math.floor(AP/45)/100)
   elseif spell == "E" then
-    return 0
+    APDmg = 20 + 30 * ELevel + 0.2*AP
   elseif spell == "R" then
-    stacks = self:GetStacks(target)
-    dmg    = math.floor(70+90*RLevel+0.75*myHero.addDamage+0.2*stacks*(70+90*RLevel+0.75*myHero.addDamage))
-    return dmg-15
+    APDmg = 50 + 150 * RLevel + 1.3*AP
   end
-  dmg = ADDmg*(1-ArmorPercent)
+  dmg = math.floor(ADDmg)*(1-ArmorPercent)+math.floor(APDmg)*(1-MagicArmorPercent)
   return math.floor(dmg)
 end
-function Darius:DrawLFC(x, y, z, radius, color)
+function Ekko:DrawLFC(x, y, z, radius, color)
     if self.Config.Drawing.lfc then
         LagFree(x, y, z, radius, 1, color, self.Config.Drawing.lfcq)
     else
@@ -546,7 +508,7 @@ function LagFree(x, y, z, radius, width, color, quality)
     end
 end
 function TopKekMsg(msg) 
-  print("<font color=\"#6699ff\"><b>[Top Kek Series]: Darius - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+  print("<font color=\"#6699ff\"><b>[Top Kek Series]: Ekko - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
 end
 ---------------------------------------
 
