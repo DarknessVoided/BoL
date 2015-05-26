@@ -305,7 +305,7 @@ function AutoupdaterMsg(msg)
     print("<font color=\"#6699ff\"><b>[Aimbot]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
 end
 function Update()
-    local version = 1.12
+    local version = 1.13
     local AUTO_UPDATE = true
     local UPDATE_HOST = "raw.github.com"
     local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -394,12 +394,17 @@ function OnLoad()
   if data[_R] ~= nil then
     UPL:AddSpell(_R, data[_R])
   end
+
+  Config:addParam("ispermashow", "Streaming Mode (needs reload)", SCRIPT_PARAM_ONOFF, true)
   
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
   Config:addParam("off", "Aimbot disabled", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
+
+  if Config.ispermashow then
+    Config:permaShow("tog")
+    Config:permaShow("off")
+  end
   
-  Config:permaShow("tog")
-  Config:permaShow("off")
   if toAim[0] then QSel = TargetSelector(TARGET_NEAR_MOUSE, data[0].range, DAMAGE_MAGIC, true) end
   if toAim[1] then WSel = TargetSelector(TARGET_NEAR_MOUSE, data[1].range, DAMAGE_MAGIC, true) end
   if toAim[2] then ESel = TargetSelector(TARGET_NEAR_MOUSE, data[2].range, DAMAGE_MAGIC, true) end
