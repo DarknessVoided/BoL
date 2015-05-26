@@ -88,9 +88,9 @@ local enemyTable = {}
 local enemyCount = 0
 local data = {
 	[_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0.250, range = 825, width = 225, collision = true, aoe = true, type = "circular"},
+	[_W] = { speed = math.huge, delay = 0.250, range = 0, width = 225, collision = true, aoe = true, type = "circular"},
 	[_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = true, aoe = false, type = "targeted"},
-	[_R] = { speed = math.huge, delay = 0.250, range = 825, width = 410, collision = false, aoe = true, type = "circular"}
+	[_R] = { speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular"}
 }
 local Ball = myHero
 
@@ -448,7 +448,7 @@ end
 
 function CastW(unit)
   if not WReady() or unit == nil or myHero.dead or Ball == nil then return end
-  local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
+  local CastPosition, HitChance, Position = UPL:Predict(_W, Ball, unit)
   if HitChance >= 1.5 and GetDistance(unit, Ball) < data[1].width then  
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end  
@@ -461,7 +461,7 @@ end
 
 function CastR(unit)
   if not RReady() or unit == nil or myHero.dead or Ball == nil then return end
-  local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
+  local CastPosition, HitChance, Position = UPL:Predict(_R, Ball, unit)
   if HitChance >= 1.5 and GetDistance(unit, Ball) < data[3].width then  
     CCastSpell(_R, CastPosition.x, CastPosition.z)
   end  
