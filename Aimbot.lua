@@ -395,12 +395,12 @@ function OnLoad()
     UPL:AddSpell(_R, data[_R])
   end
 
-  Config:addParam("ispermashow", "Streaming Mode (needs reload)", SCRIPT_PARAM_ONOFF, true)
+  Config:addParam("isstream", "Streaming Mode (needs reload)", SCRIPT_PARAM_ONOFF, false)
   
   Config:addParam("tog", "Aimbot on/off", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
   Config:addParam("off", "Aimbot disabled", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
 
-  if Config.ispermashow then
+  if Config.isstream then
     Config:permaShow("tog")
     Config:permaShow("off")
   end
