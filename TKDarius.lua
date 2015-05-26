@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.05
+  local version = 0.06
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -239,9 +239,9 @@ function Darius:LastHit()
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg1 = self:GetDmg("Q1", winion, myHero)
       local MinionDmg2 = self:GetDmg("Q", winion, myHero)
-      if MinionDmg1 and MinionDmg1 >= winion.health+enemy.shield and ValidTarget(winion, 450) then
+      if MinionDmg1 and MinionDmg1 >= winion.health+winion.shield and ValidTarget(winion, 450) then
         self:CastQ(target)
-      elseif MinionDmg2 and MinionDmg2 >= winion.health+enemy.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
+      elseif MinionDmg2 and MinionDmg2 >= winion.health+winion.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
         self:CastQ1()
       end
     end
@@ -249,7 +249,7 @@ function Darius:LastHit()
   if self.Config.farmConfig.lh.W and myHero:CanUseSpell(_W) == READY then
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg = self:GetDmg("W", winion, myHero)
-      if MinionDmg and MinionDmg >= winion.health+enemy.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
+      if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
         self:CastW(target)
       end
     end
@@ -268,7 +268,7 @@ function Darius:LaneClear()
     for i, minion in pairs(minionManager(MINION_ENEMY, 250, myHero, MINION_SORT_HEALTH_ASC).objects) do
       if minionTarget == nil then 
         minionTarget = minion
-      elseif minionTarget.health+enemy.shield >= minion.health+enemy.shield and ValidTarget(minion, 250) then
+      elseif minionTarget.health+minionTarget.shield >= minion.health+minion.shield and ValidTarget(minion, 250) then
         minionTarget = minion
       end
     end
@@ -319,7 +319,7 @@ function Darius:Combo()
     if myHero:CanUseSpell(_E) == READY then
       self:CastE(self.Target)
     end
-    if myHero:CanUseSpell(_R) == READY and not self:isInvinc(self.Target) and self:GetDmg("R", self.Target, myHero) > self.Target.health+enemy.shield and self.Config.comboConfig.R then
+    if myHero:CanUseSpell(_R) == READY and not self:isInvinc(self.Target) and self:GetDmg("R", self.Target, myHero) > self.Target.health+self.Target.shield and self.Config.comboConfig.R then
       self:CastR(self.Target)
     end
   end
