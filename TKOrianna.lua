@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.063
+local version = 0.07
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
@@ -168,9 +168,9 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
-  sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
-  Config:addSubMenu("Target Selector", "sts")
-  sts:AddToMenu(Config.sts)
+  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+  self.Config:addSubMenu("Target Selector", "sts")
+  self.Config.sts:addTS(self.sts)
 
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
@@ -222,6 +222,10 @@ function OnTick()
   	local target
   	target = GetCustomTarget()
     
+    if Ball and Ball ~= nil and (GetDistance(Ball) < 125 or GetDistance(Ball) > 1250) then
+      Ball = myHero
+    end
+
     zhg()
 
     if Config.rConfig.r then
@@ -378,24 +382,23 @@ function Combo()
   	CastW(target)
   end
   if EReady() and Config.comboConfig.E then
-  	CastE(myhero)
+  	CastE(myHero)
   end
-  if RReady() and Config.comboConfig.R then
+  if RReady() and target.health < (GetDmg("R", target, myHero)+GetDmg("W", target, myHero)+GetDmg("AD", target, myHero)) and Config.comboConfig.R then
   	CastR(target)
   end
 end
 
 function Harrass()
   target = GetCustomTarget()
-  if target == nil then return end
   if QReady() and Config.harrConfig.Q and Config.harrConfig.mana <= myHero.mana then
   	CastQ(target)
   end
   if WReady() and Config.harrConfig.W and Config.harrConfig.mana <= myHero.mana then
   	CastW(target)
   end
-  if EReady() and Config.harrConfig.E and Config.harrConfig.mana <= myHero.mana then
-  	CastE(myhero)
+  if EReady() and Config.harrConfig.E and Config.harrConfig.mana <= myHero.mana and Ball ~= nil and GetDistance(Ball) > 100 then
+  	CastE(myHero)
   end
 end
 
@@ -418,7 +421,7 @@ function Killsteal()
 			elseif enemy.health < wDmg and Config.KS.killstealW and ValidTarget(enemy, data[1].range) then
 				CastW(enemy)
 			elseif enemy.health < eDmg and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
-				CastE(enemy)
+				--CastE(enemy)
 			elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
 				CastR(enemy)
 			elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
@@ -439,7 +442,7 @@ function zhg()
 end
 
 function CastQ(unit)
-  if not QReady() or unit == nil or myHero.dead or recall or Ball == nil then return end  
+  if not QReady() or unit == nil or myHero.dead or Ball == nil then return end  
   local CastPosition, HitChance, Position = UPL:Predict(_Q, Ball, unit)
   if HitChance >= 1.5 then  
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
@@ -455,8 +458,8 @@ function CastW(unit)
 end
 
 function CastE(unit)
-  if myHero.dead or Ball == nil then return end
-    CCastSpell(_E, unit) -- soon(tm)
+  if not EReady() or myHero.dead then return end
+  CastSpell(_E, unit) -- soon(tm)
 end
 
 function CastR(unit)
@@ -492,9 +495,10 @@ function CCastSpell(Spell, xPos, zPos)
 end
 
 function GetCustomTarget()
+    sts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts:GetTarget(data[1].range)
+    return sts.target
 end
 
 function OnCreateObj(object)
@@ -524,7 +528,10 @@ function OnDraw()
 	end
   	if Ball ~= nil then  
 		if Config.Drawing.Ball and Ball ~= nil then
-		  DrawCircle(Ball.x, Ball.y, Ball.z, data[0].width, 0x111111)
+      if GetDistance(Ball) > 100 then
+		    DrawCircle(Ball.x-8, Ball.y, Ball.z+87, data[0].width-50, 0x111111)
+        DrawLFC(Ball.x-8, Ball.y, Ball.z+87, data[0].width-50, ARGB(255, 75, 0, 230), 4)
+      end
 		end
   	end
 	if Config.Drawing.DmgCalcs then
@@ -664,4 +671,33 @@ function DmgCalculations()
             enemyTable[i].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
         end
     end
+end
+function DrawLFC(x, y, z, radius, color, amount)
+  for i=1, amount do
+    LagFree(x, y, z, radius, 3, color, 3, (math.pi/(amount-1))*(i-1))
+  end 
+  LagFree(x, y, z, radius, 3, color, 3*amount, 0)
+end
+function LagFree(x, y, z, radius, width, color, quality, degree)
+    local radius = radius or 300
+    local screenMin = WorldToScreen(D3DXVECTOR3(x - radius, y, z + radius))
+    if OnScreen({x = screenMin.x + 200, y = screenMin.y + 200}, {x = screenMin.x + 200, y = screenMin.y + 200}) then
+        radius = radius*.92
+        local quality = quality and 2 * math.pi / quality or 2 * math.pi / math.floor(radius / 10)
+        local width = width and width or 1
+        local a = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(degree), y, z - radius * math.sin(degree)))
+        for theta = quality, 2 * math.pi + quality, quality do
+            local b = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(theta+degree), y, z - radius * math.sin(theta+degree)))
+            DrawLine(a.x, a.y, b.x, b.y, width, color)
+            a = b
+        end
+    end
+end
+---------------------------------------
+
+function mlog(x)
+  return -math.log(x)/math.log(10)
+end
+function TARGB(colorTable)
+    return ARGB(colorTable[1], colorTable[2], colorTable[3], colorTable[4])
 end
