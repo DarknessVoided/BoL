@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.06
+  local version = 0.07
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -89,7 +89,8 @@ function Darius:Menu()
   self.Config = scriptConfig("Top Kek Darius", "TKDarius")
   
   self.Config:addSubMenu("Prediction Settings", "misc")
-  self.Config.misc:addParam("a", "Top Kek Hitchance", SCRIPT_PARAM_ONOFF, true)
+  self.Config.misc:addParam("a", "Top Kek E Hitchance", SCRIPT_PARAM_ONOFF, true)
+  self.Config.misc:addParam("E", "E range", SCRIPT_PARAM_SLICE, 550, 400, 550, mlog(10)
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
   self.Config.comboConfig:addParam("R", "Use R to pentakill", SCRIPT_PARAM_ONOFF, true)
@@ -364,7 +365,7 @@ end
 function Darius:CastE(target) 
   if target == nil then return end
   local dist = target.ms < 350 and 0 or ((Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and self.Config.misc.a) and 15 or 0)
-  if GetDistance(target) < 550-dist then
+  if GetDistance(target) < self.Config.misc.E-dist then
     self:CCastSpell(_E, target.x, target.z)
   end
 end
@@ -387,7 +388,7 @@ function Darius:Killsteal()
       elseif myHero:CanUseSpell(_W) and enemy.health+enemy.shield < wDmg and self.Config.KS.killstealW then
         if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
           self:CastW(enemy)
-        elseif ValidTarget(enemy, 550) then
+        elseif ValidTarget(enemy, self.Config.misc.E) then
           self:CastE(enemy)
           DelayAction(function() self:CastW(enemy) end, 0.38)
         end

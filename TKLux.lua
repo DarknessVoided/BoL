@@ -78,7 +78,7 @@ local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
   [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
-  [_R] = { speed = 25000, delay = 1, range = 3600, width = 250, collision = false, type = "linear" }
+  [_R] = { speed = math.huge, delay = 1, range = 3600, width = 200, collision = false, type = "linear" }
 }
 
 function OnLoad()
