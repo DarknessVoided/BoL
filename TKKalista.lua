@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.54
+  local version = 1.55
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -256,19 +256,20 @@ end
 function Kalista:KillSomethingWithE()
   if myHero:CanUseSpell(_E) then
     local killableCounter = 0
+    local killableCounterJ = 0
     for minion,winion in pairs(self.Mobs.objects) do
       local EMinionDmg = self:GetDmg("E", winion, myHero)   
       if EMinionDmg > winion.health and GetDistance(winion) < self.data[2].range then
         if (string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak")))) then
           if not string.find(winion.charName, "Mini") then       
-            killableCounter = killableCounter +1
+            killableCounterJ = killableCounterJ +1
           end
         else      
           killableCounter = killableCounter +1
         end
       end
     end
-    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and self.Config.kConfig.lc and killableCounter >= 1) then
+    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and self.Config.kConfig.lc and killableCounterJ >= 1) then
       self:CastE()
     end
   end
