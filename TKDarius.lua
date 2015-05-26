@@ -90,7 +90,7 @@ function Darius:Menu()
   
   self.Config:addSubMenu("Prediction Settings", "misc")
   self.Config.misc:addParam("a", "Top Kek E Hitchance", SCRIPT_PARAM_ONOFF, true)
-  self.Config.misc:addParam("E", "E range", SCRIPT_PARAM_SLICE, 550, 400, 550, mlog(10)
+  self.Config.misc:addParam("E", "E range", SCRIPT_PARAM_SLICE, 550, 400, 550, mlog(10))
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
   self.Config.comboConfig:addParam("R", "Use R to pentakill", SCRIPT_PARAM_ONOFF, true)
