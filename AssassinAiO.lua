@@ -70,7 +70,7 @@ _G.Champs = {
 		[_Q] = { range = 675, type = "targeted"},
 		[_W] = { range = 375, type = "notarget"},
 		[_E] = { range = 700, type = "targeted"},
-		[_R] = { range = 550, type = "notarget"}
+		[_R] = { range = 350, type = "notarget"}
     },
 	["Khazix"] = {
 		[_Q] = { range = 325, type = "targeted"},
