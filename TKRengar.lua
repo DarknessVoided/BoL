@@ -225,7 +225,7 @@ function OnTick()
       if ultOn and not oneShot then 
         osTarget = Target
       end
-      if ultOn or (oneShot and oneShotTimer+5 < GetInGameTimer()) then 
+      if ultOn or (oneShot and oneShotTimer+5 > GetInGameTimer()) then 
         oneShot = true
         OneShot()
       else
@@ -561,6 +561,7 @@ end
 function OnDeleteObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     ultOn = false
+    oneShotTimer = GetInGameTimer()
   end
 end
 
