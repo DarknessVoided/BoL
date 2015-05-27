@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.197
+local version = 0.2
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -78,7 +78,7 @@ local ultOn, oneShot = false, false
 local osTarget = nil
 data = {
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
-    [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = false, aoe = false, type = "linear"},
+    [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = true, aoe = false, type = "linear"},
     [_R] = { range = 4000, type = "notarget"}
     }
 
@@ -225,7 +225,7 @@ function OnTick()
       if ultOn and not oneShot then 
         osTarget = Target
       end
-      if ultOn or oneShot then 
+      if ultOn or (oneShot and oneShotTimer+5 < GetInGameTimer()) then 
         oneShot = true
         OneShot()
       else
@@ -549,7 +549,7 @@ function OneShot()
     end
   end
   if Ignite ~= nil and IReady() then CastSpell(Ignite, osTarget) end
-  if osTarget.dead then oneShot = false end
+  if osTarget.dead or not osTarget.visible or GetDistance(osTarget) > 600 then oneShot = false end
 end
 
 function OnCreateObj(object)
