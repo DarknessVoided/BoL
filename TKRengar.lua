@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.21
+local version = 0.22
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -212,6 +212,10 @@ function OnTick()
 
   DmgCalculations()
 
+  if oneShot == true and oneShotTimer+5 < GetInGameTimer() then
+    oneShot = false
+  end
+
   if Target ~= nil then
     if Config.KS.enableKS then 
       Killsteal()
@@ -225,8 +229,7 @@ function OnTick()
       if ultOn and not oneShot then 
         osTarget = Target
       end
-      if ultOn or (oneShot and oneShotTimer+5 > GetInGameTimer()) then 
-        oneShot = true
+      if ultOn or oneShot then 
         OneShot()
       else
         Combo()
@@ -561,6 +564,7 @@ end
 function OnDeleteObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     ultOn = false
+    oneShot = true
     oneShotTimer = GetInGameTimer()
   end
 end
