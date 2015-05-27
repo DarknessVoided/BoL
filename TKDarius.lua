@@ -127,7 +127,6 @@ function Darius:Menu()
   self.Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   self.Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   self.Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-  self.Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   self.Config:addSubMenu("Orbwalk Settings", "oConfig")
   self:SetupOrbwalk()
@@ -224,8 +223,6 @@ function Darius:Tick()
   end
 
   self:DmgCalc()
-
-  if self.Config.ragequit then self.Config.ragequit=false self.Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function Darius:GetCustomTarget()

@@ -147,7 +147,6 @@ function OnLoad()
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-  Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
   Config.oConfig:addParam("move", "Move to mouse", SCRIPT_PARAM_ONOFF, true)
@@ -200,8 +199,6 @@ function OnTick()
   if Config.kConfig.lc and Config.farmConfig.lc.mana then
     LaneClear()
   end
-
-  if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
 end
 
 function Combo(target)

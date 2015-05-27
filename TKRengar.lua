@@ -145,7 +145,6 @@ function OnLoad()
   Config.kConfig:addParam("stop", "Stop farm at 5 stacks", SCRIPT_PARAM_ONOFF, true, string.byte("N"))
   Config.kConfig:addParam("t", "Toggle 5 stack useage", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
   Config.kConfig:addParam("qqq", "Will only stop farming if enemy in range", SCRIPT_PARAM_INFO,"")
-  Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
   SetupOrbwalk()
@@ -260,8 +259,6 @@ function OnTick()
     Config.comboConfig.fero = Config.comboConfig.fero + 1
     if Config.comboConfig.fero > 2 then Config.comboConfig.fero = 0 end
   end
-
-  if Config.ragequit then Config.ragequit=false end --trololo ty Hirschmilch Target=myHero.isWindingUp
 end
 
 function OnSendPacket(p)

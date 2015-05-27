@@ -127,7 +127,6 @@ function OnLoad()
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lc", "Last Hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   if VIP_USER then Config.kConfig:addParam("r", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T")) end
-  Config:addParam("ragequit",  "Ragequit", SCRIPT_PARAM_ONOFF, false) 
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
   SetupOrbwalk()
@@ -190,7 +189,6 @@ function OnTick()
   	local target
   	target = GetCustomTarget()
     
-    if Config.ragequit then Config.ragequit=false Target=myHero.isWindingUp end --trololo ty Hirschmilch
     if Config.casual.leW and WReady() and not isRecalling(myHero) then 
     	if myHero.mana < 40 then
     		CastSpell(_W)
