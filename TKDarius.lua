@@ -233,7 +233,7 @@ function Darius:GetCustomTarget()
 end
 
 function Darius:LastHit()
-  if self.Config.farmConfig.lh.Q and myHero:CanUseSpell(_Q) == READY then
+  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.Q) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q)) and myHero:CanUseSpell(_Q) == READY then
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg1 = self:GetDmg("Q1", winion, myHero)
       local MinionDmg2 = self:GetDmg("Q", winion, myHero)
@@ -244,7 +244,7 @@ function Darius:LastHit()
       end
     end
   end
-  if self.Config.farmConfig.lh.W and myHero:CanUseSpell(_W) == READY then
+  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.W) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.W)) and myHero:CanUseSpell(_W) == READY then
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg = self:GetDmg("W", winion, myHero)
       if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then

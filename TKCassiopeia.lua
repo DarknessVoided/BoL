@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.046
+local version = 0.047
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -191,7 +191,11 @@ function SetupOrbwalk()
   elseif _G.MMA_Loaded then
     MMALoaded = true
     TopKekMsg("Found MMA")
-      Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
+    Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
+  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+    require "Big Fat Orbwalker"
+    Config.oConfig:addParam("Info", "Big Fat Orbwalker detected!", SCRIPT_PARAM_INFO, "")
+    AddLoadCallback(function() BFWalkLoader() end)
   elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
     require 'SxOrbWalk'
     SxOrb = SxOrbWalk()

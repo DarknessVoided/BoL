@@ -1,45 +1,44 @@
 --[[
 
-  _______            _  __    _      ______ _    _         
- |__   __|          | |/ /   | |    |  ____| |  | |        
-    | | ___  _ __   | ' / ___| | __ | |__  | | _| | _____  
-    | |/ _ \| '_ \  |  < / _ \ |/ / |  __| | |/ / |/ / _ \ 
-    | | (_) | |_) | | . \  __/   <  | |____|   <|   < (_) |
-    |_|\___/| .__/  |_|\_\___|_|\_\ |______|_|\_\_|\_\___/ 
-            | |                                            
-            |_|                                                                                             
-            
+  _______            _  __    _      _                _____ _       
+ |__   __|          | |/ /   | |    | |              / ____(_)      
+    | | ___  _ __   | ' / ___| | __ | |     ___  ___| (___  _ _ __  
+    | |/ _ \| '_ \  |  < / _ \ |/ / | |    / _ \/ _ \\___ \| | '_ \ 
+    | | (_) | |_) | | . \  __/   <  | |___|  __/  __/____) | | | | |
+    |_|\___/| .__/  |_|\_\___|_|\_\ |______\___|\___|_____/|_|_| |_|
+            | |                                                     
+            |_|                                                     
+
     By Nebelwolfi
 
 ]]--
 
 --[[ Script start ]]--
-if myHero.charName ~= "Ekko" then return end
+if myHero.charName ~= "LeeSin" then return end
 
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
-TKEkkoVersion = 0.1
 
 function OnLoad()
-  Ek = nil
+  Dari = nil
   if Update() then
     return
   else
-    Ek = Ekko()
-    DelayAction(function() TopKekMsg("Loaded the latest version (v"..TKEkkoVersion..")") end, 5)
+    Dari = LeeSin()
+    DelayAction(function() TopKekMsg("Loaded the latest version (v"..ServerVersion..")") end, 5)
   end
 end
 
 function Update()
-  local version = TKEkkoVersion
+  local version = 0.01
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
-  local UPDATE_PATH = "/nebelwolfi/BoL/master/TKEkko.lua".."?rand="..math.random(1,10000)
-  local UPDATE_FILE_PATH = SCRIPT_PATH.."TKEkko.lua"
+  local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
+  local UPDATE_FILE_PATH = SCRIPT_PATH.."TKLeeSin.lua"
   local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
   if AUTO_UPDATE then
-    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKEkko.version")
+    local ServerData = GetWebResult(UPDATE_HOST, "/nebelwolfi/BoL/master/TKLeeSin.version")
     if ServerData then
       ServerVersion = type(tonumber(ServerData)) == "number" and tonumber(ServerData) or nil
       if ServerVersion then
@@ -65,71 +64,55 @@ function Update()
   return false
 end
 
-class "Ekko"
+class "LeeSin"
 
-function Ekko:__init()
+function LeeSin:__init()
   self:Vars()
   self:Menu()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
+  AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+  AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
+  AddRemoveBuffCallback(function(unit, buff) self:RemoveBuff(unit, buff) end)
 end
 
-function Ekko:Vars()
+function LeeSin:Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then self.Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then self.Ignite = SUMMONER_2 end
-  self.QReady, self.WReady, self.EReady, self.RReady, self.IReady, self.SReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) end end
-  self.data = {
-    [_Q] = { speed = 1050, delay = 0.25, range = 1050, width = 50, collision = false, aoe = false, type = "linear"},
-    [_W] = { speed = math.huge, delay = 1, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
-    [_E] = { delay = 0.50, range = 600}}
+  self.QReady, self.WReady, self.EReady, self.RReady, self.IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end
   self.Target = nil
-  self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
+  self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
   self.Mobs = minionManager(MINION_ALL, 2500, myHero, MINION_SORT_HEALTH_ASC)
+  self.stackTable = {}
   self.colorIndicatorReady    = ARGB(255, 0,   255, 0)
   self.colorIndicatorNotReady = ARGB(255, 255, 220, 0)
   self.colorInfo              = ARGB(255, 255, 50,  0)
   self.killTextTable = {}
+  self.lastWindup = 0
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
   end
 end
 
-function Ekko:Menu()
-  self.Config = scriptConfig("Top Kek Ekko", "TKEkko")
+function LeeSin:Menu()
+  self.Config = scriptConfig("Top Kek Lee Sin", "TKLeeSin")
   
   self.Config:addSubMenu("Prediction Settings", "misc")
-  UPL:AddSpell(_Q, self.data[_Q])
-  UPL:AddSpell(_W, self.data[_W])
+  UPL:AddSpell(_Q, {range = 1100, width = 58, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear"})
   UPL:AddToMenu(self.Config.misc)
-
-  self.Config:addSubMenu("Ult settings", "casual")
-  self.Config.casual:addParam("enabled", "Use Auto Ult", SCRIPT_PARAM_ONOFF, true)
-  self.Config.casual:addParam("saveme", "Ult for lifesave", SCRIPT_PARAM_ONOFF, true)
-  --Config.casual:addParam("killsomething", "Ult for max dmg in teamfight", SCRIPT_PARAM_ONOFF, true)
-
-  self.Config:addSubMenu("Combo Settings", "comboConfig")
-  self.Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  self.Config.comboConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  self.Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-
-  self.Config:addSubMenu("Harrass Settings", "harrConfig")
-  self.Config.harrConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  self.Config.harrConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  self.Config.harrConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   
   self.Config:addSubMenu("Farm Settings", "farmConfig")
   self.Config.farmConfig:addSubMenu("Lane Clear/Jungle Clear", "lc")
   self.Config.farmConfig:addSubMenu("Last Hit", "lh")
   self.Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  self.Config.farmConfig.lc:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   self.Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lh:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  self.Config.farmConfig.lh:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
       
   self.Config:addSubMenu("Killsteal Settings", "KS")
   self.Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
   self.Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
   self.Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
+  self.Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
   if Ignite ~= nil then self.Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 
   self.Config:addSubMenu("Draw Settings", "Drawing")
@@ -147,6 +130,7 @@ function Ekko:Menu()
   self.Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   self.Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   self.Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  self.Config.kConfig:addParam("Inschallah", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
   
   self.Config:addSubMenu("Orbwalk Settings", "oConfig")
   self:SetupOrbwalk()
@@ -156,11 +140,36 @@ function Ekko:Menu()
   self.Config.kConfig:permaShow("har")
   self.Config.kConfig:permaShow("lh")
   self.Config.kConfig:permaShow("lc")
+  self.Config.kConfig:permaShow("Inschallah")
   self.Config:addSubMenu("Target Selector", "ts")
   self.Config.ts:addTS(self.ts)
 end
 
-function Ekko:SetupOrbwalk()
+function LeeSin:ProcessSpell(unit, spell)  
+  if unit == myHero then
+    if string.find(string.lower(spell.name), "attack") then
+      self.lastWindup = GetInGameTimer()+spell.windUpTime
+    end
+  end
+end
+
+function LeeSin:UpdateBuff(unit, buff, stacks)
+   if buff.name == "LeeSinhemo" then
+      self.stackTable[unit.networkID] = stacks
+   end
+end
+ 
+function LeeSin:RemoveBuff(unit, buff)
+   if buff.name == "LeeSinhemo" then
+      self.stackTable[unit.networkID] = nil
+   end
+end
+
+function LeeSin:GetStacks(unit)
+   return self.stackTable[unit.networkID] or 0
+end
+
+function LeeSin:SetupOrbwalk()
   if _G.AutoCarry then
     if _G.Reborn_Initialised then
       TopKekMsg("Found SAC: Reborn")
@@ -192,7 +201,7 @@ function Ekko:SetupOrbwalk()
   end
 end
 
-function Ekko:Tick()
+function LeeSin:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
 
@@ -201,75 +210,90 @@ function Ekko:Tick()
       self:Killsteal()
     end
 
-    if (self.Config.kConfig.har or self.Config.kConfig.harr) and not self.Config.kConfig.combo then
-      self:Harrass()
+    if self.Config.kConfig.har and not self.Config.kConfig.combo then
+      self:HarrassT()
+    end
+    if self.Config.kConfig.harr and not self.Config.kConfig.combo then
+      self:HarrassH()
     end
 
     if self.Config.kConfig.combo then
       self:Combo()
     end
+
+    if self.Config.kConfig.Inschallah then
+      self:Insec()
+    end
   end
 
-  if self.Config.casual.enabled then
-    self:DoSomeUltLogic()
+  if self.Config.kConfig.lh or self.Config.kConfig.lc then
+    self:LastHit()
   end
 
-  self:LastHit()
-
-  if self.Config.kConfig.lc and self.Config.farmConfig.lc.Q then
+  if self.Config.kConfig.lc then
     self:LaneClear()
   end
 
   self:DmgCalc()
 end
 
-function Ekko:DoSomeUltLogic()
-  if self.Config.casual.saveme and myHero.health <= myHero.maxHealth * 0.15 then
-    CastR()
-  end 
-end
-
-function Ekko:GetCustomTarget()
+function LeeSin:GetCustomTarget()
     self.ts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
     return self.ts.target
 end
 
-function Ekko:LastHit()
-  if myHero:CanUseSpell(_Q) == READY and ((self.Config.kConfig.lh and self.Config.farmConfig.lh.Q) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q)) then
+function LeeSin:LastHit()
+  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.Q) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q)) and myHero:CanUseSpell(_Q) == READY then
     for minion,winion in pairs(self.Mobs.objects) do
-      local QMinionDmg = self:GetDmg("Q", winion, myHero)
-      if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
-        self:CastQ(unit)
+      local MinionDmg1 = self:GetDmg("Q1", winion, myHero)
+      local MinionDmg2 = self:GetDmg("Q2", winion, myHero)
+      if MinionDmg1 and MinionDmg1 >= winion.health+winion.shield and ValidTarget(winion, 1100) then
+        self:CastQ1(target)
+      elseif MinionDmg2 and MinionDmg2 >= winion.health+winion.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
+        self:CastQ2()
       end
     end
   end
-  if myHero:CanUseSpell(_E) == READY and ((self.Config.kConfig.lh and self.Config.farmConfig.lh.E) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.E)) then
+  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.E) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.E)) and myHero:CanUseSpell(_W) == READY then
     for minion,winion in pairs(self.Mobs.objects) do
       local MinionDmg = self:GetDmg("E", winion, myHero)
-      if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, self.data[2].range+myHero.range+myHero.boundingRadius) and GetDistance(winion) < self.data[2].range+myHero.range+myHero.boundingRadius then
-        self:CastE(unit)
+      if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, 300) then
+        self:CastE()
       end
     end
   end
 end
 
-function Ekko:LaneClear()
-  if myHero:CanUseSpell(_Q) then
-    pos, hit = GetQFarmPosition()
-    if hit >= 1 then
-      self:CastQ(pos)
+function LeeSin:LaneClear()
+  if self.Config.farmConfig.lc.Q and myHero:CanUseSpell(_Q) == READY then
+    local minionTarget = nil
+    for i, minion in pairs(minionManager(MINION_ENEMY, 1100, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      if minionTarget == nil then 
+        minionTarget = minion
+      elseif minionTarget.health+minionTarget.shield >= minion.health+minion.shield and ValidTarget(minion, 1100) then
+        minionTarget = minion
+      end
+    end
+    if minionTarget ~= nil then
+      self:CastQ1(minionTarget)
+    end
+  end
+  if self.Config.farmConfig.lc.W and myHero:CanUseSpell(_W) == READY then
+    BestPos, BestHit = GetEFarmPosition()
+    if BestHit > 1 and GetDistance(BestPos) < 150 then 
+      self:CastE()
     end
   end
 end
 
-function GetQFarmPosition()
+function GetEFarmPosition()
   local BestPos 
   local BestHit = 0
   local objects = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects
   for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, 1050, 150, objects)
+    local hit = CountObjectsNearPos(object.pos or object, 150, 350, objects)
     if hit > BestHit then
       BestHit = hit
       BestPos = Vector(object)
@@ -281,64 +305,76 @@ function GetQFarmPosition()
   return BestPos, BestHit
 end
 
-function Ekko:Combo()
-  if self.Config.comboConfig.Q and ValidTarget(self.Target, self.data[0].range) then
+function CountObjectsNearPos(pos, range, radius, objects)
+  local n = 0
+  for i, object in ipairs(objects) do
+    if GetDistance(pos, object) <= radius then
+      n = n + 1
+    end
+  end
+  return n
+end
+
+function LeeSin:Combo()
+end
+
+function LeeSin:isInvinc(unit)
+  if unit == nil then return end
+  for i=1, unit.buffCount do
+   local buff = unit:getBuff(i)
+   if buff and buff.valid and buff.name then 
+    if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
+   end
+  end
+  return false
+end
+
+function LeeSin:Harrass()
+  if myHero:CanUseSpell(_Q) == READY then
     self:CastQ(self.Target)
   end
-  if self.Config.comboConfig.W and ValidTarget(self.Target, self.data[1].range) then
-    local castPos = Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
-    castPos = castPos * GetDistance(self.Target)/2
-    self:CastW(castPos)
-  end
-  if self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+myHero.range+myHero.boundingRadius) then
-    self:CastE(self.Target)
+  if myHero:CanUseSpell(_W) == READY then
+    self:CastW(self.Target)
   end
 end
 
-function Ekko:Harrass()
-  if self.Config.harrConfig.Q and ValidTarget(self.Target, self.data[0].range) then
-    self:CastQ(self.Target)
-  end
-  if self.Config.harrConfig.W and ValidTarget(self.Target, self.data[1].range) then
-    local castPos = Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
-    castPos = castPos * GetDistance(self.Target)/2
-    self:CastW(castPos)
-  end
-  if self.Config.harrConfig.E and ValidTarget(self.Target, self.data[2].range+myHero.range+myHero.boundingRadius) then
-    self:CastE(self.Target)
-  end
-end
-
-function Ekko:CastQ(Targ) 
-  if Targ == nil then return end
-  local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, Targ)
-  if HitChance and HitChance >= 1 then
+function LeeSin:CastQ1(target) 
+  if target == nil then return end
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
+  if HitChance and HitChance >= 1.5 and QReady() then
     self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
-function Ekko:CastW(Targ) 
-  if Targ == nil then return end
-  self:CCastSpell(_W, Targ.x, Targ.z)
+function LeeSin:CastQ2() 
+  self:CCastSpell(_Q)
 end
-function Ekko:CastE(Targ) 
-  if Targ == nil then return end
-  self:CCastSpell(_E, Targ.x, Targ.z)
+function LeeSin:CastW(target) 
+  if target == nil then return end
+  if GetDistance(target) < 750+myHero.boundingRadius then
+    self:CCastSpell(_W, target)
+  end
 end
-function Ekko:CastR() 
-  self:CCastSpell(_R)
+function LeeSin:CastE() 
+  self:CCastSpell(_E)
+end
+function LeeSin:CastR(target) 
+  if target == nil then return end
+  self:CCastSpell(_R, target)
 end
 
-function Ekko:Killsteal()
-  for k,v in pairs(GetEnemyHeroes()) do
-    local enemy= v
+function LeeSin:Killsteal()
+  for k,enemy in pairs(GetEnemyHeroes()) do
     local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0)  
-    local eDmg = ((self:GetDmg("E", enemy, myHero)) or 0)  
-    local iDmg = (50 + 20 * myHero.level) / 5
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, self.data[0].range) then
+    local eDmg = ((self:GetDmg("E", enemy, myHero)) or 0)   
+    local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
+    local iDmg = (50 + 20 * myHero.level) / 2
+    if ValidTarget(enemy) and not self:isInvinc(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 1100) then
         self:CastQ(enemy)
-      elseif myHero:CanUseSpell(_E) and enemy.health < eDmg and self.Config.KS.killstealE and ValidTarget(enemy, self.data[2].range+myHero.range+myHero.boundingRadius) then
+      elseif myHero:CanUseSpell(_E) and enemy.health+enemy.shield < eDmg and self.Config.KS.killstealE then
         self:CastE(enemy)
+      elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 375) then
+        self:CastR(enemy)
       elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         self:CCastSpell(Ignite, enemy)
       end
@@ -346,18 +382,19 @@ function Ekko:Killsteal()
   end
 end
 
-function Ekko:Draw()
+function LeeSin:Draw()
   if self.Config.Drawing.QRange and myHero:CanUseSpell(_Q) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[0].range+self.data[1].width/4, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 450, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 250, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.WRange and myHero:CanUseSpell(_W) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[1].range+self.data[1].width/2, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.ERange and myHero:CanUseSpell(_E) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[2].range, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 550, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.RRange and myHero:CanUseSpell(_R) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 1500, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 450, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.dmgCalc then
     for i,k in pairs(GetEnemyHeroes()) do
@@ -376,18 +413,16 @@ function Ekko:Draw()
   end 
 end
 
-function Ekko:DmgCalc()
+function LeeSin:DmgCalc()
   if not self.Config.Drawing.dmgCalc then return end
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy.visible then
       self.killTextTable[enemy.networkID].indicatorText = ""
       local damageAA = self:GetDmg("AD", enemy, myHero)
       local damageQ  = self:GetDmg("Q", enemy, myHero)
-      local damageW  = self:GetDmg("W", enemy, myHero)
       local damageE  = self:GetDmg("E", enemy, myHero)
       local damageR  = self:GetDmg("R", enemy, myHero)
       local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
-      local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
       if QReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."Q"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_Q)
@@ -402,7 +437,7 @@ function Ekko:DmgCalc()
       end
       if enemy.health < damageQ+damageE+damageR then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.." Kill"
-        self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
+        self.killTextTable[enemy.networkID].ready = true
       end
       if enemy.health > damageQ+damageE+damageR then
         local neededAA = math.ceil((enemy.health-damageQ-damageE-damageR) / (damageAA+damageP/3+damageW))
@@ -410,14 +445,14 @@ function Ekko:DmgCalc()
       end
 
       local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
-      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health+enemy.shield / enemyDamageAA)   
       if enemyNeededAA ~= 0 then         
         self.killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
       end
     end
   end
 end
-function Ekko:CCastSpell(Spell, xPos, zPos)
+function LeeSin:CCastSpell(Spell, xPos, zPos)
   if not xPos and not zPos then
     if VIP_USER and self.Config.misc.pc then
         Packet("S_CAST", {spellId = Spell}):send()
@@ -440,7 +475,7 @@ function Ekko:CCastSpell(Spell, xPos, zPos)
   end
 end
 
-function Ekko:GetDmg(spell, target, source)
+function LeeSin:GetDmg(spell, target, source)
   if target == nil or source == nil then
     return
   end
@@ -466,22 +501,23 @@ function Ekko:GetDmg(spell, target, source)
     return 50+20*Level/2
   elseif spell == "AD" then
     ADDmg = TotalDmg
-    APDmg = 15 + 12 * Level + 0.7*AP
   elseif spell == "Q" then
-    APDmg = 45 + 15 * QLevel + 0.2*AP
+    ADDmg = (20 + 30 * QLevel + 0.9 * source.addDamage)*2 + (target.maxHealth-target.health)*0.08
+  elseif spell == "Q1" then
+    ADDmg = 20 + 30 * QLevel + 0.9 * source.addDamage
   elseif spell == "Q2" then
-    APDmg = 45 + 15 * QLevel + ((QLevel%2==0 and QLevel>0) and 10 or 0) + 0.6*AP
+    ADDmg = 20 + 30 * QLevel + 0.9 * source.addDamage + (target.maxHealth-target.health)*0.08
   elseif spell == "W" then
-    APDmg = WLevel > 0 and (target.maxHealth-target.health)*(0.05+math.floor(AP/45)/100)
+    return 0
   elseif spell == "E" then
-    APDmg = 20 + 30 * ELevel + 0.2*AP
+    APDmg = 25 + 35 * ELevel + source.addDamage
   elseif spell == "R" then
-    APDmg = 50 + 150 * RLevel + 1.3*AP
+    ADDmg = 200 * RLevel + 2 * source.addDamage
   end
-  dmg = math.floor(ADDmg)*(1-ArmorPercent)+math.floor(APDmg)*(1-MagicArmorPercent)
+  dmg = ADDmg*(1-ArmorPercent)+APDmg*(1-MagicArmorPercent)
   return math.floor(dmg)
 end
-function Ekko:DrawLFC(x, y, z, radius, color)
+function LeeSin:DrawLFC(x, y, z, radius, color)
     if self.Config.Drawing.lfc then
         LagFree(x, y, z, radius, 1, color, self.Config.Drawing.lfcq)
     else
@@ -505,7 +541,7 @@ function LagFree(x, y, z, radius, width, color, quality)
     end
 end
 function TopKekMsg(msg) 
-  print("<font color=\"#6699ff\"><b>[Top Kek Series]: Ekko - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+  print("<font color=\"#6699ff\"><b>[Top Kek Series]: LeeSin - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
 end
 ---------------------------------------
 
