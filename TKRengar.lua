@@ -74,7 +74,7 @@ local Target
 local sts
 local enemyTable = {}
 local enemyCount = 0
-local ultOn, oneShot = false, false
+local ultOn, oneShot, oneShotTimer = false, false, 0
 local osTarget = nil
 data = {
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
