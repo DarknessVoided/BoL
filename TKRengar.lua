@@ -680,7 +680,8 @@ local KillTextColor = ARGB(255, 216, 247, 8)
 local KillTextList = {"Harass Him", "Combo Kill"}
 function OnDraw()
   if Config.Drawing.QRange and QReady() then
-    DrawCircle(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, 0x111111)
+    local range = myHero.range and myHero.range or 125
+    DrawCircle(myHero.x, myHero.y, myHero.z, range+myHero.boundingRadius, 0x111111)
   end
   if Config.Drawing.WRange and WReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range+data[1].width/4, 0x111111)
