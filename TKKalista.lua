@@ -198,7 +198,7 @@ function Kalista:SetupOrbwalk()
     self.Config.oConfig:addParam("Info", "MMA detected!", SCRIPT_PARAM_INFO, "")
   elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
     require "Big Fat Orbwalker"
-    Config.oConfig:addParam("Info", "Big Fat Orbwalker detected!", SCRIPT_PARAM_INFO, "")
+    self.Config.oConfig:addParam("Info", "Big Fat Orbwalker detected!", SCRIPT_PARAM_INFO, "")
     AddLoadCallback(function() BFWalkLoader() end)
   elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
     require 'SxOrbWalk'
