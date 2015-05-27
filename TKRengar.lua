@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.22
+local version = 0.23
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -99,7 +99,7 @@ function OnLoad()
   Config.comboConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   --Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("fero", "Q=0, W=1, E=2 use at 5 stacks", SCRIPT_PARAM_SLICE, 2, 0, 2, 0)
-  Config.comboConfig:addParam("qqq", "You can press skill buttons to change this at 5 stacks!", SCRIPT_PARAM_INFO,"")
+  Config.comboConfig:addParam("qqq", "Press skill buttons to change this at 5 stacks!", SCRIPT_PARAM_ONOFF, true)
   Config.comboConfig:addParam("items", "Use Items", SCRIPT_PARAM_ONOFF, true)
   if Smite ~= nil then Config.comboConfig:addParam("S", "Use Smite", SCRIPT_PARAM_ONOFF, true) end
 
@@ -262,7 +262,7 @@ function OnTick()
 end
 
 function OnSendPacket(p)
-  if myHero.mana == 5 and not myHero.dead then
+  if myHero.mana == 5 and not myHero.dead and Config.comboConfig.qqq then
     if p.header == 0x10B then -- old: 0x00E9
       p.pos=27
       if p:Decode1() == 0x68 and Config.comboConfig.fero ~= 0 then
@@ -638,33 +638,6 @@ function CCastSpell(Spell, xPos, zPos)
     CastSpell(Spell, xPos, zPos)
   end
 end
-
--- Credits: Da Vinci
-local CastableItems = {
-  Tiamat      = { Range = 400, Slot = function() return GetInventorySlotItem(3077) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3077) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3077)) == READY) end, Damage = function(target) return getDmg("TIAMAT", target, myHero) end},
-  Hydra       = { Range = 400, Slot = function() return GetInventorySlotItem(3074) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3074) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3074)) == READY) end, Damage = function(target) return getDmg("HYDRA", target, myHero) end},
-  Bork        = { Range = 450, Slot = function() return GetInventorySlotItem(3153) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3153) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3153)) == READY) end, Damage = function(target) return getDmg("RUINEDKING", target, myHero) end},
-  Bwc         = { Range = 400, Slot = function() return GetInventorySlotItem(3144) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3144) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3144)) == READY) end, Damage = function(target) return getDmg("BWC", target, myHero) end},
-  Hextech     = { Range = 400, Slot = function() return GetInventorySlotItem(3146) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3146) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3146)) == READY) end, Damage = function(target) return getDmg("HXG", target, myHero) end},
-  Blackfire   = { Range = 750, Slot = function() return GetInventorySlotItem(3188) end,  reqTarget = true, IsReady = function() return (GetInventorySlotItem(3188) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3188)) == READY) end, Damage = function(target) return getDmg("BLACKFIRE", target, myHero) end},
-  Youmuu      = { Range = 350, Slot = function() return GetInventorySlotItem(3142) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3142) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3142)) == READY) end, Damage = function(target) return 0 end},
-  Randuin     = { Range = 500, Slot = function() return GetInventorySlotItem(3143) end,  reqTarget = false, IsReady = function() return (GetInventorySlotItem(3143) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3143)) == READY) end, Damage = function(target) return 0 end},
-  TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023) end, reqTarget = false, IsReady = function() return (GetInventorySlotItem(3023) ~= nil and myHero:CanUseSpell(GetInventorySlotItem(3023)) == READY) end, Damage = function(target) return 0 end},
-}
-function UseItems(unit)
-    if unit ~= nil then
-        for _, item in pairs(CastableItems) do
-            if item.IsReady() and GetDistance(myHero, unit) < item.Range then
-                if item.reqTarget then
-                    CastSpell(item.Slot(), unit)
-                else
-                    CastSpell(item.Slot())
-                end
-            end
-        end
-    end
-end
--- Credits end
 
 local colorRangeReady        = ARGB(255, 200, 0,   200)
 local colorRangeComboReady   = ARGB(255, 255, 128, 0)
