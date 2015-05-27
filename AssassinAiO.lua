@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.533
+local version = 0.534
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/AssassinAiO.lua".."?rand="..math.random(1,10000)
@@ -361,7 +361,7 @@ function OnTick()
 			orbLast  = 0
 		end
 	else
-	  if not myHero.dead and not recall then 
+	  if not myHero.dead and not orbDisabled then 
 		Combo()
 		Harrass()
 		EveAntiSlow()
@@ -410,7 +410,7 @@ function Harrass()
 	table.insert(skillOrder, string.sub(harr[Config.harrConfig.so], 3, 3))
 	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
 	for i=1,3 do
-		if orbDisabled or recall or myHero.dead then return end
+		if orbDisabled or myHero.dead then return end
 		if skillOrder[i] == "Q" then
 			if (Target ~= nil) and QReady() then
 				if ValidTarget(Target, data[0].range) and harrEnabled then
@@ -453,7 +453,7 @@ function Harrass()
 end
 
 function Combo()
-	if orbDisabled or recall or myHero.dead then return end
+	if orbDisabled or myHero.dead then return end
 	local skillOrder = {}
   local comboOn = false
   if Config.comboo then
@@ -477,7 +477,7 @@ function Combo()
   end
 	--PrintChat("Executing combo: "..skillOrder[1]..skillOrder[2]..skillOrder[3]..skillOrder[4]) --combos[Config.comboConfig.so]
 	for i=1,4 do
-		if orbDisabled or recall or myHero.dead then return end
+		if orbDisabled or myHero.dead then return end
 		if skillOrder[i] == "Q" then
 			if (Target ~= nil) and QReady() then
 				if ValidTarget(Target, data[0].range) and comboOn then
@@ -531,7 +531,7 @@ function Combo()
 			moveToCursor()
 		end
 	end
-	if Target ~=nil and Config.comboConfig.aa and comboOn and not orbDisabled and not recall and not myHero.dead then	
+	if Target ~=nil and Config.comboConfig.aa and comboOn and not orbDisabled and not myHero.dead then	
 		iOrb:Orbwalk(mousePos, Target)
 	elseif iOrb:GetStage() == STAGE_NONE and Config.comboConfig.move and comboOn then
 		moveToCursor()
@@ -556,7 +556,7 @@ function Castspell(Target, spell)
 end
 
 function moveToCursor()
-	if GetDistance(mousePos) > 1 and not orbDisabled and not recall and not myHero.dead then
+	if GetDistance(mousePos) > 1 and not orbDisabled and not myHero.dead then
 		iOrb:Move(mousePos)
 	end
 end
