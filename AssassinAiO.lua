@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.534
+local version = 0.54
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/AssassinAiO.lua".."?rand="..math.random(1,10000)
@@ -564,11 +564,18 @@ end
 function OnProcessSpell(object, spell)
 	if object == myHero then
 		iOrb:OnProcessSpell(object, spell)
-		if spell.name:lower():find("katarinar") and Config.combo then
+		if spell.name:lower():find("katarinar") then
 			orbDisabled = true
 			orbLast = os.clock()
 		end
 	end
+end
+
+function OnCastSpell(spell,startPos,endPos,targetUnit)
+  if spell == _R then
+      orbDisabled = true
+      orbLast = os.clock()
+  end
 end
 
 function OnWndMsg(Msg, Key)
