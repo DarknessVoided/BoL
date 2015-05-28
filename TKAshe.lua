@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.08
+local version = 0.081
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -101,8 +101,10 @@ function OnLoad()
   Config.farmConfig:addSubMenu("Last Hit", "lh")
   Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lc:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lc:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig.lh:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+  Config.farmConfig.lh:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
       
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
@@ -210,10 +212,10 @@ function OnTick()
     end
   end
 
-  if Config.kConfig.lh then
+  if Config.kConfig.lh and Config.farmConfig.lh.mana <= myHero.mana then
     LastHit()
   end
-  if Config.kConfig.lc then
+  if Config.kConfig.lc and Config.farmConfig.lc.mana <= myHero.mana then
     LaneClear()
   end
 end
