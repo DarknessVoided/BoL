@@ -434,14 +434,14 @@ end
 function CastQ(unit) 
   if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
-  if HitChance and HitChance >= 2 and QReady() then
+  if HitChance and HitChance >= 1.5 and QReady() then
     CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
 function CastW(unit) 
   if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, unit)
-  if HitChance and HitChance >= 2 and WReady() then
+  if HitChance and HitChance >= 1.2 and WReady() then
     CCastSpell(_W, CastPosition.x, CastPosition.z)
   end
 end
@@ -456,7 +456,7 @@ end
 function CastR(unit) 
   if unit == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, unit)
-  if HitChance and HitChance >= 2 and RReady() then
+  if HitChance and HitChance >= 1 and RReady() then
     CCastSpell(_R, CastPosition.x, CastPosition.z)
   end
 end
