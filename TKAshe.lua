@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.075
+local version = 0.08
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAshe.lua".."?rand="..math.random(1,10000)
@@ -48,13 +48,6 @@ if FileExist(LIB_PATH .. "/UPL.lua") then
 else 
   TopKekMsg("Downloading UPL, please don't press F9")
   DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
-  return
-end
-
-if FileExist(LIB_PATH .. "SourceLib.lua") then
-  require("SourceLib")
-else
-  TopKekMsg("Please download SourceLib")
   return
 end
 --[[ Libraries end ]]--
@@ -140,9 +133,9 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
-  sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
-  Config:addSubMenu("Target Selector", "sts")
-  sts:AddToMenu(Config.sts)
+  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+  Config:addSubMenu("Target Selector", "ts")
+  Config.ts:addTS(sts)
 
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
@@ -292,7 +285,7 @@ function LaneClear()
 end
 
 function Combo()
-  if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+  if Config.comboConfig.Q and ValidTarget(Target, data[0].range) and QReady() then
     if Config.comboConfig.Qs then 
       if focusStacks == 5 then
         CastQ(Target)
@@ -301,10 +294,10 @@ function Combo()
       CastQ(Target)
     end
   end
-  if Config.comboConfig.W and ValidTarget(Target, data[1].range) then
+  if Config.comboConfig.W and ValidTarget(Target, data[1].range) and WReady() then
     CastW(Target)
   end
-  if Config.comboConfig.R and ValidTarget(Target, data[3].range) then
+  if Config.comboConfig.R and ValidTarget(Target, data[3].range) and RReady() then
     CastR(Target)
   end
 end
@@ -384,14 +377,15 @@ function Killsteal()
 end
 
 function GetCustomTarget()
+    sts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts:GetTarget(2000)
+    return sts.target
 end
 
 --[[ Packet Cast Helper ]]--
 function CCastSpell(Spell, xPos, zPos)
-  if VIP_USER and Config.misc.pc then
+  if VIP_USER and false then --
     Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
   else
     CastSpell(Spell, xPos, zPos)

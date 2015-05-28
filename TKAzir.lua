@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.023
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKAzir.lua".."?rand="..math.random(1,10000)
@@ -183,9 +183,9 @@ function OnLoad(
   Config.kConfig:permaShow("harr")
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lc")
-  sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
-  Config:addSubMenu("Target Selector", "sts")
-  sts:AddToMenu(Config.sts)
+  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
+  Config:addSubMenu("Target Selector", "ts")
+  Config.ts:addTS(sts)
 
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
@@ -398,9 +398,10 @@ function CCastSpell(Spell, xPos, zPos)
 end
 
 function GetCustomTarget()
+    sts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts:GetTarget(data[1].range)
+    return sts.target
 end
 
 function ActivePred()

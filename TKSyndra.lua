@@ -108,13 +108,13 @@ function OnLoad()
   Config.key:permaShow("har")
   Config.key:permaShow("harr")
 
-  sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
-  Config:addSubMenu("Set Target Selector Priority", "sts")
-  sts:AddToMenu(Config.sts)
+  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
+  Config:addSubMenu("Target Selector", "ts")
+  Config.ts:addTS(sts)
 end
 
 function OnTick()
-  Target = sts:GetTarget(1500)--GetCustomTarget()
+  Target = GetCustomTarget()
   BTOnTick()
   zhg()
   if myHero.dead or recall then return end
@@ -552,10 +552,10 @@ function OnProcessSpell(unit, spell)
 end
 
 function GetCustomTarget()
-    --sts:update()
+    sts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts.GetTarget(1500)
+    return sts.target
 end
 
 --[[ Packet Cast Helper ]]--

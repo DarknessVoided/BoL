@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.013
+local version = 0.014
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLux.lua".."?rand="..math.random(1,10000)
@@ -155,9 +155,9 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
-  sts = SimpleTS(STS_PRIORITY_LESS_CAST_MAGIC)
-  Config:addSubMenu("Target Selector", "sts")
-  sts:AddToMenu(Config.sts)
+  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
+  Config:addSubMenu("Target Selector", "ts")
+  Config.ts:addTS(sts)
 
   for i = 1, heroManager.iCount do
       local champ = heroManager:GetHero(i)
@@ -491,9 +491,10 @@ function Killsteal()
 end
 
 function GetCustomTarget()
+    sts:update()
     if _G.MMA_Target and _G.MMA_Target.type == myHero.type then return _G.MMA_Target end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    return sts:GetTarget(2000)
+    return sts.target
 end
 
 --[[ Packet Cast Helper ]]--

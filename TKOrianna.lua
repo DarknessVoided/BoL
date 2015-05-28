@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.07
+local version = 0.071
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
@@ -156,9 +156,9 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
-  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
-  self.Config:addSubMenu("Target Selector", "sts")
-  self.Config.sts:addTS(self.sts)
+  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
+  Config:addSubMenu("Target Selector", "ts")
+  Config.ts:addTS(sts)
 
     for i = 1, heroManager.iCount do
         local champ = heroManager:GetHero(i)
