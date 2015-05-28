@@ -18,12 +18,12 @@ UPL = nil
 if FileExist(LIB_PATH .. "/UPL.lua") then
   require("UPL")
   UPL = UPL()
+else 
+  TopKekMsg("Downloading UPL, please don't press F9")
+  DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
+  return
 end
 
-if UPL == nil then 
-  PrintChat("Please download the UPLib.") 
-  return 
-end
 local Q = {name = "Javelin Toss", speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
 local QTargetSelector = TargetSelector(TARGET_NEAR_MOUSE, Q.range, DAMAGE_MAGIC)
 
