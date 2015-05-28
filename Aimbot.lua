@@ -305,7 +305,7 @@ function AutoupdaterMsg(msg)
     print("<font color=\"#6699ff\"><b>[Aimbot]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
 end
 function Update()
-    local version = 1.13
+    local version = 1.2
     local AUTO_UPDATE = true
     local UPDATE_HOST = "raw.github.com"
     local UPDATE_PATH = "/nebelwolfi/BoL/master/Aimbot.lua".."?rand="..math.random(1,10000)
@@ -362,8 +362,8 @@ local debugMode = false
 enemyMinions = minionManager(MINION_ENEMY, 2000, myHero, MINION_SORT_HEALTH_ASC)
 jungleMinions = minionManager(MINION_JUNGLE, 2000, myHero, MINION_SORT_MAXHEALTH_DEC)
 otherMinions = minionManager(MINION_OTHER, 2000, myHero, MINION_SORT_HEALTH_ASC)
-local opcs = {{0x10B, 0x68, 0xEE, 0xB1, 0xCE}, {0x87, 0xEC, 0x6C, 0x74, 0x98}, {0x00E9, 0x02, 0xD8, 0xB3, 0xE7}}
-local opcpos = {27, 23, 27}
+local opcs = {{0x09, 0xC8, 0xF7, 0xF2, 0x33}, {0x10B, 0x68, 0xEE, 0xB1, 0xCE}, {0x87, 0xEC, 0x6C, 0x74, 0x98}, {0x00E9, 0x02, 0xD8, 0xB3, 0xE7}}
+local opcpos = {27, 27, 23, 27}
 local secondCast = false
 
 function OnLoad()
@@ -372,7 +372,7 @@ function OnLoad()
   
   Config:addSubMenu("Settings", "misc")
   Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
-  Config.misc:addParam("ser",  "Which LoL version?", SCRIPT_PARAM_LIST, 1, {"5.9", "5.8", "5.7"})
+  Config.misc:addParam("ser",  "Which LoL version?", SCRIPT_PARAM_LIST, 1, {"5.10", "5.9", "5.8", "5.7"})
   UPL:AddToMenu(Config.misc)
  
   Config:addSubMenu("Supported skill settings", "skConfig")
