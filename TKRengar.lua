@@ -50,13 +50,6 @@ else
   DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
   return
 end
-
-if FileExist(LIB_PATH .. "SourceLib.lua") then
-  require("SourceLib")
-else
-  TopKekMsg("Please download SourceLib")
-  return
-end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--

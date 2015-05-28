@@ -79,13 +79,6 @@ if predToUse == {} then
 	TopKekMsg("Please download a Prediction") 
 	return 
 end
-
-if FileExist(LIB_PATH .. "SourceLib.lua") then
-  require("SourceLib")
-else
-  TopKekMsg("Please download SourceLib")
-  return
-end
 --[[ Libraries end ]]--
 
 --[[ Script start ]]--
