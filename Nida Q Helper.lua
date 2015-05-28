@@ -47,7 +47,7 @@ end
 function OnTick()
   QTargetSelector:update()
   QCel = QTargetSelector.target
-  if Config.throwQ or (Config.throwQh and myHero.mana >= Config.misc.mana) and not myHero.dead and not recall and QCel ~= nil and Q.Ready() then
+  if Config.throwQ or (Config.throwQh and myHero.mana >= Config.misc.mana) and not myHero.dead and QCel ~= nil and Q.Ready() then
     ThrowQ(QCel)
   end
 end
