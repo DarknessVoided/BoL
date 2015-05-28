@@ -72,8 +72,6 @@ function LeeSin:__init()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
   AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-  AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
-  AddRemoveBuffCallback(function(unit, buff) self:RemoveBuff(unit, buff) end)
 end
 
 function LeeSin:Vars()
@@ -97,7 +95,7 @@ function LeeSin:Menu()
   self.Config = scriptConfig("Top Kek Lee Sin", "TKLeeSin")
   
   self.Config:addSubMenu("Prediction Settings", "misc")
-  UPL:AddSpell(_Q, {range = 1100, width = 58, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear"})
+  UPL:AddSpell(_Q, {range = 1100, width = 70, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear"})
   UPL:AddToMenu(self.Config.misc)
   
   self.Config:addSubMenu("Farm Settings", "farmConfig")
@@ -153,22 +151,6 @@ function LeeSin:ProcessSpell(unit, spell)
   end
 end
 
-function LeeSin:UpdateBuff(unit, buff, stacks)
-   if buff.name == "LeeSinhemo" then
-      self.stackTable[unit.networkID] = stacks
-   end
-end
- 
-function LeeSin:RemoveBuff(unit, buff)
-   if buff.name == "LeeSinhemo" then
-      self.stackTable[unit.networkID] = nil
-   end
-end
-
-function LeeSin:GetStacks(unit)
-   return self.stackTable[unit.networkID] or 0
-end
-
 function LeeSin:SetupOrbwalk()
   if _G.AutoCarry then
     if _G.Reborn_Initialised then
@@ -186,7 +168,6 @@ function LeeSin:SetupOrbwalk()
   elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
     require "Big Fat Orbwalker"
     self.Config.oConfig:addParam("Info", "Big Fat Orbwalker detected!", SCRIPT_PARAM_INFO, "")
-    AddLoadCallback(function() BFWalkLoader() end)
   elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
     require 'SxOrbWalk'
     SxOrb = SxOrbWalk()
@@ -322,6 +303,16 @@ end
 function LeeSin:Combo()
 end
 
+
+function LeeSin:IsFirstCast()
+  if myHero.charName == 'LeeSin' then
+      if myHero:GetSpellData(_Q).name == 'BlindMonkQOne' then
+          return true
+      else
+          return false
+      end
+  end
+end
 function LeeSin:isInvinc(unit)
   if unit == nil then return end
   for i=1, unit.buffCount do
@@ -333,19 +324,31 @@ function LeeSin:isInvinc(unit)
   return false
 end
 
-function LeeSin:Harrass()
-  if myHero:CanUseSpell(_Q) == READY then
-    self:CastQ(self.Target)
+function LeeSin:HarrassH()
+  if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast() then
+    self:CastQ1(self.Target)
   end
-  if myHero:CanUseSpell(_W) == READY then
-    self:CastW(self.Target)
+  if myHero:CanUseSpell(_Q) == READY and not self:IsFirstCast() then
+    self:CastQ2()
+  end
+  if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 425) then
+    self:CastE(self.Target)
+  end
+end
+
+function LeeSin:HarrassT()
+  if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast() then
+    self:CastQ1(self.Target)
+  end
+  if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 425) then
+    self:CastE(self.Target)
   end
 end
 
 function LeeSin:CastQ1(target) 
   if target == nil then return end
-  local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
-  if HitChance and HitChance >= 1.5 and QReady() then
+  local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, target)
+  if HitChance >= 2 and self.QReady() then
     self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
@@ -368,16 +371,20 @@ end
 
 function LeeSin:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0)  
+    local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0) 
+    local q1Dmg = ((self:GetDmg("Q1", enemy, myHero)) or 0)  
     local eDmg = ((self:GetDmg("E", enemy, myHero)) or 0)   
     local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 2
     if ValidTarget(enemy) and not self:isInvinc(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 1100) then
-        self:CastQ(enemy)
+        self:CastQ1(enemy)
+        self:CastQ2()
+      elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < q1Dmg and self.Config.KS.killstealQ and ValidTarget(enemy, 1100) then
+        self:CastQ1(enemy)
       elseif myHero:CanUseSpell(_E) and enemy.health+enemy.shield < eDmg and self.Config.KS.killstealE then
         self:CastE(enemy)
-      elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 375) then
+      elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 425) then
         self:CastR(enemy)
       elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         self:CCastSpell(Ignite, enemy)
@@ -388,17 +395,16 @@ end
 
 function LeeSin:Draw()
   if self.Config.Drawing.QRange and myHero:CanUseSpell(_Q) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 450, ARGB(255, 155, 155, 155))
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 250, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 1100, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.WRange and myHero:CanUseSpell(_W) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 700, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.ERange and myHero:CanUseSpell(_E) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 550, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 425, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.RRange and myHero:CanUseSpell(_R) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 450, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, 375, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.dmgCalc then
     for i,k in pairs(GetEnemyHeroes()) do
@@ -427,15 +433,15 @@ function LeeSin:DmgCalc()
       local damageE  = self:GetDmg("E", enemy, myHero)
       local damageR  = self:GetDmg("R", enemy, myHero)
       local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
-      if QReady() then
+      if self.QReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."Q"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_Q)
       end
-      if EReady() then
+      if self.EReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."E"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
       end
-      if RReady() then
+      if self.RReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."R"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
       end
@@ -444,7 +450,7 @@ function LeeSin:DmgCalc()
         self.killTextTable[enemy.networkID].ready = true
       end
       if enemy.health > damageQ+damageE+damageR then
-        local neededAA = math.ceil((enemy.health-damageQ-damageE-damageR) / (damageAA+damageP/3+damageW))
+        local neededAA = math.ceil((enemy.health-damageQ-damageE-damageR) / (damageAA))
         self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
       end
 
