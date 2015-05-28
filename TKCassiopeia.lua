@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.047
+local version = 0.048
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -263,9 +263,8 @@ function LastHitSomethingPoisonedWithE()
   if EReady() then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
-      if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and isPoisoned(minion) and ValidTarget(minion, data[2].range) then
         CastE(minion)
-        return
       end      
     end    
   end  
@@ -329,7 +328,7 @@ function LastHit()
   if EReady() and Config.farmConfig.lh.E then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
-      if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and isPoisoned(minion) and ValidTarget(minion, data[2].range) then
         CastE(minion)
         return
       end      
@@ -358,7 +357,7 @@ function LaneClear()
   if EReady() and Config.farmConfig.lc.E then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, player, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
-      if EMinionDmg >= minion.health and isPoisoned(minionTarget) and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and isPoisoned(minion) and ValidTarget(minion, data[2].range) then
         CastE(minion)
       end      
     end    
