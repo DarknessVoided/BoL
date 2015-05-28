@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.23
+local version = 0.24
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -74,7 +74,7 @@ local Target
 local sts
 local enemyTable = {}
 local enemyCount = 0
-local ultOn, oneShot, oneShotTimer = false, false, 0
+local ultOn, isLeap, oneShot, oneShotTimer = false, false, false, 0
 local osTarget = nil
 data = {
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
@@ -143,8 +143,8 @@ function OnLoad()
   Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config.kConfig:addParam("stop", "Stop farm at 5 stacks", SCRIPT_PARAM_ONOFF, true, string.byte("N"))
-  Config.kConfig:addParam("t", "Toggle 5 stack useage", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
   Config.kConfig:addParam("qqq", "Will only stop farming if enemy in range", SCRIPT_PARAM_INFO,"")
+  Config.kConfig:addParam("t", "Toggle 5 stack useage", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("T"))
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
   SetupOrbwalk()
@@ -214,8 +214,8 @@ function OnTick()
 
   DmgCalculations()
 
-  if oneShot == true and oneShotTimer+5 < GetInGameTimer() then
-    oneShot = false
+  if isLeap and oneShotTimer+1.5 < GetInGameTimer() then
+    isLeap = false
   end
 
   if Target ~= nil then
@@ -228,12 +228,12 @@ function OnTick()
     end
 
     if Config.kConfig.combo then
-      if ultOn and not oneShot then 
+      if ultOn and not isLeap then 
         osTarget = Target
       end
-      if ultOn or oneShot then 
+      if ultOn or isLeap then 
         OneShot()
-      else
+      elseif not ultOn then
         Combo()
       end
     end
@@ -547,24 +547,24 @@ function OneShot()
     if Config.comboConfig.E and GetDistance(osTarget, myHero) < data[2].range then
       CastE(osTarget)
     end
-    if Config.comboConfig.item and GetDistance(osTarget, myHero) < myHero.range+myHero.boundingRadius then
-      UseItems(osTarget)
-    end
   end
   if Ignite ~= nil and IReady() then CastSpell(Ignite, osTarget) end
-  if osTarget.dead or not osTarget.visible or GetDistance(osTarget) > 600 then oneShot = false end
+  if osTarget.dead or not osTarget.visible or GetDistance(osTarget) > 600 then osTarget=nil end
 end
 
 function OnCreateObj(object)
-  if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
-    ultOn = true
+  if object ~= nil then
+    if string.find(object.name, "Rengar_Base_R_Buf") and GetDistance(myHero, object) < 80 then
+      ultOn = true
+    elseif string.find(object.name, "Rengar_LeapSound") and GetDistance(myHero, object) < 80 then
+      isLeap = true
+    end
   end 
 end
  
 function OnDeleteObj(object)
   if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
     ultOn = false
-    oneShot = true
     oneShotTimer = GetInGameTimer()
   end
 end
