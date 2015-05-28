@@ -18,8 +18,9 @@ if FileExist(LIB_PATH .. "/UPL.lua") then
   require("UPL")
   UPL = UPL()
 else
-  TopKekMsg("Please download the Unified Prediction Library!") 
-  return 
+  TopKekMsg("Downloading UPL, please don't press F9")
+  DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
+  return
 end
 require "Collision"
 
