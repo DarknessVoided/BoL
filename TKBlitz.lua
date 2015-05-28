@@ -14,6 +14,8 @@
  
 ]]--
 
+local function TopKekMsg(msg) print("<font color=\"#6699ff\"><b>[Top Kek Series]: Ashe - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") end
+
 if FileExist(LIB_PATH .. "/UPL.lua") then
   require("UPL")
   UPL = UPL()
@@ -82,10 +84,6 @@ function GetBestTarget(Range)
 	end
 	
 	return target
-end
-
-function TopKekMsg(msg) 
-	print("<font color=\"#6699ff\"><b>[Top Kek Series]: Blitzcrank - </b></font> <font color=\"#FFFFFF\">"..msg.."</font>") 
 end
 
 function OnTick()
