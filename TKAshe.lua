@@ -204,7 +204,7 @@ function OnTick()
       Killsteal()
     end
 
-    if not ultOn and (Config.kConfig.har or Config.kConfig.harr) then
+    if Config.kConfig.har or Config.kConfig.harr then
       Harrass()
     end
 
