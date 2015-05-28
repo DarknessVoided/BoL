@@ -19,7 +19,7 @@ if FileExist(LIB_PATH .. "/UPL.lua") then
   require("UPL")
   UPL = UPL()
 else 
-  TopKekMsg("Downloading UPL, please don't press F9")
+  print("Downloading UPL, please don't press F9")
   DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () print("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
   return
 end
