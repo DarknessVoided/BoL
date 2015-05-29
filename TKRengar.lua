@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.241
+local version = 0.25
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -501,6 +501,14 @@ function Combo()
         CastW(minionTarget)
       end
     end  
+  elseif myHero.mana == 5 then
+    if Config.comboConfig.fero == 0 and ValidTarget(Target, data[0].range) then
+      CastQ(Target)
+    elseif Config.comboConfig.fero == 1 and ValidTarget(Target, data[1].range) then
+      CastW(Target)
+    elseif Config.comboConfig.fero == 2 and ValidTarget(Target, data[2].range) then
+      CastE(Target)
+    end
   else
     if Config.comboConfig.Q and ValidTarget(Target, myHero.range+myHero.boundingRadius) then
       CastQ(Target)
