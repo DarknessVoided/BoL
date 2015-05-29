@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.081
+local version = 0.082
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRumble.lua".."?rand="..math.random(1,10000)
@@ -82,9 +82,6 @@ function OnLoad()
   UPL:AddSpell(_E, data[_E])
   UPL:AddSpell(_R, data[_R])
   UPL:AddToMenu(Config.misc)
-  
-  Config:addSubMenu("Misc settings", "casual")
-  Config.casual:addParam("leW", "Use W to kee passive 50+", SCRIPT_PARAM_ONOFF, true)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -120,6 +117,7 @@ function OnLoad()
   Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
   Config.kConfig:addParam("lc", "Last Hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  Config.kConfig:addParam("shield", "Auto W", SCRIPT_PARAM_ONKEYTOGGLE, true, string.byte("N"))
   if VIP_USER then Config.kConfig:addParam("r", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T")) end
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
@@ -129,6 +127,7 @@ function OnLoad()
   Config.kConfig:permaShow("harr")
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lc")
+  Config.kConfig:permaShow("shield")
   sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
   Config:addSubMenu("Target Selector", "ts")
   Config.ts:addTS(sts)
@@ -186,7 +185,7 @@ function OnTick()
   	local target
   	target = GetCustomTarget()
     
-    if Config.casual.leW and WReady() and not isRecalling(myHero) then 
+    if Config.kConfig.shield and WReady() then 
     	if myHero.mana < 40 then
     		CastSpell(_W)
     	end
@@ -244,15 +243,6 @@ function OnTick()
     		CastR(CastPosition, target)
     	end
     end
-end
-
-function isRecalling(unit)
-  if unit == nil then return end
-  for i = 1 , unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name and (string.find(buff.name, "recall") or string.find(buff.name, "Teleportn")) then return true end
-  end
-  return false
 end
 
 function DoSomeUltLogic()

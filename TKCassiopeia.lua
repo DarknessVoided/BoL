@@ -221,7 +221,7 @@ function OnTick()
   zhg()
 
   if toCastR then
-    CastR(unit)
+    CastR(Target)
     DelayAction(function() toCastR = false end, 1.5)
   end
 
@@ -473,7 +473,7 @@ function Killsteal()
         CastE(enemy)
       elseif enemy.health < eDmg*2 and isPoisoned(enemy) and Config.KS.killstealE and ValidTarget(enemy, data[2].range) then
         CastE(enemy)
-        DelayAction(CastE, 0.65, {enemy})
+        DelayAction(CastE, 0.55, {enemy})
       elseif enemy.health < rDmg and Config.KS.killstealR and ValidTarget(enemy, data[3].range) then
         CastR(enemy)
       elseif enemy.health < iDmg and Config.KS.killstealI and ValidTarget(enemy, 600) and IReady() then
