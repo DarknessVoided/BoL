@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.07
+  local version = 0.071
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -327,13 +327,13 @@ function Darius:Combo()
 end
 
 function Darius:isInvinc(unit)
-  if unit == nil then return end
+  --[[if unit == nil then return end
   for i=1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name then 
     if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
    end
-  end
+  end]]
   return false
 end
 
