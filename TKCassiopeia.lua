@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.051
+local version = 0.06
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -392,10 +392,16 @@ end
 
 function isPoisoned(unit)
   if unit == nil then return end
+  for i = 1, objManager.maxObjects do
+    local object = objManager:getObject(i)
+    if object and object.valid and object.name and GetDistance(object,unit) < 50 and string.find(object.name, "Poison") then return true end
+  end
+  --[[
   for i = 1 , unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name and string.find(buff.name, "cassiopeia") and string.find(buff.name, "poison") and (buff.endT - GetInGameTimer()) >= 0.5 then return true end
   end
+  ]]--
   return false
 end
 
