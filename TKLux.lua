@@ -344,7 +344,7 @@ function LaneClear()
   if EReady() and Config.farmConfig.lc.E then
     local pos, hit = GetEFarmPosition(data[2].range, data[2].width)
     if pos ~= nil then
-      CastE(pos)
+      CastSpell(_E, pos.x, pos.z)
     end
   end  
 end
