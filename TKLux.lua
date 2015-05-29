@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.014
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLux.lua".."?rand="..math.random(1,10000)
@@ -202,20 +202,32 @@ function SetupOrbwalk()
 end
 
 function isLight(unit)
-  --if unit == nil then return end
+  if unit == nil then return end
+  for i = 1, objManager.maxObjects do
+    local object = objManager:getObject(i)
+    if object and object.valid and object.name and GetDistance(object,unit) < 50 and string.find(object.name, "Lux_Base_P_debuff") then return true end
+  end
+  --[[
   for i = 1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "luxilluminati") and buff.endT > GetInGameTimer() then return true end
   end
+  ]]--
   return false
 end
 
 function isInE(unit)
-  --if unit == nil then return end
+  if unit == nil then return end
+  for i = 1, objManager.maxObjects do
+    local object = objManager:getObject(i)
+    if object and object.valid and object.name and GetDistance(object,unit) < data[2].width and string.find(object.name, "Lux_Base_E_mis") then return true end
+  end
+  --[[
   for i = 1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "LuxLightStrikeKugel") and buff.endT > GetInGameTimer() then return true end
   end
+  ]]--
   return false
 end
 
@@ -299,7 +311,6 @@ function LastHit()
       local EMinionDmg = GetDmg("E", minion, GetMyHero())      
       if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
         CastE(minion)
-        return
       end      
     end    
   end  
@@ -353,6 +364,16 @@ function GetEFarmPosition(range, radius)
          end
     end
     return BestPos, BestHit
+end
+
+function CountObjectsNearPos(pos, range, radius, objects)
+  local n = 0
+  for i, object in ipairs(objects) do
+    if GetDistance(pos, object) <= radius then
+      n = n + 1
+    end
+  end
+  return n
 end
 
 function GetLowestMinion(range)
