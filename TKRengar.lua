@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.25
+local version = 0.26
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -70,6 +70,7 @@ local enemyTable = {}
 local enemyCount = 0
 local ultOn, isLeap, oneShot, oneShotTimer = false, false, false, 0
 local osTarget = nil
+local ForceTarget = nil
 data = {
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
     [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = true, aoe = false, type = "linear"},
@@ -205,6 +206,10 @@ end
 
 function OnTick()
   Target = GetCustomTarget()
+  
+  if Forcetarget ~= nil and ValidTarget(Forcetarget, 1500) then
+    Target = Forcetarget  
+  end
 
   DmgCalculations()
 
@@ -274,6 +279,30 @@ function OnSendPacket(p)
         p:Block()
         p.skip(p, 1)
         Config.comboConfig.fero = 2
+      end
+    end
+  end
+end
+
+function OnWndMsg(Msg, Key)
+  if Msg == WM_LBUTTONDOWN then
+    local minD = 0
+    local starget = nil
+    for i, enemy in ipairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) then
+        if GetDistance(enemy, mousePos) <= minD or starget == nil then
+          minD = GetDistance(enemy, mousePos)
+          starget = enemy
+        end
+      end
+    end
+    
+    if starget and minD < 500 then
+      if Forcetarget and starget.charName == Forcetarget.charName then
+        Forcetarget = nil
+      else
+        Forcetarget = starget
+        TopKekMsg("New target selected: "..starget.charName.."")
       end
     end
   end
@@ -664,6 +693,12 @@ function OnDraw()
   end
   if Config.Drawing.ERange and EReady() then
     DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range+data[2].width/4, 0x111111)
+  end
+  if Forcetarget ~= nil then
+    DrawCircle(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius, ARGB(255, 0, 255, 0))
+  end
+  if osTarget ~= nil then
+    DrawCircle(osTarget.x, osTarget.y, osTarget.z, osTarget.boundingRadius, ARGB(255, 255, 0, 0))
   end
   if Config.Drawing.dmgCalc then
         for i = 1, enemyCount do
