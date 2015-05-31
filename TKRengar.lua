@@ -151,7 +151,7 @@ function OnLoad()
   Config.kConfig:permaShow("lc")
   Config.kConfig:permaShow("stop")
   Config.comboConfig:permaShow("fero")
-  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+  sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
   Config:addSubMenu("Target Selector", "ts")
   Config.ts:addTS(sts)
 
