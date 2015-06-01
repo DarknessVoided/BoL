@@ -419,7 +419,7 @@ function Combo()
         CastE(Target)
       end
     end
-  else
+  end
   if Config.comboConfig.W and myHero.health/myHero.maxHealth <= 50 then
     CastW(Target)
   end
