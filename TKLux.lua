@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.03
+local version = 0.031
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLux.lua".."?rand="..math.random(1,10000)
@@ -69,6 +69,7 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local lastWindup = 0
+local luxPassiveTable = {}
 local data = {
   [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
   [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
@@ -202,18 +203,19 @@ function SetupOrbwalk()
 end
 
 function isLight(unit)
-  if unit == nil then return end
-  for i = 1, objManager.maxObjects do
-    local object = objManager:getObject(i)
-    if object and object.valid and object.name and string.find(object.name, "Lux_Base_P_debuff") and GetDistance(object,unit) < 50 then return true end
-  end
-  --[[
-  for i = 1, unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "luxilluminati") and buff.endT > GetInGameTimer() then return true end
-  end
-  ]]--
-  return false
+  return luxPassiveTable[unit.networdID] and luxPassiveTable[unit.networdID]+6>GetInGameTimer() or false
+end
+
+function OnApplyBuff(source, unit, buff)
+   if buff.name == "luxilluminati" then
+      luxPassiveTable[unit.networkID] = GetInGameTimer()
+   end
+end
+ 
+function OnRemoveBuff(unit, buff)
+   if buff.name == "luxilluminati" then
+      luxPassiveTable[unit.networkID] = nil
+   end
 end
 
 function isInE(unit)
