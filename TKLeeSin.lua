@@ -72,6 +72,7 @@ function LeeSin:__init()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
   AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+  AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
 end
 
 function LeeSin:Vars()
@@ -86,8 +87,17 @@ function LeeSin:Vars()
   self.colorInfo              = ARGB(255, 255, 50,  0)
   self.killTextTable = {}
   self.lastWindup = 0
+  self.Wards = {}
+  self.casted, self.jumped = false, false
+  self.oldPos = nil
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
+  end
+  for i = 1, objManager.maxObjects do
+    local object = objManager:GetObject(i)
+    if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
+      table.insert(self.Wards, object)
+    end
   end
 end
 
@@ -125,10 +135,11 @@ function LeeSin:Menu()
   self.Config:addSubMenu("Key Settings", "kConfig")
   self.Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   self.Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-  self.Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("G"))
+  self.Config.kConfig:addParam("har", "Harrass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("J"))
   self.Config.kConfig:addParam("lh", "Last hit (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   self.Config.kConfig:addParam("lc", "Lane Clear (Hold)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   self.Config.kConfig:addParam("Inschallah", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+  self.Config.kConfig:addParam("wj", "Wardjump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
   
   self.Config:addSubMenu("Orbwalk Settings", "oConfig")
   self:SetupOrbwalk()
@@ -139,6 +150,7 @@ function LeeSin:Menu()
   self.Config.kConfig:permaShow("lh")
   self.Config.kConfig:permaShow("lc")
   self.Config.kConfig:permaShow("Inschallah")
+  self.Config.kConfig:permaShow("wj")
   self.Config:addSubMenu("Target Selector", "ts")
   self.Config.ts:addTS(self.ts)
 end
@@ -190,6 +202,10 @@ function LeeSin:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
 
+  if self.Config.kConfig.wj or (self.casted and not self.jumped) then
+    self:WardJump()
+  end
+
   if self.Target ~= nil then
     if self.Config.KS.enableKS then 
       self:Killsteal()
@@ -220,6 +236,66 @@ function LeeSin:Tick()
   end
 
   self:DmgCalc()
+end
+
+function LeeSin:WardJump()
+  if self.casted and self.jumped then self.casted, self.jumped = false, false
+  elseif myHero:CanUseSpell(_W) == READY and myHero:GetSpellData(_W).name == "BlindMonkWOne" then
+    local pos = self:getMousePos()
+    if self:Jump(pos, 150, true) then return end
+    slot = self:GetWardSlot()
+    if not slot then return end
+    CastSpell(slot, pos.x, pos.z)
+    self.casted = true
+  end
+end
+
+function LeeSin:Jump(pos, range, useWard)
+  for _,ally in pairs(GetAllyHeroes()) do
+    if (GetDistance(ally, pos) <= range) then
+      CastSpell(_W, ally)
+      self.jumped = true
+      return true
+    end
+  end
+  for minion,winion in pairs(minionManager(MINION_ALLY, range, pos, MINION_SORT_HEALTH_ASC).objects) do
+    if (GetDistance(winion, pos) <= range) then
+      CastSpell(_W, winion)
+      self.jumped = true
+      return true
+    end
+  end
+  table.sort(self.Wards, function(x,y) return GetDistance(x) < GetDistance(y) end)
+  for i, ward in ipairs(self.Wards) do
+    if (GetDistance(ward, pos) <= range) then
+      CastSpell(_W, ward)
+      self.jumped = true
+      return true
+    end
+  end
+end
+
+function LeeSin:CreateObj(obj)
+  if obj ~= nil and obj.valid then
+    if string.find(string.lower(obj.name), "ward") then
+      table.insert(self.Wards, obj)
+    end
+  end
+end
+
+function LeeSin:getMousePos(range)
+  local MyPos = Vector(myHero.x, myHero.y, myHero.z)
+  local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
+  return MyPos - (MyPos - MousePos):normalized() * 600
+end
+
+function LeeSin:GetWardSlot()
+  for slot = ITEM_1, ITEM_7 do
+    if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
+      return slot
+    end
+  end
+  return nil
 end
 
 function LeeSin:GetCustomTarget()
@@ -304,15 +380,14 @@ function LeeSin:Combo()
 end
 
 
-function LeeSin:IsFirstCast()
-  if myHero.charName == 'LeeSin' then
-      if myHero:GetSpellData(_Q).name == 'BlindMonkQOne' then
-          return true
-      else
-          return false
-      end
+function LeeSin:IsFirstCast(x)
+  if string.find(myHero:GetSpellData(x).name, 'One') then
+      return true
+  else
+      return false
   end
 end
+
 function LeeSin:isInvinc(unit)
   if unit == nil then return end
   --[[for i=1, unit.buffCount do
@@ -322,14 +397,18 @@ function LeeSin:isInvinc(unit)
    end
   end]]--
   return false
-en
-d
+end
+
 function LeeSin:HarrassH()
-  if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast() then
+  if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
     self:CastQ1(self.Target)
   end
-  if myHero:CanUseSpell(_Q) == READY and not self:IsFirstCast() then
-    self:CastQ2()
+  if myHero:CanUseSpell(_W) == READY and self:IsFirstCast(_W) then
+    self.oldPos = myHero.pos
+    if myHero:CanUseSpell(_Q) == READY and not self:IsFirstCast() and GetDistance(self.Target) > myHero.boundingRadius+myHero.range then
+      self:CastQ2()
+    end
+    DelayAction(function() self:Jump(self.oldPos, 250, false) end, 0.33)
   end
   if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 425) then
     self:CastE(self.Target)
