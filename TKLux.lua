@@ -205,7 +205,7 @@ function isLight(unit)
   if unit == nil then return end
   for i = 1, objManager.maxObjects do
     local object = objManager:getObject(i)
-    if object and object.valid and object.name and GetDistance(object,unit) < 50 and string.find(object.name, "Lux_Base_P_debuff") then return true end
+    if object and object.valid and object.name and string.find(object.name, "Lux_Base_P_debuff") and GetDistance(object,unit) < 50 then return true end
   end
   --[[
   for i = 1, unit.buffCount do
@@ -220,7 +220,7 @@ function isInE(unit)
   if unit == nil then return end
   for i = 1, objManager.maxObjects do
     local object = objManager:getObject(i)
-    if object and object.valid and object.name and GetDistance(object,unit) < data[2].width and string.find(object.name, "Lux_Base_E_mis") then return true end
+    if object and object.valid and object.name and string.find(object.name, "Lux_Base_E_mis") and GetDistance(object,unit) < data[2].width then return true end
   end
   --[[
   for i = 1, unit.buffCount do
