@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.02
+local version = 0.03
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLux.lua".."?rand="..math.random(1,10000)
@@ -389,36 +389,41 @@ function GetLowestMinion(range)
 end
 
 function Combo()
-  if not isLight(Target) and QReady() and EReady() then
-    if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-      CastE(Target)
-    end
-  elseif not isLight(Target) and QReady() and not EReady() then
-    if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
-      CastQ(Target)
-    end
-  elseif not isLight(Target) and EReady() and not QReady() then
-    if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
-      CastE(Target)
-    end
-  elseif isLight(Target) and QReady() then
-    DelayAction(function () if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+  if isLight(Target) then
+    if QReady() then
+      DelayAction(function () if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
                               CastQ(Target)
                             end
                           end, lastWindup-GetInGameTimer()+0.25)
-  elseif isLight(Target) and EReady() then
-    DelayAction(function () if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+    elseif EReady() then
+      DelayAction(function () if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
                               CastE(Target)
                             end
                           end, lastWindup-GetInGameTimer()+0.25)
-  end
+    end
+    if Config.comboConfig.R and Target.health < GetDmg("Rl", Target, myHero) and ValidTarget(Target, data[3].range) then
+      local doR = true
+      CastR(Target)
+    end
+  else
+    if QReady() and EReady() then
+      if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+        CastE(Target)
+      end
+    elseif QReady() and not EReady() then
+      if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
+        CastQ(Target)
+      end
+    elseif EReady() and not QReady() then
+      if Config.comboConfig.E and ValidTarget(Target, data[2].range) then
+        CastE(Target)
+      end
+    end
+  else
   if Config.comboConfig.W and myHero.health/myHero.maxHealth <= 50 then
     CastW(Target)
   end
-  if isLight(Target) and Config.comboConfig.R and Target.health < GetDmg("Rl", Target, myHero) and ValidTarget(Target, data[3].range) then
-    local doR = true
-    CastR(Target)
-  elseif Config.comboConfig.R and Target.health < GetDmg("R", Target, myHero) and ValidTarget(Target, data[3].range) then
+  if Config.comboConfig.R and Target.health < GetDmg("R", Target, myHero) and ValidTarget(Target, data[3].range) then
     local doR = true
     CastR(Target)
   end
