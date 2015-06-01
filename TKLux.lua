@@ -203,7 +203,7 @@ function SetupOrbwalk()
 end
 
 function isLight(unit)
-  return luxPassiveTable[unit.networdID] and luxPassiveTable[unit.networdID]+6>GetInGameTimer() or false
+  return luxPassiveTable[unit.networkID] and luxPassiveTable[unit.networdID]+6>GetInGameTimer() or false
 end
 
 function OnApplyBuff(source, unit, buff)
