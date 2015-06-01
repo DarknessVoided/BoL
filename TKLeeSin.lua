@@ -315,15 +315,15 @@ function LeeSin:IsFirstCast()
 end
 function LeeSin:isInvinc(unit)
   if unit == nil then return end
-  for i=1, unit.buffCount do
+  --[[for i=1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name then 
     if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
    end
-  end
+  end]]--
   return false
-end
-
+en
+d
 function LeeSin:HarrassH()
   if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast() then
     self:CastQ1(self.Target)

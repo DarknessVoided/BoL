@@ -130,6 +130,7 @@ function Ekko:Menu()
   self.Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
   self.Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
   self.Config.KS:addParam("killstealE", "Use E", SCRIPT_PARAM_ONOFF, true)
+  self.Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
   if Ignite ~= nil then self.Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 
   self.Config:addSubMenu("Draw Settings", "Drawing")
@@ -385,21 +386,22 @@ function Ekko:DmgCalc()
     if ValidTarget(enemy) and enemy.visible then
       self.killTextTable[enemy.networkID].indicatorText = ""
       local damageAA = self:GetDmg("AD", enemy, myHero)
+      local damageP  = self:GetDmg("P", enemy, myHero)
       local damageQ  = self:GetDmg("Q", enemy, myHero)
       local damageW  = self:GetDmg("W", enemy, myHero)
       local damageE  = self:GetDmg("E", enemy, myHero)
       local damageR  = self:GetDmg("R", enemy, myHero)
       local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
       local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
-      if QReady() then
+      if self.QReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."Q"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_Q)
       end
-      if EReady() then
+      if self.EReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."E"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
       end
-      if RReady() then
+      if self.RReady() then
         self.killTextTable[enemy.networkID].indicatorText = self.killTextTable[enemy.networkID].indicatorText.."R"
         self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_R)
       end
@@ -449,6 +451,7 @@ function Ekko:GetDmg(spell, target, source)
   end
   local ADDmg            = 0
   local APDmg            = 0
+  local AP               = source.ap
   local Level            = source.level
   local TotalDmg         = source.totalDamage
   local ArmorPen         = math.floor(source.armorPen)
@@ -467,9 +470,10 @@ function Ekko:GetDmg(spell, target, source)
   end
   if spell == "IGNITE" then
     return 50+20*Level/2
+  elseif spell == "P" then
+    APDmg = 15 + 12 * Level + 0.7*AP
   elseif spell == "AD" then
     ADDmg = TotalDmg
-    APDmg = 15 + 12 * Level + 0.7*AP
   elseif spell == "Q" then
     APDmg = 45 + 15 * QLevel + 0.2*AP
   elseif spell == "Q2" then
