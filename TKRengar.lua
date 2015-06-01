@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.261
+local version = 0.262
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -210,6 +210,10 @@ function OnTick()
   if Forcetarget ~= nil and ValidTarget(Forcetarget, 1500) then
     Target = Forcetarget  
   end
+  
+  if osTarget ~= nil and not ValidTarget(osTarget, 1500) then
+    osTarget = nil
+  end
 
   DmgCalculations()
 
@@ -231,6 +235,7 @@ function OnTick()
         osTarget = Target
       end
       if ultOn or isLeap then 
+        if osTarget == nil then osTarget = Target end
         OneShot()
       elseif not ultOn then
         Combo()
