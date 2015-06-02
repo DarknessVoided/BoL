@@ -68,7 +68,6 @@ local sts
 local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
-local lastWindup = 0
 local lastAttack = 0
 local previousWindUp = 0
 local previousAttackCooldown = 0
@@ -200,7 +199,6 @@ function OnTick()
 end
 
 function Combo(target)
-  if lastWindup > GetInGameTimer() then return end
   if Config.comboConfig.Q and QReady() then
     CastQ(target)
   end
@@ -220,7 +218,6 @@ function Combo(target)
 end
 
 function Harrass(target)
-  if lastWindup > GetInGameTimer() then return end
   if Config.harrConfig.Q and QReady() then
     CastQ(target)
   end

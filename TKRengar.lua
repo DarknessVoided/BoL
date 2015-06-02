@@ -268,6 +268,15 @@ function OnTick()
   end
 end
 
+function OnProcessSpell(unit, spell)  
+  if unit.isMe then
+    if not spell.name:find("summoner") then
+      --print(spell.name.." "..spell.windUpTime)
+      lastWindup = spell.windUpTime+GetInGameTimer()
+    end
+  end
+end
+
 function OnSendPacket(p)
   if myHero.mana == 5 and not myHero.dead and Config.comboConfig.qqq then
     if p.header == 0x10B then -- old: 0x00E9
@@ -314,6 +323,7 @@ function OnWndMsg(Msg, Key)
 end
 
 function LastHit()
+  if lastWindup > GetInGameTimer() then return end
   if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
     if WReady() and Config.farmConfig.lc.W then
       local minionTarget = nil
@@ -355,6 +365,7 @@ function LastHit()
 end
 
 function LaneClear()
+  if lastWindup > GetInGameTimer() then return end
   if myHero.mana == 5 and Config.farmConfig.Whp and (myHero.health / myHero.maxHealth) * 100 < 90 then
     if WReady() and Config.farmConfig.lc.W then
       local minionTarget = nil
