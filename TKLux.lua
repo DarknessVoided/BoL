@@ -219,11 +219,7 @@ function OnRemoveBuff(unit, buff)
 end
 
 function isInE(unit)
-  if unit == nil then return end
-  for i = 1, objManager.maxObjects do
-    local object = objManager:getObject(i)
-    if object and object.valid and object.name and string.find(object.name, "Lux_Base_E_mis") and GetDistance(object,unit) < data[2].width then return true end
-  end
+  if unit == nil then return false end
   --[[
   for i = 1, unit.buffCount do
    local buff = unit:getBuff(i)

@@ -73,6 +73,8 @@ function LeeSin:__init()
   AddDrawCallback(function() self:Draw() end)
   AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
   AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
+  AddApplyBuffCallback(function(source, unit, buff) self:ApplyBuff(source, unit, buff) end)
+  AddRemoveBuffCallback(function(unit, buff) self:RemoveBuff(unit, buff) end)
 end
 
 function LeeSin:Vars()
@@ -90,6 +92,7 @@ function LeeSin:Vars()
   self.Wards = {}
   self.casted, self.jumped = false, false
   self.oldPos = nil
+  self.qTable = {}
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
   end
@@ -290,7 +293,7 @@ function LeeSin:getMousePos(range)
 end
 
 function LeeSin:GetWardSlot()
-  for slot = ITEM_1, ITEM_7 do
+  for slot = ITEM_7, ITEM_1, -1 do
     if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
       return slot
     end
@@ -403,16 +406,37 @@ function LeeSin:HarrassH()
   if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
     self:CastQ1(self.Target)
   end
-  if myHero:CanUseSpell(_W) == READY and self:IsFirstCast(_W) then
-    self.oldPos = myHero.pos
-    if myHero:CanUseSpell(_Q) == READY and not self:IsFirstCast() and GetDistance(self.Target) > myHero.boundingRadius+myHero.range then
-      self:CastQ2()
-    end
-    DelayAction(function() self:Jump(self.oldPos, 250, false) end, 0.33)
+  if not self.oldPos and self:hasQ(self.Target) and myHero:CanUseSpell(_W) == READY and self:IsFirstCast(_W) then
+    self.oldPos = myHero
+    self:CastQ2()
   end
-  if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 425) then
+  if self.oldPos and GetDistance(self.Target) < 250 and myHero:CanUseSpell(_W) == READY and self:IsFirstCast(_W) then
+    for _,winion in pairs(minionManager(MINION_ALLY, 450, self.oldPos, MINION_SORT_HEALTH_ASC).objects) do
+      if GetDistance(self.oldPos) < GetDistance(winion) and GetDistance(winion) < 600 then
+        self.oldPos = winion
+      end
+    end
+    DelayAction(function() self:Jump(self.oldPos, 400, false) self.oldPos = nil end, 0.33)
+  end
+  if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 415) then
     self:CastE(self.Target)
   end
+end
+
+function LeeSin:hasQ(unit)
+  return self.qTable[unit.networkID] and self.qTable[unit.networkID]+3>GetInGameTimer() or false
+end
+
+function LeeSin:ApplyBuff(source, unit, buff)
+   if buff.name == "BlindMonkQOne" then
+      self.qTable[unit.networkID] = GetInGameTimer()
+   end
+end
+ 
+function LeeSin:RemoveBuff(unit, buff)
+   if buff.name == "BlindMonkQOne" then
+      self.qTable[unit.networkID] = nil
+   end
 end
 
 function LeeSin:HarrassT()

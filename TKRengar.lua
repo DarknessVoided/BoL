@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.262
+local version = 0.263
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKRengar.lua".."?rand="..math.random(1,10000)
@@ -557,7 +557,7 @@ function Combo()
 end
 
 function OneShot()
-  if GetDistance(osTarget, myHero) > myHero.range+myHero.boundingRadius then return end
+  if not osTarget or GetDistance(osTarget, myHero) > myHero.range+myHero.boundingRadius then return end
   if Smite ~= nil and SReady() then CastSpell(Smite, osTarget) end
   if myHero.mana == 5 then
     if Config.comboConfig.fero == 0 then
