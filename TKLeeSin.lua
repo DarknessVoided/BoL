@@ -81,7 +81,7 @@ end
 function LeeSin:Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then self.Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then self.Ignite = SUMMONER_2 end
   if myHero:GetSpellData(SUMMONER_1).name:find("flash") then self.Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("flash") then self.Flash = SUMMONER_2 end
-  self.QReady, self.WReady, self.EReady, self.RReady, self.IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end
+  self.QReady, self.WReady, self.EReady, self.RReady, self.IReady = function() return myHero:CanUseSpell(_Q) == READY end, function() return myHero:CanUseSpell(_W) == READY end, function() return myHero:CanUseSpell(_E) == READY end, function() return myHero:CanUseSpell(_R) == READY end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) == READY end end
   self.Target = nil
   self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
   self.Mobs = minionManager(MINION_ALL, 2500, myHero, MINION_SORT_HEALTH_ASC)

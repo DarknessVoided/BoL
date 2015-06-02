@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.014
+local version = 0.02
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKMalzahar.lua".."?rand="..math.random(1,10000)
@@ -61,7 +61,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 if VIP_USER then HookPackets() end
 if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
-local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) end end
+local QReady, WReady, EReady, RReady, IReady = function() return myHero:CanUseSpell(_Q) == READY end, function() return myHero:CanUseSpell(_W) == READY end, function() return myHero:CanUseSpell(_E) == READY end, function() return myHero:CanUseSpell(_R) == READY end, function() if Ignite ~= nil then return myHero:CanUseSpell(self.Ignite) == READY end end
 local RebornLoaded, RevampedLoaded, MMALoaded, SxOrbLoaded, SOWLoaded = false, false, false, false, false
 local Target 
 local sts
@@ -69,6 +69,9 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local lastWindup = 0
+local lastAttack = 0
+local previousWindUp = 0
+local previousAttackCooldown = 0
 local ultOn      = 0
 local data = {
   [_Q] = { speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear"},
@@ -144,6 +147,7 @@ function OnLoad()
   
   Config:addSubMenu("Orbwalk Settings", "oConfig")
   Config.oConfig:addParam("move", "Move to mouse", SCRIPT_PARAM_ONOFF, true)
+  Config.oConfig:addParam("attack", "Autoattack", SCRIPT_PARAM_ONOFF, true)
 
   Config.kConfig:permaShow("combo")
   Config.kConfig:permaShow("harr")
@@ -170,7 +174,7 @@ function OnTick()
 
   DmgCalculations()
 
-  if Config.oConfig.move and (Config.kConfig.har or Config.kConfig.harr or Config.kConfig.combo) and ultOn < GetInGameTimer() then
+  if Config.oConfig.move and (Config.kConfig.har or Config.kConfig.harr or Config.kConfig.combo or Config.kConfig.lc) and ultOn < GetInGameTimer() and GetDistanceSqr(mousePos, myHero.pos) > 800 and heroCanMove() then
     myHero:MoveTo(mousePos.x, mousePos.z)
   end
 
@@ -197,43 +201,61 @@ end
 
 function Combo(target)
   if lastWindup > GetInGameTimer() then return end
-  if QReady() then
+  if Config.comboConfig.Q and QReady() then
     CastQ(target)
   end
-  if EReady() then
+  if Config.comboConfig.E and EReady() then
     CastE(target)
   end
-  if WReady() then
+  if Config.comboConfig.W and WReady() then
     CastW(target)
   end
-  if RReady() then
+  if Config.comboConfig.R and RReady() then
     CastR(target)
+  end
+  if Config.oConfig.attack and timeToShoot() and ultOn < GetInGameTimer() and GetDistance(target) < myHero.range+myHero.boundingRadius then
+    lastAttack = GetInGameTimer()+0.25
+    myHero:Attack(target)
   end
 end
 
 function Harrass(target)
   if lastWindup > GetInGameTimer() then return end
-  if QReady() then
+  if Config.harrConfig.Q and QReady() then
     CastQ(target)
   end
-  if EReady() then
+  if Config.harrConfig.E and EReady() then
     CastE(target)
   end
-  if WReady() then
+  if Config.harrConfig.W and WReady() then
     CastW(target)
+  end
+  if Config.oConfig.attack and timeToShoot() and ultOn < GetInGameTimer() and GetDistance(target) < myHero.range+myHero.boundingRadius then
+    lastAttack = GetInGameTimer()+0.25
+    myHero:Attack(target)
   end
 end
 
 function OnProcessSpell(unit, spell)  
-  if unit == myHero then
-    if not string.find(spell.name, "summoner") then
+  if unit.isMe then
+    if spell.name:lower():find("attack") and not string.find(spell.name, "summoner") then
       --print(spell.name.." "..spell.windUpTime)
-      lastWindup = GetInGameTimer()+spell.windUpTime
+      lastAttack = GetTickCount() - GetLatency()/2
+      previousWindUp = spell.windUpTime*1000
+      previousAttackCooldown = spell.animationTime*1000
     end
     if string.find(spell.name, "NetherGrasp") then
       ultOn = GetInGameTimer()+2.5
     end
   end
+end
+ 
+function timeToShoot()
+  return (GetTickCount() + GetLatency()/2 > lastAttack + previousAttackCooldown)
+end
+ 
+function heroCanMove()
+  return (GetTickCount() + GetLatency()/2 > lastAttack + previousWindUp + 50)
 end
 
 function LastHit()
@@ -308,6 +330,13 @@ function LaneClear()
       CastE(minionTarget)
     end
   end  
+  if lastWindup < GetInGameTimer() and timeToShoot() and Config.oConfig.attack and ultOn < GetInGameTimer() then
+    minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius)
+    if minionTarget ~= nil and GetDistance(minionTarget)<myHero.range+myHero.boundingRadius then
+      lastAttack = GetInGameTimer()+0.25
+      myHero:Attack(minionTarget)
+    end
+  end
 end
 
 function GetLowestMinion(range)
@@ -337,6 +366,16 @@ function GetWFarmPosition(range, radius)
     end
   end
   return BestPos, BestHit
+end
+
+function CountObjectsNearPos(pos, range, radius, objects)
+  local n = 0
+  for i, object in ipairs(objects) do
+    if GetDistance(pos, object) <= radius then
+      n = n + 1
+    end
+  end
+  return n
 end
 
 function EnemiesAround(Unit, range)
