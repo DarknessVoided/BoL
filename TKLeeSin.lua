@@ -272,7 +272,10 @@ function LeeSin:Insec()
     local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, insecTowards)
   end
   CastPosition1 = 375*(Vector(self.Target) - Vector(CastPosition)):normalized()
-  if GetDistance(CastPosition1) > 375 then
+  if GetDistance(CastPosition1) > 800 then
+    CastSpell(self.Flash, CastPosition1.x, CastPosition1.z)
+    DelayAction(function() self:Jump(CastPosition1, 50, true) end, 0.25)
+  elseif GetDistance(CastPosition1) > 375 then
     self:Jump(CastPosition1, 50, true)
   elseif GetDistance(CastPosition1) > 20 then
     myHero:MoveTo(CastPosition1.x, CastPosition1.z)
