@@ -71,6 +71,7 @@ local enemyCount = 0
 local ultOn, isLeap, oneShot, oneShotTimer = false, false, false, 0
 local osTarget = nil
 local ForceTarget = nil
+local lastWindup = 0
 data = {
     [_W] = { speed = math.huge, delay = 0.5, range = 390, width = 55, collision = false, aoe = true, type = "circular"},
     [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = true, aoe = false, type = "linear"},
