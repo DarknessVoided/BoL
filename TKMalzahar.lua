@@ -327,7 +327,7 @@ function LaneClear()
       CastE(minionTarget)
     end
   end  
-  if lastWindup < GetInGameTimer() and timeToShoot() and Config.oConfig.attack and ultOn < GetInGameTimer() then
+  if timeToShoot() and Config.oConfig.attack and ultOn < GetInGameTimer() then
     minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius)
     if minionTarget ~= nil and GetDistance(minionTarget)<myHero.range+myHero.boundingRadius then
       lastAttack = GetInGameTimer()+0.25
