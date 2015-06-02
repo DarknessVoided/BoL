@@ -72,13 +72,14 @@ function Ekko:__init()
   self:Menu()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
+  AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
 end
 
 function Ekko:Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then self.Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then self.Ignite = SUMMONER_2 end
   self.QReady, self.WReady, self.EReady, self.RReady, self.IReady, self.SReady = function() return myHero:CanUseSpell(_Q) end, function() return myHero:CanUseSpell(_W) end, function() return myHero:CanUseSpell(_E) end, function() return myHero:CanUseSpell(_R) end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) end end
   self.data = {
-    [_Q] = { speed = 1050, delay = 0.25, range = 1050, width = 50, collision = false, aoe = false, type = "linear"},
+    [_Q] = { speed = 1050, delay = 0.25, range = 825, width = 70, collision = false, aoe = false, type = "linear"},
     [_W] = { speed = math.huge, delay = 1, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
     [_E] = { delay = 0.50, range = 600}}
   self.Target = nil
@@ -88,6 +89,7 @@ function Ekko:Vars()
   self.colorIndicatorNotReady = ARGB(255, 255, 220, 0)
   self.colorInfo              = ARGB(255, 255, 50,  0)
   self.killTextTable = {}
+  self.myEvilTwin = nil
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
   end
@@ -100,11 +102,6 @@ function Ekko:Menu()
   UPL:AddSpell(_Q, self.data[_Q])
   UPL:AddSpell(_W, self.data[_W])
   UPL:AddToMenu(self.Config.misc)
-
-  self.Config:addSubMenu("Ult settings", "casual")
-  self.Config.casual:addParam("enabled", "Use Auto Ult", SCRIPT_PARAM_ONOFF, true)
-  self.Config.casual:addParam("saveme", "Ult for lifesave", SCRIPT_PARAM_ONOFF, true)
-  --Config.casual:addParam("killsomething", "Ult for max dmg in teamfight", SCRIPT_PARAM_ONOFF, true)
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
   self.Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -137,7 +134,7 @@ function Ekko:Menu()
   self.Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
-  self.Config.Drawing:addParam("RRange", "R Range", SCRIPT_PARAM_ONOFF, true)
+  self.Config.Drawing:addParam("R", "R", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("lfc", "Lagg Free Circles", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("lfcq", "LFC Quality", SCRIPT_PARAM_SLICE, 32, 8, 64, mlog(8))
@@ -214,10 +211,6 @@ function Ekko:Tick()
     end
   end
 
-  if self.Config.casual.enabled then
-    self:DoSomeUltLogic()
-  end
-
   self:LastHit()
 
   if self.Config.kConfig.lc and self.Config.farmConfig.lc.Q then
@@ -227,10 +220,12 @@ function Ekko:Tick()
   self:DmgCalc()
 end
 
-function Ekko:DoSomeUltLogic()
-  if self.Config.casual.saveme and myHero.health <= myHero.maxHealth * 0.15 then
-    CastR()
-  end 
+function Ekko:CreateObj(obj)
+  if obj ~= nil and obj.valid then
+    if obj.name == "Ekko" then
+      self.myEvilTwin = obj
+    end
+  end
 end
 
 function Ekko:GetCustomTarget()
@@ -290,11 +285,11 @@ function Ekko:Combo()
     self:CastQ(self.Target)
   end
   if self.Config.comboConfig.W and ValidTarget(self.Target, self.data[1].range) then
-    local castPos = Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
-    castPos = castPos * GetDistance(self.Target)/2
+    local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, self.Target)
+    local castPos = Vector(self.Target)-(GetDistance(self.Target)/2)*(Vector(CastPosition)-Vector(self.Target)):normalized() --Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
     self:CastW(castPos)
   end
-  if self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+myHero.range+myHero.boundingRadius) then
+  if self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+(myHero.range+myHero.boundingRadius)*2) then
     self:CastE(self.Target)
   end
 end
@@ -302,14 +297,6 @@ end
 function Ekko:Harrass()
   if self.Config.harrConfig.Q and ValidTarget(self.Target, self.data[0].range) then
     self:CastQ(self.Target)
-  end
-  if self.Config.harrConfig.W and ValidTarget(self.Target, self.data[1].range) then
-    local castPos = Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
-    castPos = castPos * GetDistance(self.Target)/2
-    self:CastW(castPos)
-  end
-  if self.Config.harrConfig.E and ValidTarget(self.Target, self.data[2].range+myHero.range+myHero.boundingRadius) then
-    self:CastE(self.Target)
   end
 end
 
@@ -337,12 +324,15 @@ function Ekko:Killsteal()
     local enemy= v
     local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0)  
     local eDmg = ((self:GetDmg("E", enemy, myHero)) or 0)  
+    local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, self.data[0].range) then
         self:CastQ(enemy)
       elseif myHero:CanUseSpell(_E) and enemy.health < eDmg and self.Config.KS.killstealE and ValidTarget(enemy, self.data[2].range+myHero.range+myHero.boundingRadius) then
         self:CastE(enemy)
+      elseif myHero:CanUseSpell(_R) and enemy.health < rDmg and self.Config.KS.killstealR and GetDistance(enemy, self.myEvilTwin) < myHero.range+myHero.boundingRadius then
+        self:CastR()
       elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         self:CCastSpell(Ignite, enemy)
       end
@@ -360,8 +350,11 @@ function Ekko:Draw()
   if self.Config.Drawing.ERange and myHero:CanUseSpell(_E) then
     self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[2].range, ARGB(255, 155, 155, 155))
   end
-  if self.Config.Drawing.RRange and myHero:CanUseSpell(_R) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, 1500, ARGB(255, 155, 155, 155))
+  if self.Config.Drawing.R and self.myEvilTwin ~= nil then
+    for i=1,3 do
+      LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 250, 5, ARGB(255, 0, 155, 155), 3, (math.pi/(amount-1))*(i-1))
+    end 
+    LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 250, 5, ARGB(255, 0, 155, 155), 9, 0)
   end
   if self.Config.Drawing.dmgCalc then
     for i,k in pairs(GetEnemyHeroes()) do

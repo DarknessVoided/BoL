@@ -554,7 +554,7 @@ function LeeSin:Killsteal()
       elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 425) then
         self:CastR(enemy)
       elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
-        self:CCastSpell(Ignite, enemy)
+        CastSpell(Ignite, enemy)
       end
     end
   end
