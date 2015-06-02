@@ -252,35 +252,39 @@ function LeeSin:Tick()
 end
 
 function LeeSin:Insec()
-  if not self.RReady() or not self.Target or (GetDistance(self.Target) > 600 and self.Flash and not myHero:GetSpellData(self.Flash).currentCd == 0) or (GetDistance(self.Target) > 800 and self.Flash and myHero:GetSpellData(self.Flash).currentCd == 0) then return end
+  if myHero:GetSpellData(_R).currentCd ~= 0 or not self.Target then return end
   local insecTowards = nil
-  for _,unit in pairs(GetAllyHeroes()) do
-    if GetDistance(unit,self.Target) < 2000 and self.Config.Inschallah['I'..i] then
-      insecTowards = unit
+  if #GetAllyHeroes() > 0 then
+    for _,unit in pairs(GetAllyHeroes()) do
+      if GetDistance(unit,self.Target) < 2000 and self.Config.Inschallah['I'..i] then
+        insecTowards = unit
+      end
     end
   end
-  if not insecTowards then
+  if insecTowards == nil then
     if _G.LeftMousDown and self.Config.Inschallah.mouse then
       insecTowards = mousePos
     else
       return
     end
   end
-  if insecTowards == mousePos then
-    local CastPosition = mousePos
-  else
-    local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, insecTowards)
+  CastPosition = insecTowards
+  if GetDistance(insecTowards, mousePos) > 50 then
+    CastPosition, HitChance, Position = UPL:Predict(_R, myHero, insecTowards)
   end
-  CastPosition1 = 375*(Vector(self.Target) - Vector(CastPosition)):normalized()
-  if GetDistance(CastPosition1) > 800 then
+  CastPosition1 = Vector(self.Target)-300*(Vector(CastPosition)-Vector(self.Target)):normalized()
+  myHero:MoveTo(CastPosition1.x, CastPosition1.z)
+  if GetDistance(myHero, CastPosition1) < 25 and VectorPointProjectionOnLineSegment(myHero, CastPosition, self.Target) then
+    self:CastR(self.Target)
+  end
+  if GetDistance(CastPosition1) > 800 and not self:GetWardSlot() then
     CastSpell(self.Flash, CastPosition1.x, CastPosition1.z)
     DelayAction(function() self:Jump(CastPosition1, 50, true) end, 0.25)
-  elseif GetDistance(CastPosition1) > 375 then
-    self:Jump(CastPosition1, 50, true)
-  elseif GetDistance(CastPosition1) > 20 then
-    myHero:MoveTo(CastPosition1.x, CastPosition1.z)
-  elseif VectorPointProjectionOnLineSegment(myHero, CastPosition, self.Target) then
-    self:CastR(self.Target)
+  elseif GetDistance(CastPosition1) > 300 and GetDistance(CastPosition1) < 600 then
+    if self:Jump(CastPosition1, 50, true) then return end
+    slot = self:GetWardSlot()
+    if not slot then return end
+    CastSpell(slot, CastPosition1.x, CastPosition1.z)
   end
 end
 
@@ -300,7 +304,6 @@ function LeeSin:WardJump()
     slot = self:GetWardSlot()
     if not slot then return end
     CastSpell(slot, pos.x, pos.z)
-    self.casted = true
   end
 end
 
@@ -570,7 +573,7 @@ function LeeSin:Draw()
   if self.Config.Drawing.RRange and myHero:CanUseSpell(_R) then
     self:DrawLFC(myHero.x, myHero.y, myHero.z, 375, ARGB(255, 155, 155, 155))
   end
-  if self.Config.kConfig.Inschallah and _G.LeftMousDown then
+  if self.Config.kConfig.Inschallah and _G.LeftMousDown and self.Config.Inschallah.mouse then
     self:DrawLFC(mousePos.x, mousePos.y, mousePos.z, 30, ARGB(255, 155, 0, 0))
     self:DrawLFC(mousePos.x, mousePos.y, mousePos.z, 32, ARGB(255, 155, 0, 0))
     self:DrawLFC(mousePos.x, mousePos.y, mousePos.z, 34, ARGB(255, 155, 0, 0))
