@@ -21,17 +21,17 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 function OnLoad()
-  Lee = nil
+  Dari = nil
   if Update() then
     return
   else
-    Lee = LeeSin()
+    Dari = LeeSin()
     DelayAction(function() TopKekMsg("Loaded the latest version (v"..ServerVersion..")") end, 5)
   end
 end
 
 function Update()
-  local version = 0.03
+  local version = 0.02
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
@@ -95,8 +95,6 @@ function LeeSin:Vars()
   self.casted, self.jumped = false, false
   self.oldPos = nil
   self.qTable = {}
-  self.Forcetarget = nil
-  self.insecTarget = nil
   self.Col = Collision(1100, 1800, 0.25, 70)
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
@@ -221,10 +219,6 @@ function LeeSin:Tick()
     self:WardJump()
   end
 
-  if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, 1500) then
-    self.Target = self.Forcetarget  
-  end
-
   if self.Target ~= nil then
     if self.Config.KS.enableKS then 
       self:Killsteal()
@@ -257,41 +251,12 @@ function LeeSin:Tick()
   self:DmgCalc()
 end
 
-function OnWndMsg(Msg, Key)
-  Lee:WndMsg(Msg,Key)
-end
-
-function LeeSin:WndMsg(Msg, Key)
-  if Msg == WM_LBUTTONDOWN then
-    local minD = 0
-    local starget = nil
-    for i, enemy in ipairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) then
-        if GetDistance(enemy, mousePos) <= minD or starget == nil then
-          minD = GetDistance(enemy, mousePos)
-          starget = enemy
-        end
-      end
-    end
-    
-    if starget and minD < 500 then
-      if self.Forcetarget and starget.charName == self.Forcetarget.charName then
-        self.Forcetarget = nil
-      else
-        self.Forcetarget = starget
-        TopKekMsg("New insec-target selected: "..starget.charName.."")
-      end
-    end
-  end
-end
-
 function LeeSin:Insec()
-  if myHero:GetSpellData(_R).currentCd ~= 0 then return end
-  self.insecTarget = self.Forcetarget or self.Target
+  if myHero:GetSpellData(_R).currentCd ~= 0 or not self.Target then return end
   local insecTowards = nil
   if #GetAllyHeroes() > 0 then
     for _,unit in pairs(GetAllyHeroes()) do
-      if GetDistance(unit,insecTarget) < 2000 and self.Config.Inschallah['I'..i] then
+      if GetDistance(unit,self.Target) < 2000 and self.Config.Inschallah['I'..i] then
         insecTowards = unit
       end
     end
@@ -307,10 +272,10 @@ function LeeSin:Insec()
   if GetDistance(insecTowards, mousePos) > 50 then
     CastPosition, HitChance, Position = UPL:Predict(_R, myHero, insecTowards)
   end
-  CastPosition1 = Vector(insecTarget)-300*(Vector(CastPosition)-Vector(insecTarget)):normalized()
+  CastPosition1 = Vector(self.Target)-300*(Vector(CastPosition)-Vector(self.Target)):normalized()
   myHero:MoveTo(CastPosition1.x, CastPosition1.z)
-  if GetDistance(myHero, CastPosition1) < 25 and VectorPointProjectionOnLineSegment(myHero, CastPosition, insecTarget) then
-    self:CastR(insecTarget)
+  if GetDistance(myHero, CastPosition1) < 25 and VectorPointProjectionOnLineSegment(myHero, CastPosition, self.Target) then
+    self:CastR(self.Target)
   end
   if GetDistance(CastPosition1) > 800 and not self:GetWardSlot() then
     CastSpell(self.Flash, CastPosition1.x, CastPosition1.z)
@@ -607,14 +572,6 @@ function LeeSin:Draw()
   end
   if self.Config.Drawing.RRange and myHero:CanUseSpell(_R) then
     self:DrawLFC(myHero.x, myHero.y, myHero.z, 375, ARGB(255, 155, 155, 155))
-  end
-  if self.insecTarget ~= nil then
-    self:DrawLFC(self.insecTarget.x, self.insecTarget.y, self.insecTarget.z, self.insecTarget.boundingRadius, ARGB(255, 0, 255, 0))
-    self:DrawLFC(self.insecTarget.x, self.insecTarget.y, self.insecTarget.z, self.insecTarget.boundingRadius+2, ARGB(255, 0, 255, 0))
-    self:DrawLFC(self.insecTarget.x, self.insecTarget.y, self.insecTarget.z, self.insecTarget.boundingRadius+4, ARGB(255, 0, 255, 0))
-    self:DrawLFC(self.insecTarget.x, self.insecTarget.y, self.insecTarget.z, self.insecTarget.boundingRadius+6, ARGB(255, 0, 255, 0))
-    self:DrawLFC(self.insecTarget.x, self.insecTarget.y, self.insecTarget.z, self.insecTarget.boundingRadius+8, ARGB(255, 0, 255, 0))
-    self:DrawLFC(self.insecTarget.x, self.insecTarget.y, self.insecTarget.z, self.insecTarget.boundingRadius+10, ARGB(255, 0, 255, 0))
   end
   if self.Config.kConfig.Inschallah and _G.LeftMousDown and self.Config.Inschallah.mouse then
     self:DrawLFC(mousePos.x, mousePos.y, mousePos.z, 30, ARGB(255, 155, 0, 0))
