@@ -19,7 +19,7 @@ if myHero.charName ~= "Kalista" then return end
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
-TKKalistaVersion = 1.6
+TKKalistaVersion = 1.61
 
 function OnLoad()
   Kali = nil
@@ -168,12 +168,14 @@ function Kalista:Menu()
 end
 
 function Kalista:UpdateBuff(unit, buff, stacks)
+  if unit == nil or buff == nil then return end
    if buff.name == "kalistaexpungemarker" then
       self.stackTable[unit.networkID] = stacks
    end
 end
  
 function Kalista:RemoveBuff(unit, buff)
+  if unit == nil or buff == nil then return end
    if buff.name == "kalistaexpungemarker" then
       self.stackTable[unit.networkID] = nil
    end
@@ -260,7 +262,7 @@ function Kalista:KillSomethingWithE()
     local killableCounterJ = 0
     for minion,winion in pairs(self.Mobs.objects) do
       local EMinionDmg = self:GetDmg("E", winion, myHero)   
-      if EMinionDmg > winion.health and GetDistance(winion) < self.data[2].range then
+      if winion ~= nil and EMinionDmg > winion.health and GetDistance(winion) < self.data[2].range then
         if (string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
           if not string.find(winion.charName, "Mini") then       
             killableCounterJ = killableCounterJ +1
@@ -287,7 +289,7 @@ function Kalista:LastHit()
   if myHero:CanUseSpell(_Q) then
     for minion,winion in pairs(self.Mobs.objects) do
       local QMinionDmg = self:GetDmg("Q", winion, myHero)
-      if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
+      if winion ~= nil and QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
         self:CastQ(unit)
       end
     end
@@ -300,7 +302,7 @@ function Kalista:LaneClear()
     for minion,winion in pairs(self.Mobs.objects) do
       if minionTarget == nil then 
         minionTarget = winion
-      elseif minionTarget.health < winion.health and ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
+      elseif winion ~= nil and minionTarget.health < winion.health and ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
         minionTarget = winion
       end
       if minionTarget ~= nil then
@@ -321,7 +323,7 @@ function Kalista:Combo()
     local killableCounter = 0
     for minion,winion in pairs(self.Mobs.objects) do
       local EMinionDmg = self:GetDmg("E", winion, myHero)      
-      if EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range then
+      if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range then
         killableCounter = killableCounter +1
       end   
     end   
@@ -341,13 +343,13 @@ function Kalista:Harrass()
       local killableCounter = 0
       for minion,winion in pairs(self.Mobs.objects) do
         local EMinionDmg = self:GetDmg("E", winion, myHero)      
-        if EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range then
+        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, self.data[2].range) and GetDistance(winion) < self.data[2].range then
           killableCounter = killableCounter +1
         end   
       end 
       for i, unit in pairs(GetEnemyHeroes()) do    
         local EChampDmg = self:GetDmg("E", unit, myHero)      
-        if EChampDmg and EChampDmg > 0 and ValidTarget(unit, self.data[2].range) and GetDistance(unit) < self.data[2].range then
+        if unit ~= nil and EChampDmg and EChampDmg > 0 and ValidTarget(unit, self.data[2].range) and GetDistance(unit) < self.data[2].range then
           harrassUnit = unit
         end      
       end    
@@ -424,7 +426,7 @@ function Kalista:Draw()
     if myHero:CanUseSpell(_E) then
       for minion,winion in pairs(self.Mobs.objects) do
         damageE  = self:GetDmg("E", winion, myHero)
-        if self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
+        if winion ~= nil and self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
           if damageE > winion.health then
             DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           else
