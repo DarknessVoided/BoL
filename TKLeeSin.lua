@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.01
+  local version = 0.02
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
@@ -446,7 +446,7 @@ function LeeSin:Combo()
     end
   elseif myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
     self:CastQ1(self.Target)
-  elseif hasQ(self.Target) and self.qTable[self.Target.networkID]+2.5<GetInGameTimer() then
+  elseif (self:hasQ(self.Target) and GetDistance(self.Target) > myHero.range+myHero.boundingRange*2) or self.qTable[self.Target.networkID]+2.5<GetInGameTimer() then
     self:CastQ2()
   end
 end
