@@ -67,6 +67,7 @@ end
 class "LeeSin"
 
 function LeeSin:__init()
+  require "Collision"
   self:Vars()
   self:Menu()
   AddTickCallback(function() self:Tick() end)
@@ -93,6 +94,7 @@ function LeeSin:Vars()
   self.casted, self.jumped = false, false
   self.oldPos = nil
   self.qTable = {}
+  self.Col = Collision(1100, 1800, 0.25, 70)
   for k,enemy in pairs(GetEnemyHeroes()) do
     self.killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = "", ready = true}
   end
@@ -108,7 +110,7 @@ function LeeSin:Menu()
   self.Config = scriptConfig("Top Kek Lee Sin", "TKLeeSin")
   
   self.Config:addSubMenu("Prediction Settings", "misc")
-  UPL:AddSpell(_Q, {range = 1100, width = 70, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear"})
+  UPL:AddSpell(_Q, {range = 1100, width = 50, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear"})
   UPL:AddToMenu(self.Config.misc)
   
   self.Config:addSubMenu("Farm Settings", "farmConfig")
@@ -239,6 +241,10 @@ function LeeSin:Tick()
   end
 
   self:DmgCalc()
+end
+
+function LeeSin:Insec()
+  print("Soon TM")
 end
 
 function LeeSin:WardJump()
@@ -380,8 +386,22 @@ function CountObjectsNearPos(pos, range, radius, objects)
 end
 
 function LeeSin:Combo()
+  if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 400) and self:IsFirstCast(_E) then
+    self:CastE(self.Target)
+  end
+  if self.Target.health < self:GetDmg("Q", self.Target, myHero)+self:GetDmg("R", self.Target, myHero)+(self.Target.maxHealth-(self.Target.health-self:GetDmg("R", self.Target, myHero)*0.08)) then
+    if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
+      self:CastQ1(self.Target)
+    elseif myHero:CanUseSpell(_Q) == READY and self:hasQ(self.Target) then
+      self:CastR(self.Target)
+      DelayAction(function() self:CastQ2() end, 0.33)
+    end
+  elseif myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
+    self:CastQ1(self.Target)
+  elseif hasQ(self.Target) and self.qTable[self.Target.networkID]+2.5<GetInGameTimer() then
+    self:CastQ2()
+  end
 end
-
 
 function LeeSin:IsFirstCast(x)
   if string.find(myHero:GetSpellData(x).name, 'One') then
@@ -389,17 +409,6 @@ function LeeSin:IsFirstCast(x)
   else
       return false
   end
-end
-
-function LeeSin:isInvinc(unit)
-  if unit == nil then return end
-  --[[for i=1, unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name then 
-    if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
-   end
-  end]]--
-  return false
 end
 
 function LeeSin:HarrassH()
@@ -452,7 +461,11 @@ function LeeSin:CastQ1(target)
   if target == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, target)
   if HitChance >= 2 and self.QReady() then
-    self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
+    local Mcol = self.Col:GetMinionCollision(myHero, CastPosition)
+    local Mcol2 = self.Col:GetMinionCollision(myHero, target)
+    if not Mcol and not Mcol2 then
+      self:CCastSpell(_Q, CastPosition.x,  CastPosition.z)
+    end
   end
 end
 function LeeSin:CastQ2() 
@@ -475,16 +488,19 @@ end
 function LeeSin:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
     local qDmg = ((self:GetDmg("Q", enemy, myHero)) or 0) 
-    local q1Dmg = ((self:GetDmg("Q1", enemy, myHero)) or 0)  
+    local q1Dmg = ((self:GetDmg("Q1", enemy, myHero)) or 0) 
+    local q2Dmg = ((self:GetDmg("Q2", enemy, myHero)) or 0)  
     local eDmg = ((self:GetDmg("E", enemy, myHero)) or 0)   
     local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 2
-    if ValidTarget(enemy) and not self:isInvinc(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, 1100) then
         self:CastQ1(enemy)
         self:CastQ2()
       elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < q1Dmg and self.Config.KS.killstealQ and ValidTarget(enemy, 1100) then
         self:CastQ1(enemy)
+      elseif myHero:CanUseSpell(_Q) and self:hasQ(enemy) and enemy.health+enemy.shield < q2Dmg and self.Config.KS.killstealQ and ValidTarget(enemy, 1100) then
+        self:CastQ2()
       elseif myHero:CanUseSpell(_E) and enemy.health+enemy.shield < eDmg and self.Config.KS.killstealE then
         self:CastE(enemy)
       elseif myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and self.Config.KS.killstealR and ValidTarget(enemy, 425) then
