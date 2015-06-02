@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.06
+local version = 0.07
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -67,6 +67,7 @@ local Target
 local sts
 local enemyTable = {}
 local enemyCount = 0
+local poisonTable = {}
 local data = {
   [_Q] = { speed = math.huge, delay = 0.25, range = 850, width = 100, collision = false, aoe = true, type = "circular"},
   [_W] = { speed = 2500, delay = 0.5, range = 925, width = 90, collision = false, aoe = true, type = "circular"},
@@ -392,17 +393,31 @@ end
 
 function isPoisoned(unit)
   if unit == nil then return end
-  for i = 1, objManager.maxObjects do
-    local object = objManager:getObject(i)
-    if object and object.valid and object.name and GetDistance(object,unit) < 50 and string.find(object.name, "Poison") then return true end
-  end
-  --[[
-  for i = 1 , unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name and string.find(buff.name, "cassiopeia") and string.find(buff.name, "poison") and (buff.endT - GetInGameTimer()) >= 0.5 then return true end
-  end
-  ]]--
-  return false
+  return poisonTable[unit.networkID] and poisonTable[unit.networkID]>GetInGameTimer() or false
+end
+
+function OnApplyBuff(source, unit, buff)
+   if buff.name:find("blastpoison") then
+      poisonTable[unit.networkID] = GetInGameTimer()+3
+   end
+   if buff.name:find("miasmapoison") then
+      poisonTable[unit.networkID] = GetInGameTimer()+2
+   end
+end
+
+function OnUpdateBuff(unit, buff)
+   if buff.name:find("blastpoison") then
+      poisonTable[unit.networkID] = GetInGameTimer()+3
+   end
+   if buff.name:find("miasmapoison") then
+      poisonTable[unit.networkID] = GetInGameTimer()+2
+   end
+end
+ 
+function OnRemoveBuff(unit, buff)
+   if buff.name:find("blastpoison") then
+      poisonTable[unit.networkID] = nil
+   end
 end
 
 function Combo()
