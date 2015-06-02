@@ -128,6 +128,11 @@ function LeeSin:Menu()
   self.Config.KS:addParam("killstealR", "Use R", SCRIPT_PARAM_ONOFF, true)
   if Ignite ~= nil then self.Config.KS:addParam("killstealI", "Use Ignite", SCRIPT_PARAM_ONOFF, true) end
 
+  self.Config:addSubMenu("Insec Settings", "Inschallah") 
+  for _,ally in pairs(GetAllyHeroes()) do
+    self.Config.Inschallah:addParam("I"..i, "Insec towards "..ally.charName, SCRIPT_PARAM_ONOFF, false)
+  end
+
   self.Config:addSubMenu("Draw Settings", "Drawing")
   self.Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("WRange", "W Range", SCRIPT_PARAM_ONOFF, true)
@@ -136,7 +141,7 @@ function LeeSin:Menu()
   self.Config.Drawing:addParam("dmgCalc", "Damage", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("lfc", "Lagg Free Circles", SCRIPT_PARAM_ONOFF, true)
   self.Config.Drawing:addParam("lfcq", "LFC Quality", SCRIPT_PARAM_SLICE, 32, 8, 64, mlog(8))
-  
+
   self.Config:addSubMenu("Key Settings", "kConfig")
   self.Config.kConfig:addParam("combo", "SBTW (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   self.Config.kConfig:addParam("harr", "Harrass (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))

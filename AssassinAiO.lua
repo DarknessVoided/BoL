@@ -373,7 +373,6 @@ function OnTick()
 		end
 	  end
 	end
-  if myHero.name == "nulled.io" then print("Penis.") end
 	DmgCalculations()
 end   
 
