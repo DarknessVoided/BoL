@@ -19,6 +19,7 @@ if myHero.charName ~= "Kalista" then return end
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
+TKKalistaVersion = 1.6
 
 function OnLoad()
   Kali = nil
@@ -31,7 +32,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 1.55
+  local version = TKKalistaVersion
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKKalista.lua".."?rand="..math.random(1,10000)
@@ -260,7 +261,7 @@ function Kalista:KillSomethingWithE()
     for minion,winion in pairs(self.Mobs.objects) do
       local EMinionDmg = self:GetDmg("E", winion, myHero)   
       if EMinionDmg > winion.health and GetDistance(winion) < self.data[2].range then
-        if (string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak")))) then
+        if (string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
           if not string.find(winion.charName, "Mini") then       
             killableCounterJ = killableCounterJ +1
           end
@@ -269,7 +270,7 @@ function Kalista:KillSomethingWithE()
         end
       end
     end
-    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and self.Config.kConfig.lc and killableCounterJ >= 1) then
+    if (self.Config.farmConfig.E and killableCounter >= self.Config.farmConfig.Ea) or (self.Config.farmConfig.lc.E and killableCounter >= self.Config.farmConfig.lc.Ea) or (self.Config.farmConfig.lh.E and killableCounter >= self.Config.farmConfig.Ea ) or (self.Config.farmConfig.Ej and killableCounterJ >= 1) then
       self:CastE()
     end
   end
@@ -414,7 +415,7 @@ function Kalista:Draw()
         local posX = barPos.x - 35
         local posY = barPos.y - 50
         -- Doing damage
-        DrawText(self.killTextTable[enemy.networkID].indicatorText, 15, posX, posY, (self.killTextTable[enemy.networkID].ready and self.colorIndicatorReady or self.colorIndicatorNotReady))
+        DrawText(self.killTextTable[enemy.networkID].indicatorText, 20, posX, posY-5, ARGB(255,250,250,250))
        
         -- Taking damage
         DrawText(self.killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
@@ -422,19 +423,13 @@ function Kalista:Draw()
     end
     if myHero:CanUseSpell(_E) then
       for minion,winion in pairs(self.Mobs.objects) do
-        damageAA = self:GetDmg("AD", winion, myHero)
         damageE  = self:GetDmg("E", winion, myHero)
-        damageEx  = self:GetDmg("Ex", winion, myHero)
-      local damageEy  = self:GetDmg("Ey", winion, myHero)
-        neededAA = math.ceil((winion.health-damageEy-damageEx) / (damageAA+damageEx))
         if self:GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
-          if damageE and damageE ~= nil and damageE > winion.health then
+          if damageE > winion.health then
             DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           else
             DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
           end
-        elseif self:GetStacks(winion) == 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
-          DrawText3D(neededAA.." AA Kill", winion.x, winion.y-15, winion.z, 15, self.colorIndicatorNotReady, 0)
         end
       end
     end
@@ -447,17 +442,14 @@ function Kalista:DmgCalc()
     if ValidTarget(enemy) and enemy.visible then
       local damageAA = self:GetDmg("AD", enemy, myHero)
       local damageE  = self:GetDmg("E", enemy, myHero)
-      local damageEx  = self:GetDmg("Ex", enemy, myHero)
-      local damageEy  = self:GetDmg("Ey", enemy, myHero)
       local damageI  = self.Ignite and (self:GetDmg("IGNITE", enemy, myHero)) or 0
       local damageS  = self.Smite and (20 + 8 * myHero.level) or 0
       if enemy.health < damageE then
           self.killTextTable[enemy.networkID].indicatorText = "E Kill"
           self.killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
       end
-      if myHero:CanUseSpell(_E) and not (enemy.health > damageE) then
-        local neededAA = math.ceil((enemy.health-damageEy-damageEx) / (damageAA+damageEx))
-        self.killTextTable[enemy.networkID].indicatorText = neededAA.." AA Kill"
+      if myHero:CanUseSpell(_E) == READY and enemy.health > damageE and damageE > 0 then
+        self.killTextTable[enemy.networkID].indicatorText = math.floor(damageE/enemy.health*100).."% E"
       end
 
       local enemyDamageAA = self:GetDmg("AD", myHero, enemy)
@@ -501,13 +493,8 @@ function Kalista:GetDmg(spell, target, source)
   local TotalDmg         = source.totalDamage
   local ArmorPen         = math.floor(source.armorPen)
   local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
-  local MagicPen         = math.floor(source.magicPen)
-  local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
-
-  local Armor        = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
-  local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-  local MagicArmorPercent = MagicArmor/(100+MagicArmor)
+  local Armor            = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent     = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
 
   local QLevel, WLevel, ELevel, RLevel = myHero:GetSpellData(_Q).level, myHero:GetSpellData(_W).level, myHero:GetSpellData(_E).level, myHero:GetSpellData(_R).level
   if source ~= myHero then
@@ -523,18 +510,13 @@ function Kalista:GetDmg(spell, target, source)
     return 0
   elseif spell == "E" then
     stacks = self:GetStacks(target)
-    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + (stacks-1) *(self:kalE(ELevel) + (0.2 + 0.03 * (ELevel-1))*TotalDmg) or 0
-  elseif spell == "Ex" then
-    stacks = self:GetStacks(target) > 0 and self:GetStacks(target) or 1
-    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) or 0
-  elseif spell == "Ey" then
-    stacks = self:GetStacks(target) > 0 and self:GetStacks(target) or 1
-    ADDmg = stacks > 0 and ((stacks) * (self:kalE(ELevel) + (0.2 + 0.03 * (ELevel-1))*TotalDmg)) or 0
+    ADDmg = stacks > 0 and (10 + (10 * ELevel) + (TotalDmg * 0.6)) + (stacks-1) * (self:kalE(ELevel) + (0.2 + 0.03 * (ELevel-1))*TotalDmg) or 0
+    --if ADDmg > 0 then print(math.floor(ADDmg*(1-ArmorPercent)).."   "..math.floor(myHero:CalcDamage(target,ADDmg))) end
   elseif spell == "R" then
     return 0
   end
-  dmg = math.floor(ADDmg)*(1-ArmorPercent)
-  return math.floor(dmg)
+  --math.floor(ADDmg*(1-ArmorPercent)) --math.floor(myHero:CalcDamage(target,ADDmg))
+  return math.floor(myHero:CalcDamage(target,ADDmg))
 end
 
 function Kalista:kalE(x)
