@@ -481,7 +481,7 @@ function LeeSin:Combo()
     end
   elseif myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
     self:CastQ1(self.Target)
-  elseif self.Target~= nil and self:hasQ(self.Target) and GetDistance(self.Target) > myHero.range+myHero.boundingRange*2 then
+  elseif self.Target~= nil and self:hasQ(self.Target) and GetDistance(self.Target) > myHero.range+myHero.boundingRadius*2 then
     self:CastQ2()
   end
 end
