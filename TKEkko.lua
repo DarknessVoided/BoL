@@ -19,7 +19,7 @@ if myHero.charName ~= "Ekko" then return end
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
-TKEkkoVersion = 0.2
+TKEkkoVersion = 0.3
 
 function OnLoad()
   Ek = nil
@@ -99,6 +99,7 @@ function Ekko:Vars()
       self.myEvilTwin = object
     end
   end
+  self.lichBane = nil
 end
 
 function Ekko:Menu()
@@ -210,6 +211,8 @@ function Ekko:Tick()
     CastR()
   end
 
+  self.lichBane = self:GetLichSlot()
+
   if self.Target ~= nil then
     if self.Config.KS.enableKS then 
       self:Killsteal()
@@ -231,6 +234,16 @@ function Ekko:Tick()
   end
 
   self:DmgCalc()
+end
+
+function Ekko:GetLichSlot()
+  for slot = ITEM_1, ITEM_7, 1 do
+    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell") or string.find(string.lower(myHero:GetSpellData(slot).name), "basespell")) then
+      --print(slot)
+      return slot
+    end
+  end
+  return nil
 end
 
 function Ekko:CreateObj(obj)
@@ -312,8 +325,14 @@ function Ekko:Combo()
     --local castPos = Vector(self.Target)+(GetDistance(self.Target)/2)*(Vector(CastPosition)-Vector(self.Target)):normalized() --Vector(self.Target.x-myHero.x, self.Target.y-myHero.y, self.Target.z-myHero.z):normalized()
     self:CastW(CastPosition)
   end
-  if self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+(myHero.range+myHero.boundingRadius)*2) then
-    self:CastE(self.Target)
+  if self.lichBane then
+    if myHero:GetSpellData(self.lichBane).currentCd == 0 and self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+(myHero.range+myHero.boundingRadius)*2) then
+      self:CastE(self.Target)
+    end
+  else
+    if self.Config.comboConfig.E and ValidTarget(self.Target, self.data[2].range+(myHero.range+myHero.boundingRadius)*2) then
+      self:CastE(self.Target)
+    end
   end
 end
 
@@ -373,7 +392,7 @@ function Ekko:Draw()
   if self.Config.Drawing.ERange and myHero:CanUseSpell(_E) then
     self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[2].range, ARGB(255, 155, 155, 155))
   end
-  if self.Config.Drawing.R and self.myEvilTwin ~= nil then
+  if self.Config.Drawing.R and self.myEvilTwin ~= nil and myHero:GetSpellData(_R).currentCd < 4 then
     for i=1,3 do
       LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 450, 2, ARGB(255, 0, 155, 155), 3, (math.pi/(1))*(i-1))
     end 
