@@ -303,6 +303,17 @@ function GetQFarmPosition()
       end
     end
   end
+  local objects = minionManager(MINION_JUNGLE, 1500, myHero, MINION_SORT_HEALTH_ASC).objects
+  for i, object in ipairs(objects) do
+    local hit = CountObjectsNearPos(object.pos or object, 1050, 150, objects)
+    if hit > BestHit then
+      BestHit = hit
+      BestPos = Vector(object)
+      if BestHit == #objects then
+        break
+      end
+    end
+  end
   return BestPos, BestHit
 end
 
