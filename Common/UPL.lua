@@ -276,8 +276,10 @@ end
 
 function UPL:TimeRequest()
     if self:ActivePred() == "VPrediction" or self:ActivePred() == "HPrediction" or self:ActivePred() == "TKPrediction" then
-        return 0.001
+      return 0.001
     elseif self:ActivePred() == "DivinePrediction" then
-        return 0.2
+      return 0.2
+    else
+      return 0.01
     end
 end
