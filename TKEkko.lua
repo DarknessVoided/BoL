@@ -19,7 +19,7 @@ if myHero.charName ~= "Ekko" then return end
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
-TKEkkoVersion = 0.3
+TKEkkoVersion = 0.4
 
 function OnLoad()
   Ek = nil
@@ -116,7 +116,7 @@ function Ekko:Menu()
   self.Config:addSubMenu("Ult settings", "casual")
   self.Config.casual:addParam("saveme", "Ult for lifesave", SCRIPT_PARAM_ONOFF, true)
   self.Config.casual:addParam("hp", "At %", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
-  self.Config.casual:addParam("restore", "Restore %", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+  self.Config.casual:addParam("restore", "Restore %", SCRIPT_PARAM_SLICE, 55, 0, 100, 0)
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
   self.Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -213,7 +213,7 @@ function Ekko:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
 
-  if self.RReady() and self.Config.casual.saveme and (myHero.health <= myHero.maxHealth * self.Config.casual.hp/100 or (#self.hpTable>4 and self.hpTable[#self.hpTable-3][2]/myHero.maxHealth > self.Config.casual.restore/100)) and self.myEvilTwin and GetDistance(self.myEvilTwin) > 800 and EnemiesAround(myHero, 800) >= 1 then
+  if self.RReady() and self.Config.casual.saveme and ((myHero.health <= myHero.maxHealth * self.Config.casual.hp/100 and self.myEvilTwin and GetDistance(self.myEvilTwin) > 800) or (#self.hpTable>4 and self.hpTable[#self.hpTable-3][2]/myHero.maxHealth > self.Config.casual.restore/100)) and EnemiesAround(myHero, 800) >= 1 then
     self:CastR()
   end
 
@@ -302,7 +302,7 @@ end
 function Ekko:LaneClear()
   if myHero:CanUseSpell(_Q) then
     pos, hit = GetQFarmPosition()
-    if hit >= 1 then
+    if hit > 1 then
       self:CastQFarm(pos)
     end
   end
@@ -314,7 +314,7 @@ function Ekko:JungleClear()
       self:CastQFarm(minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_DESC).objects[1])
     end
   end
-  if myHero:CanUseSpell(_W) then
+  if myHero:CanUseSpell(_W) and (self.Config.kConfig.lc and self.Config.farmConfig.lc.W) then
     pos, hit = GetWFarmPosition()
     if hit >= 1 then
       self:CastW(pos)
@@ -322,14 +322,14 @@ function Ekko:JungleClear()
   end
   if self.lichBane then
     if myHero:GetSpellData(self.lichBane).currentCd == 0 then
-      if myHero:CanUseSpell(_E) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q) then
+      if myHero:CanUseSpell(_E) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.E) then
         if ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
           self:CastE(minionManager(MINION_JUNGLE, 550, myHero, MINION_SORT_HEALTH_DESC).objects[1])
         end
       end
     end
   else
-    if myHero:CanUseSpell(_E) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q) then
+    if myHero:CanUseSpell(_E) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.E) then
       if ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
         self:CastE(minionManager(MINION_JUNGLE, 550, myHero, MINION_SORT_HEALTH_DESC).objects[1])
       end
@@ -460,19 +460,22 @@ end
 
 function Ekko:Draw()
   if self.Config.Drawing.QRange and myHero:CanUseSpell(_Q) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[0].range+self.data[1].width/4, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[0].range+self.data[0].width/2, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.WRange and myHero:CanUseSpell(_W) then
-    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[1].range+self.data[1].width/2, ARGB(255, 155, 155, 155))
+    self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[1].range+self.data[1].width, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.ERange and myHero:CanUseSpell(_E) then
     self:DrawLFC(myHero.x, myHero.y, myHero.z, self.data[2].range, ARGB(255, 155, 155, 155))
   end
   if self.Config.Drawing.R and self.myEvilTwin ~= nil and myHero:GetSpellData(_R).currentCd < 4 then
-    for i=1,3 do
-      LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 450, 2, ARGB(255, 0, 155, 155), 3, (math.pi/(1))*(i-1))
+    for i=1,4 do
+      LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 450, 2, ARGB(155, 0, 155, 155), 3, (math.pi/(6))*(i-1))
     end 
-    LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 450, 2, ARGB(255, 0, 155, 155), 6, 0)
+    for i=1,4 do
+      LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 260, 2, ARGB(155, 55, 155, 155), 3, (math.pi/(6))*(i-1))
+    end 
+    LagFree(self.myEvilTwin.x, self.myEvilTwin.y, self.myEvilTwin.z, 450, 2, ARGB(155, 0, 155, 155), 12, 0)
   end
   if self.Config.Drawing.dmgCalc then
     for i,k in pairs(GetEnemyHeroes()) do
