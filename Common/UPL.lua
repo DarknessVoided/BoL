@@ -32,7 +32,7 @@
 
 class "UPL"
 
-_G.UPLversion = 1.76
+_G.UPLversion = 1.77
 _G.UPLautoupdate = true
 _G.UPLloaded = false
 
