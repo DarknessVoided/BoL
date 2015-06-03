@@ -92,7 +92,7 @@ end
 function UPL:Update()
   local UPL_UPDATE_HOST = "raw.github.com"
   local UPL_UPDATE_PATH = "/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000)
-  local UPL_UPDATE_FILE_PATH = SCRIPT_PATH.."UPL.lua"
+  local UPL_UPDATE_FILE_PATH = LIB_PATH.."UPL.lua"
   local UPL_UPDATE_URL = "https://"..UPL_UPDATE_HOST..UPL_UPDATE_PATH
   if UPLautoupdate then
     local UPLServerData = GetWebResult(UPL_UPDATE_HOST, "/nebelwolfi/BoL/master/Common/UPL.version")
