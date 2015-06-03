@@ -266,10 +266,10 @@ function UPL:SetActive(pred)
 end
 
 function UPL:ValidRequest()
-    if os.clock() - self.LastRequest < self:TimeRequest() then
+    if GetInGameTimer() - self.LastRequest < self:TimeRequest() then
         return false
     else
-        self.LastRequest = os.clock()
+        self.LastRequest = GetInGameTimer()
         return true
     end
 end
