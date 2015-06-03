@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.04
+  local version = 0.05
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
