@@ -284,7 +284,7 @@ function Ekko:LaneClear()
   if myHero:CanUseSpell(_Q) then
     pos, hit = GetQFarmPosition()
     if hit >= 1 then
-      self:CastQ(pos)
+      self:CastQFarm(pos)
     end
   end
 end
@@ -348,6 +348,10 @@ function Ekko:CastQ(Targ)
   if HitChance and HitChance >= 1 then
     self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
+end
+function Ekko:CastQFarm(Targ) 
+  if Targ == nil then return end
+  self:CCastSpell(_Q, Targ.x, Targ.z)
 end
 function Ekko:CastW(Targ) 
   if Targ == nil then return end
