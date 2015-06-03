@@ -80,11 +80,12 @@ function Ekko:Vars()
   self.QReady, self.WReady, self.EReady, self.RReady, self.IReady, self.SReady = function() return myHero:CanUseSpell(_Q) == READY end, function() return myHero:CanUseSpell(_W) == READY end, function() return myHero:CanUseSpell(_E) == READY end, function() return myHero:CanUseSpell(_R) == READY end, function() if Ignite ~= nil then return myHero:CanUseSpell(Ignite) == READY end end, function() if Smite ~= nil then return myHero:CanUseSpell(Smite) == READY end end
   self.data = {
     [_Q] = { speed = 1050, delay = 0.25, range = 825, width = 70, collision = false, aoe = false, type = "linear"},
-    [_W] = { speed = math.huge, delay = 2.5, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
-    [_E] = { delay = 0.50, range = 350}}
+    [_W] = { speed = math.huge, delay = 3, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
+    [_E] = { delay = 0.50, range = 350},
+    [_R] = { speed = math.huge, delay = 0.75, range = 0, width = 400, collision = false, aoe = true, type = "circular"}}
   self.Target = nil
   self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
-  self.Mobs = minionManager(MINION_ALL, 2500, myHero, MINION_SORT_HEALTH_ASC)
+  self.Mobs = minionManager(MINION_ENEMY, 2500, myHero, MINION_SORT_HEALTH_ASC)
   self.colorIndicatorReady    = ARGB(255, 0,   255, 0)
   self.colorIndicatorNotReady = ARGB(255, 255, 220, 0)
   self.colorInfo              = ARGB(255, 255, 50,  0)
@@ -100,6 +101,7 @@ function Ekko:Vars()
     end
   end
   self.lichBane = nil
+  self.hpTable  = {{0,myHero.health}}
 end
 
 function Ekko:Menu()
@@ -108,10 +110,13 @@ function Ekko:Menu()
   self.Config:addSubMenu("Prediction Settings", "misc")
   UPL:AddSpell(_Q, self.data[_Q])
   UPL:AddSpell(_W, self.data[_W])
+  UPL:AddSpell(_R, self.data[_R])
   UPL:AddToMenu(self.Config.misc)
   
   self.Config:addSubMenu("Ult settings", "casual")
   self.Config.casual:addParam("saveme", "Ult for lifesave", SCRIPT_PARAM_ONOFF, true)
+  self.Config.casual:addParam("hp", "At %", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
+  self.Config.casual:addParam("restore", "Restore %", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
 
   self.Config:addSubMenu("Combo Settings", "comboConfig")
   self.Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -127,6 +132,7 @@ function Ekko:Menu()
   self.Config.farmConfig:addSubMenu("Lane Clear/Jungle Clear", "lc")
   self.Config.farmConfig:addSubMenu("Last Hit", "lh")
   self.Config.farmConfig.lc:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+  self.Config.farmConfig.lc:addParam("W", "Use W (Jungle)", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lc:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   self.Config.farmConfig.lc:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   self.Config.farmConfig.lh:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -207,11 +213,14 @@ function Ekko:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
 
-  if self.RReady() and self.Config.casual.saveme and myHero.health <= myHero.maxHealth * 0.15 and self.myEvilTwin and GetDistance(self.myEvilTwin) > 800 then
-    CastR()
+  if self.RReady() and self.Config.casual.saveme and (myHero.health <= myHero.maxHealth * self.Config.casual.hp/100 or (#self.hpTable>4 and self.hpTable[#self.hpTable-3][2]/myHero.maxHealth > self.Config.casual.restore/100)) and self.myEvilTwin and GetDistance(self.myEvilTwin) > 800 and EnemiesAround(myHero, 800) >= 1 then
+    self:CastR()
   end
 
   self.lichBane = self:GetLichSlot()
+  if self.hpTable[#self.hpTable][1] <= GetInGameTimer()+1 then
+    table.insert(self.hpTable, {GetInGameTimer(),myHero.health})
+  end
 
   if self.Target ~= nil then
     if self.Config.KS.enableKS then 
@@ -229,11 +238,21 @@ function Ekko:Tick()
 
   self:LastHit()
 
-  if self.Config.kConfig.lc and self.Config.farmConfig.lc.Q then
+  if self.Config.farmConfig.lc.mana < myHero.mana and self.Config.kConfig.lc and self.Config.farmConfig.lc.Q then
     self:LaneClear()
   end
 
+  if self.Config.farmConfig.lc.mana < myHero.mana then
+    self:JungleClear()
+  end
+
   self:DmgCalc()
+end
+
+function EnemiesAround(Unit, range)
+  local c=0
+  if Unit == nil then return 0 end
+  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
 end
 
 function Ekko:GetLichSlot()
@@ -289,6 +308,35 @@ function Ekko:LaneClear()
   end
 end
 
+function Ekko:JungleClear()
+  if myHero:CanUseSpell(_Q) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q) then
+    if ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
+      self:CastQFarm(minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_DESC).objects[1])
+    end
+  end
+  if myHero:CanUseSpell(_W) then
+    pos, hit = GetWFarmPosition()
+    if hit >= 1 then
+      self:CastW(pos)
+    end
+  end
+  if self.lichBane then
+    if myHero:GetSpellData(self.lichBane).currentCd == 0 then
+      if myHero:CanUseSpell(_E) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q) then
+        if ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
+          self:CastE(minionManager(MINION_JUNGLE, 550, myHero, MINION_SORT_HEALTH_DESC).objects[1])
+        end
+      end
+    end
+  else
+    if myHero:CanUseSpell(_E) == READY and (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q) then
+      if ValidTarget(winion, self.data[0].range) and GetDistance(winion) < self.data[0].range then
+        self:CastE(minionManager(MINION_JUNGLE, 550, myHero, MINION_SORT_HEALTH_DESC).objects[1])
+      end
+    end
+  end
+end
+
 function GetQFarmPosition()
   local BestPos 
   local BestHit = 0
@@ -303,9 +351,15 @@ function GetQFarmPosition()
       end
     end
   end
+  return BestPos, BestHit
+end
+
+function GetWFarmPosition()
+  local BestPos 
+  local BestHit = 0
   local objects = minionManager(MINION_JUNGLE, 1500, myHero, MINION_SORT_HEALTH_ASC).objects
   for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, 1050, 150, objects)
+    local hit = CountObjectsNearPos(object.pos or object, 1050, 450, objects)
     if hit > BestHit then
       BestHit = hit
       BestPos = Vector(object)
@@ -356,7 +410,7 @@ end
 function Ekko:CastQ(Targ) 
   if Targ == nil then return end
   local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, Targ)
-  if HitChance and HitChance >= 1 then
+  if HitChance and HitChance >= 1.2 then
     self:CCastSpell(_Q, CastPosition.x, CastPosition.z)
   end
 end
@@ -375,6 +429,13 @@ end
 function Ekko:CastR() 
   self:CCastSpell(_R)
 end
+function Ekko:CastRPredict(Targ) 
+  if Targ == nil then return end
+  local CastPosition, HitChance, Position = UPL:Predict(_R, self.myEvilTwin, Targ)
+  if HitChance and HitChance >= 2 then
+    self:CCastSpell(_R)
+  end
+end
 
 function Ekko:Killsteal()
   for k,v in pairs(GetEnemyHeroes()) do
@@ -384,12 +445,12 @@ function Ekko:Killsteal()
     local rDmg = ((self:GetDmg("R", enemy, myHero)) or 0)  
     local iDmg = (50 + 20 * myHero.level) / 5
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:CanUseSpell(_Q) and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, self.data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and enemy.health < qDmg and self.Config.KS.killstealQ and ValidTarget(enemy, self.data[0].range) then
         self:CastQ(enemy)
-      elseif myHero:CanUseSpell(_E) and enemy.health < eDmg and self.Config.KS.killstealE and ValidTarget(enemy, self.data[2].range+myHero.range+myHero.boundingRadius) then
+      elseif myHero:CanUseSpell(_E) == READY and enemy.health < eDmg and self.Config.KS.killstealE and ValidTarget(enemy, self.data[2].range+myHero.range+myHero.boundingRadius) then
         self:CastE(enemy)
-      elseif myHero:CanUseSpell(_R) and enemy.health < rDmg and self.Config.KS.killstealR and GetDistanceSqr(enemy, self.myEvilTwin) < 100000 then
-        self:CastR()
+      elseif myHero:CanUseSpell(_R) == READY and enemy.health < rDmg and self.Config.KS.killstealR and GetDistance(enemy, self.myEvilTwin) < 500 then
+        self:CastRPredict(enemy)
       elseif enemy.health < iDmg and self.Config.KS.killstealI and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
         CastSpell(Ignite, enemy)
       end
