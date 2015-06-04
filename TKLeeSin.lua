@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.06
+  local version = 0.07
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
@@ -296,8 +296,7 @@ function LeeSin:Insec()
       end
     end
   end
-  if insecTowards == nil then
-    if _G.LeftMousDown and self.Config.Inschallah.mouse then
+  if insecTowards == nil or (_G.LeftMousDown and self.Config.Inschallah.mouse) then
       insecTowards = mousePos
     else
       return
@@ -532,7 +531,7 @@ function LeeSin:RemoveBuff(unit, buff)
 end
 
 function LeeSin:HarrassT()
-  if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast() then
+  if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
     self:CastQ1(self.Target)
   end
   if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, 425) then
