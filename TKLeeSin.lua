@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.05
+  local version = 0.06
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
@@ -134,7 +134,7 @@ function LeeSin:Menu()
 
   self.Config:addSubMenu("Insec Settings", "Inschallah") 
   for _,ally in pairs(GetAllyHeroes()) do
-    self.Config.Inschallah:addParam("I"..i, "Insec towards "..ally.charName, SCRIPT_PARAM_ONOFF, false)
+    self.Config.Inschallah:addParam("I".._, "Insec towards "..ally.charName, SCRIPT_PARAM_ONOFF, false)
   end
   self.Config.Inschallah:addParam("mouse", "Insec towards mouse on leftclick", SCRIPT_PARAM_ONOFF, false)
 
@@ -291,7 +291,7 @@ function LeeSin:Insec()
   local insecTowards = nil
   if #GetAllyHeroes() > 0 then
     for _,unit in pairs(GetAllyHeroes()) do
-      if GetDistance(unit,insecTarget) < 2000 and self.Config.Inschallah['I'..i] then
+      if GetDistance(unit,insecTarget) < 2000 and self.Config.Inschallah['I'.._] then
         insecTowards = unit
       end
     end
