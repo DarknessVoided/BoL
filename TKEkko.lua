@@ -101,7 +101,7 @@ function Ekko:Vars()
     end
   end
   self.lichBane = nil
-  self.hpTable  = {{0,myHero.health}}
+  --self.hpTable  = {{0,myHero.health}}
 end
 
 function Ekko:Menu()
@@ -218,9 +218,9 @@ function Ekko:Tick()
   end
 
   self.lichBane = self:GetLichSlot()
-  if self.hpTable[#self.hpTable][1] <= GetInGameTimer()+1 then
-    table.insert(self.hpTable, {GetInGameTimer(),myHero.health})
-  end
+  --if self.hpTable[#self.hpTable][1] <= GetInGameTimer()+1 then
+  --  table.insert(self.hpTable, {GetInGameTimer(),myHero.health})
+  --end
 
   if self.Target ~= nil then
     if self.Config.KS.enableKS then 
