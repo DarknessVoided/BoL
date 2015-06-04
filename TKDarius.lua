@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.071
+  local version = 0.072
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKDarius.lua".."?rand="..math.random(1,10000)
@@ -141,6 +141,7 @@ function Darius:Menu()
 end
 
 function Darius:ProcessSpell(unit, spell)  
+  if not unit then return end
   if unit == myHero then
     if string.find(string.lower(spell.name), "attack") then
       self.lastWindup = GetInGameTimer()+spell.windUpTime
@@ -149,12 +150,14 @@ function Darius:ProcessSpell(unit, spell)
 end
 
 function Darius:UpdateBuff(unit, buff, stacks)
+  if not unit then return end
    if buff.name == "dariushemo" then
       self.stackTable[unit.networkID] = stacks
    end
 end
  
 function Darius:RemoveBuff(unit, buff)
+  if not unit then return end
    if buff.name == "dariushemo" then
       self.stackTable[unit.networkID] = nil
    end
