@@ -302,7 +302,7 @@ _G.Champs = {
 
 if not _G.Champs[myHero.charName] then _G.Champs = nil collectgarbage() return end -- not supported :(
 
-AimbotVersion = 1.31
+AimbotVersion = 1.4
 
 --Scriptstatus Tracker
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("VILKJJKPQMO") 
@@ -439,16 +439,16 @@ function Aimbot:Tick()
               end
               local CastPosition, HitChance, Position = UPL:Predict(i, myHero, self.Target)
               if debugMode then PrintChat("1 - Attempt to aim!") end
-              if HitChance >= 3 then
+              if HitChance and HitChance >= 3 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
-              elseif HitChance >= 2 then
+              elseif HitChance and HitChance >= 2 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
-              elseif HitChance >= 1.5 and self.Config.skConfig[self.str[i]] >= 1 then
+              elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]] >= 1 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
-              elseif HitChance >= 1 and self.Config.skConfig[self.str[i]] >= 2 then
+              elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]] >= 2 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
               else
@@ -458,15 +458,15 @@ function Aimbot:Tick()
                     self.Target = self:GetNextCustomTarget(i, self.Target)
                    if ValidTarget(self.Target) then
                     local CastPosition, HitChance, Position = UPL:Predict(i, myHero, self.Target)
-                    if HitChance >= 2 then
+                    if HitChance and HitChance >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       self:CCastSpell(i, CastPosition)
-                    elseif HitChance >= 1.5 and self.Config.skConfig[self.str[i]] >= 1 then
+                    elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]] >= 1 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       self:CCastSpell(i, CastPosition)
-                    elseif HitChance >= 1 and self.Config.skConfig[self.str[i]] >= 2 then
+                    elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]] >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       self:CCastSpell(i, CastPosition)
