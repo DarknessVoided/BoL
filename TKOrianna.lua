@@ -253,7 +253,7 @@ function LastHit()
   if WReady() and Config.farmConfig.lh.W then
     for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
       local WMinionDmg = GetDmg("W", minion, GetMyHero())
-      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+      if WMinionDmg >= minion.health and GetDistance(minion, Ball) < data[1].width then
         CastW(minion)
         return
       end
@@ -293,7 +293,7 @@ function LaneClear()
   if WReady() and Config.farmConfig.lc.W then
     for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
       local WMinionDmg = GetDmg("W", minion, GetMyHero())
-      if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+      if WMinionDmg >= minion.health and GetDistance(minion, Ball) < data[1].width then
         CastW(minion)
         return
       end
