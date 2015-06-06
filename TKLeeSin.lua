@@ -297,10 +297,9 @@ function LeeSin:Insec()
     end
   end
   if insecTowards == nil or (_G.LeftMousDown and self.Config.Inschallah.mouse) then
-      insecTowards = mousePos
-    else
-      return
-    end
+    insecTowards = mousePos
+  else
+    return
   end
   CastPosition = insecTowards
   if GetDistance(insecTowards, mousePos) > 50 then
