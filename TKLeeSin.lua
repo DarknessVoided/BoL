@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.071
+  local version = 0.072
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
@@ -85,7 +85,7 @@ function LeeSin:Vars()
   self.Target = nil
   self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
   self.Mobs = minionManager(MINION_ENEMY, 2500, myHero, MINION_SORT_HEALTH_ASC)
-  self.JMobs = minionManager(MINION_JUNGLE, 2500, myHero, MINION_SORT_HEALTH_ASC)
+  self.JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
   self.stackTable = {}
   self.colorIndicatorReady    = ARGB(255, 0,   255, 0)
   self.colorIndicatorNotReady = ARGB(255, 255, 220, 0)
@@ -435,7 +435,7 @@ function LeeSin:LaneClear()
     for i, minion in pairs(self.JMobs.objects) do
       if minionTarget == nil then 
         minionTarget = minion
-      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, 1100) then
+      elseif minionTarget.maxHealth < minion.maxHealth and GetDistance(minion) < 1100 then
         minionTarget = minion
       end
     end
@@ -443,14 +443,20 @@ function LeeSin:LaneClear()
       self:CastQ1(minionTarget)
     end
   end
-  if self.Config.farmConfig.lc.W and myHero:CanUseSpell(_W) == READY then
+  if self.Config.farmConfig.lc.E and myHero:CanUseSpell(_E) == READY then
     BestPos, BestHit = GetEFarmPosition()
     if BestHit > 1 and GetDistance(BestPos) < 150 then 
       self:CastE()
     end
-    BestPos, BestHit = GetEJFarmPosition()
-    if BestHit >= 1 and GetDistance(BestPos) < 150 then 
-      self:CastE()
+    for i, minion in pairs(self.JMobs.objects) do
+      if minionTarget == nil then 
+        minionTarget = minion
+      elseif minionTarget.maxHealth < minion.maxHealth and GetDistance(minion) < 350 then
+        minionTarget = minion
+      end
+    end
+    if minionTarget ~= nil then
+      self:CastE(minionTarget)
     end
   end
 end
@@ -458,24 +464,7 @@ end
 function GetEFarmPosition()
   local BestPos 
   local BestHit = 0
-  local objects = self.Mobs.objects
-  for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, 150, 350, objects)
-    if hit > BestHit then
-      BestHit = hit
-      BestPos = Vector(object)
-      if BestHit == #objects then
-        break
-      end
-    end
-  end
-  return BestPos, BestHit
-end
-
-function GetEJFarmPosition()
-  local BestPos 
-  local BestHit = 0
-  local objects = self.JMobs.objects
+  local objects = minionManager(MINION_ENEMY, 1100, myHero, MINION_SORT_HEALTH_ASC).objects
   for i, object in ipairs(objects) do
     local hit = CountObjectsNearPos(object.pos or object, 150, 350, objects)
     if hit > BestHit then
