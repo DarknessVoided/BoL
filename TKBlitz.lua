@@ -93,8 +93,8 @@ function OnTick()
 	end
 
 	if target and (myHero:CanUseSpell(_E) == READY) and Menu.UseE then
-		if GetDistance(target, myHero) <= myHero.range+target.boundingRadius  then
-			CastSpell(_E)
+		if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius  then
+			CastSpell(_E, myHero:Attack(target))
 		end
 	end
 	
