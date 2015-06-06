@@ -217,6 +217,7 @@ end
 function LeeSin:Tick()
   self.Target = self:GetCustomTarget()
   self.Mobs:update()
+  self.JMobs:update()
 
   if self.Config.kConfig.wj or (self.casted and not self.jumped) then
     self:WardJump()
