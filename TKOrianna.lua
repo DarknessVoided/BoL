@@ -149,7 +149,7 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
-  sts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_MAGICAL, false, true)
+  sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
   Config:addSubMenu("Target Selector", "ts")
   Config.ts:addTS(sts)
 
