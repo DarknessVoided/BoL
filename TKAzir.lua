@@ -53,31 +53,15 @@ TwinShadows = { Range = 1000, Slot = function() return GetInventorySlotItem(3023
 --[[ Castable itemlist end ]]--
 
 --[[ Libraries start ]]--
-local predToUse = {}
-VP = nil
-DP = nil
-HP = nil
-if FileExist(LIB_PATH .. "/VPrediction.lua") then
-  require("VPrediction")
-  VP = VPrediction()
-  table.insert(predToUse, "VPrediction")
-end
-
-if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-  require "DivinePred"
-  DP = DivinePred() 
-  table.insert(predToUse, "DivinePred")
-end
-
-if FileExist(LIB_PATH .. "/HPrediction.lua") then
-  require("HPrediction")
-  HP = HPrediction()
-  table.insert(predToUse, "HPrediction")
-end
-
-if predToUse == {} then 
-	TopKekMsg("Please download a Prediction") 
-	return 
+if not _G.UPLloaded then
+  if FileExist(LIB_PATH .. "/UPL.lua") then
+    require("UPL")
+    _G.UPL = UPL()
+  else 
+    TopKekMsg("Downloading UPL, please don't press F9")
+    DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
+    return
+  end
 end
 --[[ Libraries end ]]--
 

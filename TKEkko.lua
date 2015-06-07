@@ -54,13 +54,15 @@ function Update()
       TopKekMsg("Error downloading version info")
     end
   end
-  if FileExist(LIB_PATH .. "/UPL.lua") then
-    require("UPL")
-    _G.UPL = UPL()
-  else 
-    TopKekMsg("Downloading UPL, please don't press F9")
-    DelayAction(function() DownloadFile("https://"..UPDATE_HOST.."/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
-    return true
+  if not _G.UPLloaded then
+    if FileExist(LIB_PATH .. "/UPL.lua") then
+      require("UPL")
+      _G.UPL = UPL()
+    else 
+      TopKekMsg("Downloading UPL, please don't press F9")
+      DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
+      return
+    end
   end
   return false
 end
