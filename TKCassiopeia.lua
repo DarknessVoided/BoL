@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.07
+local version = 0.08
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -75,6 +75,7 @@ local data = {
   [_R] = { speed = math.huge, delay = 0.5, range = 825, width = 410, collision = false, aoe = true, type = "cone"}
 }
 local toCastR = false
+local lastE = 0
 
 function OnLoad()
   Config = scriptConfig("Top Kek Cassiopeia", "TKCassiopeia")
@@ -91,6 +92,7 @@ function OnLoad()
   Config.casual:addSubMenu("Zhonya's settings", "zhg")
   Config.casual.zhg:addParam("enabled", "Use Auto Zhonya's", SCRIPT_PARAM_ONOFF, true)
   Config.casual.zhg:addParam("zhonyapls", "Min. % health for Zhonya's", SCRIPT_PARAM_SLICE, 15, 1, 50, 0)
+  Config.casual:addParam("E", "Use E every Xs", SCRIPT_PARAM_SLICE, 0.5, 0.5, 1.0, 1)
 
   Config:addSubMenu("Combo Settings", "comboConfig")
   Config.comboConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -420,6 +422,14 @@ function OnRemoveBuff(unit, buff)
    end
 end
 
+function OnProcessSpell(unit, spell)
+  if unit and unit.isMe and spell then
+    if spell.name == "CassiopeiaTwinFang" then
+      lastE = GetInGameTimer()
+    end
+  end
+end
+
 function Combo()
   if Config.comboConfig.Q and ValidTarget(Target, data[0].range) then
     CastQ(Target)
@@ -462,7 +472,7 @@ function CastW(unit)
   end
 end
 function CastE(unit) 
-  if unit == nil then return end
+  if unit == nil or lastE + Config.casual.E > GetInGameTimer() then return end
   if VIP_USER and Config.misc.pc then
     Packet("S_CAST", {spellId = _E, targetNetworkId = unit.networkID}):send()
   else
