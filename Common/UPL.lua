@@ -32,61 +32,62 @@
 
 class "UPL"
 
-_G.UPLversion = 1.78
-_G.UPLautoupdate = true
-_G.UPLloaded = false
-
 --Scriptstatus tracker (usercounter)
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("PCFEDDEJJKJ") 
 --Scriptstatus tracker (usercounter)
 
 
 function UPL:__init()
-  self.ActiveP = 1
-  self.LastRequest = 0
-  self.Config = nil
-  self.VP  = nil
-  self.DP  = nil
-  self.HP  = nil
-  self.TKP = nil
-  self.HPSpells  = {}
-  self.spellData = {
-    [_Q] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
-    [_W] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
-    [_E] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
-    [_R] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"}}
-  self.predTable = {}
-  if FileExist(LIB_PATH .. "VPrediction.lua") then
-    require("VPrediction")
-    self.VP = VPrediction()
-    table.insert(self.predTable, "VPrediction")
-  end
+  if not _G.UPLloaded then
+    _G.UPLversion = 1.8
+    _G.UPLautoupdate = true
+    _G.UPLloaded = false
+    self.ActiveP = 1
+    self.LastRequest = 0
+    self.Config = nil
+    self.VP  = nil
+    self.DP  = nil
+    self.HP  = nil
+    self.TKP = nil
+    self.HPSpells  = {}
+    self.spellData = {
+      [_Q] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
+      [_W] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
+      [_E] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
+      [_R] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"}}
+    self.predTable = {}
+    if FileExist(LIB_PATH .. "VPrediction.lua") then
+      require("VPrediction")
+      self.VP = VPrediction()
+      table.insert(self.predTable, "VPrediction")
+    end
 
-  if FileExist(LIB_PATH .. "Prodiction.lua") then
-    --require("Prodiction")
-    --table.insert(self.predTable, "Prodiction")
-  end
+    if FileExist(LIB_PATH .. "Prodiction.lua") then
+      --require("Prodiction")
+      --table.insert(self.predTable, "Prodiction")
+    end
 
-  if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-    require "DivinePred"
-    self.DP = DivinePred() 
-    table.insert(self.predTable, "DivinePrediction")
-  end
+    if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+      require "DivinePred"
+      self.DP = DivinePred() 
+      table.insert(self.predTable, "DivinePrediction")
+    end
 
-  if FileExist(LIB_PATH .. "HPrediction.lua") then
-    require("HPrediction")
-    self.HP = HPrediction()
-    table.insert(self.predTable, "HPrediction")
-  end
+    if FileExist(LIB_PATH .. "HPrediction.lua") then
+      require("HPrediction")
+      self.HP = HPrediction()
+      table.insert(self.predTable, "HPrediction")
+    end
 
-  if FileExist(LIB_PATH .. "TKPrediction.lua") then
-    require("TKPrediction")
-    self.TKP = TKPrediction()
-    table.insert(self.predTable, "TKPrediction")
+    if FileExist(LIB_PATH .. "TKPrediction.lua") then
+      require("TKPrediction")
+      self.TKP = TKPrediction()
+      table.insert(self.predTable, "TKPrediction")
+    end
+    self:Update()
+    DelayAction(function() self:Loaded() end, 5)
+    return self
   end
-  self:Update()
-  DelayAction(function() self:Loaded() end, 5)
-  return self
 end
 
 function UPL:Update()
