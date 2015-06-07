@@ -363,7 +363,7 @@ function Combo()
   if WReady() and Config.comboConfig.W then
   	CastW(target)
   end
-  if EReady() and Config.comboConfig.E then
+  if EReady() and Config.comboConfig.E and Ball ~= nil and GetDistance(Ball) > 100 and VectorPointProjectionOnLineSegment(Ball, myHero, target) then
   	CastE(myHero)
   end
   if RReady() and target.health < (GetDmg("R", target, myHero)+GetDmg("W", target, myHero)+GetDmg("AD", target, myHero)) and Config.comboConfig.R then
