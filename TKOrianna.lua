@@ -149,7 +149,7 @@ function OnLoad()
   Config.kConfig:permaShow("har")
   Config.kConfig:permaShow("lh")
   Config.kConfig:permaShow("lc")
-  sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[0].range+data[3].width, DAMAGE_MAGICAL, false, true)
+  sts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1000, DAMAGE_MAGICAL, false, true)
   Config:addSubMenu("Target Selector", "ts")
   Config.ts:addTS(sts)
 
