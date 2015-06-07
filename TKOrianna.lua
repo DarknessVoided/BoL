@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.09
+local version = 0.1
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
@@ -366,7 +366,7 @@ function Combo()
   if EReady() and Config.comboConfig.E and Ball ~= nil and GetDistance(Ball) > 100 and VectorPointProjectionOnLineSegment(Ball, myHero, target) then
   	CastE(myHero)
   end
-  if RReady() and target.health < (GetDmg("R", target, myHero)+GetDmg("W", target, myHero)+GetDmg("AD", target, myHero)) and Config.comboConfig.R then
+  if RReady() and target.health < (GetDmg("R", target, myHero)+GetDmg("AD", target, myHero)) and Config.comboConfig.R then
   	CastR(target)
   end
 end
