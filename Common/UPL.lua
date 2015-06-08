@@ -86,7 +86,7 @@ function UPL:__init()
       table.insert(self.predTable, "TKPrediction")
     end
     self:Update()
-    DelayAction(function() self:Loaded() end, 5)
+    DelayAction(function() self:Loaded() end, 3)
     return self
   end
 end
