@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.1
+local version = 0.11
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKOrianna.lua".."?rand="..math.random(1,10000)
@@ -436,7 +436,7 @@ function CastW(unit)
   if not WReady() or unit == nil or myHero.dead or Ball == nil then return end
   --local CastPosition, HitChance, Position = UPL:Predict(_W, Ball, unit)
   if GetDistance(unit, Ball) < data[1].width-unit.boundingRadius then  
-    CCastSpell(_W)
+    CastSpell(_W)
   end  
 end
 
@@ -449,7 +449,7 @@ function CastR(unit)
   if not RReady() or unit == nil or myHero.dead or Ball == nil then return end
   --local CastPosition, HitChance, Position = UPL:Predict(_R, Ball, unit)
   if GetDistance(unit, Ball) < data[3].width-unit.boundingRadius then  
-    CCastSpell(_R)
+    CastSpell(_R)
   end  
 end
 
