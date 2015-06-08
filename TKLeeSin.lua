@@ -31,7 +31,7 @@ function OnLoad()
 end
 
 function Update()
-  local version = 0.072
+  local version = 0.08
   local AUTO_UPDATE = true
   local UPDATE_HOST = "raw.github.com"
   local UPDATE_PATH = "/nebelwolfi/BoL/master/TKLeeSin.lua".."?rand="..math.random(1,10000)
@@ -569,25 +569,25 @@ function LeeSin:CastQ1(target)
     local Mcol = self.Col:GetMinionCollision(myHero, CastPosition)
     local Mcol2 = self.Col:GetMinionCollision(myHero, target)
     if not Mcol and not Mcol2 then
-      self:CCastSpell(_Q, CastPosition.x,  CastPosition.z)
+      CastSpell(_Q, CastPosition.x,  CastPosition.z)
     end
   end
 end
 function LeeSin:CastQ2() 
-  self:CCastSpell(_Q)
+  CastSpell(_Q)
 end
 function LeeSin:CastW(target) 
   if target == nil then return end
   if GetDistance(target) < 750+myHero.boundingRadius then
-    self:CCastSpell(_W, target)
+    CastSpell(_W, target)
   end
 end
 function LeeSin:CastE() 
-  self:CCastSpell(_E)
+  CastSpell(_E)
 end
 function LeeSin:CastR(target) 
   if target == nil then return end
-  self:CCastSpell(_R, target)
+  CastSpell(_R, target)
 end
 
 function LeeSin:Killsteal()
@@ -699,28 +699,6 @@ function LeeSin:DmgCalc()
       if enemyNeededAA ~= 0 then         
         self.killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
       end
-    end
-  end
-end
-function LeeSin:CCastSpell(Spell, xPos, zPos)
-  if not xPos and not zPos then
-    if VIP_USER and self.Config.misc.pc then
-        Packet("S_CAST", {spellId = Spell}):send()
-    else
-        CastSpell(Spell)
-    end
-  elseif xPos and not zPos then
-    target = xPos
-    if VIP_USER and self.Config.misc.pc then
-        Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
-    else
-        CastSpell(Spell, target)
-    end
-  elseif xPos and zPos then
-    if VIP_USER and self.Config.misc.pc then
-      Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-    else
-      CastSpell(Spell, xPos, zPos)
     end
   end
 end
