@@ -39,12 +39,13 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 1.8
+    _G.UPLversion = 1.85
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
     self.LastRequest = 0
     self.Config = nil
+    self.Config2 = nil
     self.VP  = nil
     self.DP  = nil
     self.HP  = nil
@@ -163,6 +164,11 @@ function UPL:AddToMenu(Config)
   self.Config = Config
 end
 
+function UPL:AddToMenu2(Config, state)
+  Config:addParam({state = "Misc", name = "pred", code = SCRIPT_PARAM_LIST, value = self.ActiveP, list = self.predTable})
+  self.Config2 = Config
+end
+
 function UPL:AddSpell(spell, array)
   if not UPLloaded then
     DelayAction(function() self:AddSpell(spell,array) end, 1)
@@ -254,7 +260,7 @@ function UPL:ReturnPred()
 end
 
 function UPL:ActivePred()
-    local int = self.Config.pred and self.Config.pred or self.ActiveP
+    local int = self.Config and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.Config2 and self.Config:getParam("Misc", "pred") or 1)
     return tostring(self.predTable[int])
 end
 
