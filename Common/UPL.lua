@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 1.85
+    _G.UPLversion = 1.86
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -86,7 +86,7 @@ function UPL:__init()
       table.insert(self.predTable, "TKPrediction")
     end
     self:Update()
-    DelayAction(function() self:Loaded() end, 3)
+    DelayAction(function() self:Loaded() end, 5)
     return self
   end
 end
@@ -260,7 +260,7 @@ function UPL:ReturnPred()
 end
 
 function UPL:ActivePred()
-    local int = self.Config and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.Config2 and self.Config:getParam("Misc", "pred") or 1)
+    local int = self.Config and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.Config2 and self.Config2:getParam("Misc", "pred") or 1)
     return tostring(self.predTable[int])
 end
 
