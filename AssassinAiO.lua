@@ -80,8 +80,8 @@ _G.Champs = {
     },
 	["Leblanc"] = {
 		[_Q] = { range = 700, type = "targeted"},
-		[_W] = { speed = 2000, delay = 0.250, range =600, width = 300, collision = false, aoe = false, type = "circular"},
-    [_E] = { speed = 1600, delay = 0.250, range = 950, width = 70, collision = true, aoe = false, type = "linear"},
+		[_W] = { speed = 1300, delay = 0.250, range = 600, width = 300, collision = false, aoe = false, type = "circular"},
+    [_E] = { speed = 1300, delay = 0.250, range = 950, width = 55, collision = true, aoe = false, type = "linear"},
 		[_R] = { range = 0, type = "mimikri"}
     },
 	["LeeSin"] = {
@@ -183,7 +183,7 @@ _G.Champs = {
 }
 
 --[[ Auto updater start ]]--
-local version = 0.54
+local version = 0.55
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/AssassinAiO.lua".."?rand="..math.random(1,10000)
