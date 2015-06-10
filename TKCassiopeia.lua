@@ -14,7 +14,7 @@
 ]]--
 
 --[[ Auto updater start ]]--
-local version = 0.08
+local version = 0.081
 local AUTO_UPDATE = true
 local UPDATE_HOST = "raw.github.com"
 local UPDATE_PATH = "/nebelwolfi/BoL/master/TKCassiopeia.lua".."?rand="..math.random(1,10000)
@@ -686,9 +686,9 @@ end
 
 function OnSendPacket(p)
   if Config.rConfig.blokr and not toCastR and not myHero.dead then
-    if p.header == 0x09 then -- old: 0x00E9
-      p.pos=27
-      if p:Decode1() == 0x33 then
+    if p.header == 0x9B then
+      p.pos=10
+      if p:Decode1() == 0x68 then
         p:Block()
         p.skip(p, 1)
         toCastR = true
