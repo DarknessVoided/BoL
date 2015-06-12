@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 1.86
+    _G.UPLversion = 1.9
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -49,7 +49,7 @@ function UPL:__init()
     self.VP  = nil
     self.DP  = nil
     self.HP  = nil
-    self.TKP = nil
+    self.SP = nil
     self.HPSpells  = {}
     self.spellData = {
       [_Q] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
@@ -80,10 +80,10 @@ function UPL:__init()
       table.insert(self.predTable, "HPrediction")
     end
 
-    if FileExist(LIB_PATH .. "TKPrediction.lua") then
-      require("TKPrediction")
-      self.TKP = TKPrediction()
-      table.insert(self.predTable, "TKPrediction")
+    if FileExist(LIB_PATH .. "SPrediction.lua") then
+      require("SPrediction")
+      self.SP = SPrediction()
+      table.insert(self.predTable, "SPrediction")
     end
     self:Update()
     DelayAction(function() self:Loaded() end, 5)
@@ -154,8 +154,8 @@ function UPL:Predict(spell, source, Target)
       end
   elseif self:ActivePred() == "HPrediction" then
       return self:HPredict(Target, spell, source)
-  elseif self:ActivePred() == "TKPrediction" then
-      return self.TKP:Predict(spell, source, Target)
+  elseif self:ActivePred() == "SPrediction" then
+      return self.SP:Predict(spell, source, Target)
   end
 end
 
@@ -252,7 +252,7 @@ function UPL:ReturnPred()
       return self.VP
     elseif self:ActivePred() == "HPrediction" then
       return self.HP
-    elseif self:ActivePred() == "TKPrediction" then
+    elseif self:ActivePred() == "SPrediction" then
       return self.TKP
     elseif self:ActivePred() == "DivinePrediction" then
       return self.DP
@@ -282,7 +282,7 @@ function UPL:ValidRequest()
 end
 
 function UPL:TimeRequest()
-    if self:ActivePred() == "VPrediction" or self:ActivePred() == "HPrediction" or self:ActivePred() == "TKPrediction" then
+    if self:ActivePred() == "VPrediction" or self:ActivePred() == "HPrediction" or self:ActivePred() == "SPrediction" then
       return 0.001
     elseif self:ActivePred() == "DivinePrediction" then
       return 0.2
