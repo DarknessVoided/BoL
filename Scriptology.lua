@@ -2783,9 +2783,13 @@ function Lux:ShieldManager(unit, spell)
       if Config:getParam("Misc", "Wa") and myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
         Cast(_W, myHero)
       end
+    elseif GetDistance(spell.endPos) < GetDistance(myHero.pos, myHero.minBBox) then
+      if Config:getParam("Misc", "Wa") and myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
+        Cast(_W, myHero)
+      end
     else
       local proj1, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(unit, myHero, Vector(spell.endPos))
-      if isOnSegment and GetDistanceSqr(proj1, spell.endPos) <= (GetDistance(myHero.pos, myHero.minBBox) ^ 2) then
+      if isOnSegment then --and GetDistanceSqr(proj1, spell.endPos) <= (GetDistance(myHero.pos, myHero.minBBox) ^ 2) then
         if Config:getParam("Misc", "Wa") and myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
           Cast(_W, myHero)
         end
