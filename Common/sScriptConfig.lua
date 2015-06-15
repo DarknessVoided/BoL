@@ -405,12 +405,12 @@ function sScriptConfig:Draw()
                     if c > 0 then
                         bxPos = self.pos.x+self.Scale.x*(40+self.offsets.buttonwidth)
                         y = y + 1
-                        byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((40+45+self.Sprites[par.name].height)*(y)+20+self.offsets.top)
+                        byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((40+45+self.Sprites[par.name].height)*(y+0.5)+20+self.offsets.top)
                     end
                     self.Sprites[par.name]:SetScale(self.Scale.x,self.Scale.z)
                     self.Sprites[par.name]:Draw(bxPos,byPos,255)
                     bxPos = self.pos.x+self.Scale.x*(self.Sprites["mid"].width/2+self.Sprites[par.name].width/2-self.Sprites[par.list[par.value]].width/2+40+self.offsets.buttonwidth)
-                    byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((40+45+self.Sprites[par.name].height)*(y)+20+self.offsets.top)
+                    byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((40+45+self.Sprites[par.name].height)*(y+0.5)+20+self.offsets.top)
                     self.Sprites[par.list[par.value]]:SetScale(self.Scale.x*0.5,self.Scale.z*0.5)
                     self.Sprites[par.list[par.value]]:Draw(bxPos,byPos, 255) 
                 elseif par.code == SCRIPT_PARAM_INFO then
