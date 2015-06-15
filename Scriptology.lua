@@ -13,19 +13,19 @@
 ]]--
 
 --[[
-SAsheVersion          = 1.2 -- is fixed
+SAsheVersion          = 1.2 -- Q is fixed
 SAzirVersion          = 1
 SBlitzcrankVersion    = 1
 SBrandVersion         = 1
 SCassiopeiaVersion    = 1
-SDariusVersion        = 1.2 -- auto Q harrass
+SDariusVersion        = 1.2 -- auto Q harrass added
 SEkkoVersion          = 1
 SGnarVersion          = 1
 SJarvanVersion        = 1
 SKalistaVersion       = 1
 SKogmawVersion        = 1
 SLeeSinVersion        = 1
-SLuxVersion           = 1.1
+SLuxVersion           = 1.1 -- shield manager fixed
 SMalzaharVersion      = 1
 SNidaleeVersion       = 1
 SOlafVersion          = 1
