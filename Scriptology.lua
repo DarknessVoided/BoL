@@ -57,7 +57,7 @@ function OnLoad()
   require("sScriptConfig")
   champList = { "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
                 "Darius", "Ekko", 
-                "Kalista", "Lux", "Malzahar", 
+                "Kalista", "LeeSin", "Lux", "Malzahar", 
                 "Orianna", "Rengar", 
                 "Rumble", "Teemo", 
                 "Volibear" }
@@ -101,12 +101,12 @@ end
 
 function Auth()
   if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
-  paidList = { }
-  paid     = {}
+  authList = { "LeeSin" }
+  auth     = {}
   for _,champ in pairs(paidList) do
-    paid[champ] = true
+    auth[champ] = true
   end
-  if not paid[myHero.charName] then
+  if not auth[myHero.charName] then
     Load()
     ScriptologyMsg("No auth needed")
     return true 
