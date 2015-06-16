@@ -317,7 +317,7 @@ function Vars()
       ["Rengar"] = {
         [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+(0.95+0.05*level)*TotalDmg end},
         [_W] = { speed = math.huge, delay = 0.5, range = 490, width = 490, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.8*AP end},
-        [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50*level+0.7*TotalDmg end},
+        [_E] = { speed = 825, delay = 0.25, range = 1000, width = 80, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50*level+0.7*TotalDmg end},
         [_R] = { range = 4000}
       },
       ["Riven"] = {
@@ -506,7 +506,7 @@ end
 
 function Draw()
   if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
-    DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
+    DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
   end
   if myHero.charName ~= "Orianna" then
     if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
@@ -3475,7 +3475,7 @@ function Rengar:DeleteObj(object)
 end
 
 function Rengar:LastHit()
-  if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
+  --[[if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
     Cast(_W)
   else
     if Config:getParam("LaneClear", "Q") then
@@ -3486,7 +3486,6 @@ function Rengar:LastHit()
     end
     if Config:getParam("LaneClear", "W") then
       local minionTarget = GetLowestMinion(data[1].range)
-      local hit, pos = GetFarmPosition(0, data[1].width)
       if minionTarget ~= nil and hit and hit > 1 and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
         Cast(_W)
       end
@@ -3497,7 +3496,7 @@ function Rengar:LastHit()
         Cast(_E, minionTarget, false, true, 1)
       end
     end
-  end
+  end]]
 end
 
 function Rengar:LaneClear()
@@ -3512,7 +3511,7 @@ function Rengar:LaneClear()
     end
     if Config:getParam("LaneClear", "W") then
       local pos, hit = GetFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
-      if hit and hit > 1 and pos and GetDistance(pos) < 150 then
+      if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
         Cast(_W)
       end
     end
