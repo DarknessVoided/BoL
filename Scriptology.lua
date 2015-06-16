@@ -48,7 +48,7 @@ SYorickVersion        = 1
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.11
+_G.ScriptologyVersion    = 1.12
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -1603,7 +1603,7 @@ end
 
 function Darius:LastHit()
   if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") < myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana)) then
-    for minion,winion in pairs(self.Mobs.objects) do
+    for minion,winion in pairs(Mobs.objects) do
       local MinionDmg1 = self:GetDmg("Q1", myHero, winion)
       local MinionDmg2 = self:GetDmg("Q", myHero, winion)
       if MinionDmg1 and MinionDmg1 >= winion.health+winion.shield and ValidTarget(winion, 450) then
@@ -1614,7 +1614,7 @@ function Darius:LastHit()
     end
   end
   if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") < myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana)) then
-    for minion,winion in pairs(self.Mobs.objects) do
+    for minion,winion in pairs(Mobs.objects) do
       local MinionDmg = self:GetDmg("W", myHero, winion)
       if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
         CastSpell(_W, myHero:Attack(winion))
@@ -1719,7 +1719,7 @@ end
 function Darius:CastQ(target) 
   if target == nil then return end
   local dist = target.ms < 350 and 0 or (Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and 25 or 0)
-  if GetDistance(target) < data[0].width*(Config:getParam("Misc", "offset", "E")/100)-dist and GetDistance(target) >= 250 then
+  if GetDistance(target) < data[0].width*(Config:getParam("Misc", "offset", "Q")/100)-dist and GetDistance(target) >= 250 then
     Cast(_Q)
   end
 end
@@ -2354,7 +2354,7 @@ function Kalista:Harrass()
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) then
     local harrassUnit = nil
     local killableCounter = 0
-    for minion,winion in pairs(self.Mobs.objects) do
+    for minion,winion in pairs(Mobs.objects) do
       local EMinionDmg = GetDmg(_E, myHero, winion)      
       if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
         killableCounter = killableCounter +1
