@@ -3547,7 +3547,7 @@ function Rengar:OneShot()
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
       if GetDistance(self.osTarget, myHero) < data[1].width then
-        Cast(_W, self.osTarget, false, true, 1)
+        Cast(_W)
       end
     elseif Config:getParam("Misc", "Oneshot2") == 3 then
       if GetDistance(self.osTarget, myHero) < data[2].range then
@@ -3559,7 +3559,7 @@ function Rengar:OneShot()
         CastSpell(_Q, myHero:Attack(self.osTarget))
     end
     if Config:getParam("Combo", "W") and GetDistance(self.osTarget, myHero) < data[1].width then
-        Cast(_W, self.osTarget, false, true, 1)
+        Cast(_W)
     end
     if Config:getParam("Combo", "E") and GetDistance(self.osTarget, myHero) < data[2].range then
         Cast(_E, self.osTarget, false, true, 1)
@@ -3579,7 +3579,7 @@ function Rengar:ExecuteCombo()
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
       if GetDistance(Target, myHero) < data[1].width then
-        Cast(_W, Target, false, true, 1)
+        Cast(_W)
       end
     elseif Config:getParam("Misc", "Oneshot2") == 3 then
       if GetDistance(Target, myHero) < data[2].range then
@@ -3591,7 +3591,7 @@ function Rengar:ExecuteCombo()
         CastSpell(_Q, myHero:Attack(Target))
     end
     if Config:getParam("Combo", "W") and GetDistance(Target, myHero) < data[1].width then
-        Cast(_W, Target, false, true, 1)
+        Cast(_W)
     end
     if Config:getParam("Combo", "E") and GetDistance(Target, myHero) < data[2].range then
         Cast(_E, Target, false, true, 1.5)
@@ -3609,7 +3609,7 @@ function Rengar:Harrass()
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
       if GetDistance(Target, myHero) < data[1].width then
-        Cast(_W, Target, false, true, 1)
+        Cast(_W)
       end
     elseif Config:getParam("Misc", "Oneshot2") == 3 then
       if GetDistance(Target, myHero) < data[2].range then
@@ -3621,7 +3621,7 @@ function Rengar:Harrass()
         CastSpell(_Q, myHero:Attack(Target))
     end
     if Config:getParam("Harrass", "W") and GetDistance(Target, myHero) < data[1].width then
-        Cast(_W, Target, false, true, 1)
+        Cast(_W)
     end
     if Config:getParam("Harrass", "E") and GetDistance(Target, myHero) < data[2].range then
         Cast(_E, Target, false, true, 1.5)
@@ -3635,7 +3635,7 @@ function Rengar:Killsteal()
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         CastSpell(_Q, myHero:Attack(enemy))
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
-        Cast(_W, enemy, false, true, 1)
+        Cast(_W)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
         Cast(_E, enemy, false, true, 1.5)
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
