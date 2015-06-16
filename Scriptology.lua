@@ -17,7 +17,7 @@ SAsheVersion          = 1.2 -- Q is fixed
 SAzirVersion          = 1
 SBlitzcrankVersion    = 1
 SBrandVersion         = 1
-SCassiopeiaVersion    = 1
+SCassiopeiaVersion    = 1.1 -- killsteal error
 SDariusVersion        = 1.2 -- auto Q harrass added
 SEkkoVersion          = 1
 SGnarVersion          = 1
@@ -31,7 +31,7 @@ SNidaleeVersion       = 1
 SOlafVersion          = 1
 SOriannaVersion       = 1
 SQuinnVersion         = 1
-SRengarVersion        = 1
+SRengarVersion        = 1.1 -- fix?
 SRivenVersion         = 1
 SRumbleVersion        = 1
 SSejuaniVersion       = 1
@@ -48,7 +48,7 @@ SYorickVersion        = 1
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.09
+_G.ScriptologyVersion    = 1.10
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -153,7 +153,7 @@ function Update()
       require("UPL")
       _G.UPL = UPL()
     else 
-      TopKekMsg("Downloading UPL, please don't press F9")
+      ScriptologyMsg("Downloading UPL, please don't press F9")
       DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () TopKekMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
       return true
     end
@@ -1556,8 +1556,8 @@ function Cassiopeia:Killsteal()
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
         Cast(_E, enemy, true)
       elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and stackTable[enemy.networkID] and stackTable[enemy.networkID] > 0 and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
-        CastE(enemy)
-        DelayAction(CastE, 0.55, {enemy})
+        Cast(_E, enemy, true)
+        DelayAction(Cast, 0.55, {_E, enemy, true})
       elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
         Cast(_R, enemy, false, true, 2)
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
@@ -3391,6 +3391,10 @@ class "Rengar"
 function Rengar:__init()
   self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
   self:Menu()
+  self.oneShotTimer = 0
+  self.ultOn = false
+  self.osTarget = nil
+  self.isLeap = false
   self.keyStr = {[0] = "Q", [1] = "W", [2] = "E"}
   AddTickCallback(function() self:Tick() end)
   AddCreateObjCallback(function(x) self:CreateObj(x) end)
@@ -3480,7 +3484,7 @@ end
 
 function Rengar:LastHit()
   if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
-    CastSpell(_W)
+    Cast(_W)
   else
     if Config:getParam("LaneClear", "Q") then
       local minionTarget = GetLowestMinion(data[0].range)
@@ -3492,7 +3496,7 @@ function Rengar:LastHit()
       local minionTarget = GetLowestMinion(data[1].range)
       local hit, pos = GetFarmPosition(0, data[1].width)
       if minionTarget ~= nil and hit and hit > 1 and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
-        CastSpell(_W)
+        Cast(_W)
       end
     end
     if Config:getParam("LaneClear", "E") then
@@ -3506,7 +3510,7 @@ end
 
 function Rengar:LaneClear()
   if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
-    CastSpell(_W)
+    Cast(_W)
   else
     if Config:getParam("LaneClear", "Q") then
       local minionTarget = GetLowestMinion(data[0].range)
@@ -3517,7 +3521,7 @@ function Rengar:LaneClear()
     if Config:getParam("LaneClear", "W") then
       local hit, pos = GetFarmPosition(0, data[1].width)
       if hit > 1 and GetDistance(pos) < 150 then
-        CastSpell(_W)
+        Cast(_W)
       end
     end
     if Config:getParam("LaneClear", "E") then
