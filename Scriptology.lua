@@ -281,7 +281,7 @@ function Vars()
         [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
         [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear"},
         [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
-        [_R] = { speed = math.huge, delay = 1, range = 3600, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
+        [_R] = { speed = math.huge, delay = 1, range = 3340, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
       },
       ["Malzahar"] = {
         [_Q] = { speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+55*level+0.8*AP end},
@@ -2605,7 +2605,7 @@ function LeeSin:LastHit()
     for minion,winion in pairs(Mobs.objects) do
       local MinionDmg = GetDmg(_E, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, 300) then
-        self:CastE()
+        Cast(_E)
       end
     end
   end
@@ -4283,7 +4283,7 @@ function Volibear:LastHit()
     for minion,winion in pairs(Mobs.objects) do
       local MinionDmg = GetDmg(_Q, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
-        self:CastQ()
+        Cast(_Q)
       end
     end
   end
@@ -4291,7 +4291,7 @@ function Volibear:LastHit()
     for minion,winion in pairs(Mobs.objects) do
       local MinionDmg = GetDmg(_W, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
-        self:CastW()
+        Cast(_W, winion, true)
       end
     end
   end
@@ -4299,7 +4299,7 @@ function Volibear:LastHit()
     for minion,winion in pairs(Mobs.objects) do
       local MinionDmg = GetDmg(_E, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
-        self:CastE()
+        Cast(_E)
       end
     end
   end
@@ -4315,7 +4315,7 @@ function Volibear:LaneClear()
         minionTarget = winion
       end
       if minionTarget ~= nil then
-        self:CastQ()
+        Cast(_Q)
       end
     end
   end
@@ -4328,7 +4328,7 @@ function Volibear:LaneClear()
         minionTarget = winion
       end
       if minionTarget ~= nil then
-        self:CastW(minionTarget)
+        Cast(_W, minionTarget, true)
       end
     end
   end
@@ -4341,7 +4341,7 @@ function Volibear:LaneClear()
         minionTarget = winion
       end
       if minionTarget ~= nil then
-        self:CastE()
+        Cast(_E)
       end
     end
   end
@@ -4349,30 +4349,30 @@ end
 
 function Volibear:Combo()
   if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
-    self:CastQ(Target)
+    Cast(_Q)
   end
   if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
     if GetDmg(_W, Target, myHero) >= Target.health then
-      self:CastW(Target)
+      Cast(_W, Target, true)
     end
   end
   if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
-    self:CastE(Target)
+    Cast(_E, Target, false, true, 1)
   end
   if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
-    self:CastE(Target)
+    Cast(_E, Target, false, true, 1)
   end
 end
 
 function Volibear:Harrass()
   if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
-    self:CastQ(Target)
+    Cast(_Q)
   end
   if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
-    self:CastW(Target)
+    Cast(_W, Target, true)
   end
   if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
-    self:CastE(Target)
+    Cast(_E, Target, false, true, 1)
   end
 end
 
@@ -4380,11 +4380,11 @@ function Volibear:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
-        self:CastQ(enemy)
+        Cast(_Q)
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
-        self:CastW(enemy)
+        Cast(_W, enemy, true)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
-        self:CastE()
+        Cast(_E, enemy, false, true, 1)
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
         CastSpell(Ignite, enemy)
       end
