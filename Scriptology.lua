@@ -103,7 +103,7 @@ function Auth()
   if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
   authList = { "LeeSin" }
   auth     = {}
-  for _,champ in pairs(paidList) do
+  for _,champ in pairs(authList) do
     auth[champ] = true
   end
   if not auth[myHero.charName] then
