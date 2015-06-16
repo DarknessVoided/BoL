@@ -2814,7 +2814,7 @@ function Lux:LaneClear()
 end
 
 function Lux:Combo()
-  if GetStacks(Target) > 0 and Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and myHero:CalcMagicDamage(Target, 220+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= Target.health then
+  if GetStacks(Target) > 0 and Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= Target.health then
     Cast(_R, Target, false, true, 2)
   end
   if timeToShoot() then
