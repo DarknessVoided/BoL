@@ -6,7 +6,9 @@
 | |\  || || (_| || (_| |  \ \/' /  | | | ||  __/| || |_) ||  __/| |   
 \_| \_/|_| \__,_| \__,_|   \_/\_\  \_| |_/ \___||_|| .__/  \___||_|   
                                                    | |                
-                                                   |_|                
+                                                   |_| 
+
+    By Scriptologe a.k.a Nebelwolfi               
 ]]--
 if myHero.charName ~= "Nidalee" then return end
 
@@ -26,7 +28,7 @@ if not _G.UPLloaded then
 end
 
 local Q = {name = "Javelin Toss", speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
-local QTargetSelector = TargetSelector(TARGET_LOW_HP_PRIORITY, Q.range, DAMAGE_MAGIC)
+local QTargetSelector = TargetSelector(TARGET_LESS_CAST_PRIORITY, Q.range, DAMAGE_MAGIC)
 
 function OnLoad()
   Config = scriptConfig("Nida Q Helper ", " Nida Q Helper ")
@@ -48,7 +50,7 @@ end
 function OnTick()
   QTargetSelector:update()
   QCel = QTargetSelector.target
-  if Config.throwQ or (Config.throwQh and myHero.mana >= Config.misc.mana) and not myHero.dead and QCel ~= nil and Q.Ready() then
+  if Config.throwQ or (Config.throwQh and myHero.mana/myHero.maxMana*100 >= Config.misc.mana) and not myHero.dead and QCel ~= nil and Q.Ready() then
     ThrowQ(QCel)
   end
 end
@@ -57,7 +59,7 @@ function ThrowQ(unit)
   if unit and Q.Ready() and ValidTarget(unit) then
     local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, unit)
     if HitChance >= Config.misc.hc then
-      if VIP_USER and Config.misc.pc then
+      if VIP_USER and Config.misc.pc then -- maybe this gets some functionality somewhen?
         Packet("S_CAST", {spellId = _Q, fromX = CastPosition.x, fromY = CastPosition.z, toX = CastPosition.x, toY = CastPosition.z}):send()
       else
         CastSpell(_Q, CastPosition.x, CastPosition.z)

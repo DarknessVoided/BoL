@@ -166,9 +166,9 @@ _G.Champs = {
         [_Q] = { speed = 1400, delay = 0.250, range = 925, width = 80, collision = false, aoe = false, type = "linear"}
     },
         ["Lux"] = {
-        [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
+        [_Q] = { speed = 1350, delay = 0.25, range = 1175, width = 65, collision = true, type = "linear" },
         [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
-        [_R] = { speed = math.huge, delay = 1, range = 3600, width = 190, collision = false, type = "linear" }
+        [_R] = { speed = math.huge, delay = 0.675, range = 3340, width = 190, collision = false, type = "linear" }
     },
         ["Malphite"] = {
         [_R] = { speed = 550, delay = 0.0, range = 1000, width = 300, collision = false, aoe = true, type = "circular"}
