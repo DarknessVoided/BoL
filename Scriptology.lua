@@ -1786,7 +1786,7 @@ end
 function Ekko:LastHit()
   if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
     for minion,winion in pairs(Mobs.objects) do
-      local QMinionDmg = self:GetDmg(_Q, myHero, winion)
+      local QMinionDmg = GetDmg(_Q, myHero, winion)
       if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
         Cast(_Q, winion, false, true, 1.2)
       end
@@ -1794,7 +1794,7 @@ function Ekko:LastHit()
   end
   if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
     for minion,winion in pairs(Mobs.objects) do
-      local MinionDmg = self:GetDmg(_E, myHero, winion)
+      local MinionDmg = GetDmg(_E, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range+myHero.range+myHero.boundingRadius) and GetDistance(winion) < data[2].range+myHero.range+myHero.boundingRadius then
         Cast(_E, winion)
       end
@@ -2327,16 +2327,16 @@ function Kalista:LaneClear()
 end
 
 function Kalista:Combo()
-  if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(self.Target, data[0].range) then
+  if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
     Cast(_Q, Target, false, true, 1.5)
   end
-  if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(self.Target, data[2].range) then
-    if self:GetDmg(_E, myHero, Target) >= self.Target.health then
+  if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
+    if GetDmg(_E, myHero, Target) >= Target.health then
       Cast(_E)
     end
     local killableCounter = 0
     for minion,winion in pairs(Mobs.objects) do
-      local EMinionDmg = self:GetDmg(_E, myHero, winion)      
+      local EMinionDmg = GetDmg(_E, myHero, winion)      
       if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
         killableCounter = killableCounter +1
       end   
@@ -2348,10 +2348,10 @@ function Kalista:Combo()
 end
 
 function Kalista:Harrass()
-  if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(self.Target, data[0].range) then
+  if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) then
     Cast(_Q, Target, false, true, 1.2)
   end
-  if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(self.Target, data[2].range) then
+  if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) then
     local harrassUnit = nil
     local killableCounter = 0
     for minion,winion in pairs(self.Mobs.objects) do
@@ -2614,7 +2614,7 @@ function LeeSin:LastHit()
   end
   if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.E) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.E)) and myHero:CanUseSpell(_W) == READY then
     for minion,winion in pairs(Mobs.objects) do
-      local MinionDmg = self:GetDmg("E", winion, myHero)
+      local MinionDmg = GetDmg(_E, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, 300) then
         self:CastE()
       end
@@ -2706,7 +2706,7 @@ function LeeSin:Harrass()
     end
     DelayAction(function() self:Jump(self.oldPos, 400, false) self.oldPos = nil end, 0.33)
   end
-  if myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, data[2].width) then
+  if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].width) then
     Cast(_E, Target, false, true, 1.2)
   end
 end
@@ -4354,31 +4354,31 @@ function Volibear:LaneClear()
 end
 
 function Volibear:Combo()
-  if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY and ValidTarget(self.Target, data[0].range) then
-    self:CastQ(self.Target)
+  if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
+    self:CastQ(Target)
   end
-  if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY and ValidTarget(self.Target, data[1].range) then
-    if self:GetDmg(_W, self.Target, myHero) >= self.Target.health then
-      self:CastW(self.Target)
+  if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
+    if GetDmg(_W, Target, myHero) >= Target.health then
+      self:CastW(Target)
     end
   end
-  if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, data[2].range) then
-    self:CastE(self.Target)
+  if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
+    self:CastE(Target)
   end
-  if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(self.Target, data[3].range) then
-    self:CastE(self.Target)
+  if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
+    self:CastE(Target)
   end
 end
 
 function Volibear:Harrass()
-  if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(self.Target, data[0].range) then
-    self:CastQ(self.Target)
+  if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
+    self:CastQ(Target)
   end
-  if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(self.Target, data[1].range) then
-    self:CastW(self.Target)
+  if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
+    self:CastW(Target)
   end
-  if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(self.Target, data[2].range) then
-    self:CastE(self.Target)
+  if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
+    self:CastE(Target)
   end
 end
 
