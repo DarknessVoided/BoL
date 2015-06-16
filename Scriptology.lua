@@ -3511,7 +3511,7 @@ function Rengar:LaneClear()
     end
     if Config:getParam("LaneClear", "W") then
       local hit, pos = GetFarmPosition(0, data[1].width)
-      if hit > 1 and pos and GetDistance(pos) < 150 then
+      if hit and hit > 1 and pos and GetDistance(pos) < 150 then
         Cast(_W)
       end
     end
