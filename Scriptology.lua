@@ -24,7 +24,7 @@ SGnarVersion          = 1
 SJarvanVersion        = 1
 SKalistaVersion       = 1
 SKogmawVersion        = 1
-SLeeSinVersion        = 1
+SLeeSinVersion        = 1.1 -- is now live
 SLuxVersion           = 1.4 -- fixes
 SMalzaharVersion      = 1
 SNidaleeVersion       = 1
@@ -48,7 +48,7 @@ SYorickVersion        = 1
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.15
+_G.ScriptologyVersion    = 1.16
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -101,7 +101,7 @@ end
 
 function Auth()
   if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
-  authList = { "LeeSin" }
+  authList = {  }
   auth     = {}
   for _,champ in pairs(authList) do
     auth[champ] = true
@@ -1232,9 +1232,10 @@ function Blitzcrank:WndMsg(Msg, Key)
     if starget and minD < 500 then
       if self.Forcetarget and starget.charName == self.Forcetarget.charName then
         self.Forcetarget = nil
+        ScriptologyMsg("Target un-selected.")
       else
         self.Forcetarget = starget
-        print("<font color=\"#FF0000\">Blitzcrank: New target selected: "..starget.charName.."</font>")
+        ScriptologyMsg("New target selected: "..starget.charName)
       end
     end
   end
@@ -2442,33 +2443,10 @@ function LeeSin:InsecTicker()
   end
 end
 
-function LeeSin:WndMsg(Msg, Key)
-  if Msg == WM_LBUTTONDOWN then
-    local minD = 0
-    local starget = nil
-    for i, enemy in ipairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) then
-        if GetDistance(enemy, mousePos) <= minD or starget == nil then
-          minD = GetDistance(enemy, mousePos)
-          starget = enemy
-        end
-      end
-    end
-    
-    if starget and minD < 500 then
-      if self.Forcetarget and starget.charName == self.Forcetarget.charName then
-        self.Forcetarget = nil
-      else
-        self.Forcetarget = starget
-        TopKekMsg("New insec-target selected: "..starget.charName.."")
-      end
-    end
-  end
-end
-
 function LeeSin:Insec()
   if myHero:GetSpellData(_R).currentCd ~= 0 then return end
   self.insecTarget = self.Forcetarget or Target
+  if self.insecTarget == nil then if GetDistance(mousePos,myHero.pos) > myHero.boundingRadius then myHero:MoveTo(mousePos.x, mousePos.z) end return end
   local insecTowards = nil
   if #GetAllyHeroes() > 0 then
     for _,unit in pairs(GetAllyHeroes()) do
@@ -2486,11 +2464,16 @@ function LeeSin:Insec()
   if GetDistance(insecTowards, mousePos) > 50 then
     CastPosition, HitChance, Position = UPL:Predict(_R, myHero, insecTowards)
   end
-  CastPosition1 = Vector(insecTarget)-300*(Vector(CastPosition)-Vector(insecTarget)):normalized()
+  CastPosition1 = Vector(self.insecTarget)-300*(Vector(CastPosition)-Vector(self.insecTarget)):normalized()
   myHero:MoveTo(CastPosition1.x, CastPosition1.z)
   local x, y, z = VectorPointProjectionOnLineSegment(myHero, CastPosition, self.insecTarget)
   if GetDistance(myHero, CastPosition1) < 25 and z then
-    self:CastR(insecTarget)
+    if myHero:CanUseSpell(_Q) then 
+      Cast(_Q, self.insecTarget)
+      DelayAction(function() Cast(_R, self.insecTarget, true) DelayAction(function() Cast(_Q) end, 0.33) end, data[0].delay+GetDistance(self.insecTarget, myHero.pos)/data[0].speed)
+    else
+      Cast(_R, self.insecTarget, true)
+    end
   end
   if GetDistance(CastPosition1) > 300 and GetDistance(CastPosition1) < 600 then
     if self:Jump(CastPosition1, 50, true) then return end
@@ -2517,10 +2500,10 @@ function LeeSin:Msg(Msg, Key)
         end
       end
     end
-    
     if starget and minD < 500 then
       if self.Forcetarget and starget.charName == self.Forcetarget.charName then
         self.Forcetarget = nil
+        ScriptologyMsg("Insec-target un-selected.")
       else
         self.Forcetarget = starget
         ScriptologyMsg("New insec-target selected: "..starget.charName.."")
@@ -2597,7 +2580,7 @@ function LeeSin:GetWardSlot()
 end
 
 function LeeSin:LastHit()
-  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.Q) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.Q)) and myHero:CanUseSpell(_Q) == READY then
+  if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q"))) and myHero:CanUseSpell(_Q) == READY then
     for minion,winion in pairs(Mobs.objects) do
       local MinionDmg1 = self:GetDmg("Q1", winion, myHero)
       local MinionDmg2 = self:GetDmg("Q2", winion, myHero)
@@ -2611,7 +2594,7 @@ function LeeSin:LastHit()
       end
     end
   end
-  if ((self.Config.kConfig.lh and self.Config.farmConfig.lh.E) or (self.Config.kConfig.lc and self.Config.farmConfig.lc.E)) and myHero:CanUseSpell(_W) == READY then
+  if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E"))) and myHero:CanUseSpell(_W) == READY then
     for minion,winion in pairs(Mobs.objects) do
       local MinionDmg = GetDmg(_E, myHero, winion)
       if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, 300) then
@@ -2622,7 +2605,7 @@ function LeeSin:LastHit()
 end
 
 function LeeSin:LaneClear()
-  if self.Config.farmConfig.lc.Q and myHero:CanUseSpell(_Q) == READY then
+  if Config:getParam("LaneClear", "Q") and myHero:CanUseSpell(_Q) == READY then
     local minionTarget = nil
     for i, minion in pairs(Mobs.objects) do
       if minionTarget == nil then 
@@ -2645,8 +2628,8 @@ function LeeSin:LaneClear()
       Cast(_Q, minionTarget, false, true, 1.5)
     end
   end
-  if self.Config.farmConfig.lc.E and myHero:CanUseSpell(_E) == READY then
-    BestPos, BestHit = GetEFarmPosition()
+  if Config:getParam("LaneClear", "E") and myHero:CanUseSpell(_E) == READY then
+    BestPos, BestHit = GetFarmPosition(data[2].range, data[2].width)
     if BestHit > 1 and GetDistance(BestPos) < 150 then 
       Cast(_E)
     end
