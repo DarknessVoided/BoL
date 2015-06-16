@@ -9,7 +9,7 @@
             | |                                                         
             |_|                                                         
 
-		By Nebelwolfi
+    By Nebelwolfi
 
 ]]--
 
@@ -90,13 +90,13 @@ function OnLoad()
   if VIP_USER then Config.comboConfig:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, false) end
 
   if VIP_USER then 
-  	Config:addSubMenu("Ult Settings", "rConfig")
-  	Config.rConfig:addParam("r", "Auto-R", SCRIPT_PARAM_ONOFF, true)
-  	Config.rConfig:addParam("toomanyenemies", "Min. enemies for auto-r", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+    Config:addSubMenu("Ult Settings", "rConfig")
+    Config.rConfig:addParam("r", "Auto-R", SCRIPT_PARAM_ONOFF, true)
+    Config.rConfig:addParam("toomanyenemies", "Min. enemies for auto-r", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
     Config.misc:addParam("SPACE", " ", SCRIPT_PARAM_INFO,"")
-  	Config.rConfig:addParam("omgisteamfight", "Auto-R in teamfights", SCRIPT_PARAM_ONOFF, true)
-  	Config.rConfig:addParam("teamfightallies", "Min. allies in teamfight", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
-  	Config.rConfig:addParam("teamfightenemies", "Min. enemies in teamfight", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
+    Config.rConfig:addParam("omgisteamfight", "Auto-R in teamfights", SCRIPT_PARAM_ONOFF, true)
+    Config.rConfig:addParam("teamfightallies", "Min. allies in teamfight", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
+    Config.rConfig:addParam("teamfightenemies", "Min. enemies in teamfight", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
   end
 
   Config:addSubMenu("Harrass Settings", "harrConfig")
@@ -106,7 +106,7 @@ function OnLoad()
   Config:addSubMenu("Farm Settings", "farmConfig")
   Config.farmConfig:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-			
+      
   Config:addSubMenu("Draw Settings", "Drawing")
   Config.Drawing:addParam("QRange", "Q Range", SCRIPT_PARAM_ONOFF, true)
   Config.Drawing:addParam("ERange", "E Range", SCRIPT_PARAM_ONOFF, true)
@@ -183,56 +183,56 @@ function SetupOrbwalk()
 end
 
 function OnTick()
-  	local target
-  	target = GetCustomTarget()
+    local target
+    target = GetCustomTarget()
     
     if Config.kConfig.shield and WReady() then 
-    	if myHero.mana < 40 then
-    		CastSpell(_W)
-    	end
+      if myHero.mana < 40 then
+        CastSpell(_W)
+      end
     end
 
     if (Config.kConfig.harr or Config.kConfig.har) and ValidTarget(target, data[2].range) then
       if Config.harrConfig.Q then
       local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, target)
-    	if HitChance >= 2 then
-    		CCastSpell(_Q, CastPosition.x, CastPosition.z)
-    	end
+      if HitChance >= 2 then
+        CCastSpell(_Q, CastPosition.x, CastPosition.z)
+      end
       end
       if Config.harrConfig.E then
-       	local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, target)
-    	if HitChance >= 2 then
-    		CCastSpell(_E, CastPosition.x, CastPosition.z)
-    	end
+        local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, target)
+      if HitChance >= 2 then
+        CCastSpell(_E, CastPosition.x, CastPosition.z)
+      end
       end
     end
 
     if Config.kConfig.lc then
-		FarmQ()
-		FarmE()
+    FarmQ()
+    FarmE()
     end
 
     if Config.kConfig.combo and ValidTarget(target, 1500) then
       if Config.comboConfig.Q then
       local CastPosition, HitChance, Position = UPL:Predict(_Q, myHero, target)
-    	if HitChance >= 2 then
-    		CCastSpell(_Q, CastPosition.x, CastPosition.z)
-    	end
+      if HitChance >= 2 then
+        CCastSpell(_Q, CastPosition.x, CastPosition.z)
+      end
       end
       if Config.comboConfig.W and WReady() then
-		CastSpell(_W)
+    CastSpell(_W)
       end
       if Config.comboConfig.E then
       local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, target)
-    	if HitChance >= 2 then
-    		CCastSpell(_E, CastPosition.x, CastPosition.z)
-    	end
+      if HitChance >= 2 then
+        CCastSpell(_E, CastPosition.x, CastPosition.z)
+      end
       end
       if VIP_USER and Config.comboConfig.R then
       local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, target)
-    	if HitChance >= 2 then
-    		CastR(CastPosition, target)
-    	end
+      if HitChance >= 2 then
+        CastR(CastPosition, target)
+      end
       end
     end
     
@@ -240,33 +240,33 @@ function OnTick()
 
     if VIP_USER and Config.kConfig.r then
       local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, target)
-    	if HitChance >= 2 then
-    		CastR(CastPosition, target)
-    	end
+      if HitChance >= 2 then
+        CastR(CastPosition, target)
+      end
     end
 end
 
 function DoSomeUltLogic()
   if not VIP_USER then return end
-  	if Config.rConfig.r then
-  		local enemies = EnemiesAround(Target, 250)
-  		if enemies >= Config.rConfig.toomanyenemies then
+    if Config.rConfig.r then
+      local enemies = EnemiesAround(Target, 250)
+      if enemies >= Config.rConfig.toomanyenemies then
       local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, target)
-	    	if HitChance >= 2 then
-	    		CastR(CastPosition, target)
-	    	end
-  		end
-  	end
-  	if Config.rConfig.omgisteamfight then
-  		local enemies = EnemiesAround(Target, 250)
-  		local allies = AlliesAround(myHero, 500)
-  		if enemies >= Config.rConfig.teamfightenemies and allies >= Config.rConfig.teamfightallies then
+        if HitChance >= 2 then
+          CastR(CastPosition, target)
+        end
+      end
+    end
+    if Config.rConfig.omgisteamfight then
+      local enemies = EnemiesAround(Target, 250)
+      local allies = AlliesAround(myHero, 500)
+      if enemies >= Config.rConfig.teamfightenemies and allies >= Config.rConfig.teamfightallies then
       local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, target)
-	    	if HitChance >= 2 then
-	    		CastR(CastPosition, target)
-	    	end
-	    end
-  	end
+        if HitChance >= 2 then
+          CastR(CastPosition, target)
+        end
+      end
+    end
 end
 
 function EnemiesAround(Unit, range)
@@ -280,27 +280,27 @@ function AlliesAround(Unit, range)
 end
 
 function FarmQ()
-	if Config.farmConfig.FarmQ and QReady() then
-		for index, minion in pairs(minionManager(MINION_ENEMY, 600, player, MINION_SORT_HEALTH_ASC).objects) do
-			local mhp = minion.health
-			local qDmg = GetDmg("Q", minion, myHero)
-			if qDmg >= mhp then
-            	CCastSpell(_Q, minion.x, minion.z)
-			end
-		end
+  if Config.farmConfig.FarmQ and QReady() then
+    for index, minion in pairs(minionManager(MINION_ENEMY, 600, player, MINION_SORT_HEALTH_ASC).objects) do
+      local mhp = minion.health
+      local qDmg = GetDmg("Q", minion, myHero)
+      if qDmg >= mhp then
+              CCastSpell(_Q, minion.x, minion.z)
+      end
+    end
   end
 end
 
 function FarmE()
-	if Config.farmConfig.FarmE and EReady() then
-		for index, minion in pairs(minionManager(MINION_ENEMY, 850, player, MINION_SORT_HEALTH_ASC).objects) do
-			local mhp = minion.health
-			local eDmg = GetDmg("E", minion, myHero)
+  if Config.farmConfig.FarmE and EReady() then
+    for index, minion in pairs(minionManager(MINION_ENEMY, 850, player, MINION_SORT_HEALTH_ASC).objects) do
+      local mhp = minion.health
+      local eDmg = GetDmg("E", minion, myHero)
       local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, target)
-			if eDmg >= mhp and HitChance > 1.5 then
-    			CCastSpell(_E, CastPosition.x, CastPosition.z)
-			end
-		end
+      if eDmg >= mhp and HitChance > 1.5 then
+          CCastSpell(_E, CastPosition.x, CastPosition.z)
+      end
+    end
     end
 end
 
@@ -313,8 +313,8 @@ function CCastSpell(Spell, xPos, zPos)
   end
 end
 function CastR(Target, target)
-	Pos = Target + (Vector(target) - Target):normalized()*(GetDistance(Target)) --myHero+(Vector(Target)-myHero):normalized()*GetDistance(Target)
-	Packet("S_CAST", {spellId = _R, fromX = Pos.x, fromY = Pos.z, toX = Target.x, toY = Target.z}):send()
+  Pos = Target + (Vector(target) - Target):normalized()*(GetDistance(Target)) --myHero+(Vector(Target)-myHero):normalized()*GetDistance(Target)
+  Packet("S_CAST", {spellId = _R, fromX = Pos.x, fromY = Pos.z, toX = Target.x, toY = Target.z}):send()
 end
 
 function GetCustomTarget()
@@ -325,19 +325,19 @@ function GetCustomTarget()
 end
 
 function OnDraw()
-	if Config.Drawing.QRange then
-		DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
-	end
-	if Config.Drawing.WRange then
-		DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range, 0x111111)
-	end
-	if Config.Drawing.ERange then
-		DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
-	end
-	if Config.Drawing.RRange then
-		DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
-	end
-	if Config.Drawing.DmgCalcs then
+  if Config.Drawing.QRange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, 0x111111)
+  end
+  if Config.Drawing.WRange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range, 0x111111)
+  end
+  if Config.Drawing.ERange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, 0x111111)
+  end
+  if Config.Drawing.RRange then
+    DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, 0x111111)
+  end
+  if Config.Drawing.DmgCalcs then
         for i = 1, enemyCount do
             local enemy = enemyTable[i].player
             if ValidTarget(enemy) then

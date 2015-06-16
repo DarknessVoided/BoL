@@ -82,9 +82,9 @@ local predictions = {}
 local enemyTable = {}
 local enemyCount = 0
 local data = {
-	[_Q] = { speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear"},
-	[_W] = { speed = math.huge, delay = 0, range = 450, width = 100, collision = false, aoe = false, type = "circular"},
-	[_E] = { range = 1300, type = "targeted"},
+  [_Q] = { speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear"},
+  [_W] = { speed = math.huge, delay = 0, range = 450, width = 100, collision = false, aoe = false, type = "circular"},
+  [_E] = { range = 1300, type = "targeted"},
   [_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone"},
   [4] = { range = 350, type = "soldier"}
 }
@@ -130,7 +130,7 @@ function OnLoad(
   Config.farmConfig:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   Config.farmConfig:addParam("mana", "Min. mana %", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-			
+      
   Config:addSubMenu("Killsteal Settings", "KS")
   Config.KS:addParam("enableKS", "Enable Killsteal", SCRIPT_PARAM_ONOFF, true)
   Config.KS:addParam("killstealQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
