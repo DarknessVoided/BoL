@@ -565,11 +565,11 @@ function Draw()
         if myHero.charName == "Kalista" then
           DrawText(killTextTable[enemy.networkID].indicatorText, 20, posX, posY-5, ARGB(255,250,250,250))
         else
-          DrawText(killTextTable[enemy.networkID].indicatorText, 15, posX, posY, ARGB(255, 255, 50, 0))
+          DrawText(killTextTable[enemy.networkID].indicatorText, 15, posX, posY, ARGB(255, 50, 255, 50))
         end
        
         -- Taking damage
-        DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 0, 0))
+        DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
       end
     end
     if myHero.charName == "Kalista" and myHero:CanUseSpell(_E) then
@@ -3425,7 +3425,7 @@ function Rengar:Tick()
   if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, 1500) then
     Target = self.Forcetarget  
   end
-  if self.osTarget ~= nil and not ValidTarget(self.osTarget, 1500) then
+  if self.osTarget ~= nil and not ValidTarget(self.osTarget, 1500) or self.osTarget.dead then
     self.osTarget = nil
   end
   if self.isLeap and self.oneShotTimer+1.5 < GetInGameTimer() then
@@ -3475,7 +3475,7 @@ function Rengar:DeleteObj(object)
 end
 
 function Rengar:LastHit()
-  --[[if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
+  if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
     Cast(_W)
   else
     if Config:getParam("LaneClear", "Q") then
@@ -3486,7 +3486,7 @@ function Rengar:LastHit()
     end
     if Config:getParam("LaneClear", "W") then
       local minionTarget = GetLowestMinion(data[1].range)
-      if minionTarget ~= nil and hit and hit > 1 and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
+      if minionTarget ~= nil and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
         Cast(_W)
       end
     end
@@ -3496,7 +3496,7 @@ function Rengar:LastHit()
         Cast(_E, minionTarget, false, true, 1)
       end
     end
-  end]]
+  end
 end
 
 function Rengar:LaneClear()
