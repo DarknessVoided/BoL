@@ -31,7 +31,7 @@ SNidaleeVersion       = 1
 SOlafVersion          = 1
 SOriannaVersion       = 1.1 -- harrass mana slider
 SQuinnVersion         = 1
-SRengarVersion        = 1.2 -- fix
+SRengarVersion        = 1.3 -- fixed oneshot mode
 SRivenVersion         = 1
 SRumbleVersion        = 1
 SSejuaniVersion       = 1
@@ -48,7 +48,7 @@ SYorickVersion        = 1
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.20
+_G.ScriptologyVersion    = 1.21
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -316,7 +316,7 @@ function Vars()
       },
       ["Rengar"] = {
         [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+(0.95+0.05*level)*TotalDmg end},
-        [_W] = { speed = math.huge, delay = 0.5, range = 0, width = 490, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.8*AP end},
+        [_W] = { speed = math.huge, delay = 0.5, range = 490, width = 490, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.8*AP end},
         [_E] = { speed = 1500, delay = 0.50, range = 1000, width = 80, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50*level+0.7*TotalDmg end},
         [_R] = { range = 4000}
       },
@@ -3479,7 +3479,7 @@ function Rengar:LastHit()
     Cast(_W)
   else
     if Config:getParam("LaneClear", "Q") then
-      local minionTarget = GetLowestMinion(data[0].range)
+      local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
       if minionTarget ~= nil and minionTarget.health < GetDmg(_Q, myHero, minionTarget) then
         CastSpell(_Q, myHero:Attack(minionTarget))
       end
@@ -3505,13 +3505,13 @@ function Rengar:LaneClear()
     Cast(_W)
   else
     if Config:getParam("LaneClear", "Q") then
-      local minionTarget = GetLowestMinion(data[0].range)
+      local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
       if minionTarget ~= nil then
         CastSpell(_Q, myHero:Attack(minionTarget))
       end
     end
     if Config:getParam("LaneClear", "W") then
-      local hit, pos = GetFarmPosition(0, data[1].width)
+      local pos, hit = GetFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
       if hit and hit > 1 and pos and GetDistance(pos) < 150 then
         Cast(_W)
       end
@@ -3535,19 +3535,20 @@ function Rengar:Combo()
   end
   if self.ultOn or self.isLeap then 
     if self.osTarget == nil then self.osTarget = Target end
-    if self.osTarget ~= nil then self:OneShot() end
+    self:OneShot()
   elseif not self.ultOn then
     self:ExecuteCombo()
   end
 end
 
 function Rengar:OneShot()
-  if not self.osTarget or GetDistance(self.osTarget, myHero) > myHero.range+myHero.boundingRadius then return end
+  if not self.osTarget or GetDistance(self.osTarget, myHero) > 800 then return end
   PrintAlertRed("Oneshotting... "..self.osTarget.charName)
   if Smite ~= nil then CastSpell(Smite, self.osTarget) end
+  if Ignite ~= nil then CastSpell(Ignite, self.osTarget) end
   if myHero.mana == 5 then
     if Config:getParam("Misc", "Oneshot2") == 1 then
-      if GetDistance(self.osTarget, myHero) < myHero.range+myHero.boundingRadius then
+      if GetDistance(self.osTarget, myHero) < 450 then
         CastSpell(_Q, myHero:Attack(self.osTarget))
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
@@ -3560,18 +3561,17 @@ function Rengar:OneShot()
       end
     end
   else
-    if Config:getParam("Combo", "Q") and GetDistance(self.osTarget, myHero) < myHero.range+myHero.boundingRadius then
+    if Config:getParam("Combo", "Q") and GetDistance(self.osTarget, myHero) < 450 then
         CastSpell(_Q, myHero:Attack(self.osTarget))
     end
     if Config:getParam("Combo", "W") and GetDistance(self.osTarget, myHero) < data[1].width then
         Cast(_W, self.osTarget, false, true, 1)
     end
     if Config:getParam("Combo", "E") and GetDistance(self.osTarget, myHero) < data[2].range then
-        Cast(_E, self.osTarget, false, true, 1)
+        Cast(_E, self.osTarget)
     end
   end
-  if Ignite ~= nil then CastSpell(Ignite, self.osTarget) end
-  if self.osTarget.dead or not self.osTarget.visible or GetDistance(self.osTarget) > 600 then self.osTarget=nil end
+  if self.osTarget.dead or GetDistance(self.osTarget) > 800 then self.osTarget=nil end
 end
 
 function Rengar:ExecuteCombo()
