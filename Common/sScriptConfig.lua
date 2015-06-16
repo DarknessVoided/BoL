@@ -406,6 +406,8 @@ function sScriptConfig:Draw()
                         bxPos = self.pos.x+self.Scale.x*(40+self.offsets.buttonwidth)
                         y = y + 1
                         byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
+                    else
+                        byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+self.Sprites["code"..par.code].height)*(y)+20+self.offsets.top)
                     end
                     self.Sprites[par.name]:SetScale(self.Scale.x,self.Scale.z)
                     self.Sprites[par.name]:Draw(bxPos,byPos,255)
