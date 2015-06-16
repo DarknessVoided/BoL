@@ -1453,13 +1453,13 @@ function Cassiopeia:LastHitSomethingPoisonedWithE()
   if Config:getParam("LastHit", "E") then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg(_E, myHero, minion)  
-      if EMinionDmg >= minion.health and stackTable[minion.networkID] and stackTable[minion.networkID] > 0 and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and GetStacks[minion] > 0 and ValidTarget(minion, data[2].range) then
         Cast(_E, minion, true)
       end      
     end   
     for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg(_E, myHero, minion)  
-      if EMinionDmg >= minion.health and stackTable[minion.networkID] and stackTable[minion.networkID] > 0 and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and GetStacks[minion] > 0 and ValidTarget(minion, data[2].range) then
         Cast(_E, minion, true)
       end      
     end    
