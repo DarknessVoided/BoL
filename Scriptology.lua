@@ -31,7 +31,7 @@ SNidaleeVersion       = 1
 SOlafVersion          = 1
 SOriannaVersion       = 1.1 -- harrass mana slider
 SQuinnVersion         = 1
-SRengarVersion        = 1.1 -- fix?
+SRengarVersion        = 1.2 -- fix
 SRivenVersion         = 1
 SRumbleVersion        = 1
 SSejuaniVersion       = 1
@@ -3530,7 +3530,7 @@ function Rengar:Combo()
   end
   if self.ultOn or self.isLeap then 
     if self.osTarget == nil then self.osTarget = Target end
-    self:OneShot()
+    if self.osTarget ~= nil then self:OneShot() end
   elseif not self.ultOn then
     self:ExecuteCombo()
   end
