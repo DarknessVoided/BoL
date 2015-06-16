@@ -1453,13 +1453,13 @@ function Cassiopeia:LastHitSomethingPoisonedWithE()
   if Config:getParam("LastHit", "E") then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg(_E, myHero, minion)  
-      if EMinionDmg >= minion.health and GetStacks[minion] > 0 and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
         Cast(_E, minion, true)
       end      
     end   
     for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg(_E, myHero, minion)  
-      if EMinionDmg >= minion.health and GetStacks[minion] > 0 and ValidTarget(minion, data[2].range) then
+      if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
         Cast(_E, minion, true)
       end      
     end    
@@ -1503,12 +1503,12 @@ function Cassiopeia:LaneClear()
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
     for minion,winion in pairs(Mobs.objects) do
-      if winion ~= nil and (stackTable[winion.networkID] and stackTable[winion.networkID] > 0) then
+      if winion ~= nil and GetStacks(winion) > 0 then
         Cast(_E, winion, true)
       end
     end
     for minion,winion in pairs(JMobs.objects) do
-      if winion ~= nil and (stackTable[winion.networkID] and stackTable[winion.networkID] > 0) then
+      if winion ~= nil and GetStacks(winion) > 0 then
         Cast(_E, winion, true)
       end
     end
@@ -1523,11 +1523,11 @@ function Cassiopeia:Combo()
     Cast(_W, Target, false, true, 1.5)
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
-    if GetStacks[Target] > 0 then
+    if GetStacks(Target) > 0 then
       Cast(_E, Target, true)
     end
   end
-  if Config:getParam("Combo", "R") and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 1 and stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and ValidTarget(Target, data[3].range) then
+  if Config:getParam("Combo", "R") and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 1 and GetStacks(Target) > 0)) and ValidTarget(Target, data[3].range) then
     Cast(_R, Target, true)
   end
 end
@@ -1540,7 +1540,7 @@ function Cassiopeia:Harrass()
     Cast(_W, Target, false, true, 1.5)
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
-    if GetStacks[Target] > 0 then
+    if GetStacks(Target) > 0 then
       Cast(_E, Target, true)
     end
   end
@@ -1555,7 +1555,7 @@ function Cassiopeia:Killsteal()
         Cast(_W, enemy, false, true, 1.5)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
         Cast(_E, enemy, true)
-      elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and GetStacks[enemy] > 0 and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+      elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and GetStacks(enemy) > 0 and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
         Cast(_E, enemy, true)
         DelayAction(Cast, 0.55, {_E, enemy, true})
       elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
