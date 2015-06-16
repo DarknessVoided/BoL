@@ -193,6 +193,7 @@ end
 
 function Vars()
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+  if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
   killTextTable = {}
   for k,enemy in pairs(GetEnemyHeroes()) do
     killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = ""}
