@@ -1523,7 +1523,7 @@ function Cassiopeia:Combo()
     Cast(_W, Target, false, true, 1.5)
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
-    if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+    if GetStacks[Target] > 0 then
       Cast(_E, Target, true)
     end
   end
@@ -1540,7 +1540,7 @@ function Cassiopeia:Harrass()
     Cast(_W, Target, false, true, 1.5)
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
-    if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+    if GetStacks[Target] > 0 then
       Cast(_E, Target, true)
     end
   end
@@ -1555,7 +1555,7 @@ function Cassiopeia:Killsteal()
         Cast(_W, enemy, false, true, 1.5)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
         Cast(_E, enemy, true)
-      elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and stackTable[enemy.networkID] and stackTable[enemy.networkID] > 0 and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+      elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and GetStacks[enemy] > 0 and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
         Cast(_E, enemy, true)
         DelayAction(Cast, 0.55, {_E, enemy, true})
       elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
