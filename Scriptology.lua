@@ -821,6 +821,7 @@ function DmgCalc()
         local damageW  = GetDmg(_W, myHero, enemy)
         local damageE  = GetDmg(_E, myHero, enemy)
         local damageR  = GetDmg(_R, myHero, enemy)
+        local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
         local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
         local damageS  = Smite and (20 + 8 * myHero.level) or 0
         if myHero:CanUseSpell(_Q) == READY and damageQ > 0 then
@@ -832,10 +833,13 @@ function DmgCalc()
         if myHero:CanUseSpell(_E) == READY and damageE > 0 then
           killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."E"
         end
-        if myHero:CanUseSpell(_R) == READY and damageR > 0 then
+        if myHero:CanUseSpell(_R) == READY and damageR > 0 and myHero.charName ~= "Orianna" then
           killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."R"
         end
-        if enemy.health < damageQ+damageW+damageE+damageR then
+        if myHero:CanUseSpell(_R) == READY and damageRC > 0 then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."RQ"
+        end
+        if enemy.health < damageQ+damageW+damageE+damageR+damageRC then
           killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
         end
         if myHero.charName == "Teemo" and enemy.health > damageQ+damageE+damageAA then
@@ -3350,9 +3354,17 @@ function Orianna:Combo()
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(Target) then
     Cast(_E, myHero, true)
   end
-  if myHero:CanUseSpell(_R) == READY and Target.health < (GetDmg(_R, myHero, Target)+GetDmg("AD", myHero, Target)) and Config:getParam("Combo", "R") then
+  if myHero:CanUseSpell(_R) == READY and Target.health < self:CalcRComboDmg(Target) and Config:getParam("Combo", "R") then
     CastR(Target)
   end
+end
+
+function Orianna:CalcRComboDmg(unit)
+  dmg = 0
+  if myHero:GetSpellData(_Q).currentCd < 1.5 then
+    dmg = dmg + GetDmg(_Q, myHero, unit)
+  end
+  return (GetDmg(_R, myHero, unit)+GetDmg("AD", myHero, unit))+dmg
 end
 
 function Orianna:Harrass()
@@ -3370,14 +3382,19 @@ end
 function Orianna:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      local Ball = objHolder["TheDoomBall"] or myHero
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
-        if objHolder["TheDoomBall"] then Cast(_Q, Target, false, true, 1.5, objHolder["TheDoomBall"]) else Cast(_Q, Target, false, true, 1.5, myHero) end
+        Cast(_Q, Target, false, true, 1.5, Ball)
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") then
         CastW(enemy)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, enemy) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(enemy) then
         Cast(_E, myHero)
       elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") then
         CastR(enemy)
+      elseif myHero:CanUseSpell(_R) == READY and enemy.health < self:CalcRComboDmg(enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") then
+        CastR(enemy)
+        DelayAction(Cast, data[3].delay, {_Q, Target, false, true, 1.5, Ball})
+        DelayAction(CastW, data[3].delay+data[0].delay+GetDistance(Ball,enemy)/data[0].speed, {enemy})
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
         CastSpell(Ignite, enemy)
       end
@@ -3388,16 +3405,16 @@ end
 function CastW(unit)
   if myHero:CanUseSpell(_W) ~= READY or unit == nil or myHero.dead then return end
   local Ball = objHolder["TheDoomBall"] or myHero
-  if GetDistance(unit, Ball) < data[1].width then  
-    CastSpell(_W)
+  if GetDistance(unit, Ball) < data[1].width+unit.boundingRadius*2 then 
+    Cast(_W, Target, false, true, 1.5, Ball)
   end  
 end
 
 function CastR(unit)
   if myHero:CanUseSpell(_R) ~= READY or unit == nil or myHero.dead then return end
   local Ball = objHolder["TheDoomBall"] or myHero
-  if GetDistance(unit, Ball) < data[3].width then  
-    CastSpell(_R)
+  if GetDistance(unit, Ball) < data[3].width+unit.boundingRadius*2 then  
+    Cast(_R, Target, false, true, 1.5, Ball) 
   end  
 end
 
