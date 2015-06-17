@@ -31,7 +31,7 @@ SNidaleeVersion       = 1
 SOlafVersion          = 1
 SOriannaVersion       = 1.1 -- harrass mana slider
 SQuinnVersion         = 1
-SRengarVersion        = 1.4 -- oneshot mode improved
+SRengarVersion        = 1.5 -- added jungle clear
 SRivenVersion         = 1
 SRumbleVersion        = 1
 SSejuaniVersion       = 1
@@ -48,7 +48,7 @@ SYorickVersion        = 1
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.23
+_G.ScriptologyVersion    = 1.24
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -698,7 +698,24 @@ end
 function GetFarmPosition(range, width)
   local BestPos 
   local BestHit = 0
-  local objects = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects
+  local objects = minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects
+  for i, object in ipairs(objects) do
+    local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
+    if hit > BestHit then
+      BestHit = hit
+      BestPos = Vector(object)
+      if BestHit == #objects then
+        break
+      end
+    end
+  end
+  return BestPos, BestHit
+end
+
+function GetJFarmPosition(range, width)
+  local BestPos 
+  local BestHit = 0
+  local objects = minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects
   for i, object in ipairs(objects) do
     local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
     if hit > BestHit then
@@ -938,6 +955,18 @@ function GetLowestMinion(range)
     if minionTarget == nil then 
       minionTarget = minion
     elseif minionTarget.health >= minion.health and ValidTarget(minion, range) then
+      minionTarget = minion
+    end
+  end
+  return minionTarget
+end
+
+function GetJMinion(range)
+  local minionTarget = nil
+  for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+    if minionTarget == nil then 
+      minionTarget = minion
+    elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) then
       minionTarget = minion
     end
   end
@@ -3243,9 +3272,9 @@ function Orianna:UltLogic()
   if Config:getParam("Misc", "Ra") then
     local enemies = 0
     if objHolder["TheDoomBall"] then
-      enemies = EnemiesAround(objHolder["TheDoomBall"], data[3].width)
+      enemies = EnemiesAround(objHolder["TheDoomBall"], data[3].width-myHero.boundingRadius)
     else
-      enemies = EnemiesAround(myHero, data[3].width)
+      enemies = EnemiesAround(myHero, data[3].width-myHero.boundingRadius)
     end
     if enemies >= 3 then
       CastSpell(_R)
@@ -3288,7 +3317,7 @@ function Orianna:LastHit()
       if MinionDmgQ and MinionDmgW >= winion.health and (objHolder["TheDoomBall"] and GetDistance(winion, objHolder["TheDoomBall"]) < data[1].width or GetDistance(winion) < data[1].width) then
         Cast(_W)
       end
-      if MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (objHolder["TheDoomBall"] and GetDistance(winion, objHolder["TheDoomBall"]) < data[1].width or GetDistance(winion) < data[1].width) then
+      if myHero:CanUseSpell(_Q) == READY and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (objHolder["TheDoomBall"] and GetDistance(winion, objHolder["TheDoomBall"]) < data[1].width or GetDistance(winion) < data[1].width) then
           Cast(_Q, winion, false, true, 1.2)
           DelayAction(Cast, 0.25, {_W})
       end
@@ -3518,6 +3547,28 @@ function Rengar:LaneClear()
     end
     if Config:getParam("LaneClear", "E") then
       local minionTarget = GetLowestMinion(data[2].range)
+      if minionTarget ~= nil then
+        Cast(_E, minionTarget, false, true, 1)
+      end
+    end
+  end
+  if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    Cast(_W)
+  else
+    if Config:getParam("LaneClear", "Q") then
+      local minionTarget = GetJMinion(myHero.range+myHero.boundingRadius*2)
+      if minionTarget ~= nil then
+        CastSpell(_Q, myHero:Attack(minionTarget))
+      end
+    end
+    if Config:getParam("LaneClear", "W") then
+      local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
+      if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
+        Cast(_W)
+      end
+    end
+    if Config:getParam("LaneClear", "E") then
+      local minionTarget = GetJMinion(data[2].range)
       if minionTarget ~= nil then
         Cast(_E, minionTarget, false, true, 1)
       end
