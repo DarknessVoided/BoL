@@ -14,34 +14,34 @@
 
 --[[
 SAsheVersion          = 1.3 -- Q is fixed
-SAzirVersion          = 1
+SAzirVersion          = 0
 SBlitzcrankVersion    = 1
 SBrandVersion         = 1
 SCassiopeiaVersion    = 1.2 -- all modes poison fixed
 SDariusVersion        = 1.2 -- auto Q harrass added
 SEkkoVersion          = 1
-SGnarVersion          = 1
-SJarvanVersion        = 1
+SGnarVersion          = 0
+SJarvanVersion        = 0
 SKalistaVersion       = 1
-SKogmawVersion        = 1
+SKogmawVersion        = 0
 SLeeSinVersion        = 1.2 -- is now live
 SLuxVersion           = 1.4 -- fixes
 SMalzaharVersion      = 1
-SNidaleeVersion       = 1
-SOlafVersion          = 1
+SNidaleeVersion       = 0
+SOlafVersion          = 0
 SOriannaVersion       = 1.1 -- harrass mana slider
-SQuinnVersion         = 1
+SQuinnVersion         = 0
 SRengarVersion        = 1.5 -- added jungle clear
-SRivenVersion         = 1
+SRivenVersion         = 0
 SRumbleVersion        = 1
-SSejuaniVersion       = 1
-SShyvanaVersion       = 1
+SSejuaniVersion       = 0
+SShyvanaVersion       = 0
 STeemoVersion         = 1
-SVayneVersion         = 1
-SViktorVersion        = 1
+SVayneVersion         = 0
+SViktorVersion        = 0
 SVolibearVersion      = 1
-SYasuoVersion         = 1
-SYorickVersion        = 1
+SYasuoVersion         = 0
+SYorickVersion        = 0
 ]]--
 
 --Scriptstatus Tracker
