@@ -1093,11 +1093,11 @@ function Ashe:Killsteal()
 end
 
 function Ashe:QReady()
-  unit = myHero
-  if unit == nil then return false end
-  for i = 1, unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name ~= nil and string.find(buff.name, "asheqcastready") and buff.endT > GetInGameTimer() then return true end
+  for i = 1, myHero.buffCount do
+    local buff = myHero:getBuff(i)
+    if buff and buff.valid and buff.name ~= nil and buff.name == "asheqcastready" and buff.endT > GetInGameTimer() then 
+      return true 
+    end
   end
   return false
 end
