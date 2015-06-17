@@ -2,7 +2,7 @@ if myHero.charName ~= "Katarina" then return end
 function OnLoad() 
 	ForceTarget = nil lastAttack = 0 previousAttackCooldown = 0 previousWindUp = 0 ultOn = 0 
 	targetSelector = TargetSelector(TARGET_LESS_CAST, 700, DAMAGE_MAGICAL, false, true) 
-	cfg = scriptConfig("Smashing Katarina", "SKatarina") 
+	cfg = scriptConfig("Definitely Katarina", "DKatarina") 
 	cfg:addParam("k", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32) 
 end 
 
