@@ -3295,9 +3295,10 @@ function Orianna:Menu()
     Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
     Config:addParam({state = s, name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
   end
-  for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
+  for _,s in pairs({"LaneClear", "LastHit"}) do
     Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W"}, slider = {30,50}})
   end
+  Config:addParam({state = "Harrass", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {30,50,50}})
   Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
@@ -3349,13 +3350,13 @@ function Orianna:Combo()
     if objHolder["TheDoomBall"] then Cast(_Q, Target, false, true, 1.5, objHolder["TheDoomBall"]) else Cast(_Q, Target, false, true, 1.5, myHero) end
   end
   if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") then
-    CastW(Target)
+    self:CastW(Target)
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(Target) then
     Cast(_E, myHero, true)
   end
   if myHero:CanUseSpell(_R) == READY and Target.health < self:CalcRComboDmg(Target) and Config:getParam("Combo", "R") then
-    CastR(Target)
+    self:CastR(Target)
   end
 end
 
@@ -3372,7 +3373,7 @@ function Orianna:Harrass()
     if objHolder["TheDoomBall"] then Cast(_Q, Target, false, true, 1.5, objHolder["TheDoomBall"]) else Cast(_Q, Target, false, true, 1.5, myHero) end
   end
   if myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
-    CastW(Target)
+    self:CastW(Target)
   end
   if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(Target) then
     Cast(_E, myHero, true)
@@ -3386,15 +3387,15 @@ function Orianna:Killsteal()
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         Cast(_Q, Target, false, true, 1.5, Ball)
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") then
-        CastW(enemy)
+        self:CastW(enemy)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, enemy) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(enemy) then
         Cast(_E, myHero)
       elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") then
-        CastR(enemy)
+        self:CastR(enemy)
       elseif myHero:CanUseSpell(_R) == READY and enemy.health < self:CalcRComboDmg(enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") then
-        CastR(enemy)
+        self:CastR(enemy)
         DelayAction(Cast, data[3].delay, {_Q, Target, false, true, 1.5, Ball})
-        DelayAction(CastW, data[3].delay+data[0].delay+GetDistance(Ball,enemy)/data[0].speed, {enemy})
+        DelayAction(function() self:CastW(enemy) end, data[3].delay+data[0].delay+GetDistance(Ball,enemy)/data[0].speed)
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
         CastSpell(Ignite, enemy)
       end
@@ -3402,7 +3403,7 @@ function Orianna:Killsteal()
   end
 end
 
-function CastW(unit)
+function Orianna:CastW(unit)
   if myHero:CanUseSpell(_W) ~= READY or unit == nil or myHero.dead then return end
   local Ball = objHolder["TheDoomBall"] or myHero
   if GetDistance(unit, Ball) < data[1].width+unit.boundingRadius*2 then 
@@ -3410,7 +3411,7 @@ function CastW(unit)
   end  
 end
 
-function CastR(unit)
+function Orianna:CastR(unit)
   if myHero:CanUseSpell(_R) ~= READY or unit == nil or myHero.dead then return end
   local Ball = objHolder["TheDoomBall"] or myHero
   if GetDistance(unit, Ball) < data[3].width+unit.boundingRadius*2 then  
