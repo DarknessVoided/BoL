@@ -2683,7 +2683,7 @@ class "Nidalee"
 function Nidalee:__init()
   self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
   self:Menu()
-  AddTickCallback(function() self:Test(_Q))
+  AddTickCallback(function() self:Test(_Q) end)
 end
 
 function Nidalee:Menu()
