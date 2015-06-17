@@ -28,7 +28,7 @@ function OnTick()
 		end 
 			if target and GetDistance(target) < 350 then CastSpell(_R) 
 				end 
-			if target and GetDistance(target) < myHero.range+myHero.boundingRadius+target.boundingRadius+25 and timeToShoot() then 
+			if target and GetDistance(target) < myHero.range+myHero.boundingRadius+target.boundingRadius+25 and timeToShoot() and not ultOn then 
 				myHero:Attack(target) 
 			end 
 	end 				
