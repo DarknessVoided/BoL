@@ -3543,7 +3543,7 @@ end
 
 function Rengar:OneShot()
   if not self.osTarget or GetDistance(self.osTarget, myHero) > 800 then return end
-  if self.alertTicker < GetInGameTimer then PrintAlertRed("Oneshotting... "..self.osTarget.charName) self.alertTicker = GetInGameTimer()+0.25 end
+  if self.alertTicker < GetInGameTimer() then PrintAlertRed("Oneshotting... "..self.osTarget.charName) self.alertTicker = GetInGameTimer()+0.25 end
   if Smite ~= nil then CastSpell(Smite, self.osTarget) end
   if Ignite ~= nil then CastSpell(Ignite, self.osTarget) end
   if myHero.mana == 5 then
