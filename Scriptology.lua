@@ -2683,6 +2683,7 @@ class "Nidalee"
 function Nidalee:__init()
   self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
   self:Menu()
+  AddTickCallback(function() self:Test(_Q))
 end
 
 function Nidalee:Menu()
@@ -2701,6 +2702,10 @@ function Nidalee:Menu()
   Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+end
+
+function Nidalee:Test(x)
+  print(myHero:GetSpellData(x).name)
 end
 
 function Nidalee:LastHit()
@@ -2731,26 +2736,6 @@ function Nidalee:LastHit()
 end
 
 function Nidalee:LaneClear()
-  if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
-    BestPos, BestHit = GetQFarmPosition()
-    if BestHit > 1 and GetDistance(BestPos) < 150 then 
-      self:CastQ1()
-    end
-  end
-  if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana*100 then
-    local minionTarget = nil
-    for i, minion in pairs(minionManager(MINION_ENEMY, 250, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      if minionTarget == nil then 
-        minionTarget = minion
-      elseif minionTarget.health+minionTarget.shield >= minion.health+minion.shield and ValidTarget(minion, 250) then
-        minionTarget = minion
-      end
-    end
-    if minionTarget ~= nil then
-      CastSpell(_W, myHero:Attack(minionTarget))
-    end
-  end
-
   if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
     local minionTarget = nil
     for minion,winion in pairs(Mobs.objects) do
