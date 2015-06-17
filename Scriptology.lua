@@ -3387,6 +3387,7 @@ function Rengar:__init()
   self.ultOn = false
   self.osTarget = nil
   self.isLeap = false
+  self.alertTicker = 0
   self.keyStr = {[0] = "Q", [1] = "W", [2] = "E"}
   AddTickCallback(function() self:Tick() end)
   AddCreateObjCallback(function(x) self:CreateObj(x) end)
@@ -3542,7 +3543,7 @@ end
 
 function Rengar:OneShot()
   if not self.osTarget or GetDistance(self.osTarget, myHero) > 800 then return end
-  PrintAlertRed("Oneshotting... "..self.osTarget.charName)
+  if self.alertTicker < GetInGameTimer then PrintAlertRed("Oneshotting... "..self.osTarget.charName) self.alertTicker = GetInGameTimer()+0.25 end
   if Smite ~= nil then CastSpell(Smite, self.osTarget) end
   if Ignite ~= nil then CastSpell(Ignite, self.osTarget) end
   if myHero.mana == 5 then
