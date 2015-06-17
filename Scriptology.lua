@@ -13,7 +13,7 @@
 ]]--
 
 --[[
-SAsheVersion          = 1.3 -- Q is fixed
+SAsheVersion          = 1.3 -- Q fixed
 SAzirVersion          = 0
 SBlitzcrankVersion    = 1
 SBrandVersion         = 1
@@ -1654,17 +1654,6 @@ function Darius:LastHit()
   end
 end
 
-function Darius:Harrass2()
-  if Config:getParam("Harrass", "Toggle") then
-    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
-      self:CastQ(Target)
-    end
-    if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
-      self:CastW(Target)
-    end
-  end
-end
-
 function Darius:LaneClear()
   if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
     BestPos, BestHit = GetFarmPosition(0, data[0].width)
@@ -1713,6 +1702,17 @@ function Darius:Harrass()
   end
   if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
     self:CastW(Target)
+  end
+end
+
+function Darius:Harrass2()
+  if Config:getParam("Harrass", "Toggle") then
+    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
+      self:CastQ(Target)
+    end
+    if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
+      self:CastW(Target)
+    end
   end
 end
 
