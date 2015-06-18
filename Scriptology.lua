@@ -27,7 +27,7 @@ SKogmawVersion        = 0
 SLeeSinVersion        = 1.2 -- is now live
 SLuxVersion           = 1.4 -- fixes
 SMalzaharVersion      = 1
-SNidaleeVersion       = 1.2 -- jump clarity
+SNidaleeVersion       = 1.3 -- jump clarity
 SOlafVersion          = 0
 SOriannaVersion       = 1.3 -- better ult calculation
 SQuinnVersion         = 0
@@ -48,7 +48,7 @@ SYorickVersion        = 0
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.33
+_G.ScriptologyVersion    = 1.34
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -2747,9 +2747,19 @@ function Nidalee:__init()
         [_W] = { range = 350, width = 175},
         [_E] = { range = 350}}
   }
+  self.ludenStacks = 0
   AddDrawCallback(function() self:Draw() end)
   AddTickCallback(function() self:Heal() end)
   AddTickCallback(function() self:DmgCalc() end)
+  AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
+end
+
+function Nidalee:UpdateBuff(unit, buff, stacks)
+  if unit and unit.isMe and buff and buff.name and buff.name == "itemmagicshankcharge" then self.ludenStacks = stacks end
+end
+
+function Nidalee:RemoveBuff(unit, buff)
+  if unit and unit.isMe and buff and buff.name and buff.name == "itemmagicshankcharge" then self.ludenStacks = 0 end
 end
 
 function Nidalee:Heal()
@@ -2840,7 +2850,7 @@ function Nidalee:DmgCalc()
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy.visible then
       killTextTable[enemy.networkID].indicatorText = ""
-      local damageAA = self:GetDmg("AD", enemy)
+      local damageAA = self:GetDmg("AD", enemy)+self:GetDmg("Ludens", enemy)
       local damageQ  = self:GetDmg(_Q, enemy, true)
       local damageC  = self:GetRWEQComboDmg(enemy)
       local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
@@ -2886,7 +2896,7 @@ function Nidalee:DoRWEQCombo(unit)
     if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
       Cast(_E, unit)
     end
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") then
+    if myHero:CanUseSpell(_Q) == READY and (self:GetDmg(_Q, unit, false) < unit.health and myHero:CanUseSpell(_E) ~= READY or true) and Config:getParam("Combo", "Q") then
       CastSpell(_Q, myHero:Attack(unit))
     end
     if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") then
@@ -2906,7 +2916,7 @@ function Nidalee:GetRWEQComboDmg(target,damage)
   if myHero:CanUseSpell(_E) == READY then
     dmg = dmg + self:GetDmg(_E,unit)
   end
-  if myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
+  if myHero:CanUseSpell(_Q) == READY then
     unit.health = unit.health-dmg
     dmg = dmg + self:GetDmg(_Q,unit)
   end
@@ -2959,7 +2969,7 @@ end
 function Nidalee:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
         Cast(_Q, enemy, false, true, 1.2)
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
         CastSpell(Ignite, enemy)
@@ -2972,7 +2982,7 @@ function Nidalee:Killsteal()
         end
       end
       if ScriptologyDebug then print(self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true))) end
-      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
+      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
         Cast(_Q, enemy, false, true, 1.2)
         DelayAction(function() self:DoRWEQCombo(enemy) end, 0.05+self.data.Human[0].delay+GetDistance(enemy)/self.data.Human[0].speed)
       end
@@ -3013,6 +3023,8 @@ function Nidalee:GetDmg(spell, target, human)
     return 50+20*Level/2
   elseif spell == "AD" then
     ADDmg = TotalDmg
+  elseif spell == "Ludens" then
+    APDmg = self.ludenStacks >= 90 and 100+0.1*AP or 0
   elseif human then
     if spell == _Q then
       APDmg = (25+25*QLevel+0.4*AP)*math.max(1,math.min(3,GetDistance(target.pos)/1250*3))--kanker
