@@ -27,7 +27,7 @@ SKogmawVersion        = 0
 SLeeSinVersion        = 1.2 -- is now live
 SLuxVersion           = 1.4 -- fixes
 SMalzaharVersion      = 1
-SNidaleeVersion       = 0
+SNidaleeVersion       = 1
 SOlafVersion          = 0
 SOriannaVersion       = 1.3 -- better ult calculation
 SQuinnVersion         = 0
@@ -48,7 +48,7 @@ SYorickVersion        = 0
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.26
+_G.ScriptologyVersion    = 1.27
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -58,7 +58,7 @@ function OnLoad()
   champList = { "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
                 "Darius", "Ekko", 
                 "Kalista", "LeeSin", "Lux", "Malzahar", 
-                "Orianna", "Rengar", 
+                "Nidalee", "Orianna", "Rengar", 
                 "Rumble", "Teemo", 
                 "Volibear" }
                 --[[
@@ -187,6 +187,8 @@ function Menu()
     if myHero.charName == "Rumble" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
                                         Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end 
     if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}}) end 
+    if myHero.charName == "Nidalee" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true})
+                                         Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}}) end
     if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
     if myHero.charName ~= "Darius" then UPL:AddToMenu2(Config, "Misc")end 
   end
@@ -231,7 +233,7 @@ function Vars()
       ["Brand"] = {
         [_Q] = { speed = 1200, delay = 0.5, range = 1050, width = 80, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+40+0.65*AP end},
         [_W] = { speed = 900, delay = 0.25, range = 1050, width = 275, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45*level+30+0.6*AP end},
-        [_E] = { range = 625, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30*level+30+0.55*AP end},
+        [_E] = { range = 625, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25*level+30+0.55*AP end},
         [_R] = { range = 750, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 100*level+50+0.5*AP end}
       },
       ["Cassiopeia"] = {
@@ -301,10 +303,10 @@ function Vars()
         [_R] = { speed = math.huge, delay = 0.5, range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.26*AP end}
       },
       ["Nidalee"] = {
-        [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+25*level+0.4*AP end},
-        [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return end},
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return end},
-        [_R] = { }
+        [_Q] = { speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear"},
+        [_W] = { range = 0},
+        [_E] = { range = 0},
+        [_R] = { range = 0}
       },
       ["Olaf"] = {
         [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+TotalDmg end},
@@ -414,6 +416,9 @@ function Vars()
       },
       ["Lux"] = {
         "luxilluminati"
+      },
+      ["Nidalee"] = {
+        "nidaleepassivehunted"
       }
   }
   objTrackList = {
@@ -511,10 +516,11 @@ function Tick()
     loadedClass:LaneClear()
   end
 
-  DmgCalc()
+  if myHero.charName ~= "Nidalee" then DmgCalc() end
 end
 
 function Draw()
+  if myHero.charName == "Nidalee" then return end
   if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
     DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
   end
@@ -575,7 +581,7 @@ function Draw()
         if myHero.charName == "Kalista" then
           DrawText(killTextTable[enemy.networkID].indicatorText, 20, posX, posY-5, ARGB(255,250,250,250))
         else
-          DrawText(killTextTable[enemy.networkID].indicatorText, 15, posX, posY, ARGB(255, 50, 255, 50))
+          DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 50, 255, 50))
         end
        
         -- Taking damage
@@ -668,6 +674,7 @@ function RemoveBuff(unit, buff)
 end
 
 function GetStacks(unit)
+  if not unit then return 0 end
   return stackTable[unit.networkID] or 0
 end
 
@@ -859,8 +866,8 @@ function DmgCalc()
           local neededAA = math.ceil((enemy.health-damageQ-damageW) / (damageAA))
           killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
         elseif enemy.health > damageQ+damageW+damageE+damageR then
-          local neededAA = math.ceil((enemy.health-damageQ-damageW-damageE-damageR) / (damageAA))
-          killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Combokill"
+          local neededAA = math.ceil((enemy.health-damageQ-damageW-damageE-damageR) / (enemy.health))
+          killTextTable[enemy.networkID].indicatorText = neededAA.." % Combodmg"
         end
       end
       local enemyDamageAA = GetDmg("AD", enemy, myHero)
@@ -1471,7 +1478,7 @@ end
 class "Cassiopeia"
 
 function Cassiopeia:__init()
-  self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+  self.ts = TargetSelector(TARGET_LESS_CAST, 900, DAMAGE_MAGICAL, false, true)
   self:Menu()
   AddTickCallback(function() self:LastHitSomethingPoisonedWithE() end)
 end
@@ -1495,7 +1502,7 @@ function Cassiopeia:Menu()
 end
 
 function Cassiopeia:LastHitSomethingPoisonedWithE()
-  if Config:getParam("LastHit", "E") then    
+  if Config:getParam("LastHit", "E") and not Config:getParam("Combo", "Combo") and not Config:getParam("Harrass", "Harrass") then    
     for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
       local EMinionDmg = GetDmg(_E, myHero, minion)  
       if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
@@ -1512,6 +1519,20 @@ function Cassiopeia:LastHitSomethingPoisonedWithE()
 end
 
 function Cassiopeia:LastHit()
+  if Config:getParam("LastHit", "E") then    
+    for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
+      local EMinionDmg = GetDmg(_E, myHero, minion)  
+      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        Cast(_E, minion, true)
+      end      
+    end   
+    for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
+      local EMinionDmg = GetDmg(_E, myHero, minion)  
+      if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        Cast(_E, minion, true)
+      end      
+    end    
+  end  
 end
 
 function Cassiopeia:LaneClear()
@@ -2683,7 +2704,32 @@ class "Nidalee"
 function Nidalee:__init()
   self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
   self:Menu()
-  AddTickCallback(function() self:Test(_Q) end)
+  self.data = {
+    Human  = {
+        [_Q] = { speed = 1337, delay = 0.125, range = 1500, width = 25, collision = true, aoe = false, type = "linear"},
+        [_W] = { range = 900},
+        [_E] = { range = 600}
+      },
+    Cougar = {
+        [_W] = { range = 350, width = 175},
+        [_E] = { range = 350}}
+  }
+  AddDrawCallback(function() self:Draw() end)
+  AddTickCallback(function() self:Heal() end)
+  AddTickCallback(function() self:DmgCalc() end)
+end
+
+function Nidalee:Heal()
+  if Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") and myHero.maxHealth-myHero.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap then
+    Cast(_E, myHero, true)
+  end
+  if Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") then
+    for _,k in pairs(GetAllyHeroes()) do
+      if k.maxHealth-k.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and (k.maxHealth-k.health)/k.maxHealth <= 0.35 then
+        Cast(_E, k, true)
+      end
+    end
+  end
 end
 
 function Nidalee:Menu()
@@ -2694,143 +2740,185 @@ function Nidalee:Menu()
   end
   Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
   Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-  for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-    Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-  end
+  Config:addParam({state = "Harrass", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q"}, slider = {50}})
   Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+  Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}})
 end
 
-function Nidalee:Test(x)
-  print(myHero:GetSpellData(x).name)
+function Nidalee:IsHuman()
+  return myHero:GetSpellData(_Q).name == "JavelinToss"
+end
+
+function Nidalee:GetAARange()
+  return myHero.range+myHero.boundingRadius*2
+end
+
+function Nidalee:getMousePos()
+  local MyPos = Vector(myHero.x, myHero.y, myHero.z)
+  local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
+  return MyPos - (MyPos - MousePos):normalized() * self.data.Cougar[1].range
+end
+
+function Nidalee:Draw()
+  if self:IsHuman() then
+    if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[0].range, ARGB(255, 155, 155, 155))
+    end
+    if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[1].range, ARGB(255, 155, 155, 155))
+    end
+    if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[2].range, ARGB(255, 155, 155, 155))
+    end
+  else
+    if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, self:GetAARange(), ARGB(255, 155, 155, 155))
+    end
+    if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
+      local drawPos = self:getMousePos()
+      local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
+      DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width, ARGB(255, 155, 155, 155))
+      DrawText("W Jump", 15, barPos.x, barPos.y, ARGB(255, 155, 155, 155))
+    end
+    if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Cougar[2].range, ARGB(255, 155, 155, 155))
+    end
+  end
+  if Config:getParam("Draws", "DMG") then
+    for i,k in pairs(GetEnemyHeroes()) do
+      local enemy = k
+      if ValidTarget(enemy) then
+        local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+        local posX = barPos.x - 35
+        local posY = barPos.y - 50
+        DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 150, 255, 150))
+        DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
+      end
+    end
+  end
+end
+
+function Nidalee:DmgCalc()
+  if not Config:getParam("Draws", "DMG") then return end
+  for k,enemy in pairs(GetEnemyHeroes()) do
+    if ValidTarget(enemy) and enemy.visible then
+      killTextTable[enemy.networkID].indicatorText = ""
+      local damageAA = self:GetDmg("AD", enemy)
+      local damageQ  = self:GetDmg(_Q, enemy, true)
+      local damageC  = self:GetRWEQComboDmg(enemy)
+      local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+      local damageS  = Smite and (20 + 8 * myHero.level) or 0
+      if myHero:CanUseSpell(_Q) == READY and damageQ > 0 then
+        killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
+      end
+      if myHero:CanUseSpell(_R) == READY and damageC > 0 then
+        killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."RWEQ"
+      end
+      if enemy.health < damageQ+damageC then
+        killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
+      end
+      local neededAA = math.floor((enemy.health-damageQ-damageC-damageI) / (enemy.health))
+      killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
+      local enemyDamageAA = GetDmg("AD", enemy, myHero)
+      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+      if enemyNeededAA ~= 0 then         
+        killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+      end
+    end
+  end
+end
+
+function Nidalee:Combo()
+  if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    Cast(_Q, Target, false, true, 1.5)
+  end
+  self:DoRWEQCombo(Target)
+  if not self:IsHuman() and GetDistance(Target) > 425 then
+    Cast(_R)
+  end
+end
+
+function Nidalee:DoRWEQCombo(unit)
+  if myHero:CanUseSpell(_R) == READY and GetStacks(unit) > 0 and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config:getParam("Combo", "R") then
+    Cast(_R)
+  end
+  if myHero:CanUseSpell(_W) == READY and GetStacks(unit) > 0 and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range > 0 and Config:getParam("Combo", "W") then
+    Cast(_W, unit)
+  end
+  if not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
+    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
+      Cast(_E, unit)
+    end
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") then
+      CastSpell(_Q, myHero:Attack(unit))
+    end
+    if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") then
+      if GetDistance(unit) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(unit) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
+        Cast(_W, unit)
+      end
+    end
+  end
+end
+
+function Nidalee:GetRWEQComboDmg(target,damage)
+  local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
+  local dmg = damage
+  if myHero:CanUseSpell(_W) == READY then
+    dmg = dmg + self:GetDmg(_W,unit)
+  end
+  if myHero:CanUseSpell(_E) == READY then
+    dmg = dmg + self:GetDmg(_E,unit)
+  end
+  if myHero:CanUseSpell(_Q) == READY then
+    unit.health = unit.health-dmg
+    dmg = dmg + self:GetDmg(_Q,unit)
+  end
+  return dmg
+end
+
+function Nidalee:Harrass()
+  if self:IsHuman() then
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+      Cast(_Q, Target, false, true, 2)
+    end
+  else
+  end
 end
 
 function Nidalee:LastHit()
-  if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
-    for minion,winion in pairs(Mobs.objects) do
-      local MinionDmg = GetDmg(_Q, myHero, winion)
-      if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
-        Cast(_Q, winion, false, true, 1.2)
-      end
-    end
-  end
-  if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
-    for minion,winion in pairs(Mobs.objects) do
-      local MinionDmg = GetDmg(_W, myHero, winion)
-      if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
-        Cast(_W, Target, false, true, 1.5)
-      end
-    end
-  end
-  if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
-    for minion,winion in pairs(Mobs.objects) do
-      local MinionDmg = GetDmg(_E, myHero, winion)
-      if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
-        Cast(_E, winion, true)
+  if not self:IsHuman() then
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LastHit", "Q") and ValidTarget(Target, data[0].range) then
+      local minionTarget = GetLowestMinion(self:GetAARange())
+      if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
+        Cast(_Q, myHero:Attack(minionTarget))
       end
     end
   end
 end
 
 function Nidalee:LaneClear()
-  if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
-    local minionTarget = nil
-    for minion,winion in pairs(Mobs.objects) do
-      if minionTarget == nil then 
-        minionTarget = winion
-      elseif minionTarget.health < winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) <= 100*data[0].range then
-        minionTarget = winion
+  if not self:IsHuman() then
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and ValidTarget(Target, data[0].range) then
+      local minionTarget = GetLowestMinion(self:GetAARange())
+      if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
+        Cast(_Q, myHero:Attack(minionTarget))
       end
     end
-    if minionTarget ~= nil then
-      Cast(_Q, minionTarget, false, true, 1.2)
-    end
-  end
-  if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
-    BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
-    if BestHit > 1 then 
-      Cast(_W, BestPos)
-    end
-  end
-  if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
-    local minionTarget = nil
-    for minion,winion in pairs(Mobs.objects) do
-      if minionTarget == nil then 
-        minionTarget = winion
-      elseif minionTarget.health < winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
-        minionTarget = winion
+    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and ValidTarget(Target, data[1].range) then
+      local pos, hit = GetFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
+      if GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
+        Cast(_W, pos)
       end
     end
-    if minionTarget ~= nil and (stackTable[minionTarget.networkID] and stackTable[minionTarget.networkID] > 0) then
-      Cast(_E, winion, true)
-    end
-  end
-end
-
-function Nidalee:Combo()
-  if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Combo", "E") then
-    if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
-      Cast(_E, Target, true)
-    end
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
-      if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
-        Cast(_Q, Target, false, true, 1.2)
+    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and ValidTarget(Target, data[2].range) then
+      local pos, hit = GetFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
+      if hit > 0 then
+        Cast(_E, pos)
       end
-    end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") and ValidTarget(Target, data[1].range) then
-      if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
-        Cast(_W, Target, false, true, 1.5)
-      end
-    end
-  elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Combo", "W") then
-    if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
-      Cast(_W, Target, false, true, 1.5)
-    end
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
-      if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
-        Cast(_Q, Target, false, true, 1.2)
-      end
-    end
-  else
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
-      Cast(_Q, Target, false, true, 1.5)
-    end
-  end
-  if Config:getParam("Combo", "R") and (GetDmg(_R, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 1 and stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and ValidTarget(Target, data[3].range) then
-    Cast(_R, Target, true)
-  end
-end
-
-function Nidalee:Harrass()
-  if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Harrass", "E") then
-    if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
-      Cast(_E, Target, true)
-    end
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[0].range) then
-      if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
-        Cast(_Q, Target, false, true, 1.2)
-      end
-    end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[1].range) then
-      if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
-        Cast(_W, Target, false, true, 1.5)
-      end
-    end
-  elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Harrass", "W") then
-    if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
-      Cast(_W, Target, false, true, 1.5)
-    end
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
-      if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
-        Cast(_Q, Target, false, true, 1.2)
-      end
-    end
-  else
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
-      Cast(_Q, Target, false, true, 2)
     end
   end
 end
@@ -2838,19 +2926,77 @@ end
 function Nidalee:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-      if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
         Cast(_Q, enemy, false, true, 1.2)
-      elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
-        Cast(_W, enemy, false, true, 1.5)
-      elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
-        Cast(_E, enemy, true)
-      elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
-        Cast(_R, enemy, true)
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
         CastSpell(Ignite, enemy)
       end
+      if myHero:CanUseSpell(_Q) == READY and not self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
+        local pos, chance, ppos = UPL:Predict(_Q, myHero, enemy)
+        if chance >= 2 then
+          Cast(_R)
+          DelayAction(function() Cast(_Q, enemy, false, true, 1.5) end, 0.125)
+        end
+      end
+      if ScriptologyDebug then print(self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true))) end
+      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
+        Cast(_Q, enemy, false, true, 1.2)
+        DelayAction(function() self:DoRWEQCombo(enemy) end, 0.05+self.data.Human[0].delay+GetDistance(enemy)/self.data.Human[0].speed)
+      end
+      if GetStacks(enemy) > 0 and GetDistance(enemy)-self.data.Cougar[1].range*2 < 0 then
+        if enemy.health < self:GetRWEQComboDmg(enemy,0) then
+          self:DoRWEQCombo(enemy)
+        end
+      end
     end
   end
+end
+
+function Nidalee:GetDmg(spell, target, human)
+  if target == nil then
+    return
+  end
+  local source           = myHero
+  local ADDmg            = 0
+  local APDmg            = 0
+  local AP               = source.ap
+  local Level            = source.level
+  local TotalDmg         = source.totalDamage
+  local ArmorPen         = math.floor(source.armorPen)
+  local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+  local MagicPen         = math.floor(source.magicPen)
+  local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+
+  local Armor        = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+  local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+  local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+
+  local QLevel, WLevel, ELevel, RLevel = source:GetSpellData(_Q).level, source:GetSpellData(_W).level, source:GetSpellData(_E).level, source:GetSpellData(_R).level
+  if source ~= myHero then
+    return TotalDmg*(1-ArmorPercent)
+  end
+  if spell == "IGNITE" then
+    return 50+20*Level/2
+  elseif spell == "AD" then
+    ADDmg = TotalDmg
+  elseif human then
+    if spell == _Q then
+      APDmg = (25+25*QLevel+0.4*AP)*math.max(1,math.min(3,GetDistance(target.pos)/1250*3))--kanker
+    elseif spell == _W then
+    elseif spell == _E then
+    end
+  elseif not human then
+    if spell == _Q then
+      APDmg = ((({[1]=4,[2]=20,[3]=50,[4]=90})[RLevel])+0.36*AP+0.75*TotalDmg)*(1+GetStacks(target)*0.33)*2.5*(target.maxHealth-target.health)/target.maxHealth--kanker
+    elseif spell == _W then
+      APDmg = 50*RLevel+0.45*AP
+    elseif spell == _E then
+      APDmg = 10+60*RLevel+0.45*AP
+    end
+  end
+  dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
+  return math.floor(dmg)
 end
 
 ----------------------------------------------------------------------------------------------------------------------------
