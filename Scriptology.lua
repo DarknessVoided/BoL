@@ -2963,15 +2963,27 @@ function Nidalee:LaneClear()
       if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
         Cast(_Q, myHero:Attack(minionTarget))
       end
+      local minionTarget = GetJMinion(self:GetAARange())
+      if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
+        Cast(_Q, myHero:Attack(minionTarget))
+      end
     end
     if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and ValidTarget(Target, data[1].range) then
       local pos, hit = GetFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
       if GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
         Cast(_W, pos)
       end
+      local pos, hit = GetJFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
+      if GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
+        Cast(_W, pos)
+      end
     end
     if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and ValidTarget(Target, data[2].range) then
       local pos, hit = GetFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
+      if hit > 0 then
+        Cast(_E, pos)
+      end
+      local pos, hit = GetJFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
       if hit > 0 then
         Cast(_E, pos)
       end
