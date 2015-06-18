@@ -190,7 +190,7 @@ function Menu()
     if myHero.charName == "Nidalee" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true})
                                          Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}}) end
     if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    if myHero.charName ~= "Darius" then UPL:AddToMenu2(Config, "Misc")end 
+    if myHero.charName ~= "Darius" then UPL:AddToMenu2(Config, "Misc") end 
   end
   Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
   if myHero.charName ~= "Orianna" then
@@ -255,10 +255,10 @@ function Vars()
         [_R] = { speed = math.huge, delay = 0.5, range = 0, width = 400, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 150*level+50+1.3*AP end}
       },
       ["Gnar"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return end},
-        [_W] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return end},
-        [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return end},
-        [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return end}
+        [_Q] = { range = 0},
+        [_W] = { range = 0},
+        [_E] = { range = 0},
+        [_R] = { range = 0}
       },
       ["Hecarim"] = {
         [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.6*TotalDmg end},
@@ -1165,16 +1165,6 @@ function Ashe:QReady()
   end
   return false
 end
-
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-
-class "Azir"
-
--- soon
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -2909,7 +2899,7 @@ end
 
 function Nidalee:GetRWEQComboDmg(target,damage)
   local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
-  local dmg = damage
+  local dmg = damage or 0
   if myHero:CanUseSpell(_W) == READY then
     dmg = dmg + self:GetDmg(_W,unit)
   end
