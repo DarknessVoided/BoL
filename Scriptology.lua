@@ -2753,10 +2753,10 @@ function Nidalee:__init()
 end
 
 function Nidalee:Heal()
-  if Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") and myHero.maxHealth-myHero.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap then
+  if self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap then
     Cast(_E, myHero, true)
   end
-  if Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") then
+  if self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") then
     for _,k in pairs(GetAllyHeroes()) do
       if k.maxHealth-k.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and (k.maxHealth-k.health)/k.maxHealth <= 0.35 then
         Cast(_E, k, true)
@@ -2779,7 +2779,6 @@ function Nidalee:Menu()
   Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
   if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-  Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}})
 end
 
 function Nidalee:IsHuman()
@@ -2854,7 +2853,7 @@ function Nidalee:DmgCalc()
       if enemy.health < damageQ+damageC then
         killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
       end
-      local neededAA = math.floor((enemy.health-damageQ-damageC-damageI) / (enemy.health))
+      local neededAA = math.floor(100 * (damageQ+damageC+damageI) / (enemy.health))
       killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
       local enemyDamageAA = GetDmg("AD", enemy, myHero)
       local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
