@@ -18,6 +18,7 @@ function sScriptConfig:__init(name, theme)
     self.LastIncrRequest = 0
     self.slide  = {false, false, false, false}
     AddLoadCallback(function() self:load() self:Load_Sprites() end)
+    AddUnloadCallback(function() self:Unload_Sprites() end)
     AddDrawCallback(function() self:Draw() end)
     AddMsgCallback(function(Msg, Key) self:Msg(Msg, Key) end)
     AddTickCallback(function() self:Tick() end)
@@ -155,6 +156,12 @@ end
 function sScriptConfig:addSubStates(state, sub)
     self.substates[state] = sub
     if self.state == nil or self.state == state then self.state = sub[1] end
+end
+
+function sScriptConfig:Unload_Sprites()
+    for _,k in pairs(self.Sprites) do
+        k:Release()
+    end
 end
 
 function sScriptConfig:Load_Sprites()
