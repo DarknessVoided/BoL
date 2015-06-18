@@ -27,7 +27,7 @@ SKogmawVersion        = 0
 SLeeSinVersion        = 1.2 -- is now live
 SLuxVersion           = 1.4 -- fixes
 SMalzaharVersion      = 1
-SNidaleeVersion       = 1.4 -- better healing
+SNidaleeVersion       = 1.5 -- better combo
 SOlafVersion          = 0
 SOriannaVersion       = 1.3 -- better ult calculation
 SQuinnVersion         = 0
@@ -48,7 +48,7 @@ SYorickVersion        = 0
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.35
+_G.ScriptologyVersion    = 1.36
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -754,6 +754,15 @@ function CountObjectsNearPos(pos, range, radius, objects)
     end
   end
   return n
+end
+
+function GetLichSlot()
+  for slot = ITEM_1, ITEM_7, 1 do
+    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell")) then
+      return slot
+    end
+  end
+  return nil
 end
 
 function isInvinc(unit)
@@ -1872,16 +1881,6 @@ function Ekko:GetTwin()
   return twin
 end
 
-function Ekko:GetLichSlot()
-  for slot = ITEM_1, ITEM_7, 1 do
-    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell")) then
-      --print(slot)
-      return slot
-    end
-  end
-  return nil
-end
-
 function Ekko:LastHit()
   if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
     for minion,winion in pairs(Mobs.objects) do
@@ -2748,10 +2747,12 @@ function Nidalee:__init()
         [_E] = { range = 350}}
   }
   self.ludenStacks = 0
+  self.spearCooldownUntil = 0
   AddDrawCallback(function() self:Draw() end)
   AddTickCallback(function() self:Heal() end)
   AddTickCallback(function() self:DmgCalc() end)
   AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
+  AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
   AddTickCallback(function() self:Flee() end)
 end
 
@@ -2778,6 +2779,10 @@ end
 
 function Nidalee:RemoveBuff(unit, buff)
   if unit and unit.isMe and buff and buff.name and buff.name == "itemmagicshankcharge" then self.ludenStacks = 0 end
+end
+
+function Nidalee:ProcessSpell(unit, spell)
+  if unit and unit.isMe and spell and spell.name and spell.name == "JavelinToss" then self.spearCooldownUntil = GetInGameTimer()+6*(1+unit.cdr) end
 end
 
 function Nidalee:Heal()
@@ -2863,8 +2868,8 @@ function Nidalee:DmgCalc()
   for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy.visible then
       killTextTable[enemy.networkID].indicatorText = ""
-      local damageAA = self:GetDmg("AD", enemy)+self:GetDmg("Ludens", enemy)
-      local damageQ  = self:GetDmg(_Q, enemy, true)
+      local damageAA = self:GetDmg("AD", enemy)
+      local damageQ  = self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)
       local damageC  = self:GetRWEQComboDmg(enemy)
       local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
       local damageS  = Smite and (20 + 8 * myHero.level) or 0
@@ -2896,6 +2901,9 @@ function Nidalee:Combo()
   if not self:IsHuman() and GetDistance(Target) > 425 then
     Cast(_R)
   end
+  if not self:IsHuman() and self.spearCooldownUntil < GetInGameTimer() then
+    Cast(_R)
+  end
 end
 
 function Nidalee:DoRWEQCombo(unit)
@@ -2906,11 +2914,25 @@ function Nidalee:DoRWEQCombo(unit)
     Cast(_W, unit)
   end
   if not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
-      Cast(_E, unit)
-    end
-    if myHero:CanUseSpell(_Q) == READY and (self:GetDmg(_Q, unit, false) < unit.health and myHero:CanUseSpell(_E) ~= READY or true) and Config:getParam("Combo", "Q") then
-      CastSpell(_Q, myHero:Attack(unit))
+    if self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and not Config:getParam("Combo", "E") then
+        CastSpell(_Q, myHero:Attack(unit))
+    elseif self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
+      if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
+        Cast(_E, unit)
+      end
+      if myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config:getParam("Combo", "Q") and Config:getParam("Combo", "E") then
+        CastSpell(_Q, myHero:Attack(unit))
+      end
+      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and not Config:getParam("Combo", "E") then
+        CastSpell(_Q, myHero:Attack(unit))
+      end
+    else
+      if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
+        Cast(_E, unit)
+      end
+      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") then
+        CastSpell(_Q, myHero:Attack(unit))
+      end
     end
     if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") then
       if GetDistance(unit) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(unit) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
@@ -2931,17 +2953,23 @@ function Nidalee:GetRWEQComboDmg(target,damage)
   end
   if myHero:CanUseSpell(_Q) == READY then
     unit.health = unit.health-dmg
-    dmg = dmg + self:GetDmg(_Q,unit)
+    dmg = dmg + self:GetDmg(_Q,unit)+self:GetDmg("Lichbane", unit)
   end
   return dmg
 end
 
 function Nidalee:Harrass()
   if self:IsHuman() then
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, self.data.Human[0].range) then
       Cast(_Q, Target, false, true, 2)
     end
   else
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, self.data.Human[0].range) then
+      CastSpell(_Q, myHero:Attack(unit))
+    end
+    if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, self.data.Human[2].range) then
+      Cast(_E, unit)
+    end
   end
 end
 
@@ -3006,12 +3034,27 @@ function Nidalee:Killsteal()
           DelayAction(function() Cast(_Q, enemy, false, true, 1.5) end, 0.125)
         end
       end
-      if ScriptologyDebug then print(self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true))) end
-      if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
+      if not self:IsHuman() and EnemiesAround(enemy, 500) < 3 then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < self:GetDmg(_Q, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self:GetAARange()) then
+          Cast(_Q, myHero:Attack(enemy))
+        end
+        if myHero:CanUseSpell(_W) == READY and enemy.health < self:GetDmg(_W, enemy) and Config:getParam("Killsteal", "W") then
+          if GetDistance(enemy) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(enemy) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
+            Cast(_W, enemy)
+          end
+        end
+        if myHero:CanUseSpell(_E) == READY and enemy.health < self:GetDmg(_E, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, self.data.Cougar[2].range) then
+          Cast(_E, enemy)
+        end
+      end
+      if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
         Cast(_Q, enemy, false, true, 1.2)
         DelayAction(function() self:DoRWEQCombo(enemy) end, 0.05+self.data.Human[0].delay+GetDistance(enemy)/self.data.Human[0].speed)
       end
-      if GetStacks(enemy) > 0 and GetDistance(enemy)-self.data.Cougar[1].range*2 < 0 then
+      if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and not self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
+        Cast(_R)
+      end
+      if GetStacks(enemy) > 0 and EnemiesAround(enemy, 500) < 3 and GetDistance(enemy)-self.data.Cougar[1].range*2 < 0 then
         if enemy.health < self:GetRWEQComboDmg(enemy,0) then
           self:DoRWEQCombo(enemy)
         end
@@ -3050,6 +3093,8 @@ function Nidalee:GetDmg(spell, target, human)
     ADDmg = TotalDmg
   elseif spell == "Ludens" then
     APDmg = self.ludenStacks >= 90 and 100+0.1*AP or 0
+  elseif spell == "Lichbane" then
+    APDmg = (GetLichSlot() and source.damage*0.75+0.5*AP or 0)
   elseif human then
     if spell == _Q then
       APDmg = (25+25*QLevel+0.4*AP)*math.max(1,math.min(3,GetDistance(target.pos)/1250*3))--kanker
