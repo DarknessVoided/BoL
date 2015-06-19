@@ -17,7 +17,7 @@ function sScriptConfig:__init(name, theme)
     self.lastMove = 0
     self.LastIncrRequest = 0
     self.slide  = {false, false, false, false}
-    AddLoadCallback(function() self:load() self:Load_Sprites() end)
+    self.loaded = false
     AddUnloadCallback(function() self:Unload_Sprites() end)
     AddDrawCallback(function() self:Draw() end)
     AddMsgCallback(function(Msg, Key) self:Msg(Msg, Key) end)
@@ -438,6 +438,11 @@ function sScriptConfig:Draw()
 end
 
 function sScriptConfig:Tick()
+    if not self.loaded then
+        self.loaded = true
+        self:load() 
+        self:Load_Sprites()
+    end
     local cursor = GetCursorPos()
     if self.resize then
         if self.Scale.x > 0.2 and cursor.x+15 < self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2 and cursor.y < self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states+self.offsets.bot)-self.Scale.z*self.offsets.bot/2 then
