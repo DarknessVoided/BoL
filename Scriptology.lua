@@ -88,6 +88,8 @@ function OnLoad()
     else
       Auth()
     end
+  else
+    ScriptologyMsg("Your champion is not (yet) supported!")
   end
 end
 
