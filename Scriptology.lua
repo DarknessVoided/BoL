@@ -33,7 +33,7 @@
   SOriannaVersion       = 1.3 -- better ult calculation
   SQuinnVersion         = 0
   SRengarVersion        = 1.6 -- fixed combo stuck bug
-  SRivenVersion         = 0.1 -- soon(tm)
+  SRivenVersion         = 1   -- release
   SRumbleVersion        = 1
   SSejuaniVersion       = 0
   SShyvanaVersion       = 0
@@ -49,7 +49,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.37
+_G.ScriptologyVersion    = 1.38
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -58,7 +58,7 @@ function OnLoad()
   require("sScriptConfig")
   champList = { "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
                 "Darius", "Ekko", 
-                "Kalista", "LeBlanc", "LeeSin", "Lux", "Malzahar", 
+                "Kalista", "LeeSin", "Lux", "Malzahar", 
                 "Nidalee", "Orianna", "Rengar", "Riven",
                 "Rumble", "Teemo", 
                 "Volibear" }
@@ -88,8 +88,6 @@ function OnLoad()
     else
       Auth()
     end
-  else
-    ScriptologyMsg("Your champion is not (yet) supported!")
   end
 end
 
@@ -114,7 +112,7 @@ end
 
 function Auth()
   if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
-  authList = { "LeBlanc", "Riven" }
+  authList = { }
   auth     = {}
   for _,champ in pairs(authList) do
     auth[champ] = true
@@ -180,7 +178,7 @@ function Menu()
   Config:addState("Harrass")
   if myHero.charName ~= "Blitzcrank" then Config:addState("Farm")
   if myHero.charName ~= "Teemo" then Config:addSubStates("Farm", {"LaneClear", "LastHit"}) end end
-  Config:addState("Killsteal")
+  if myHero.charName ~= "Riven" then Config:addState("Killsteal") end
   Config:addState("Draws")
   if myHero.charName ~= "Volibear" and myHero.charName ~= "Teemo" then 
     Config:addState("Misc")
@@ -342,10 +340,10 @@ function Vars()
         [_R] = { range = 4000}
       },
       ["Riven"] = {
-        [_Q] = { range = 0, width = 225, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+20*level+(0.35+0.05*level)*TotalDmg end},
-        [_W] = { range = 0, width = 250, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
-        [_E] = { range = 325},
-        [_R] = { range = 1100, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*TotalDmg)*(3*(target.maxHealth*0.75-(target.health-target.maxHealth*0.25))/(target.maxHealth*0.75)) end},
+        [_Q] = { range = 310, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+(0.35+0.05*level)*TotalDmg end},
+        [_W] = { range = 265, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
+        [_E] = { range = 390},
+        [_R] = { range = 930, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*source.addDamage)*(math.min(3,math.max(1,4*(target.maxHealth-target.health)/target.maxHealth))) end},
       },
       ["Rumble"] = {
         [_Q] = { speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+20*level+0.33*AP end},
@@ -466,11 +464,12 @@ function Vars()
   Target = nil
   Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
   JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
+  sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
 end
 
 function SetupOrbwalk()
   if myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Riven" then
-    ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other!")
+    ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other")
   else
     if _G.AutoCarry then
       if _G.Reborn_Initialised then
@@ -505,6 +504,10 @@ function Tick()
   Mobs:update()
   JMobs:update()
 
+  for _=0,3 do
+    sReady[_] = myHero:CanUseSpell(_) == READY
+  end
+
   loadedClass:Killsteal()
 
   if Target ~= nil or myHero.charName == "Blitzcrank" then 
@@ -516,20 +519,21 @@ function Tick()
       loadedClass:Combo()
     end
   end
+  if myHero.charName ~= "Riven" then
+    if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
+      loadedClass:LastHit()
+    end
 
-  if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
-    loadedClass:LastHit()
+    if Config:getParam("LaneClear", "LaneClear") then
+      loadedClass:LaneClear()
+    end
   end
 
-  if Config:getParam("LaneClear", "LaneClear") then
-    loadedClass:LaneClear()
-  end
-
-  if myHero.charName ~= "Nidalee" then DmgCalc() end
+  if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
 end
 
 function Draw()
-  if myHero.charName == "Nidalee" then return end
+  if myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
   if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
     DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
   end
@@ -923,12 +927,13 @@ function GetDmg(spell, source, target)
   local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
 
-  local QLevel, WLevel, ELevel, RLevel = source:GetSpellData(_Q).level, source:GetSpellData(_W).level, source:GetSpellData(_E).level, source:GetSpellData(_R).level
   if source ~= myHero then
     return TotalDmg*(1-ArmorPercent)
   end
   if spell == "IGNITE" then
     return 50+20*Level/2
+  elseif spell == "Tiamat" then
+    ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
   elseif spell == "AD" then
     if myHero.charName == "Ashe" then
       ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
@@ -936,12 +941,21 @@ function GetDmg(spell, source, target)
       ADDmg = TotalDmg
     end
   elseif type(spell) == "number" then
-    if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-    if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-    if data[spell].dmgTRUE then return data[spell].dmgTRUE(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+    if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+    if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+    if data[spell].dmgTRUE then return data[spell].dmgTRUE(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
   end
   dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
   return math.floor(dmg)
+end
+
+function GetHydraSlot()
+  for slot = ITEM_1, ITEM_7, 1 do
+    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "tiamat")) then
+      return slot
+    end
+  end
+  return nil
 end
 
 function Cast(Spell, target, targeted, predict, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
@@ -1046,7 +1060,7 @@ end
 
 function GetJMinion(range)
   local minionTarget = nil
-  for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+  for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
     if minionTarget == nil then 
       minionTarget = minion
     elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) then
@@ -2942,9 +2956,10 @@ function Nidalee:DmgCalc()
       end
       if enemy.health < damageQ+damageC then
         killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
+      else
+        local neededAA = math.floor(100 * (damageQ+damageC+damageI) / (enemy.health))
+        killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
       end
-      local neededAA = math.floor(100 * (damageQ+damageC+damageI) / (enemy.health))
-      killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
       local enemyDamageAA = GetDmg("AD", enemy, myHero)
       local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
       if enemyNeededAA ~= 0 then         
@@ -3662,6 +3677,333 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
+
+class "Riven"
+
+function Riven:__init()
+  self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+  self:Menu()
+  self.Target = Target
+  self.QState = false
+  self.WState = false
+  self.QCast  = 0
+  self.movePos = nil
+  self.orbTable = { QDelay = 0, EDelay = 0, lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625, range = myHero.range + myHero.boundingRadius, trueRange = myHero.range + GetDistance(myHero.minBBox) + 1 }
+  AddDrawCallback(function() self:Draw() end)
+  AddTickCallback(function() self:Tick() end)
+  AddTickCallback(function() self:OrbWalk() end)
+  AddAnimationCallback(function(unit,ani) self:Animation(unit,ani) end)
+  AddProcessSpellCallback(function(unit,spell) self:ProcessSpell(unit,spell) end)
+end
+
+function Riven:Menu()
+  for _,s in pairs({"Combo", "Harrass"}) do
+    Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+  end
+  for _,s in pairs({"LaneClear", "LastHit"}) do
+    Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+  end
+  Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+  Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+  Config:addParam({state = "Misc", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "Misc", name = "Jump", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+end
+
+function Riven:Draw()
+  DrawLFC(myHero.x, myHero.y, myHero.z, self.orbTable.range, ARGB(255,255,255,255))
+  if Config:getParam("Draws", "Q") and sReady[_Q] then
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(105,155,155,155))
+  end
+  if Config:getParam("Draws", "W") and sReady[_W] then
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range, ARGB(105,155,155,155))
+  end
+  if Config:getParam("Draws", "E") and sReady[_E] then
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range, ARGB(255,255,255,255))
+  end
+  if Config:getParam("Draws", "R") and sReady[_R] then
+    DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range, ARGB(255,255,255,255)) 
+  end
+  if self.movePos then
+    local color = IsWall(D3DXVECTOR3(self.movePos.x,self.movePos.y,self.movePos.z)) and ARGB(255,255,0,0) or ARGB(255,255,255,255)
+    DrawCircle(self.movePos.x, self.movePos.y, self.movePos.z, 75, color) 
+    self.movePos = nil
+  end
+  if Config:getParam("Draws", "DMG") then
+    for i,k in pairs(GetEnemyHeroes()) do
+      local enemy = k
+      if ValidTarget(enemy) then
+        local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+        local posX = barPos.x - 35
+        local posY = barPos.y - 50
+        DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 250, 255, 250))
+        DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
+      end
+    end
+  end
+end
+
+function Riven:Tick()
+  self.orbTable.range = myHero.range + myHero.boundingRadius
+  self.orbTable.trueRange = myHero.range + GetDistance(myHero.minBBox) + 1
+  if Config:getParam("Misc", "Flee") then
+    myHero:MoveTo(mousePos.x, mousePos.z)
+    if sReady[_E] then
+      Cast(_E, mousePos)
+    end
+    if not sReady[_E] and sReady[_Q] and self.orbTable.EDelay + 350 < GetTickCount() then
+      Cast(_Q, mousePos)
+    end
+  end
+  if Config:getParam("Misc", "Jump") then
+    self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
+    self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
+    if self.QCast < 2 then
+      Cast(_Q, myHero)
+    end
+    if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
+      myHero:MoveTo(self.movePos.x, self.movePos.z)
+    else
+      if sReady[_Q] then
+        Cast(_Q, mousePos)
+      end
+    end
+  end
+  self:DmgCalc()
+end
+
+function Riven:DmgCalc()
+  if not Config:getParam("Draws", "DMG") then return end
+  for k,enemy in pairs(GetEnemyHeroes()) do
+    if ValidTarget(enemy) and enemy.visible then
+      killTextTable[enemy.networkID].indicatorText = ""
+      local damageC  = self:CalcComboDmg(enemy, 0, not Config:getParam("Combo", "R"))
+      local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+      local damageS  = Smite and (20 + 8 * myHero.level) or 0
+      if enemy.health < damageC then
+        killTextTable[enemy.networkID].indicatorText = "Kill!!"
+      else
+        local neededAA = math.floor(100 * (damageC+damageI) / (enemy.health))
+        killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
+      end
+      local enemyDamageAA = GetDmg("AD", enemy, myHero)
+      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+      if enemyNeededAA ~= 0 then         
+        killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+      end
+    end
+  end
+end
+
+function Riven:DmgP(unit, ad)
+  return myHero:CalcDamage(unit, 5+math.max(5*math.floor((myHero.level+2)/3)+10,10*math.floor((myHero.level+2)/3)-15)*ad/100)
+end
+
+function Riven:CalcComboDmg(target, damage, disableUlt)
+  local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
+  local dmg = damage or 0
+  local ad = myHero.totalDamage*(disableUlt and 1 or 1.2)
+  local me = {ap = myHero.ap, level = myHero.level, totalDamage = ad, armorPen = myHero.armorPen, armorPenPercent = myHero.armorPenPercent, magicPen = myHero.magicPen, magicPenPercent = myHero.magicPenPercent}
+  if sReady[_Q] then
+    dmg = dmg + GetDmg(_Q,me,unit)*3+GetDmg("Tiamat",me,unit)+GetDmg("AD",me,unit)*3+self:DmgP(target, ad)*3
+  end
+  if sReady[_W] then
+    dmg = dmg + GetDmg(_W,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+  end
+  if (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine") and not disableUlt then
+    unit.health = unit.health-dmg
+    dmg = dmg + GetDmg(_R,me,unit)
+  end
+  return dmg
+end
+
+function Riven:OrbWalk()
+  if Config:getParam("Combo", "Combo") then
+    self.Target = Target
+  end
+  if Config:getParam("Harrass", "Harrass") then
+    self.Target = Target
+  end
+  if Config:getParam("LastHit", "LastHit") then
+    self.Target = GetLowestMinion(500)
+    if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
+      self.Target = nil
+    end
+    if not self.Target then
+      self.Target = GetJMinion(500)
+    end
+  end
+  if Config:getParam("LaneClear", "LaneClear") then
+    self.Target = GetLowestMinion(500)
+    if not self.Target then
+      self.Target = GetJMinion(500)
+    end
+  end
+  if self:DoOrb() then self:Orb(self.Target) end
+end
+
+function Riven:Orb(unit)
+  if not ValidTarget(unit, self.orbTable.trueRange + 40) then
+    unit = Target
+  end
+  if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, self.orbTable.trueRange + 40) then
+    myHero:Attack(unit)
+  elseif os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) + self.orbTable.minionAA then
+    local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
+    if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
+      myHero:MoveTo(unit.x, unit.z)
+    elseif GetDistance(mousePos) > 66 then
+      myHero:MoveTo(movePos.x, movePos.z)
+    end
+  end
+end
+
+function Riven:DoOrb()
+  if Config:getParam("Combo", "Combo") then
+    self.QState = Config:getParam("Combo", "Q")
+    self.WState = Config:getParam("Combo", "W")
+    self.orbTable.minionAA = 0
+    return true
+  end
+  if Config:getParam("Harrass", "Harrass") then
+    self.QState = Config:getParam("Harrass", "Q")
+    self.WState = Config:getParam("Harrass", "W")
+    self.orbTable.minionAA = 0
+    return true
+  end
+  if Config:getParam("LastHit", "LastHit") then
+    self.QState = Config:getParam("LastHit", "Q")
+    self.WState = Config:getParam("LastHit", "W")
+    self.orbTable.minionAA = 0.004
+    return true
+  end
+  if Config:getParam("LaneClear", "LaneClear") then
+    self.QState = Config:getParam("LaneClear", "Q")
+    self.WState = Config:getParam("LaneClear", "W")
+    self.orbTable.minionAA = 0.004
+    return true
+  end
+  self.QState = false
+  return false
+end
+
+function Riven:WindUp(unit)
+  if unit.isMe then
+    if self:DoOrb() and ValidTarget(self.Target) then
+      self:CastItems(self.Target) 
+      if sReady[_W] and GetDistance(self.Target) < data[1].range and self.WState then 
+        Cast(_W, self.Target)
+      elseif sReady[_Q] and ValidTarget(self.Target, 600) and self.QState then
+        Cast(_Q, self.Target)
+      end
+    end
+  end
+end
+
+function Riven:CastItems(unit)
+  local i = {["ItemTiamatCleave"] = self.orbTable.range, ["YoumusBlade"] = self.orbTable.range}
+  local u = {["ItemSwordOfFeastAndFamine"] = 600}
+  for slot = ITEM_1, ITEM_6 do
+    if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
+      CastSpell(slot) 
+    end
+    if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
+      CastSpell(slot, unit)
+    end
+  end
+end
+
+function Riven:Animation(unit,ani)
+  if unit and unit.isMe and ani then
+    if ani:find("Spell1a") or ani:find("Spell1b") or ani:find("Spell1c") then
+      self.orbTable.lastAction = os.clock() + 0.245
+      if Target then
+        local movePos = Target + (Vector(myHero) - Target):normalized() * (GetDistance(Target) + 62)
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    end
+  end
+end
+
+function Riven:ProcessSpell(unit,spell)
+  if unit and unit.isMe and spell and self:DoOrb() then
+    if spell.name:lower():find("attack") then
+      self.orbTable.windUp = 1 / (spell.windUpTime * myHero.attackSpeed)
+      self.orbTable.animation = 1 / (spell.animationTime * myHero.attackSpeed)
+      DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000 + self.orbTable.minionAA)
+    elseif spell.name == "RivenTriCleave" then
+      self.QCast = self.QCast + 1
+      if self.QCast == 4 then self.QCast = 1 end
+      self.orbTable.QDelay = os.clock()
+      if Target and self:DoOrb() then
+        local movePos = Target + (Vector(myHero) - Target):normalized() * (GetDistance(Target) + 65)
+        if movePos and GetDistance(Target) < 294 then
+          self.orbTable.lastAction = os.clock() + 0.85
+          myHero:MoveTo(movePos.x, movePos.z)
+        else
+          myHero:MoveTo(mousePos.x, mousePos.z)
+        end
+      end
+    elseif spell.name == "RivenMartyr" then
+      self.orbTable.lastAA = 0
+      if Target and self:DoOrb() and GetDistanceSqr(Target) < data[0].range * data[0].range and self.QState then
+        self:CastItems(Target)
+        Cast(_Q, Target)
+        DelayAction(function() self:CastItems(Target) end, 0.134)
+        DelayAction(function() Cast(_Q, Target) end, 0.134)
+        DelayAction(function() self:CastItems(Target) end, 0.137)
+        DelayAction(function() Cast(_Q, Target) end, 0.137)
+      end
+    elseif spell.name == "ItemTiamatCleave" then
+      self.orbTable.lastAA = 0
+      if Target and self:DoOrb() and GetDistanceSqr(Target) < data[0].range * data[0].range and self.QState then
+        DelayAction(function() if GetDistanceSqr(Target) < data[1].range * data[1].range then Cast(_W, Target) end end, 0.137)
+        DelayAction(function() Cast(_Q, Target) end, 0.137)
+        DelayAction(function() if GetDistanceSqr(Target) < data[1].range * data[1].range then Cast(_W, Target) end end, 0.139)
+        DelayAction(function() Cast(_Q, Target) end, 0.139)
+      end
+    elseif spell.name == "RivenFengShuiEngine" or spell.name == "rivenizunablade" then
+      self.orbTable.lastAA = 0
+      if Target and self:DoOrb() and GetDistanceSqr(Target) < data[0].range * data[0].range and self.QState then
+        self:CastItems(Target)
+        if GetDistanceSqr(Target) < data[1].range * data[1].range then Cast(_W, Target) end
+        Cast(_Q, Target)
+      end
+    elseif spell.name == "RivenFeint" then
+      self.orbTable.EDelay = GetTickCount()
+      self.orbTable.lastAA = 0
+    end
+  end
+end
+
+function Riven:Combo()
+  if GetDistance(Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("Combo", "E") and GetDistance(Target) < data[2].range then
+    CastSpell(_E, Target)
+  end
+  if Config:getParam("Combo", "R") and self:CalcComboDmg(Target, 0) >= Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
+  if Config:getParam("Combo", "R") and GetDmg(_R,myHero,Target) >= Target.health and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target) end
+  if sReady[_W] and GetDistance(Target) < data[1].range and Config:getParam("Combo", "W") then
+    CastSpell(_W)
+  end
+end
+
+function Riven:Harrass()
+  if GetDistance(Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("Harrass", "E") and GetDistance(Target) < data[2].range then
+    CastSpell(_E, Target)
+  end
+  if sReady[_W] and GetDistance(Target) < data[1].range and Config:getParam("Harrass", "W") then
+    CastSpell(_W)
+  end
+end
+
+function Riven:Killsteal()
+end
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
