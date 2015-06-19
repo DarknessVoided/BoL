@@ -13,35 +13,36 @@
 ]]--
 
 --[[
-SAsheVersion          = 1.3 -- Q fixed
-SAzirVersion          = 0
-SBlitzcrankVersion    = 1
-SBrandVersion         = 1
-SCassiopeiaVersion    = 1.3 -- Q fixed, added facingme logic
-SDariusVersion        = 1.2 -- auto Q harrass added
-SEkkoVersion          = 1
-SGnarVersion          = 0
-SJarvanVersion        = 0
-SKalistaVersion       = 1
-SKogmawVersion        = 0
-SLeeSinVersion        = 1.2 -- is now live
-SLuxVersion           = 1.4 -- fixes
-SMalzaharVersion      = 1
-SNidaleeVersion       = 1.5 -- better combo
-SOlafVersion          = 0
-SOriannaVersion       = 1.3 -- better ult calculation
-SQuinnVersion         = 0
-SRengarVersion        = 1.6 -- fixed combo stuck bug
-SRivenVersion         = 0
-SRumbleVersion        = 1
-SSejuaniVersion       = 0
-SShyvanaVersion       = 0
-STeemoVersion         = 1
-SVayneVersion         = 0
-SViktorVersion        = 0
-SVolibearVersion      = 1
-SYasuoVersion         = 0
-SYorickVersion        = 0
+  SAsheVersion          = 1.3 -- Q fixed
+  SAzirVersion          = 0
+  SBlitzcrankVersion    = 1
+  SBrandVersion         = 1
+  SCassiopeiaVersion    = 1.3 -- Q fixed, added facingme logic
+  SDariusVersion        = 1.2 -- auto Q harrass added
+  SEkkoVersion          = 1
+  SGnarVersion          = 0
+  SJarvanVersion        = 0
+  SKalistaVersion       = 1
+  SKogmawVersion        = 0
+  SLeBlancVersion       = 0.1 -- soon(tm)
+  SLeeSinVersion        = 1.2 -- is now live
+  SLuxVersion           = 1.4 -- fixes
+  SMalzaharVersion      = 1
+  SNidaleeVersion       = 1.5 -- better combo
+  SOlafVersion          = 0
+  SOriannaVersion       = 1.3 -- better ult calculation
+  SQuinnVersion         = 0
+  SRengarVersion        = 1.6 -- fixed combo stuck bug
+  SRivenVersion         = 0.1 -- soon(tm)
+  SRumbleVersion        = 1
+  SSejuaniVersion       = 0
+  SShyvanaVersion       = 0
+  STeemoVersion         = 1
+  SVayneVersion         = 0
+  SViktorVersion        = 0
+  SVolibearVersion      = 1
+  SYasuoVersion         = 0
+  SYorickVersion        = 0
 ]]--
 
 --Scriptstatus Tracker
@@ -57,8 +58,8 @@ function OnLoad()
   require("sScriptConfig")
   champList = { "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
                 "Darius", "Ekko", 
-                "Kalista", "LeeSin", "Lux", "Malzahar", 
-                "Nidalee", "Orianna", "Rengar", 
+                "Kalista", "LeBlanc", "LeeSin", "Lux", "Malzahar", 
+                "Nidalee", "Orianna", "Rengar", "Riven",
                 "Rumble", "Teemo", 
                 "Volibear" }
                 --[[
@@ -111,7 +112,7 @@ end
 
 function Auth()
   if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
-  authList = {  }
+  authList = { "LeBlanc", "Riven" }
   auth     = {}
   for _,champ in pairs(authList) do
     auth[champ] = true
@@ -158,7 +159,7 @@ function Update()
   else
     ScriptologyMsg("Error downloading version info")
   end
-  if myHero.charName ~= "Darius" and myHero.charName ~= "Teemo" and myHero.charName ~= "Volibear" and not _G.UPLloaded then
+  if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" and myHero.charName ~= "Teemo" and myHero.charName ~= "Volibear" and not _G.UPLloaded then
     if FileExist(LIB_PATH .. "/UPL.lua") then
       require("UPL")
       _G.UPL = UPL()
@@ -190,7 +191,7 @@ function Menu()
     if myHero.charName == "Nidalee" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true})
                                          Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {50}}) end
     if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    if myHero.charName ~= "Darius" then UPL:AddToMenu2(Config, "Misc") end 
+    if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
   end
   Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
   if myHero.charName ~= "Orianna" then
@@ -284,6 +285,12 @@ function Vars()
         [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
         [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.3*AP+0.5*TotalDmg end}
       },
+      ["LeBlanc"] = {
+        [_Q] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+0.4*AP end},
+        [_W] = { speed = 1300, delay = 0.250, range = 600, width = 250, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+40*level+0.6*AP end},
+        [_E] = { speed = 1300, delay = 0.250, range = 950, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.5*AP end},
+        [_R] = { range = 0}
+      },
       ["LeeSin"] = {
         [_Q] = { range = 1100, width = 50, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.9*source.addDamage end},
         [_W] = { range = 600},
@@ -333,10 +340,10 @@ function Vars()
         [_R] = { range = 4000}
       },
       ["Riven"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+20*level+(0.35+0.05*level)*TotalDmg end},
-        [_W] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
-        [_E] = { },
-        [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*TotalDmg)*(3*(target.maxHealth*0.75-(target.health-target.maxHealth*0.25))/(target.maxHealth*0.75)) end},
+        [_Q] = { range = 0, width = 225, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+20*level+(0.35+0.05*level)*TotalDmg end},
+        [_W] = { range = 0, width = 250, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
+        [_E] = { range = 325},
+        [_R] = { range = 1100, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*TotalDmg)*(3*(target.maxHealth*0.75-(target.health-target.maxHealth*0.25))/(target.maxHealth*0.75)) end},
       },
       ["Rumble"] = {
         [_Q] = { speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+20*level+0.33*AP end},
@@ -460,7 +467,7 @@ function Vars()
 end
 
 function SetupOrbwalk()
-  if myHero.charName == "Malzahar" or myHero.charName == "Katarina" then
+  if myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Riven" then
     ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other!")
   else
     if _G.AutoCarry then
@@ -642,6 +649,7 @@ end
 
 function ApplyBuff(source, unit, buff)
   if source and source.isMe and buff and unit then
+    print(buff.name)
     for _,name in pairs(trackList[myHero.charName]) do
       if buff.name:find(name) then
         stackTable[unit.networkID] = 1
@@ -702,7 +710,7 @@ function timeToShoot()
 end
  
 function heroCanMove()
-  return (GetTickCount() + GetLatency()/2 > lastAttack + previousWindUp + 50) and ultOn < GetInGameTimer()
+  return (GetTickCount() + GetLatency()/2 > lastAttack + previousWindUp + 75) and ultOn < GetInGameTimer()
 end
 
 function GetCustomTarget()
@@ -2088,6 +2096,57 @@ function Kalista:Killsteal()
       elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
         CastSpell(Ignite, enemy)
       end
+    end
+  end
+end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "LeBlanc"
+
+function LeBlanc:__init()
+  if not Auth() then return end
+  self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+  self:Menu()
+end
+
+function LeBlanc:Menu()
+  for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
+    Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+  end
+  Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+  Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+  for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
+    Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
+  end
+  Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+end
+
+function LeBlanc:LastHit()
+end
+
+function LeBlanc:LaneClear()
+end
+
+function LeBlanc:Combo()
+end
+
+function LeBlanc:Harrass()
+end
+
+function LeBlanc:Killsteal()
+  for k,enemy in pairs(GetEnemyHeroes()) do
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
     end
   end
 end
@@ -3595,6 +3654,12 @@ function Rengar:Killsteal()
     end
   end
 end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
