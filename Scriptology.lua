@@ -3475,13 +3475,13 @@ function Rengar:Combo()
 end
 
 function Rengar:OneShot()
-  if not self.osTarget or GetDistance(self.osTarget, myHero) > 800 then return end
+  if not self.osTarget or GetDistance(self.osTarget, myHero) > 800 then self:ExecuteCombo() return end
   if self.alertTicker < GetInGameTimer() then PrintAlertRed("Oneshotting... "..self.osTarget.charName) self.alertTicker = GetInGameTimer()+0.25 end
   if Smite ~= nil then CastSpell(Smite, self.osTarget) end
   if Ignite ~= nil then CastSpell(Ignite, self.osTarget) end
   if myHero.mana == 5 then
     if Config:getParam("Misc", "Oneshot2") == 1 then
-      if GetDistance(self.osTarget, myHero) < 450 then
+      if GetDistance(self.osTarget, myHero) < myHero.range+myHero.boundingRadius*2 then
         CastSpell(_Q, myHero:Attack(self.osTarget))
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
@@ -3491,6 +3491,10 @@ function Rengar:OneShot()
     elseif Config:getParam("Misc", "Oneshot2") == 3 then
       if GetDistance(self.osTarget, myHero) < data[2].range then
         Cast(_E, self.osTarget, false, true, 1)
+      end
+    else
+      if GetDistance(self.osTarget, myHero) < myHero.range+myHero.boundingRadius*2 then
+        CastSpell(_Q, myHero:Attack(self.osTarget))
       end
     end
   else
@@ -3508,11 +3512,12 @@ function Rengar:OneShot()
 end
 
 function Rengar:ExecuteCombo()
+  if not Target then return end
   if myHero.mana == 5 and myHero.health / myHero.maxHealth <= 0.35 then
     Cast(_W, Target, false, true, 1)
   elseif myHero.mana == 5 then
     if Config:getParam("Misc", "Oneshot2") == 1 then
-      if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius then
+      if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
         CastSpell(_Q, myHero:Attack(Target))
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
@@ -3523,9 +3528,13 @@ function Rengar:ExecuteCombo()
       if GetDistance(Target, myHero) < data[2].range then
         Cast(_E, Target, false, true, 1.5)
       end
+    else
+      if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
+        CastSpell(_Q, myHero:Attack(Target))
+      end
     end
   else
-    if Config:getParam("Combo", "Q") and GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius then
+    if Config:getParam("Combo", "Q") and GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
         CastSpell(_Q, myHero:Attack(Target))
     end
     if Config:getParam("Combo", "W") and GetDistance(Target, myHero) < data[1].width then
@@ -3542,7 +3551,7 @@ function Rengar:Harrass()
     Cast(_W, Target, false, true, 1)
   elseif myHero.mana == 5 then
     if Config:getParam("Misc", "Oneshot2") == 1 then
-      if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius then
+      if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
         CastSpell(_Q, myHero:Attack(Target))
       end
     elseif Config:getParam("Misc", "Oneshot2") == 2 then
@@ -3553,9 +3562,13 @@ function Rengar:Harrass()
       if GetDistance(Target, myHero) < data[2].range then
         Cast(_E, Target, false, true, 1.5)
       end
+    else
+      if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
+        CastSpell(_Q, myHero:Attack(Target))
+      end
     end
   else
-    if Config:getParam("Harrass", "Q") and GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius then
+    if Config:getParam("Harrass", "Q") and GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
         CastSpell(_Q, myHero:Attack(Target))
     end
     if Config:getParam("Harrass", "W") and GetDistance(Target, myHero) < data[1].width then
