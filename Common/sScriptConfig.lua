@@ -302,8 +302,7 @@ function sScriptConfig:Load_Sprites()
         self.offsets = {top = self.Sprites["top"].height, button = self.Sprites["state"].height, bot = self.Sprites["drag"].height*2, width = self.Sprites["top"].width, buttonwidth = self.Sprites["state"].width}
     else
         self:Unload_Sprites()
-        print("Reloading... Please wait!")
-        DelayAction(function() self.loaded = false end, 5)
+        DelayAction(function() print("Reloading menu... Please wait!") self.loaded = false end, 5)
     end
 end
 
@@ -507,6 +506,7 @@ function sScriptConfig:Tick()
 end
 
 function sScriptConfig:Msg(Msg, Key)
+    if not self.loaded or self.hadToDownload then return end
     local cursor = GetCursorPos()
     if Msg == KEY_DOWN and Key > 16 and self.keyChange then
         for _,par in pairs(self.par) do
