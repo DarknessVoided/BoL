@@ -14,6 +14,7 @@ function OnLoad()
   	Config:addParam("p", "Print", SCRIPT_PARAM_ONOFF, false)
   	Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, false)
   	sts = TargetSelector(TARGET_LESS_CAST, 3500, DAMAGE_MAGIC)
+  	print("<font color=\"#6699ff\"><b>[Scriptology Prediction]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">Loaded.</font>") 
 end
 
 function OnTick()
@@ -34,9 +35,6 @@ function OnTick()
 				CastSpell(spell, hposh.x, hposh.z)
 			end
 		end
-	end
-	if Config.p then
-		print()
 	end
 end
 
