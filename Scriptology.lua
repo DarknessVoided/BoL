@@ -28,7 +28,7 @@
   SLeeSinVersion        = 1.2 -- is now live
   SLuxVersion           = 1.4 -- fixes
   SMalzaharVersion      = 1
-  SNidaleeVersion       = 1.5 -- better combo
+  SNidaleeVersion       = 1.6 -- better combo
   SOlafVersion          = 0
   SOriannaVersion       = 1.3 -- better ult calculation
   SQuinnVersion         = 0
@@ -49,7 +49,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.47
+_G.ScriptologyVersion    = 1.48
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -3064,17 +3064,17 @@ class "Nidalee"
 
   function Nidalee:LaneClear()
     if not self:IsHuman() then
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and ValidTarget(Target, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") then
         local minionTarget = GetLowestMinion(self:GetAARange())
         if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
           Cast(_Q, myHero:Attack(minionTarget))
         end
-        local minionTarget = GetJMinion(self:GetAARange())
-        if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
+        minionTarget = GetJMinion(self:GetAARange())
+        if minionTarget then
           Cast(_Q, myHero:Attack(minionTarget))
         end
       end
-      if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and ValidTarget(Target, data[1].range) then
+      if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") then
         local pos, hit = GetFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
         if GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
           Cast(_W, pos)
@@ -3084,7 +3084,7 @@ class "Nidalee"
           Cast(_W, pos)
         end
       end
-      if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and ValidTarget(Target, data[2].range) then
+      if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") then
         local pos, hit = GetFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
         if hit > 0 then
           Cast(_E, pos)
