@@ -28,7 +28,7 @@
   SLeeSinVersion        = 1.2 -- is now live
   SLuxVersion           = 1.4 -- fixes
   SMalzaharVersion      = 1
-  SNidaleeVersion       = 1.7 -- better combo
+  SNidaleeVersion       = 1.7 -- fixed farming
   SOlafVersion          = 0
   SOriannaVersion       = 1.3 -- better ult calculation
   SQuinnVersion         = 0
