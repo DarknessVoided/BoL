@@ -3076,21 +3076,21 @@ class "Nidalee"
       end
       if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") then
         local pos, hit = GetFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
-        if GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
+        if pos and GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
           Cast(_W, pos)
         end
         local pos, hit = GetJFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
-        if GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
+        if pos and GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
           Cast(_W, pos)
         end
       end
       if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") then
         local pos, hit = GetFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
-        if hit > 0 then
+        if pos and hit > 0 then
           Cast(_E, pos)
         end
         local pos, hit = GetJFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
-        if hit > 0 then
+        if pos and hit > 0 then
           Cast(_E, pos)
         end
       end
