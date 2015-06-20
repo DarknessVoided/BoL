@@ -446,6 +446,7 @@ function sScriptConfig:Draw()
                         end
                     end
                 elseif par.code == SCRIPT_PARAM_LIST then
+                    if not self.Sprites[par.list[par.value]] then par.value = 1 end
                     if c > 0 then
                         bxPos = self.pos.x+self.Scale.x*(40+self.offsets.buttonwidth)
                         y = y + 1
