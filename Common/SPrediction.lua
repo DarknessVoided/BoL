@@ -14,7 +14,7 @@
             require("SPrediction")
             SP = SPrediction()
 
-            Position, Chance, Direction = SP:Predict(_Q, myHero, Target)
+            Position, Chance, Direction = SP:Predict(_Q, source, Target)
             if Chance >= X then
                 CastSpell(_Q, Position.x, Position.y)
             end
