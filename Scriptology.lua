@@ -3075,21 +3075,21 @@ class "Nidalee"
         end
       end
       if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") then
-        local pos, hit = GetFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
-        if pos and GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
+        local pos, hit = GetFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
+        if pos and GetDistance(pos) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(pos) <= self.data.Cougar[1].range+self.data.Cougar[1].width and hit > 0 then
           Cast(_W, pos)
         end
-        local pos, hit = GetJFarmPosition(self.data.Human[1].range, self.data.Human[1].width)
-        if pos and GetDistance(pos) >= self.data.Human[1].range-self.data.Human[1].width and GetDistance(pos) <= self.data.Human[1].range+self.data.Human[1].width and hit > 0 then
+        local pos, hit = GetJFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
+        if pos and GetDistance(pos) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(pos) <= self.data.Cougar[1].range+self.data.Cougar[1].width and hit > 0 then
           Cast(_W, pos)
         end
       end
       if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") then
-        local pos, hit = GetFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
+        local pos, hit = GetFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range/2)
         if pos and hit > 0 then
           Cast(_E, pos)
         end
-        local pos, hit = GetJFarmPosition(self.data.Human[2].range, self.data.Human[2].range/2)
+        local pos, hit = GetJFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range/2)
         if pos and hit > 0 then
           Cast(_E, pos)
         end
