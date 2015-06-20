@@ -175,29 +175,24 @@ function sScriptConfig:Load_Sprites()
         "code1",
         "code1_selected",
         "code2",
-        "LOGO",
-        "BANNER",
         "code4",
         "SLIDER_1",
         "SLIDER_2",
         "SLIDER_3",
         "SLIDER_4",
         "code3",
-        "code3_selected",
         "code7",
         "state",
         "state_selected", 
-        "substate",
-        "substate_selected", 
         "state_bottom",
         "state_bottom_selected", 
         "bot",
-        "chibi\\"..GetUser():lower(),
-        "Words\\Button\\Change",
-        "Scripts\\"..self.name,
-        "Scripts\\"..self.name.." Logo",
-        "Scripts\\"..self.theme.." Logo"
+        "Words\\Button\\Change"
     }
+    self.dontDownload    = {"chibi\\"..GetUser():lower(),
+                            "Scripts\\"..self.name,
+                            "Scripts\\"..self.name.." Logo",
+                            "Scripts\\"..self.theme.." Logo"}
     self.buttonTable     = { "1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Space","Ctrl" }
     self.numTable        = { "1","2","3","4","5","6","7","8","9","0","%" }
     for _, sprite in pairs(self.SpriteTable) do
@@ -207,6 +202,16 @@ function sScriptConfig:Load_Sprites()
         else
             DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
             self.hadToDownload = true
+        end
+    end
+    for _, sprite in pairs(self.dontDownload) do
+        location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
+        if FileExist(SPRITE_PATH .. location) then
+            self.Sprites[sprite] = createSprite(location)
+        else
+            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            --self.hadToDownload = true
         end
     end
     for _, sprite in pairs(self.numTable) do
@@ -294,10 +299,10 @@ function sScriptConfig:Load_Sprites()
             end
         end
     end
-    while #self.states < 6 do
-        self:addState("blank")
-    end
     if not self.hadToDownload then
+        while #self.states < 6 do
+            self:addState("blank")
+        end
         self.offsets = {top = self.Sprites["top"].height, button = self.Sprites["state"].height, bot = self.Sprites["drag"].height*2, width = self.Sprites["top"].width, buttonwidth = self.Sprites["state"].width}
     else
         self:Unload_Sprites()
