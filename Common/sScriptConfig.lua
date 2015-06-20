@@ -302,12 +302,12 @@ function sScriptConfig:Load_Sprites()
     else
         self:Unload_Sprites()
         print("Reloading... Please wait!")
-        DelayAction(function() self:Load_Sprites() end, 3)
+        DelayAction(function() self.loaded = false end, 3)
     end
 end
 
 function sScriptConfig:Draw()
-    if IsKeyDown(16) then
+    if IsKeyDown(16) and self.loaded then
         self.Sprites["top"]:SetScale(self.Scale.x,self.Scale.z)
         self.Sprites["top"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4, 255)
         if self.Sprites["Scripts\\"..self.name.." Logo"] then
