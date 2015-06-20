@@ -200,7 +200,7 @@ function sScriptConfig:Load_Sprites()
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
         else
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
             self.hadToDownload = true
         end
     end
@@ -209,8 +209,8 @@ function sScriptConfig:Load_Sprites()
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
         else
-            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
-            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
+            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
             --self.hadToDownload = true
         end
     end
@@ -219,7 +219,7 @@ function sScriptConfig:Load_Sprites()
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
         else
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
             self.hadToDownload = true
         end
     end
@@ -232,7 +232,7 @@ function sScriptConfig:Load_Sprites()
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
         else
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
             self.hadToDownload = true
         end
     end
@@ -242,14 +242,14 @@ function sScriptConfig:Load_Sprites()
             if FileExist(SPRITE_PATH .. location) then
                 self.Sprites[sprite] = createSprite(location)
             else
-                DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+                DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
                 self.hadToDownload = true
             end
             location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. "_selected.png"
             if FileExist(SPRITE_PATH .. location) then
                 self.Sprites[sprite.."_selected"] = createSprite(location)
             else
-                DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+                DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
                 self.hadToDownload = true
             end
         elseif self.substates[sprite] then
@@ -258,14 +258,14 @@ function sScriptConfig:Load_Sprites()
                 if FileExist(SPRITE_PATH .. location) then
                     self.Sprites[k] = createSprite(location)
                 else
-                    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+                    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
                     self.hadToDownload = true
                 end
                 location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. "_selected.png"
                 if FileExist(SPRITE_PATH .. location) then
                     self.Sprites[k.."_selected"] = createSprite(location)
                 else
-                    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+                    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
                     self.hadToDownload = true
                 end
             end
@@ -277,14 +277,14 @@ function sScriptConfig:Load_Sprites()
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
         else
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
             self.hadToDownload = true
         end
         location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. "_selected.png"
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite.."_selected"] = createSprite(location)
         else
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
             self.hadToDownload = true
         end
         if par.code == SCRIPT_PARAM_LIST then
@@ -293,7 +293,7 @@ function sScriptConfig:Load_Sprites()
                 if FileExist(SPRITE_PATH .. location) then
                     self.Sprites[k] = createSprite(location)
                 else
-                    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait..."..location) end)
+                    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
                     self.hadToDownload = true
                 end
             end
