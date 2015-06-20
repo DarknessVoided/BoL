@@ -112,10 +112,6 @@ function Load()
   DelayAction(function() ScriptologyMsg("Loaded the latest version (v"..ScriptologyVersion..")") end, 3)
 end
 
-function OnWndMsg(Msg, Key)
-  print(string.byte(0))
-end
-
 function Auth()
   if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
   authList = { }

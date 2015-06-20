@@ -302,7 +302,7 @@ function sScriptConfig:Load_Sprites()
     else
         self:Unload_Sprites()
         print("Reloading... Please wait!")
-        DelayAction(function() self.loaded = false end, 3)
+        DelayAction(function() self.loaded = false end, 5)
     end
 end
 
