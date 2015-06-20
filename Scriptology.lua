@@ -3539,7 +3539,7 @@ function Rengar:Combo()
     self.osTarget = self.Forcetarget
     Target = self.Forcetarget
   end
-  if self.ultOn or self.isLeap then 
+  if self.osTarget or self.ultOn or self.isLeap then 
     if self.osTarget == nil then self.osTarget = Target end
     self:OneShot()
   elseif not self.ultOn then
