@@ -28,7 +28,7 @@ function OnTick()
 		end
 	end
 	if Config.s then
-		if Target ~= nil then
+		if Target ~= nil and not Target.dead then
 			hposh, hchance, hhpos = SP:Predict(spell, myHero, Target)
 			if hchance and hchance >= Config.hc then
 				if Config.p then print("Shootchance:"..hchance) end
