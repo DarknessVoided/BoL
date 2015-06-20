@@ -208,10 +208,6 @@ function sScriptConfig:Load_Sprites()
         location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
-        else
-            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
-            --DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading sprites please wait... "..location) end)
-            --self.hadToDownload = true
         end
     end
     for _, sprite in pairs(self.numTable) do
