@@ -2,15 +2,18 @@ require("SPrediction")
 SP = SPrediction()
 local sts
 local Target
-local spell = _Q
+local spells = {_Q, _W, _E, _R}
+local str    = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 local minHitDistance = 75
 local pos, chance, hpos, hhpos, hposh, hchance
 
 function OnLoad() 
   	Config = scriptConfig("Scriptology Prediction Tester", "SPT")
-  	Config:addParam("s", "Shoot", SCRIPT_PARAM_ONKEYTOGGLE, false, 32)
+  	Config:addParam("s", "Shoot", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   	Config:addParam("hc","Hitchance", SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
-  	Config:addParam("spell","Spell", SCRIPT_PARAM_SLICE, 0, 0, 3, 0)
+  	for _,k in pairs(spells) do
+  		Config:addParam(""..k, "Spell "..str[k], SCRIPT_PARAM_ONOFF, false)
+  	end
   	Config:addParam("p", "Print", SCRIPT_PARAM_ONOFF, false)
   	Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, false)
   	sts = TargetSelector(TARGET_LESS_CAST, 3500, DAMAGE_MAGIC)
@@ -18,30 +21,39 @@ function OnLoad()
 end
 
 function OnTick()
-	spell = Config.spell
-	local speed, delay, range, width, coll, type = SP:GetData(spell, myHero)
 	sts:update()
 	Target = sts.target
-	for _,v in pairs(GetEnemyHeroes()) do
-		if not v.dead then 
-			if range and width and GetDistance(myHero,v) <= range+width and GetDistance(myHero,v) >= minHitDistance and (not Target or v.health < Target.health) then Target = v end
+	for _,spell in pairs(spells) do
+		if Config[""..spell] then
+			local speed, delay, range, width, coll, type = SP:GetData(spell, myHero)
+			for _,v in pairs(GetEnemyHeroes()) do
+				if not v.dead then 
+					if range and width and GetDistance(myHero,v) <= range+width and GetDistance(myHero,v) >= minHitDistance and (not Target or v.health < Target.health) then Target = v end
+				end
+			end
 		end
 	end
 	if Config.s then
-		if Target ~= nil and not Target.dead then
-			hposh, hchance, hhpos = SP:Predict(spell, myHero, Target)
-			if hchance and hchance >= Config.hc then
-				if Config.p then print("Shootchance:"..hchance) end
-				CastSpell(spell, hposh.x, hposh.z)
-			end
+		if Target ~= nil then
+  			for _,spell in pairs(spells) do
+  				if Config[""..spell] then
+					hposh, hchance, hhpos = SP:Predict(spell, myHero, Target)
+					if hchance and hchance >= Config.hc then
+						if Config.p then print("Shootchance:"..hchance) end
+						CastSpell(spell, hposh.x, hposh.z)
+					end
+				end
+  			end
 		end
 	end
 end
 
 function OnDraw()
 	if not Config.d then return end
-	local speed, delay, range, width, coll, type = SP:GetData(spell, myHero)
-	DrawCircle3D(myHero.x, myHero.y, myHero.z, range, 1, ARGB(255,255,255,255), 32)
+	for _,spell in pairs(spells) do
+		local speed, delay, range, width, coll, type = SP:GetData(spell, myHero)
+		DrawCircle3D(myHero.x, myHero.y, myHero.z, range, 1, ARGB(255,255,255,255), 32)
+	end
 
 	DrawHitBox(myHero, 2, ARGB(255,255,255,255))
 	ppos, range = SP:PredictPos(myHero)
@@ -73,8 +85,12 @@ function OnDraw()
 	predTarget = Target --{x = mousePos.x, y = mousePos.y, z = mousePos.z, name = "cursor", charName = "cursor", ms = 400, unitAddRange = myHero.unitAddRange}
 	if predTarget ~= nil then
 		if not Config.s then
-			pos, chance, hpos = SP:Predict(spell, myHero, predTarget)
-			if chance and chance > 0 and Config.p then print(predTarget.charName.." Hitchance:"..chance) end
+  			for _,spell in pairs(spells) do
+  				if Config[""..spell] then
+					pos, chance, hpos = SP:Predict(spell, myHero, predTarget)
+					if chance and chance > 0 and Config.p then print(predTarget.charName.." Hitchance:"..chance) end
+				end
+			end
 		end
 		ppos, range = SP:PredictPos(predTarget)
 		DrawCircle3D(ppos.x, ppos.y, ppos.z, range, 1, ARGB(255,255,255,255), 32)
