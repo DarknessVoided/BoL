@@ -782,7 +782,7 @@ function GetLichSlot()
 end
 
 function isInvinc(unit)
-  if unit == nil then return end
+  if unit == nil then if self == nil then return else unit = self end end
   for i=1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name then 
