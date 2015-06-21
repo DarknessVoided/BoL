@@ -781,7 +781,7 @@ function GetLichSlot()
   return nil
 end
 
-function isInvinc(unit)
+function IsInvinc(unit)
   if unit == nil then if self == nil then return else unit = self end end
   for i=1, unit.buffCount do
    local buff = unit:getBuff(i)
@@ -792,8 +792,8 @@ function isInvinc(unit)
   return false
 end
 
-function isRecalling(unit)
-  if unit == nil then return end
+function IsRecalling(unit)
+  if unit == nil then if self == nil then return else unit = self end end
   for i=1, unit.buffCount do
    local buff = unit:getBuff(i)
    if buff and buff.valid and buff.name then 
@@ -1804,7 +1804,7 @@ class "Darius"
       if myHero:CanUseSpell(_E) == READY then
         self:CastE(Target)
       end
-      if myHero:CanUseSpell(_R) == READY and not isInvinc(Target) and GetDmg(_R, myHero, Target) > Target.health+Target.shield and Config:getParam("Combo", "R") then
+      if myHero:CanUseSpell(_R) == READY and not IsInvinc(Target) and GetDmg(_R, myHero, Target) > Target.health+Target.shield and Config:getParam("Combo", "R") then
         Cast(_R, enemy, true)
       end
     end
@@ -1838,7 +1838,7 @@ class "Darius"
       local rDmg = ((GetDmg(_R, myHero, enemy)) or 0)
       local iDmg = (50 + 20 * myHero.level) / 5
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
-        if not isInvinc(enemy) and myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
+        if not IsInvinc(enemy) and myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
           Cast(_R, enemy, true)
         elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, 450) then
           self:CastQ(enemy)
@@ -1851,7 +1851,7 @@ class "Darius"
             self:CastE(enemy)
             DelayAction(function() CastSpell(_W, myHero:Attack(enemy)) end, 0.38)
           end
-        elseif not isInvinc(enemy) and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
+        elseif not IsInvinc(enemy) and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
       if ScriptologyDebug then print(rDmg)  end
           Cast(_R, enemy, true)
         elseif enemy.health+enemy.shield < iDmg and Config:getParam("Killsteal", "I") and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
@@ -2552,7 +2552,7 @@ class "Lux"
   end
 
   function Lux:ShieldManager(unit, spell)
-    if not unit.isMe and unit.team ~= myHero.team and not isRecalling(myHero) and Config:getParam("Misc", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if not unit.isMe and unit.team ~= myHero.team and not IsRecalling(myHero) and Config:getParam("Misc", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
       if spell.target and spell.target.isMe then
         if Config:getParam("Misc", "Wa") and myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
           Cast(_W, myHero)
@@ -2874,7 +2874,7 @@ class "Nidalee"
   end
 
   function Nidalee:Heal()
-    if not isRecalling(myHero) and self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap then
+    if not IsRecalling(myHero) and self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap then
       Cast(_E, myHero, true)
     end
     if self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") <= myHero.mana/myHero.maxMana*100 then
@@ -3722,7 +3722,7 @@ function Rumble:Menu()
 end
 
 function Rumble:DoW()
-  if Config:getParam("Misc", "Wa") and not isRecalling(myHero) and myHero.mana < 40 then
+  if Config:getParam("Misc", "Wa") and not IsRecalling(myHero) and myHero.mana < 40 then
     CastSpell(_W)
   end
 end
