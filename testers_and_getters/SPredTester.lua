@@ -4,7 +4,6 @@ local sts
 local Target
 local spells = {_Q, _W, _E, _R}
 local str    = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
-local minHitDistance = 75
 
 function OnLoad() 
   	Config = scriptConfig("Scriptology Prediction Tester", "SPT")
@@ -25,7 +24,7 @@ function OnTick()
 			local speed, delay, range, width, coll, type = SP:GetData(spell, myHero)
 			for _,v in pairs(GetEnemyHeroes()) do
 				if not v.dead then 
-					if range and width and GetDistance(myHero,v) <= range+width and GetDistance(myHero,v) >= minHitDistance and (not Target or v.health < Target.health) then Target = v end
+					if range and width and GetDistance(myHero,v) <= range+width and GetDistance(myHero,v) >=75 and (not Target or v.health < Target.health) then Target = v end
 				end
 			end
 		end
