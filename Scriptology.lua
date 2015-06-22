@@ -13,6 +13,7 @@
 ]]--
 
 --[[
+  SAhriVersion          = 1
   SAsheVersion          = 1.4 -- removed ult over whole map
   SAzirVersion          = 0
   SBlitzcrankVersion    = 1
@@ -49,14 +50,14 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.54
+_G.ScriptologyVersion    = 1.55
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
 
 function OnLoad()
   require("sScriptConfig")
-  champList = { "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
+  champList = { "Ahri", "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
                 "Darius", "Ekko", 
                 "Kalista", "LeeSin", "Lux", "Malzahar", 
                 "Nidalee", "Orianna", "Rengar", "Riven",
@@ -215,6 +216,12 @@ function Vars()
   end
   stackTable = {}
   championData = {
+      ["Ahri"] = {
+        [_Q] = { range = 880, delay = 0.25, speed = 1600, width = 100, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.35*AP end},
+        [_W] = { range = 600, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.4*AP end},
+        [_E] = { range = 950, delay = 0.25, speed = 1550, width = 60, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.5*AP end},
+        [_R] = { range = 800, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+30+0.3*AP end}
+      },
       ["Ashe"] = {
         [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.05*level+1.1)*TotalDmg end},
         [_W] = { speed = 902, delay = 0.5, range = 1200, width = 100, collision = true, aoe = false, type = "cone", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10*level+30+TotalDmg end},
@@ -408,6 +415,9 @@ function Vars()
   previousAttackCooldown = 0
   ultOn = 0
   trackList = {
+      ["Ahri"] = {
+        "AhriSeduce"
+      },
       ["Brand"] = {
         "brandablaze"
       },
@@ -434,7 +444,6 @@ function Vars()
       ["Ashe"] = { "Ashe_Base_Q_Ready.troy" },
       ["Azir"] = { "AzirSoldier" },
       ["Ekko"] = { "Ekko", "Ekko_Base_Q_Aoe_Dilation.troy", "Ekko_Base_W_Detonate_Slow.troy", "Ekko_Base_W_Indicator.troy", "Ekko_Base_W_Cas.troy" },
-      ["Lux"]  = { "" },
       ["Orianna"] = { "TheDoomBall" }
   }
   objTimeTrackList = {
@@ -501,6 +510,30 @@ function SetupOrbwalk()
   end
 end
 
+function DisableOrbwalkerMovement()
+  if _G.Reborn_Loaded then
+    _G.AutoCarry.MyHero:MovementEnabled(false)
+  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+    _G["BigFatOrb_DisableMove"] = true
+  elseif self.OrbLoaded == "SxOrbWalk" then
+    SxOrb:DisableMove()
+  elseif FileExist(LIB_PATH .. "SOW.lua") then
+    SOWVP.Move = false
+  end
+end
+
+function EnableOrbwalkerMovement()
+  if _G.Reborn_Loaded then
+    _G.AutoCarry.MyHero:MovementEnabled(true)
+  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+    _G["BigFatOrb_DisableMove"] = false
+  elseif self.OrbLoaded == "SxOrbWalk" then
+    SxOrb:EnableMove()
+  elseif FileExist(LIB_PATH .. "SOW.lua") then
+    SOWi.Move = true
+  end
+end
+
 function Tick()
   if myHero.charName ~= "Blitzcrank" then Target = GetCustomTarget() end
   Mobs:update()
@@ -521,15 +554,16 @@ function Tick()
       loadedClass:Combo()
     end
   end
+
   if myHero.charName ~= "Riven" then
     if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
       loadedClass:LastHit()
     end
+  end
 
     if Config:getParam("LaneClear", "LaneClear") then
       loadedClass:LaneClear()
     end
-  end
 
   if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
 end
@@ -634,10 +668,15 @@ function CreateObj(object)
   if object and object.valid and object.name then
     for _,name in pairs(objTrackList[myHero.charName]) do
       if object.name == name then
+        if myHero.charName == "Ahri" and GetDistance(obj) < 500 then
+          objHolder[object.name] = object
+          objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+        elseif myHero.charName ~= "Ahri" then
+          objHolder[object.name] = object
+          objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+        end
         --table.insert(objHolder, object)
         --table.insert(objTimeHolder, GetInGameTimer() + objTimeTrackList[myHero.charName][_])
-        objHolder[object.name] = object
-        objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
         if ScriptologyDebug then print("Object "..object.name.." created. Now tracking!") end
       end
     end
@@ -657,7 +696,6 @@ end
 
 function ApplyBuff(source, unit, buff)
   if source and source.isMe and buff and unit then
-    --print(buff.name)
     for _,name in pairs(trackList[myHero.charName]) do
       if buff.name:find(name) then
         stackTable[unit.networkID] = 1
@@ -1060,6 +1098,18 @@ function GetLowestMinion(range)
   return minionTarget
 end
 
+function GetClosestMinion(range)
+  local minionTarget = nil
+  for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+    if minionTarget == nil then 
+      minionTarget = minion
+    elseif GetDistance(minionTarget) > GetDistance(minion) and ValidTarget(minion, range) then
+      minionTarget = minion
+    end
+  end
+  return minionTarget
+end
+
 function GetJMinion(range)
   local minionTarget = nil
   for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
@@ -1079,6 +1129,218 @@ end
 --[[ Champion specific parts from here ]]--
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "Ahri"
+
+  function Ahri:__init()
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    self:Menu()
+    self.Orb = nil
+    self.ultOn = 0
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
+    AddTickCallback(function() self:Tick() end)
+    AddDrawCallback(function() self:Draw() end)
+  end
+
+  function Ahri:Menu()
+    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
+      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+    end
+    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
+      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
+    end
+    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+  end
+
+  function Ahri:ProcessSpell(unit, spell)
+    if unit and unit.isMe and not self.Orb then
+      if spell.name == "AhriOrbofDeception" then
+        self.Orb = {time = GetInGameTimer(), dir = Vector(spell.endPos)}
+      end
+      if spell.name == "AhriTumble" then
+        if self.ultOn < GetInGameTimer()-10 then self.ultOn = GetInGameTimer() print("ulton") end
+      end
+    end
+  end
+
+  function Ahri:Tick()
+    if Config:getParam("Misc", "Qc") then self:CatchQ() end
+  end
+
+  function Ahri:Draw()
+    if self.Orb and self.Orb.time > GetInGameTimer()-2 then
+      local draw = Vector(self.Orb.dir)+(Vector(self.Orb.dir)-myHero):normalized()*(data[0].range-GetDistance(self.Orb.dir))
+      DrawLine3D(myHero.x, myHero.y, myHero.z, draw.x, draw.y, draw.z, data[0].width, ARGB(35, 255, 255, 255))
+    else
+      self.Orb = nil
+    end
+  end
+
+  function Ahri:LastHit()
+    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+      minion = GetLowestMinion(data[_Q].range)
+      if minion and minion < GetDmg(_Q, myHero, minion) then 
+        Cast(_Q, minion)
+      end
+    end
+    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+      minion = GetClosestMinion(data[_W].range)
+      if minion and minion.health < GetDmg(_W, myHero, minion) then 
+        Cast(_W)
+      end
+    end
+    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+      minion = GetLowestMinion(data[_E].range)
+      if minion and minion.health < GetDmg(_E, myHero, minion) then 
+        Cast(_E, minion)
+      end
+    end
+  end
+
+  function Ahri:LaneClear()
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      BestPos, BestHit = GetLineFarmPosition(data[_Q].range, data[_Q].width)
+      if BestPos and BestHit > 1 then 
+        Cast(_Q, BestPos)
+      end
+    end
+    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+      minion = GetClosestMinion(data[_W].range)
+      if minion and minion.health < GetDmg(_W, myHero, minion) then 
+        Cast(_W)
+      end
+    end
+    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+      minion = GetLowestMinion(data[_E].range)
+      if minion and minion.health < GetDmg(_E, myHero, minion) then 
+        Cast(_E, minion)
+      end
+    end
+  end
+
+  function Ahri:Combo()
+    if sReady[_E] and Config:getParam("Combo", "E") and GetDistance(Target) < data[2].range then
+      Cast(_E, Target, false, true, 2)
+    end
+    if GetStacks(Target) > 0 then
+      if sReady[_Q] and Config:getParam("Combo", "Q") and GetDistance(Target) < data[0].range then
+        Cast(_Q, Target, false, true, 2)
+      end
+      if sReady[_W] and Config:getParam("Combo", "W") and GetDistance(Target) < data[1].range then
+        Cast(_W)
+      end
+    else
+      if sReady[_Q] and Config:getParam("Combo", "Q") and GetDistance(Target) < data[0].range then
+        Cast(_Q, Target, false, true, 2)
+      end
+      if sReady[_W] and Config:getParam("Combo", "W") and GetDistance(Target) < data[1].range then
+        Cast(_W)
+      end
+      self:CatchQ()
+    end
+    if Target.health < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < data[3].range then
+      Cast(_R, Target)
+    elseif self.ultOn > GetInGameTimer()-10 and (not self.Orb or self.Orb.time < GetInGameTimer()-1.5) and GetDistance(Target) < data[3].range then
+      Cast(_R, Target)
+    end
+  end
+
+  function Ahri:CatchQ()
+    if Target and self.Orb and self.Orb.time > GetInGameTimer()-1.5 then
+      DisableOrbwalkerMovement()
+      local x,y,z = UPL:Predict(_Q,Vector(self.Orb.dir)+(Vector(self.Orb.dir)-myHero):normalized()*(data[0].range-GetDistance(self.Orb.dir)),Target)
+      local x = Vector(self.Orb.dir)+(x-Vector(self.Orb.dir)):normalized()*(data[0].range)
+      if self.ultOn > GetInGameTimer()-10 then
+        local x = Vector(x)-(Vector(target)-myHero):normalized()*data[3].range
+        Cast(_R,x)
+      else
+        myHero:MoveTo(x.x,x.z)
+      end
+      if GetDistance(x) < 50  then
+        EnableOrbwalkerMovement()   
+      end 
+    else
+      EnableOrbwalkerMovement() 
+    end
+  end
+
+  function Ahri:Harrass()
+    if sReady[_E] and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[2].range then
+      Cast(_E, Target, false, true, 2)
+    end
+    if GetStacks(Target) > 0 then
+      if sReady[_Q] and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[0].range then
+        Cast(_Q, Target, false, true, 2)
+      end
+      if sReady[_W] and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
+        Cast(_W)
+      end
+    else
+      if sReady[_Q] and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[0].range then
+        Cast(_Q, Target, false, true, 2)
+      end
+      if sReady[_W] and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
+        Cast(_W)
+      end
+      self:CatchQ()
+    end
+  end
+
+  function Ahri:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+          Cast(_Q, enemy, false, true, 1.5)
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q")*2 and ValidTarget(enemy, data[0].range) then
+          Cast(_Q, enemy, false, true, 2)
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+          Cast(_W)
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.5)
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+          Cast(_R, enemy)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[3].range) then
+          Cast(_Q, enemy, false, true, 1.5)
+          Cast(_R, enemy)
+        elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[3].range) then
+          Cast(_W)
+          Cast(_R, enemy)
+        elseif myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.5)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_R, enemy) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+          Cast(_Q, enemy, false, true, 1.5)
+          Cast(_W)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.5)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+        elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.5)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_W) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.5)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.5)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) Cast(_R, enemy) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+        end
+      end
+    end
+  end
+  
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 
