@@ -50,7 +50,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.59
+_G.ScriptologyVersion    = 1.60
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -1483,7 +1483,7 @@ class "Ashe"
 
   function Ashe:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and self:QReady() and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           CastSpell(_Q, myHero:Attack(enemy))
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
@@ -1606,7 +1606,7 @@ class "Blitzcrank"
 
   function Blitzcrank:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 2)
         elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
@@ -1827,7 +1827,7 @@ class "Brand"
 
   function Brand:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
@@ -1988,7 +1988,7 @@ class "Cassiopeia"
 
   function Cassiopeia:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
@@ -2132,7 +2132,7 @@ class "Darius"
       local wDmg = ((GetDmg(_W, myHero, enemy)) or 0)   
       local rDmg = ((GetDmg(_R, myHero, enemy)) or 0)
       local iDmg = (50 + 20 * myHero.level) / 5
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if not IsInvinc(enemy) and myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
           Cast(_R, enemy, true)
         elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, 450) then
@@ -2267,7 +2267,7 @@ class "Ekko"
 
   function Ekko:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
         elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
@@ -2412,7 +2412,7 @@ class "Kalista"
 
   function Kalista:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
           Cast(_E)
         elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
@@ -2470,7 +2470,7 @@ class "LeBlanc"
 
   function LeBlanc:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       end
     end
   end
@@ -2791,7 +2791,7 @@ class "LeeSin"
 
   function LeeSin:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
         elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+self:QDmg(enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
@@ -2924,7 +2924,7 @@ class "Lux"
 
   function Lux:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
@@ -3092,7 +3092,7 @@ class "Malzahar"
 
   function Malzahar:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
@@ -3405,7 +3405,7 @@ class "Nidalee"
 
   function Nidalee:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
@@ -3630,7 +3630,7 @@ end
 
 function Orianna:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       local Ball = objHolder["TheDoomBall"] or myHero
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         Cast(_Q, Target, false, true, 1.5, Ball)
@@ -3961,7 +3961,7 @@ end
 
 function Rengar:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         CastSpell(_Q, myHero:Attack(enemy))
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
@@ -4097,7 +4097,7 @@ end
 
 function Rumble:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         Cast(_Q, enemy, false, true, 1.2)
       elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
@@ -4185,7 +4185,7 @@ end
 
 function Teemo:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         Cast(_Q, enemy, true)
       elseif enemy.health < GetDmg("AD", myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, myHero.radius+myHero.boundingRadius) then
@@ -4330,7 +4330,7 @@ end
 
 function Volibear:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         Cast(_Q)
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
@@ -4524,7 +4524,7 @@ end
 
 function Sample:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and enemy.visible then
+    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
         Cast(_Q, enemy, false, true, 1.2)
       elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
