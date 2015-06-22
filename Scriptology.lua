@@ -1168,7 +1168,7 @@ class "Ahri"
         self.Orb = {time = GetInGameTimer(), dir = Vector(spell.endPos)}
       end
       if spell.name == "AhriTumble" then
-        if self.ultOn < GetInGameTimer()-10 then self.ultOn = GetInGameTimer() print("ulton") end
+        if self.ultOn < GetInGameTimer()-10 then self.ultOn = GetInGameTimer() end
       end
     end
   end
@@ -1229,6 +1229,7 @@ class "Ahri"
   end
 
   function Ahri:Combo()
+    if not Target then return end
     if sReady[_E] and Config:getParam("Combo", "E") and GetDistance(Target) < data[2].range then
       Cast(_E, Target, false, true, 2)
     end
@@ -1256,12 +1257,12 @@ class "Ahri"
   end
 
   function Ahri:CatchQ()
-    if Target and self.Orb and self.Orb.time > GetInGameTimer()-1.5 then
+    if Target and self.Orb and self.Orb.dir and self.Orb.time > GetInGameTimer()-1.5 then
       DisableOrbwalkerMovement()
       local x,y,z = UPL:Predict(_Q,Vector(self.Orb.dir)+(Vector(self.Orb.dir)-myHero):normalized()*(data[0].range-GetDistance(self.Orb.dir)),Target)
       local x = Vector(self.Orb.dir)+(x-Vector(self.Orb.dir)):normalized()*(data[0].range)
       if self.ultOn > GetInGameTimer()-10 then
-        local x = Vector(x)-(Vector(target)-myHero):normalized()*data[3].range
+        local x = Vector(x)-(Vector(Target)-myHero):normalized()*data[3].range
         Cast(_R,x)
       else
         myHero:MoveTo(x.x,x.z)
@@ -1275,6 +1276,7 @@ class "Ahri"
   end
 
   function Ahri:Harrass()
+    if not Target then return end
     if sReady[_E] and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[2].range then
       Cast(_E, Target, false, true, 2)
     end
