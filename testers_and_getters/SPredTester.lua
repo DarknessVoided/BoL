@@ -5,7 +5,6 @@ local Target
 local spells = {_Q, _W, _E, _R}
 local str    = { [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R" }
 local minHitDistance = 75
-local pos, chance, hpos, hhpos, hposh, hchance
 
 function OnLoad() 
   	Config = scriptConfig("Scriptology Prediction Tester", "SPT")
@@ -15,7 +14,7 @@ function OnLoad()
   		Config:addParam(""..k, "Spell "..str[k], SCRIPT_PARAM_ONOFF, false)
   	end
   	sts = TargetSelector(TARGET_LESS_CAST, 3500, DAMAGE_MAGIC)
-  	print("<font color=\"#6699ff\"><b>[Scriptology Prediction]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">Loaded.</font>") 
+  	print("<font color=\"#6699ff\"><b>[Scriptology Prediction Tester]: </b></font> <font color=\"#FFFFFF\">Loaded.</font>") 
 end
 
 function OnTick()
@@ -35,9 +34,9 @@ function OnTick()
 		if Target ~= nil then
   			for _,spell in pairs(spells) do
   				if Config[""..spell] then
-					hposh, hchance, hhpos = SP:Predict(spell, myHero, Target)
-					if hchance and hchance >= Config.hc then
-						CastSpell(spell, hposh.x, hposh.z)
+					CastPosition, HitChance = SP:Predict(spell, myHero, Target)
+					if CastPosition and HitChance >= Config.hc then
+						CastSpell(spell, CastPosition.x, CastPosition.z)
 					end
 				end
   			end
