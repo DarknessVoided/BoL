@@ -14,7 +14,6 @@ function OnLoad()
   	for _,k in pairs(spells) do
   		Config:addParam(""..k, "Spell "..str[k], SCRIPT_PARAM_ONOFF, false)
   	end
-  	Config:addParam("p", "Print", SCRIPT_PARAM_ONOFF, false)
   	sts = TargetSelector(TARGET_LESS_CAST, 3500, DAMAGE_MAGIC)
   	print("<font color=\"#6699ff\"><b>[Scriptology Prediction]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">Loaded.</font>") 
 end
@@ -38,7 +37,6 @@ function OnTick()
   				if Config[""..spell] then
 					hposh, hchance, hhpos = SP:Predict(spell, myHero, Target)
 					if hchance and hchance >= Config.hc then
-						if Config.p then print("Shootchance:"..hchance) end
 						CastSpell(spell, hposh.x, hposh.z)
 					end
 				end
