@@ -307,7 +307,7 @@ function sScriptConfig:Load_Sprites()
 end
 
 function sScriptConfig:Draw()
-    if IsKeyDown(16) and self.loaded then
+    if (self.keyChange or IsKeyDown(16)) and self.loaded then
         self.Sprites["top"]:SetScale(self.Scale.x,self.Scale.z)
         self.Sprites["top"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4, 255)
         if self.Sprites["Scripts\\"..self.name.." Logo"] then

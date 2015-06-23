@@ -1281,28 +1281,30 @@ class "Ahri"
       self:CatchQ()
     end
     if Target.health < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < data[3].range then
-      Cast(_R, Target)
+      local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
+      Cast(_R, ultPos)
     elseif self.ultOn > GetInGameTimer()-10 and (not self.Orb or self.Orb.time < GetInGameTimer()-1.5) and GetDistance(Target) < data[3].range then
-      Cast(_R, Target)
+      local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
+      Cast(_R, ultPos)
     end
   end
 
   function Ahri:CatchQ()
     if Target and self.Orb and self.Orb.dir and self.Orb.time > GetInGameTimer()-1.5 then
-      DisableOrbwalkerMovement()
+      --DisableOrbwalkerMovement()
       local x,y,z = UPL.VP:GetLineCastPosition(Target, data[0].delay, data[0].width, data[0].range, data[0].speed, Vector(Vector(self.Orb.dir)+(Vector(self.Orb.dir)-myHero):normalized()*(data[0].range-GetDistance(self.Orb.dir))), data[0].collision)
       local x = Vector(self.Orb.dir)+(x-Vector(self.Orb.dir)):normalized()*(data[0].range)
       if self.ultOn > GetInGameTimer()-10 then
         x = Vector(x)-(Vector(Target)-myHero):normalized()*data[3].range
         Cast(_R,x)
       else
-        myHero:MoveTo(x.x,x.z)
+        --myHero:MoveTo(x.x,x.z)
       end
       if x and GetDistance(x) < 50  then
-        EnableOrbwalkerMovement()   
+        --EnableOrbwalkerMovement()   
       end 
     else
-      EnableOrbwalkerMovement() 
+      --EnableOrbwalkerMovement() 
     end
   end
 
@@ -1332,25 +1334,26 @@ class "Ahri"
   function Ahri:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        local ultPos = Vector(enemy.x, enemy.y, enemy.z) - ( Vector(enemy.x, enemy.y, enemy.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q")*2 and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)*2 and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 2)
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
           Cast(_W)
         elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
         elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy)
+          Cast(_R, ultPos)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[3].range) then
           Cast(_Q, enemy, false, true, 1.5)
           Cast(_R, enemy)
         elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[3].range) then
           Cast(_W)
-          Cast(_R, enemy)
+          Cast(_R, ultPos)
         elseif myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
-          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_R, enemy) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_R, ultPos) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
           Cast(_Q, enemy, false, true, 1.5)
           Cast(_W)
@@ -1365,7 +1368,7 @@ class "Ahri"
           DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
-          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) Cast(_R, enemy) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
+          DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) Cast(_R, ultPos) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
         end
       end
     end
