@@ -37,7 +37,7 @@ return {
         [_Q] = { speed = 1100, delay = 0.25, range = 850, width = 108, collision = true, aoe = false, type = "linear"}
     },
     ["Blitzcrank"] = {
-        [_Q] = { speed = 1620, delay = 0.250, range = 900, width = 70, collision = true, type = "linear"},
+        [_Q] = { speed = 1800, delay = 0.250, range = 900, width = 70, collision = true, type = "linear"},
         [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular"}
     },
     ["Brand"] = {
