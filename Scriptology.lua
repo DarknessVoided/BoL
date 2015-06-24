@@ -559,11 +559,11 @@ function Tick()
     if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
       loadedClass:LastHit()
     end
-  end
 
     if Config:getParam("LaneClear", "LaneClear") then
       loadedClass:LaneClear()
     end
+  end
 
   if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
 end
