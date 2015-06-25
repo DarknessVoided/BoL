@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 1.9
+    _G.UPLversion = 2
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -86,7 +86,7 @@ function UPL:__init()
       table.insert(self.predTable, "SPrediction")
     end
     self:Update()
-    DelayAction(function() self:Loaded() end, 5)
+    DelayAction(function() self:Loaded() end, 3)
     return self
   end
 end
@@ -247,13 +247,13 @@ function UPL:VPredict(Target, spell, source)
   end
 end
 
-function UPL:ReturnPred()
+function UPL:ReturnPred(x)
     if self:ActivePred() == "VPrediction" then
       return self.VP
     elseif self:ActivePred() == "HPrediction" then
       return self.HP
     elseif self:ActivePred() == "SPrediction" then
-      return self.TKP
+      return self.SP
     elseif self:ActivePred() == "DivinePrediction" then
       return self.DP
     end
@@ -265,7 +265,7 @@ function UPL:ActivePred()
 end
 
 function UPL:SetActive(pred)
-  for i=1,#predTable do
+  for i=1,#self.predTable do
     if predTable[i] == pred then
       self.ActiveP = i
     end

@@ -533,7 +533,7 @@ function sScriptConfig:Msg(Msg, Key)
     if Msg == KEY_UP and Key == 16 then
         self:save()
     end
-    if Msg == WM_LBUTTONDOWN then
+    if Msg == WM_LBUTTONDOWN and (self.keyChange or IsKeyDown(16)) then
         if CursorIsUnder(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2, self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.Scale.z*self.offsets.bot/2) then
             self.resize = true
         end
