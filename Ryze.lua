@@ -7,7 +7,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 function OnLoad() 
 	passiveTracker = 0 
 	ForceTarget = nil 
-	targetSelector = TargetSelector(TARGET_CLOSEST, 900, DAMAGE_MAGICAL, false, true)
+	targetSelector = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
 	Config = scriptConfig("Smashing Ryze", "SRyze") 
 	Config:addParam("k", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32) 
 	Config:addTS(targetSelector) 
@@ -34,7 +34,7 @@ function OnTick()
 			end 
 			if passiveTracker >= 5 then 
 				if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then
-					CastSpell(_Q, target.x, target.z) 
+					SP.SpellData[myHero.charName][_Q].collision = false
 				elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then 
 					CastSpell(_E, target) 
 				elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then
@@ -43,6 +43,7 @@ function OnTick()
 					CastSpell(_R, target) 
 				end 
 			else 
+				SP.SpellData[myHero.charName][_Q].collision = true
 				CastSpell(_W, target) 
 				CastSpell(_E, target) 
 			end 
