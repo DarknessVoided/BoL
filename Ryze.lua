@@ -8,9 +8,9 @@ function OnLoad()
 	passiveTracker = 0 
 	ForceTarget = nil 
 	targetSelector = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
-	cfg = scriptConfig("Smashing Ryze", "SRyze") 
-	cfg:addParam("k", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32) 
-	cfg:addTS(targetSelector) 
+	Config = scriptConfig("Smashing Ryze", "SRyze") 
+	Config:addParam("k", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32) 
+	Config:addTS(targetSelector) 
 end 
 
 function OnTick() 
@@ -19,7 +19,7 @@ function OnTick()
 	if Forcetarget ~= nil and ValidTarget(Forcetarget, 900) then 
 		target = Forcetarget 
 	end 
-	if cfg.k then 
+	if Config.k then 
 		if GetDistance(mousePos) > myHero.boundingRadius then 
 			myHero:MoveTo(mousePos.x, mousePos.z) 
 		end 
