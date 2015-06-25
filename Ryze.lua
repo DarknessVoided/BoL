@@ -58,6 +58,7 @@ function OnTick()
 		end 
 	end 
 end 
+
 function OnWndMsg(Msg, Key) if Msg == WM_LBUTTONDOWN then local minD = 0 local starget = nil for i, enemy in ipairs(GetEnemyHeroes()) do if ValidTarget(enemy) then if GetDistance(enemy, mousePos) <= minD or starget == nil then minD = GetDistance(enemy, mousePos) starget = enemy end end end if starget and minD < 500 then if Forcetarget and starget.charName == Forcetarget.charName then Forcetarget = nil else Forcetarget = starget print("<font color=\"#FF0000\">Smashing Ryze: New target selected: "..starget.charName.."</font>") end end end end 
 
 function OnApplyBuff(unit, buff) 
