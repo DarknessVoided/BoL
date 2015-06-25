@@ -13,6 +13,7 @@ function OnLoad()
 	ForceTarget = nil 
 	targetSelector = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
 	Config = scriptConfig("Smashing Ryze", "SRyze") 
+	Config:addParam("m", "Move to mouse", SCRIPT_PARAM_ONOFF, true)
 	Config:addParam("k", "Combo (HOLD)", SCRIPT_PARAM_ONKEYDOWN, false, 32) 
 	Config:addTS(targetSelector) 
 end 
@@ -24,7 +25,7 @@ function OnTick()
 		target = Forcetarget 
 	end 
 	if Config.k then 
-		if GetDistance(mousePos) > myHero.boundingRadius then 
+		if GetDistance(mousePos) > myHero.boundingRadius and Config.m then 
 			myHero:MoveTo(mousePos.x, mousePos.z) 
 		end 
 		if target and GetDistance(target) < 900 then 
