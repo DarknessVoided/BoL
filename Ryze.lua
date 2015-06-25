@@ -33,7 +33,9 @@ function OnTick()
 				end  
 			end 
 			if passiveTracker >= 5 then 
-				if myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then 
+				if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then
+					CastSpell(_Q, target.x, target.z) 
+				elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then 
 					CastSpell(_E, target) 
 				elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 then
 					CastSpell(_W, target) 
