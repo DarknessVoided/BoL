@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2
+    _G.UPLversion = 2.01
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -266,7 +266,7 @@ end
 
 function UPL:SetActive(pred)
   for i=1,#self.predTable do
-    if predTable[i] == pred then
+    if self.predTable[i] == pred then
       self.ActiveP = i
     end
   end
