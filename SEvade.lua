@@ -111,7 +111,7 @@ class 'SEvade' -- {
 	function SEvade:Draw()
 		for _=1,#self.thrownSpell do
 			local speed, delay, range, width, collision, type = SP:GetData(self.thrownSpell[_].spell,self.thrownSpell[_].unit)
-			local endPos = self.thrownSpell[_].startPos+self.thrownSpell[_].dir:normalized()*range
+			local endPos = self.thrownSpell[_].startPos+self.thrownSpell[_].dir:normalized()*(range+width)
 			if self.thrownSpell[_].time+range/speed+delay > GetInGameTimer() then
 				DrawLine3D(self.thrownSpell[_].startPos.x, self.thrownSpell[_].startPos.y, self.thrownSpell[_].startPos.z, endPos.x, endPos.y, endPos.z, width, ARGB(55, 255, 255, 255))
 			else
