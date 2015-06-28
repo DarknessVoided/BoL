@@ -56,644 +56,635 @@ _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
 
-function OnLoad()
-  require("sScriptConfig")
-  champList = { "Ahri", "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
-                "Darius", "Ekko", 
-                "Kalista", "LeeSin", "Lux", "Malzahar", 
-                "Nidalee", "Orianna", "Rengar", "Riven", "Ryze",
-                "Rumble", "Teemo", 
-                "Vayne", "Volibear" }
-                --[[
-                TODO:
-                "Azir",
-                "Gnar", "Hecarim", "Jarvan", "Jinx",
-                "KogMaw", "LeeSin",
-                "Nidalee", "Olaf", "Quinn", "RekSai", 
-                "Riven", "Sejuani", "Shyvana", "Thresh", "Tristana"
-                "Vayne", "Viktor", "Yasuo", "Yorick"
+-- { Global functions
 
-                Total List:
-                "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", 
-                "Darius", "Ekko", "Gnar", "Hecarim", "Jarvan", "Jinx",
-                "Kalista", "KogMaw", "LeeSin", "Lux", "Malzahar", 
-                "Nidalee", "Olaf", "Orianna", "Quinn", "RekSai", "Rengar", 
-                "Riven", "Rumble", "Sejuani", "Shyvana", "Teemo", "Thresh", 
-                "Tristana", "Vayne", "Viktor", "Volibear", "Yasuo", "Yorick" }]]--
-  supported = {}
-  for _,champ in pairs(champList) do
-    supported[champ] = true
-  end
-  if supported[myHero.charName] then
-    if ScriptologyAutoUpdate and Update() then
-      return
-    else
-      Auth()
+  function OnLoad()
+    require("sScriptConfig")
+    champList = { "Ahri", "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
+                  "Darius", "Ekko", 
+                  "Kalista", "LeeSin", "Lux", "Malzahar", 
+                  "Nidalee", "Orianna", "Rengar", "Riven", "Ryze",
+                  "Rumble", "Teemo", 
+                  "Vayne", "Volibear" }
+                  --[[
+                  TODO:
+                  "Azir",
+                  "Gnar", "Hecarim", "Jarvan", "Jinx",
+                  "KogMaw", "LeeSin",
+                  "Nidalee", "Olaf", "Quinn", "RekSai", 
+                  "Riven", "Sejuani", "Shyvana", "Thresh", "Tristana"
+                  "Vayne", "Viktor", "Yasuo", "Yorick"
+
+                  Total List:
+                  "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", 
+                  "Darius", "Ekko", "Gnar", "Hecarim", "Jarvan", "Jinx",
+                  "Kalista", "KogMaw", "LeeSin", "Lux", "Malzahar", 
+                  "Nidalee", "Olaf", "Orianna", "Quinn", "RekSai", "Rengar", 
+                  "Riven", "Rumble", "Sejuani", "Shyvana", "Teemo", "Thresh", 
+                  "Tristana", "Vayne", "Viktor", "Volibear", "Yasuo", "Yorick" }]]--
+    supported = {}
+    for _,champ in pairs(champList) do
+      supported[champ] = true
     end
-  else
-    ScriptologyMsg("Your Champion is not supported (yet)!")
-  end
-end
-
-function Load()
-  Menu()
-  Vars()
-  loadedClass = _G[myHero.charName]()
-  AddTickCallback(function() Tick() end)
-  AddDrawCallback(function() Draw() end)
-  if objTrackList[myHero.charName] then
-    AddCreateObjCallback(function(x) CreateObj(x) end)
-    AddDeleteObjCallback(function(x) DeleteObj(x) end)
-  end
-  if trackList[myHero.charName] then
-    AddApplyBuffCallback(function(x,y,z) ApplyBuff(x,y,z) end)
-    AddUpdateBuffCallback(function(x,y,z) UpdateBuff(x,y,z) end)
-    AddRemoveBuffCallback(function(x,y) RemoveBuff(x,y) end)
-  end
-  AddProcessSpellCallback(function(x,y) ProcessSpell(x,y) end)
-  DelayAction(function() ScriptologyMsg("Loaded the latest version (v"..ScriptologyVersion..")") end, 3)
-end
-
-function Auth()
-  if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
-  authList = { }
-  auth     = {}
-  for _,champ in pairs(authList) do
-    auth[champ] = true
-  end
-  if not auth[myHero.charName] then
-    Load()
-    ScriptologyMsg("No auth needed")
-    return true 
-  end
-  local authdata = GetWebResult("scriptology.tk", "/users/"..GetUser():lower().."."..myHero.charName:lower())
-  if authdata and authAttempt < 9 then
-    if type(tonumber(authdata)) == "number" and tonumber(authdata) == -1 then
-      ScriptologyMsg("Authed! Hello "..GetUser())
-      Load()
-      return true
-    elseif type(tonumber(authdata)) == "number" and tonumber(authdata) > 0 then
-      ScriptologyMsg("Trial mode active! Hello "..GetUser())
-      Load()
-      return true
+    if supported[myHero.charName] then
+      if ScriptologyAutoUpdate and Update() then
+        return
+      else
+        Auth()
+      end
     else
-      ScriptologyMsg("User: "..GetUser().." not found. Auth failed..")
-      return false
+      ScriptologyMsg("Your Champion is not supported (yet)!")
     end
-  elseif authAttempt < 9 then
-    ScriptologyMsg("Auth failed, retrying. Attempt "..authAttempt.."/8")
-    DelayAction(Auth, 2)
-  else
-    ScriptologyMsg("Auth failed. Please try again later..")
   end
-end
 
-function Update()
-  local ScriptologyServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Scriptology.version")
-  if ScriptologyServerData then
-    ScriptologyServerVersion = type(tonumber(ScriptologyServerData)) == "number" and tonumber(ScriptologyServerData) or nil
-    if ScriptologyServerVersion then
-      if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
-        ScriptologyMsg("New version available v"..ScriptologyServerVersion)
-        ScriptologyMsg("Updating, please don't press F9")
-        DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua".."?rand="..math.random(1,10000), SCRIPT_PATH.."Scriptology.lua", function () ScriptologyMsg("Successfully updated. ("..ScriptologyVersion.." => "..ScriptologyServerVersion.."), press F9 twice to load the updated version") end) DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/sScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."sScriptConfig.lua", function () end) end, 3)
+  function Load()
+    Menu()
+    Vars()
+    loadedClass = _G[myHero.charName]()
+    AddTickCallback(function() Tick() end)
+    AddDrawCallback(function() Draw() end)
+    if objTrackList[myHero.charName] then
+      AddCreateObjCallback(function(x) CreateObj(x) end)
+      AddDeleteObjCallback(function(x) DeleteObj(x) end)
+    end
+    if trackList[myHero.charName] then
+      AddApplyBuffCallback(function(x,y,z) ApplyBuff(x,y,z) end)
+      AddUpdateBuffCallback(function(x,y,z) UpdateBuff(x,y,z) end)
+      AddRemoveBuffCallback(function(x,y) RemoveBuff(x,y) end)
+    end
+    AddProcessSpellCallback(function(x,y) ProcessSpell(x,y) end)
+    DelayAction(function() ScriptologyMsg("Loaded the latest version (v"..ScriptologyVersion..")") end, 3)
+  end
+
+  function Auth()
+    if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
+    authList = { }
+    auth     = {}
+    for _,champ in pairs(authList) do
+      auth[champ] = true
+    end
+    if not auth[myHero.charName] then
+      Load()
+      ScriptologyMsg("No auth needed")
+      return true 
+    end
+    local authdata = GetWebResult("scriptology.tk", "/users/"..GetUser():lower().."."..myHero.charName:lower())
+    if authdata and authAttempt < 9 then
+      if type(tonumber(authdata)) == "number" and tonumber(authdata) == -1 then
+        ScriptologyMsg("Authed! Hello "..GetUser())
+        Load()
+        return true
+      elseif type(tonumber(authdata)) == "number" and tonumber(authdata) > 0 then
+        ScriptologyMsg("Trial mode active! Hello "..GetUser())
+        Load()
+        return true
+      else
+        ScriptologyMsg("User: "..GetUser().." not found. Auth failed..")
+        return false
+      end
+    elseif authAttempt < 9 then
+      ScriptologyMsg("Auth failed, retrying. Attempt "..authAttempt.."/8")
+      DelayAction(Auth, 2)
+    else
+      ScriptologyMsg("Auth failed. Please try again later..")
+    end
+  end
+
+  function Update()
+    local ScriptologyServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Scriptology.version")
+    if ScriptologyServerData then
+      ScriptologyServerVersion = type(tonumber(ScriptologyServerData)) == "number" and tonumber(ScriptologyServerData) or nil
+      if ScriptologyServerVersion then
+        if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
+          ScriptologyMsg("New version available v"..ScriptologyServerVersion)
+          ScriptologyMsg("Updating, please don't press F9")
+          DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua".."?rand="..math.random(1,10000), SCRIPT_PATH.."Scriptology.lua", function () ScriptologyMsg("Successfully updated. ("..ScriptologyVersion.." => "..ScriptologyServerVersion.."), press F9 twice to load the updated version") end) DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/sScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."sScriptConfig.lua", function () end) end, 3)
+          return true
+        end
+      end
+    else
+      ScriptologyMsg("Error downloading version info")
+    end
+    if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" and myHero.charName ~= "Teemo" and myHero.charName ~= "Volibear" and not _G.UPLloaded then
+      if FileExist(LIB_PATH .. "/UPL.lua") then
+        require("UPL")
+        _G.UPL = UPL()
+      else 
+        ScriptologyMsg("Downloading UPL, please don't press F9")
+        DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () ScriptologyMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
         return true
       end
     end
-  else
-    ScriptologyMsg("Error downloading version info")
+    return false
   end
-  if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" and myHero.charName ~= "Teemo" and myHero.charName ~= "Volibear" and not _G.UPLloaded then
-    if FileExist(LIB_PATH .. "/UPL.lua") then
-      require("UPL")
-      _G.UPL = UPL()
-    else 
-      ScriptologyMsg("Downloading UPL, please don't press F9")
-      DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () ScriptologyMsg("Successfully downloaded UPL. Press F9 twice.") end) end, 3) 
-      return true
+
+  function Menu()
+    Config = sScriptConfig("Scriptology "..myHero.charName, "Scriptology") -- <- u mad?
+    Config:addState("Combo")
+    Config:addState("Harrass")
+    if myHero.charName ~= "Blitzcrank" then Config:addState("Farm")
+    Config:addSubStates("Farm", {"LaneClear", "LastHit"}) end
+    if myHero.charName ~= "Riven" then Config:addState("Killsteal") end
+    Config:addState("Draws")
+    if myHero.charName ~= "Volibear" and myHero.charName ~= "Teemo" then 
+      Config:addState("Misc")
+      if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
+                                       Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true}) end
+      if myHero.charName == "Kalista" then Config:addParam({state = "Misc", name = "Ej", code = SCRIPT_PARAM_ONOFF, value = true}) end 
+      if myHero.charName == "Rumble" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
+                                          Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end 
+      if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}}) end 
+      if myHero.charName == "Nidalee" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true})
+                                           Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {50}}) end
+      if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
+      if myHero.charName == "Vayne" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = false})
+                                         Config:addParam({state = "Misc", name = "offset", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {90}}) end
+      if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
     end
+    Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+    if myHero.charName ~= "Orianna" then
+      Config:addParam({state = "Draws", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = "Draws", name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = "Draws", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    end
+    Config:addParam({state = "Draws", name = "DMG", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Draws", name = "LFC", code = SCRIPT_PARAM_ONOFF, value = true})
+    SetupOrbwalk()
   end
-  return false
-end
 
-function Menu()
-  Config = sScriptConfig("Scriptology "..myHero.charName, "Scriptology") -- <- u mad?
-  Config:addState("Combo")
-  Config:addState("Harrass")
-  if myHero.charName ~= "Blitzcrank" then Config:addState("Farm")
-  Config:addSubStates("Farm", {"LaneClear", "LastHit"}) end
-  if myHero.charName ~= "Riven" then Config:addState("Killsteal") end
-  Config:addState("Draws")
-  if myHero.charName ~= "Volibear" and myHero.charName ~= "Teemo" then 
-    Config:addState("Misc")
-    if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
-                                     Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    if myHero.charName == "Kalista" then Config:addParam({state = "Misc", name = "Ej", code = SCRIPT_PARAM_ONOFF, value = true}) end 
-    if myHero.charName == "Rumble" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
-                                        Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end 
-    if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}}) end 
-    if myHero.charName == "Nidalee" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true})
-                                         Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {50}}) end
-    if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    if myHero.charName == "Vayne" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = false})
-                                       Config:addParam({state = "Misc", name = "offset", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {90}}) end
-    if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
-  end
-  Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-  if myHero.charName ~= "Orianna" then
-    Config:addParam({state = "Draws", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Draws", name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Draws", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-  end
-  Config:addParam({state = "Draws", name = "DMG", code = SCRIPT_PARAM_ONOFF, value = true})
-  Config:addParam({state = "Draws", name = "LFC", code = SCRIPT_PARAM_ONOFF, value = true})
-  SetupOrbwalk()
-end
-
-function Vars()
-  if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
-  if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
-  killTextTable = {}
-  for k,enemy in pairs(GetEnemyHeroes()) do
-    killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = ""}
-  end
-  stackTable = {}
-  championData = {
-      ["Ahri"] = {
-        [_Q] = { range = 880, delay = 0.25, speed = 1600, width = 100, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.35*AP end},
-        [_W] = { range = 600, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.4*AP end},
-        [_E] = { range = 950, delay = 0.25, speed = 1550, width = 60, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.5*AP end},
-        [_R] = { range = 800, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+30+0.3*AP end}
-      },
-      ["Ashe"] = {
-        [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.05*level+1.1)*TotalDmg end},
-        [_W] = { speed = 902, delay = 0.5, range = 1200, width = 100, collision = true, aoe = false, type = "cone", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10*level+30+TotalDmg end},
-        [_E] = { speed = 1500, delay = 0.25, range = 25000, width = 80, collision = false, aoe = false, type = "linear"},
-        [_R] = { speed = 1600, delay = 0.5, range = 25000, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 175*level+75+AP end}
-      },
-      ["Azir"] = {
-        [_Q] = { speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+20*level+0.05*AP end},
-        [_W] = { speed = math.huge, delay = 0, range = 450, width = 350, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return (Level < 11 and 45+5*Level or Level*10)+0.6*AP end},
-        [_E] = { range = 1300, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.4*AP end},
-        [_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.5*AP end}
-      },
-      ["Blitzcrank"] = {
-        [_Q] = { speed = 1800, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 55*level+25+AP end},
-        [_W] = { range = 25000},
-        [_E] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 2*TotalDmg end},
-        [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 125*level+125+AP end}
-      },
-      ["Brand"] = {
-        [_Q] = { speed = 1200, delay = 0.5, range = 1050, width = 80, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+40+0.65*AP end},
-        [_W] = { speed = 900, delay = 0.25, range = 1050, width = 275, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45*level+30+0.6*AP end},
-        [_E] = { range = 625, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25*level+30+0.55*AP end},
-        [_R] = { range = 750, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 100*level+50+0.5*AP end}
-      },
-      ["Cassiopeia"] = {
-        [_Q] = { speed = math.huge, delay = 0.25, range = 850, width = 100, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+30*level+0.45*AP end},
-        [_W] = { speed = 2500, delay = 0.5, range = 925, width = 90, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+5*level+0.1*AP end},
-        [_E] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+0.55*AP end},
-        [_R] = { speed = math.huge, delay = 0.5, range = 825, width = 410, collision = false, aoe = true, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+10*level+0.5*AP end}
-      },
-      ["Darius"] = {
-        [_Q] = { range = 0, width = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 35*level+35+0.7*TotalDmg end},
-        [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return TotalDmg+0.2*level*TotalDmg end},
-        [_E] = { range = 550},
-        [_R] = { range = 450, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return math.floor(70+90*level+0.75*myHero.addDamage+0.2*GetStacks(target)*(70+90*level+0.75*myHero.addDamage)) end}
-      },
-      ["Ekko"] = {
-        [_Q] = { speed = 1050, delay = 0.25, range = 825, width = 140, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15*level+45+0.2*AP end},
-        [_W] = { speed = math.huge, delay = 3, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
-        [_E] = { delay = 0.50, range = 350, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30*level+20+0.2*AP+TotalDmg end},
-        [_R] = { speed = math.huge, delay = 0.5, range = 0, width = 400, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 150*level+50+1.3*AP end}
-      },
-      ["Gnar"] = {
-        [_Q] = { range = 0},
-        [_W] = { range = 0},
-        [_E] = { range = 0},
-        [_R] = { range = 0}
-      },
-      ["Hecarim"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.6*TotalDmg end},
-        [_W] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 8.75+11.25*level+0.2*AP end},
-        [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.5*TotalDmg end},
-        [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50+100*level+AP end}
-      },
-      ["Jarvan"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+1.2*TotalDmg end},
-        [_W] = { },
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.8*AP end},
-        [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 75+125*level+1.5*TotalDmg end}
-      },
-      ["Kalista"] = {
-        [_Q] = { speed = 1750, delay = 0.25, range = 1275, width = 70, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
-        [_W] = { delay = 1.5, range = 5500},
-        [_E] = { delay = 0.50, range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.2 + 0.03 * (level-1))*TotalDmg) or 0 end},
-        [_R] = { range = 4000}
-      },
-      ["KogMaw"] = {
-        [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+50*level+0.5*AP end},
-        [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*Ap+TotalDmg end},
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
-        [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.3*AP+0.5*TotalDmg end}
-      },
-      ["LeBlanc"] = {
-        [_Q] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+0.4*AP end},
-        [_W] = { speed = 1300, delay = 0.250, range = 600, width = 250, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+40*level+0.6*AP end},
-        [_E] = { speed = 1300, delay = 0.250, range = 950, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.5*AP end},
-        [_R] = { range = 0}
-      },
-      ["LeeSin"] = {
-        [_Q] = { range = 1100, width = 50, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.9*source.addDamage end},
-        [_W] = { range = 600},
-        [_E] = { range = 0, width = 450, delay = 0.25, speed = math.huge, collision = false, aoe = false, type = "circular", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+source.addDamage end},
-        [_R] = { range = 2000, width = 150, delay = 0.25, speed = 2000, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 200*level+2*source.addDamage end}
-      },
-      ["Lux"] = {
-        [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
-        [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear"},
-        [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
-        [_R] = { speed = math.huge, delay = 1, range = 3340, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
-      },
-      ["Malzahar"] = {
-        [_Q] = { speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+55*level+0.8*AP end},
-        [_W] = { speed = math.huge, delay = 0.5, range = 800, width = 250, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return (0.04+0.01*level)*target.maxHealth+AP/100 end},
-        [_E] = { speed = math.huge, delay = 0.5, range = 650, dmgAP = function(AP, level, Level, TotalDmg, source, target) return (20+60*level)/8+0.1*AP end},
-        [_R] = { speed = math.huge, delay = 0.5, range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.26*AP end}
-      },
-      ["Nidalee"] = {
-        [_Q] = { speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear"},
-        [_W] = { range = 0},
-        [_E] = { range = 0},
-        [_R] = { range = 0}
-      },
-      ["Olaf"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+TotalDmg end},
-        [_W] = { },
-        [_E] = { range = 0, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.4*TotalDmg end},
-        [_R] = { }
-      },
-      ["Orianna"] = {
-        [_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.5*AP end},
-        [_W] = { speed = math.huge, delay = 0.250, range = 0, width = 225, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.7*AP end},
-        [_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = false, aoe = false, type = "targeted", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.3*AP end},
-        [_R] = { speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.7*AP end}
-      },
-      ["Quinn"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30+40*level+0.65*source.addDamage+0.5*AP end},
-        [_W] = { },
-        [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+30*level+0.2*source.addDamage end},
-        [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (70+50*level+0.5*source.addDamage)*(1+((target.maxHealth-target.health)/target.maxHealth)) end}
-      },
-      ["Rengar"] = {
-        [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+(0.95+0.05*level)*TotalDmg end},
-        [_W] = { speed = math.huge, delay = 0.5, range = 490, width = 490, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.8*AP end},
-        [_E] = { speed = 1375, delay = 0.25, range = 1000, width = 80, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50*level+0.7*TotalDmg end},
-        [_R] = { range = 4000}
-      },
-      ["Riven"] = {
-        [_Q] = { range = 310, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+(0.35+0.05*level)*TotalDmg end},
-        [_W] = { range = 265, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
-        [_E] = { range = 390},
-        [_R] = { range = 930, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*source.addDamage)*(math.min(3,math.max(1,4*(target.maxHealth-target.health)/target.maxHealth))) end},
-      },
-      ["Rumble"] = {
-        [_Q] = { speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+20*level+0.33*AP end},
-        [_W] = { range = myHero.boundingRadius},
-        [_E] = { speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+25*level+0.4*AP end},
-        [_R] = { speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+55*level+0.3*AP end}
-      },
-      ["Ryze"] = {
-        [_Q] = { speed = 1875, delay = 0.25, range = 900, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.55*AP+(0.015+0.05*level)*source.maxMana end},
-        [_W] = { range = 600, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 60+20*level+0.4*AP+0.025*myHero.maxMana end},
-        [_E] = { range = 600, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 34+16*level+0.3*AP+0.02*myHero.maxMana end},
-        [_R] = { range = 900}
-      },
-      ["Sejuani"] = {
-        [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.4*AP end},
-        [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return end},
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level*0.5*AP end},
-        [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+100*level*0.8*AP end}
-      },
-      ["Shyvana"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.75+0.05*level)*TotalDmg end},
-        [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+15*level+0.2*TotalDmg end},
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+40*level+0.6*TotalDmg end},
-        [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+125*level+0.7*AP end}
-      },
-      ["Teemo"] = {
-        [_Q] = { range = myHero.range+myHero.boundingRadius*3, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*Level+0.8*AP end},
-        [_W] = { range = 25000},
-        [_E] = { range = myHero.range+myHero.boundingRadius, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 9*level+0.3*AP end},
-        [_R] = { range = myHero.range, width = 250}
-      },
-      ["Vayne"] = {
-        [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
-        [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 10+10*level+((0.03+0.01*level)*target.maxHealth) end},
-        [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.5*TotalDmg end},
-        [_R] = { range = 1000}
-      },
-      ["Viktor"] = {
-        [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+20*level+0.2*AP end},
-        [_W] = { },
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.7*AP end},
-        [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+100*level+0.55*AP end}
-      },
-      ["Volibear"] = {
-        [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+TotalDmg end},
-        [_W] = { range = myHero.range*2+myHero.boundingRadius+25, dmgAD = function(AP, level, Level, TotalDmg, source, target) return ((1+(target.maxHealth-target.health)/target.maxHealth))*(45*level+35+0.15*(source.maxHealth-(440+86*Level))) end},
-        [_E] = { range = myHero.range*2+myHero.boundingRadius*2+10, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45*level+15+0.6*AP end},
-        [_R] = { range = myHero.range+myHero.boundingRadius, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+35+0.3*AP end}
-      },
-      ["Yasuo"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+TotalDmg end},
-        [_W] = { },
-        [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
-        [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end}
-      },
-      ["Yorick"] = {
-        [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+1.2*TotalDmg+TotalDmg end},
-        [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+AP end},
-        [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+TotalDmg end},
-        [_R] = { }
-      }
-  }
-  lastAttack = 0
-  lastWindup = 0
-  previousWindUp = 0
-  previousAttackCooldown = 0
-  ultOn = 0
-  trackList = {
-      ["Ahri"] = {
-        "AhriSeduce"
-      },
-      ["Blitzcrank"] = {
-        "rocketgrab2"
-      },
-      ["Brand"] = {
-        "brandablaze"
-      },
-      ["Cassiopeia"] = {
-        "blastpoison", "miasmapoison"
-      },
-      ["Darius"] = {
-        "dariushemo"
-      },
-      ["Kalista"] = {
-        "kalistaexpungemarker"
-      },
-      ["LeeSin"] = {
-        "BlindMonkQOne"
-      },
-      ["Lux"] = {
-        "luxilluminati"
-      },
-      ["Nidalee"] = {
-        "nidaleepassivehunted"
-      }
-  }
-  objTrackList = {
-      ["Ashe"] = { "Ashe_Base_Q_Ready.troy" },
-      ["Azir"] = { "AzirSoldier" },
-      ["Ekko"] = { "Ekko", "Ekko_Base_Q_Aoe_Dilation.troy", "Ekko_Base_W_Detonate_Slow.troy", "Ekko_Base_W_Indicator.troy", "Ekko_Base_W_Cas.troy" },
-      ["Orianna"] = { "TheDoomBall" }
-  }
-  objTimeTrackList = {
-      ["Ashe"] = { 4 },
-      ["Azir"] = { 9 },
-      ["Ekko"] = { math.huge, 1.565, 1.70, 3, 1 },
-      ["Orianna"] = { math.huge }
-  }
-  if objTrackList[myHero.charName] then
-    objHolder = {}
-    objTimeHolder = {}
-    table.insert(objHolder, myHero)
-    for k=1,objManager.maxObjects,1 do
-      local object = objManager:getObject(k)
-      for _,name in pairs(objTrackList[myHero.charName]) do
-        if object and object.valid and object.name and object.team == myHero.team and object.name == name then
-          --table.insert(objTimeHolder, GetInGameTimer() + objTimeTrackList[myHero.charName][_])
-          objHolder[name] = object
-          --objTimeHolder[name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
-          if ScriptologyDebug then print("Object "..object.name.." already created. Now tracking!") end
+  function Vars()
+    if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+    if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
+    killTextTable = {}
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = ""}
+    end
+    stackTable = {}
+    championData = {
+        ["Ahri"] = {
+          [_Q] = { range = 880, delay = 0.25, speed = 1600, width = 100, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.35*AP end},
+          [_W] = { range = 600, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.4*AP end},
+          [_E] = { range = 950, delay = 0.25, speed = 1550, width = 60, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.5*AP end},
+          [_R] = { range = 800, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+30+0.3*AP end}
+        },
+        ["Ashe"] = {
+          [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.05*level+1.1)*TotalDmg end},
+          [_W] = { speed = 902, delay = 0.5, range = 1200, width = 100, collision = true, aoe = false, type = "cone", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10*level+30+TotalDmg end},
+          [_E] = { speed = 1500, delay = 0.25, range = 25000, width = 80, collision = false, aoe = false, type = "linear"},
+          [_R] = { speed = 1600, delay = 0.5, range = 25000, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 175*level+75+AP end}
+        },
+        ["Azir"] = {
+          [_Q] = { speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+20*level+0.05*AP end},
+          [_W] = { speed = math.huge, delay = 0, range = 450, width = 350, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return (Level < 11 and 45+5*Level or Level*10)+0.6*AP end},
+          [_E] = { range = 1300, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.4*AP end},
+          [_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.5*AP end}
+        },
+        ["Blitzcrank"] = {
+          [_Q] = { speed = 1800, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 55*level+25+AP end},
+          [_W] = { range = 25000},
+          [_E] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 2*TotalDmg end},
+          [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 125*level+125+AP end}
+        },
+        ["Brand"] = {
+          [_Q] = { speed = 1200, delay = 0.5, range = 1050, width = 80, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+40+0.65*AP end},
+          [_W] = { speed = 900, delay = 0.25, range = 1050, width = 275, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45*level+30+0.6*AP end},
+          [_E] = { range = 625, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25*level+30+0.55*AP end},
+          [_R] = { range = 750, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 100*level+50+0.5*AP end}
+        },
+        ["Cassiopeia"] = {
+          [_Q] = { speed = math.huge, delay = 0.25, range = 850, width = 100, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+30*level+0.45*AP end},
+          [_W] = { speed = 2500, delay = 0.5, range = 925, width = 90, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+5*level+0.1*AP end},
+          [_E] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+0.55*AP end},
+          [_R] = { speed = math.huge, delay = 0.5, range = 825, width = 410, collision = false, aoe = true, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+10*level+0.5*AP end}
+        },
+        ["Darius"] = {
+          [_Q] = { range = 0, width = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 35*level+35+0.7*TotalDmg end},
+          [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return TotalDmg+0.2*level*TotalDmg end},
+          [_E] = { range = 550},
+          [_R] = { range = 450, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return math.floor(70+90*level+0.75*myHero.addDamage+0.2*GetStacks(target)*(70+90*level+0.75*myHero.addDamage)) end}
+        },
+        ["Ekko"] = {
+          [_Q] = { speed = 1050, delay = 0.25, range = 825, width = 140, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15*level+45+0.2*AP end},
+          [_W] = { speed = math.huge, delay = 3, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
+          [_E] = { delay = 0.50, range = 350, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30*level+20+0.2*AP+TotalDmg end},
+          [_R] = { speed = math.huge, delay = 0.5, range = 0, width = 400, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 150*level+50+1.3*AP end}
+        },
+        ["Gnar"] = {
+          [_Q] = { range = 0},
+          [_W] = { range = 0},
+          [_E] = { range = 0},
+          [_R] = { range = 0}
+        },
+        ["Hecarim"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.6*TotalDmg end},
+          [_W] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 8.75+11.25*level+0.2*AP end},
+          [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.5*TotalDmg end},
+          [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50+100*level+AP end}
+        },
+        ["Jarvan"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+1.2*TotalDmg end},
+          [_W] = { },
+          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.8*AP end},
+          [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 75+125*level+1.5*TotalDmg end}
+        },
+        ["Kalista"] = {
+          [_Q] = { speed = 1750, delay = 0.25, range = 1275, width = 70, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
+          [_W] = { delay = 1.5, range = 5500},
+          [_E] = { delay = 0.50, range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.2 + 0.03 * (level-1))*TotalDmg) or 0 end},
+          [_R] = { range = 4000}
+        },
+        ["KogMaw"] = {
+          [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+50*level+0.5*AP end},
+          [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*Ap+TotalDmg end},
+          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
+          [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.3*AP+0.5*TotalDmg end}
+        },
+        ["LeBlanc"] = {
+          [_Q] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+0.4*AP end},
+          [_W] = { speed = 1300, delay = 0.250, range = 600, width = 250, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+40*level+0.6*AP end},
+          [_E] = { speed = 1300, delay = 0.250, range = 950, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.5*AP end},
+          [_R] = { range = 0}
+        },
+        ["LeeSin"] = {
+          [_Q] = { range = 1100, width = 50, delay = 0.25, speed = 1800, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.9*source.addDamage end},
+          [_W] = { range = 600},
+          [_E] = { range = 0, width = 450, delay = 0.25, speed = math.huge, collision = false, aoe = false, type = "circular", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+source.addDamage end},
+          [_R] = { range = 2000, width = 150, delay = 0.25, speed = 2000, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 200*level+2*source.addDamage end}
+        },
+        ["Lux"] = {
+          [_Q] = { speed = 1025, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
+          [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear"},
+          [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
+          [_R] = { speed = math.huge, delay = 1, range = 3340, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
+        },
+        ["Malzahar"] = {
+          [_Q] = { speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+55*level+0.8*AP end},
+          [_W] = { speed = math.huge, delay = 0.5, range = 800, width = 250, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return (0.04+0.01*level)*target.maxHealth+AP/100 end},
+          [_E] = { speed = math.huge, delay = 0.5, range = 650, dmgAP = function(AP, level, Level, TotalDmg, source, target) return (20+60*level)/8+0.1*AP end},
+          [_R] = { speed = math.huge, delay = 0.5, range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.26*AP end}
+        },
+        ["Nidalee"] = {
+          [_Q] = { speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear"},
+          [_W] = { range = 0},
+          [_E] = { range = 0},
+          [_R] = { range = 0}
+        },
+        ["Olaf"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+TotalDmg end},
+          [_W] = { },
+          [_E] = { range = 0, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.4*TotalDmg end},
+          [_R] = { }
+        },
+        ["Orianna"] = {
+          [_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.5*AP end},
+          [_W] = { speed = math.huge, delay = 0.250, range = 0, width = 225, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.7*AP end},
+          [_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = false, aoe = false, type = "targeted", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.3*AP end},
+          [_R] = { speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.7*AP end}
+        },
+        ["Quinn"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30+40*level+0.65*source.addDamage+0.5*AP end},
+          [_W] = { },
+          [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+30*level+0.2*source.addDamage end},
+          [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (70+50*level+0.5*source.addDamage)*(1+((target.maxHealth-target.health)/target.maxHealth)) end}
+        },
+        ["Rengar"] = {
+          [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+(0.95+0.05*level)*TotalDmg end},
+          [_W] = { speed = math.huge, delay = 0.5, range = 490, width = 490, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.8*AP end},
+          [_E] = { speed = 1375, delay = 0.25, range = 1000, width = 80, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 50*level+0.7*TotalDmg end},
+          [_R] = { range = 4000}
+        },
+        ["Riven"] = {
+          [_Q] = { range = 310, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+(0.35+0.05*level)*TotalDmg end},
+          [_W] = { range = 265, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
+          [_E] = { range = 390},
+          [_R] = { range = 930, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*source.addDamage)*(math.min(3,math.max(1,4*(target.maxHealth-target.health)/target.maxHealth))) end},
+        },
+        ["Rumble"] = {
+          [_Q] = { speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+20*level+0.33*AP end},
+          [_W] = { range = myHero.boundingRadius},
+          [_E] = { speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+25*level+0.4*AP end},
+          [_R] = { speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+55*level+0.3*AP end}
+        },
+        ["Ryze"] = {
+          [_Q] = { speed = 1875, delay = 0.25, range = 900, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.55*AP+(0.015+0.05*level)*source.maxMana end},
+          [_W] = { range = 600, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 60+20*level+0.4*AP+0.025*myHero.maxMana end},
+          [_E] = { range = 600, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 34+16*level+0.3*AP+0.02*myHero.maxMana end},
+          [_R] = { range = 900}
+        },
+        ["Sejuani"] = {
+          [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.4*AP end},
+          [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return end},
+          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level*0.5*AP end},
+          [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+100*level*0.8*AP end}
+        },
+        ["Shyvana"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.75+0.05*level)*TotalDmg end},
+          [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+15*level+0.2*TotalDmg end},
+          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+40*level+0.6*TotalDmg end},
+          [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+125*level+0.7*AP end}
+        },
+        ["Teemo"] = {
+          [_Q] = { range = myHero.range+myHero.boundingRadius*3, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*Level+0.8*AP end},
+          [_W] = { range = 25000},
+          [_E] = { range = myHero.range+myHero.boundingRadius, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 9*level+0.3*AP end},
+          [_R] = { range = myHero.range, width = 250}
+        },
+        ["Vayne"] = {
+          [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
+          [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 10+10*level+((0.03+0.01*level)*target.maxHealth) end},
+          [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.5*TotalDmg end},
+          [_R] = { range = 1000}
+        },
+        ["Viktor"] = {
+          [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+20*level+0.2*AP end},
+          [_W] = { },
+          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.7*AP end},
+          [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+100*level+0.55*AP end}
+        },
+        ["Volibear"] = {
+          [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+TotalDmg end},
+          [_W] = { range = myHero.range*2+myHero.boundingRadius+25, dmgAD = function(AP, level, Level, TotalDmg, source, target) return ((1+(target.maxHealth-target.health)/target.maxHealth))*(45*level+35+0.15*(source.maxHealth-(440+86*Level))) end},
+          [_E] = { range = myHero.range*2+myHero.boundingRadius*2+10, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45*level+15+0.6*AP end},
+          [_R] = { range = myHero.range+myHero.boundingRadius, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+35+0.3*AP end}
+        },
+        ["Yasuo"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+TotalDmg end},
+          [_W] = { },
+          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
+          [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end}
+        },
+        ["Yorick"] = {
+          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+1.2*TotalDmg+TotalDmg end},
+          [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+AP end},
+          [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+TotalDmg end},
+          [_R] = { }
+        }
+    }
+    lastAttack = 0
+    lastWindup = 0
+    previousWindUp = 0
+    previousAttackCooldown = 0
+    ultOn = 0
+    trackList = {
+        ["Ahri"] = {
+          "AhriSeduce"
+        },
+        ["Blitzcrank"] = {
+          "rocketgrab2"
+        },
+        ["Brand"] = {
+          "brandablaze"
+        },
+        ["Cassiopeia"] = {
+          "blastpoison", "miasmapoison"
+        },
+        ["Darius"] = {
+          "dariushemo"
+        },
+        ["Kalista"] = {
+          "kalistaexpungemarker"
+        },
+        ["LeeSin"] = {
+          "BlindMonkQOne"
+        },
+        ["Lux"] = {
+          "luxilluminati"
+        },
+        ["Nidalee"] = {
+          "nidaleepassivehunted"
+        }
+    }
+    objTrackList = {
+        ["Ashe"] = { "Ashe_Base_Q_Ready.troy" },
+        ["Azir"] = { "AzirSoldier" },
+        ["Ekko"] = { "Ekko", "Ekko_Base_Q_Aoe_Dilation.troy", "Ekko_Base_W_Detonate_Slow.troy", "Ekko_Base_W_Indicator.troy", "Ekko_Base_W_Cas.troy" },
+        ["Orianna"] = { "TheDoomBall" }
+    }
+    objTimeTrackList = {
+        ["Ashe"] = { 4 },
+        ["Azir"] = { 9 },
+        ["Ekko"] = { math.huge, 1.565, 1.70, 3, 1 },
+        ["Orianna"] = { math.huge }
+    }
+    if objTrackList[myHero.charName] then
+      objHolder = {}
+      objTimeHolder = {}
+      table.insert(objHolder, myHero)
+      for k=1,objManager.maxObjects,1 do
+        local object = objManager:getObject(k)
+        for _,name in pairs(objTrackList[myHero.charName]) do
+          if object and object.valid and object.name and object.team == myHero.team and object.name == name then
+            --table.insert(objTimeHolder, GetInGameTimer() + objTimeTrackList[myHero.charName][_])
+            objHolder[name] = object
+            --objTimeHolder[name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+            if ScriptologyDebug then print("Object "..object.name.." already created. Now tracking!") end
+          end
         end
       end
     end
+    data = championData[myHero.charName]
+    for k,v in pairs(data) do
+      if v.type then UPL:AddSpell(k, v) end
+    end
+    Target = nil
+    Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
+    JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
+    sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
   end
-  data = championData[myHero.charName]
-  for k,v in pairs(data) do
-    if v.type then UPL:AddSpell(k, v) end
-  end
-  Target = nil
-  Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
-  JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
-  sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
-end
 
-function SetupOrbwalk()
-  if myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Riven" then
-    ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other")
-  else
-    if _G.AutoCarry then
-      if _G.Reborn_Initialised then
-        ScriptologyMsg("Found SAC: Reborn")
-      else
-        ScriptologyMsg("Found SAC: Revamped")
-      end
-    elseif _G.Reborn_Loaded then
-      DelayAction(function() SetupOrbwalk() end, 1)
-    elseif _G.MMA_Loaded then
-      ScriptologyMsg("Found MMA")
-    elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
-      require "Big Fat Orbwalker"
-    elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-      require 'SxOrbWalk'
-      SxOrb:LoadToMenu(scriptConfig("SxOrbWalk", "ScriptologySxOrbWalk"))
-      ScriptologyMsg("Found SxOrb.")
-    elseif FileExist(LIB_PATH .. "SOW.lua") then
-      require 'SOW'
-      require 'VPrediction'
-      SOWVP = SOW(VP)
-      SOWVP:LoadToMenu(scriptConfig("SOW", "ScriptologySOW"))
-      ScriptologyMsg("Found SOW")
+  function SetupOrbwalk()
+    if myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Riven" then
+      ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other")
     else
-      ScriptologyMsg("No valid Orbwalker found")
-    end
-  end
-end
-
-function DisableOrbwalkerMovement()
-  if _G.Reborn_Loaded then
-    _G.AutoCarry.MyHero:MovementEnabled(false)
-  elseif _G.MMA_Loaded then
-    _G.MMA_AvoidMovement(true)
-  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
-    _G["BigFatOrb_DisableMove"] = true
-  elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-    SxOrb:DisableMove()
-  elseif FileExist(LIB_PATH .. "SOW.lua") then
-    SOWVP.Move = false
-  end
-end
-
-function EnableOrbwalkerMovement()
-  if _G.Reborn_Loaded then
-    _G.AutoCarry.MyHero:MovementEnabled(true)
-  elseif _G.MMA_Loaded then
-    _G.MMA_AvoidMovement(false)
-  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
-    _G["BigFatOrb_DisableMove"] = false
-  elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-    SxOrb:EnableMove()
-  elseif FileExist(LIB_PATH .. "SOW.lua") then
-    SOWi.Move = true
-  end
-end
-
-function DisableOrbwalkerAttacks()
-  if _G.Reborn_Loaded then
-    _G.AutoCarry.MyHero:AttacksEnabled(false)
-  elseif _G.MMA_Loaded then
-    _G.MMA_StopAttacks(true)
-  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
-    _G["BigFatOrb_DisableAttacks"] = true
-  elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-    SxOrb:DisableAttacks()
-  elseif FileExist(LIB_PATH .. "SOW.lua") then
-    SOWi.Attacks = false
-  end
-end
-
-function EnableOrbwalkerAttacks()
-  if _G.Reborn_Loaded then
-    _G.AutoCarry.MyHero:AttacksEnabled(true)
-  elseif _G.MMA_Loaded then
-    _G.MMA_StopAttacks(false)
-  elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
-    _G["BigFatOrb_DisableAttacks"] = false
-  elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-    SxOrb:EnableAttacks()
-  elseif FileExist(LIB_PATH .. "SOW.lua") then
-    SOWi.Attacks = true
-  end
-end
-
-function Tick()
-  if myHero.charName ~= "Blitzcrank" then Target = GetCustomTarget() end
-  Mobs:update()
-  JMobs:update()
-
-  for _=0,3 do
-    sReady[_] = myHero:CanUseSpell(_) == READY
-  end
-
-  if myHero.charName ~= "Riven" then loadedClass:Killsteal() end
-
-  if Target ~= nil or myHero.charName == "Blitzcrank" then 
-    if Config:getParam("Harrass", "Harrass") and not Config:getParam("Combo", "Combo") then
-      loadedClass:Harrass()
-    end
-
-    if Config:getParam("Combo", "Combo") then
-      loadedClass:Combo()
+      if _G.AutoCarry then
+        if _G.Reborn_Initialised then
+          ScriptologyMsg("Found SAC: Reborn")
+        else
+          ScriptologyMsg("Found SAC: Revamped")
+        end
+      elseif _G.Reborn_Loaded then
+        DelayAction(function() SetupOrbwalk() end, 1)
+      elseif _G.MMA_Loaded then
+        ScriptologyMsg("Found MMA")
+      elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+        require "Big Fat Orbwalker"
+      elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+        require 'SxOrbWalk'
+        SxOrb:LoadToMenu(scriptConfig("SxOrbWalk", "ScriptologySxOrbWalk"))
+        ScriptologyMsg("Found SxOrb.")
+      elseif FileExist(LIB_PATH .. "SOW.lua") then
+        require 'SOW'
+        require 'VPrediction'
+        SOWVP = SOW(VP)
+        SOWVP:LoadToMenu(scriptConfig("SOW", "ScriptologySOW"))
+        ScriptologyMsg("Found SOW")
+      else
+        ScriptologyMsg("No valid Orbwalker found")
+      end
     end
   end
 
-  if myHero.charName ~= "Riven" then
-    if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
-      loadedClass:LastHit()
+  function DisableOrbwalkerMovement()
+    if _G.Reborn_Loaded then
+      _G.AutoCarry.MyHero:MovementEnabled(false)
+    elseif _G.MMA_Loaded then
+      _G.MMA_AvoidMovement(true)
+    elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+      _G["BigFatOrb_DisableMove"] = true
+    elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+      SxOrb:DisableMove()
+    elseif FileExist(LIB_PATH .. "SOW.lua") then
+      SOWVP.Move = false
     end
   end
 
-    if Config:getParam("LaneClear", "LaneClear") then
-      loadedClass:LaneClear()
-    end
-
-  if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
-end
-
-function Draw()
-  if myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
-  if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
-    DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
-  end
-  if myHero.charName ~= "Orianna" then
-    if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
-      DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range > 0 and data[1].range or data[1].width, ARGB(255, 155, 155, 155))
-    end
-    if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
-      DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255, 155, 155, 155))
-    end
-    if Config:getParam("Draws", "R") and myHero:CanUseSpell(_R) == READY then
-      DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range > 0 and data[3].range or data[3].width, ARGB(255, 155, 155, 155))
+  function EnableOrbwalkerMovement()
+    if _G.Reborn_Loaded then
+      _G.AutoCarry.MyHero:MovementEnabled(true)
+    elseif _G.MMA_Loaded then
+      _G.MMA_AvoidMovement(false)
+    elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+      _G["BigFatOrb_DisableMove"] = false
+    elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+      SxOrb:EnableMove()
+    elseif FileExist(LIB_PATH .. "SOW.lua") then
+      SOWi.Move = true
     end
   end
-  --print(#objHolder)
-  if objTrackList[myHero.charName] then
-    if #objHolder > 0 then
-      for _,obj in pairs(objHolder) do
-        if obj ~= myHero then
-          if objTimeHolder[obj.name] and objTimeHolder[obj.name] < math.huge and objTimeHolder[obj.name]>GetInGameTimer() then 
-            local barPos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
-            local posX = barPos.x - 35
-            local posY = barPos.y - 50
-            DrawText((math.floor((objTimeHolder[obj.name]-GetInGameTimer())*100)/100).."s", 25, posX, posY, ARGB(255, 255, 0, 0)) 
-          end
-          width = myHero.charName == "Ekko" and obj.name == "Ekko" and data[3].width or (((myHero.charName == "Ekko" and obj.name:find("Ekko_Base_W")) or myHero.charName == "Azir") and data[1].width or data[0].width)
-          if myHero.charName == "Ekko" then
-            if obj.name == "Ekko" and Config:getParam("Draws", "R") then 
-              DrawLFT(obj.x, obj.y, obj.z, width, ARGB(155, 155, 150, 250)) 
-              DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
-            elseif obj.name:find("Ekko_Base_Q") and Config:getParam("Draws", "Q") then 
-              DrawLine3D(myHero.x, myHero.y, myHero.z, obj.x, obj.y, obj.z, 1, ARGB(255, 155, 150, 250)) 
-              DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
-            elseif Config:getParam("Draws", "W") then
+
+  function DisableOrbwalkerAttacks()
+    if _G.Reborn_Loaded then
+      _G.AutoCarry.MyHero:AttacksEnabled(false)
+    elseif _G.MMA_Loaded then
+      _G.MMA_StopAttacks(true)
+    elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+      _G["BigFatOrb_DisableAttacks"] = true
+    elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+      SxOrb:DisableAttacks()
+    elseif FileExist(LIB_PATH .. "SOW.lua") then
+      SOWi.Attacks = false
+    end
+  end
+
+  function EnableOrbwalkerAttacks()
+    if _G.Reborn_Loaded then
+      _G.AutoCarry.MyHero:AttacksEnabled(true)
+    elseif _G.MMA_Loaded then
+      _G.MMA_StopAttacks(false)
+    elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+      _G["BigFatOrb_DisableAttacks"] = false
+    elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+      SxOrb:EnableAttacks()
+    elseif FileExist(LIB_PATH .. "SOW.lua") then
+      SOWi.Attacks = true
+    end
+  end
+
+  function Tick()
+    if myHero.charName ~= "Blitzcrank" then Target = GetCustomTarget() end
+    Mobs:update()
+    JMobs:update()
+
+    for _=0,3 do
+      sReady[_] = myHero:CanUseSpell(_) == READY
+    end
+
+    if myHero.charName ~= "Riven" then loadedClass:Killsteal() end
+
+    if Target ~= nil or myHero.charName == "Blitzcrank" then 
+      if Config:getParam("Harrass", "Harrass") and not Config:getParam("Combo", "Combo") then
+        loadedClass:Harrass()
+      end
+
+      if Config:getParam("Combo", "Combo") then
+        loadedClass:Combo()
+      end
+    end
+
+    if myHero.charName ~= "Riven" then
+      if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
+        loadedClass:LastHit()
+      end
+    end
+
+      if Config:getParam("LaneClear", "LaneClear") then
+        loadedClass:LaneClear()
+      end
+
+    if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
+  end
+
+  function Draw()
+    if myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
+    if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
+    end
+    if myHero.charName ~= "Orianna" then
+      if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range > 0 and data[1].range or data[1].width, ARGB(255, 155, 155, 155))
+      end
+      if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255, 155, 155, 155))
+      end
+      if Config:getParam("Draws", "R") and myHero:CanUseSpell(_R) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range > 0 and data[3].range or data[3].width, ARGB(255, 155, 155, 155))
+      end
+    end
+    --print(#objHolder)
+    if objTrackList[myHero.charName] then
+      if #objHolder > 0 then
+        for _,obj in pairs(objHolder) do
+          if obj ~= myHero then
+            if objTimeHolder[obj.name] and objTimeHolder[obj.name] < math.huge and objTimeHolder[obj.name]>GetInGameTimer() then 
+              local barPos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
+              local posX = barPos.x - 35
+              local posY = barPos.y - 50
+              DrawText((math.floor((objTimeHolder[obj.name]-GetInGameTimer())*100)/100).."s", 25, posX, posY, ARGB(255, 255, 0, 0)) 
+            end
+            width = myHero.charName == "Ekko" and obj.name == "Ekko" and data[3].width or (((myHero.charName == "Ekko" and obj.name:find("Ekko_Base_W")) or myHero.charName == "Azir") and data[1].width or data[0].width)
+            if myHero.charName == "Ekko" then
+              if obj.name == "Ekko" and Config:getParam("Draws", "R") then 
+                DrawLFT(obj.x, obj.y, obj.z, width, ARGB(155, 155, 150, 250)) 
+                DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
+              elseif obj.name:find("Ekko_Base_Q") and Config:getParam("Draws", "Q") then 
+                DrawLine3D(myHero.x, myHero.y, myHero.z, obj.x, obj.y, obj.z, 1, ARGB(255, 155, 150, 250)) 
+                DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
+              elseif Config:getParam("Draws", "W") then
+                DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
+              end
+            elseif myHero.charName == "Orianna" then
+              DrawCircle(obj.x-8, obj.y, obj.z+87, data[0].width-50, 0x111111)
+              for i=0,2 do
+                LagFree(obj.x-8, obj.y, obj.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 3, (math.pi/4.5)*(i))
+              end 
+              LagFree(obj.x-8, obj.y, obj.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 9, 0)
+            else
               DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
             end
-          elseif myHero.charName == "Orianna" then
-            DrawCircle(obj.x-8, obj.y, obj.z+87, data[0].width-50, 0x111111)
-            for i=0,2 do
-              LagFree(obj.x-8, obj.y, obj.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 3, (math.pi/4.5)*(i))
-            end 
-            LagFree(obj.x-8, obj.y, obj.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 9, 0)
-          else
-            DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
           end
         end
       end
     end
-  end
-  if Config:getParam("Draws", "DMG") then
-    for i,k in pairs(GetEnemyHeroes()) do
-      local enemy = k
-      if ValidTarget(enemy) then
-        local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
-        local posX = barPos.x - 35
-        local posY = barPos.y - 50
-        -- Doing damage
-        if myHero.charName == "Kalista" then
-          DrawText(killTextTable[enemy.networkID].indicatorText, 20, posX, posY-5, ARGB(255,250,250,250))
-        else
-          DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 50, 255, 50))
-        end
-       
-        -- Taking damage
-        DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
-      end
-    end
-    if myHero.charName == "Kalista" and myHero:CanUseSpell(_E) then
-      for minion,winion in pairs(Mobs.objects) do
-        damageE = GetDmg(_E, myHero, winion)
-        if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
-          if damageE > winion.health then
-            DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+    if Config:getParam("Draws", "DMG") then
+      for i,k in pairs(GetEnemyHeroes()) do
+        local enemy = k
+        if ValidTarget(enemy) then
+          local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+          local posX = barPos.x - 35
+          local posY = barPos.y - 50
+          -- Doing damage
+          if myHero.charName == "Kalista" then
+            DrawText(killTextTable[enemy.networkID].indicatorText, 20, posX, posY-5, ARGB(255,250,250,250))
           else
-            DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+            DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 50, 255, 50))
           end
+         
+          -- Taking damage
+          DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
         end
       end
-      if Config:getParam("Misc", "Ej") then
-        for minion,winion in pairs(JMobs.objects) do
+      if myHero.charName == "Kalista" and myHero:CanUseSpell(_E) then
+        for minion,winion in pairs(Mobs.objects) do
           damageE = GetDmg(_E, myHero, winion)
           if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
             if damageE > winion.health then
@@ -703,502 +694,514 @@ function Draw()
             end
           end
         end
-      end
-    end
-  end 
-end
-
-function CreateObj(object)
-  if object and object.valid and object.name then
-    for _,name in pairs(objTrackList[myHero.charName]) do
-      if object.name == name then
-        if myHero.charName == "Ahri" and GetDistance(obj) < 500 then
-          objHolder[object.name] = object
-          objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
-        elseif myHero.charName ~= "Ahri" then
-          objHolder[object.name] = object
-          objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+        if Config:getParam("Misc", "Ej") then
+          for minion,winion in pairs(JMobs.objects) do
+            damageE = GetDmg(_E, myHero, winion)
+            if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
+              if damageE > winion.health then
+                DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+              else
+                DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+              end
+            end
+          end
         end
-        --table.insert(objHolder, object)
-        --table.insert(objTimeHolder, GetInGameTimer() + objTimeTrackList[myHero.charName][_])
-        if ScriptologyDebug then print("Object "..object.name.." created. Now tracking!") end
       end
-    end
+    end 
   end
-end
- 
-function DeleteObj(object)
-  if object and object.name then 
-    for _,name in pairs(objTrackList[myHero.charName]) do
-      if object.name == name and name ~= "TheDoomBall" then
-        objHolder[object.name] = nil
-        if ScriptologyDebug then print("Object "..object.name.." destroyed. No longer tracking! "..#objHolder) end
-      end
-    end
-  end
-end
 
-function ApplyBuff(source, unit, buff)
-  if source and source.isMe and buff and unit then
-    for _,name in pairs(trackList[myHero.charName]) do
-      if buff.name:find(name) then
-        stackTable[unit.networkID] = 1
-        if ScriptologyDebug then print(source.charName.." applied "..name.." on "..unit.charName) end
-      end
-    end
-  end
-end
-
-function UpdateBuff(unit, buff, stacks)
-  if buff and unit then
-    for _,name in pairs(trackList[myHero.charName]) do
-      if buff.name:find(name) and stackTable[unit.networkID] then
-        stackTable[unit.networkID] = stacks
-        if ScriptologyDebug then print("Updated "..name.." on "..unit.charName.." with "..stacks.." stacks") end
-      end
-    end
-  end
-end
-
-function RemoveBuff(unit, buff)
-  if buff and unit then
-    for _,name in pairs(trackList[myHero.charName]) do
-      if buff.name:find(name) then
-        stackTable[unit.networkID] = nil
-        if ScriptologyDebug then print("Removed "..name.." from "..unit.charName) end
-      end
-    end
-  end
-end
-
-function GetStacks(unit)
-  if not unit then return 0 end
-  return stackTable[unit.networkID] or 0
-end
-
-function ProcessSpell(unit, spell)
-  if unit and unit.isMe and spell then
-    lastAttack = GetTickCount() - GetLatency()/2
-    previousWindUp = spell.windUpTime*1000
-    previousAttackCooldown = spell.animationTime*1000
-    if string.find(string.lower(spell.name), "attack") then
-      lastWindup = GetInGameTimer()+spell.windUpTime
-    elseif spell.name == "EkkoR" then
-      objHolder["Ekko"] = nil
-    elseif spell.name == "OrianaIzunaCommand" then
-      objHolder["TheDoomBall"] = nil
-    elseif spell.name == "OrianaRedactCommand" then
-      objHolder["TheDoomBall"] = spell.target
-    elseif string.find(spell.name, "NetherGrasp") or spell.name:lower():find("katarinar") then
-      ultOn = GetInGameTimer()+2.5
-    end
-  end
-end
- 
-function timeToShoot()
-  return (GetTickCount() + GetLatency()/2 > lastAttack + previousAttackCooldown) and ultOn < GetInGameTimer()
-end
- 
-function heroCanMove()
-  return (GetTickCount() + GetLatency()/2 > lastAttack + previousWindUp + 75) and ultOn < GetInGameTimer()
-end
-
-function GetCustomTarget()
-  loadedClass.ts:update()
-  if _G.MMA_Loaded and _G.MMA_Target() and _G.MMA_Target().type == myHero.type then return _G.MMA_Target() end
-  if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-  return loadedClass.ts.target
-end
-
-function GetFarmPosition(range, width)
-  local BestPos 
-  local BestHit = 0
-  local objects = minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects
-  for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
-    if hit > BestHit then
-      BestHit = hit
-      BestPos = Vector(object)
-      if BestHit == #objects then
-        break
-      end
-    end
-  end
-  return BestPos, BestHit
-end
-
-function GetJFarmPosition(range, width)
-  local BestPos 
-  local BestHit = 0
-  local objects = minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects
-  for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
-    if hit > BestHit then
-      BestHit = hit
-      BestPos = Vector(object)
-      if BestHit == #objects then
-        break
-      end
-    end
-  end
-  return BestPos, BestHit
-end
-
-function GetLineFarmPosition(range, width)
-  local BestPos 
-  local BestHit = 0
-  local objects = minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects
-  for i, object in ipairs(objects) do
-    local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
-    local hit = CountObjectsOnLineSegment(myHero, EndPos, width, objects)
-    if hit > BestHit then
-      BestHit = hit
-      BestPos = object
-      if BestHit == #objects then
-        break
-      end
-    end
-  end
-  return BestPos, BestHit
-end
-
-function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-  local n = 0
-  for i, object in ipairs(objects) do
-    local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
-    local w = width
-    if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
-      n = n + 1
-    end
-  end
-  return n
-end
-
-function CountObjectsNearPos(pos, range, radius, objects)
-  local n = 0
-  for i, object in ipairs(objects) do
-    if GetDistance(pos, object) <= radius then
-      n = n + 1
-    end
-  end
-  return n
-end
-
-function GetLichSlot()
-  for slot = ITEM_1, ITEM_7, 1 do
-    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell")) then
-      return slot
-    end
-  end
-  return nil
-end
-
-function IsInvinc(unit)
-  if unit == nil then if self == nil then return else unit = self end end
-  for i=1, unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name then 
-    if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
-   end
-  end
-  return false
-end
-
-function IsRecalling(unit)
-  if unit == nil then if self == nil then return else unit = self end end
-  for i=1, unit.buffCount do
-   local buff = unit:getBuff(i)
-   if buff and buff.valid and buff.name then 
-    if string.find(buff.name, "recall") or string.find(buff.name, "Recall") or string.find(buff.name, "teleport") or string.find(buff.name, "Teleport") then return true end
-   end
-  end
-  return false
-end
-
-function DrawLFC(x, y, z, radius, color)
-    if Config:getParam("Draws", "LFC") then
-        LagFree(x, y, z, radius, 1, color, 32, 0)
-    else
-        local radius = radius or 300
-        DrawCircle(x, y, z, radius, color)
-    end
-end
-
-function DrawLFT(x, y, z, radius, color)
-  LagFree(x, y, z, radius, 1, color, 3, 0)
-end
-
-function LagFree(x, y, z, radius, width, color, quality, degree)
-    local radius = radius or 300
-    local screenMin = WorldToScreen(D3DXVECTOR3(x - radius, y, z + radius))
-    if OnScreen({x = screenMin.x + 200, y = screenMin.y + 200}, {x = screenMin.x + 200, y = screenMin.y + 200}) then
-        radius = radius*.92
-        local quality = quality and 2 * math.pi / quality or 2 * math.pi / math.floor(radius / 10)
-        local width = width and width or 1
-        local a = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(degree), y, z - radius * math.sin(degree)))
-        for theta = quality, 2 * math.pi + quality, quality do
-            local b = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(theta+degree), y, z - radius * math.sin(theta+degree)))
-            DrawLine(a.x, a.y, b.x, b.y, width, color)
-            a = b
+  function CreateObj(object)
+    if object and object.valid and object.name then
+      for _,name in pairs(objTrackList[myHero.charName]) do
+        if object.name == name then
+          if myHero.charName == "Ahri" and GetDistance(obj) < 500 then
+            objHolder[object.name] = object
+            objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+          elseif myHero.charName ~= "Ahri" then
+            objHolder[object.name] = object
+            objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+          end
+          --table.insert(objHolder, object)
+          --table.insert(objTimeHolder, GetInGameTimer() + objTimeTrackList[myHero.charName][_])
+          if ScriptologyDebug then print("Object "..object.name.." created. Now tracking!") end
         end
+      end
     end
-end
-
-function ScriptologyMsg(msg) 
-  print("<font color=\"#6699ff\"><b>[Scriptology Loader]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
-end
-
-function TARGB(colorTable)
-  return ARGB(colorTable[1], colorTable[2], colorTable[3], colorTable[4])
-end
-
-function DmgCalc()
-  if not Config:getParam("Draws", "DMG") then return end
-  if myHero.charName == "Ryze" then loadedClass:DmgCalc() return end
-  for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy.visible then
-      killTextTable[enemy.networkID].indicatorText = ""
-      if myHero.charName == "Kalista" then
-        local damageAA = GetDmg("AD", myHero, enemy)
-        local damageE  = GetDmg(_E, myHero, enemy)
-        if enemy.health < damageE then
-            killTextTable[enemy.networkID].indicatorText = "E Kill"
-            killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
+  end
+   
+  function DeleteObj(object)
+    if object and object.name then 
+      for _,name in pairs(objTrackList[myHero.charName]) do
+        if object.name == name and name ~= "TheDoomBall" then
+          objHolder[object.name] = nil
+          if ScriptologyDebug then print("Object "..object.name.." destroyed. No longer tracking! "..#objHolder) end
         end
-        if myHero:CanUseSpell(_E) == READY and enemy.health > damageE and damageE > 0 then
-          killTextTable[enemy.networkID].indicatorText = math.floor(damageE/enemy.health*100).."% E"
-        else
-          killTextTable[enemy.networkID].indicatorText = ""
+      end
+    end
+  end
+
+  function ApplyBuff(source, unit, buff)
+    if source and source.isMe and buff and unit then
+      for _,name in pairs(trackList[myHero.charName]) do
+        if buff.name:find(name) then
+          stackTable[unit.networkID] = 1
+          if ScriptologyDebug then print(source.charName.." applied "..name.." on "..unit.charName) end
         end
+      end
+    end
+  end
+
+  function UpdateBuff(unit, buff, stacks)
+    if buff and unit then
+      for _,name in pairs(trackList[myHero.charName]) do
+        if buff.name:find(name) and stackTable[unit.networkID] then
+          stackTable[unit.networkID] = stacks
+          if ScriptologyDebug then print("Updated "..name.." on "..unit.charName.." with "..stacks.." stacks") end
+        end
+      end
+    end
+  end
+
+  function RemoveBuff(unit, buff)
+    if buff and unit then
+      for _,name in pairs(trackList[myHero.charName]) do
+        if buff.name:find(name) then
+          stackTable[unit.networkID] = nil
+          if ScriptologyDebug then print("Removed "..name.." from "..unit.charName) end
+        end
+      end
+    end
+  end
+
+  function GetStacks(unit)
+    if not unit then return 0 end
+    return stackTable[unit.networkID] or 0
+  end
+
+  function ProcessSpell(unit, spell)
+    if unit and unit.isMe and spell then
+      lastAttack = GetTickCount() - GetLatency()/2
+      previousWindUp = spell.windUpTime*1000
+      previousAttackCooldown = spell.animationTime*1000
+      if string.find(string.lower(spell.name), "attack") then
+        lastWindup = GetInGameTimer()+spell.windUpTime
+      elseif spell.name == "EkkoR" then
+        objHolder["Ekko"] = nil
+      elseif spell.name == "OrianaIzunaCommand" then
+        objHolder["TheDoomBall"] = nil
+      elseif spell.name == "OrianaRedactCommand" then
+        objHolder["TheDoomBall"] = spell.target
+      elseif string.find(spell.name, "NetherGrasp") or spell.name:lower():find("katarinar") then
+        ultOn = GetInGameTimer()+2.5
+      end
+    end
+  end
+   
+  function timeToShoot()
+    return (GetTickCount() + GetLatency()/2 > lastAttack + previousAttackCooldown) and ultOn < GetInGameTimer()
+  end
+   
+  function heroCanMove()
+    return (GetTickCount() + GetLatency()/2 > lastAttack + previousWindUp + 75) and ultOn < GetInGameTimer()
+  end
+
+  function GetCustomTarget()
+    loadedClass.ts:update()
+    if _G.MMA_Loaded and _G.MMA_Target() and _G.MMA_Target().type == myHero.type then return _G.MMA_Target() end
+    if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
+    return loadedClass.ts.target
+  end
+
+  function GetFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects
+    for i, object in ipairs(objects) do
+      local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
+      if hit > BestHit then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+          break
+        end
+      end
+    end
+    return BestPos, BestHit
+  end
+
+  function GetJFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects
+    for i, object in ipairs(objects) do
+      local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
+      if hit > BestHit then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+          break
+        end
+      end
+    end
+    return BestPos, BestHit
+  end
+
+  function GetLineFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects
+    for i, object in ipairs(objects) do
+      local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
+      local hit = CountObjectsOnLineSegment(myHero, EndPos, width, objects)
+      if hit > BestHit then
+        BestHit = hit
+        BestPos = object
+        if BestHit == #objects then
+          break
+        end
+      end
+    end
+    return BestPos, BestHit
+  end
+
+  function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
+    local n = 0
+    for i, object in ipairs(objects) do
+      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
+      local w = width
+      if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+        n = n + 1
+      end
+    end
+    return n
+  end
+
+  function CountObjectsNearPos(pos, range, radius, objects)
+    local n = 0
+    for i, object in ipairs(objects) do
+      if GetDistance(pos, object) <= radius then
+        n = n + 1
+      end
+    end
+    return n
+  end
+
+  function GetLichSlot()
+    for slot = ITEM_1, ITEM_7, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell")) then
+        return slot
+      end
+    end
+    return nil
+  end
+
+  function IsInvinc(unit)
+    if unit == nil then if self == nil then return else unit = self end end
+    for i=1, unit.buffCount do
+     local buff = unit:getBuff(i)
+     if buff and buff.valid and buff.name then 
+      if buff.name == "JudicatorIntervention" or buff.name == "UndyingRage" then return true end
+     end
+    end
+    return false
+  end
+
+  function IsRecalling(unit)
+    if unit == nil then if self == nil then return else unit = self end end
+    for i=1, unit.buffCount do
+     local buff = unit:getBuff(i)
+     if buff and buff.valid and buff.name then 
+      if string.find(buff.name, "recall") or string.find(buff.name, "Recall") or string.find(buff.name, "teleport") or string.find(buff.name, "Teleport") then return true end
+     end
+    end
+    return false
+  end
+
+  function DrawLFC(x, y, z, radius, color)
+      if Config:getParam("Draws", "LFC") then
+          LagFree(x, y, z, radius, 1, color, 32, 0)
       else
-        local damageAA = GetDmg("AD", myHero, enemy)
-        local damageQ  = GetDmg(_Q, myHero, enemy)
-        local damageW  = GetDmg(_W, myHero, enemy)
-        local damageE  = GetDmg(_E, myHero, enemy)
-        local damageR  = GetDmg(_R, myHero, enemy)
-        local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
-        local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
-        local damageS  = Smite and (20 + 8 * myHero.level) or 0
-        damageQ = myHero:CanUseSpell(_Q) == READY and damageQ or 0
-        damageW = myHero:CanUseSpell(_W) == READY and damageW or 0
-        damageE = myHero:CanUseSpell(_E) == READY and damageE or 0
-        damageR = myHero:CanUseSpell(_R) == READY and damageR or 0
-        if myHero:CanUseSpell(_Q) == READY and damageQ > 0 then
-          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
+          local radius = radius or 300
+          DrawCircle(x, y, z, radius, color)
+      end
+  end
+
+  function DrawLFT(x, y, z, radius, color)
+    LagFree(x, y, z, radius, 1, color, 3, 0)
+  end
+
+  function LagFree(x, y, z, radius, width, color, quality, degree)
+      local radius = radius or 300
+      local screenMin = WorldToScreen(D3DXVECTOR3(x - radius, y, z + radius))
+      if OnScreen({x = screenMin.x + 200, y = screenMin.y + 200}, {x = screenMin.x + 200, y = screenMin.y + 200}) then
+          radius = radius*.92
+          local quality = quality and 2 * math.pi / quality or 2 * math.pi / math.floor(radius / 10)
+          local width = width and width or 1
+          local a = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(degree), y, z - radius * math.sin(degree)))
+          for theta = quality, 2 * math.pi + quality, quality do
+              local b = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(theta+degree), y, z - radius * math.sin(theta+degree)))
+              DrawLine(a.x, a.y, b.x, b.y, width, color)
+              a = b
+          end
+      end
+  end
+
+  function ScriptologyMsg(msg) 
+    print("<font color=\"#6699ff\"><b>[Scriptology Loader]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+  end
+
+  function TARGB(colorTable)
+    return ARGB(colorTable[1], colorTable[2], colorTable[3], colorTable[4])
+  end
+
+  function DmgCalc()
+    if not Config:getParam("Draws", "DMG") then return end
+    if myHero.charName == "Ryze" then loadedClass:DmgCalc() return end
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy.visible then
+        killTextTable[enemy.networkID].indicatorText = ""
+        if myHero.charName == "Kalista" then
+          local damageAA = GetDmg("AD", myHero, enemy)
+          local damageE  = GetDmg(_E, myHero, enemy)
+          if enemy.health < damageE then
+              killTextTable[enemy.networkID].indicatorText = "E Kill"
+              killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
+          end
+          if myHero:CanUseSpell(_E) == READY and enemy.health > damageE and damageE > 0 then
+            killTextTable[enemy.networkID].indicatorText = math.floor(damageE/enemy.health*100).."% E"
+          else
+            killTextTable[enemy.networkID].indicatorText = ""
+          end
+        else
+          local damageAA = GetDmg("AD", myHero, enemy)
+          local damageQ  = GetDmg(_Q, myHero, enemy)
+          local damageW  = GetDmg(_W, myHero, enemy)
+          local damageE  = GetDmg(_E, myHero, enemy)
+          local damageR  = GetDmg(_R, myHero, enemy)
+          local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
+          local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+          local damageS  = Smite and (20 + 8 * myHero.level) or 0
+          damageQ = myHero:CanUseSpell(_Q) == READY and damageQ or 0
+          damageW = myHero:CanUseSpell(_W) == READY and damageW or 0
+          damageE = myHero:CanUseSpell(_E) == READY and damageE or 0
+          damageR = myHero:CanUseSpell(_R) == READY and damageR or 0
+          if myHero:CanUseSpell(_Q) == READY and damageQ > 0 then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
+          end
+          if myHero:CanUseSpell(_W) == READY and damageW > 0 then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."W"
+          end
+          if myHero:CanUseSpell(_E) == READY and damageE > 0 then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."E"
+          end
+          if myHero:CanUseSpell(_R) == READY and damageR > 0 and myHero.charName ~= "Orianna" then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."R"
+          end
+          if myHero:CanUseSpell(_R) == READY and damageRC > 0 then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."RQ"
+          end
+          if enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy)+damageRC then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
+          end
+          if myHero.charName == "Teemo" and enemy.health > damageQ+damageE+damageAA then
+            local neededAA = math.ceil((enemy.health) / (damageAA+damageE))
+            neededAA = neededAA < 1 and 1 or neededAA
+            killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
+          elseif myHero.charName == "Ashe" or myHero.charName == "Vayne" then
+            local neededAA = math.ceil((enemy.health-damageQ-damageW-damageE) / (damageAA))
+            neededAA = neededAA < 1 and 1 or neededAA
+            killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
+          elseif enemy.health > damageQ+damageW+damageE+damageR then
+            local neededAA = math.ceil(100*(damageQ+damageW+damageE+damageR)/(enemy.health))
+            killTextTable[enemy.networkID].indicatorText = neededAA.." % Combodmg"
+          end
         end
-        if myHero:CanUseSpell(_W) == READY and damageW > 0 then
-          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."W"
-        end
-        if myHero:CanUseSpell(_E) == READY and damageE > 0 then
-          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."E"
-        end
-        if myHero:CanUseSpell(_R) == READY and damageR > 0 and myHero.charName ~= "Orianna" then
-          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."R"
-        end
-        if myHero:CanUseSpell(_R) == READY and damageRC > 0 then
-          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."RQ"
-        end
-        if enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy)+damageRC then
-          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
-        end
-        if myHero.charName == "Teemo" and enemy.health > damageQ+damageE+damageAA then
-          local neededAA = math.ceil((enemy.health) / (damageAA+damageE))
-          neededAA = neededAA < 1 and 1 or neededAA
-          killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
-        elseif myHero.charName == "Ashe" or myHero.charName == "Vayne" then
-          local neededAA = math.ceil((enemy.health-damageQ-damageW-damageE) / (damageAA))
-          neededAA = neededAA < 1 and 1 or neededAA
-          killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
-        elseif enemy.health > damageQ+damageW+damageE+damageR then
-          local neededAA = math.ceil(100*(damageQ+damageW+damageE+damageR)/(enemy.health))
-          killTextTable[enemy.networkID].indicatorText = neededAA.." % Combodmg"
+        local enemyDamageAA = GetDmg("AD", enemy, myHero)
+        local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+        if enemyNeededAA ~= 0 then         
+          killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
         end
       end
-      local enemyDamageAA = GetDmg("AD", enemy, myHero)
-      local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
-      if enemyNeededAA ~= 0 then         
-        killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+    end
+  end
+
+  function GetDmg(spell, source, target)
+    if target == nil or source == nil then
+      return
+    end
+    local ADDmg            = 0
+    local APDmg            = 0
+    local AP               = source.ap
+    local Level            = source.level
+    local TotalDmg         = source.totalDamage
+    local crit = myHero.critChance
+    local crdm = myHero.critDmg
+    local ArmorPen         = math.floor(source.armorPen)
+    local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+    local MagicPen         = math.floor(source.magicPen)
+    local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+
+    local Armor        = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+
+    if source ~= myHero then
+      return TotalDmg*(1-ArmorPercent)
+    end
+    if spell == "IGNITE" then
+      return 50+20*Level/2
+    elseif spell == "Tiamat" then
+      ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+    elseif spell == "AD" then
+      if myHero.charName == "Ashe" then
+        ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
+      else
+        ADDmg = TotalDmg
+      end
+    elseif type(spell) == "number" then
+      if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      if data[spell].dmgTRUE then return data[spell].dmgTRUE(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+    end
+    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
+    return math.floor(dmg)
+  end
+
+  function GetHydraSlot()
+    for slot = ITEM_1, ITEM_7, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "tiamat")) then
+        return slot
       end
     end
+    return nil
   end
-end
 
-function GetDmg(spell, source, target)
-  if target == nil or source == nil then
-    return
-  end
-  local ADDmg            = 0
-  local APDmg            = 0
-  local AP               = source.ap
-  local Level            = source.level
-  local TotalDmg         = source.totalDamage
-  local crit = myHero.critChance
-  local crdm = myHero.critDmg
-  local ArmorPen         = math.floor(source.armorPen)
-  local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
-  local MagicPen         = math.floor(source.magicPen)
-  local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
-
-  local Armor        = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
-  local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-  local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
-
-  if source ~= myHero then
-    return TotalDmg*(1-ArmorPercent)
-  end
-  if spell == "IGNITE" then
-    return 50+20*Level/2
-  elseif spell == "Tiamat" then
-    ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
-  elseif spell == "AD" then
-    if myHero.charName == "Ashe" then
-      ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
-    else
-      ADDmg = TotalDmg
-    end
-  elseif type(spell) == "number" then
-    if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-    if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-    if data[spell].dmgTRUE then return data[spell].dmgTRUE(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-  end
-  dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
-  return math.floor(dmg)
-end
-
-function GetHydraSlot()
-  for slot = ITEM_1, ITEM_7, 1 do
-    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "tiamat")) then
-      return slot
-    end
-  end
-  return nil
-end
-
-function Cast(Spell, target, targeted, predict, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
-  if not target and not targeted then
-    if VIP_USER then
-        Packet("S_CAST", {spellId = Spell}):send()
-    else
-        CastSpell(Spell)
-    end
-  elseif target and targeted then
-    if VIP_USER then
-        Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
-    else
-        CastSpell(Spell, target)
-    end
-  elseif target and not targeted and not predict then
-    xPos = target.x
-    zPos = target.z
-    if VIP_USER then
-      Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-    else
-      CastSpell(Spell, xPos, zPos)
-    end
-  elseif target and not targeted and predict then
-    if not source then source = myHero end
-    if not hitchance then hitchance = 2 end
-    local CastPosition, HitChance, Position = UPL:Predict(Spell, source, target)
-    if HitChance >= hitchance then
-      xPos = CastPosition.x
-      zPos = CastPosition.z
+  function Cast(Spell, target, targeted, predict, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
+    if not target and not targeted then
+      if VIP_USER then
+          Packet("S_CAST", {spellId = Spell}):send()
+      else
+          CastSpell(Spell)
+      end
+    elseif target and targeted then
+      if VIP_USER then
+          Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
+      else
+          CastSpell(Spell, target)
+      end
+    elseif target and not targeted and not predict then
+      xPos = target.x
+      zPos = target.z
       if VIP_USER then
         Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
       else
         CastSpell(Spell, xPos, zPos)
       end
-      CastSpell(Spell)
+    elseif target and not targeted and predict then
+      if not source then source = myHero end
+      if not hitchance then hitchance = 2 end
+      local CastPosition, HitChance, Position = UPL:Predict(Spell, source, target)
+      if HitChance >= hitchance then
+        xPos = CastPosition.x
+        zPos = CastPosition.z
+        if VIP_USER then
+          Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+        else
+          CastSpell(Spell, xPos, zPos)
+        end
+        CastSpell(Spell)
+      end
     end
   end
-end
 
-function EnemiesAround(Unit, range)
-  local c=0
-  if Unit == nil then return 0 end
-  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
-end
-
-function EnemiesAroundAndFacingMe(Unit, range)
-  local c=0
-  if Unit == nil then return 0 end
-  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range and GetDistance(PredictPos(hero), myHero) < GetDistance(hero, myHero) then c=c+1 end end return c
-end
-
-function PredictPos(target)
-  speed = target.ms
-  dir = GetTargetDirection(target)
-  if dir and target.isMoving then
-    return Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*speed/8, GetDistance(target.minBBox, target.pos)
-  elseif not target.isMoving then
-    return Vector(target), GetDistance(target.minBBox, target.pos)
+  function EnemiesAround(Unit, range)
+    local c=0
+    if Unit == nil then return 0 end
+    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
   end
-end
 
-function GetTargetDirection(target)
-  local wp = GetWayPoints(target)
-  if #wp == 1 then
-    return Vector(target.x, target.y, target.z)
-  elseif #wp >= 2 then
-    return Vector(wp[2].x-target.x, wp[2].y-target.y, wp[2].z-target.z)
+  function EnemiesAroundAndFacingMe(Unit, range)
+    local c=0
+    if Unit == nil then return 0 end
+    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range and GetDistance(PredictPos(hero), myHero) < GetDistance(hero, myHero) then c=c+1 end end return c
   end
-end
 
-function GetWayPoints(target)
-  local result = {}
-  if target.hasMovePath then
-    table.insert(result, Vector(target))
-    for i = target.pathIndex, target.pathCount do
-      path = target:GetPath(i)
-      table.insert(result, Vector(path))
-    end
-  else
-    table.insert(result, Vector(target))
-  end
-  return result
-end
-
-function AlliesAround(Unit, range)
-  local c=0
-  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
-end
-
-function GetLowestMinion(range)
-  local minionTarget = nil
-  for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-    if minionTarget == nil then 
-      minionTarget = minion
-    elseif minionTarget.health >= minion.health and ValidTarget(minion, range) then
-      minionTarget = minion
+  function PredictPos(target)
+    speed = target.ms
+    dir = GetTargetDirection(target)
+    if dir and target.isMoving then
+      return Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*speed/8, GetDistance(target.minBBox, target.pos)
+    elseif not target.isMoving then
+      return Vector(target), GetDistance(target.minBBox, target.pos)
     end
   end
-  return minionTarget
-end
 
-function GetClosestMinion(range)
-  local minionTarget = nil
-  for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-    if minionTarget == nil then 
-      minionTarget = minion
-    elseif GetDistance(minionTarget) > GetDistance(minion) and ValidTarget(minion, range) then
-      minionTarget = minion
+  function GetTargetDirection(target)
+    local wp = GetWayPoints(target)
+    if #wp == 1 then
+      return Vector(target.x, target.y, target.z)
+    elseif #wp >= 2 then
+      return Vector(wp[2].x-target.x, wp[2].y-target.y, wp[2].z-target.z)
     end
   end
-  return minionTarget
-end
 
-
-function GetJMinion(range)
-  local minionTarget = nil
-  for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-    if minionTarget == nil then 
-      minionTarget = minion
-    elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) then
-      minionTarget = minion
+  function GetWayPoints(target)
+    local result = {}
+    if target.hasMovePath then
+      table.insert(result, Vector(target))
+      for i = target.pathIndex, target.pathCount do
+        path = target:GetPath(i)
+        table.insert(result, Vector(path))
+      end
+    else
+      table.insert(result, Vector(target))
     end
+    return result
   end
-  return minionTarget
-end
+
+  function AlliesAround(Unit, range)
+    local c=0
+    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
+  end
+
+  function GetLowestMinion(range)
+    local minionTarget = nil
+    for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      if minionTarget == nil then 
+        minionTarget = minion
+      elseif minionTarget.health >= minion.health and ValidTarget(minion, range) then
+        minionTarget = minion
+      end
+    end
+    return minionTarget
+  end
+
+  function GetClosestMinion(range)
+    local minionTarget = nil
+    for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      if minionTarget == nil then 
+        minionTarget = minion
+      elseif GetDistance(minionTarget) > GetDistance(minion) and ValidTarget(minion, range) then
+        minionTarget = minion
+      end
+    end
+    return minionTarget
+  end
+
+
+  function GetJMinion(range)
+    local minionTarget = nil
+    for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      if minionTarget == nil then 
+        minionTarget = minion
+      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) then
+        minionTarget = minion
+      end
+    end
+    return minionTarget
+  end
+-- }
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
