@@ -3,37 +3,7 @@ _G.SEvadeVersion    = 0.02
 _G.SEvadeLastUpdate = "Beta :: Day 2 - only drawings"
 
 function OnLoad()
-	Load()
-end
-
-function Load()
-    if Auth() then SEvade() end
-end
-
-function Auth()
-  if authAttempt then authAttempt = authAttempt + 1 else authAttempt = 1 end
-  local authdata = GetWebResult("scriptology.tk", "/users/"..GetUser():lower()..".evade")
-  if authdata and authAttempt < 9 then
-    if type(tonumber(authdata)) == "number" and tonumber(authdata) == -1 then
-      Msg("Authed! Hello "..GetUser())
-      _G.SEvadeLoaded = true
-      return true
-    elseif type(tonumber(authdata)) == "number" and tonumber(authdata) > 0 then
-      Msg("Trial mode active! Hello "..GetUser())
-      _G.SEvadeLoaded = true
-      return true
-    else
-      Msg("User: "..GetUser().." not found. Auth failed..")
-      return false
-    end
-  elseif authAttempt < 9 then
-    Msg("Auth failed, retrying. Attempt "..authAttempt.."/8")
-    DelayAction(Load, 2)
-  else
-    Msg("Auth failed. Please try again later..")
-      _G.SEvadeLoaded = true
-    return true
-  end
+	SEvade() end
 end
 
 function Msg(msg, title)
