@@ -58,7 +58,6 @@ class 'SEvade' -- {
 		AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
 		AddTickCallback(function() self:Tick() end)
 		AddDrawCallback(function() self:Draw() end)
-	    --AddCreateObjCallback(function(x) CreateObj(x) end)
 	end
 
 	function SEvade:ProcessSpell(unit, spell)
@@ -88,7 +87,7 @@ class 'SEvade' -- {
 		end
 	end
 
-	function SEvade:AssumeThrownskill(source,direction,delay)
+	function SEvade:AssumeThrownskill(source,direction,delay) -- I'm a lazy bastard...
 		local tempCdTable = self.cdTable[source.networkID]
 		DelayAction(function()
 			for i=0,3 do
