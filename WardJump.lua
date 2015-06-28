@@ -4,6 +4,7 @@ if not toCast[myHero.charName] then return end
 function OnLoad()
 	Config = scriptConfig("WardJump","WardJump")
   	Config:addParam("wj", "Wardjump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+  	Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
   	Wards = {}
   	casted, jumped = false, false
   	for i = 1, objManager.maxObjects do
@@ -21,8 +22,10 @@ function OnTick()
 end
 
 function OnDraw()
-	local pos = getMousePos()
-	DrawCircle3D(pos.x,pos.y,pos.z,150,1,ARGB(255,255,255,255),32)
+	if Config.d then
+		local pos = getMousePos()
+		DrawCircle3D(pos.x,pos.y,pos.z,150,1,ARGB(255,255,255,255),32)
+	end
 end
 
 function WardJump()
