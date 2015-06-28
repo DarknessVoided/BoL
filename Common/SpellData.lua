@@ -272,7 +272,7 @@ return {
         [_R] = { speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear"}
     },
     ["Ryze"] = {
-        [_Q] = { speed = 1875, delay = 0.25, range = 900, width = 55, collision = false, aoe = false, type = "linear"},
+        [_Q] = { speed = 1875, delay = 0.25, range = 900, width = 55, collision = true, aoe = false, type = "linear"},
     },
     ["Sejuani"] = {
         [_R] = { speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
@@ -337,6 +337,9 @@ return {
         [_Q] = { speed = 1500, delay = 0.5, range = 1475, width = 100, collision = false, aoe = false, type = "linear"},
         [_E] = { speed = 1750, delay = 0.25, range = 925, width = 235, collision = false, aoe = true, type = "circular"},
         [_R] = { speed = 1200, delay = 0.5, range = 800, width = 100, collision = false, aoe = false, type = "linear"}
+    },
+    ["Vayne"] = {
+        [_E] = { speed = 2200, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear"}
     },
     ["Veigar"] = {
         [_Q] = { speed = 1200, delay = 0.25, range = 875, width = 75, collision = true, aoe = false, type = "linear"},
