@@ -339,7 +339,7 @@ return {
         [_R] = { speed = 1200, delay = 0.5, range = 800, width = 100, collision = false, aoe = false, type = "linear"}
     },
     ["Vayne"] = {
-        [_E] = { speed = 2200, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear"}
+        [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear"}
     },
     ["Veigar"] = {
         [_Q] = { speed = 1200, delay = 0.25, range = 875, width = 75, collision = true, aoe = false, type = "linear"},
