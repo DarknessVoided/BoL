@@ -98,6 +98,6 @@ class 'SEvade' -- {
 					self.thrownSpell[#self.thrownSpell+1] = {spell = i, time = GetInGameTimer(), unit = source, startPos = Vector(source), dir = direction}
 				end
 			end
-		end, delay+0.075)
+		end, delay+0.05)
 	end
 -- }
