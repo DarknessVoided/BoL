@@ -14,13 +14,11 @@ end
 class 'SEvade' -- {
 
 	function SEvade:__init()
-        if _G.SEvadeLoaded then
-        	if SEvadeAutoUpdate then self:Update() end
-        	Msg(SEvadeLastUpdate, "Last Update")
-        	self:Load()
-        else
-        	Msg("Exiting..", "Auth Failed")
-        end
+		if _G.SEvadeLoaded then
+			if SEvadeAutoUpdate then self:Update() end
+			Msg(SEvadeLastUpdate, "Last Update")
+			self:Load()
+		end
 	end
 
 	function SEvade:Update()
