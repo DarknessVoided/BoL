@@ -8,10 +8,10 @@ function OnLoad()
   	Wards = {}
   	casted, jumped = false, false
   	for i = 1, objManager.maxObjects do
-    	local object = objManager:GetObject(i)
-    	if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
-      		table.insert(Wards, object)
-    	end
+		local object = objManager:GetObject(i)
+		if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
+			table.insert(Wards, object)
+		end
   	end
 end
 
