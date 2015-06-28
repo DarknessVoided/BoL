@@ -27,7 +27,7 @@ if not _G.UPLloaded then
   end
 end
 
-local Q = {name = "Javelin Toss", speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
+local Q = {name = "Javelin Toss", speed = 1337, delay = 0.25, range = 1625, width = 37.5, collision = true, aoe = false, type = "linear", Ready = function() return myHero:CanUseSpell(_Q) == READY end}
 local QTargetSelector = TargetSelector(TARGET_LESS_CAST_PRIORITY, Q.range, DAMAGE_MAGIC)
 
 function OnLoad()
