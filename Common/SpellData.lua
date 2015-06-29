@@ -149,6 +149,8 @@ return {
     ["Kalista"] = {
         [_Q] = { speed = 1750, delay = 0.25, range = 1375, width = 70, collision = true, aoe = false, type = "linear"},
     },
+    ["Katarina"] = {
+    },
     ["Karma"] = {
         [_Q] = { speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
     },
