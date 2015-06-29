@@ -2659,6 +2659,14 @@ class "Katarina"
                   DelayAction(function() Cast(_R) end, 0.75)
                 end
               end
+            elseif sReady[_W] then
+              pos, b = PredictPos(enemy)
+              if GetDistance(pos) < data[1].range then
+                DelayAction(function() Cast(_W) end, 0.25)
+                if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                  DelayAction(function() Cast(_R) end, 0.5)
+                end
+              end
             end
           elseif sReady[_E] then
             Cast(_E, enemy, true)
