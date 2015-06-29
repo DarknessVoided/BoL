@@ -24,6 +24,7 @@
   SGnarVersion          = 0
   SJarvanVersion        = 0
   SKalistaVersion       = 1
+  SKatarinaVersion      = 1   -- initial release
   SKogmawVersion        = 0
   SLeBlancVersion       = 0.1 -- soon(tm)
   SLeeSinVersion        = 1.2 -- is now live
@@ -51,7 +52,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.68
+_G.ScriptologyVersion    = 1.69
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -62,7 +63,7 @@ _G.ScriptologyDebug      = false
     require("sScriptConfig")
     champList = { "Ahri", "Ashe", "Blitzcrank", "Brand", "Cassiopeia", 
                   "Darius", "Ekko", 
-                  "Kalista", "LeeSin", "Lux", "Malzahar", 
+                  "Kalista", "Katarina", "LeeSin", "Lux", "Malzahar", 
                   "Nidalee", "Orianna", "Rengar", "Riven", "Ryze",
                   "Rumble", "Teemo", 
                   "Vayne", "Volibear" }
@@ -165,7 +166,7 @@ _G.ScriptologyDebug      = false
     else
       ScriptologyMsg("Error downloading version info")
     end
-    if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" and myHero.charName ~= "Teemo" and myHero.charName ~= "Volibear" and not _G.UPLloaded then
+    if myHero.charName ~= "Darius" and myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" and myHero.charName ~= "Teemo" and myHero.charName ~= "Volibear" and not _G.UPLloaded then
       if FileExist(LIB_PATH .. "/UPL.lua") then
         require("UPL")
         _G.UPL = UPL()
@@ -199,7 +200,7 @@ _G.ScriptologyDebug      = false
       if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
       if myHero.charName == "Vayne" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = false})
                                          Config:addParam({state = "Misc", name = "offset", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {90}}) end
-      if myHero.charName ~= "Darius" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
+      if myHero.charName ~= "Darius" and myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
     end
     Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
     if myHero.charName ~= "Orianna" then
@@ -293,6 +294,12 @@ _G.ScriptologyDebug      = false
           [_E] = { delay = 0.50, range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.2 + 0.03 * (level-1))*TotalDmg) or 0 end},
           [_R] = { range = 4000}
         },
+        ["Katarina"] = {
+          [_Q] = { range = 675, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+25*level+0.45*AP end},
+          [_W] = { range = 375, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.25*AP+0.6*TotalDmg end},
+          [_E] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+30*level+0.25*AP end},
+          [_R] = { range = 550, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+10*level+0.2*AP+0.3*source.addDamage end}
+          },
         ["KogMaw"] = {
           [_Q] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+50*level+0.5*AP end},
           [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*Ap+TotalDmg end},
@@ -425,6 +432,7 @@ _G.ScriptologyDebug      = false
     previousWindUp = 0
     previousAttackCooldown = 0
     ultOn = 0
+    ultTarget = nil
     trackList = {
         ["Ahri"] = {
           "AhriSeduce"
@@ -626,7 +634,7 @@ _G.ScriptologyDebug      = false
       if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255, 155, 155, 155))
       end
-      if Config:getParam("Draws", "R") and myHero:CanUseSpell(_R) == READY then
+      if Config:getParam("Draws", "R") and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
         DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range > 0 and data[3].range or data[3].width, ARGB(255, 155, 155, 155))
       end
     end
@@ -793,6 +801,7 @@ _G.ScriptologyDebug      = false
         objHolder["TheDoomBall"] = spell.target
       elseif string.find(spell.name, "NetherGrasp") or spell.name:lower():find("katarinar") then
         ultOn = GetInGameTimer()+2.5
+        ultTarget = Target
       end
     end
   end
@@ -977,14 +986,14 @@ _G.ScriptologyDebug      = false
           local damageQ  = GetDmg(_Q, myHero, enemy)
           local damageW  = GetDmg(_W, myHero, enemy)
           local damageE  = GetDmg(_E, myHero, enemy)
-          local damageR  = GetDmg(_R, myHero, enemy)
+          local damageR  = GetDmg(_R, myHero, enemy)*(myHero.charName == "Katarina" and 10 or 1)
           local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
           local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
           local damageS  = Smite and (20 + 8 * myHero.level) or 0
           damageQ = myHero:CanUseSpell(_Q) == READY and damageQ or 0
           damageW = myHero:CanUseSpell(_W) == READY and damageW or 0
           damageE = myHero:CanUseSpell(_E) == READY and damageE or 0
-          damageR = myHero:CanUseSpell(_R) == READY and damageR or 0
+          damageR = (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) and damageR or 0
           if myHero:CanUseSpell(_Q) == READY and damageQ > 0 then
             killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
           end
@@ -994,7 +1003,7 @@ _G.ScriptologyDebug      = false
           if myHero:CanUseSpell(_E) == READY and damageE > 0 then
             killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."E"
           end
-          if myHero:CanUseSpell(_R) == READY and damageR > 0 and myHero.charName ~= "Orianna" then
+          if myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0 and damageR > 0 and myHero.charName ~= "Orianna" then
             killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."R"
           end
           if myHero:CanUseSpell(_R) == READY and damageRC > 0 then
@@ -1124,14 +1133,14 @@ _G.ScriptologyDebug      = false
   function EnemiesAroundAndFacingMe(Unit, range)
     local c=0
     if Unit == nil then return 0 end
-    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range and GetDistance(PredictPos(hero), myHero) < GetDistance(hero, myHero) then c=c+1 end end return c
+    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) pos, b = PredictPos(hero) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range and GetDistance(pos, myHero) < GetDistance(hero, myHero) then c=c+1 end end return c
   end
 
-  function PredictPos(target)
+  function PredictPos(target,delay)
     speed = target.ms
     dir = GetTargetDirection(target)
     if dir and target.isMoving then
-      return Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*speed/8, GetDistance(target.minBBox, target.pos)
+      return Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*speed/8+Vector(dir.x, dir.y, dir.z):normalized()*target.ms*delay, GetDistance(target.minBBox, target.pos)
     elseif not target.isMoving then
       return Vector(target), GetDistance(target.minBBox, target.pos)
     end
@@ -2472,6 +2481,202 @@ class "Kalista"
           Cast(_Q, enemy, false, true, 1.2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
+        end
+      end
+    end
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "Katarina"
+
+  function Katarina:__init()
+    self.ts = TargetSelector(TARGET_LESS_CAST, 700, DAMAGE_MAGICAL, false, true)
+    self:Menu()
+    self.Target = nil
+    self.orbTable = { lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625 }
+    AddTickCallback(function() self:OrbWalk() end)
+  end
+
+  function Katarina:OrbWalk()
+    if Config:getParam("LastHit", "LastHit") then
+      self.Target = GetLowestMinion(700)
+      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
+        self.Target = nil
+      end
+      if not self.Target then
+        self.Target = GetJMinion(700)
+      end
+    end
+    if Config:getParam("LaneClear", "LaneClear") then
+      self.Target = GetLowestMinion(700)
+      if not self.Target then
+        self.Target = GetJMinion(700)
+      end
+    end
+    if Config:getParam("Harrass", "Harrass") then
+      self.Target = Target
+    end
+    if Config:getParam("Combo", "Combo") then
+      self.Target = Target
+    end
+    if self.Forcetarget and ValidTarget(self.Forcetarget, 700) then
+      self.Target = self.Forcetarget
+    end
+    if self:DoOrb() then self:Orb(self.Target) end
+  end
+
+  function Katarina:Orb(unit)
+    if not ValidTarget(unit, myHero.range + GetDistance(myHero.minBBox) + 1 + 40) then
+      unit = Target
+    end
+    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, myHero.range + GetDistance(myHero.minBBox) + 1 + 40) then
+      myHero:Attack(unit)
+    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) + self.orbTable.minionAA then
+      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
+      if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
+        myHero:MoveTo(unit.x, unit.z)
+      elseif self:DoOrb() and GetDistance(mousePos) > 50 then
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    end
+  end
+
+  function Katarina:DoOrb()
+    if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then
+      return false
+    end
+    if Config:getParam("Combo", "Combo") then
+      return true
+    end
+    if Config:getParam("Harrass", "Harrass") then
+      return true
+    end
+    if Config:getParam("LastHit", "LastHit") then
+      return true
+    end
+    if Config:getParam("LaneClear", "LaneClear") then
+      return true
+    end
+    return false
+  end
+
+  function Katarina:Menu()
+    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
+      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+    end
+    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+  end
+
+  function Katarina:LastHit()
+    if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
+    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
+      Cast(_Q, self.Target, true)
+    end
+    pos, b = PredictPos(self.Target,0.25)
+    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
+      Cast(_W)
+    end
+    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
+      Cast(_E, self.Target, true)
+    end
+  end
+
+  function Katarina:LaneClear()
+    if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
+    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+      Cast(_Q, self.Target, true)
+    end
+    pos, b = PredictPos(self.Target,0.25)
+    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+      Cast(_W)
+    end
+    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+      Cast(_E, self.Target, true)
+    end
+  end
+
+  function Katarina:Combo()
+    if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
+    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+      Cast(_Q, self.Target, true)
+    end
+    pos, b = PredictPos(self.Target,0.25)
+    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+      Cast(_W)
+    end
+    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+      Cast(_E, self.Target, true)
+    end
+    if Config:getParam("Combo", "R") and sReady[_R] and GetDistance(self.Target) < 200 and self.Target.health < GetDmg(_R, myHero, self.Target)*10 then
+      Cast(_R)
+    end
+  end
+
+  function Katarina:Harrass()
+    if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
+    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+      Cast(_Q, self.Target, true)
+    end
+    pos, b = PredictPos(self.Target,0.25)
+    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+      Cast(_W)
+    end
+    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+      Cast(_E, self.Target, true)
+    end
+  end
+
+  function Katarina:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and GetDistance(enemy) < 700 then
+        local dmg = 0
+        for _,k in pairs({"Q","W","E"}) do
+          if Config:getParam("Killsteal", k) and sReady[_-1] then
+            dmg = dmg + GetDmg(_-1, myHero, enemy)
+          end
+        end
+        if dmg+(sReady[_Q] and myHero:CalcMagicDamage(enemy,15*myHero:GetSpellData(_Q).level+0.15*myHero.ap) or 0)+((myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) and GetDmg(_R, myHero, enemy)*10 or 0) >= enemy.health then
+          if sReady[_Q] then
+            Cast(_Q, enemy, true)
+            if sReady[_E] then
+              DelayAction(Cast, 0.25, {_E, enemy, true})
+              if sReady[_W] then
+                DelayAction(function() Cast(_W) end, 0.5)
+                if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                  DelayAction(function() Cast(_R) end, 0.75)
+                end
+              end
+            end
+          elseif sReady[_E] then
+            Cast(_E, enemy, true)
+            if sReady[_W] then
+              DelayAction(function() Cast(_W) end, 0.25)
+              if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                DelayAction(function() Cast(_R) end, 0.5)
+              end
+            end
+          elseif sReady[_W] then
+            pos, b = PredictPos(enemy)
+            if GetDistance(pos) < data[1].range then
+              Cast(_W)
+              if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                DelayAction(function() Cast(_R) end, 0.25)
+              end
+            end
+          end
         end
       end
     end
