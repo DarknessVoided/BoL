@@ -4361,6 +4361,7 @@ class "Ryze"
     if not target then
       target = GetLowestMinion(900)
     end
+if not target then return end
     if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_E, myHero, target) then 
       CastSpell(_Q, target, false, true, 1)
     end
