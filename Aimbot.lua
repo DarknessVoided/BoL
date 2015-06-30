@@ -305,7 +305,7 @@ _G.Champs = {
 
 if not _G.Champs[myHero.charName] then _G.Champs = nil collectgarbage() return end -- not supported :(
 
-AimbotVersion = 1.5
+AimbotVersion = 1.51
 
 --Scriptstatus Tracker
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("VILKJJKPQMO") 
@@ -366,10 +366,11 @@ function Aimbot:__init()
   AddTickCallback(function() self:Tick() end)
   AddDrawCallback(function() self:Draw() end)
   AddMsgCallback(function(x,y) self:Msg(x,y) end)
+  HookPackets()
   AddSendPacketCallback(function(p) self:SendPacket(p) end)
+  AddRecvPacketCallback2(function(p) self:RecvPacket(p) end)
 end
 function Aimbot:Vars()
-    HookPackets()
     self.data = _G.Champs[myHero.charName]
     self.QReady, self.WReady, self.EReady, self.RReady = nil, nil, nil, nil
     self.Target = nil
@@ -425,7 +426,7 @@ function Aimbot:Tick()
   --if Config.lh and not myHero.dead and not recall then 
   --end
   -- [[ Real aimbot part ]] --
-  if self.Config.tog and not self.Config.off and not myHero.dead and self:IsFirstCast() and (self.toCast[0] or self.toCast[1] or self.toCast[2] or self.toCast[3] or self.secondCast) then -- 
+  if self.Config.tog and not self.Config.off and not myHero.dead and (self:IsFirstCast() or self.secondCast) and (self.toCast[0] or self.toCast[1] or self.toCast[2] or self.toCast[3]) then -- 
       for i, spell in pairs(self.data) do
           self.Target = self:GetCustomTarget(i)
           if self.Target == nil or self.Target.dead then return end
@@ -493,14 +494,21 @@ function Aimbot:EnemiesAround(Unit, range)
 end
 
 function Aimbot:Msg(msg, key)
+   if msg == KEY_DOWN and self.Config.skConfig["Q"] and self:IsChargeable(0) and myHero:CanUseSpell(_Q) == READY then
+    DelayAction(function() if not self.secondCast and myHero:CanUseSpell(_Q) == READY then self.toCast[0] = true self.secondCast = true end end, 1.5)
+   end
    if msg == KEY_UP and key == GetKey("Q") and self.toAim[0] and not self.secondCast then
      self.toCast[0] = false
+     self.secondCast = false
    elseif msg == KEY_UP and key == GetKey("W") and self.toAim[1] and not self.secondCast then 
      self.toCast[1] = false
+     self.secondCast = false
    elseif msg == KEY_UP and key == GetKey("E") and self.toAim[2] and not self.secondCast then 
      self.toCast[2] = false
+     self.secondCast = false
    elseif msg == KEY_UP and key == GetKey("R") and self.toAim[3] and not self.secondCast then
      self.toCast[3] = false
+     self.secondCast = false
    end
 end
 
@@ -649,20 +657,21 @@ function Aimbot:SendPacket(p)
             end
         end
     end
-    --[[if head == 0xDF then
-        p.pos=8
-        local opc = p:Decode1()
-        if ValidPacketRequest() then
-            if lastopc == opc then
-                if debugMode then print("pew") end
-                lastopc = nil
-                toCast[0] = true
-                secondCast = true
-            else
-                lastopc = opc
-            end
-        end
-    end]]--
+  end
+end
+
+function Aimbot:RecvPacket(p)
+  if self.Config.tog and not self.Config.off and not myHero.dead then
+    local head = p.header
+    if head == 0x22 then
+      self.toCast[_Q] = true
+      self.secondCast = true
+      --[[self.Target = self:GetCustomTarget(_Q)
+      if self.Target ~= nil then
+        print(self.Target.charName)
+        self:CCastSpell(_Q, self.Target)
+      end]]
+    end
   end
 end
 
