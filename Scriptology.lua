@@ -16,7 +16,7 @@
   SAhriVersion          = 1.2 -- r catch angle fix
   SAsheVersion          = 1.4 -- removed ult over whole map
   SAzirVersion          = 0
-  SBlitzcrankVersion    = 1
+  SBlitzcrankVersion    = 1.1 -- fixed R ks
   SBrandVersion         = 1
   SCassiopeiaVersion    = 1.4 -- facingme fixed
   SDariusVersion        = 1.2 -- auto Q harrass added
@@ -24,7 +24,7 @@
   SGnarVersion          = 0
   SJarvanVersion        = 0
   SKalistaVersion       = 1
-  SKatarinaVersion      = 1   -- initial release
+  SKatarinaVersion      = 1.1 -- fixed all toggles in not-combo-modes
   SKogmawVersion        = 0
   SLeBlancVersion       = 0.1 -- soon(tm)
   SLeeSinVersion        = 1.2 -- is now live
@@ -52,7 +52,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.69
+_G.ScriptologyVersion    = 1.70
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -1673,10 +1673,8 @@ class "Blitzcrank"
           Cast(_Q, enemy, false, true, 2)
         elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
           CastSpell(_E, myHero:Attack(enemy))
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy, false, true, 2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Killsteal", "Ignite") and enemy.health < GetDmg(_R, myHero, enemy)+(50 + 20 * myHero.level) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy, false, true, 2)
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range-enemy.boundingRadius) then
+          Cast(_R)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
@@ -2527,7 +2525,14 @@ class "Katarina"
     if self.Forcetarget and ValidTarget(self.Forcetarget, 700) then
       self.Target = self.Forcetarget
     end
-    if self:DoOrb() then self:Orb(self.Target) end
+    if self:DoOrb() then
+      DisableOrbwalkerMovement()
+      DisableOrbwalkerAttacks() 
+      self:Orb(self.Target) 
+    else
+      EnableOrbwalkerMovement()
+      EnableOrbwalkerAttacks() 
+    end
   end
 
   function Katarina:Orb(unit)
@@ -2582,28 +2587,28 @@ class "Katarina"
 
   function Katarina:LastHit()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
+    if Config:getParam("LastHit", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
+    if Config:getParam("LastHit", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
       Cast(_W)
     end
-    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
+    if Config:getParam("LastHit", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
       Cast(_E, self.Target, true)
     end
   end
 
   function Katarina:LaneClear()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+    if Config:getParam("LaneClear", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if Config:getParam("LaneClear", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
-    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+    if Config:getParam("LaneClear", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
       Cast(_E, self.Target, true)
     end
   end
@@ -2627,14 +2632,14 @@ class "Katarina"
 
   function Katarina:Harrass()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+    if Config:getParam("Harrass", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if Config:getParam("Harrass", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
-    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+    if Config:getParam("Harrass", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
       Cast(_E, self.Target, true)
     end
   end
@@ -2648,42 +2653,44 @@ class "Katarina"
             dmg = dmg + GetDmg(_-1, myHero, enemy)
           end
         end
-        if dmg+(sReady[_Q] and myHero:CalcMagicDamage(enemy,15*myHero:GetSpellData(_Q).level+0.15*myHero.ap) or 0)+((myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) and GetDmg(_R, myHero, enemy)*10 or 0) >= enemy.health then
-          if sReady[_Q] then
+        if dmg+((sReady[_Q] and Config:getParam("Killsteal", "Q")) and myHero:CalcMagicDamage(enemy,15*myHero:GetSpellData(_Q).level+0.15*myHero.ap) or 0)+((myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0 and Config:getParam("Killsteal", "R")) and GetDmg(_R, myHero, enemy)*10 or 0) >= enemy.health then
+          if Config:getParam("Killsteal", "Q") and sReady[_Q] then
             Cast(_Q, enemy, true)
-            if sReady[_E] then
+            if Config:getParam("Killsteal", "E") and sReady[_E] then
               DelayAction(Cast, 0.25, {_E, enemy, true})
-              if sReady[_W] then
+              if Config:getParam("Killsteal", "W") and sReady[_W] then
                 DelayAction(function() Cast(_W) end, 0.5)
-                if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                if (Config:getParam("Killsteal", "R") and myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                   DelayAction(function() Cast(_R) end, 0.75)
                 end
               end
-            elseif sReady[_W] then
+            elseif Config:getParam("Killsteal", "W") and sReady[_W] then
               pos, b = PredictPos(enemy)
               if GetDistance(pos) < data[1].range then
                 DelayAction(function() Cast(_W) end, 0.25)
-                if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                   DelayAction(function() Cast(_R) end, 0.5)
                 end
               end
             end
-          elseif sReady[_E] then
+          elseif Config:getParam("Killsteal", "E") and sReady[_E] then
             Cast(_E, enemy, true)
-            if sReady[_W] then
+            if Config:getParam("Killsteal", "W") and sReady[_W] then
               DelayAction(function() Cast(_W) end, 0.25)
-              if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+              if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.5)
               end
             end
-          elseif sReady[_W] then
+          elseif Config:getParam("Killsteal", "W") and sReady[_W] then
             pos, b = PredictPos(enemy)
             if GetDistance(pos) < data[1].range then
               Cast(_W)
-              if (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+              if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.25)
               end
             end
+          elseif GetDistance(enemy) < 250 and Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+            Cast(_R)
           end
         end
       end
