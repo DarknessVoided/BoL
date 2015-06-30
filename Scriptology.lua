@@ -4392,14 +4392,14 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
+        if myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_E) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") < myHero.mana/myHero.maxMana*100 then 
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana*100 then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana*100 then
           CastSpell(_W, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config:getParam("LaneClear", "R") and Config:getParam("LaneClear", "mana", "R") < myHero.mana/myHero.maxMana*100 then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config:getParam("LaneClear", "R") and Config:getParam("LaneClear", "mana", "R") < myHero.mana/myHero.maxMana*100 then
           CastSpell(_R, target) 
         end 
       else 
@@ -4423,14 +4423,14 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Combo", "Q") then
+        if myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_E) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config:getParam("Combo", "Q") then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Combo", "E") then 
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config:getParam("Combo", "E") then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Combo", "W") then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config:getParam("Combo", "W") then
           CastSpell(_W, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config:getParam("Combo", "R") then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config:getParam("Combo", "R") then
           CastSpell(_R, target) 
         end 
       else 
