@@ -34,7 +34,7 @@
   SOlafVersion          = 0
   SOriannaVersion       = 1.3 -- better ult calculation
   SQuinnVersion         = 0
-  SRengarVersion        = 1.6 -- fixed combo stuck bug
+  SRengarVersion        = 1.7 -- reworked completely
   SRivenVersion         = 1.2 -- combo R fix, laneclear fix
   SRyzeVersion          = 1.2 -- anti combo break
   SRumbleVersion        = 1
@@ -52,7 +52,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.75
+_G.ScriptologyVersion    = 1.76
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -501,7 +501,7 @@ _G.ScriptologyDebug      = false
   end
 
   function SetupOrbwalk()
-    if myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Riven" then
+    if myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" then
       ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other")
     else
       if _G.AutoCarry then
@@ -607,7 +607,7 @@ _G.ScriptologyDebug      = false
 
     if myHero.charName ~= "Riven" then loadedClass:Killsteal() end
 
-    if Target ~= nil or myHero.charName == "Blitzcrank" then 
+    if myHero.charName ~= "Rengar" and (Target ~= nil or myHero.charName == "Blitzcrank") then 
       if Config:getParam("Harrass", "Harrass") and not Config:getParam("Combo", "Combo") then
         loadedClass:Harrass()
       end
@@ -623,9 +623,9 @@ _G.ScriptologyDebug      = false
       end
     end
 
-      if Config:getParam("LaneClear", "LaneClear") then
-        loadedClass:LaneClear()
-      end
+    if Config:getParam("LaneClear", "LaneClear") then
+      loadedClass:LaneClear()
+    end
 
     if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
   end
@@ -972,7 +972,7 @@ _G.ScriptologyDebug      = false
   end
 
   function DmgCalc()
-    if not Config:getParam("Draws", "DMG") then return end
+    if not Config:getParam("Draws", "DMG") or myHero.charName == "Rengar" then return end
     if myHero.charName == "Ryze" then loadedClass:DmgCalc() return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy.visible then
@@ -2504,11 +2504,22 @@ class "Katarina"
     self.ts = TargetSelector(TARGET_LESS_CAST, 700, DAMAGE_MAGICAL, false, true)
     self:Menu()
     self.Target = nil
+    self.Wards = {}
+    self.casted, self.jumped = false, false
+    self.oldPos = nil
+    for i = 1, objManager.maxObjects do
+      local object = objManager:GetObject(i)
+      if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
+        table.insert(self.Wards, object)
+      end
+    end
     self.orbTable = { lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625 }
     AddTickCallback(function() self:OrbWalk() end)
+    AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
   end
 
   function Katarina:OrbWalk()
+    if Config:getParam("Misc", "Jump") then self:WardJump() end
     if Config:getParam("LastHit", "LastHit") then
       self.Target = GetLowestMinion(700)
       if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
@@ -2534,12 +2545,7 @@ class "Katarina"
       self.Target = self.Forcetarget
     end
     if self:DoOrb() then
-      DisableOrbwalkerMovement()
-      DisableOrbwalkerAttacks() 
       self:Orb(self.Target) 
-    else
-      EnableOrbwalkerMovement()
-      EnableOrbwalkerAttacks() 
     end
   end
 
@@ -2591,6 +2597,73 @@ class "Katarina"
     Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config:addParam({state = "Misc", name = "Jump", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  end
+
+  function Katarina:WardJump()
+    if self.casted and self.jumped then self.casted, self.jumped = false, false
+    elseif myHero:CanUseSpell(_E) == READY then
+      local pos = self:getMousePos()
+      if self:Jump(pos, 150, true) then return end
+      slot = self:GetWardSlot()
+      if not slot then return end
+      CastSpell(slot, pos.x, pos.z)
+    end
+  end
+
+  function Katarina:Jump(pos, range, useWard)
+    for _,ally in pairs(GetAllyHeroes()) do
+      if (GetDistance(ally, pos) <= range) then
+        CastSpell(_E, ally)
+        self.jumped = true
+        return true
+      end
+    end
+    for _,ally in pairs(GetEnemyHeroes()) do
+      if (GetDistance(ally, pos) <= range) then
+        CastSpell(_E, ally)
+        self.jumped = true
+        return true
+      end
+    end
+    for minion,winion in pairs(minionManager(MINION_ALL, range, pos, MINION_SORT_HEALTH_ASC).objects) do
+      if (GetDistance(winion, pos) <= range) then
+        CastSpell(_E, winion)
+        self.jumped = true
+        return true
+      end
+    end
+    table.sort(self.Wards, function(x,y) return GetDistance(x) < GetDistance(y) end)
+    for i, ward in ipairs(self.Wards) do
+      if (GetDistance(ward, pos) <= range) then
+        CastSpell(_E, ward)
+        self.jumped = true
+        return true
+      end
+    end
+  end
+
+  function Katarina:CreateObj(obj)
+    if obj ~= nil and obj.valid then
+      if string.find(string.lower(obj.name), "ward") then
+        table.insert(self.Wards, obj)
+      end
+    end
+  end
+
+  function Katarina:getMousePos(range)
+    local MyPos = Vector(myHero.x, myHero.y, myHero.z)
+    local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
+    return MyPos - (MyPos - MousePos):normalized() * 700
+  end
+
+  function Katarina:GetWardSlot()
+    for slot = ITEM_7, ITEM_1, -1 do
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
+        return slot
+      end
+    end
+    return nil
   end
 
   function Katarina:LastHit()
@@ -2599,7 +2672,7 @@ class "Katarina"
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("LastHit", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
+    if pos and Config:getParam("LastHit", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
       Cast(_W)
     end
     if Config:getParam("LastHit", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
@@ -2613,7 +2686,7 @@ class "Katarina"
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("LaneClear", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if pos and Config:getParam("LaneClear", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
     if Config:getParam("LaneClear", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
@@ -2627,7 +2700,7 @@ class "Katarina"
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if pos and Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
     if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
@@ -2644,7 +2717,7 @@ class "Katarina"
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if Config:getParam("Harrass", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if pos and Config:getParam("Harrass", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
     if Config:getParam("Harrass", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
@@ -2674,7 +2747,7 @@ class "Katarina"
               end
             elseif Config:getParam("Killsteal", "W") and sReady[_W] then
               pos, b = PredictPos(enemy)
-              if GetDistance(pos) < data[1].range then
+              if pos and GetDistance(pos) < data[1].range then
                 DelayAction(function() Cast(_W) end, 0.25)
                 if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                   DelayAction(function() Cast(_R) end, 0.5)
@@ -2691,7 +2764,7 @@ class "Katarina"
             end
           elseif Config:getParam("Killsteal", "W") and sReady[_W] then
             pos, b = PredictPos(enemy)
-            if GetDistance(pos) < data[1].range then
+            if pos and GetDistance(pos) < data[1].range then
               Cast(_W)
               if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.25)
@@ -3967,10 +4040,11 @@ class "Rengar"
     self.isLeap = false
     self.alertTicker = 0
     self.keyStr = {[0] = "Q", [1] = "W", [2] = "E"}
+    self.orbTable = { lastAA = 0, lastAction = 0, windUp = 3.75, animation = 0.625, range = myHero.range + myHero.boundingRadius, trueRange = myHero.range + GetDistance(myHero.minBBox) + 1 }
     AddTickCallback(function() self:Tick() end)
-    AddCreateObjCallback(function(x) self:CreateObj(x) end)
-    AddDeleteObjCallback(function(x) self:DeleteObj(x) end)
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
+    AddAnimationCallback(function(x,y) self:Animation(x,y) end)
+    AddProcessSpellCallback(function(unit,spell) self:ProcessSpell(unit,spell) end)
   end
 
   function Rengar:Menu()
@@ -3983,28 +4057,95 @@ class "Rengar"
     Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Oneshot", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Oneshot2", code = SCRIPT_PARAM_LIST, value = 1, list = {"Q", "W", "E"}})
+    Config:addParam({state = "Misc", name = "Empower", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Misc", name = "Empower2", code = SCRIPT_PARAM_LIST, value = 1, list = {"Q", "W", "E"}})
     if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
   end
 
   function Rengar:Tick()
-    if Config:getParam("Misc", "Oneshot") then
-      local os = Config:getParam("Misc", "Oneshot2")
-      Config:incParamBy1("Misc", "Oneshot2")
-      if os ~= Config:getParam("Misc", "Oneshot2") then
-        PrintAlertRed("Switched Oneshotmode! Now: "..self.keyStr[Config:getParam("Misc", "Oneshot2")-1])
+    self.orbTable.range = myHero.range + myHero.boundingRadius
+    self.orbTable.trueRange = myHero.range + GetDistance(myHero.minBBox) + 1
+    if Config:getParam("Misc", "Empower") then
+      local os = Config:getParam("Misc", "Empower2")
+      Config:incParamBy1("Misc", "Empower2")
+      if os ~= Config:getParam("Misc", "Empower2") then
+        PrintAlertRed("Switched Empoweredmode! Now using: "..self.keyStr[Config:getParam("Misc", "Empower2")-1])
       end
     end
-    if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, 1500) then
-      Target = self.Forcetarget  
+    self:OrbWalk()
+  end
+
+  function Rengar:OrbWalk()
+    if Config:getParam("LastHit", "LastHit") then
+      self.Target = GetLowestMinion(500)
+      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
+        self.Target = nil
+      end
+      if not self.Target then
+        self.Target = GetJMinion(500)
+      end
     end
-    if self.osTarget ~= nil and (not ValidTarget(self.osTarget, 1500) or self.osTarget.dead) then
-      self.osTarget = nil
+    if Config:getParam("LaneClear", "LaneClear") then
+      self.Target = GetLowestMinion(500)
+      if not self.Target then
+        self.Target = GetJMinion(500)
+      end
     end
-    if self.isLeap and self.oneShotTimer+1.5 < GetInGameTimer() then
-      self.isLeap = false
+    if Config:getParam("Harrass", "Harrass") then
+      self.Target = Target
     end
+    if Config:getParam("Combo", "Combo") then
+      self.Target = Target
+    end
+    if self.Forcetarget and ValidTarget(self.Forcetarget, self.orbTable.trueRange + 40) then
+      self.Target = self.Forcetarget
+    end
+    if self:DoOrb() then self:Orb(self.Target) end
+  end
+
+  function Rengar:Orb(unit)
+    if not ValidTarget(unit, self.orbTable.trueRange + 40) then
+      unit = Target
+    end
+    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, self.orbTable.trueRange + 40) then
+      myHero:Attack(unit)
+    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) then
+      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
+      if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
+        myHero:MoveTo(unit.x, unit.z)
+      elseif GetDistance(mousePos) > 50 then
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    end
+  end
+
+  function Rengar:DoOrb()
+    for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
+      if Config:getParam(k, k) then
+        return self:SetStates(k)
+      end
+    end
+    return false
+  end
+
+  function Rengar:SetStates(mode)
+    self.QState = Config:getParam(mode, "Q")
+    self.WState = Config:getParam(mode, "W")
+    self.EState = Config:getParam(mode, "E")
+    if myHero.mana == 5 then
+      self.QState = false
+      self.WState = false
+      self.EState = false
+      if Config:getParam("Misc", "Empower2") == 1 then
+        self.QState = true
+      elseif Config:getParam("Misc", "Empower2") == 2 then
+        self.WState = true
+      elseif Config:getParam("Misc", "Empower2") == 3 then
+        self.EState = true
+      end
+    end
+    self.IState = mode == "Combo" or mode == "Harrass"
+    return true
   end
 
   function Rengar:Msg(Msg, Key)
@@ -4031,20 +4172,51 @@ class "Rengar"
     end
   end
 
-  function Rengar:CreateObj(object)
-    if object ~= nil then
-      if string.find(object.name, "Rengar_Base_R_Buf") and GetDistance(myHero, object) < 80 then
-        self.ultOn = true
-      elseif string.find(object.name, "Rengar_LeapSound") and GetDistance(myHero, object) < 80 then
-        self.isLeap = true
+  function Rengar:Animation(unit, ani)
+    if unit and unit.isMe and ani then
+      if ani == "Spell5" and self:DoOrb() then
+        if Smite ~= nil then CastSpell(Smite, self.Target) end
+        if Ignite ~= nil then CastSpell(Ignite, self.Target) end
+        if self.EState then DelayAction(function() CastSpell(_E, self.Target.x, self.Target.z) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000) end
+        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000)
       end
-    end 
+    end
   end
-   
-  function Rengar:DeleteObj(object)
-    if object ~= nil and string.find(object.name, "Rengar_Base_R_Buf") then
-      self.ultOn = false
-      self.oneShotTimer = GetInGameTimer()
+
+  function Rengar:ProcessSpell(unit,spell)
+    if unit and unit.isMe and spell and self:DoOrb() then
+      if spell.name:lower():find("attack") then
+        self.orbTable.windUp = 1 / (spell.windUpTime * myHero.attackSpeed)
+        self.orbTable.animation = 1 / (spell.animationTime * myHero.attackSpeed)
+        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000)
+      elseif spell.name:lower():find("rengare") and self.WState then
+        Cast(_W, self.Target, false, true, 1)
+      end
+    end
+  end
+
+  function Rengar:WindUp(unit)
+    if unit.isMe then
+      if ValidTarget(self.Target) and self:DoOrb() then
+        if self.WState then Cast(_W, self.Target, false, true, 1) end
+        if self.IState then self:CastItems(self.Target) end
+        if self.QState and sReady[_Q] and ValidTarget(self.Target, 600) then
+          Cast(_Q, myHero:Attack(self.Target))
+        end
+      end
+    end
+  end
+
+  function Rengar:CastItems(unit)
+    local i = {["ItemTiamatCleave"] = self.orbTable.range, ["YoumusBlade"] = self.orbTable.range}
+    local u = {["ItemSwordOfFeastAndFamine"] = 600}
+    for slot = ITEM_1, ITEM_6 do
+      if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
+        CastSpell(slot) 
+      end
+      if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
+        CastSpell(slot, unit)
+      end
     end
   end
 
@@ -4120,135 +4292,13 @@ class "Rengar"
     end
   end
 
-  function Rengar:Combo()
-    if self.ultOn and not self.isLeap then 
-      self.osTarget = Target
-    end
-    if self.Forcetarget then
-      self.osTarget = self.Forcetarget
-      Target = self.Forcetarget
-    end
-    if self.osTarget or self.ultOn or self.isLeap then 
-      if self.osTarget == nil then self.osTarget = Target end
-      self:OneShot()
-    elseif not self.ultOn then
-      self:ExecuteCombo()
-    end
-  end
-
-  function Rengar:OneShot()
-    if not self.osTarget or GetDistance(self.osTarget, myHero) > 800 then self:ExecuteCombo() return end
-    if self.alertTicker < GetInGameTimer() then PrintAlertRed("Oneshotting... "..self.osTarget.charName) self.alertTicker = GetInGameTimer()+0.25 end
-    if Smite ~= nil then CastSpell(Smite, self.osTarget) end
-    if Ignite ~= nil then CastSpell(Ignite, self.osTarget) end
-    if myHero.mana == 5 then
-      if Config:getParam("Misc", "Oneshot2") == 1 then
-        if GetDistance(self.osTarget, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(self.osTarget))
-        end
-      elseif not self.ultOn and Config:getParam("Misc", "Oneshot2") == 2 then
-        if GetDistance(self.osTarget, myHero) < data[1].width then
-          Cast(_W, self.osTarget, false, true, 1)
-        end
-      elseif not self.ultOn and Config:getParam("Misc", "Oneshot2") == 3 then
-        if GetDistance(self.osTarget, myHero) < data[2].range then
-          Cast(_E, self.osTarget, false, true, 1)
-        end
-      else
-        if GetDistance(self.osTarget, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(self.osTarget))
-        end
-      end
-    else
-      if Config:getParam("Combo", "Q") and GetDistance(self.osTarget, myHero) < 450 then
-          CastSpell(_Q, myHero:Attack(self.osTarget))
-      end
-      if not self.ultOn and Config:getParam("Combo", "W") and GetDistance(self.osTarget, myHero) < data[1].width then
-          Cast(_W, self.osTarget, false, true, 1)
-      end
-      if not self.ultOn and Config:getParam("Combo", "E") and GetDistance(self.osTarget, myHero) < data[2].range then
-          Cast(_E, self.osTarget)
-      end
-    end
-    if self.osTarget.dead or GetDistance(self.osTarget) > 800 then self.osTarget=nil end
-  end
-
-  function Rengar:ExecuteCombo()
-    if not Target then return end
-    if myHero.mana == 5 and myHero.health / myHero.maxHealth <= 0.35 then
-      Cast(_W, Target, false, true, 1)
-    elseif myHero.mana == 5 then
-      if Config:getParam("Misc", "Oneshot2") == 1 then
-        if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(Target))
-        end
-      elseif Config:getParam("Misc", "Oneshot2") == 2 then
-        if GetDistance(Target, myHero) < data[1].width then
-          Cast(_W)
-        end
-      elseif Config:getParam("Misc", "Oneshot2") == 3 then
-        if GetDistance(Target, myHero) < data[2].range then
-          Cast(_E, Target, false, true, 1.5)
-        end
-      else
-        if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(Target))
-        end
-      end
-    else
-      if Config:getParam("Combo", "Q") and GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(Target))
-      end
-      if Config:getParam("Combo", "W") and GetDistance(Target, myHero) < data[1].width then
-          Cast(_W)
-      end
-      if Config:getParam("Combo", "E") and GetDistance(Target, myHero) < data[2].range then
-          Cast(_E, Target, false, true, 1.5)
-      end
-    end
-  end
-
-  function Rengar:Harrass()
-    if myHero.mana == 5 and myHero.health / myHero.maxHealth <= 0.35 then
-      Cast(_W, Target, false, true, 1)
-    elseif myHero.mana == 5 then
-      if Config:getParam("Misc", "Oneshot2") == 1 then
-        if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(Target))
-        end
-      elseif Config:getParam("Misc", "Oneshot2") == 2 then
-        if GetDistance(Target, myHero) < data[1].width then
-          Cast(_W)
-        end
-      elseif Config:getParam("Misc", "Oneshot2") == 3 then
-        if GetDistance(Target, myHero) < data[2].range then
-          Cast(_E, Target, false, true, 1.5)
-        end
-      else
-        if GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(Target))
-        end
-      end
-    else
-      if Config:getParam("Harrass", "Q") and GetDistance(Target, myHero) < myHero.range+myHero.boundingRadius*2 then
-          CastSpell(_Q, myHero:Attack(Target))
-      end
-      if Config:getParam("Harrass", "W") and GetDistance(Target, myHero) < data[1].width then
-          Cast(_W)
-      end
-      if Config:getParam("Harrass", "E") and GetDistance(Target, myHero) < data[2].range then
-          Cast(_E, Target, false, true, 1.5)
-      end
-    end
-  end
-
   function Rengar:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
           CastSpell(_Q, myHero:Attack(enemy))
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
-          Cast(_W)
+          Cast(_W, enemy, false, true, 1)
         elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
