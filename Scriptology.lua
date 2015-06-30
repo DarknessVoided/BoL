@@ -4279,7 +4279,7 @@ SSL({93,204,115,150,232,6,110,223,186,159,210,130,166,89,209,117,251,101,237,221
 class "Ryze"
 
   function Ryze:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 600, DAMAGE_MAGICAL, false, true)
     self:Menu()
     self.passiveTracker = 0
     AddTickCallback(function() self:SwapOrbAttack() end)
