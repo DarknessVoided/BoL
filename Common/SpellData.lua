@@ -94,6 +94,10 @@ return {
         [_W] = { speed = 1200, delay = 0.25, range = 900, width = 90, collision = false, aoe = false, type = "linear"},
         [_R] = { speed = 2000, delay = 1, range = 25000, width = 180, collision = false, aoe = false, type = "linear"}
     },
+    ["Fiddlesticks"] = {
+    },
+    ["Fiora"] = {
+    },
     ["Fizz"] = {
         [_R] = { speed = 1350, delay = 0.250, range = 1150, width = 100, collision = false, aoe = false, type = "linear"}
     },
@@ -103,6 +107,8 @@ return {
     },
     ["Gangplank"] = {
         [_R] = { speed = math.huge, delay = 0.25, range = 25000, width = 575, collision = false, aoe = true, type = "circular"}
+    },
+    ["Garen"] = {
     },
     ["Gnar"] = {
         [_Q] = { speed = 1225, delay = 0.125, range = 1200, width = 80, collision = true, aoe = false, type = "linear"}
@@ -135,11 +141,11 @@ return {
         [_Q] = { speed = 1400, delay = 0.2, range = 770, width = 0, collision = false, aoe = false, type = "linear"},
         [_E] = { speed = 200, delay = 0.2, range = 850, width = 0, collision = false, aoe = false, type = "linear"}
     },
-    ["Jaycve"] = {
-        [_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
-    },
     ["Jax"] = {
         [_E] = { speed = math.huge, delay = 0.250, range = 0, width = 375, collision = false, aoe = true, type = "circular"}
+    },
+    ["Jayce"] = {
+        [_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["Jinx"] = {
         [_W] = { speed = 3000, delay = 0.600, range = 1400, width = 60, collision = true, aoe = false, type = "linear"},
@@ -148,8 +154,6 @@ return {
     },
     ["Kalista"] = {
         [_Q] = { speed = 1750, delay = 0.25, range = 1375, width = 70, collision = true, aoe = false, type = "linear"},
-    },
-    ["Katarina"] = {
     },
     ["Karma"] = {
         [_Q] = { speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
@@ -160,6 +164,10 @@ return {
     ["Kassadin"] = {
         [_E] = { speed = 2200, delay = 0, range = 650, width = 80, collision = false, aoe = false, type = "cone"},
         [_R] = { speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
+    },
+    ["Katarina"] = {
+    },
+    ["Kayle"] = {
     },
     ["Kennen"] = {
         [_Q] = { speed = 1700, delay = 0.180, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
@@ -211,6 +219,8 @@ return {
         [_Q] = { speed = math.huge, delay = 0.25, range = 600, width = 100, collision = false, aoe = false, type = "linear"},
         [_E] = { speed = 1500, delay = 0.25, range = 1100, width = 175, collision = false, aoe = false, type = "circular"}
     },
+    ["MasterYi"] = {
+    },
     ["MissFortune"] = {
         [_E] = { speed = math.huge, delay = 0.25, range = 800, width = 200, collision = false, aoe = true, type = "circular"},
         [_R] = { speed = math.huge, delay = 0.25, range = 1400, width = 700, collision = false, aoe = true, type = "cone"}
@@ -236,6 +246,8 @@ return {
     ["Nocturne"] = {
         [_Q] = { speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
     },
+    ["Nunu"] = {
+    },
     ["Olaf"] = {
         [_Q] = { speed = 1600, delay = 0.25, range = 1000, width = 90, collision = false, aoe = false, type = "linear"}
     },
@@ -249,8 +261,12 @@ return {
         [_E] = { speed = math.huge, delay = 0.250, range = 400, width = 100, collision = false, aoe = true, type = "cone"},
         [_R] = { speed = 3000, delay = 1, range = 5500, width = 1000, collision = false, aoe = true, type = "circular"}
     },
+    ["Poppy"] = {
+    },
     ["Quinn"] = {
         [_Q] = { speed = 1550, delay = 0.25, range = 1050, width = 80, collision = true, aoe = false, type = "linear"}
+    },
+    ["Rammus"] = {
     },
     ["RekSai"] = {
         [_Q] = { speed = 1550, delay = 0.25, range = 1050, width = 180, collision = true, aoe = false, type = "linear"}
@@ -279,11 +295,15 @@ return {
     ["Sejuani"] = {
         [_R] = { speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
     },
+    ["Shaco"] = {
+    },
     ["Shen"] = {
         [_E] = { speed = 1200, delay = 0.25, range = 600, width = 40, collision = false, aoe = false, type = "linear"}
     },
     ["Shyvana"] = {
         [_E] = { speed = 1500, delay = 0.250, range = 925, width = 60, collision = false, aoe = false, type = "linear"}
+    },
+    ["Singed"] = {
     },
     ["Sion"] = {
         [_Q] = { speed = math.huge, delay = 0.125, range = 925, width = 250, collision = false, aoe = false, type = "cone"}
@@ -313,6 +333,8 @@ return {
     ["Taric"] = {
         [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 175, collision = false, aoe = false, type = "circular"}
     },
+    ["Teemo"] = {
+    },
     ["Thresh"] = {
         [_Q] = { speed = 1825, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
     },
@@ -330,6 +352,8 @@ return {
     },
     ["Twitch"] = {
         [_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
+    },
+    ["Udyr"] = {
     },
     ["Urgot"] = {
         [_Q] = { speed = 1600, delay = 0.2, range = 1400, width = 80, collision = true, aoe = false, type = "linear"},
@@ -360,6 +384,14 @@ return {
         [_W] = { speed = 750, delay = 0.6, range = 700, width = 125, collision = false, aoe = true, type = "circular"},
         [_E] = { speed = 1200, delay = 0.25, range = 1200, width = 0, collision = false, aoe = false, type = "linear"},
         [_R] = { speed = 1000, delay = 0.25, range = 700, width = 0, collision = false, aoe = true, type = "circular"}
+    },
+    ["Vladimir"] = {
+    },
+    ["Volibear"] = {
+    },
+    ["Warwick"] = {
+    },
+    ["Wukong"] = {
     },
     ["Xerath"] = {
         [_Q] = { speed = math.huge, delay = 1.75, range = 750, width = 100, collision = false, aoe = false, type = "linear"},
