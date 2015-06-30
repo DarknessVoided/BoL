@@ -302,7 +302,7 @@ function sScriptConfig:Load_Sprites()
         self.offsets = {top = self.Sprites["top"].height, button = self.Sprites["state"].height, bot = self.Sprites["drag"].height*2, width = self.Sprites["top"].width, buttonwidth = self.Sprites["state"].width}
     else
         self:Unload_Sprites()
-        DelayAction(function() print("Reloading menu... Please wait!") DelayAction(function() print("Reloaded. Have fun!") self.loaded = false end, 1.5) self.loaded = false end, 1.5)
+        DelayAction(function() print("Reloading menu... Please wait!") DelayAction(function() print("Reloaded. Have fun!") end, 1.5) self.loaded = false end, 1.5)
     end
 end
 
