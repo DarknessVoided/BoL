@@ -36,7 +36,7 @@
   SQuinnVersion         = 0
   SRengarVersion        = 1.6 -- fixed combo stuck bug
   SRivenVersion         = 1.2 -- combo R fix, laneclear fix
-  SRyzeVersion          = 1   -- initial release
+  SRyzeVersion          = 1.1 -- lasthit fix
   SRumbleVersion        = 1
   SSejuaniVersion       = 0
   SShyvanaVersion       = 0
