@@ -43,7 +43,7 @@
   STeemoVersion         = 1.1 -- Q is now QQQ
   SVayneVersion         = 1   -- initial release
   SViktorVersion        = 0
-  SVolibearVersion      = 1
+  SVolibearVersion      = 1.1 -- error spam fix
   SYasuoVersion         = 0
   SYorickVersion        = 0
 ]]--
@@ -4935,11 +4935,12 @@ class "Volibear"
         Cast(_W, Target, true)
       end
     end
-    if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
-      Cast(_E, Target, false, true, 1)
+    pos, b = PredictPos(Target)
+    if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(pos) < data[2].range then
+      Cast(_E)
     end
     if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
-      Cast(_E, Target, false, true, 1)
+      Cast(_R, myHero:Attack(Target))
     end
   end
 
@@ -4950,8 +4951,9 @@ class "Volibear"
     if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, true)
     end
-    if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
-      Cast(_E, Target, false, true, 1)
+    pos, b = PredictPos(Target)
+    if Config:getParam("Harrass", "E") and GetDistance(pos) < data[2].range and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
+      Cast(_E)
     end
   end
 
@@ -4962,8 +4964,8 @@ class "Volibear"
           Cast(_Q)
         elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, true)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, false, true, 1)
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range-enemy.boundingRadius) then
+          Cast(_E)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
