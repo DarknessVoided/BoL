@@ -294,7 +294,7 @@ _G.ScriptologyDebug      = false
           },
         ["KogMaw"] = {
           [_Q] = { range = 975, delay = 0.25, speed = 1600, width = 80, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+50*level+0.5*AP end},
-          [_W] = { range = function() return myHero.range + myHero.boundingRadius*2 + 110+20*myHero:GetSpellData(_W).level end, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*Ap+TotalDmg end},
+          [_W] = { range = function() return myHero.range + myHero.boundingRadius*2 + 110+20*myHero:GetSpellData(_W).level end, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*AP+TotalDmg end},
           [_E] = { range = 1200, delay = 0.25, speed = 1300, width = 120, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
           [_R] = { range = function() return 900+300*myHero:GetSpellData(_R).level end, speed = math.huge, delay = 1.1,  width = 250, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.3*AP+0.5*TotalDmg end}
         },
@@ -629,13 +629,13 @@ _G.ScriptologyDebug      = false
     end
     if myHero.charName ~= "Orianna" then
       if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
-        DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range > 0 and data[1].range or data[1].width, ARGB(255*Config:getParam("Draws", "Opacity", "W")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100)))
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[1].range) == "function" and data[1].range() or data[1].range > 0 and data[1].range or data[1].width, ARGB(255*Config:getParam("Draws", "Opacity", "W")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100)))
       end
       if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255*Config:getParam("Draws", "Opacity", "E")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100)))
       end
       if Config:getParam("Draws", "R") and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
-        DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config:getParam("Draws", "Opacity", "R")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100)))
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[3].range) == "function" and data[3].range() or data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config:getParam("Draws", "Opacity", "R")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100)))
       end
     end
     --print(#objHolder)
