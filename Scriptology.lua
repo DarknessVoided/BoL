@@ -52,7 +52,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.78
+_G.ScriptologyVersion    = 1.79
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -296,7 +296,7 @@ _G.ScriptologyDebug      = false
           [_Q] = { range = 975, delay = 0.25, speed = 1600, width = 80, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+50*level+0.5*AP end},
           [_W] = { range = function() return myHero.range + myHero.boundingRadius*2 + 110+20*myHero:GetSpellData(_W).level end, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*AP+TotalDmg end},
           [_E] = { range = 1200, delay = 0.25, speed = 1300, width = 120, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
-          [_R] = { range = function() return 900+300*myHero:GetSpellData(_R).level end, speed = math.huge, delay = 1.1,  width = 250, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.3*AP+0.5*TotalDmg end}
+          [_R] = { range = 1500, speed = math.huge, delay = 1.1,  width = 250, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+40*level+0.3*AP+0.5*TotalDmg end}
         },
         ["LeBlanc"] = {
           [_Q] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+0.4*AP end},
@@ -984,7 +984,7 @@ _G.ScriptologyDebug      = false
         else
           local damageAA = GetDmg("AD", myHero, enemy)
           local damageQ  = GetDmg(_Q, myHero, enemy)
-          local damageW  = GetDmg(_W, myHero, enemy)
+          local damageW  = (myHero.charName == "KogMaw" and 0 or GetDmg(_W, myHero, enemy))
           local damageE  = GetDmg(_E, myHero, enemy)
           local damageR  = GetDmg(_R, myHero, enemy)*(myHero.charName == "Katarina" and 10 or 1)
           local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
@@ -2808,6 +2808,11 @@ class "KogMaw"
   function KogMaw:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
     self:Menu()
+    AddTickCallback(function() self:Tick() end)
+  end
+
+  function KogMaw:Tick()
+    self.ts.range = 900+myHero:GetSpellData(_R).level*300
   end
 
   function KogMaw:Menu()
@@ -2829,20 +2834,86 @@ class "KogMaw"
   end
 
   function KogMaw:LastHit()
+    local minionTarget = GetLowestMinion(math.min(data[0].range, data[1].range()))
+    if not minionTarget then return end
+    if GetDmg(_Q, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+      Cast(_Q, minionTarget, false, true, 2)
+    elseif GetDmg(_W, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+      Cast(_W, myHero:Attack(minionTarget))
+    elseif GetDmg(_E, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+      Cast(_E, minionTarget2, false, true, 2)
+    end
   end
 
   function KogMaw:LaneClear()
+    local minionTarget = GetLowestMinion(math.min(data[0].range, data[1].range()))
+    if minionTarget then
+      if Config:getParam("LaneClear", "Q") and myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, minionTarget, false, true, 2)
+      end
+      if Config:getParam("LaneClear", "W") and myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+        Cast(_W, myHero:Attack(minionTarget))
+      end
+    end
+    minionTarget = GetLineFarmPosition(data[2].range, data[2].width)
+    if minionTarget then
+      if Config:getParam("LaneClear", "E") and myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+        Cast(_E, minionTarget, false, true, 2)
+      end
+    end
   end
 
   function KogMaw:Combo()
+    if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY then
+      Cast(_Q, Target, false, true, 2)
+    end
+    if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY then
+      Cast(_W, myHero:Attack(Target))
+    end
+    if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY then
+      Cast(_E, Target, false, true, 2)
+    end
+    if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY then
+      Cast(_R, Target, false, true, 2)
+    end
   end
 
   function KogMaw:Harrass()
+    if Config:getParam("Harrass", "Q") and myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      Cast(_Q, Target, false, true, 2)
+    end
+    if Config:getParam("Harrass", "W") and myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+      Cast(_W, myHero:Attack(Target))
+    end
+    if Config:getParam("Harrass", "E") and myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+      Cast(_E, Target, false, true, 2)
+    end
   end
 
   function KogMaw:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+          Cast(_Q, enemy, false, true, 1.5)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.2)
+          DelayAction(function() Cast(_E, enemy, false, true, 1.2) end, data[2].delay)
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.2)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.2)
+          DelayAction(function() Cast(_Q, enemy, false, true, 1.2) DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay) end, data[2].delay)
+        elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+          Cast(_E, enemy, false, true, 1.2)
+          DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[2].delay)
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[0].range) then
+          Cast(_Q, enemy, false, true, 1.5)
+          DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay)
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+          Cast(_R, enemy, false, true, 2)
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+          CastSpell(Ignite, enemy)
+        end
       end
     end
   end
@@ -3336,10 +3407,10 @@ class "Lux"
 
   function Lux:Harrass()
     if GetStacks(Target) == 0 then
-      if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY then
+      if Config:getParam("Harrass", "Q") and myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
         Cast(_Q, Target, false, true, 2)
       end
-      if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY then
+      if Config:getParam("Harrass", "E") and myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
         Cast(_E, Target, false, true, 1.5)
       end
     end
