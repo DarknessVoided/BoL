@@ -3844,10 +3844,10 @@ class "Nidalee"
         Cast(_Q, Target, false, true, 2)
       end
     else
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, self.data.Human[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, self.data.Cougar[0].range) then
         CastSpell(_Q, myHero:Attack(Target))
       end
-      if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, self.data.Human[2].range) then
+      if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, self.data.Cougar[2].range) then
         Cast(_E, Target)
       end
     end
