@@ -4175,9 +4175,9 @@ class "Rengar"
   function Rengar:Animation(unit, ani)
     if unit and unit.isMe and ani then
       if ani == "Spell5" and self:DoOrb() then
-        if Smite ~= nil then CastSpell(Smite, self.Target) end
-        if Ignite ~= nil then CastSpell(Ignite, self.Target) end
-        if self.EState then DelayAction(function() CastSpell(_E, self.Target.x, self.Target.z) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000) end
+        if Smite ~= nil and self.IState then CastSpell(Smite, self.Target) end
+        if Ignite ~= nil and self.IState then CastSpell(Ignite, self.Target) end
+        if self.EState then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) end end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000) end
         DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000)
       end
     end
