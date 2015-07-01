@@ -15,37 +15,26 @@
 --[[
   SAhriVersion          = 1.2 -- r catch angle fix
   SAsheVersion          = 1.4 -- removed ult over whole map
-  SAzirVersion          = 0
   SBlitzcrankVersion    = 1.1 -- fixed R ks
   SBrandVersion         = 1
   SCassiopeiaVersion    = 1.4 -- facingme fixed
   SDariusVersion        = 1.2 -- auto Q harrass added
   SEkkoVersion          = 1
-  SGnarVersion          = 0
-  SJarvanVersion        = 0
   SKalistaVersion       = 1.1 -- added R to save ally
   SKatarinaVersion      = 1.1 -- fixed all toggles in not-combo-modes
-  SKogmawVersion        = 0
-  SLeBlancVersion       = 0.1 -- soon(tm)
+  SKogmawVersion        = 1
   SLeeSinVersion        = 1.2 -- is now live
   SLuxVersion           = 1.4 -- fixes
   SMalzaharVersion      = 1
   SNidaleeVersion       = 1.9 -- fixed harrass bugsplat
-  SOlafVersion          = 0
   SOriannaVersion       = 1.3 -- better ult calculation
-  SQuinnVersion         = 0
   SRengarVersion        = 1.7 -- reworked completely
   SRivenVersion         = 1.2 -- combo R fix, laneclear fix
   SRyzeVersion          = 1.2 -- anti combo break
   SRumbleVersion        = 1
-  SSejuaniVersion       = 0
-  SShyvanaVersion       = 0
   STeemoVersion         = 1.1 -- Q is now QQQ
   SVayneVersion         = 1   -- initial release
-  SViktorVersion        = 0
   SVolibearVersion      = 1.1 -- error spam fix
-  SYasuoVersion         = 0
-  SYorickVersion        = 0
  ]]--
 
 --Scriptstatus Tracker
@@ -2914,57 +2903,6 @@ class "KogMaw"
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
-      end
-    end
-  end
-
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-
-class "LeBlanc"
-
-  function LeBlanc:__init()
-    if not Auth() then return end
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
-    self:Menu()
-  end
-
-  function LeBlanc:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-  end
-
-  function LeBlanc:LastHit()
-  end
-
-  function LeBlanc:LaneClear()
-  end
-
-  function LeBlanc:Combo()
-  end
-
-  function LeBlanc:Harrass()
-  end
-
-  function LeBlanc:Killsteal()
-    for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       end
     end
   end
