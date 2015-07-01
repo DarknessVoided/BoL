@@ -409,6 +409,7 @@ function sScriptConfig:Draw()
                 elseif par.code == SCRIPT_PARAM_SLICE then --{0,30,100,5}
                     if c > 0 then y = y + 1 c = 0 end
                     if y == 0 then y = 0.2+0.05*#par.slider end
+                    if y == 2 then y = 1.5 end
                     self.Sprites[par.name]:SetScale(self.Scale.x*1.25,self.Scale.z*1.25)
                     self.Sprites[par.name]:Draw(self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y-10), 255)
                     self.Sprites["code"..par.code]:SetScale(self.Scale.x*1.25,self.Scale.z*1.25)
@@ -573,6 +574,7 @@ function sScriptConfig:Msg(Msg, Key)
                 elseif par.code == SCRIPT_PARAM_SLICE then
                     if c > 0 then y = y + 1 c = 0 end
                     if y == 0 then y = 0.2+0.05*#par.slider end
+                    if y == 2 then y = 1.5 end
                     for k=1,#par.slider do
                         sxPos = self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites["SLIDER_"..k].width/2+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2)
                         syPos = self.pos.z+WINDOW_H/4+self.Scale.z*(30+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y)

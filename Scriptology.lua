@@ -210,6 +210,7 @@ _G.ScriptologyDebug      = false
     end
     Config:addParam({state = "Draws", name = "DMG", code = SCRIPT_PARAM_ONOFF, value = true})
     Config:addParam({state = "Draws", name = "LFC", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Draws", name = "Opacity", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E","R"}, slider = {30,30,30,30}})
     SetupOrbwalk()
   end
 
@@ -633,17 +634,17 @@ _G.ScriptologyDebug      = false
   function Draw()
     if myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
     if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
-      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255, 155, 155, 155))
+      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255*Config:getParam("Draws", "Opacity", "Q")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "Q")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "Q")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "Q")/100)))
     end
     if myHero.charName ~= "Orianna" then
       if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
-        DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range > 0 and data[1].range or data[1].width, ARGB(255, 155, 155, 155))
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range > 0 and data[1].range or data[1].width, ARGB(255*Config:getParam("Draws", "Opacity", "W")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100)))
       end
       if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
-        DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255, 155, 155, 155))
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255*Config:getParam("Draws", "Opacity", "E")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100)))
       end
       if Config:getParam("Draws", "R") and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
-        DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range > 0 and data[3].range or data[3].width, ARGB(255, 155, 155, 155))
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config:getParam("Draws", "Opacity", "R")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100)))
       end
     end
     --print(#objHolder)
