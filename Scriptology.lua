@@ -43,7 +43,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.87
+_G.ScriptologyVersion    = 1.88
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -54,15 +54,7 @@ _G.ScriptologyDebug      = false
     require("sScriptConfig")
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Ekko", "Kalista", "Katarina", 
                   "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", "Ryze", "Rumble", 
-                  "Talon", "Teemo", "Vayne", "Volibear" }
-                  --[[
-                  TODO:
-                  "Azir",
-                  "Gnar", "Hecarim", "Jarvan", "Jinx",
-                  "LeeSin",
-                  "Nidalee", "Olaf", "Quinn", "RekSai", 
-                  "Riven", "Sejuani", "Shyvana", "Thresh", "Tristana"
-                  "Vayne", "Viktor", "Yasuo", "Yorick" }]]--
+                  "Talon", "Teemo", "Vayne", "Volibear", "Yasuo" }
     supported = {}
     for _,champ in pairs(champList) do
       supported[champ] = true
@@ -182,6 +174,7 @@ _G.ScriptologyDebug      = false
       if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
       if myHero.charName == "Vayne" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = false})
                                          Config:addParam({state = "Misc", name = "offset", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {90}}) end
+      if myHero.charName == "Yasuo" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true}) end
       if myHero.charName ~= "Darius" and myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
     end
     Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
@@ -404,15 +397,15 @@ _G.ScriptologyDebug      = false
           [_R] = { range = myHero.range+myHero.boundingRadius, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+35+0.3*AP end}
         },
         ["Yasuo"] = {
-          [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+TotalDmg end},
-          [_W] = { },
-          [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
-          [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end}
+          [_Q] = { range = 500, speed = math.huge, delay = 0.125, width = 55, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20*level+TotalDmg-10 end},
+          [_W] = { range = 350},
+          [_E] = { range = 475, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
+          [_R] = { range = 1200, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end}
         },
         ["Yorick"] = {
           [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+1.2*TotalDmg+TotalDmg end},
-          [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+AP end},
-          [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30+25*level+TotalDmg end},
+          [_W] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
+          [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+source.addDamage*1.5 end},
           [_R] = { }
         }
     }
@@ -449,6 +442,9 @@ _G.ScriptologyDebug      = false
         },
         ["Nidalee"] = {
           "nidaleepassivehunted"
+        },
+        ["Yasuo"] = {
+          "YasuoDashWrapper"
         }
     }
     objTrackList = {
@@ -490,8 +486,8 @@ _G.ScriptologyDebug      = false
   end
 
   function SetupOrbwalk()
-    if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" or myHero.charName == "Talon" then
-      if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
+    if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" or myHero.charName == "Talon" or myHero.charName == "Yasuo" then
+      if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" and myHero.charName ~= "Yasuo" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
       aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Talon"] = {_Q} }
       aaResetTable2 = { ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
       aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
@@ -1314,7 +1310,7 @@ class "SWalk"
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
     if VIP_USER and self.melee then 
       self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
-      AddRecvPacketCallback2(function(x) self:RecvPacket2(x) end) 
+      AddRecvPacketCallback2(function(x) self:RecvPacket(x) end) 
     end
     return self
   end
@@ -1410,12 +1406,12 @@ class "SWalk"
         self.orbTable.windUp = spell.windUpTime
         self.orbTable.animation = spell.animationTime
         self.orbTable.lastAA = os.clock()
-        DelayAction(function() self:WindUp(spell.target) end, 1 / (myHero.attackSpeed * 1 / (spell.windUpTime * myHero.attackSpeed)) - GetLatency() / 2000)
+        DelayAction(function() self:WindUp(self.Target) end, 1 / (myHero.attackSpeed * 1 / (spell.windUpTime * myHero.attackSpeed)) - GetLatency() / 2000)
       end
     end
   end
 
-  function SWalk:RecvPacket2(p)
+  function SWalk:RecvPacket(p)
     if self.Config.pc and p.header == 0xD1 then
       self.orbTable.lastAA = 0
       self:WindUp(self.Target)
@@ -2801,8 +2797,19 @@ class "Ekko"
   end
 
   function Ekko:Harrass()
-    if Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.5)
+    end
+    if GetLichSlot() then
+      if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config:getParam("Harrass", "mana", "E") < myHero.mana/myHero.maxMana*100 and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
+        Cast(_E, Target)
+      elseif myHero:GetSpellData(GetLichSlot()).currentCd > 0 and Config:getParam("Harrass", "mana", "E") < myHero.mana/myHero.maxMana*100 and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) and GetDistance(Target) > myHero.range+myHero.boundingRadius*2 then
+        Cast(_E, Target)
+      end
+    else
+      if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
+        Cast(_E, Target)
+      end
     end
   end
 
@@ -5126,7 +5133,7 @@ class "Rumble"
 class "Talon"
 
   function Talon:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
     self:Menu()
   end
 
@@ -5574,6 +5581,132 @@ class "Volibear"
           Cast(_E)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
+        end
+      end
+    end
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "Yasuo"
+
+  function Yasuo:__init()
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    self:Menu()
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
+    AddTickCallback(function() self:Tick() end)
+  end
+
+  function Yasuo:Tick()
+    if Config:getParam("Misc", "Flee") then
+      self:Move(mousePos)
+    end
+  end
+
+  function Yasuo:Move(x)
+    myHero:MoveTo(x.x,x.z)
+    if sReady[_E] then
+      local minion = nil
+      for _,k in pairs(Mobs.objects) do
+        if not minion and k and GetDistanceSqr(k) < data[2].range*data[2].range then minion = k end
+        if minion and k and GetStacks(k) == 0 and GetDistanceSqr(k,myHero) > GetDistanceSqr(minion,myHero) and GetDistanceSqr(k,x) < GetDistanceSqr(minion,x) and GetDistanceSqr(k,x) > data[2].range*data[2].range/2 and GetDistanceSqr(k) < data[2].range*data[2].range then
+          minion = k
+        end
+      end
+      if minion then
+        Cast(_E, minion, true)
+      end
+    end
+  end
+
+  function Yasuo:ProcessSpell(unit, spell)
+    if (Config:getParam("Misc", "Wa") or (Config:getParam("Combo", "Combo") and Config:getParam("Combo", "W"))) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
+      if myHero == spell.target and spell.name:lower():find("attack") and unit.range > 475 then
+        local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
+        Cast(_W, wPos)
+      elseif spell.endPos and not spell.target then
+        local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
+        if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
+          local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
+          Cast(_W, wPos)
+        end
+      end
+    end
+  end
+
+  function Yasuo:Menu()
+    for _,s in pairs({"Combo", "Harrass", "Killsteal", "LaneClear", "LastHit"}) do
+      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+    end
+    Config:addParam({state = "Combo", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true})
+                          Config:addParam({state = "Combo", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Misc", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  end
+
+  function Yasuo:LastHit()
+    local minion = GetLowestMinion(data[2].range)
+    if minion and GetStacks(minion) == 0 and minion.health < GetDmg(_E, myHero, minion) and loadedOrb.State[_E] then
+      Cast(_E, minion, true)
+    end
+    if minion and GetStacks(minion) == 0 and minion.health < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and loadedOrb.State[_Q] and loadedOrb.State[_E] then
+      Cast(_E, minion, true)
+      DelayAction(function() Cast(_Q) end, 0.25)
+    end
+  end
+
+  function Yasuo:LaneClear()
+    -- mad?
+  end
+
+  function Yasuo:Combo()
+    if not self.Target then return end
+    if GetDistance(self.Target) > loadedOrb.myRange and Config:getParam("Combo", "E") then
+      if GetDistance(self.Target) < data[2].range and GetStacks(self.Target) == 0 then
+        Cast(_E, self.Target, true)
+      else
+        self:Move(self.Target)
+      end
+    end
+    if self.Target.y > myHero.y+25 and Config:getParam("Combo", "R") then
+      if sReady[_Q] and GetDistance(self.Target) < data[0].range then
+        myHero:Attack(self.Target)
+      else
+        Cast(_R, self.Target, true)
+      end
+    end
+  end
+
+  function Yasuo:Harrass()
+    if not self.Target then return end
+    if GetDistance(self.Target) > loadedOrb.myRange and GetStacks(self.Target) == 0 and Config:getParam("Harrass", "E") then
+      Cast(_E, self.Target, true)
+    end
+  end
+
+  function Yasuo:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        if enemy.y > myHero.y+25 and Config:getParam("Killsteal", "R") and GetDmg(_R,myHero,enemy) > enemy.health then
+          Cast(_R, enemy, true)
+        elseif Config:getParam("Killsteal", "Q") and GetDmg(_Q,myHero,enemy) > enemy.health then
+          Cast(_Q, enemy, false, true, 1)
+        elseif Config:getParam("Killsteal", "E") and GetDmg(_E,myHero,enemy) > enemy.health then
+          Cast(_E, enemy, true)
+        elseif Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and GetDmg(_Q,myHero,enemy)+GetDmg(_E,myHero,enemy) > enemy.health then
+          Cast(_E, enemy, true)
+          DelayAction(function() Cast(_Q) end, 0.25)
         end
       end
     end
