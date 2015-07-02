@@ -5164,7 +5164,7 @@ class "Talon"
     if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(self.Target, data[2].range) then
       Cast(_E, self.Target, true)
     end
-    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].range) and self.Target.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg("AD", myHero, enemy)+GetDmg(_R, myHero, enemy) then
+    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].width) and self.Target.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg("AD", myHero, enemy)+GetDmg(_R, myHero, enemy) then
       Cast(_R, self.Target, true)
     end
   end
