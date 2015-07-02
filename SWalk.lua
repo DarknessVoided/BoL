@@ -9,7 +9,7 @@ function OnLoad()
 		aaResetTable4 = { ["Riven"] = {_W}  }
     sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
 	str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-	orbTable = { lastAA = 0, windUp = 3.75, animation = 0.625 }
+	orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
 	myRange = myHero.range+myHero.boundingRadius*2
 	ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, myHero.range+myHero.boundingRadius*2, DAMAGE_PHISYCAL)
 	Config = scriptConfig("SWalk", "SW")
@@ -44,7 +44,7 @@ function OnLoad()
 	end
 	Config.mConfig:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
 	Config.mConfig:addParam("wtt", "Walk to Target (melee)", SCRIPT_PARAM_ONOFF, true)
-	if VIP_USER then HookPackets() Config.mConfig:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true) end
+	if VIP_USER then HookPackets() Config.mConfig:addParam("pc", "Use packet for animation cancel (melee)", SCRIPT_PARAM_ONOFF, true) end
 	SWalkMsg("Loaded") 
 end
 
@@ -86,6 +86,36 @@ function Orb(unit)
 			myHero:MoveTo(movePos.x, movePos.z)
 		end
 	end
+end
+
+function OnAnimation(unit,ani)
+	if myHero.charName == "Riven" and unit and unit.isMe and ani then
+	  	if ani:find("Spell1a") or ani:find("Spell1b") then
+	    	orbTable.lastAA = os.clock() + 0.245
+	    	if ts.target then
+        		local movePos = ts.target + (Vector(myHero) - ts.target):normalized() * (GetDistance(ts.target) + 62)
+        		myHero:MoveTo(movePos.x, movePos.z)
+			end
+		elseif ani:find("Spell1c") then
+	    	orbTable.lastAA = os.clock() + 0.245
+      		if VIP_USER and Config.mConfig.pc then 
+        		DelayAction(function() CastDance() end, 0.137)
+      		else
+        		local movePos = ts.target + (Vector(myHero) - ts.target):normalized() * (GetDistance(ts.target) + 62)
+        		myHero:MoveTo(movePos.x, movePos.z)
+    		end
+		end
+	end
+end
+
+function CastDance()
+	p = CLoLPacket(0xF2)
+	p.vTable = 0xE93C0C
+	p:EncodeF(myHero.networkID)
+	p:Encode1(0xFF)
+	p:Encode2(0x3DFF)
+	p:Encode2(0xF288)
+	SendPacket(p)
 end
 
 function DoOrb()
