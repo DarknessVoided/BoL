@@ -11,7 +11,7 @@ function OnLoad()
 	Config.kConfig:addParam("lc", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
 	Config:addSubMenu("Target Selector", "ts")
 	Config.ts:addTS(ts)
-	Config.mConfig:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, -0.2, -10, 10, 0)
+	Config.mConfig:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -10, 10, 0)
 	SWalkMsg("Loaded") 
 end
 
