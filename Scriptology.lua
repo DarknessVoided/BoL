@@ -43,7 +43,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.84
+_G.ScriptologyVersion    = 1.85
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -404,7 +404,7 @@ _G.ScriptologyDebug      = false
           [_R] = { range = myHero.range+myHero.boundingRadius, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+35+0.3*AP end}
         },
         ["Yasuo"] = {
-          [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+TotalDmg end},
+          [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+TotalDmg end},
           [_W] = { },
           [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
           [_R] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end}
@@ -491,7 +491,11 @@ _G.ScriptologyDebug      = false
 
   function SetupOrbwalk()
     if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" or myHero.charName == "Talon" then
-      ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other")
+      if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
+      aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Talon"] = {_Q} }
+      aaResetTable2 = { ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
+      aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
+      loadedOrb = SWalk(myHero.charName ~= "Azir" and myHero.charName ~= "Malzahar", aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
       DelayAction(function() ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end, 5)
     else
       if _G.AutoCarry then
@@ -517,7 +521,8 @@ _G.ScriptologyDebug      = false
         SOWVP:LoadToMenu(scriptConfig("SOW", "ScriptologySOW"))
         ScriptologyMsg("Found SOW")
       else
-        ScriptologyMsg("No valid Orbwalker found")
+        loadedOrb = SWalk(false, nil, nil, nil)
+        ScriptologyMsg("No valid Orbwalker found - loading SWalk")
       end
     end
   end
@@ -1017,7 +1022,7 @@ _G.ScriptologyDebug      = false
           if myHero:CanUseSpell(_R) == READY and damageRC > 0 then
             killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."RQ"
           end
-          if enemy.health < (GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy)+damageRC+(myHero.charName == "Talon" and damageAA*c/2 or 0))*(myHero.charName == "Talon" and 1+0.03*myHero:GetSpellData(_E).level or 1) then
+          if enemy.health < (GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy)+damageRC+((myHero.charName == "Talon" and c > 0) and damageAA or 0))*(myHero.charName == "Talon" and 1+0.03*myHero:GetSpellData(_E).level or 1) then
             killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
           end
           if myHero.charName == "Teemo" and enemy.health > damageQ+damageE+damageAA then
@@ -1256,6 +1261,219 @@ _G.ScriptologyDebug      = false
   end
 -- }
 
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ SWalk - Inbuilt OrbWalker from here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "SWalk"
+
+  function SWalk:__init(m, a1, a2, a3)
+    self.melee = m
+    -- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
+      self.aaResetTable = a1
+    -- CastSpell(s, x, z)
+      self.aaResetTable2 = a2
+    -- CastSpell(s, t)
+      self.aaResetTable3 = a3
+    self.State = {}
+    self.orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
+    self.myRange = myHero.range+myHero.boundingRadius*2
+    self.Config = scriptConfig("SWalk", "SW")
+    self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -10, 10, 0)
+    local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+    if self.aaResetTable then
+      for _,k in pairs(self.aaResetTable) do
+        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
+      end
+    end
+    if self.aaResetTable2 then
+      for _,k in pairs(self.aaResetTable2) do
+        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
+      end
+    end
+    if self.aaResetTable3 then
+      for _,k in pairs(self.aaResetTable3) do
+        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
+      end
+    end
+    self.Config:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
+    if self.melee then 
+      self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
+    end
+    AddTickCallback(function() self:OrbWalk() end)
+    AddDrawCallback(function() self:Draw() end)
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
+    if VIP_USER and self.melee then 
+      self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
+      AddRecvPacketCallback2(function(x) self:RecvPacket2(x) end) 
+    end
+    return self
+  end
+
+  function SWalk:Draw()
+    DrawCircle3D(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, 1, ARGB(105,0,255,0), 32)
+  end
+
+  function SWalk:OrbWalk()
+    myRange = myHero.range+myHero.boundingRadius*2
+    if Config:getParam("LastHit", "LastHit") then
+      self.Target = GetLowestMinion(data[0].range)
+      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
+        self.Target = nil
+      end
+    end
+    if Config:getParam("LaneClear", "LaneClear") then
+      self.Target = GetLowestMinion(data[0].range)
+      if not self.Target then
+        self.Target = GetJMinion(data[0].range)
+      end
+    end
+    if Config:getParam("Harrass", "Harrass") then
+      self.Target = Target
+    end
+    if Config:getParam("Combo", "Combo") then
+      self.Target = Target
+    end
+    if self.Forcetarget and ValidTarget(self.Forcetarget, 700) then
+      self.Target = self.Forcetarget
+    end
+    if self:DoOrb() then
+      loadedClass.Target = self.Target
+      self:Orb(self.Target) 
+    end
+  end
+
+  function SWalk:Orb(unit)
+    if not ValidTarget(unit, myRange) then unit = Target end
+    if os.clock() > self.orbTable.lastAA + self.orbTable.animation and ValidTarget(unit, myRange) then
+      myHero:Attack(unit)
+      if myHero.charName == "Kalista" then
+        local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250 
+        if self:DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
+          myHero:MoveTo(movePos.x, movePos.z)
+        end
+      end
+    elseif GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp + self.Config.cadj/1000) then
+      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
+      if self:DoOrb() and unit and ValidTarget(unit, myRange) and unit.type == myHero.type and self.melee and self.Config.wtt then
+        if GetDistance(unit) > myHero.boundingRadius+unit.boundingRadius then
+          myHero:MoveTo(unit.x, unit.z)
+        end
+      elseif self:DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    end
+  end
+
+  function SWalk:DoOrb()
+    if (myHero.charName == "Katarina" or myHero.charName == "Malzahar") and ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then return false end
+    for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
+      if Config:getParam(k, k) then
+        return self:SetStates(k)
+      end
+    end
+    return false
+  end
+
+  function SWalk:SetStates(mode)
+    self.State[_Q] = Config:getParam(mode, "Q")
+    self.State[_W] = Config:getParam(mode, "W")
+    self.State[_E] = Config:getParam(mode, "E")
+    if myHero.charName == "Rengar" and myHero.mana == 5 then
+      self.State[_Q] = false
+      self.State[_W] = false
+      self.State[_E] = false
+      if Config:getParam("Misc", "Empower2") == 1 then
+        self.State[_Q] = true
+      elseif Config:getParam("Misc", "Empower2") == 2 then
+        self.State[_W] = true
+      elseif Config:getParam("Misc", "Empower2") == 3 then
+        self.State[_E] = true
+      end
+    end
+    self.IState = mode == "Combo" or mode == "Harrass"
+    return true
+  end
+
+  function SWalk:ProcessSpell(unit, spell)
+    if unit and unit.isMe and spell and not self.Config.pc then
+      if spell.name:lower():find("attack") then
+        self.orbTable.windUp = spell.windUpTime
+        self.orbTable.animation = spell.animationTime
+        self.orbTable.lastAA = os.clock()
+        DelayAction(function() self:WindUp(spell.target) end, 1 / (myHero.attackSpeed * 1 / (spell.windUpTime * myHero.attackSpeed)) - GetLatency() / 2000)
+      end
+    end
+  end
+
+  function SWalk:RecvPacket2(p)
+    if self.Config.pc and p.header == 0xD1 then
+      self.orbTable.lastAA = 0
+      self:WindUp(self.Target)
+    end
+  end
+
+  function SWalk:WindUp(unit)
+    if ValidTarget(unit) then
+      local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+      if self.aaResetTable then
+        for _,k in pairs(self.aaResetTable) do
+          if self.Config[str[k]] and sReady[k] and self.State[k] then
+            self.orbTable.lastAA = 0
+            CastSpell(k)
+            return
+          end
+        end
+      end
+      if self.aaResetTable2 then
+        for _,k in pairs(self.aaResetTable2) do
+          if self.Config[str[k]] and sReady[k] and self.State[k] then
+            self.orbTable.lastAA = 0
+            CastSpell(k, unit.x, unit.z)
+            return
+          end
+        end
+      end
+      if self.aaResetTable3 then
+        for _,k in pairs(self.aaResetTable3) do
+          if self.Config[str[k]] and sReady[k] and self.State[k] then
+            self.orbTable.lastAA = 0
+            CastSpell(k, unit)
+            return
+          end
+        end
+      end
+      if self.IState and self.Config.i and self:CastItems(unit) then return end
+    end
+  end
+
+  function SWalk:CastItems(unit)
+    local i = {["ItemTiamatCleave"] = self.myRange, ["YoumusBlade"] = self.myRange}
+    local u = {["ItemSwordOfFeastAndFamine"] = 600}
+    for slot = ITEM_1, ITEM_6 do
+      if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
+        CastSpell(slot) 
+        return true
+      end
+      if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
+        CastSpell(slot, unit) 
+        return true
+      end
+    end
+    return false
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ SWalk - Inbuilt OrbWalker till here ]]--
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -1626,52 +1844,7 @@ class "Azir"
     self:Menu()
     self.soldierToDash = nil
     self.Target = nil
-    self.orbTable = { lastAA = 0, windUp = 3.75, animation = 0.625 }
     AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-    AddTickCallback(function() self:OrbWalk() end)
-  end
-
-  function Azir:OrbWalk()
-    if Config:getParam("Misc", "Flee") then self:Flee() end
-    if Config:getParam("Misc", "Insec") then self:Insec() end
-    if Config:getParam("LastHit", "LastHit") then
-      self.Target = GetLowestMinion(self:CountSoldiers() > 0 and data[0].range+data[1].width or myHero.range+myHero.boundingRadius)
-      if self.Target and self.Target.health > (self:CountSoldiers() > 0 and self:CountSoldiers(self.Target)*GetDmg(_W,myHero,self.Target) or GetDmg("AD",myHero,self.Target)) then
-        self.Target = nil
-      end
-    end
-    if Config:getParam("LaneClear", "LaneClear") then
-      self.Target = GetLowestMinion(self:CountSoldiers() > 0 and data[0].range+data[1].width or myHero.range+myHero.boundingRadius)
-      if not self.Target then
-        self.Target = GetJMinion(self:CountSoldiers() > 0 and data[0].range+data[1].width or myHero.range+myHero.boundingRadius)
-      end
-    end
-    if Config:getParam("Harrass", "Harrass") then
-      self.Target = Target
-    end
-    if Config:getParam("Combo", "Combo") then
-      self.Target = Target
-    end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, data[0].range) then
-      self.Target = self.Forcetarget
-    end
-    if self:DoOrb() then
-      self:Orb(self.Target) 
-    end
-  end
-
-  function Azir:Orb(unit)
-    if not ValidTarget(unit, (self:CountSoldiers() > 0 and data[0].range+data[1].width or myHero.range+myHero.boundingRadius)) then
-      unit = Target
-    end
-    if os.clock() > self.orbTable.lastAA + self.orbTable.animation and ValidTarget(unit, (self:CountSoldiers() > 0 and data[0].range+data[1].width or myHero.range+myHero.boundingRadius)) then
-      myHero:Attack(unit)
-    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAA + self.orbTable.windUp then
-      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and GetDistance(mousePos) > 75 then
-        myHero:MoveTo(movePos.x, movePos.z)
-      end
-    end
   end
 
   function Azir:ProcessSpell(unit, spell)
@@ -1682,21 +1855,8 @@ class "Azir"
             objTimeHolder[obj.networkID] = objTimeHolder[obj.networkID] + 1
           end
         end
-      elseif spell.name:lower():find("attack") then
-        self.orbTable.windUp = spell.windUpTime
-        self.orbTable.animation = spell.animationTime
-        self.orbTable.lastAA = os.clock()
       end
     end
-  end
-
-  function Azir:DoOrb()
-    for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
-      if Config:getParam(k, k) then
-        return true
-      end
-    end
-    return Config:getParam("Misc", "Flee") or Config:getParam("Misc", "Insec")
   end
 
   function Azir:CountSoldiers(unit)
@@ -2715,8 +2875,8 @@ class "Kalista"
     else
       self.saveAlly = false
     end
-    if Config:getParam("Combo", "Combo") and Config:getParam("Misc", "AA_Gap") and GetDistance(GetClosestEnemy()) > myHero.range+myHero.boundingRadius+Target.boundingRadius then
-      local winion = GetLowestMinion(myHero.range+myHero.boundingRadius+winion.boundingRadius)  
+    if Target and Config:getParam("Combo", "Combo") and Config:getParam("Misc", "AA_Gap") and GetDistance(GetClosestEnemy()) > myHero.range+myHero.boundingRadius+Target.boundingRadius then
+      local winion = GetLowestMinion(myHero.range+myHero.boundingRadius*2)  
       if winion ~= nil then
         myHero:Attack(winion)
         myHero:MoveTo(mousePos.x, mousePos.z)
@@ -2828,75 +2988,12 @@ class "Katarina"
         table.insert(self.Wards, object)
       end
     end
-    self.orbTable = { lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625 }
-    AddTickCallback(function() self:OrbWalk() end)
+    AddTickCallback(function() self:Tick() end)
     AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
   end
 
-  function Katarina:OrbWalk()
+  function Katarina:Tick()
     if Config:getParam("Misc", "Jump") then self:WardJump() end
-    if Config:getParam("LastHit", "LastHit") then
-      self.Target = GetLowestMinion(700)
-      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
-        self.Target = nil
-      end
-      if not self.Target then
-        self.Target = GetJMinion(700)
-      end
-    end
-    if Config:getParam("LaneClear", "LaneClear") then
-      self.Target = GetLowestMinion(700)
-      if not self.Target then
-        self.Target = GetJMinion(700)
-      end
-    end
-    if Config:getParam("Harrass", "Harrass") then
-      self.Target = Target
-    end
-    if Config:getParam("Combo", "Combo") then
-      self.Target = Target
-    end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, 700) then
-      self.Target = self.Forcetarget
-    end
-    if self:DoOrb() then
-      self:Orb(self.Target) 
-    end
-  end
-
-  function Katarina:Orb(unit)
-    if not ValidTarget(unit, myHero.range + GetDistance(myHero.minBBox) + 1 + 40) then
-      unit = Target
-    end
-    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, myHero.range + GetDistance(myHero.minBBox) + 1 + 40) then
-      myHero:Attack(unit)
-    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) + self.orbTable.minionAA then
-      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
-        myHero:MoveTo(unit.x, unit.z)
-      elseif self:DoOrb() and GetDistance(mousePos) > 50 then
-        myHero:MoveTo(movePos.x, movePos.z)
-      end
-    end
-  end
-
-  function Katarina:DoOrb()
-    if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then
-      return false
-    end
-    if Config:getParam("Combo", "Combo") then
-      return true
-    end
-    if Config:getParam("Harrass", "Harrass") then
-      return true
-    end
-    if Config:getParam("LastHit", "LastHit") then
-      return true
-    end
-    if Config:getParam("LaneClear", "LaneClear") then
-      return true
-    end
-    return false
   end
 
   function Katarina:Menu()
@@ -4425,7 +4522,6 @@ class "Rengar"
     self.isLeap = false
     self.alertTicker = 0
     self.keyStr = {[0] = "Q", [1] = "W", [2] = "E"}
-    self.orbTable = { lastAA = 0, lastAction = 0, windUp = 3.75, animation = 0.625, range = myHero.range + myHero.boundingRadius, trueRange = myHero.range + GetDistance(myHero.minBBox) + 1 }
     AddTickCallback(function() self:Tick() end)
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
     AddAnimationCallback(function(x,y) self:Animation(x,y) end)
@@ -4448,8 +4544,6 @@ class "Rengar"
   end
 
   function Rengar:Tick()
-    self.orbTable.range = myHero.range + myHero.boundingRadius
-    self.orbTable.trueRange = myHero.range + GetDistance(myHero.minBBox) + 1
     if Config:getParam("Misc", "Empower") then
       local os = Config:getParam("Misc", "Empower2")
       Config:incParamBy1("Misc", "Empower2")
@@ -4457,80 +4551,6 @@ class "Rengar"
         PrintAlertRed("Switched Empoweredmode! Now using: "..self.keyStr[Config:getParam("Misc", "Empower2")-1])
       end
     end
-    self:OrbWalk()
-  end
-
-  function Rengar:OrbWalk()
-    if Config:getParam("LastHit", "LastHit") then
-      self.Target = GetLowestMinion(500)
-      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
-        self.Target = nil
-      end
-      if not self.Target then
-        self.Target = GetJMinion(500)
-      end
-    end
-    if Config:getParam("LaneClear", "LaneClear") then
-      self.Target = GetLowestMinion(500)
-      if not self.Target then
-        self.Target = GetJMinion(500)
-      end
-    end
-    if Config:getParam("Harrass", "Harrass") then
-      self.Target = Target
-    end
-    if Config:getParam("Combo", "Combo") then
-      self.Target = Target
-    end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, self.orbTable.trueRange + 40) then
-      self.Target = self.Forcetarget
-    end
-    if self:DoOrb() then self:Orb(self.Target) end
-  end
-
-  function Rengar:Orb(unit)
-    if not ValidTarget(unit, self.orbTable.trueRange + 40) then
-      unit = Target
-    end
-    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, self.orbTable.trueRange + 40) then
-      myHero:Attack(unit)
-    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) then
-      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
-        myHero:MoveTo(unit.x, unit.z)
-      elseif GetDistance(mousePos) > 50 then
-        myHero:MoveTo(movePos.x, movePos.z)
-      end
-    end
-  end
-
-  function Rengar:DoOrb()
-    for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
-      if Config:getParam(k, k) then
-        return self:SetStates(k)
-      end
-    end
-    return false
-  end
-
-  function Rengar:SetStates(mode)
-    self.QState = Config:getParam(mode, "Q")
-    self.WState = Config:getParam(mode, "W")
-    self.EState = Config:getParam(mode, "E")
-    if myHero.mana == 5 then
-      self.QState = false
-      self.WState = false
-      self.EState = false
-      if Config:getParam("Misc", "Empower2") == 1 then
-        self.QState = true
-      elseif Config:getParam("Misc", "Empower2") == 2 then
-        self.WState = true
-      elseif Config:getParam("Misc", "Empower2") == 3 then
-        self.EState = true
-      end
-    end
-    self.IState = mode == "Combo" or mode == "Harrass"
-    return true
   end
 
   function Rengar:Msg(Msg, Key)
@@ -4559,35 +4579,20 @@ class "Rengar"
 
   function Rengar:Animation(unit, ani)
     if unit and unit.isMe and ani then
-      if ani == "Spell5" and self:DoOrb() then
-        if Smite ~= nil and self.IState then CastSpell(Smite, self.Target) end
-        if Ignite ~= nil and self.IState then CastSpell(Ignite, self.Target) end
-        if self.EState then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) end end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000) end
-        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000)
+      if ani == "Spell5" and loadedOrb:DoOrb() then
+        if Smite ~= nil and loadedOrb.IState then CastSpell(Smite, self.Target) end
+        if Ignite ~= nil and loadedOrb.IState then CastSpell(Ignite, self.Target) end
+        loadedOrb.orbTable.lastAA = 0
+        if loadedOrb.State[_E] then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) end end, 1 / (myHero.attackSpeed * loadedOrb.orbTable.windUp) - GetLatency() / 2000) end
+        DelayAction(function() loadedOrb:WindUp(unit) end, 1 / (myHero.attackSpeed * loadedOrb.orbTable.windUp) - GetLatency() / 2000)
       end
     end
   end
 
   function Rengar:ProcessSpell(unit,spell)
-    if unit and unit.isMe and spell and self:DoOrb() then
-      if spell.name:lower():find("attack") then
-        self.orbTable.windUp = 1 / (spell.windUpTime * myHero.attackSpeed)
-        self.orbTable.animation = 1 / (spell.animationTime * myHero.attackSpeed)
-        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000)
-      elseif spell.name:lower():find("rengare") and self.WState then
+    if unit and unit.isMe and spell and loadedOrb:DoOrb() then
+      if spell.name:lower():find("rengare") and loadedOrb.State[_W] then
         Cast(_W, self.Target, false, true, 1)
-      end
-    end
-  end
-
-  function Rengar:WindUp(unit)
-    if unit.isMe then
-      if ValidTarget(self.Target) and self:DoOrb() then
-        if self.WState then Cast(_W, self.Target, false, true, 1) end
-        if self.IState then self:CastItems(self.Target) end
-        if self.QState and sReady[_Q] and ValidTarget(self.Target, 600) then
-          Cast(_Q, myHero:Attack(self.Target))
-        end
       end
     end
   end
@@ -5097,71 +5102,6 @@ class "Talon"
   function Talon:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     self:Menu()
-    self.QState = false
-    self.WState = false
-    self.IState = false
-    self.orbTable = { lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625 }
-    AddTickCallback(function() self:OrbWalk() end)
-    AddProcessSpellCallback(function(unit,spell) self:ProcessSpell(unit,spell) end)
-  end
-
-  function Talon:OrbWalk()
-    if Config:getParam("LastHit", "LastHit") then
-      self.Target = GetLowestMinion(data[0].range)
-      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
-        self.Target = nil
-      end
-    end
-    if Config:getParam("LaneClear", "LaneClear") then
-      self.Target = GetLowestMinion(data[0].range)
-      if not self.Target then
-        self.Target = GetJMinion(data[0].range)
-      end
-    end
-    if Config:getParam("Harrass", "Harrass") then
-      self.Target = Target
-    end
-    if Config:getParam("Combo", "Combo") then
-      self.Target = Target
-    end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, 700) then
-      self.Target = self.Forcetarget
-    end
-    if self:DoOrb() then
-      self:Orb(self.Target) 
-    end
-  end
-
-  function Talon:Orb(unit)
-    if not ValidTarget(unit, myHero.range + GetDistance(myHero.minBBox) + 1 + 40) then
-      unit = Target
-    end
-    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, myHero.range + GetDistance(myHero.minBBox) + 1 + 40) then
-      myHero:Attack(unit)
-    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) + self.orbTable.minionAA then
-      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and unit and ValidTarget(unit, data[0].range) and unit.type == myHero.type and self.IState then
-        myHero:MoveTo(unit.x, unit.z)
-      elseif self:DoOrb() and GetDistance(mousePos) > 50 then
-        myHero:MoveTo(movePos.x, movePos.z)
-      end
-    end
-  end
-
-  function Talon:DoOrb()
-    for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
-      if Config:getParam(k, k) then
-        return self:SetStates(k)
-      end
-    end
-    return false
-  end
-
-  function Talon:SetStates(mode)
-    self.QState = Config:getParam(mode, "Q")
-    self.WState = Config:getParam(mode, "W")
-    self.IState = mode == "Combo" or mode == "Harrass"
-    return true
   end
 
   function Talon:Menu()
@@ -5185,44 +5125,6 @@ class "Talon"
     Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-  end
-
-  function Talon:ProcessSpell(unit,spell)
-    if unit and unit.isMe and spell then
-      if spell.name:lower():find("attack") then
-        self.orbTable.windUp = 1 / (spell.windUpTime * myHero.attackSpeed)
-        self.orbTable.animation = 1 / (spell.animationTime * myHero.attackSpeed)
-        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) - GetLatency() / 2000)
-      elseif spell.name:lower():find("cutthroat") then
-        self.orbTable.lastAA = 0
-        myHero:Attack(spell.target)
-      end
-    end
-  end
-
-  function Talon:WindUp(unit)
-    if unit.isMe then
-      if ValidTarget(self.Target) then
-        if self.WState then Cast(_W, self.Target, false, true, 1) end
-        if self.IState then self:CastItems(self.Target) end
-        if self.QState and  myHero:GetSpellData(_Q).currentCd == 0 and ValidTarget(self.Target, 600) then
-          Cast(_Q, myHero:Attack(self.Target))
-        end
-      end
-    end
-  end
-
-  function Talon:CastItems(unit)
-    local i = {["ItemTiamatCleave"] = self.orbTable.range, ["YoumusBlade"] = self.orbTable.range}
-    local u = {["ItemSwordOfFeastAndFamine"] = 600}
-    for slot = ITEM_1, ITEM_6 do
-      if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
-        CastSpell(slot) 
-      end
-      if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
-        CastSpell(slot, unit)
-      end
-    end
   end
 
   function Talon:LastHit()
@@ -5262,7 +5164,7 @@ class "Talon"
     if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(self.Target, data[2].range) then
       Cast(_E, self.Target, true)
     end
-    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].range) and killTextTable[self.Target.networkID]:find("Killable") then
+    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].range) and self.Target.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg("AD", myHero, enemy)+GetDmg(_R, myHero, enemy) then
       Cast(_R, self.Target, true)
     end
   end
@@ -5286,13 +5188,13 @@ class "Talon"
         local c = 0
         for _,k in pairs({"Q","W","E"}) do
           if Config:getParam("Killsteal", k) and sReady[_-1] then
-            dmg = dmg + GetDmg(_-1, myHero, enemy)
+            dmg = dmg + GetDmg(_-1, myHero, enemy) * ((k == "W" or k == "R") and 0.5 or 1)
             c = c + 1
           end
         end
-        dmg = dmg + c/2*GetDmg("AD", myHero, enemy)
+        dmg = dmg + (c > 0 and GetDmg("AD", myHero, enemy) or 0)
         dmg = dmg*((sReady[_E]) and 1+0.03*myHero:GetSpellData(_E).level or 1)+((sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") and Config:getParam("Killsteal", "R") and GetDmg(_R, myHero, enemy)*2 or 0)
-        if dmg >= enemy.health then
+        if dmg >= enemy.health and EnemiesAround(enemy,750) < 3 then
           if Config:getParam("Killsteal", "Q") and myHero:GetSpellData(_Q).currentCd == 0 and GetDistance(enemy) < data[2].range then
             if GetDistance(enemy) < data[0].range then CastSpell(_Q, myHero:Attack(enemy)) end
             if Config:getParam("Killsteal", "E") and sReady[_E] then
