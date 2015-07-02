@@ -194,7 +194,7 @@ function sScriptConfig:Load_Sprites()
                             "Scripts\\"..self.name.." Logo",
                             "Scripts\\"..self.theme.." Logo"}
     self.buttonTable     = { "1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Space","Ctrl" }
-    self.buttonTable2    = { 20,33,34,35,36,45,46 }
+    self.buttonTable2    = { 20,33,34,35,36,45,46,104,105,106,107,108,109 }
     self.numTable        = { "1","2","3","4","5","6","7","8","9","0","%" }
     for _, sprite in pairs(self.SpriteTable) do
         location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
