@@ -2370,7 +2370,17 @@ class "Cassiopeia"
   function Cassiopeia:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST, 900, DAMAGE_MAGICAL, false, true)
     self:Menu()
+    self.lastE = 0
     AddTickCallback(function() self:LastHitSomethingPoisonedWithE() end)
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
+  end
+
+  function Cassiopeia:ProcessSpell(unit, spell)
+    if unit and unit.isMe then
+      if spell.name == "CassiopeiaTwinFang" then
+        self.lastE = GetInGameTimer() + (100+Config:getParam("Misc", "Humanizer", "E"))/200
+      end
+    end
   end
 
   function Cassiopeia:Menu()
@@ -2389,9 +2399,11 @@ class "Cassiopeia"
     Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
     if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config:addParam({state = "Misc", name = "Humanizer", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {0}})
   end
 
   function Cassiopeia:LastHitSomethingPoisonedWithE()
+    if self.lastE > GetInGameTimer() then return end
     if Config:getParam("LastHit", "E") and not Config:getParam("Combo", "Combo") and not Config:getParam("Harrass", "Harrass") then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
@@ -2409,6 +2421,7 @@ class "Cassiopeia"
   end
 
   function Cassiopeia:LastHit()
+    if self.lastE > GetInGameTimer() then return end
     if Config:getParam("LastHit", "E") then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
@@ -2457,6 +2470,7 @@ class "Cassiopeia"
         Cast(_W, BestPos)
       end
     end
+    if self.lastE > GetInGameTimer() then return end
     if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
       for minion,winion in pairs(Mobs.objects) do
         if winion ~= nil and GetStacks(winion) > 0 then
@@ -2478,7 +2492,7 @@ class "Cassiopeia"
     if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
+    if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
       if GetStacks(Target) > 0 then
         Cast(_E, Target, true)
       end
@@ -2495,7 +2509,7 @@ class "Cassiopeia"
     if myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and ValidTarget(Target, data[1].range) and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
       Cast(_W, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
       if GetStacks(Target) > 0 then
         Cast(_E, Target, true)
       end
