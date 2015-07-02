@@ -521,7 +521,10 @@ _G.ScriptologyDebug      = false
         SOWVP:LoadToMenu(scriptConfig("SOW", "ScriptologySOW"))
         ScriptologyMsg("Found SOW")
       else
-        loadedOrb = SWalk(false, nil, nil, nil)
+        aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Talon"] = {_Q} }
+        aaResetTable2 = { ["Kalista"] = {_Q}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
+        aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
+        loadedOrb = SWalk(false, aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
         ScriptologyMsg("No valid Orbwalker found - loading SWalk")
       end
     end
@@ -1424,7 +1427,7 @@ class "SWalk"
       local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
       if self.aaResetTable then
         for _,k in pairs(self.aaResetTable) do
-          if self.Config[str[k]] and sReady[k] and self.State[k] then
+          if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
             self.orbTable.lastAA = 0
             CastSpell(k)
             return
@@ -1433,7 +1436,7 @@ class "SWalk"
       end
       if self.aaResetTable2 then
         for _,k in pairs(self.aaResetTable2) do
-          if self.Config[str[k]] and sReady[k] and self.State[k] then
+          if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
             self.orbTable.lastAA = 0
             CastSpell(k, unit.x, unit.z)
             return
@@ -1442,7 +1445,7 @@ class "SWalk"
       end
       if self.aaResetTable3 then
         for _,k in pairs(self.aaResetTable3) do
-          if self.Config[str[k]] and sReady[k] and self.State[k] then
+          if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
             self.orbTable.lastAA = 0
             CastSpell(k, unit)
             return
@@ -2908,7 +2911,7 @@ class "Kalista"
   end
 
   function Kalista:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) and myHero.mana >= 85+myHero:GetSpellData(_Q).level*5 then
       Cast(_Q, Target, false, true, 1.5)
     end
     if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
@@ -2929,7 +2932,7 @@ class "Kalista"
   end
 
   function Kalista:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 85+myHero:GetSpellData(_Q).level*5 then
       Cast(_Q, Target, false, true, 1.2)
     end
     if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) then
@@ -5164,7 +5167,7 @@ class "Talon"
     if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(self.Target, data[2].range) then
       Cast(_E, self.Target, true)
     end
-    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].width) and self.Target.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg("AD", myHero, enemy)+GetDmg(_R, myHero, enemy) then
+    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].width) and self.Target.health < GetDmg(_Q, myHero, self.Target)+GetDmg(_W, myHero, self.Target)+GetDmg("AD", myHero, self.Target)+GetDmg(_R, myHero, self.Target) then
       Cast(_R, self.Target, true)
     end
   end
