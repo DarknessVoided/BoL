@@ -9,7 +9,7 @@ function OnLoad()
   Config.kConfig:addParam("harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addParam("lh", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addParam("lc", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-	Config.mConfig:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, -0.2, -5, 5, 1)
+	Config.mConfig:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, -0.2, -10, 10, 0)
 	SWalkMsg("Loaded") 
 end
 
@@ -18,6 +18,7 @@ function SWalkMsg(msg)
 end
 
 function OnTick()
+	ts:update()
 	myRange = myHero.range+myHero.boundingRadius*2
 	if Config.kConfig.lh then
 		Target = GetLowestMinion(myRange)
@@ -41,6 +42,10 @@ function OnTick()
 		Orb(Target) 
 	end
 end
+
+function OnDraw()
+	DrawCircle3D(myHero.x, myHero.y, myHero.z, myRange, 1, ARGB(105,0,255,0), 32)
+end
 	
 function Orb(unit)
 	if not ValidTarget(unit, myRange) then
@@ -48,7 +53,7 @@ function Orb(unit)
 	end
 	if os.clock() > orbTable.lastAA + orbTable.animation and ValidTarget(unit, myRange) then
 		myHero:Attack(unit)
-	elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > orbTable.lastAA + orbTable.windUp + Config.mConfig.cadj/100 then
+	elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > orbTable.lastAA + orbTable.windUp + Config.mConfig.cadj/1000 then
 		local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
 		if DoOrb() and GetDistance(mousePos) > 125 then
 			myHero:MoveTo(movePos.x, movePos.z)
