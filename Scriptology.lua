@@ -1181,7 +1181,7 @@ _G.ScriptologyDebug      = false
     local c=0
     if Unit == nil then return 0 end
     for i=1,heroManager.iCount do hero = heroManager:GetHero(i) 
-      if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range and pos then pos, b = PredictPos(hero) if pos and GetDistance(pos, myHero) < GetDistance(hero, myHero) then c=c+1 end end end return c
+      if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then pos, b = PredictPos(hero) if pos and GetDistance(pos, myHero) < GetDistance(hero, myHero) then c=c+1 end end end return c
   end
 
   function PredictPos(target,delay)
