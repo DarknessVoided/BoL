@@ -1287,8 +1287,8 @@ class "SWalk"
     self.State = {}
     self.orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
     self.myRange = myHero.range+myHero.boundingRadius*2
-    self.Config = scriptConfig("SWalk", "SW")
-    self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -10, 10, 0)
+    self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
+    self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -20, 20, 0)
     local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     if self.aaResetTable then
       for _,k in pairs(self.aaResetTable) do
@@ -2862,7 +2862,7 @@ class "Kalista"
       for minion,winion in pairs(JMobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
         if winion ~= nil and EMinionDmg > winion.health and GetDistance(winion) < data[2].range then
-          if (string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
+          if (string.find(winion.charName, "Crab") or string.find(winion.charName, "Rift") or string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
             if not string.find(winion.charName, "Mini") then       
               killableCounterJ = killableCounterJ + 1
             end
