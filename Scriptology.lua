@@ -1130,6 +1130,17 @@ _G.ScriptologyDebug      = false
     for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
   end
 
+  function GetClosestAlly()
+    local ally = nil
+    for v,k in pairs(GetAllyHeroes()) do
+      if not ally then ally = k end
+      if GetDistanceSqr(k) < GetDistanceSqr(ally) then
+        ally = k
+      end
+    end
+    return ally
+  end
+
   function EnemiesAroundAndFacingMe(Unit, range)
     local c=0
     if Unit == nil then return 0 end

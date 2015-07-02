@@ -194,6 +194,7 @@ function sScriptConfig:Load_Sprites()
                             "Scripts\\"..self.name.." Logo",
                             "Scripts\\"..self.theme.." Logo"}
     self.buttonTable     = { "1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Space","Ctrl" }
+    self.buttonTable2    = { 20,33,34,35,36,45,46 }
     self.numTable        = { "1","2","3","4","5","6","7","8","9","0","%" }
     for _, sprite in pairs(self.SpriteTable) do
         location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
@@ -225,6 +226,15 @@ function sScriptConfig:Load_Sprites()
         elseif sprite == "Alt" then sprite = 18
         elseif sprite == "Ctrl" then sprite = 17
         else sprite = string.byte(sprite) end
+        if FileExist(SPRITE_PATH .. location) then
+            self.Sprites[sprite] = createSprite(location)
+        elseif self.theme == "Scriptology" then
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+            self.hadToDownload = true
+        end
+    end
+    for _, sprite in pairs(self.buttonTable2) do
+        location = "sScriptConfig\\"..self.theme.."\\Words\\Button\\" .. sprite .. ".png"
         if FileExist(SPRITE_PATH .. location) then
             self.Sprites[sprite] = createSprite(location)
         elseif self.theme == "Scriptology" then
@@ -512,10 +522,12 @@ function sScriptConfig:Msg(Msg, Key)
     local cursor = GetCursorPos()
     if Msg == KEY_DOWN and Key > 16 and self.keyChange then
         for _,par in pairs(self.par) do
-            if par.state == self.state and self.keyChange == par and (par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE) and self.Sprites[Key] then
-                par.key = Key
-                self.keyChange = nil
-                self:save()
+            if par.state == self.state and self.keyChange == par and (par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE) then
+                if self.Sprites[Key] then
+                    par.key = Key
+                    self.keyChange = nil
+                    self:save()
+                end
             end
         end
     end
