@@ -20,7 +20,7 @@
   SCassiopeiaVersion    = 1.4 -- facingme fixed
   SDariusVersion        = 1.2 -- auto Q harrass added
   SEkkoVersion          = 1   -- initial release
-  SKalistaVersion       = 1.1 -- added R to save ally
+  SKalistaVersion       = 1.2 -- fixed orbwalk
   SKatarinaVersion      = 1.1 -- fixed all toggles in not-combo-modes
   SKogmawVersion        = 1   -- initial release
   SLeeSinVersion        = 1.2 -- is now live
