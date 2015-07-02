@@ -5224,7 +5224,7 @@ class "Talon"
             if Config:getParam("Killsteal", "R") and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
               DelayAction(function() Cast(_R) end, 0.25)
             end
-          elseif GetDistance(enemy) < data[3].range and Config:getParam("Killsteal", "R") and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
+          elseif GetDistance(enemy) < data[3].width and Config:getParam("Killsteal", "R") and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
             Cast(_R)
           end
         end
