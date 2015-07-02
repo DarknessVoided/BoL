@@ -81,36 +81,6 @@ function Orb(unit)
 	end
 end
 
-function OnAnimation(unit,ani)
-	if myHero.charName == "Riven" and unit and unit.isMe and ani then
-	  	if ani:find("Spell1a") or ani:find("Spell1b") then
-	    	orbTable.lastAA = os.clock() + 0.245
-	    	if ts.target then
-        		local movePos = ts.target + (Vector(myHero) - ts.target):normalized() * (GetDistance(ts.target) + 62)
-        		myHero:MoveTo(movePos.x, movePos.z)
-			end
-		elseif ani:find("Spell1c") then
-	    	orbTable.lastAA = os.clock() + 0.245
-      		if VIP_USER and Config.mConfig.pc then 
-        		DelayAction(function() CastDance() end, 0.137)
-      		else
-        		local movePos = ts.target + (Vector(myHero) - ts.target):normalized() * (GetDistance(ts.target) + 62)
-        		myHero:MoveTo(movePos.x, movePos.z)
-    		end
-		end
-	end
-end
-
-function CastDance()
-	p = CLoLPacket(0xF2)
-	p.vTable = 0xE93C0C
-	p:EncodeF(myHero.networkID)
-	p:Encode1(0xFF)
-	p:Encode2(0x3DFF)
-	p:Encode2(0xF288)
-	SendPacket(p)
-end
-
 function DoOrb()
 	return Config.kConfig.combo or Config.kConfig.harrass or Config.kConfig.lc or Config.kConfig.lh
 end
