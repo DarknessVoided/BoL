@@ -1,12 +1,10 @@
 function OnLoad()
-	-- CastSpell(s, myHero:Attack(t))
-		aaResetTable = { ["Talon"] = {_Q} }
+	-- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
+		aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Talon"] = {_Q} }
 	-- CastSpell(s, x, z)
-		aaResetTable2 = { ["Riven"] = {_Q} }
+		aaResetTable2 = { ["Riven"] = {_Q}, ["Yasuo"] = {_Q} }
 	-- CastSpell(s, t)
-		aaResetTable3 = {  }
-	-- CastSpell(s)
-		aaResetTable4 = { ["Riven"] = {_W}  }
+		aaResetTable3 = { ["Teemo"] = {_Q} }
     sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
 	str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
 	orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
@@ -34,11 +32,6 @@ function OnLoad()
 	end
 	if aaResetTable3[myHero.charName] then
 		for _,k in pairs(aaResetTable3[myHero.charName]) do
-			Config.mConfig:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
-		end
-	end
-	if aaResetTable4[myHero.charName] then
-		for _,k in pairs(aaResetTable4[myHero.charName]) do
 			Config.mConfig:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
 		end
 	end
@@ -161,15 +154,6 @@ function OnWindUp(unit)
 		end
 		if aaResetTable3[myHero.charName] then
 			for _,k in pairs(aaResetTable3[myHero.charName]) do
-				if Config.mConfig[str[k]] and sReady[k] then
-					orbTable.lastAA = 0
-					CastSpell(k, unit)
-					return
-				end
-			end
-		end
-		if aaResetTable4[myHero.charName] then
-			for _,k in pairs(aaResetTable4[myHero.charName]) do
 				if Config.mConfig[str[k]] and sReady[k] then
 					orbTable.lastAA = 0
 					CastSpell(k, unit)
