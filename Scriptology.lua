@@ -43,7 +43,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.92
+_G.ScriptologyVersion    = 1.93
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -1344,10 +1344,12 @@ class "SWalk"
     if ScriptologyLoaded and Config:getParam("LastHit", "LastHit") or self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
       dmg = GetDmg("AD",myHero,self.Target)
-      if self.Target and dmg and self.Target.health > dmg then if health > dmg then
+      if self.Target and dmg and self.Target.health >= dmg then 
+        if health >= dmg then
           self.Target = nil
         end
       end
+      if health < 0 then self.Target = nil end
     end
     if ScriptologyLoaded and Config:getParam("LaneClear", "LaneClear") or self.Config.kConfig.LaneClear then
       self.Target, health = self:GetLowestPMinion(self.myRange)
@@ -1355,9 +1357,10 @@ class "SWalk"
         self.Target = GetJMinion(self.myRange)
       end
       dmg = GetDmg("AD",myHero,self.Target)
-      if dmg and health > dmg and health <= dmg*2 then
+      if dmg and health ~= self.Target.health and (health >= dmg or self.Target.health-health-dmg <= 0) then
         self.Target = nil
       end
+      if health < 0 then self.Target = nil end
     end 
     if ScriptologyLoaded and Config:getParam("Harrass", "Harrass") or self.Config.kConfig.Harrass then
       self.Target = Target
@@ -1401,9 +1404,9 @@ class "SWalk"
       for _=0,3 do
         sReady[_] = myHero:CanUseSpell(_) == READY
       end
-      self.State[_Q] = false
-      self.State[_W] = false
-      self.State[_E] = false
+      self.State[_Q] = true
+      self.State[_W] = true
+      self.State[_E] = true
       self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
       return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
     end
@@ -1420,7 +1423,7 @@ class "SWalk"
     local minionTarget = nil
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = VP:GetPredictedHealth2(minion,  GetDistance(myHero, minion) / VP.projectilespeeds[myHero.charName])
+      local hp = VP:GetPredictedHealth(minion,  GetDistance(myHero, minion) / VP.projectilespeeds[myHero.charName], self.orbTable.windUp)
       if minionTarget == nil then 
         minionTarget = minion
         health = hp
@@ -1473,10 +1476,11 @@ class "SWalk"
   function SWalk:WindUp(unit)
     if ValidTarget(unit) then
       local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-      if self.Config.aar and self.IState or true then
+      if (self.Config.aar and self.IState or true) then
         if self.aaResetTable then
           for _,k in pairs(self.aaResetTable) do
-            if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
+            range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
+            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k)
               return
@@ -1485,7 +1489,8 @@ class "SWalk"
         end
         if self.aaResetTable2 then
           for _,k in pairs(self.aaResetTable2) do
-            if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
+            range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
+            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k, unit.x, unit.z)
               return
@@ -1494,7 +1499,8 @@ class "SWalk"
         end
         if self.aaResetTable3 then
           for _,k in pairs(self.aaResetTable3) do
-            if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
+            range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
+            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k, unit)
               return
