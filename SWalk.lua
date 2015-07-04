@@ -57,14 +57,14 @@ function OnTick()
 		Target, health = GetLowestPMinion(myRange)
 		if Target then dmg = myHero:CalcDamage(Target,myHero.totalDamage) end
 		if Target and Target.health > dmg then if health > dmg then Target = nil end end
-	    if health < 0 then Target = nil end
+		if health < 0 then Target = nil end
 	end
 	if Config.kConfig.lc then
 		Target, health = GetLowestPMinion(myRange)
 		if Target then dmg = myHero:CalcDamage(Target,myHero.totalDamage) end
 		if not Target then Target = GetJMinion(myRange) end
-	    if dmg and health ~= Target.health and (health >= dmg or Target.health-health-dmg <= 0) then Target = nil end
-	    if health < 0 then Target = nil end
+		if dmg and health ~= Target.health and (health >= dmg or Target.health-health-dmg <= 0) then Target = nil end
+		if health < 0 then Target = nil end
 	end
 	if Config.kConfig.harrass or Config.kConfig.combo then Target = ts.target end
 	if DoOrb() then Orb(Target) end
@@ -82,9 +82,9 @@ function Orb(unit)
 		local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
 		if DoOrb() and unit and ValidTarget(unit, myRange) and unit.type == myHero.type and Config.mConfig.wtt then
 			if GetDistance(unit) > myHero.boundingRadius+unit.boundingRadius then
-        		myHero:MoveTo(unit.x, unit.z)
-        	end
-      	elseif DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
+				myHero:MoveTo(unit.x, unit.z)
+			end
+		elseif DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
 			myHero:MoveTo(movePos.x, movePos.z)
 		end
 	end
@@ -107,7 +107,7 @@ end
 
 function OnRecvPacket(p)
 	if Config.mConfig.pc and p.header == 0xD1 then
-	  OnWindUp(ts.target)
+		OnWindUp(ts.target)
 	end
 end
 
@@ -140,7 +140,7 @@ function OnWindUp(unit)
 				end
 			end
 		end
-	    if Config.mConfig.i and CastItems(unit) then return end
+		if Config.mConfig.i and CastItems(unit) then return end
 	end
 end
 
