@@ -38,6 +38,7 @@ function OnLoad()
 	Config.mConfig:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
 	Config.mConfig:addParam("wtt", "Walk to Target (melee)", SCRIPT_PARAM_ONOFF, true)
 	if VIP_USER then HookPackets() Config.mConfig:addParam("pc", "Use packet for animation cancel (melee)", SCRIPT_PARAM_ONOFF, true) end
+    if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
 	SWalkMsg("Loaded") 
 end
 
@@ -50,8 +51,8 @@ function OnTick()
     for _=0,3 do sReady[_] = myHero:CanUseSpell(_) == READY end
 	myRange = myHero.range+myHero.boundingRadius*2
 	if Config.kConfig.lh then
-		Target = GetLowestMinion(myRange)
-		if Target and Target.health > myHero:CalcDamage(Target,myHero.totalDamage) then Target = nil end
+		Target, health = GetLowestPMinion(myRange)
+		if Target and Target.health > myHero:CalcDamage(Target,myHero.totalDamage) then if health > myHero:CalcDamage(Target,myHero.totalDamage) then Target = nil end end
 	end
 	if Config.kConfig.lc then
 		Target = GetLowestMinion(myRange)
@@ -161,9 +162,25 @@ function GetLowestMinion(range)
 		end
 	end
 	return minionTarget
- end
+end
+
+function GetLowestPMinion(range)
+	local minionTarget = nil
+	local health = 0
+	for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+		local hp = VP:GetPredictedHealth2(minion,  GetDistance(myHero, minion) / VP.projectilespeeds[myHero.charName])
+		if minionTarget == nil then 
+			minionTarget = minion
+			hp = health
+		elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
+			minionTarget = minion
+			health = health
+		end
+	end
+	return minionTarget, 
+end
  
- function GetJMinion(range)
+function GetJMinion(range)
 	local minionTarget = nil
 	for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
 		if minionTarget == nil then 

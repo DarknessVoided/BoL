@@ -492,7 +492,6 @@ _G.ScriptologyDebug      = false
       aaResetTable2 = { ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
       aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
       loadedOrb = SWalk(myHero.charName ~= "Azir" and myHero.charName ~= "Malzahar", aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
-      if not UPLloaded then require("VPrediction") VP = VPrediction() end
       DelayAction(function() ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end, 5)
     else
       if _G.AutoCarry then
@@ -1315,6 +1314,7 @@ class "SWalk"
       self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
       AddRecvPacketCallback2(function(x) self:RecvPacket(x) end) 
     end
+    if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
   end
 
@@ -1325,8 +1325,8 @@ class "SWalk"
   function SWalk:OrbWalk()
     myRange = myHero.range+myHero.boundingRadius*2
     if Config:getParam("LastHit", "LastHit") then
-      self.Target = GetLowestMinion(data[0].range)
-      if self.Target and (UPLloaded and UPL.VP:GetPredictedHealth(self.Target,  GetDistance(myHero, self.Target) / UPL.VP.projectilespeeds[myHero.charName]) or VP:GetPredictedHealth(self.Target,  GetDistance(myHero, self.Target) / VP.projectilespeeds[myHero.charName])) > GetDmg("AD",myHero,self.Target)  then
+      self.Target, health = GetLowestMinion(data[0].range)
+      if self.Target.health > GetDmg("AD",myHero,Target) then if health > GetDmg("AD",myHero,Target) then self.Target = nil end end
         self.Target = nil
       end
     end
@@ -1381,6 +1381,22 @@ class "SWalk"
       end
     end
     return false
+  end
+
+  function SWalk:GetLowestPMinion(range)
+    local minionTarget = nil
+    local health = 0
+    for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      local hp = VP:GetPredictedHealth2(minion,  GetDistance(myHero, minion) / VP.projectilespeeds[myHero.charName])
+      if minionTarget == nil then 
+        minionTarget = minion
+        hp = health
+      elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
+        minionTarget = minion
+        health = health
+      end
+    end
+    return minionTarget, 
   end
 
   function SWalk:SetStates(mode)
@@ -5672,7 +5688,7 @@ class "Riven"
   end
 
   function Riven:RecvPacket(p)
-    if p.header == 0xD1 and self:DoOrb() then
+    if p.header == 209 and self:DoOrb() then
       self:CastDance()
       self:WindUp(myHero)
     end
@@ -5822,12 +5838,12 @@ class "Riven"
   end
 
   function Riven:CastDance()
-    p = CLoLPacket(0xF2)
-    p.vTable = 0xE93C0C
+    p = CLoLPacket(242)
+    p.vTable = 15285260
     p:EncodeF(myHero.networkID)
-    p:Encode1(0xFF)
-    p:Encode2(0x3DFF)
-    p:Encode2(0xF288)
+    p:Encode1(255)
+    p:Encode2(15871)
+    p:Encode2(62088)
     SendPacket(p)
   end
 
