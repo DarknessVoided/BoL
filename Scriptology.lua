@@ -65,7 +65,8 @@ _G.ScriptologyDebug      = false
         Auth()
       end
     else
-      ScriptologyMsg("Your Champion is not supported (yet)! Loaded SWalk instead")
+      ScriptologyMsg("Your Champion is not supported (yet)!")
+      ScriptologyMsg("Loaded SWalk instead")
       LoadOrb()
     end
   end
