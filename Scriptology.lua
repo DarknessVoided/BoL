@@ -37,6 +37,8 @@
   STeemoVersion         = 1.1 -- Q is now QQQ
   SVayneVersion         = 1   -- initial release
   SVolibearVersion      = 1.1 -- error spam fix
+  SWalkVersion          = 1   -- initial release
+  SYasuoVersion         = 1   -- initial release
  ]]--
 
 --Scriptstatus Tracker
