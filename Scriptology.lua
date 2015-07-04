@@ -65,7 +65,8 @@ _G.ScriptologyDebug      = false
         Auth()
       end
     else
-      ScriptologyMsg("Your Champion is not supported (yet)!")
+      ScriptologyMsg("Your Champion is not supported (yet)! Loaded SWalk instead")
+      loadedOrb = SWalk()
     end
   end
 
@@ -73,6 +74,7 @@ _G.ScriptologyDebug      = false
     Menu()
     Vars()
     loadedClass = _G[myHero.charName]()
+    ScriptologyLoaded = true
     AddTickCallback(function() Tick() end)
     AddDrawCallback(function() Draw() end)
     if objTrackList[myHero.charName] then
@@ -1314,6 +1316,13 @@ class "SWalk"
       self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
       AddRecvPacketCallback2(function(x) self:RecvPacket(x) end) 
     end
+    if not ScriptologyLoaded then
+      self.Config:addSubMenu("Key Settings", "kConfig")
+      self.Config.kConfig:addParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+      self.Config.kConfig:addParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+      self.Config.kConfig:addParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+      self.Config.kConfig:addParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
   end
@@ -1324,25 +1333,26 @@ class "SWalk"
 
   function SWalk:OrbWalk()
     myRange = myHero.range+myHero.boundingRadius*2
-    if Config:getParam("LastHit", "LastHit") then
+    if ScriptologyLoaded and Config:getParam("LastHit", "LastHit") or self.Config.kConfig.LastHit then
       self.Target, health = GetLowestMinion(data[0].range)
-      if self.Target.health > GetDmg("AD",myHero,Target) then if health > GetDmg("AD",myHero,Target) then self.Target = nil end end
-        self.Target = nil
+      if self.Target.health > GetDmg("AD",myHero,Target) then if health > GetDmg("AD",myHero,Target) then
+          self.Target = nil
+        end
       end
     end
-    if Config:getParam("LaneClear", "LaneClear") then
+    if ScriptologyLoaded and Config:getParam("LaneClear", "LaneClear") or self.Config.kConfig.LaneClear then
       self.Target = GetLowestMinion(data[0].range)
       if not self.Target then
         self.Target = GetJMinion(data[0].range)
       end
     end 
-    if Config:getParam("Harrass", "Harrass") then
+    if ScriptologyLoaded and Config:getParam("Harrass", "Harrass") or self.Config.kConfig.Harrass then
       self.Target = Target
     end
-    if Config:getParam("Combo", "Combo") then
+    if ScriptologyLoaded and Config:getParam("Combo", "Combo") or self.Config.kConfig.Combo then
       self.Target = Target
     end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, 700) then
+    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget))and ValidTarget(self.Forcetarget, 700) then
       self.Target = self.Forcetarget
     end
     if self:DoOrb() then
@@ -1374,9 +1384,16 @@ class "SWalk"
   end
 
   function SWalk:DoOrb()
-    if (myHero.charName == "Katarina" or myHero.charName == "Malzahar") and ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then return false end
+    if not ScriptologyLoaded then
+      self.State[_Q] = false
+      self.State[_W] = false
+      self.State[_E] = false
+      self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
+      return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
+    end
+    if (myHero.charName == "Katarina" or myHero.charName == "Malzahar") and ultOn and ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then return false end
     for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
-      if Config:getParam(k, k) then
+      if Config:getParam(k, k) or Config.kConfig then
         return self:SetStates(k)
       end
     end
