@@ -1360,7 +1360,7 @@ class "SWalk"
         self.Target = GetJMinion(self.myRange)
       end
       dmg = GetDmg("AD",myHero,self.Target)
-      if dmg and health ~= self.Target.health and (health >= dmg or self.Target.health-health-dmg <= 0) then
+      if self.Target and dmg and health ~= self.Target.health and (health >= dmg or self.Target.health-health-dmg <= 0) then
         self.Target = nil
       end
       if health < 0 then self.Target = nil end
