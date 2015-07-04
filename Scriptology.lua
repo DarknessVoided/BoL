@@ -492,6 +492,7 @@ _G.ScriptologyDebug      = false
       aaResetTable2 = { ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
       aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
       loadedOrb = SWalk(myHero.charName ~= "Azir" and myHero.charName ~= "Malzahar", aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
+      if not UPLloaded then require("VPrediction") VP = VPrediction() end
       DelayAction(function() ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end, 5)
     else
       if _G.AutoCarry then
@@ -1325,7 +1326,7 @@ class "SWalk"
     myRange = myHero.range+myHero.boundingRadius*2
     if Config:getParam("LastHit", "LastHit") then
       self.Target = GetLowestMinion(data[0].range)
-      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
+      if self.Target and (UPLloaded and UPL.VP:GetPredictedHealth(self.Target,  GetDistance(myHero, self.Target) / UPL.VP.projectilespeeds[myHero.charName]) or VP:GetPredictedHealth(self.Target,  GetDistance(myHero, self.Target) / VP.projectilespeeds[myHero.charName])) > GetDmg("AD",myHero,self.Target)  then
         self.Target = nil
       end
     end
@@ -1334,7 +1335,7 @@ class "SWalk"
       if not self.Target then
         self.Target = GetJMinion(data[0].range)
       end
-    end
+    end 
     if Config:getParam("Harrass", "Harrass") then
       self.Target = Target
     end
