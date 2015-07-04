@@ -43,7 +43,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.91
+_G.ScriptologyVersion    = 1.92
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -66,7 +66,7 @@ _G.ScriptologyDebug      = false
       end
     else
       ScriptologyMsg("Your Champion is not supported (yet)! Loaded SWalk instead")
-      loadedOrb = SWalk()
+      LoadOrb()
     end
   end
 
@@ -490,10 +490,7 @@ _G.ScriptologyDebug      = false
     if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" or myHero.charName == "Talon" or myHero.charName == "Yasuo" then
       if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" and myHero.charName ~= "Yasuo" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
       if myHero.charName == "Riven" then return end
-      aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Talon"] = {_Q} }
-      aaResetTable2 = { ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
-      aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
-      loadedOrb = SWalk(myHero.charName ~= "Azir" and myHero.charName ~= "Malzahar", aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
+      LoadOrb()
       DelayAction(function() ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end, 5)
     else
       if _G.AutoCarry then
@@ -519,13 +516,20 @@ _G.ScriptologyDebug      = false
         SOWVP:LoadToMenu(scriptConfig("SOW", "ScriptologySOW"))
         ScriptologyMsg("Found SOW")
       else
-        aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Talon"] = {_Q} }
-        aaResetTable2 = { ["Kalista"] = {_Q}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
-        aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
-        loadedOrb = SWalk(false, aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
+        LoadOrb()
         ScriptologyMsg("No valid Orbwalker found - loading SWalk")
       end
     end
+  end
+
+  function LoadOrb()
+  -- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
+    aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Sivir"] = {_W}, ["Talon"] = {_Q} }
+  -- CastSpell(s, x, z)
+    aaResetTable2 = { ["Kalista"] = {_Q}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
+  -- CastSpell(s, t)
+    aaResetTable3 = { ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
+    loadedOrb = SWalk(myHero.range < 500, aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
   end
 
   function DisableOrbwalkerMovement()
@@ -1306,17 +1310,21 @@ class "SWalk"
       end
     end
     self.Config:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
-    if self.melee then 
-      self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
-    end
     AddTickCallback(function() self:OrbWalk() end)
     AddDrawCallback(function() self:Draw() end)
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
     if VIP_USER and self.melee then 
-      self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
-      AddRecvPacketCallback2(function(x) self:RecvPacket(x) end) 
+      self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
+      if VIP_USER then
+        self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
+        AddRecvPacketCallback2(function(x) self:RecvPacket(x) end) 
+      end
+    end
+    if self.aaResetTable or self.aaResetTable2 or self.aaResetTable3 then
+      self.Config:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
     end
     if not ScriptologyLoaded then
+      sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
       self.Config.kConfig:addParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
       self.Config.kConfig:addParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
@@ -1334,16 +1342,21 @@ class "SWalk"
   function SWalk:OrbWalk()
     myRange = myHero.range+myHero.boundingRadius*2
     if ScriptologyLoaded and Config:getParam("LastHit", "LastHit") or self.Config.kConfig.LastHit then
-      self.Target, health = GetLowestMinion(data[0].range)
-      if self.Target.health > GetDmg("AD",myHero,Target) then if health > GetDmg("AD",myHero,Target) then
+      self.Target, health = self:GetLowestPMinion(self.myRange)
+      dmg = GetDmg("AD",myHero,self.Target)
+      if self.Target and dmg and self.Target.health > dmg then if health > dmg then
           self.Target = nil
         end
       end
     end
     if ScriptologyLoaded and Config:getParam("LaneClear", "LaneClear") or self.Config.kConfig.LaneClear then
-      self.Target = GetLowestMinion(data[0].range)
+      self.Target, health = self:GetLowestPMinion(self.myRange)
       if not self.Target then
-        self.Target = GetJMinion(data[0].range)
+        self.Target = GetJMinion(self.myRange)
+      end
+      dmg = GetDmg("AD",myHero,self.Target)
+      if dmg and health > dmg and health <= dmg*2 then
+        self.Target = nil
       end
     end 
     if ScriptologyLoaded and Config:getParam("Harrass", "Harrass") or self.Config.kConfig.Harrass then
@@ -1352,11 +1365,11 @@ class "SWalk"
     if ScriptologyLoaded and Config:getParam("Combo", "Combo") or self.Config.kConfig.Combo then
       self.Target = Target
     end
-    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget))and ValidTarget(self.Forcetarget, 700) then
+    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and ValidTarget(self.Forcetarget, self.myRange*1.2) then
       self.Target = self.Forcetarget
     end
     if self:DoOrb() then
-      loadedClass.Target = self.Target
+      if ScriptologyLoaded then loadedClass.Target = self.Target end
       self:Orb(self.Target) 
     end
   end
@@ -1385,6 +1398,9 @@ class "SWalk"
 
   function SWalk:DoOrb()
     if not ScriptologyLoaded then
+      for _=0,3 do
+        sReady[_] = myHero:CanUseSpell(_) == READY
+      end
       self.State[_Q] = false
       self.State[_W] = false
       self.State[_E] = false
@@ -1457,30 +1473,32 @@ class "SWalk"
   function SWalk:WindUp(unit)
     if ValidTarget(unit) then
       local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-      if self.aaResetTable then
-        for _,k in pairs(self.aaResetTable) do
-          if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
-            self.orbTable.lastAA = 0
-            CastSpell(k)
-            return
+      if self.Config.aar and self.IState or true then
+        if self.aaResetTable then
+          for _,k in pairs(self.aaResetTable) do
+            if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
+              self.orbTable.lastAA = 0
+              CastSpell(k)
+              return
+            end
           end
         end
-      end
-      if self.aaResetTable2 then
-        for _,k in pairs(self.aaResetTable2) do
-          if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
-            self.orbTable.lastAA = 0
-            CastSpell(k, unit.x, unit.z)
-            return
+        if self.aaResetTable2 then
+          for _,k in pairs(self.aaResetTable2) do
+            if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
+              self.orbTable.lastAA = 0
+              CastSpell(k, unit.x, unit.z)
+              return
+            end
           end
         end
-      end
-      if self.aaResetTable3 then
-        for _,k in pairs(self.aaResetTable3) do
-          if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
-            self.orbTable.lastAA = 0
-            CastSpell(k, unit)
-            return
+        if self.aaResetTable3 then
+          for _,k in pairs(self.aaResetTable3) do
+            if self.Config[str[k]] and sReady[k] and self.State[k] and (data[k].range > 0 and GetDistance(unit) < data[k].range or GetDistance(unit) < data[k].width) then
+              self.orbTable.lastAA = 0
+              CastSpell(k, unit)
+              return
+            end
           end
         end
       end

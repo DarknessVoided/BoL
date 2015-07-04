@@ -35,6 +35,9 @@ function OnLoad()
 			Config.mConfig:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
 		end
 	end
+	if aaResetTable[myHero.charName] or aaResetTable2[myHero.charName] or aaResetTable3[myHero.charName] then
+		Config.mConfig:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
+	end
 	Config.mConfig:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
 	Config.mConfig:addParam("wtt", "Walk to Target (melee)", SCRIPT_PARAM_ONOFF, true)
 	if VIP_USER then HookPackets() Config.mConfig:addParam("pc", "Use packet for animation cancel (melee)", SCRIPT_PARAM_ONOFF, true) end
