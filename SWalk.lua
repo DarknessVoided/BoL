@@ -55,12 +55,16 @@ function OnTick()
 	myRange = myHero.range+myHero.boundingRadius*2
 	if Config.kConfig.lh then
 		Target, health = GetLowestPMinion(myRange)
-		print(health)
 		if Target and Target.health > myHero:CalcDamage(Target,myHero.totalDamage) then if health > myHero:CalcDamage(Target,myHero.totalDamage) then Target = nil end end
 	end
 	if Config.kConfig.lc then
-		Target = GetLowestMinion(myRange)
+		Target, health = GetLowestPMinion(myRange)
 		if not Target then Target = GetJMinion(myRange) end
+		if Target then
+			if health > myHero:CalcDamage(Target,myHero.totalDamage) and health <= myHero:CalcDamage(Target,myHero.totalDamage)*2 then
+				Target = nil
+			end
+		end
 	end
 	if Config.kConfig.harrass or Config.kConfig.combo then Target = ts.target end
 	if DoOrb() then Orb(Target) end
