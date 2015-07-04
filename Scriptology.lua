@@ -1396,7 +1396,7 @@ class "SWalk"
         health = health
       end
     end
-    return minionTarget, 
+    return minionTarget, health
   end
 
   function SWalk:SetStates(mode)

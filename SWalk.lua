@@ -177,7 +177,7 @@ function GetLowestPMinion(range)
 			health = health
 		end
 	end
-	return minionTarget, 
+	return minionTarget, health
 end
  
 function GetJMinion(range)
