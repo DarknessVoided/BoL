@@ -52,6 +52,7 @@ function OnTick()
 	myRange = myHero.range+myHero.boundingRadius*2
 	if Config.kConfig.lh then
 		Target, health = GetLowestPMinion(myRange)
+		print(health)
 		if Target and Target.health > myHero:CalcDamage(Target,myHero.totalDamage) then if health > myHero:CalcDamage(Target,myHero.totalDamage) then Target = nil end end
 	end
 	if Config.kConfig.lc then
@@ -171,10 +172,10 @@ function GetLowestPMinion(range)
 		local hp = VP:GetPredictedHealth2(minion,  GetDistance(myHero, minion) / VP.projectilespeeds[myHero.charName])
 		if minionTarget == nil then 
 			minionTarget = minion
-			hp = health
+			health = hp
 		elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
 			minionTarget = minion
-			health = health
+			health = hp
 		end
 	end
 	return minionTarget, health

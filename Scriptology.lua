@@ -1390,10 +1390,10 @@ class "SWalk"
       local hp = VP:GetPredictedHealth2(minion,  GetDistance(myHero, minion) / VP.projectilespeeds[myHero.charName])
       if minionTarget == nil then 
         minionTarget = minion
-        hp = health
+        health = hp
       elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
         minionTarget = minion
-        health = health
+        health = hp
       end
     end
     return minionTarget, health
