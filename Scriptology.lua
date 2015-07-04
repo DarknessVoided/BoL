@@ -43,7 +43,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.90
+_G.ScriptologyVersion    = 1.91
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -51,7 +51,6 @@ _G.ScriptologyDebug      = false
 -- { Global functions
 
   function OnLoad()
-    require("sScriptConfig")
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Ekko", "Kalista", "Katarina", 
                   "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", "Ryze", "Rumble", 
                   "Talon", "Teemo", "Vayne", "Volibear", "Yasuo" }
@@ -131,7 +130,7 @@ _G.ScriptologyDebug      = false
         if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
           ScriptologyMsg("New version available v"..ScriptologyServerVersion)
           ScriptologyMsg("Updating, please don't press F9")
-          DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua".."?rand="..math.random(1,10000), SCRIPT_PATH.."Scriptology.lua", function () ScriptologyMsg("Successfully updated. ("..ScriptologyVersion.." => "..ScriptologyServerVersion.."), press F9 twice to load the updated version") end) DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/sScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."sScriptConfig.lua", function () end) end, 3)
+          DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua".."?rand="..math.random(1,10000), SCRIPT_PATH.."Scriptology.lua", function () ScriptologyMsg("Successfully updated. ("..ScriptologyVersion.." => "..ScriptologyServerVersion.."), press F9 twice to load the updated version") end) end, 3)
           return true
         end
       end
@@ -1476,6 +1475,783 @@ class "SWalk"
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 --[[ SWalk - Inbuilt OrbWalker till here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ sScriptConfig - Inbuilt ScriptConfig from here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "sScriptConfig"
+
+  function sScriptConfig:__init(name, theme)
+      UpdateWindow()
+      self.name   = name
+      self.theme  = theme
+      self.state  = nil
+      self.states = {}
+      self.substates = {}
+      self.par    = {}
+      self.resize = false
+      self.move   = false
+      self.pos    = {x = 0, z = 50}
+      self.touch  = {x = 0, z = 0}
+      self.Scale  = {x = 0.65*1920/WINDOW_W, z = 0.65*1080/WINDOW_H}
+      self.keyChange = nil
+      self.lastMove = 0
+      self.LastIncrRequest = 0
+      self.slide  = {false, false, false, false}
+      self.loaded = false
+      AddUnloadCallback(function() self:Unload_Sprites() end)
+      AddDrawCallback(function() self:Draw() end)
+      AddMsgCallback(function(Msg, Key) self:Msg(Msg, Key) end)
+      AddTickCallback(function() self:Tick() end)
+      return self
+  end
+
+  local function remove(name)
+      if not GetSave("sScriptConfig")[name] then GetSave("sScriptConfig")[name] = {} end
+      table.clear(GetSave("sScriptConfig")[name])
+  end
+
+  local function load(name)
+      if not GetSave("sScriptConfig")[name] then GetSave("sScriptConfig")[name] = {} end
+      return GetSave("sScriptConfig")[name]
+  end
+
+  local function save(name, content)
+      if not GetSave("sScriptConfig")[name] then GetSave("sScriptConfig")[name] = {} end
+      table.clear(GetSave("sScriptConfig")[name])
+      table.merge(GetSave("sScriptConfig")[name], content, true)
+  end
+
+  function sScriptConfig:load()
+      local function sensitiveMerge(base, t)
+          for i, v in pairs(t) do
+              if type(base[i]) == type(v) then
+                  if type(v) == "table" then sensitiveMerge(base[i], v)
+                  else base[i] = v
+                  end
+              end
+          end
+      end
+      local config = load(self.name)
+      for var, value in pairs(config) do
+          for _,par in pairs(self.par) do
+              if par.name == value.name and par.state == value.state then
+                  if value.code == SCRIPT_PARAM_ONKEYDOWN or value.code == SCRIPT_PARAM_ONKEYTOGGLE then par.key = value.key end
+                  if value.code == SCRIPT_PARAM_ONOFF or value.code == SCRIPT_PARAM_LIST then par.value = value.value end
+                  if value.code == SCRIPT_PARAM_SLICE then par.slider = value.slider end
+              end
+          end
+      end
+  end
+
+  function sScriptConfig:save()
+      local content = {}
+      content = {}
+      for var, param in pairs(self.par) do
+          table.insert(content, param)
+      end
+      save(self.name, content)
+  end
+
+  function sScriptConfig:addParam(par)
+      table.insert(self.par, par)
+  end
+
+  function sScriptConfig:getParam(state, param1, param2)
+      for _,par in pairs(self.par) do
+          if par.name == param1 and par.state == state then
+              if par.code == SCRIPT_PARAM_SLICE and param2 then
+                  for k=1,#par.slider do
+                      if par.text[k] == param2 then
+                          return par.slider[k]
+                      end
+                  end
+              elseif par.code == SCRIPT_PARAM_ONKEYDOWN then
+                  return IsKeyDown(par.key)  
+              else
+                  return par.value
+              end
+          end
+      end
+  end
+
+  function sScriptConfig:setParam(state, value, param1, param2)
+      for _,par in pairs(self.par) do
+          if par.name == param1 and par.state == state then
+              if par.code == SCRIPT_PARAM_SLICE and param2 then
+                  for k=1,#par.slider do
+                      if par.text[k] == param2 then
+                          par.slider[k] = value
+                      end
+                  end
+              elseif par.code == SCRIPT_PARAM_LIST then
+                  if par.value == #par.list then
+                      par.value = 1
+                  else
+                      par.value = value
+                  end
+              else
+                  par.value = value
+              end
+          end
+      end
+  end
+
+  function sScriptConfig:incParamBy1(state, param1, param2)
+      if not self:ValidIncrRequest() then return end
+      for _,par in pairs(self.par) do
+          if par.name == param1 and par.state == state then
+              if par.code == SCRIPT_PARAM_SLICE and param2 then
+                  for k=1,#par.slider do
+                      if par.text[k] == param2 then
+                          par.slider[k] = par.slider[k] + 1
+                      end
+                  end
+              elseif par.code == SCRIPT_PARAM_LIST then
+                  if par.value == #par.list then
+                      par.value = 1
+                  else
+                      par.value = par.value + 1
+                  end
+              else
+                  par.value = par.value + 1
+              end
+          end
+      end
+  end
+
+  function sScriptConfig:ValidIncrRequest()
+      if GetInGameTimer() - self.LastIncrRequest < 0.5 then
+          return false
+      else
+          self.LastIncrRequest = GetInGameTimer()
+          return true
+      end
+  end
+
+  function sScriptConfig:addState(state)
+      table.insert(self.states, state)
+      if self.state == nil then self.state = state end
+  end
+
+  function sScriptConfig:addSubStates(state, sub)
+      self.substates[state] = sub
+      if self.state == nil or self.state == state then self.state = sub[1] end
+  end
+
+  function sScriptConfig:Unload_Sprites()
+      for _,k in pairs(self.Sprites) do
+          k:Release()
+      end
+  end
+
+  function sScriptConfig:Load_Sprites()
+      self.hadToDownload  = false
+      self.Sprites        = {}
+      self.SpriteTable    = {
+          "top",
+          "mid",
+          "drag",
+          "drag_selected",
+          "code1",
+          "code1_selected",
+          "code2",
+          "code4",
+          "SLIDER_1",
+          "SLIDER_2",
+          "SLIDER_3",
+          "SLIDER_4",
+          "code3",
+          "code7",
+          "state",
+          "state_selected", 
+          "state_bottom",
+          "state_bottom_selected", 
+          "bot",
+          "Words\\Button\\Change",
+          "Scripts\\"..self.name
+      }
+      self.dontDownload    = {"chibi\\"..GetUser():lower(),
+                              "Scripts\\"..self.name.." Logo",
+                              "Scripts\\"..self.theme.." Logo"}
+      self.buttonTable     = { "1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Space","Ctrl" }
+      self.buttonTable2    = { 20,33,34,35,36,45,46,104,105,106,107,108,109 }
+      self.numTable        = { "1","2","3","4","5","6","7","8","9","0","%" }
+      for _, sprite in pairs(self.SpriteTable) do
+          location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite] = createSprite(location)
+          elseif self.theme == "Scriptology" then
+              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+              self.hadToDownload = true
+          end
+      end
+      for _, sprite in pairs(self.dontDownload) do
+          location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite] = createSprite(location)
+          end
+      end
+      for _, sprite in pairs(self.numTable) do
+          location = "sScriptConfig\\"..self.theme.."\\Num\\" .. sprite .. ".png"
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite] = createSprite(location)
+          elseif self.theme == "Scriptology" then
+              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+              self.hadToDownload = true
+          end
+      end
+      for _, sprite in pairs(self.buttonTable) do
+          location = "sScriptConfig\\"..self.theme.."\\Words\\Button\\" .. sprite .. ".png"
+          if sprite == "Space" then sprite = 32
+          elseif sprite == "Alt" then sprite = 18
+          elseif sprite == "Ctrl" then sprite = 17
+          else sprite = string.byte(sprite) end
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite] = createSprite(location)
+          elseif self.theme == "Scriptology" then
+              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+              self.hadToDownload = true
+          end
+      end
+      for _, sprite in pairs(self.buttonTable2) do
+          location = "sScriptConfig\\"..self.theme.."\\Words\\Button\\" .. sprite .. ".png"
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite] = createSprite(location)
+          elseif self.theme == "Scriptology" then
+              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+              self.hadToDownload = true
+          end
+      end
+      for _, sprite in pairs(self.states) do
+          if not self.substates[sprite] then
+              location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. ".png"
+              if FileExist(SPRITE_PATH .. location) then
+                  self.Sprites[sprite] = createSprite(location)
+              elseif self.theme == "Scriptology" then
+                  DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+                  self.hadToDownload = true
+              end
+              location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. "_selected.png"
+              if FileExist(SPRITE_PATH .. location) then
+                  self.Sprites[sprite.."_selected"] = createSprite(location)
+              elseif self.theme == "Scriptology" then
+                  DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+                  self.hadToDownload = true
+              end
+          elseif self.substates[sprite] then
+              for v,k in pairs(self.substates[sprite]) do
+                  location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. ".png"
+                  if FileExist(SPRITE_PATH .. location) then
+                      self.Sprites[k] = createSprite(location)
+                  elseif self.theme == "Scriptology" then
+                      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+                      self.hadToDownload = true
+                  end
+                  location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. "_selected.png"
+                  if FileExist(SPRITE_PATH .. location) then
+                      self.Sprites[k.."_selected"] = createSprite(location)
+                  elseif self.theme == "Scriptology" then
+                      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+                      self.hadToDownload = true
+                  end
+              end
+          end
+      end
+      for _, par in pairs(self.par) do
+          sprite=par.name
+          location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. ".png"
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite] = createSprite(location)
+          elseif self.theme == "Scriptology" then
+              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+              self.hadToDownload = true
+          end
+          location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. "_selected.png"
+          if FileExist(SPRITE_PATH .. location) then
+              self.Sprites[sprite.."_selected"] = createSprite(location)
+          elseif self.theme == "Scriptology" then
+              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+              self.hadToDownload = true
+          end
+          if par.code == SCRIPT_PARAM_LIST then
+              for _,k in pairs(par.list) do
+                  location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. ".png"
+                  if FileExist(SPRITE_PATH .. location) then
+                      self.Sprites[k] = createSprite(location)
+                  elseif self.theme == "Scriptology" then
+                      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
+                      self.hadToDownload = true
+                  end
+              end
+          end
+      end
+      if not self.hadToDownload then
+          while #self.states < 6 do
+              self:addState("blank")
+          end
+          self.offsets = {top = self.Sprites["top"].height, button = self.Sprites["state"].height, bot = self.Sprites["drag"].height*2, width = self.Sprites["top"].width, buttonwidth = self.Sprites["state"].width}
+      else
+          self:Unload_Sprites()
+          DelayAction(function() print("Reloading menu... Please wait!") DelayAction(function() print("Reloaded. Have fun!") end, 1.5) self.loaded = false end, 1.5)
+      end
+  end
+
+  function sScriptConfig:Draw()
+      if (self.keyChange or IsKeyDown(16)) and self.loaded then
+          self.Sprites["top"]:SetScale(self.Scale.x,self.Scale.z)
+          self.Sprites["top"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4, 255)
+          if self.Sprites["Scripts\\"..self.name.." Logo"] then
+              self.Sprites["Scripts\\"..self.name.." Logo"]:SetScale(self.Scale.x,self.Scale.z)
+              self.Sprites["Scripts\\"..self.name.." Logo"]:Draw(self.pos.x+self.Scale.z*(self.offsets.buttonwidth/2-self.Sprites["Scripts\\"..self.name.." Logo"].width/2), self.pos.z+WINDOW_H/4+self.Scale.z*(self.Sprites["top"].height/2-self.Sprites["Scripts\\"..self.name.." Logo"].height/2), 255)
+          elseif self.Sprites["Scripts\\"..self.theme.." Logo"] then
+              self.Sprites["Scripts\\"..self.theme.." Logo"]:SetScale(self.Scale.x,self.Scale.z)
+              self.Sprites["Scripts\\"..self.theme.." Logo"]:Draw(self.pos.x+self.Scale.z*(self.offsets.buttonwidth/2-self.Sprites["Scripts\\"..self.theme.." Logo"].width/2), self.pos.z+WINDOW_H/4+self.Scale.z*(self.Sprites["top"].height/2-self.Sprites["Scripts\\"..self.theme.." Logo"].height/2), 255)
+          end
+          self.Sprites["Scripts\\"..self.name]:SetScale(self.Scale.x,self.Scale.z)
+          self.Sprites["Scripts\\"..self.name]:Draw(self.pos.x+self.Scale.z*((self.offsets.buttonwidth+self.Sprites["top"].width)/2-self.Sprites["Scripts\\"..self.name].width/2), self.pos.z+WINDOW_H/4+self.Scale.z*(self.Sprites["top"].height/2-self.Sprites["Scripts\\"..self.name].height/2), 255)
+          for _,par in pairs(self.states) do
+              if not self.substates[par] then
+                  if self.state ~= par and self.Sprites[par] or self.state == par and self.Sprites[par.."_selected"] then
+                      if self.state == par then
+                          self.Sprites["state_selected"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["state_selected"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), 255)
+                          self.Sprites[par.."_selected"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites[par.."_selected"]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5))-self.Scale.z*self.Sprites[par.."_selected"].height/2, 255)
+                      else
+                          self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), 255)
+                          self.Sprites[par]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites[par]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5)-self.Sprites[par].height/2), 255)
+                      end
+                  else
+                      self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
+                      self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), 255)
+                  end
+              else
+                  for v,k in pairs(self.substates[par]) do
+                      if self.state ~= k and self.Sprites[k] or self.state == k and self.Sprites[k.."_selected"] then
+                          if self.state == k then
+                              self.Sprites["state_selected"]:SetScale(self.Scale.x,self.Scale.z)
+                              self.Sprites["state_selected"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), 255)
+                              self.Sprites[k.."_selected"]:SetScale(self.Scale.x*3/4,self.Scale.z*3/4)
+                              self.Sprites[k.."_selected"]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5)-self.offsets.button/2+self.offsets.button/2*(v-1)+self.Sprites[k.."_selected"].height/2-self.Sprites[k].height/4), 255)
+                          else
+                              self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
+                              self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), 255)
+                              self.Sprites[k]:SetScale(self.Scale.x*3/4,self.Scale.z*3/4)
+                              self.Sprites[k]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5)-self.offsets.button/2+self.offsets.button/2*(v-1)+self.Sprites[k].height/2-self.Sprites[k].height/4), 255)
+                          end
+                      else
+                          self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), 255)
+                      end
+                  end
+              end
+          end
+          self.Sprites["mid"]:SetScale(self.Scale.x,self.Scale.z)
+          self.Sprites["mid"]:Draw(self.pos.x+self.Scale.x*self.offsets.buttonwidth, self.pos.z+WINDOW_H/4+self.Scale.z*self.offsets.top, 255)
+          if self.Sprites["chibi\\"..GetUser():lower()] then
+              self.Sprites["chibi\\"..GetUser():lower()]:SetScale(self.Scale.x*0.75,self.Scale.z*0.75)
+              self.Sprites["chibi\\"..GetUser():lower()]:Draw(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*(self.Sprites["chibi\\"..GetUser():lower()].width-75), self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*(self.Sprites["chibi\\"..GetUser():lower()].height-120), 175)
+          end
+          local a = 0
+          local c = 0
+          local y = 0
+          for _,par in pairs(self.par) do
+              if par.state == self.state and self.Sprites["code"..par.code] and ((par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE) and self.Sprites[string.char(par.key)] or (par.code == SCRIPT_PARAM_SLICE and self.Sprites["code"..par.code] or self.Sprites[par.name])) then
+                  if c == 4 then c = 0 y = y + 1 end
+                  bxPos = self.pos.x+self.Scale.x*(self.Sprites["code"..par.code].width*(c)+40+c*45+self.offsets.buttonwidth)
+                  byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((40+self.Sprites["code"..par.code].height)*(y)+20+self.offsets.top)
+                  if par.code == SCRIPT_PARAM_ONOFF then
+                      if par.value then
+                          self.Sprites["code"..par.code.."_selected"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["code"..par.code.."_selected"]:Draw(bxPos,byPos, 255)
+                          self.Sprites[par.name.."_selected"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites[par.name.."_selected"]:Draw(bxPos+self.Scale.x*(self.Sprites["code"..par.code].width/2-self.Sprites[par.name].width/2),byPos+self.Scale.z*(self.Sprites["code"..par.code].height/2-self.Sprites[par.name].height/2), 255)
+                      else
+                          self.Sprites["code"..par.code]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["code"..par.code]:Draw(bxPos,byPos, 255)
+                          self.Sprites[par.name]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites[par.name]:Draw(bxPos+self.Scale.x*(self.Sprites["code"..par.code].width/2-self.Sprites[par.name].width/2),byPos+self.Scale.z*(self.Sprites["code"..par.code].height/2-self.Sprites[par.name].height/2), 255)
+                      end
+                  elseif par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE then
+                      a = a + 1
+                      local b = 0
+                      local ppos = par.name
+                      local kpos = par.key
+                      for _,k in pairs(self.par) do
+                          if par.state == k.state and (k.code == SCRIPT_PARAM_ONKEYDOWN or k.code == SCRIPT_PARAM_ONKEYTOGGLE) then
+                              ppos = k.name 
+                              kpos = k.key
+                              b = b + 1
+                          end
+                      end
+                      xOffset = b > 1 and self.Scale.x*(0-a*self.Sprites["mid"].width/(2*b)+(b+0.75)*self.Sprites["mid"].width/(4*b)) or 0
+                      self.Sprites[par.name]:SetScale(self.Scale.x*0.75,self.Scale.z*0.75)
+                      self.Sprites[par.name]:Draw(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites[ppos].width/2+15),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.Sprites[kpos].height/2, 255)
+                      if self.keyChange then 
+                          self.Sprites["Words\\Button\\Change"]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["Words\\Button\\Change"]:Draw(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["Words\\Button\\Change"].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states-self.Sprites["Words\\Button\\Change"].height/2-self.Sprites[ppos].height*2-20), 255)      
+                      else
+                          self.Sprites[par.key]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites[par.key]:Draw(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites[kpos].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states-self.Sprites[kpos].height/2-self.Sprites[ppos].height*2-20), 255)   
+                      end
+                  elseif par.code == SCRIPT_PARAM_SLICE then --{0,30,100,5}
+                      if c > 0 then y = y + 1 c = 0 end
+                      if y == 0 then y = 0.2+0.05*#par.slider end
+                      if y == 2 then y = 1.5 end
+                      self.Sprites[par.name]:SetScale(self.Scale.x*1.25,self.Scale.z*1.25)
+                      self.Sprites[par.name]:Draw(self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y-10), 255)
+                      self.Sprites["code"..par.code]:SetScale(self.Scale.x*1.25,self.Scale.z*1.25)
+                      self.Sprites["code"..par.code]:Draw(self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y), 255) 
+                      for k=#par.slider,1,-1 do
+                          self.Sprites["SLIDER_"..k]:SetScale(self.Scale.x,self.Scale.z)
+                          self.Sprites["SLIDER_"..k]:Draw(self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites["SLIDER_"..k].width/2+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(30+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y), 255)          
+                          self.Sprites[par.text[k]]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                          self.Sprites[par.text[k]]:Draw(self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites[par.text[k]].width/2*0.37+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y), 255)            
+                          if self.slide[k] then
+                              nxPos = self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2+self.Sprites["code"..par.code].width/2+self.Sprites["code"..par.code].width/4+15)
+                              nzPos = self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y-10)
+                              if par.slider[k] > 99 then
+                                  self.Sprites["1"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites["1"]:Draw(nxPos,nzPos, 255)  
+                                  self.Sprites["0"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites["0"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)         
+                                  self.Sprites["0"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites["0"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)  
+                                  self.Sprites["%"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites["%"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["%"].width/4+self.Scale.x*4,nzPos, 255)  
+                              elseif par.slider[k] > 9 then
+                                  self.Sprites[""..math.floor(par.slider[k]/10)]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites[""..math.floor(par.slider[k]/10)]:Draw(nxPos,nzPos, 255)  
+                                  self.Sprites[""..math.floor(par.slider[k]-math.floor(par.slider[k]/10)*10)]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites[""..math.floor(par.slider[k]-math.floor(par.slider[k]/10)*10)]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)         
+                                  self.Sprites["%"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites["%"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["%"].width/4+self.Scale.x*4,nzPos, 255)          
+                              else
+                                  self.Sprites[""..math.floor(par.slider[k])]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites[""..math.floor(par.slider[k])]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)         
+                                  self.Sprites["%"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
+                                  self.Sprites["%"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["%"].width/4+self.Scale.x*4,nzPos, 255)         
+                              end
+                          end
+                      end
+                  elseif par.code == SCRIPT_PARAM_LIST then
+                      if not self.Sprites[par.list[par.value]] then par.value = 1 end
+                      if c > 0 then
+                          bxPos = self.pos.x+self.Scale.x*(40+self.offsets.buttonwidth)
+                          y = y + 1
+                          byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
+                      else
+                          byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
+                      end
+                      self.Sprites[par.name]:SetScale(self.Scale.x,self.Scale.z)
+                      self.Sprites[par.name]:Draw(bxPos,byPos,255)
+                      bxPos = self.pos.x+self.Scale.x*(self.Sprites["mid"].width/2+self.Sprites[par.name].width/2-self.Sprites[par.list[par.value]].width/2+40+self.offsets.buttonwidth)
+                      byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
+                      self.Sprites[par.list[par.value]]:SetScale(self.Scale.x*0.5,self.Scale.z*0.5)
+                      self.Sprites[par.list[par.value]]:Draw(bxPos,byPos, 255) 
+                  elseif par.code == SCRIPT_PARAM_INFO then
+                  end
+                  c = c+1
+              end
+          end
+          if self.resize then
+              self.Sprites["drag_selected"]:SetScale(self.Scale.x,self.Scale.z) --self.Sprites[par.."_selected"].height
+              self.Sprites["drag_selected"]:Draw(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2, 255)
+          else
+              self.Sprites["drag"]:SetScale(self.Scale.x,self.Scale.z)
+              self.Sprites["drag"]:Draw(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2-1, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2-1, 255)
+          end
+      end
+  end
+
+  function sScriptConfig:Tick()
+      if not self.loaded then
+          self.loaded = true
+          self:load() 
+          self:Load_Sprites()
+      end
+      local cursor = GetCursorPos()
+      if self.resize then
+          if self.Scale.x > 0.2 and cursor.x+15 < self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2 and cursor.y < self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states+self.offsets.bot)-self.Scale.z*self.offsets.bot/2 then
+              self.Scale = {x = self.Scale.x-0.05, z = self.Scale.z-0.05}
+          elseif self.Scale.x < 1 and cursor.x-15 > self.pos.x+self.Scale.x*self.offsets.width and cursor.y > self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states+self.offsets.bot) then
+              self.Scale = {x = self.Scale.x+0.05, z = self.Scale.z+0.05}
+          end
+      end
+      if self.move then
+          self.pos = {x = cursor.x-self.touch.x, z = cursor.y-self.touch.z}
+          self.pos = {x = self.pos.x < 0 and 0 or (self.pos.x+self.Scale.x*self.offsets.width > WINDOW_W and WINDOW_W-self.Scale.x*self.offsets.width or self.pos.x), z = self.pos.z < -WINDOW_H/4 and -WINDOW_H/4 or self.pos.z}
+      end
+      for _,par in pairs(self.par) do
+          if par.state == self.state and par.code == SCRIPT_PARAM_SLICE then
+              for k=1,#par.slider do
+                  if self.slide[k] then
+                      local val = self.touch.z+(cursor.x-self.touch.x)/self.Scale.x/self.Sprites["code"..SCRIPT_PARAM_SLICE].width*100--((cursor.x-self.touch.x)*par.slider[k]/100-self.Sprites["SLICE"].width/100)
+                      val = val < 0 and 0 or (val > 100 and 100 or val)
+                      par.slider[k] = val
+                  end
+              end
+          end
+      end
+  end
+
+  function sScriptConfig:Msg(Msg, Key)
+      if not self.loaded or self.hadToDownload then return end
+      local cursor = GetCursorPos()
+      if Msg == KEY_DOWN and Key > 16 and self.keyChange then
+          for _,par in pairs(self.par) do
+              if par.state == self.state and self.keyChange == par and (par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE) then
+                  if self.Sprites[Key] then
+                      par.key = Key
+                      self.keyChange = nil
+                      self:save()
+                  end
+              end
+          end
+      end
+      if Msg == KEY_DOWN and Key > 16 then 
+          for _,par in pairs(self.par) do
+              if par.code == SCRIPT_PARAM_ONKEYTOGGLE and par.key == Key then
+                  par.value = not par.value
+                  if par.value then
+                      PrintAlertRed(par.state.." "..par.name.." is now on!")
+                  else
+                      PrintAlertRed(par.state.." "..par.name.." is now off!")
+                  end
+              end
+          end
+      end
+      if Msg == KEY_UP and Key == 16 then
+          self:save()
+      end
+      if Msg == WM_LBUTTONDOWN and (self.keyChange or IsKeyDown(16)) then
+          if CursorIsUnder(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2, self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.Scale.z*self.offsets.bot/2) then
+              self.resize = true
+          end
+          if CursorIsUnder(self.pos.x, self.pos.z+WINDOW_H/4, self.Scale.x*self.offsets.width, self.Scale.z*self.offsets.top) then
+              self.touch = {x = cursor.x-self.pos.x, z = cursor.y-self.pos.z}
+              self.move = true
+          end
+          local a = 0
+          local c = 0
+          local y = 0
+          for _,par in pairs(self.par) do
+              if par.state == self.state and self.Sprites["code"..par.code] then
+                  if c == 4 then c = 0 y = y + 1 end
+                  bxPos = self.pos.x+self.Scale.x*(self.Sprites["code"..par.code].width*(c)+40+c*45+self.offsets.buttonwidth)
+                  byPos = self.pos.z+WINDOW_H/4+self.Scale.z*(20+(40+self.Sprites["code"..par.code].height)*(y)+self.offsets.top)
+                  if par.code == SCRIPT_PARAM_ONOFF then
+                      if CursorIsUnder(bxPos, byPos, self.Scale.x*self.Sprites["code"..par.code].width, self.Scale.z*self.Sprites["code"..par.code].height) then
+                          par.value = not par.value
+                          self:save()
+                      end
+                  elseif par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE then
+                      a = a + 1
+                      local b = 0
+                      local ppos = par.name
+                      local kpos = par.key
+                      for _,k in pairs(self.par) do
+                          if par.state == k.state and (k.code == SCRIPT_PARAM_ONKEYDOWN or k.code == SCRIPT_PARAM_ONKEYTOGGLE) then
+                              ppos = k.name kpos = k.key
+                              b = b + 1
+                          end
+                      end
+                      xOffset = b > 1 and self.Scale.x*(0-a*self.Sprites["mid"].width/(2*b)+(b+0.75)*self.Sprites["mid"].width/(4*b)) or 0
+                      sprite = par.key > 32 and "Button\\"..string.char(par.key) or "Button\\".."Space"
+                      if CursorIsUnder(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites[par.key].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states-self.Sprites[par.key].height/2-self.Sprites[par.name].height*2-20), self.Scale.x*self.Sprites[par.key].width, self.Scale.z*self.Sprites[par.key].height) then
+                          self.keyChange = par
+                      end
+                  elseif par.code == SCRIPT_PARAM_SLICE then
+                      if c > 0 then y = y + 1 c = 0 end
+                      if y == 0 then y = 0.2+0.05*#par.slider end
+                      if y == 2 then y = 1.5 end
+                      for k=1,#par.slider do
+                          sxPos = self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites["SLIDER_"..k].width/2+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2)
+                          syPos = self.pos.z+WINDOW_H/4+self.Scale.z*(30+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y)
+                          if CursorIsUnder(sxPos,syPos,self.Sprites["SLIDER_"..k].width,self.Sprites["SLIDER_"..k].height) then
+                              self.touch = {x = cursor.x, z = par.slider[k]}
+                              self.slide[k] = true
+                              break
+                          end
+                      end
+                  elseif par.code == SCRIPT_PARAM_LIST then
+                      if c > 0 then
+                          y = y +1
+                      end
+                      bxPos = self.pos.x+self.Scale.x*(self.Sprites["mid"].width/2+self.Sprites[par.name].width/2-self.Sprites[par.list[par.value]].width/2+40+self.offsets.buttonwidth)
+                      byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
+                      if CursorIsUnder(bxPos, byPos, self.Scale.x*self.Sprites[par.list[par.value]].width, self.Scale.z*self.Sprites[par.list[par.value]].height) then
+                          par.value = par.value + 1
+                          if par.value > #par.list then
+                              par.value = 1
+                          end
+                      end
+                  end
+                  c = c+1
+              end
+          end
+          for _,k in pairs(self.states) do
+              if not self.substates[k] then
+                  if CursorIsUnder(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), self.Scale.x*self.offsets.buttonwidth, self.Scale.z*self.offsets.button) then
+                      self.state = k
+                  end
+              else
+                  for v,l in pairs(self.substates[k]) do
+                      if CursorIsUnder(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), self.Scale.x*self.offsets.buttonwidth, self.Scale.z*self.offsets.button/2) then
+                          self.state = l
+                      end
+                  end
+              end
+          end
+      elseif Msg == WM_LBUTTONUP then
+          self.resize = false
+          self.move = false
+          for _,par in pairs(self.par) do
+              if par.state == self.state and par.code == SCRIPT_PARAM_SLICE then
+                  for k=1,#par.slider do
+                      if self.slide[k] then
+                          self.slide[k] = false
+                      end
+                  end
+              end
+          end
+      end
+  end
+
+-- -- Alerter Class
+  -- written by Weee
+  -- adjusted so it doesn't create a scriptConfig instance
+  --[[
+      PrintAlert(text, duration, r, g, b, sprite)           - Pushes an alert message (notification) to the middle of the screen. Together with first message it also adds a configuration menu to the scriptConfig.
+                  text:   Alert text                        - <string>
+  ]]
+
+  local __mAlerter, __Alerter_OnTick, __Alerter_OnDraw = nil, nil, nil
+
+  function PrintAlertRed(text, duration)
+      if not __mAlerter then __mAlerter = __Alerter() end
+      return __mAlerter:Push(text, duration, 255, 0, 0)
+  end
+
+  class("__Alerter")
+  function __Alerter:__init()
+      if not __Alerter_OnTick then
+          function __Alerter_OnTick() if __mAlerter then __mAlerter:OnTick() end end
+          AddTickCallback(__Alerter_OnTick)
+      end
+      if not __Alerter_OnDraw then
+          function __Alerter_OnDraw() if __mAlerter then __mAlerter:OnDraw() end end
+          AddDrawCallback(__Alerter_OnDraw)
+      end
+
+      self.yO = -WINDOW_H * 0.25
+      self.x = WINDOW_W/2
+      self.y = WINDOW_H/2 + self.yO
+      self._alerts = {}
+      self.activeCount = 0
+      return self
+  end
+
+  function __Alerter:OnTick()
+      self.yO = -WINDOW_H * 0.25
+      self.x = WINDOW_W/2
+      self.y = WINDOW_H/2 + self.yO
+      --if #self._alerts == 0 then self:__finalize() end
+  end
+
+  function __Alerter:OnDraw()
+      local gameTime = GetInGameTimer()
+      for i, alert in ipairs(self._alerts) do
+          self.activeCount = 0
+          for j = 1, i do
+              local cAlert = self._alerts[j]
+              if not cAlert.outro then self.activeCount = self.activeCount + 1 end
+          end
+          if self.activeCount <= 3 and (not alert.playT or alert.playT + 0.5*2 + alert.duration > gameTime) then
+              alert.playT = not alert.playT and self._alerts[i-1] and (self._alerts[i-1].playT + 0.5 >= gameTime and self._alerts[i-1].playT + 0.5 or gameTime) or alert.playT or gameTime
+              local intro = alert.playT + 0.5 > gameTime
+              alert.outro = alert.playT + 0.5 + alert.duration <= gameTime
+              alert.step = alert.outro and math.min(1, (gameTime - alert.playT - 0.5 - alert.duration) / 0.5)
+                      or gameTime >= alert.playT and math.min(1, (gameTime - alert.playT) / 0.5)
+                      or 0
+              local xO = alert.outro and self:Easing(alert.step, 0, 50) or self:Easing(alert.step, -50, 50)
+              local alpha = alert.outro and self:Easing(alert.step, 255, -255) or self:Easing(alert.step, 0, 255)
+              local yOffsetTar = GetTextArea(alert.text, 20).y * 1.2 * (self.activeCount-1)
+              alert.yOffset = intro and alert.step == 0 and yOffsetTar
+                      or #self._alerts > 1 and not alert.outro and (alert.yOffset < yOffsetTar and math.min(yOffsetTar, alert.yOffset + 0.5) or alert.yOffset > yOffsetTar and math.max(yOffsetTar, alert.yOffset - 0.5))
+                      or alert.yOffset
+              local x = self.x + xO
+              local y = self.y - alert.yOffset
+              -- outline:
+              local o = 1--TODO
+              if o > 0 then
+                  for j = -o, o do
+                      for k = -o, o do
+                          DrawTextA(alert.text, 20, math.floor(x+j), math.floor(y+k), ARGB(alpha, 0, 0, 0), "center", "center")
+                      end
+                  end
+              end
+              -- sprite:
+              if alert.sprite then
+                  alert.sprite:SetScale(alert.spriteScale, alert.spriteScale)
+                  alert.sprite:Draw(math.floor(x - GetTextArea(alert.text, 20).x/2 - alert.sprite.width * alert.spriteScale * 1.5), math.floor(y - alert.sprite.width * alert.spriteScale / 2), alpha)
+              end
+              -- text:
+              DrawTextA(alert.text, 20, math.floor(x), math.floor(y), ARGB(alpha, alert.r, alert.g, alert.b), "center", "center")
+          elseif alert.playT and alert.playT + 0.5*2 + alert.duration <= gameTime then
+              table.remove(self._alerts, i)
+          end
+      end
+  end
+
+  function __Alerter:Push(text, duration, r, g, b, sprite)
+      local alert = {}
+      alert.text = text
+      alert.sprite = sprite
+      alert.spriteScale = sprite and 20 / sprite.height
+      alert.duration = duration or 1
+      alert.r = r
+      alert.g = g
+      alert.b = b
+
+      alert.parent = self
+      alert.yOffset = 0
+
+      alert.reset = function(duration)
+          alert.playT = GetInGameTimer() - 0.5
+          alert.duration = duration or 0
+          alert.yOffset = GetTextArea(alert.text, 20).y * (self.activeCount-1)
+      end
+
+      self._alerts[#self._alerts+1] = alert
+      return alert
+  end
+
+  function __Alerter:Easing(step, sPos, tPos)
+      step = step - 1
+      return tPos * (step ^ 3 + 1) + sPos
+  end
+
+  function __Alerter:__finalize()
+      __Alerter_OnTick = nil
+      __Alerter_OnDraw = nil
+      __mAlerter = nil
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ sScriptConfig - Inbuilt ScriptConfig till here ]]--
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -4740,9 +5516,423 @@ class "Rengar"
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 
--- class "Riven"
-  -- Encrypted by Joikor
-  assert(load(Base64Decode("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"), nil, "bt", _ENV))()
+class "Riven"
+
+  function Riven:__init()
+    self.ts = TargetSelector(TARGET_NEAR_MOUSE, 930, DAMAGE_PHYSICAL, false, true)
+    self:Menu()
+    self.Target = Target
+    self.QState = false
+    self.WState = false
+    self.QCast  = 0
+    self.movePos = nil
+    self.rNow   = false
+    self.orbTable = { QDelay = 0, EDelay = 0, lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625, range = myHero.range + myHero.boundingRadius, trueRange = myHero.range + GetDistance(myHero.minBBox) + 1 }
+    AddDrawCallback(function() self:Draw() end)
+    AddTickCallback(function() self:Tick() end)
+    AddTickCallback(function() self:OrbWalk() end)
+    AddAnimationCallback(function(unit,ani) self:Animation(unit,ani) end)
+    AddProcessSpellCallback(function(unit,spell) self:ProcessSpell(unit,spell) end)
+    AddMsgCallback(function(x,y) self:Msg(x,y) end)
+    if VIP_USER then AddRecvPacketCallback2(function(p) self:RecvPacket(p) end) end
+  end
+
+  function Riven:Menu()
+    for _,s in pairs({"Combo", "Harrass", "LaneClear"}) do
+      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
+    end
+    Config:addParam({state = "LastHit", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "LastHit", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addParam({state = "Misc", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config:addParam({state = "Misc", name = "Jump", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+  end
+
+  function Riven:Msg(Msg, Key)
+    if Msg == WM_LBUTTONDOWN then
+      local minD = 0
+      local starget = nil
+      for i, enemy in ipairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy) then
+          if GetDistance(enemy, mousePos) <= minD or starget == nil then
+            minD = GetDistance(enemy, mousePos)
+            starget = enemy
+          end
+        end
+      end
+      
+      if starget and minD < 500 then
+        if self.Forcetarget and starget.charName == self.Forcetarget.charName then
+          self.Forcetarget = nil
+        else
+          self.Forcetarget = starget
+          ScriptologyMsg("New target selected: "..starget.charName.."")
+        end
+      end
+    end
+  end
+
+  function Riven:Draw()
+    DrawLFC(myHero.x, myHero.y, myHero.z, self.orbTable.range, ARGB(255,255,255,255))
+    if Config:getParam("Draws", "Q") and sReady[_Q] then
+      DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(105,155,155,155))
+    end
+    if Config:getParam("Draws", "W") and sReady[_W] then
+      DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range, ARGB(105,155,155,155))
+    end
+    if Config:getParam("Draws", "E") and sReady[_E] then
+      DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range, ARGB(255,255,255,255))
+    end
+    if Config:getParam("Draws", "R") and sReady[_R] then
+      DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range, ARGB(255,255,255,255)) 
+    end
+    if self.movePos then
+      local color = IsWall(D3DXVECTOR3(self.movePos.x,self.movePos.y,self.movePos.z)) and ARGB(255,255,0,0) or ARGB(255,255,255,255)
+      DrawCircle(self.movePos.x, self.movePos.y, self.movePos.z, 75, color) 
+      self.movePos = nil
+    end
+    if Config:getParam("Draws", "DMG") then
+      for i,k in pairs(GetEnemyHeroes()) do
+        local enemy = k
+        if ValidTarget(enemy) then
+          local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+          local posX = barPos.x - 35
+          local posY = barPos.y - 50
+          DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 250, 255, 250))
+          DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
+        end
+      end
+    end
+  end
+
+  function Riven:Tick()
+    self.orbTable.range = myHero.range + myHero.boundingRadius
+    self.orbTable.trueRange = myHero.range + GetDistance(myHero.minBBox) + 1
+    if Config:getParam("Misc", "Flee") then
+      myHero:MoveTo(mousePos.x, mousePos.z)
+      if sReady[_E] then
+        Cast(_E, mousePos)
+      end
+      if not sReady[_E] and sReady[_Q] and self.orbTable.EDelay + 350 < GetTickCount() then
+        Cast(_Q, mousePos)
+      end
+    end
+    if Config:getParam("Misc", "Jump") then
+      self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
+      self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
+      if self.QCast < 2 then
+        Cast(_Q, myHero)
+      end
+      if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
+        myHero:MoveTo(self.movePos.x, self.movePos.z)
+      else
+        if sReady[_Q] then
+          Cast(_Q, mousePos)
+        end
+      end
+    end
+    self:AutoW()
+    self:DmgCalc()
+  end
+
+  function Riven:DmgCalc()
+    if not Config:getParam("Draws", "DMG") then return end
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy.visible then
+        killTextTable[enemy.networkID].indicatorText = ""
+        local damageC  = self:CalcComboDmg(enemy, 0, not Config:getParam("Combo", "R"))
+        local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+        local damageS  = Smite and (20 + 8 * myHero.level) or 0
+        if enemy.health < damageC+damageI then
+          killTextTable[enemy.networkID].indicatorText = "Kill!!"
+        else
+          local neededAA = math.floor(100 * (damageC+damageI) / (enemy.health))
+          killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
+        end
+        local enemyDamageAA = GetDmg("AD", enemy, myHero)
+        local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+        if enemyNeededAA ~= 0 then         
+          killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+        end
+      end
+    end
+  end
+
+  function Riven:DmgP(unit, ad)
+    return myHero:CalcDamage(unit, 5+math.max(5*math.floor((myHero.level+2)/3)+10,10*math.floor((myHero.level+2)/3)-15)*ad/100)
+  end
+
+  function Riven:RecvPacket(p)
+    if p.header == 0xD1 and self:DoOrb() then
+      self:CastDance()
+      self:WindUp(myHero)
+    end
+  end
+
+  function Riven:CalcComboDmg(target, damage, disableUlt)
+    local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
+    local dmg = damage or 0
+    local ad = myHero.totalDamage*((disableUlt and (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine")) and 1 or 1.2)
+    local me = {ap = myHero.ap, level = myHero.level, totalDamage = ad, armorPen = myHero.armorPen, armorPenPercent = myHero.armorPenPercent, magicPen = myHero.magicPen, magicPenPercent = myHero.magicPenPercent}
+    if sReady[_Q] then
+      dmg = dmg + GetDmg(_Q,me,unit)*3+GetDmg("Tiamat",me,unit)+GetDmg("AD",me,unit)*3+self:DmgP(target, ad)*3
+    end
+    if sReady[_W] then
+      dmg = dmg + GetDmg(_W,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+    end
+    if (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine") and not disableUlt then
+      unit.health = unit.health-dmg
+      dmg = dmg + GetDmg(_R,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+    end
+    return dmg
+  end
+
+  function Riven:OrbWalk()
+    if Config:getParam("LastHit", "LastHit") then
+      self.Target = GetLowestMinion(500)
+      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
+        self.Target = nil
+      end
+      if not self.Target then
+        self.Target = GetJMinion(500)
+      end
+    end
+    if Config:getParam("LaneClear", "LaneClear") then
+      self.Target = GetLowestMinion(500)
+      if not self.Target then
+        self.Target = GetJMinion(500)
+      end
+    end
+    if Config:getParam("Harrass", "Harrass") then
+      self.Target = Target
+    end
+    if Config:getParam("Combo", "Combo") then
+      self.Target = Target
+    end
+    if self.Forcetarget and ValidTarget(self.Forcetarget, self.orbTable.trueRange + 40) then
+      self.Target = self.Forcetarget
+    end
+    if self:DoOrb() then self:Orb(self.Target) end
+  end
+
+  function Riven:Orb(unit)
+    if not ValidTarget(unit, self.orbTable.trueRange + 40) then
+      unit = Target
+    end
+    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, self.orbTable.trueRange + 40) then
+      myHero:Attack(unit)
+    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) + self.orbTable.minionAA then
+      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
+      if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
+        myHero:MoveTo(unit.x, unit.z)
+      elseif GetDistance(mousePos) > 50 then
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    end
+  end
+
+  function Riven:DoOrb()
+    if Config:getParam("Combo", "Combo") then
+      self.QState = Config:getParam("Combo", "Q")
+      self.WState = Config:getParam("Combo", "W")
+      self.IState = true
+      self.orbTable.minionAA = 0
+      return true
+    end
+    if Config:getParam("Harrass", "Harrass") then
+      self.QState = Config:getParam("Harrass", "Q")
+      self.WState = Config:getParam("Harrass", "W")
+      self.IState = true
+      self.orbTable.minionAA = 0
+      return true
+    end
+    if Config:getParam("LastHit", "LastHit") then
+      self.QState = Config:getParam("LastHit", "Q")
+      self.WState = Config:getParam("LastHit", "W")
+      self.IState = false
+      self.orbTable.minionAA = 0.004
+      return true
+    end
+    if Config:getParam("LaneClear", "LaneClear") then
+      self.QState = Config:getParam("LaneClear", "Q")
+      self.WState = Config:getParam("LaneClear", "W")
+      self.IState = false
+      self.orbTable.minionAA = 0.004
+      return true
+    end
+    self.QState = false
+    return false
+  end
+
+  function Riven:WindUp(unit)
+    if unit.isMe then
+      if self:DoOrb() and ValidTarget(self.Target) then
+        self:CastItems(self.Target) 
+        if sReady[_W] and GetDistance(self.Target) < data[1].range and self.WState then 
+          Cast(_W, self.Target)
+        elseif sReady[_Q] and ValidTarget(self.Target, 600) and self.QState then
+          if myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and self.QCast == 2 then
+            Cast(_R, self.Target)
+            DelayAction(function() Cast(_Q, self.Target) end, 0.137)
+          else
+            Cast(_Q, self.Target)
+          end
+        end
+      end
+    end
+  end
+
+  function Riven:CastItems(unit)
+    if not self.IState then return end
+    local i = {["ItemTiamatCleave"] = self.orbTable.range, ["YoumusBlade"] = self.orbTable.range}
+    local u = {["ItemSwordOfFeastAndFamine"] = 600}
+    for slot = ITEM_1, ITEM_6 do
+      if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
+        CastSpell(slot) 
+      end
+      if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
+        CastSpell(slot, unit)
+      end
+    end
+  end
+
+  function Riven:Animation(unit,ani)
+    if unit and unit.isMe and ani then
+      if ani:find("Spell1a") or ani:find("Spell1b") or ani:find("Spell1c") then
+        self.orbTable.lastAction = os.clock() + 0.245
+        if self.Target then
+          if VIP_USER and self.QCast == 3 and false then 
+            DelayAction(function() self:CastDance() end, 0.137)
+          else
+            local movePos = self.Target + (Vector(myHero) - self.Target):normalized() * (GetDistance(self.Target) + 62)
+            myHero:MoveTo(movePos.x, movePos.z)
+          end
+        end
+      end
+    end
+  end
+
+  function Riven:CastDance()
+    p = CLoLPacket(0xF2)
+    p.vTable = 0xE93C0C
+    p:EncodeF(myHero.networkID)
+    p:Encode1(0xFF)
+    p:Encode2(0x3DFF)
+    p:Encode2(0xF288)
+    SendPacket(p)
+  end
+
+  function Riven:ProcessSpell(unit,spell)
+    if unit and unit.isMe and spell then
+      if spell.name:lower():find("attack") then
+        self.orbTable.windUp = 1 / (spell.windUpTime * myHero.attackSpeed)
+        self.orbTable.animation = 1 / (spell.animationTime * myHero.attackSpeed)
+        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) + (self.QCast == 3 and 0.02 or 0) - GetLatency() / 2000 + self.orbTable.minionAA)
+      elseif spell.name == "RivenTriCleave" then
+        self.QCast = self.QCast + 1
+        if self.QCast == 4 then self.QCast = 1 end
+        self.orbTable.QDelay = os.clock()
+        if self.Target and self:DoOrb() then
+          local movePos = self.Target + (Vector(myHero) - self.Target):normalized() * (GetDistance(self.Target) + 65)
+          if movePos and GetDistance(self.Target) < 294 then
+            self.orbTable.lastAction = os.clock() + 0.85
+            myHero:MoveTo(movePos.x, movePos.z)
+          else
+            myHero:MoveTo(mousePos.x, mousePos.z)
+          end
+        end
+      elseif spell.name == "RivenMartyr" then
+        self.orbTable.lastAA = 0
+        if self.Target and self:DoOrb() and GetDistance(self.Target) < data[0].range then
+          self:CastItems(self.Target)
+          Cast(_Q, self.Target)
+          DelayAction(function() self:CastItems(self.Target) end, 0.134)
+          DelayAction(function() Cast(_Q, self.Target) end, 0.134)
+          DelayAction(function() self:CastItems(self.Target) end, 0.137)
+          DelayAction(function() Cast(_Q, self.Target) end, 0.137)
+        end
+      elseif spell.name == "ItemTiamatCleave" then
+        self.orbTable.lastAA = 0
+        if self.Target and self:DoOrb() and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+          DelayAction(function() if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end end, 0.137)
+          DelayAction(function() Cast(_Q, self.Target) end, 0.137)
+          DelayAction(function() if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end end, 0.139)
+          DelayAction(function() Cast(_Q, self.Target) end, 0.139)
+        end
+      elseif spell.name == "RivenFengShuiEngine" or spell.name == "rivenizunablade" then
+        self.orbTable.lastAA = 0
+        if self.Target and self:DoOrb() and GetDistance(self.Target) < data[0].range and self.QCast == 2 then
+          self:CastItems(self.Target)
+          if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end
+          Cast(_Q, self.Target)
+        end
+      elseif spell.name == "RivenFeint" then
+        self.orbTable.EDelay = GetTickCount()
+        self.orbTable.lastAA = 0
+      end
+    end
+  end
+
+  function Riven:Combo()
+    if not self.Target then return end
+    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("Combo", "E") and GetDistance(self.Target) < data[2].range then
+      if Config:getParam("Combo", "R") and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        Cast(_E, self.Target)
+        DelayAction(function() Cast(_R) end, 0.075) 
+      else
+        CastSpell(_E, self.Target)
+      end
+    end
+    if Config:getParam("Combo", "R") and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
+    if (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target) end
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config:getParam("Combo", "W") then
+      CastSpell(_W)
+    end
+    if sReady[_Q] and not sReady[_E] and GetDistance(self.Target) > self.orbTable.trueRange + 30 then
+      if self.orbTable.EDelay + 300 < GetTickCount() and self.orbTable.QDelay + 1.2 < os.clock() then
+        Cast(_Q, Target)
+      end
+    end
+  end
+
+  function Riven:AutoW()
+    for _,k in pairs(GetEnemyHeroes()) do
+      if sReady[_W] and ValidTarget(k, data[_W].range) and (2 <= EnemiesAround(k, data[_W].range)) then
+        Cast(_W)
+      end
+    end
+  end
+
+  function Riven:Harrass()
+    if not self.Target then return end
+    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("Harrass", "E") and GetDistance(self.Target) < data[2].range then
+      CastSpell(_E, self.Target)
+    end
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config:getParam("Harrass", "W") then
+      CastSpell(_W)
+    end
+  end
+
+  function Riven:LaneClear()
+    if not self.Target then return end
+    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("LaneClear", "E") and GetDistance(self.Target) < data[2].range then
+      CastSpell(_E, self.Target)
+    end
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config:getParam("LaneClear", "W") then
+      CastSpell(_W)
+    end
+    if sReady[_Q] and GetDistance(self.Target) > self.orbTable.trueRange + 36 then
+      CastSpell(_Q, self.Target)
+    end
+  end
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
