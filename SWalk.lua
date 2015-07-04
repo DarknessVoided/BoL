@@ -63,7 +63,7 @@ function OnTick()
 		Target, health = GetLowestPMinion(myRange)
 		if Target then dmg = myHero:CalcDamage(Target,myHero.totalDamage) end
 		if not Target then Target = GetJMinion(myRange) end
-		if dmg and health ~= Target.health and (health >= dmg or Target.health-health-dmg <= 0) then Target = nil end
+		if Target and dmg and health ~= Target.health and (health >= dmg or Target.health-health-dmg <= 0) then Target = nil end
 		if health < 0 then Target = nil end
 	end
 	if Config.kConfig.harrass or Config.kConfig.combo then Target = ts.target end
