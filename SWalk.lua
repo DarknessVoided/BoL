@@ -5,7 +5,7 @@ function OnLoad()
 		aaResetTable2 = { ["Riven"] = {_Q}, ["Yasuo"] = {_Q} }
 	-- CastSpell(s, t)
 		aaResetTable3 = { ["Teemo"] = {_Q} }
-    sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
+	sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
 	str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
 	orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
 	myRange = myHero.range+myHero.boundingRadius*2
