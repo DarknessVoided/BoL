@@ -12,40 +12,11 @@
 
 ]]--
 
---[[
-  SAhriVersion          = 1.2 -- r catch angle fix
-  SAsheVersion          = 1.4 -- removed ult over whole map
-  SAzirVersion          = 1   -- initial release
-  SBlitzcrankVersion    = 1.1 -- fixed R ks
-  SBrandVersion         = 1   -- initial release
-  SCassiopeiaVersion    = 1.4 -- facingme fixed
-  SDariusVersion        = 1.2 -- auto Q harrass added
-  SEkkoVersion          = 1   -- initial release
-  SKalistaVersion       = 1.3 -- fixed and improved shitload stuff
-  SKatarinaVersion      = 1.1 -- fixed all toggles in not-combo-modes
-  SKogmawVersion        = 1   -- initial release
-  SLeeSinVersion        = 1.2 -- is now live
-  SLuxVersion           = 1.4 -- fixes
-  SMalzaharVersion      = 1   -- initial release
-  SNidaleeVersion       = 1.9 -- fixed harrass bugsplat
-  SOriannaVersion       = 1.3 -- better ult calculation
-  SRengarVersion        = 1.7 -- reworked completely
-  SRivenVersion         = 1.2 -- combo R fix, laneclear fix
-  SRyzeVersion          = 1.2 -- anti combo break
-  SRumbleVersion        = 1   -- initial release
-  STalonVersion         = 1   -- initial release
-  STeemoVersion         = 1.1 -- Q is now QQQ
-  SVayneVersion         = 1   -- initial release
-  SVolibearVersion      = 1.1 -- error spam fix
-  SWalkVersion          = 1   -- initial release
-  SYasuoVersion         = 1   -- initial release
- ]]--
-
 --Scriptstatus Tracker
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.95
+_G.ScriptologyVersion    = 1.96
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -56,6 +27,7 @@ _G.ScriptologyDebug      = false
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Ekko", "Kalista", "Katarina", 
                   "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", "Ryze", "Rumble", 
                   "Talon", "Teemo", "Vayne", "Volibear", "Yasuo" }
+    Cfg = scriptConfig("Scriptology Loader", "Scriptology")
     supported = {}
     for _,champ in pairs(champList) do
       supported[champ] = true
@@ -152,44 +124,43 @@ _G.ScriptologyDebug      = false
         return true
       end
     end
+    if FileExist(LIB_PATH .. "/ImprovedScriptConfig.lua") then
+      require("ImprovedScriptConfig")
+    else 
+      ScriptologyMsg("Downloading ImprovedScriptConfig, please don't press F9")
+      DelayAction(function() DownloadFile("https://raw.github.com/Feez/BoL/master/Common/ImprovedScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."ImprovedScriptConfig.lua", function () ScriptologyMsg("Successfully downloaded ImprovedScriptConfig. Press F9 twice.") end) end, 3) 
+      return true
+    end  
     return false
   end
 
   function Menu()
-    Config = sScriptConfig("Scriptology "..myHero.charName, "Scriptology") -- <- u mad?
-    Config:addState("Combo")
-    Config:addState("Harrass")
-    if myHero.charName ~= "Blitzcrank" then Config:addState("Farm")
-    Config:addSubStates("Farm", {"LaneClear", "LastHit"}) end
-    if myHero.charName ~= "Riven" then Config:addState("Killsteal") end
-    Config:addState("Draws")
+    Cfg:addSubMenu(myHero.charName, "Scriptology")
+    Config = Cfg.Scriptology
+    Config:addSubMenu("Combo","Combo")
+    Config:addSubMenu("Harrass","Harrass")
+    if myHero.charName ~= "Blitzcrank" then
+    Config:addSubMenu("LastHit","LastHit")
+    Config:addSubMenu("LaneClear","LaneClear") end
+    Config:addSubMenu("Killsteal","Killsteal")
     if myHero.charName ~= "Volibear" and myHero.charName ~= "Teemo" then 
-      Config:addState("Misc")
-      if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
-                                       Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true}) end
-      if myHero.charName == "Kalista" then Config:addParam({state = "Misc", name = "Ej", code = SCRIPT_PARAM_ONOFF, value = true})
-                                           Config:addParam({state = "Misc", name = "AA_Gap", code = SCRIPT_PARAM_ONOFF, value = true})
-                                           Config:addParam({state = "Misc", name = "R", code = SCRIPT_PARAM_ONOFF, value = true}) end 
-      if myHero.charName == "Rumble" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
-                                          Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end 
-      if myHero.charName == "Lux" then Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"W"}, slider = {50}}) end 
-      if myHero.charName == "Nidalee" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = true})
-                                           Config:addParam({state = "Misc", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {50}}) end
-      if myHero.charName == "Orianna" then Config:addParam({state = "Misc", name = "Ra", code = SCRIPT_PARAM_ONOFF, value = true}) end
-      if myHero.charName == "Vayne" then Config:addParam({state = "Misc", name = "Ea", code = SCRIPT_PARAM_ONOFF, value = false})
-                                         Config:addParam({state = "Misc", name = "offset", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {90}}) end
-      if myHero.charName == "Yasuo" then Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true}) end
-      if myHero.charName ~= "Darius" and myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then UPL:AddToMenu2(Config, "Misc") end 
+      Config:addSubMenu("Misc","Misc")
     end
-    Config:addParam({state = "Draws", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
+    Config:addSubMenu("Draws","Draws")
+    Config.Draws:addParam("Q", "Draw Q", SCRIPT_PARAM_ONOFF, true)
     if myHero.charName ~= "Orianna" then
-      Config:addParam({state = "Draws", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = "Draws", name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = "Draws", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
+      Config.Draws:addParam("W", "Draw W", SCRIPT_PARAM_ONOFF, true)
+      Config.Draws:addParam("E", "Draw E", SCRIPT_PARAM_ONOFF, true)
+      Config.Draws:addParam("R", "Draw R", SCRIPT_PARAM_ONOFF, true)
     end
-    Config:addParam({state = "Draws", name = "DMG", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Draws", name = "LFC", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Draws", name = "Opacity", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E","R"}, slider = {30,30,30,30}})
+    Config.Draws:addParam("DMG", "Draw DMG", SCRIPT_PARAM_ONOFF, true)
+    Config.Draws:addParam("LFC", "Use LFC", SCRIPT_PARAM_ONOFF, true)
+    Config.Draws:addParam("OpacityQ", "Opacity Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Draws:addParam("OpacityW", "Opacity W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Draws:addParam("OpacityE", "Opacity E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Draws:addParam("OpacityR", "Opacity R", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config:addSubMenu("Key Settings","kConfig")
+    UPL:AddToMenu(Cfg)
     SetupOrbwalk()
   end
 
@@ -498,31 +469,76 @@ _G.ScriptologyDebug      = false
     else
       if _G.AutoCarry then
         if _G.Reborn_Initialised then
+          Cfg:addParam("owinfo", "SAC support loaded", SCRIPT_PARAM_INFO, "")
           ScriptologyMsg("Found SAC: Reborn")
         else
           ScriptologyMsg("Found SAC: Revamped")
+          Cfg:addParam("owinfo", "SAC support loaded", SCRIPT_PARAM_INFO, "")
         end
       elseif _G.Reborn_Loaded then
         DelayAction(function() SetupOrbwalk() end, 1)
       elseif _G.MMA_Loaded then
         ScriptologyMsg("Found MMA")
-      elseif FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
-        require "Big Fat Orbwalker"
-      elseif FileExist(LIB_PATH .. "SxOrbWalk.lua") then
-        require 'SxOrbWalk'
-        SxOrb:LoadToMenu(scriptConfig("SxOrbWalk", "ScriptologySxOrbWalk"))
-        ScriptologyMsg("Found SxOrb.")
-      elseif FileExist(LIB_PATH .. "SOW.lua") then
-        require 'SOW'
-        require 'VPrediction'
-        SOWVP = SOW(VP)
-        SOWVP:LoadToMenu(scriptConfig("SOW", "ScriptologySOW"))
-        ScriptologyMsg("Found SOW")
+        Cfg:addParam("owinfo", "MMA support loaded", SCRIPT_PARAM_INFO, "")
       else
-        LoadOrb()
-        ScriptologyMsg("No valid Orbwalker found - loading SWalk")
+        Cfg:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_INFO, "")
+        if FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+          Cfg:addParam("bfw", "Big Fat Orbwalker", SCRIPT_PARAM_ONOFF, false)
+          DelayAction(function() Cfg.bfw = false end, 0.1)
+          DelayAction(function() Cfg:setCallback("bfw", function(var) if var then require "Big Fat Orbwalker" RemoveOw() end end) end, 0.25)
+        end
+        if FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+          Cfg:addParam("SxOrbWalk", "SxOrbWalk", SCRIPT_PARAM_ONOFF, false)
+          DelayAction(function() Cfg.SxOrbWalk = false end, 0.1)
+          DelayAction(function() Cfg:setCallback("SxOrbWalk", function(var) if var then LoadSxOrbWalk() end end) end, 0.25)
+        end
+        if FileExist(LIB_PATH .. "SOW.lua") then
+          Cfg:addParam("SOW", "SOW", SCRIPT_PARAM_ONOFF, false)
+          DelayAction(function() Cfg.SOW = false end, 0.1)
+          DelayAction(function() Cfg:setCallback("SOW", function(var) if var then LoadSOW() end end) end, 0.25)
+        end
+        Cfg:addParam("SWalkl", "SWalk", SCRIPT_PARAM_ONOFF, false)
+        DelayAction(function() Cfg.SWalkl = false end, 0.1)
+        DelayAction(function() Cfg:setCallback("SWalkl", function(var) if var then LoadOrb() RemoveOw() end end) end, 0.25)
+        DelayAction(function() if Cfg.SWalkl ~= nil and not loadedOrb then LoadOrb() RemoveOw() end end, 60)
       end
     end
+  end
+
+  function LoadSxOrbWalk()
+    require 'SxOrbWalk'
+    Cfg:addSubMenu("SxOrbWalk","SxOrbWalk")
+    SxOrb:LoadToMenu(Cfg.SxOrbWalk)
+    ScriptologyMsg("Loaded SxOrb.")
+    RemoveOw()
+  end
+
+  function LoadSOW()
+    require 'SOW'
+    require 'VPrediction'
+    SOWVP = SOW(VP)
+    Cfg:addSubMenu("SOW","SOW")
+    SOWVP:LoadToMenu(Cfg.SOW)
+    ScriptologyMsg("Loaded SOW")
+    RemoveOw()
+  end
+
+  function RemoveOw()
+    DelayAction(function()
+      Cfg:removeParam("info")
+      if Cfg.bfw ~= nil then
+        Cfg:removeParam("bfw")
+      end
+      if Cfg.SOW ~= nil then
+        Cfg:removeParam("SOW")
+      end
+      if Cfg.SxOrbWalk ~= nil then
+        Cfg:removeParam("SxOrbWalk")
+      end
+      if Cfg.SWalkl ~= nil then
+        Cfg:removeParam("SWalkl")
+      end
+    end, 0.05)
   end
 
   function LoadOrb()
@@ -601,6 +617,7 @@ _G.ScriptologyDebug      = false
 
   function Tick()
     if myHero.charName ~= "Blitzcrank" then Target = GetCustomTarget() end
+    if Cfg.SWalkl ~= nil and not loadedOrb and Config.kConfig.Combo then LoadOrb() RemoveOw() end
     Mobs:update()
     JMobs:update()
 
@@ -610,23 +627,23 @@ _G.ScriptologyDebug      = false
 
     if myHero.charName ~= "Riven" then loadedClass:Killsteal() end
 
-    if myHero.charName ~= "Rengar" and (Target ~= nil or myHero.charName == "Blitzcrank") then 
-      if Config:getParam("Harrass", "Harrass") and not Config:getParam("Combo", "Combo") then
+    if Target ~= nil or myHero.charName == "Blitzcrank" then 
+      if Config.kConfig.Harrass and not Config.kConfig.Combo then
         loadedClass:Harrass()
       end
 
-      if Config:getParam("Combo", "Combo") then
+      if Config.kConfig.Combo then
         loadedClass:Combo()
       end
     end
 
     if myHero.charName ~= "Riven" then
-      if Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear") then
+      if Config.kConfig.LastHit or Config.kConfig.LaneClear then
         loadedClass:LastHit()
       end
     end
 
-    if Config:getParam("LaneClear", "LaneClear") then
+    if Config.kConfig.LaneClear then
       loadedClass:LaneClear()
     end
 
@@ -635,18 +652,18 @@ _G.ScriptologyDebug      = false
 
   function Draw()
     if myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
-    if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
-      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255*Config:getParam("Draws", "Opacity", "Q")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "Q")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "Q")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "Q")/100)))
+    if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255*Config.Draws.OpacityQ/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100)))
     end
     if myHero.charName ~= "Orianna" then
-      if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
-        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[1].range) == "function" and data[1].range() or data[1].range > 0 and data[1].range or data[1].width, ARGB(255*Config:getParam("Draws", "Opacity", "W")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "W")/100)))
+      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[1].range) == "function" and data[1].range() or data[1].range > 0 and data[1].range or data[1].width, ARGB(255*Config.Draws.OpacityW/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100)))
       end
-      if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
-        DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255*Config:getParam("Draws", "Opacity", "E")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "E")/100)))
+      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255*Config.Draws.OpacityE/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100)))
       end
-      if Config:getParam("Draws", "R") and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
-        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[3].range) == "function" and data[3].range() or data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config:getParam("Draws", "Opacity", "R")/100, (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100), (Config:getParam("Draws", "LFC") and 255 or 255*Config:getParam("Draws", "Opacity", "R")/100)))
+      if Config.Draws.R and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[3].range) == "function" and data[3].range() or data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config.Draws.OpacityR/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100)))
       end
     end
     --print(#objHolder)
@@ -659,7 +676,7 @@ _G.ScriptologyDebug      = false
                 local barPos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
                 local posX = barPos.x - 35
                 local posY = barPos.y - 50
-                if myHero.charName ~= "Azir" or Config:getParam("Draws", "W") then DrawText((math.floor((objTimeHolder[obj.networkID]-GetInGameTimer())*100)/100).."s", 25, posX, posY, ARGB(255, 255, 0, 0)) end
+                if myHero.charName ~= "Azir" or Config.Draws.W then DrawText((math.floor((objTimeHolder[obj.networkID]-GetInGameTimer())*100)/100).."s", 25, posX, posY, ARGB(255, 255, 0, 0)) end
               else
                 objHolder[obj.networkID] = nil
                 objTimeHolder[obj.networkID] = nil
@@ -667,13 +684,13 @@ _G.ScriptologyDebug      = false
             end
             width = myHero.charName == "Ekko" and obj.name == "Ekko" and data[3].width or (((myHero.charName == "Ekko" and obj.name:find("Ekko_Base_W")) or myHero.charName == "Azir") and data[1].width or data[0].width)
             if myHero.charName == "Ekko" then
-              if obj.name == "Ekko" and Config:getParam("Draws", "R") then 
+              if obj.name == "Ekko" and Config.Draws.R then 
                 DrawLFT(obj.x, obj.y, obj.z, width, ARGB(155, 155, 150, 250)) 
                 DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
-              elseif obj.name:find("Ekko_Base_Q") and Config:getParam("Draws", "Q") then 
+              elseif obj.name:find("Ekko_Base_Q") and Config.Draws.Q then 
                 DrawLine3D(myHero.x, myHero.y, myHero.z, obj.x, obj.y, obj.z, 1, ARGB(255, 155, 150, 250)) 
                 DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
-              elseif Config:getParam("Draws", "W") then
+              elseif Config.Draws.W then
                 DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
               end
             elseif myHero.charName == "Orianna" then
@@ -682,14 +699,14 @@ _G.ScriptologyDebug      = false
                 LagFree(obj.x-8, obj.y, obj.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 3, (math.pi/4.5)*(i))
               end 
               LagFree(obj.x-8, obj.y, obj.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 9, 0)
-            elseif myHero.charName ~= "Azir" or Config:getParam("Draws", "W") then
+            elseif myHero.charName ~= "Azir" or Config.Draws.W then
               DrawLFC(obj.x, obj.y, obj.z, width, ARGB(255, 155, 150, 250))
             end
           end
         end
       end
     end
-    if Config:getParam("Draws", "DMG") then
+    if Config.Draws.DMG then
       for i,k in pairs(GetEnemyHeroes()) do
         local enemy = k
         if ValidTarget(enemy) then
@@ -718,7 +735,7 @@ _G.ScriptologyDebug      = false
             end
           end
         end
-        if Config:getParam("Misc", "Ej") then
+        if Config.Misc.Ej then
           for minion,winion in pairs(JMobs.objects) do
             damageE = GetDmg(_E, myHero, winion)
             if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
@@ -943,8 +960,47 @@ _G.ScriptologyDebug      = false
     return false
   end
 
+  function ArrangeTSPriorities()
+    local priorityTable2 = {
+        p5 = {"Alistar", "Amumu", "Blitzcrank", "Braum", "ChoGath", "DrMundo", "Garen", "Gnar", "Hecarim", "JarvanIV", "Leona", "Lulu", "Malphite", "Nasus", "Nautilus", "Nunu", "Olaf", "Rammus", "Renekton", "Sejuani", "Shen", "Shyvana", "Singed", "Sion", "Skarner", "Taric", "Thresh", "Volibear", "Warwick", "MonkeyKing", "Yorick", "Zac"},
+        p4 = {"Aatrox", "Darius", "Elise", "Evelynn", "Galio", "Gangplank", "Gragas", "Irelia", "Jax","LeeSin", "Maokai", "Morgana", "Nocturne", "Pantheon", "Poppy", "Rengar", "Rumble", "Ryze", "Swain","Trundle", "Tryndamere", "Udyr", "Urgot", "Vi", "XinZhao", "RekSai"},
+        p3 = {"Akali", "Diana", "Fiddlesticks", "Fiora", "Fizz", "Heimerdinger", "Janna", "Jayce", "Kassadin","Kayle", "KhaZix", "Lissandra", "Mordekaiser", "Nami", "Nidalee", "Riven", "Shaco", "Sona", "Soraka", "Vladimir", "Yasuo", "Zilean", "Zyra"},
+        p2 = {"Ahri", "Anivia", "Annie",  "Brand",  "Cassiopeia", "Ekko", "Karma", "Karthus", "Katarina", "Kennen", "LeBlanc",  "Lux", "Malzahar", "MasterYi", "Orianna", "Syndra", "Talon",  "TwistedFate", "Veigar", "VelKoz", "Viktor", "Xerath", "Zed", "Ziggs" },
+        p1 = {"Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jinx", "Kalista", "KogMaw", "Lucian", "MissFortune", "Quinn", "Sivir", "Teemo", "Tristana", "Twitch", "Varus", "Vayne"},
+    }
+     local priorityOrder = {
+        [1] = {1,1,1,1,1},
+        [2] = {1,1,2,2,2},
+        [3] = {1,1,2,3,3},
+        [4] = {1,2,3,4,4},
+        [5] = {1,2,3,4,5},
+    }
+    local function _SetPriority(table, hero, priority)
+        if table ~= nil and hero ~= nil and priority ~= nil and type(table) == "table" then
+            for i=1, #table, 1 do
+                if hero.charName:find(table[i]) ~= nil and type(priority) == "number" then
+                    TS_SetHeroPriority(priority, hero.charName)
+                end
+            end
+        end
+    end
+    for i=1, #table, 1 do
+
+    end
+    local enemies = #GetEnemyHeroes()
+    if priorityTable2~=nil and type(priorityTable2) == "table" and enemies > 0 then
+      for i, enemy in ipairs(GetEnemyHeroes()) do
+        _SetPriority(priorityTable2.p1, enemy, math.min(1, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p2, enemy, math.min(2, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p3,  enemy, math.min(3, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p4,  enemy, math.min(4, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p5,  enemy, math.min(5, #GetEnemyHeroes()))
+      end
+    end
+  end
+
   function DrawLFC(x, y, z, radius, color)
-      if Config:getParam("Draws", "LFC") then
+      if Config.Draws.LFC then
           LagFree(x, y, z, radius, 1, color, 32, 0)
       else
           local radius = radius or 300
@@ -981,7 +1037,7 @@ _G.ScriptologyDebug      = false
   end
 
   function DmgCalc()
-    if not Config:getParam("Draws", "DMG") or myHero.charName == "Rengar" then return end
+    if not Config.Draws.DMG or myHero.charName == "Rengar" then return end
     if myHero.charName == "Ryze" then loadedClass:DmgCalc() return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy.visible then
@@ -1294,7 +1350,12 @@ class "SWalk"
     self.State = {}
     self.orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
     self.myRange = myHero.range+myHero.boundingRadius*2
-    self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
+    if Cfg then
+      Cfg:addSubMenu("SWalk", "SWalk")
+      self.Config = Cfg.SWalk
+    else
+      self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
+    end
     self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -20, 20, 0)
     local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     if self.aaResetTable then
@@ -1326,13 +1387,15 @@ class "SWalk"
     if self.aaResetTable or self.aaResetTable2 or self.aaResetTable3 then
       self.Config:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
     end
-    if not ScriptologyLoaded then
+    if not supported[myHero.charName] then
       sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
-      self.Config.kConfig:addParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-      self.Config.kConfig:addParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-      self.Config.kConfig:addParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
-      self.Config.kConfig:addParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+      self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+      self.Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+      self.Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+      self.Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    else
+      self.Config.kConfig = Cfg.Scriptology.kConfig
     end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
@@ -1344,7 +1407,7 @@ class "SWalk"
 
   function SWalk:OrbWalk()
     myRange = myHero.range+myHero.boundingRadius*2
-    if ScriptologyLoaded and Config:getParam("LastHit", "LastHit") or self.Config.kConfig.LastHit then
+    if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
       dmg = GetDmg("AD",myHero,self.Target)
       if self.Target and dmg and self.Target.health >= dmg then 
@@ -1354,7 +1417,7 @@ class "SWalk"
       end
       if health < 0 then self.Target = nil end
     end
-    if ScriptologyLoaded and Config:getParam("LaneClear", "LaneClear") or self.Config.kConfig.LaneClear then
+    if self.Config.kConfig.LaneClear then
       self.Target, health = self:GetLowestPMinion(self.myRange)
       if not self.Target then
         self.Target = GetJMinion(self.myRange)
@@ -1365,17 +1428,17 @@ class "SWalk"
       end
       if health < 0 then self.Target = nil end
     end 
-    if ScriptologyLoaded and Config:getParam("Harrass", "Harrass") or self.Config.kConfig.Harrass then
+    if self.Config.kConfig.Harrass then
       self.Target = Target
     end
-    if ScriptologyLoaded and Config:getParam("Combo", "Combo") or self.Config.kConfig.Combo then
+    if self.Config.kConfig.Combo then
       self.Target = Target
     end
     if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and ValidTarget(self.Forcetarget, self.myRange*1.2) then
       self.Target = self.Forcetarget
     end
     if self:DoOrb() then
-      if ScriptologyLoaded then loadedClass.Target = self.Target end
+      if ScriptologyLoaded and loadedClass.Target then loadedClass.Target = self.Target end
       self:Orb(self.Target) 
     end
   end
@@ -1414,10 +1477,21 @@ class "SWalk"
       return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
     end
     if (myHero.charName == "Katarina" or myHero.charName == "Malzahar") and ultOn and ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then return false end
-    for _,k in pairs({"Combo", "Harrass", "LastHit", "LaneClear"}) do
-      if Config:getParam(k, k) or Config.kConfig then
-        return self:SetStates(k)
-      end
+    if self.Config.kConfig.Combo then
+      self.IState = true
+      return self:SetStates(Config.Combo)
+    end
+    if self.Config.kConfig.Harrass then
+      self.IState = true
+      return self:SetStates(Config.Harrass)
+    end
+    if self.Config.kConfig.LastHit then
+      self.IState = false
+      return self:SetStates(Config.LastHit)
+    end
+    if self.Config.kConfig.LaneClear then
+      self.IState = false
+      return self:SetStates(Config.LaneClear)
     end
     return false
   end
@@ -1439,22 +1513,21 @@ class "SWalk"
   end
 
   function SWalk:SetStates(mode)
-    self.State[_Q] = Config:getParam(mode, "Q")
-    self.State[_W] = Config:getParam(mode, "W")
-    self.State[_E] = Config:getParam(mode, "E")
+    self.State[_Q] = mode.Q
+    self.State[_W] = mode.W
+    self.State[_E] = mode.E
     if myHero.charName == "Rengar" and myHero.mana == 5 then
       self.State[_Q] = false
       self.State[_W] = false
       self.State[_E] = false
-      if Config:getParam("Misc", "Empower2") == 1 then
+      if Config.Misc.Empower2 == 1 then
         self.State[_Q] = true
-      elseif Config:getParam("Misc", "Empower2") == 2 then
+      elseif Config.Misc.Empower2 == 2 then
         self.State[_W] = true
-      elseif Config:getParam("Misc", "Empower2") == 3 then
+      elseif Config.Misc.Empower2 == 3 then
         self.State[_E] = true
       end
     end
-    self.IState = mode == "Combo" or mode == "Harrass"
     return true
   end
 
@@ -1540,653 +1613,6 @@ class "SWalk"
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
---[[ sScriptConfig - Inbuilt ScriptConfig from here ]]--
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-
-class "sScriptConfig"
-
-  function sScriptConfig:__init(name, theme)
-      UpdateWindow()
-      self.name   = name
-      self.theme  = theme
-      self.state  = nil
-      self.states = {}
-      self.substates = {}
-      self.par    = {}
-      self.resize = false
-      self.move   = false
-      self.pos    = {x = 0, z = 50}
-      self.touch  = {x = 0, z = 0}
-      self.Scale  = {x = 0.40*1920/WINDOW_W, z = 0.40*1080/WINDOW_H}
-      self.keyChange = nil
-      self.lastMove = 0
-      self.LastIncrRequest = 0
-      self.slide  = {false, false, false, false}
-      self.loaded = false
-      AddUnloadCallback(function() self:Unload_Sprites() end)
-      AddDrawCallback(function() self:Draw() end)
-      AddMsgCallback(function(Msg, Key) self:Msg(Msg, Key) end)
-      AddTickCallback(function() self:Tick() end)
-      return self
-  end
-
-  local function remove(name)
-      if not GetSave("sScriptConfig")[name] then GetSave("sScriptConfig")[name] = {} end
-      table.clear(GetSave("sScriptConfig")[name])
-  end
-
-  local function load(name)
-      if not GetSave("sScriptConfig")[name] then GetSave("sScriptConfig")[name] = {} end
-      return GetSave("sScriptConfig")[name]
-  end
-
-  local function save(name, content)
-      if not GetSave("sScriptConfig")[name] then GetSave("sScriptConfig")[name] = {} end
-      table.clear(GetSave("sScriptConfig")[name])
-      table.merge(GetSave("sScriptConfig")[name], content, true)
-  end
-
-  function sScriptConfig:load()
-      local function sensitiveMerge(base, t)
-          for i, v in pairs(t) do
-              if type(base[i]) == type(v) then
-                  if type(v) == "table" then sensitiveMerge(base[i], v)
-                  else base[i] = v
-                  end
-              end
-          end
-      end
-      local config = load(self.name)
-      for var, value in pairs(config) do
-          for _,par in pairs(self.par) do
-              if par.name == value.name and par.state == value.state then
-                  if value.code == SCRIPT_PARAM_ONKEYDOWN or value.code == SCRIPT_PARAM_ONKEYTOGGLE then par.key = value.key end
-                  if value.code == SCRIPT_PARAM_ONOFF or value.code == SCRIPT_PARAM_LIST then par.value = value.value end
-                  if value.code == SCRIPT_PARAM_SLICE then par.slider = value.slider end
-              end
-          end
-      end
-  end
-
-  function sScriptConfig:save()
-      local content = {}
-      content = {}
-      for var, param in pairs(self.par) do
-          table.insert(content, param)
-      end
-      save(self.name, content)
-  end
-
-  function sScriptConfig:addParam(par)
-      table.insert(self.par, par)
-  end
-
-  function sScriptConfig:getParam(state, param1, param2)
-      for _,par in pairs(self.par) do
-          if par.name == param1 and par.state == state then
-              if par.code == SCRIPT_PARAM_SLICE and param2 then
-                  for k=1,#par.slider do
-                      if par.text[k] == param2 then
-                          return par.slider[k]
-                      end
-                  end
-              elseif par.code == SCRIPT_PARAM_ONKEYDOWN then
-                  return IsKeyDown(par.key)  
-              else
-                  return par.value
-              end
-          end
-      end
-  end
-
-  function sScriptConfig:setParam(state, value, param1, param2)
-      for _,par in pairs(self.par) do
-          if par.name == param1 and par.state == state then
-              if par.code == SCRIPT_PARAM_SLICE and param2 then
-                  for k=1,#par.slider do
-                      if par.text[k] == param2 then
-                          par.slider[k] = value
-                      end
-                  end
-              elseif par.code == SCRIPT_PARAM_LIST then
-                  if par.value == #par.list then
-                      par.value = 1
-                  else
-                      par.value = value
-                  end
-              else
-                  par.value = value
-              end
-          end
-      end
-  end
-
-  function sScriptConfig:incParamBy1(state, param1, param2)
-      if not self:ValidIncrRequest() then return end
-      for _,par in pairs(self.par) do
-          if par.name == param1 and par.state == state then
-              if par.code == SCRIPT_PARAM_SLICE and param2 then
-                  for k=1,#par.slider do
-                      if par.text[k] == param2 then
-                          par.slider[k] = par.slider[k] + 1
-                      end
-                  end
-              elseif par.code == SCRIPT_PARAM_LIST then
-                  if par.value == #par.list then
-                      par.value = 1
-                  else
-                      par.value = par.value + 1
-                  end
-              else
-                  par.value = par.value + 1
-              end
-          end
-      end
-  end
-
-  function sScriptConfig:ValidIncrRequest()
-      if GetInGameTimer() - self.LastIncrRequest < 0.5 then
-          return false
-      else
-          self.LastIncrRequest = GetInGameTimer()
-          return true
-      end
-  end
-
-  function sScriptConfig:addState(state)
-      table.insert(self.states, state)
-      if self.state == nil then self.state = state end
-  end
-
-  function sScriptConfig:addSubStates(state, sub)
-      self.substates[state] = sub
-      if self.state == nil or self.state == state then self.state = sub[1] end
-  end
-
-  function sScriptConfig:Unload_Sprites()
-      for _,k in pairs(self.Sprites) do
-          k:Release()
-      end
-  end
-
-  function sScriptConfig:Load_Sprites()
-      self.hadToDownload  = false
-      self.Sprites        = {}
-      self.SpriteTable    = {
-          "top",
-          "mid",
-          "drag",
-          "drag_selected",
-          "code1",
-          "code1_selected",
-          "code2",
-          "code4",
-          "SLIDER_1",
-          "SLIDER_2",
-          "SLIDER_3",
-          "SLIDER_4",
-          "code3",
-          "code7",
-          "state",
-          "state_selected", 
-          "state_bottom",
-          "state_bottom_selected", 
-          "bot",
-          "Words\\Button\\Change",
-          "Scripts\\"..self.name
-      }
-      self.dontDownload    = {"chibi\\"..GetUser():lower(),
-                              "Scripts\\"..self.name.." Logo",
-                              "Scripts\\"..self.theme.." Logo"}
-      self.buttonTable     = { "1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Space","Ctrl" }
-      self.buttonTable2    = { 20,33,34,35,36,45,46,104,105,106,107,108,109 }
-      self.numTable        = { "1","2","3","4","5","6","7","8","9","0","%" }
-      for _, sprite in pairs(self.SpriteTable) do
-          location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite] = createSprite(location)
-          elseif self.theme == "Scriptology" then
-              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-              self.hadToDownload = true
-          end
-      end
-      for _, sprite in pairs(self.dontDownload) do
-          location = "sScriptConfig\\"..self.theme.."\\" .. sprite .. ".png"
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite] = createSprite(location)
-          end
-      end
-      for _, sprite in pairs(self.numTable) do
-          location = "sScriptConfig\\"..self.theme.."\\Num\\" .. sprite .. ".png"
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite] = createSprite(location)
-          elseif self.theme == "Scriptology" then
-              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-              self.hadToDownload = true
-          end
-      end
-      for _, sprite in pairs(self.buttonTable) do
-          location = "sScriptConfig\\"..self.theme.."\\Words\\Button\\" .. sprite .. ".png"
-          if sprite == "Space" then sprite = 32
-          elseif sprite == "Alt" then sprite = 18
-          elseif sprite == "Ctrl" then sprite = 17
-          else sprite = string.byte(sprite) end
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite] = createSprite(location)
-          elseif self.theme == "Scriptology" then
-              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-              self.hadToDownload = true
-          end
-      end
-      for _, sprite in pairs(self.buttonTable2) do
-          location = "sScriptConfig\\"..self.theme.."\\Words\\Button\\" .. sprite .. ".png"
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite] = createSprite(location)
-          elseif self.theme == "Scriptology" then
-              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-              self.hadToDownload = true
-          end
-      end
-      for _, sprite in pairs(self.states) do
-          if not self.substates[sprite] then
-              location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. ".png"
-              if FileExist(SPRITE_PATH .. location) then
-                  self.Sprites[sprite] = createSprite(location)
-              elseif self.theme == "Scriptology" then
-                  DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-                  self.hadToDownload = true
-              end
-              location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. "_selected.png"
-              if FileExist(SPRITE_PATH .. location) then
-                  self.Sprites[sprite.."_selected"] = createSprite(location)
-              elseif self.theme == "Scriptology" then
-                  DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-                  self.hadToDownload = true
-              end
-          elseif self.substates[sprite] then
-              for v,k in pairs(self.substates[sprite]) do
-                  location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. ".png"
-                  if FileExist(SPRITE_PATH .. location) then
-                      self.Sprites[k] = createSprite(location)
-                  elseif self.theme == "Scriptology" then
-                      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-                      self.hadToDownload = true
-                  end
-                  location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. "_selected.png"
-                  if FileExist(SPRITE_PATH .. location) then
-                      self.Sprites[k.."_selected"] = createSprite(location)
-                  elseif self.theme == "Scriptology" then
-                      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-                      self.hadToDownload = true
-                  end
-              end
-          end
-      end
-      for _, par in pairs(self.par) do
-          sprite=par.name
-          location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. ".png"
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite] = createSprite(location)
-          elseif self.theme == "Scriptology" then
-              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-              self.hadToDownload = true
-          end
-          location = "sScriptConfig\\"..self.theme.."\\Words\\" .. sprite .. "_selected.png"
-          if FileExist(SPRITE_PATH .. location) then
-              self.Sprites[sprite.."_selected"] = createSprite(location)
-          elseif self.theme == "Scriptology" then
-              DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-              self.hadToDownload = true
-          end
-          if par.code == SCRIPT_PARAM_LIST then
-              for _,k in pairs(par.list) do
-                  location = "sScriptConfig\\"..self.theme.."\\Words\\" .. k .. ".png"
-                  if FileExist(SPRITE_PATH .. location) then
-                      self.Sprites[k] = createSprite(location)
-                  elseif self.theme == "Scriptology" then
-                      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Sprites/"..location.."?rand="..math.random(1,10000), SPRITE_PATH..location, function () print("Downloading a sprite please wait... ") end)
-                      self.hadToDownload = true
-                  end
-              end
-          end
-      end
-      if not self.hadToDownload then
-          while #self.states < 6 do
-              self:addState("blank")
-          end
-          self.offsets = {top = self.Sprites["top"].height, button = self.Sprites["state"].height, bot = self.Sprites["drag"].height*2, width = self.Sprites["top"].width, buttonwidth = self.Sprites["state"].width}
-      else
-          self:Unload_Sprites()
-          DelayAction(function() print("Reloading menu... Please wait!") DelayAction(function() print("Reloaded. Have fun!") end, 1.5) self.loaded = false end, 1.5)
-      end
-  end
-
-  function sScriptConfig:Draw()
-      if (self.keyChange or IsKeyDown(16)) and self.loaded then
-          self.Sprites["top"]:SetScale(self.Scale.x,self.Scale.z)
-          self.Sprites["top"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4, 255)
-          if self.Sprites["Scripts\\"..self.name.." Logo"] then
-              self.Sprites["Scripts\\"..self.name.." Logo"]:SetScale(self.Scale.x,self.Scale.z)
-              self.Sprites["Scripts\\"..self.name.." Logo"]:Draw(self.pos.x+self.Scale.z*(self.offsets.buttonwidth/2-self.Sprites["Scripts\\"..self.name.." Logo"].width/2), self.pos.z+WINDOW_H/4+self.Scale.z*(self.Sprites["top"].height/2-self.Sprites["Scripts\\"..self.name.." Logo"].height/2), 255)
-          elseif self.Sprites["Scripts\\"..self.theme.." Logo"] then
-              self.Sprites["Scripts\\"..self.theme.." Logo"]:SetScale(self.Scale.x,self.Scale.z)
-              self.Sprites["Scripts\\"..self.theme.." Logo"]:Draw(self.pos.x+self.Scale.z*(self.offsets.buttonwidth/2-self.Sprites["Scripts\\"..self.theme.." Logo"].width/2), self.pos.z+WINDOW_H/4+self.Scale.z*(self.Sprites["top"].height/2-self.Sprites["Scripts\\"..self.theme.." Logo"].height/2), 255)
-          end
-          self.Sprites["Scripts\\"..self.name]:SetScale(self.Scale.x,self.Scale.z)
-          self.Sprites["Scripts\\"..self.name]:Draw(self.pos.x+self.Scale.z*((self.offsets.buttonwidth+self.Sprites["top"].width)/2-self.Sprites["Scripts\\"..self.name].width/2), self.pos.z+WINDOW_H/4+self.Scale.z*(self.Sprites["top"].height/2-self.Sprites["Scripts\\"..self.name].height/2), 255)
-          for _,par in pairs(self.states) do
-              if not self.substates[par] then
-                  if self.state ~= par and self.Sprites[par] or self.state == par and self.Sprites[par.."_selected"] then
-                      if self.state == par then
-                          self.Sprites["state_selected"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["state_selected"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), 255)
-                          self.Sprites[par.."_selected"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites[par.."_selected"]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5))-self.Scale.z*self.Sprites[par.."_selected"].height/2, 255)
-                      else
-                          self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), 255)
-                          self.Sprites[par]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites[par]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5)-self.Sprites[par].height/2), 255)
-                      end
-                  else
-                      self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
-                      self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), 255)
-                  end
-              else
-                  for v,k in pairs(self.substates[par]) do
-                      if self.state ~= k and self.Sprites[k] or self.state == k and self.Sprites[k.."_selected"] then
-                          if self.state == k then
-                              self.Sprites["state_selected"]:SetScale(self.Scale.x,self.Scale.z)
-                              self.Sprites["state_selected"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), 255)
-                              self.Sprites[k.."_selected"]:SetScale(self.Scale.x*3/4,self.Scale.z*3/4)
-                              self.Sprites[k.."_selected"]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5)-self.offsets.button/2+self.offsets.button/2*(v-1)+self.Sprites[k.."_selected"].height/2-self.Sprites[k].height/4), 255)
-                          else
-                              self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
-                              self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), 255)
-                              self.Sprites[k]:SetScale(self.Scale.x*3/4,self.Scale.z*3/4)
-                              self.Sprites[k]:Draw(self.pos.x+self.Scale.x*20, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-0.5)-self.offsets.button/2+self.offsets.button/2*(v-1)+self.Sprites[k].height/2-self.Sprites[k].height/4), 255)
-                          end
-                      else
-                          self.Sprites["state"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["state"]:Draw(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), 255)
-                      end
-                  end
-              end
-          end
-          self.Sprites["mid"]:SetScale(self.Scale.x,self.Scale.z)
-          self.Sprites["mid"]:Draw(self.pos.x+self.Scale.x*self.offsets.buttonwidth, self.pos.z+WINDOW_H/4+self.Scale.z*self.offsets.top, 255)
-          if self.Sprites["chibi\\"..GetUser():lower()] then
-              self.Sprites["chibi\\"..GetUser():lower()]:SetScale(self.Scale.x*0.75,self.Scale.z*0.75)
-              self.Sprites["chibi\\"..GetUser():lower()]:Draw(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*(self.Sprites["chibi\\"..GetUser():lower()].width-75), self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*(self.Sprites["chibi\\"..GetUser():lower()].height-120), 175)
-          end
-          local a = 0
-          local c = 0
-          local y = 0
-          for _,par in pairs(self.par) do
-              if par.state == self.state and self.Sprites["code"..par.code] and ((par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE) and self.Sprites[string.char(par.key)] or (par.code == SCRIPT_PARAM_SLICE and self.Sprites["code"..par.code] or self.Sprites[par.name])) then
-                  if c == 4 then c = 0 y = y + 1 end
-                  bxPos = self.pos.x+self.Scale.x*(self.Sprites["code"..par.code].width*(c)+40+c*45+self.offsets.buttonwidth)
-                  byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((40+self.Sprites["code"..par.code].height)*(y)+20+self.offsets.top)
-                  if par.code == SCRIPT_PARAM_ONOFF then
-                      if par.value then
-                          self.Sprites["code"..par.code.."_selected"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["code"..par.code.."_selected"]:Draw(bxPos,byPos, 255)
-                          self.Sprites[par.name.."_selected"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites[par.name.."_selected"]:Draw(bxPos+self.Scale.x*(self.Sprites["code"..par.code].width/2-self.Sprites[par.name].width/2),byPos+self.Scale.z*(self.Sprites["code"..par.code].height/2-self.Sprites[par.name].height/2), 255)
-                      else
-                          self.Sprites["code"..par.code]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["code"..par.code]:Draw(bxPos,byPos, 255)
-                          self.Sprites[par.name]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites[par.name]:Draw(bxPos+self.Scale.x*(self.Sprites["code"..par.code].width/2-self.Sprites[par.name].width/2),byPos+self.Scale.z*(self.Sprites["code"..par.code].height/2-self.Sprites[par.name].height/2), 255)
-                      end
-                  elseif par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE then
-                      a = a + 1
-                      local b = 0
-                      local ppos = par.name
-                      local kpos = par.key
-                      for _,k in pairs(self.par) do
-                          if par.state == k.state and (k.code == SCRIPT_PARAM_ONKEYDOWN or k.code == SCRIPT_PARAM_ONKEYTOGGLE) then
-                              ppos = k.name 
-                              kpos = k.key
-                              b = b + 1
-                          end
-                      end
-                      xOffset = b > 1 and self.Scale.x*(0-a*self.Sprites["mid"].width/(2*b)+(b+0.75)*self.Sprites["mid"].width/(4*b)) or 0
-                      self.Sprites[par.name]:SetScale(self.Scale.x*0.75,self.Scale.z*0.75)
-                      self.Sprites[par.name]:Draw(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites[ppos].width/2+15),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.Sprites[kpos].height/2, 255)
-                      if self.keyChange then 
-                          self.Sprites["Words\\Button\\Change"]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["Words\\Button\\Change"]:Draw(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["Words\\Button\\Change"].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states-self.Sprites["Words\\Button\\Change"].height/2-self.Sprites[ppos].height*2-20), 255)      
-                      else
-                          self.Sprites[par.key]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites[par.key]:Draw(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites[kpos].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states-self.Sprites[kpos].height/2-self.Sprites[ppos].height*2-20), 255)   
-                      end
-                  elseif par.code == SCRIPT_PARAM_SLICE then --{0,30,100,5}
-                      if c > 0 then y = y + 1 c = 0 end
-                      if y == 0 then y = 0.2+0.05*#par.slider end
-                      if y == 2 then y = 1.5 end
-                      self.Sprites[par.name]:SetScale(self.Scale.x*1.25,self.Scale.z*1.25)
-                      self.Sprites[par.name]:Draw(self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y-10), 255)
-                      self.Sprites["code"..par.code]:SetScale(self.Scale.x*1.25,self.Scale.z*1.25)
-                      self.Sprites["code"..par.code]:Draw(self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y), 255) 
-                      for k=#par.slider,1,-1 do
-                          self.Sprites["SLIDER_"..k]:SetScale(self.Scale.x,self.Scale.z)
-                          self.Sprites["SLIDER_"..k]:Draw(self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites["SLIDER_"..k].width/2+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(30+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y), 255)          
-                          self.Sprites[par.text[k]]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                          self.Sprites[par.text[k]]:Draw(self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites[par.text[k]].width/2*0.37+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2),self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y), 255)            
-                          if self.slide[k] then
-                              nxPos = self.pos.x+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2+self.Sprites["code"..par.code].width/2+self.Sprites["code"..par.code].width/4+15)
-                              nzPos = self.pos.z+WINDOW_H/4+self.Scale.z*(35+self.offsets.top+self.offsets.button*(#self.states-3)*y-10)
-                              if par.slider[k] > 99 then
-                                  self.Sprites["1"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites["1"]:Draw(nxPos,nzPos, 255)  
-                                  self.Sprites["0"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites["0"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)         
-                                  self.Sprites["0"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites["0"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)  
-                                  self.Sprites["%"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites["%"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["%"].width/4+self.Scale.x*4,nzPos, 255)  
-                              elseif par.slider[k] > 9 then
-                                  self.Sprites[""..math.floor(par.slider[k]/10)]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites[""..math.floor(par.slider[k]/10)]:Draw(nxPos,nzPos, 255)  
-                                  self.Sprites[""..math.floor(par.slider[k]-math.floor(par.slider[k]/10)*10)]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites[""..math.floor(par.slider[k]-math.floor(par.slider[k]/10)*10)]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)         
-                                  self.Sprites["%"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites["%"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["%"].width/4+self.Scale.x*4,nzPos, 255)          
-                              else
-                                  self.Sprites[""..math.floor(par.slider[k])]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites[""..math.floor(par.slider[k])]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2,nzPos, 255)         
-                                  self.Sprites["%"]:SetScale(self.Scale.x*0.37,self.Scale.z*0.37)
-                                  self.Sprites["%"]:Draw(nxPos+self.Scale.x*self.Sprites["0"].width/2+self.Scale.x*self.Sprites["%"].width/4+self.Scale.x*4,nzPos, 255)         
-                              end
-                          end
-                      end
-                  elseif par.code == SCRIPT_PARAM_LIST then
-                      if not self.Sprites[par.list[par.value]] then par.value = 1 end
-                      if c > 0 then
-                          bxPos = self.pos.x+self.Scale.x*(40+self.offsets.buttonwidth)
-                          y = y + 1
-                          byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
-                      else
-                          byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
-                      end
-                      self.Sprites[par.name]:SetScale(self.Scale.x,self.Scale.z)
-                      self.Sprites[par.name]:Draw(bxPos,byPos,255)
-                      bxPos = self.pos.x+self.Scale.x*(self.Sprites["mid"].width/2+self.Sprites[par.name].width/2-self.Sprites[par.list[par.value]].width/2+40+self.offsets.buttonwidth)
-                      byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
-                      self.Sprites[par.list[par.value]]:SetScale(self.Scale.x*0.5,self.Scale.z*0.5)
-                      self.Sprites[par.list[par.value]]:Draw(bxPos,byPos, 255) 
-                  elseif par.code == SCRIPT_PARAM_INFO then
-                  end
-                  c = c+1
-              end
-          end
-          if self.resize then
-              self.Sprites["drag_selected"]:SetScale(self.Scale.x,self.Scale.z) --self.Sprites[par.."_selected"].height
-              self.Sprites["drag_selected"]:Draw(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2, 255)
-          else
-              self.Sprites["drag"]:SetScale(self.Scale.x,self.Scale.z)
-              self.Sprites["drag"]:Draw(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2-1, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2-1, 255)
-          end
-      end
-  end
-
-  function sScriptConfig:Tick()
-      if not self.loaded then
-          self.loaded = true
-          self:load() 
-          self:Load_Sprites()
-      end
-      local cursor = GetCursorPos()
-      if self.resize then
-          if self.Scale.x > 0.2 and cursor.x+15 < self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2 and cursor.y < self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states+self.offsets.bot)-self.Scale.z*self.offsets.bot/2 then
-              self.Scale = {x = self.Scale.x-0.05, z = self.Scale.z-0.05}
-          elseif self.Scale.x < 1 and cursor.x-15 > self.pos.x+self.Scale.x*self.offsets.width and cursor.y > self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states+self.offsets.bot) then
-              self.Scale = {x = self.Scale.x+0.05, z = self.Scale.z+0.05}
-          end
-      end
-      if self.move then
-          self.pos = {x = cursor.x-self.touch.x, z = cursor.y-self.touch.z}
-          self.pos = {x = self.pos.x < 0 and 0 or (self.pos.x+self.Scale.x*self.offsets.width > WINDOW_W and WINDOW_W-self.Scale.x*self.offsets.width or self.pos.x), z = self.pos.z < -WINDOW_H/4 and -WINDOW_H/4 or self.pos.z}
-      end
-      for _,par in pairs(self.par) do
-          if par.state == self.state and par.code == SCRIPT_PARAM_SLICE then
-              for k=1,#par.slider do
-                  if self.slide[k] then
-                      local val = self.touch.z+(cursor.x-self.touch.x)/self.Scale.x/self.Sprites["code"..SCRIPT_PARAM_SLICE].width*100--((cursor.x-self.touch.x)*par.slider[k]/100-self.Sprites["SLICE"].width/100)
-                      val = val < 0 and 0 or (val > 100 and 100 or val)
-                      par.slider[k] = val
-                  end
-              end
-          end
-      end
-  end
-
-  function sScriptConfig:Msg(Msg, Key)
-      if not self.loaded or self.hadToDownload then return end
-      local cursor = GetCursorPos()
-      if Msg == KEY_DOWN and Key > 16 and self.keyChange then
-          for _,par in pairs(self.par) do
-              if par.state == self.state and self.keyChange == par and (par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE) then
-                  if self.Sprites[Key] then
-                      par.key = Key
-                      self.keyChange = nil
-                      self:save()
-                  end
-              end
-          end
-      end
-      if Msg == KEY_DOWN and Key > 16 then 
-          for _,par in pairs(self.par) do
-              if par.code == SCRIPT_PARAM_ONKEYTOGGLE and par.key == Key then
-                  par.value = not par.value
-                  if par.value then
-                      PrintAlertRed(par.state.." "..par.name.." is now on!")
-                  else
-                      PrintAlertRed(par.state.." "..par.name.." is now off!")
-                  end
-              end
-          end
-      end
-      if Msg == KEY_UP and Key == 16 then
-          self:save()
-      end
-      if Msg == WM_LBUTTONDOWN and (self.keyChange or IsKeyDown(16)) then
-          if CursorIsUnder(self.pos.x+self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states)-self.Scale.z*self.offsets.bot/2, self.Scale.x*self.offsets.width-self.Scale.x*self.offsets.bot/2, self.Scale.z*self.offsets.bot/2) then
-              self.resize = true
-          end
-          if CursorIsUnder(self.pos.x, self.pos.z+WINDOW_H/4, self.Scale.x*self.offsets.width, self.Scale.z*self.offsets.top) then
-              self.touch = {x = cursor.x-self.pos.x, z = cursor.y-self.pos.z}
-              self.move = true
-          end
-          local a = 0
-          local c = 0
-          local y = 0
-          for _,par in pairs(self.par) do
-              if par.state == self.state and self.Sprites["code"..par.code] then
-                  if c == 4 then c = 0 y = y + 1 end
-                  bxPos = self.pos.x+self.Scale.x*(self.Sprites["code"..par.code].width*(c)+40+c*45+self.offsets.buttonwidth)
-                  byPos = self.pos.z+WINDOW_H/4+self.Scale.z*(20+(40+self.Sprites["code"..par.code].height)*(y)+self.offsets.top)
-                  if par.code == SCRIPT_PARAM_ONOFF then
-                      if CursorIsUnder(bxPos, byPos, self.Scale.x*self.Sprites["code"..par.code].width, self.Scale.z*self.Sprites["code"..par.code].height) then
-                          par.value = not par.value
-                          self:save()
-                      end
-                  elseif par.code == SCRIPT_PARAM_ONKEYDOWN or par.code == SCRIPT_PARAM_ONKEYTOGGLE then
-                      a = a + 1
-                      local b = 0
-                      local ppos = par.name
-                      local kpos = par.key
-                      for _,k in pairs(self.par) do
-                          if par.state == k.state and (k.code == SCRIPT_PARAM_ONKEYDOWN or k.code == SCRIPT_PARAM_ONKEYTOGGLE) then
-                              ppos = k.name kpos = k.key
-                              b = b + 1
-                          end
-                      end
-                      xOffset = b > 1 and self.Scale.x*(0-a*self.Sprites["mid"].width/(2*b)+(b+0.75)*self.Sprites["mid"].width/(4*b)) or 0
-                      sprite = par.key > 32 and "Button\\"..string.char(par.key) or "Button\\".."Space"
-                      if CursorIsUnder(self.pos.x+xOffset+self.Scale.x*(self.offsets.buttonwidth+self.Sprites["mid"].width/2-self.Sprites[par.key].width/2-1),self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*#self.states-self.Sprites[par.key].height/2-self.Sprites[par.name].height*2-20), self.Scale.x*self.Sprites[par.key].width, self.Scale.z*self.Sprites[par.key].height) then
-                          self.keyChange = par
-                      end
-                  elseif par.code == SCRIPT_PARAM_SLICE then
-                      if c > 0 then y = y + 1 c = 0 end
-                      if y == 0 then y = 0.2+0.05*#par.slider end
-                      if y == 2 then y = 1.5 end
-                      for k=1,#par.slider do
-                          sxPos = self.pos.x+self.Scale.x*((self.Sprites["code"..par.code].width+70)*par.slider[k]/100+k*2+self.offsets.buttonwidth-self.Sprites["SLIDER_"..k].width/2+self.Sprites["mid"].width/2-self.Sprites["code"..par.code].width/2)
-                          syPos = self.pos.z+WINDOW_H/4+self.Scale.z*(30+self.offsets.top-self.Sprites["SLIDER_"..k].height+self.offsets.button*(#self.states-3)*y)
-                          if CursorIsUnder(sxPos,syPos,self.Sprites["SLIDER_"..k].width,self.Sprites["SLIDER_"..k].height) then
-                              self.touch = {x = cursor.x, z = par.slider[k]}
-                              self.slide[k] = true
-                              break
-                          end
-                      end
-                  elseif par.code == SCRIPT_PARAM_LIST then
-                      if c > 0 then
-                          y = y +1
-                      end
-                      bxPos = self.pos.x+self.Scale.x*(self.Sprites["mid"].width/2+self.Sprites[par.name].width/2-self.Sprites[par.list[par.value]].width/2+40+self.offsets.buttonwidth)
-                      byPos = self.pos.z+WINDOW_H/4+self.Scale.z*((80+45+self.Sprites[par.name].height)*(y+0.5)+self.offsets.top)
-                      if CursorIsUnder(bxPos, byPos, self.Scale.x*self.Sprites[par.list[par.value]].width, self.Scale.z*self.Sprites[par.list[par.value]].height) then
-                          par.value = par.value + 1
-                          if par.value > #par.list then
-                              par.value = 1
-                          end
-                      end
-                  end
-                  c = c+1
-              end
-          end
-          for _,k in pairs(self.states) do
-              if not self.substates[k] then
-                  if CursorIsUnder(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)), self.Scale.x*self.offsets.buttonwidth, self.Scale.z*self.offsets.button) then
-                      self.state = k
-                  end
-              else
-                  for v,l in pairs(self.substates[k]) do
-                      if CursorIsUnder(self.pos.x, self.pos.z+WINDOW_H/4+self.Scale.z*(self.offsets.top+self.offsets.button*(_-1)+self.offsets.button/2*(v-1)), self.Scale.x*self.offsets.buttonwidth, self.Scale.z*self.offsets.button/2) then
-                          self.state = l
-                      end
-                  end
-              end
-          end
-      elseif Msg == WM_LBUTTONUP then
-          self.resize = false
-          self.move = false
-          for _,par in pairs(self.par) do
-              if par.state == self.state and par.code == SCRIPT_PARAM_SLICE then
-                  for k=1,#par.slider do
-                      if self.slide[k] then
-                          self.slide[k] = false
-                      end
-                  end
-              end
-          end
-      end
-  end
 
 -- -- Alerter Class
   -- written by Weee
@@ -2312,11 +1738,6 @@ class "sScriptConfig"
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
---[[ sScriptConfig - Inbuilt ScriptConfig till here ]]--
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
 --[[ Champion specific parts from here ]]--
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -2327,6 +1748,9 @@ class "Ahri"
 
   function Ahri:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.Orb = nil
     self.ultOn = 0
@@ -2336,21 +1760,37 @@ class "Ahri"
   end
 
   function Ahri:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Ahri:ProcessSpell(unit, spell)
@@ -2365,7 +1805,7 @@ class "Ahri"
   end
 
   function Ahri:Tick()
-    if Config:getParam("Misc", "Qc") then self:CatchQ() end
+    if Config.Misc.Qc then self:CatchQ() end
   end
 
   function Ahri:Draw()
@@ -2378,19 +1818,19 @@ class "Ahri"
   end
 
   function Ahri:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       minion = GetLowestMinion(data[_Q].range)
       if minion and minion.health < GetDmg(_Q, myHero, minion) then 
         Cast(_Q, minion)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       minion = GetClosestMinion(data[_W].range)
       if minion and minion.health < GetDmg(_W, myHero, minion) then 
         Cast(_W)
       end
     end
-    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       minion = GetLowestMinion(data[_E].range)
       if minion and minion.health < GetDmg(_E, myHero, minion) then 
         Cast(_E, minion)
@@ -2399,19 +1839,19 @@ class "Ahri"
   end
 
   function Ahri:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetLineFarmPosition(data[_Q].range, data[_Q].width)
       if BestPos and BestHit > 1 then 
         Cast(_Q, BestPos)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       minion = GetClosestMinion(data[_W].range)
       if minion and minion.health < GetDmg(_W, myHero, minion) then 
         Cast(_W)
       end
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       minion = GetLowestMinion(data[_E].range)
       if minion and minion.health < GetDmg(_E, myHero, minion) then 
         Cast(_E, minion)
@@ -2421,21 +1861,21 @@ class "Ahri"
 
   function Ahri:Combo()
     if not Target then return end
-    if sReady[_E] and Config:getParam("Combo", "E") and GetDistance(Target) < data[2].range then
+    if sReady[_E] and Config.Combo.E and GetDistance(Target) < data[2].range then
       Cast(_E, Target, false, true, 2)
     end
     if GetStacks(Target) > 0 then
-      if sReady[_Q] and Config:getParam("Combo", "Q") and GetDistance(Target) < data[0].range then
+      if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < data[0].range then
         Cast(_Q, Target, false, true, 2)
       end
-      if sReady[_W] and Config:getParam("Combo", "W") and GetDistance(Target) < data[1].range then
+      if sReady[_W] and Config.Combo.W and GetDistance(Target) < data[1].range then
         Cast(_W)
       end
     else
-      if sReady[_Q] and Config:getParam("Combo", "Q") and GetDistance(Target) < data[0].range then
+      if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < data[0].range then
         Cast(_Q, Target, false, true, 2)
       end
-      if sReady[_W] and Config:getParam("Combo", "W") and GetDistance(Target) < data[1].range then
+      if sReady[_W] and Config.Combo.W and GetDistance(Target) < data[1].range then
         Cast(_W)
       end
       self:CatchQ()
@@ -2470,21 +1910,21 @@ class "Ahri"
 
   function Ahri:Harrass()
     if not Target then return end
-    if sReady[_E] and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[2].range then
+    if sReady[_E] and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[2].range then
       Cast(_E, Target, false, true, 2)
     end
     if GetStacks(Target) > 0 then
-      if sReady[_Q] and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[0].range then
+      if sReady[_Q] and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[0].range then
         Cast(_Q, Target, false, true, 2)
       end
-      if sReady[_W] and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
+      if sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
         Cast(_W)
       end
     else
-      if sReady[_Q] and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[0].range then
+      if sReady[_Q] and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[0].range then
         Cast(_Q, Target, false, true, 2)
       end
-      if sReady[_W] and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
+      if sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
         Cast(_W)
       end
       self:CatchQ()
@@ -2495,38 +1935,38 @@ class "Ahri"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         local ultPos = Vector(enemy.x, enemy.y, enemy.z) - ( Vector(enemy.x, enemy.y, enemy.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)*2 and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)*2 and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 2)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, ultPos)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_Q, myHero, enemy) and Config.Killsteal.R and Config.Killsteal.Q and ValidTarget(enemy, data[3].range) then
           Cast(_Q, enemy, false, true, 1.5)
           Cast(_R, enemy)
-        elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config.Killsteal.R and Config.Killsteal.W and ValidTarget(enemy, data[3].range) then
           Cast(_W)
           Cast(_R, ultPos)
-        elseif myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.R and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
           DelayAction(function() if GetStacks(enemy) > 0 then Cast(_R, ultPos) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_Q, enemy, false, true, 1.5)
           Cast(_W)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
           DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
-        elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.W and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
           DelayAction(function() if GetStacks(enemy) > 0 then Cast(_W) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
           DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_W) == READY and myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
           DelayAction(function() if GetStacks(enemy) > 0 then Cast(_Q, enemy, false, true, 1.5) Cast(_W) Cast(_R, ultPos) end end, data[2].delay+GetDistance(enemy)/data[2].speed)
         end
@@ -2544,30 +1984,50 @@ class "Ashe"
 
   function Ashe:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:AimR() end)
   end
 
   function Ashe:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W"}, slider = {50,50}})
-    end
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "AimR", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("AimR", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
   end
 
   function Ashe:AimR()
-    if Config:getParam("Misc", "AimR") then
+    if Config.Misc.AimR then
       for _,k in pairs(GetEnemyHeroes()) do
         if not k.dead and GetDistance(k,mousePos) < 750 then
           Cast(_R, k, false, true, 2)
@@ -2577,7 +2037,7 @@ class "Ashe"
   end
 
   function Ashe:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
         if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
@@ -2588,7 +2048,7 @@ class "Ashe"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
         local WMinionDmg = GetDmg(_W, myHero, minion)
         if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
@@ -2599,12 +2059,12 @@ class "Ashe"
   end
 
   function Ashe:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       if self:QReady() then
         Cast(_Q)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = nil
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
@@ -2620,26 +2080,26 @@ class "Ashe"
   end
 
   function Ashe:Combo()
-    if Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if Config.Combo.Q and ValidTarget(Target, data[0].range) then
       if self:QReady() then
         Cast(_Q)
       end
     end
-    if Config:getParam("Combo", "W") and ValidTarget(Target, data[1].range) then
+    if Config.Combo.W and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, false, true, 1.5)
     end
-    if Config:getParam("Combo", "R") and GetDistance(Target) < myHero.range*2+myHero.boundingRadius*4 and GetDmg(_R, myHero, Target)+GetDmg("AD", myHero, Target)+GetDmg(_W, myHero, Target) < Target.health then
+    if Config.Combo.R and GetDistance(Target) < myHero.range*2+myHero.boundingRadius*4 and GetDmg(_R, myHero, Target)+GetDmg("AD", myHero, Target)+GetDmg(_W, myHero, Target) < Target.health then
       Cast(_R, Target, false, true, 1.5)
     end
   end
 
   function Ashe:Harrass()
-    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
+    if Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
       if self:QReady() then
         CastSpell(_Q, myHero:Attack(Target))
       end
     end
-    if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
+    if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, false, true, 1.5)
     end
   end
@@ -2647,13 +2107,13 @@ class "Ashe"
   function Ashe:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and self:QReady() and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and self:QReady() and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           CastSpell(_Q, myHero:Attack(enemy))
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and GetDistance(enemy) < 2500 then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and GetDistance(enemy) < 2500 then
           Cast(_R, enemy, false, true, 1.5)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -2680,6 +2140,9 @@ class "Azir"
 
   function Azir:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[0].range, DAMAGE_MAGICAL)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.soldierToDash = nil
     self.Target = nil
@@ -2729,40 +2192,45 @@ class "Azir"
   end
 
   function Azir:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W"}, slider = {50,50}})
-    end
-    Config:addParam({state = "Combo", name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Killsteal", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Insec", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
   end
 
   function Azir:LastHit()
-    if self.Target and self.Target.type ~= myHero.type and self:CountSoldiers() < 1 and sReady[_W] and ((Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if self.Target and self.Target.type ~= myHero.type and self:CountSoldiers() < 1 and sReady[_W] and ((Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_W, self.Target)
     end
-    if ((Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) and self.Target and self:CountSoldiers() > 0 and GetDmg(_Q, myHero, self.Target)*self:CountSoldiers() > self.Target.health then
+    if ((Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) and self.Target and self:CountSoldiers() > 0 and GetDmg(_Q, myHero, self.Target)*self:CountSoldiers() > self.Target.health then
       Cast(_Q, self.Target)
     end
   end
 
   function Azir:LaneClear()
-    if self.Target and self.Target.type ~= myHero.type and self:CountSoldiers() < 1 and sReady[_W] and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if self.Target and self.Target.type ~= myHero.type and self:CountSoldiers() < 1 and sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       Cast(_W, self.Target)
     end
-    if Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and self:CountSoldiers() > 0 then
+    if Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana and self:CountSoldiers() > 0 then
       for _,k in pairs(self:GetSoldiers()) do
         pos, hit = GetLineFarmPosition(data[0].range,data[0].width,k)
         if pos and hit > 0 then
@@ -2773,15 +2241,15 @@ class "Azir"
   end
 
   function Azir:Combo()
-    if sReady[_W] and Config:getParam("Combo", "W") then
+    if sReady[_W] and Config.Combo.W then
       Cast(_W, self.Target)
     end
-    if Config:getParam("Combo", "Q") and self:CountSoldiers() > 0 then
+    if Config.Combo.Q and self:CountSoldiers() > 0 then
       for _,k in pairs(self:GetSoldiers()) do
         Cast(_Q, self.Target, false, true, 1.5)
       end
     end
-    if self.Target and Config:getParam("Combo", "E") and self.Target.health < GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
+    if self.Target and Config.Combo.E and self.Target.health < GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
       for _,k in pairs(self:GetSoldiers()) do
         local x, y, z = VectorPointProjectionOnLineSegment(myHero, k, self.Target)
         if x and y and z then
@@ -2789,16 +2257,16 @@ class "Azir"
         end
       end
     end
-    if self.Target and Config:getParam("Combo", "R") and self.Target.health < GetDmg(_R,myHero,self.Target)+GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
+    if self.Target and Config.Combo.R and self.Target.health < GetDmg(_R,myHero,self.Target)+GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
       Cast(_R,self.Target,false,true,2)
     end
   end
 
   function Azir:Harrass()
-    if self:CountSoldiers() <= 1 and sReady[_W] and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if self:CountSoldiers() <= 1 and sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       Cast(_W, self.Target)
     end
-    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and self:CountSoldiers() > 0 then
+    if Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and self:CountSoldiers() > 0 then
       for _,k in pairs(self:GetSoldiers()) do
         Cast(_Q, self.Target, false, true, 1.5)
       end
@@ -2858,12 +2326,12 @@ class "Azir"
   function Azir:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if self:CountSoldiers(enemy)*GetDmg(_W,myHero,enemy) > enemy.health and Config:getParam("Killsteal", "W") and GetDistance(enemy) < data[1].range+data[1].width then 
+        if self:CountSoldiers(enemy)*GetDmg(_W,myHero,enemy) > enemy.health and Config.Killsteal.W and GetDistance(enemy) < data[1].range+data[1].width then 
           myHero:Attack(enemy)
-        elseif (self:CountSoldiers(enemy)+1)*GetDmg(_W,myHero,enemy) > enemy.health and Config:getParam("Killsteal", "W") and GetDistance(enemy) < data[1].range+data[1].width then 
+        elseif (self:CountSoldiers(enemy)+1)*GetDmg(_W,myHero,enemy) > enemy.health and Config.Killsteal.W and GetDistance(enemy) < data[1].range+data[1].width then 
           Cast(_W, enemy)
           myHero:Attack(enemy)
-        elseif GetDmg(_R,myHero,enemy) > enemy.health and Config:getParam("Killsteal", "R") and GetDistance(enemy) < data[3].range then
+        elseif GetDmg(_R,myHero,enemy) > enemy.health and Config.Killsteal.R and GetDistance(enemy) < data[3].range then
           Cast(_R, enemy, false, true, 1)
         end
       end
@@ -2888,16 +2356,19 @@ class "Blitzcrank"
   end
 
   function Blitzcrank:Menu()
-    for _,s in pairs({"Combo", "Harrass", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Harrass", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","E"}, slider = {50,50}})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   end
 
   function Blitzcrank:GetBestTarget(Range)
@@ -2925,13 +2396,13 @@ class "Blitzcrank"
       target = self.Forcetarget  
     end
 
-    if target and myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
+    if target and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
       if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
         CastSpell(_E, myHero:Attack(target))
       end
     end
 
-    if target and myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") then
+    if target and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if HitChance > 1.2 and GetDistance(CastPosition) <= data[0].range  then
         local Mcol = self.Col:GetMinionCollision(myHero, CastPosition)
@@ -2949,13 +2420,13 @@ class "Blitzcrank"
       target = self.Forcetarget  
     end
 
-    if target and myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if target and myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
       if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
         CastSpell(_E, myHero:Attack(target))
       end
     end
     
-    if target and myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if target and myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if HitChance > 1.5 and GetDistance(CastPosition) <= data[0].range  then
         local Mcol = self.Col:GetMinionCollision(myHero, CastPosition)
@@ -2970,13 +2441,13 @@ class "Blitzcrank"
   function Blitzcrank:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 2)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           CastSpell(_E, myHero:Attack(enemy))
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range-enemy.boundingRadius) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range-enemy.boundingRadius) then
           Cast(_R)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -2993,7 +2464,7 @@ class "Blitzcrank"
       DrawLFC(self.Forcetarget.x, self.Forcetarget.y, self.Forcetarget.z, data[0].width, ARGB(255, 0, 255, 0))
     end
     
-    if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) and target ~= nil then
+    if Config.Draws.Q and myHero:CanUseSpell(_Q) and target ~= nil then
       local CastPosition, HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if CastPosition then
         DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, data[0].range, ARGB(255, 255, 0, 0))
@@ -3038,29 +2509,48 @@ class "Brand"
 
   function Brand:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
   end
 
   function Brand:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Brand:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -3068,7 +2558,7 @@ class "Brand"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_W, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
@@ -3076,7 +2566,7 @@ class "Brand"
         end
       end
     end
-    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
@@ -3087,7 +2577,7 @@ class "Brand"
   end
 
   function Brand:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = nil
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
@@ -3100,13 +2590,13 @@ class "Brand"
         Cast(_Q, minionTarget, false, true, 1.2)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
       if BestHit > 1 then 
         Cast(_W, BestPos)
       end
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = nil
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
@@ -3122,65 +2612,65 @@ class "Brand"
   end
 
   function Brand:Combo()
-    if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Combo", "E") then
+    if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Combo.E then
       if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
         Cast(_E, Target, true)
       end
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
         if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
           Cast(_Q, Target, false, true, 1.2)
         end
       end
-      if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") and ValidTarget(Target, data[1].range) then
+      if myHero:CanUseSpell(_W) == READY and Config.Combo.W and ValidTarget(Target, data[1].range) then
         if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
           Cast(_W, Target, false, true, 1.5)
         end
       end
-    elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Combo", "W") then
+    elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Combo.W then
       if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
         Cast(_W, Target, false, true, 1.5)
       end
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
         if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
           Cast(_Q, Target, false, true, 1.2)
         end
       end
     else
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
         Cast(_Q, Target, false, true, 1.5)
       end
     end
-    if Config:getParam("Combo", "R") and (GetDmg(_R, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 1 and stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and ValidTarget(Target, data[3].range) then
+    if Config.Combo.R and (GetDmg(_R, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 1 and stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and ValidTarget(Target, data[3].range) then
       Cast(_R, Target, true)
     end
   end
 
   function Brand:Harrass()
-    if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Harrass", "E") then
-      if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Harrass.E then
+      if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
         Cast(_E, Target, true)
       end
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[0].range) then
         if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
           Cast(_Q, Target, false, true, 1.2)
         end
       end
-      if myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[1].range) then
+      if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[1].range) then
         if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
           Cast(_W, Target, false, true, 1.5)
         end
       end
-    elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config:getParam("Harrass", "W") then
-      if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Harrass.W then
+      if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
         Cast(_W, Target, false, true, 1.5)
       end
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, data[0].range) and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
         if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
           Cast(_Q, Target, false, true, 1.2)
         end
       end
     else
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, data[0].range) and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
         Cast(_Q, Target, false, true, 2)
       end
     end
@@ -3189,15 +2679,15 @@ class "Brand"
   function Brand:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, true)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -3214,6 +2704,9 @@ class "Cassiopeia"
 
   function Cassiopeia:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST, 900, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.lastE = 0
     AddTickCallback(function() self:LastHitSomethingPoisonedWithE() end)
@@ -3223,33 +2716,44 @@ class "Cassiopeia"
   function Cassiopeia:ProcessSpell(unit, spell)
     if unit and unit.isMe then
       if spell.name == "CassiopeiaTwinFang" then
-        self.lastE = GetInGameTimer() + (100+Config:getParam("Misc", "Humanizer", "E"))/200
+        self.lastE = GetInGameTimer() + (100+Config.Misc.Humanizer)/200
       end
     end
   end
 
   function Cassiopeia:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "LastHit", name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,65,30}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "Humanizer", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {0}})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Misc:addParam("Humanizer", "Humanizer", SCRIPT_PARAM_SLICE, 0, 0, 100, 0)
   end
 
   function Cassiopeia:LastHitSomethingPoisonedWithE()
     if self.lastE > GetInGameTimer() then return end
-    if Config:getParam("LastHit", "E") and not Config:getParam("Combo", "Combo") and not Config:getParam("Harrass", "Harrass") then    
+    if Config.LastHit.E and not Config.kConfig.Combo and not Config.kConfig.Harrass then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
@@ -3267,7 +2771,7 @@ class "Cassiopeia"
 
   function Cassiopeia:LastHit()
     if self.lastE > GetInGameTimer() then return end
-    if Config:getParam("LastHit", "E") then    
+    if Config.LastHit.E then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
@@ -3284,7 +2788,7 @@ class "Cassiopeia"
   end
 
   function Cassiopeia:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if BestHit > 1 then 
         Cast(_Q, BestPos)
@@ -3309,14 +2813,14 @@ class "Cassiopeia"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
       if BestHit > 1 then 
         Cast(_W, BestPos)
       end
     end
     if self.lastE > GetInGameTimer() then return end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       for minion,winion in pairs(Mobs.objects) do
         if winion ~= nil and GetStacks(winion) > 0 then
           Cast(_E, winion, true)
@@ -3331,30 +2835,30 @@ class "Cassiopeia"
   end
 
   function Cassiopeia:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") and ValidTarget(Target, data[1].range) then
+    if myHero:CanUseSpell(_W) == READY and Config.Combo.W and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
+    if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config.Combo.E and ValidTarget(Target, data[2].range) then
       if GetStacks(Target) > 0 then
         Cast(_E, Target, true)
       end
     end
-    if Config:getParam("Combo", "R") and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= Target.health or (EnemiesAroundAndFacingMe(Target, 500) > 1 and GetStacks(Target) > 0)) and ValidTarget(Target, data[3].range) then
+    if Config.Combo.R and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= Target.health or (EnemiesAroundAndFacingMe(Target, 500) > 1 and GetStacks(Target) > 0)) and ValidTarget(Target, data[3].range) then
       Cast(_R, Target, true)
     end
   end
 
   function Cassiopeia:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, data[0].range) and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       Cast(_Q, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and ValidTarget(Target, data[1].range) and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and ValidTarget(Target, data[1].range) and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       Cast(_W, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config.Harrass.E and ValidTarget(Target, data[2].range) and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
       if GetStacks(Target) > 0 then
         Cast(_E, Target, true)
       end
@@ -3364,18 +2868,18 @@ class "Cassiopeia"
   function Cassiopeia:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
-        elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and GetStacks(enemy) > 0 and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif enemy.health < GetDmg(_E, myHero, enemy)*2 and GetStacks(enemy) > 0 and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
           DelayAction(Cast, 0.55, {_E, enemy, true})
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, false, true, 2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -3392,32 +2896,44 @@ class "Darius"
 
   function Darius:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:Harrass2() end)
   end
 
   function Darius:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W"}, slider = {30,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Toggle", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYTOGGLE, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "offset", code = SCRIPT_PARAM_SLICE, text = {"Q","E"}, slider = {100,100}})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addParam("offsetQ", "Max Q range %", SCRIPT_PARAM_LIST, 100, 0, 100, 0)
+    Config.Misc:addParam("offsetE", "Max E range %", SCRIPT_PARAM_LIST, 100, 0, 100, 0)
   end
 
   function Darius:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") < myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg1 = self:GetDmg("Q1", myHero, winion)
         local MinionDmg2 = self:GetDmg("Q", myHero, winion)
@@ -3428,7 +2944,7 @@ class "Darius"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") < myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = self:GetDmg("W", myHero, winion)
         if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
@@ -3439,13 +2955,13 @@ class "Darius"
   end
 
   function Darius:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
+    if myHero:CanUseSpell(_Q) == READY and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
       BestPos, BestHit = GetFarmPosition(0, data[0].width)
       if BestHit > 1 and GetDistance(BestPos) < 150 then 
         Cast(_Q)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana*100 then
+    if myHero:CanUseSpell(_W) == READY and Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then
       local minionTarget = nil
       for i, minion in pairs(minionManager(MINION_ENEMY, 250, myHero, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
@@ -3474,27 +2990,27 @@ class "Darius"
       if myHero:CanUseSpell(_E) == READY then
         self:CastE(Target)
       end
-      if myHero:CanUseSpell(_R) == READY and not IsInvinc(Target) and GetDmg(_R, myHero, Target) > Target.health+Target.shield and Config:getParam("Combo", "R") then
+      if myHero:CanUseSpell(_R) == READY and not IsInvinc(Target) and GetDmg(_R, myHero, Target) > Target.health+Target.shield and Config.Combo.R then
         Cast(_R, enemy, true)
       end
     end
   end
 
   function Darius:Harrass()
-    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
+    if Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
       self:CastQ(Target)
     end
-    if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
+    if Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
       self:CastW(Target)
     end
   end
 
   function Darius:Harrass2()
-    if Config:getParam("Harrass", "Toggle") then
-      if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
+    if Config.kConfig.HarrassToggle then
+      if Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
         self:CastQ(Target)
       end
-      if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
+      if Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
         self:CastW(Target)
       end
     end
@@ -3508,23 +3024,23 @@ class "Darius"
       local rDmg = ((GetDmg(_R, myHero, enemy)) or 0)
       local iDmg = (50 + 20 * myHero.level) / 5
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if not IsInvinc(enemy) and myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
+        if not IsInvinc(enemy) and myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
           Cast(_R, enemy, true)
-        elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, 450) then
+        elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < qDmg and Config.Killsteal.Q and ValidTarget(enemy, 450) then
           self:CastQ(enemy)
-        elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < q1Dmg and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, 300) then
+        elseif myHero:CanUseSpell(_Q) and enemy.health+enemy.shield < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
           Cast(_Q)
-        elseif myHero:CanUseSpell(_W) and enemy.health+enemy.shield < wDmg and Config:getParam("Killsteal", "W") then
+        elseif myHero:CanUseSpell(_W) and enemy.health+enemy.shield < wDmg and Config.Killsteal.W then
           if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
             CastSpell(_W, myHero:Attack(enemy))
-          elseif ValidTarget(enemy, data[2].range*(Config:getParam("Misc", "offset", "E")/100)) then
+          elseif ValidTarget(enemy, data[2].range*(Config.Misc.offsetE/100)) then
             self:CastE(enemy)
             DelayAction(function() CastSpell(_W, myHero:Attack(enemy)) end, 0.38)
           end
-        elseif not IsInvinc(enemy) and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config:getParam("Killsteal", "R") and ValidTarget(enemy, 450) then
+        elseif not IsInvinc(enemy) and myHero:CanUseSpell(_R) and enemy.health+enemy.shield < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
       if ScriptologyDebug then print(rDmg)  end
           Cast(_R, enemy, true)
-        elseif enemy.health+enemy.shield < iDmg and Config:getParam("Killsteal", "I") and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
+        elseif enemy.health+enemy.shield < iDmg and Config.Killsteal.I and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -3534,7 +3050,7 @@ class "Darius"
   function Darius:CastQ(target) 
     if target == nil then return end
     local dist = target.ms < 350 and 0 or (Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and 25 or 0)
-    if GetDistance(target) < data[0].width*(Config:getParam("Misc", "offset", "Q")/100)-dist and GetDistance(target) >= 250 then
+    if GetDistance(target) < data[0].width*(Config.Misc.offsetQ/100)-dist and GetDistance(target) >= 250 then
       Cast(_Q)
     end
   end
@@ -3542,7 +3058,7 @@ class "Darius"
   function Darius:CastE(target) 
     if target == nil then return end
     local dist = target.ms < 350 and 0 or (Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and 25 or 0)
-    if GetDistance(target) < data[2].range*(Config:getParam("Misc", "offset", "E")/100)-dist then
+    if GetDistance(target) < data[2].range*(Config.Misc.offsetE/100)-dist then
       Cast(_E, target)
     end
   end
@@ -3557,25 +3073,37 @@ class "Ekko"
 
   function Ekko:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
   end
 
   function Ekko:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Combo", name = "W", code = SCRIPT_PARAM_ONOFF, value = false})
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Ekko:GetTwin()
@@ -3589,7 +3117,7 @@ class "Ekko"
   end
 
   function Ekko:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local QMinionDmg = GetDmg(_Q, myHero, winion)
         if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -3597,7 +3125,7 @@ class "Ekko"
         end
       end
     end
-    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range+myHero.range+myHero.boundingRadius) and GetDistance(winion) < data[2].range+myHero.range+myHero.boundingRadius then
@@ -3608,7 +3136,7 @@ class "Ekko"
   end
 
   function Ekko:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
+    if myHero:CanUseSpell(_Q) == READY and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
       pos, hit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if hit > 1 then
         Cast(_Q, pos)
@@ -3617,37 +3145,37 @@ class "Ekko"
   end
 
   function Ekko:Combo()
-    if Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.2)
     end
-    if Config:getParam("Combo", "W") and ValidTarget(Target, data[1].range) then
+    if Config.Combo.W and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, false, true, 1)
     end
     if GetLichSlot() then
-      if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
+      if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config.Combo.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
         Cast(_E, Target)
-      elseif myHero:GetSpellData(GetLichSlot()).currentCd > 0 and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) and GetDistance(Target) > myHero.range+myHero.boundingRadius*2 then
+      elseif myHero:GetSpellData(GetLichSlot()).currentCd > 0 and Config.Combo.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) and GetDistance(Target) > myHero.range+myHero.boundingRadius*2 then
         Cast(_E, Target)
       end
     else
-      if Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
+      if Config.Combo.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
         Cast(_E, Target)
       end
     end
   end
 
   function Ekko:Harrass()
-    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[0].range) then
+    if Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.5)
     end
     if GetLichSlot() then
-      if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config:getParam("Harrass", "mana", "E") < myHero.mana/myHero.maxMana*100 and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
+      if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config.Harrass.manaE < myHero.mana/myHero.maxMana*100 and Config.Harrass.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
         Cast(_E, Target)
-      elseif myHero:GetSpellData(GetLichSlot()).currentCd > 0 and Config:getParam("Harrass", "mana", "E") < myHero.mana/myHero.maxMana*100 and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) and GetDistance(Target) > myHero.range+myHero.boundingRadius*2 then
+      elseif myHero:GetSpellData(GetLichSlot()).currentCd > 0 and Config.Harrass.manaE < myHero.mana/myHero.maxMana*100 and Config.Harrass.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) and GetDistance(Target) > myHero.range+myHero.boundingRadius*2 then
         Cast(_E, Target)
       end
     else
-      if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
+      if Config.Harrass.E and Config.Harrass.manaE < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
         Cast(_E, Target)
       end
     end
@@ -3656,13 +3184,13 @@ class "Ekko"
   function Ekko:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
           Cast(_E, enemy)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, false, true, 1.5, self:GetTwin())
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -3679,6 +3207,9 @@ class "Kalista"
 
   function Kalista:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.soulMate = nil
     self.saveAlly = false
@@ -3690,9 +3221,10 @@ class "Kalista"
     if not unit or not spell or GetDistance(unit) > 1000 then return end
     if spell.name == "KalistaPSpellCast" then 
       self.soulMate = spell.target
+      Config.Misc:modifyParam("R", "text", "Save ally with R ("..self.soulMate.charName..")")
       ScriptologyMsg("Soulmate found: "..spell.target.charName)
     end
-    if Config:getParam("Misc", "R") and self.saveAlly and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or GetDistance(spell.endPos,self.soulMate) < self.soulMate.boundingRadius*3) then
+    if Config.Misc.R and self.saveAlly and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or GetDistance(spell.endPos,self.soulMate) < self.soulMate.boundingRadius*3) then
       Cast(_R)
       ScriptologyMsg("Saving soulmate from spell: "..spell.name)
       self.saveAlly = false
@@ -3700,27 +3232,42 @@ class "Kalista"
   end
 
   function Kalista:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q"}, slider = {50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "WallJump", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("Ea", "Execute X Minions", SCRIPT_PARAM_SLICE, 2, 0, 5, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("Ea", "Execute X Minions", SCRIPT_PARAM_SLICE, 2, 0, 5, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("WallJump", "WallJump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addParam("Ej", "Use E to steal Jungle", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("AAGap", "AAs as Gapcloser on minions", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("R", "Save ally with R (none bound)", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("Rhp", "Save ally under X% hp", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
   end
 
   function Kalista:Tick()
-    if Config:getParam("Misc", "WallJump") then
+    if Config.Misc.WallJump then
       CastSpell(_Q, mousePos.x, mousePos.z)
       myHero:MoveTo(mousePos.x, mousePos.z)
     end
-    if myHero:CanUseSpell(_E) and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E")) or Config:getParam("Misc", "Ej")) then
+    if myHero:CanUseSpell(_E) and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E) or Config.Misc.Ej) then
       local killableCounter = 0
       local killableCounterJ = 0
       for minion,winion in pairs(Mobs.objects) do
@@ -3739,16 +3286,16 @@ class "Kalista"
           end
         end
       end
-      if (Config:getParam("LaneClear", "LaneClear") and killableCounter >= 2) or (Config:getParam("LastHit", "LastHit") and killableCounter >= 2) or (Config:getParam("Misc", "Ej") and killableCounterJ >= 1) then
+      if (Config.kConfig.LaneClear and killableCounter >= Config.LaneClear.Ea) or (Config.kConfig.LastHit and killableCounter >= Config.LastHit.Ea) or (Config.Misc.Ej and killableCounterJ >= 1) then
         Cast(_E)
       end
     end
-    if self.soulMate and self.soulMate.health/self.soulMate.maxHealth < 0.15 then
+    if self.soulMate and self.soulMate.health/self.soulMate.maxHealth < Config.Misc.Rhp/100 then
       self.saveAlly = true
     else
       self.saveAlly = false
     end
-    if Target and Config:getParam("Combo", "Combo") and Config:getParam("Misc", "AA_Gap") and GetDistance(GetClosestEnemy()) > myHero.range+myHero.boundingRadius+Target.boundingRadius then
+    if Target and Config.kConfig.Combo and Config.Misc.AAGap and GetDistance(GetClosestEnemy()) > myHero.range+myHero.boundingRadius+Target.boundingRadius then
       local winion = GetLowestMinion(myHero.range+myHero.boundingRadius*2)  
       if winion ~= nil then
         myHero:Attack(winion)
@@ -3766,7 +3313,7 @@ class "Kalista"
   end
 
   function Kalista:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -3781,10 +3328,10 @@ class "Kalista"
   end
 
   function Kalista:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) and myHero.mana >= 85+myHero:GetSpellData(_Q).level*5 then
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) and myHero.mana >= 85+myHero:GetSpellData(_Q).level*5 then
       Cast(_Q, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(Target, data[2].range) then
       if GetDmg(_E, myHero, Target) >= Target.health then
         Cast(_E)
       end
@@ -3802,10 +3349,10 @@ class "Kalista"
   end
 
   function Kalista:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 85+myHero:GetSpellData(_Q).level*5 then
+    if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 85+myHero:GetSpellData(_Q).level*5 then
       Cast(_Q, Target, false, true, 1.2)
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) then
+    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, data[2].range) then
       local harrassUnit = nil
       local killableCounter = 0
       for minion,winion in pairs(Mobs.objects) do
@@ -3829,11 +3376,11 @@ class "Kalista"
   function Kalista:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        if myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E)
-        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -3850,6 +3397,9 @@ class "Katarina"
 
   function Katarina:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST, 700, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.Target = nil
     self.Wards = {}
@@ -3866,23 +3416,33 @@ class "Katarina"
   end
 
   function Katarina:Tick()
-    if Config:getParam("Misc", "Jump") then self:WardJump() end
+    if Config.Misc.Jump then self:WardJump() end
   end
 
   function Katarina:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "Jump", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Katarina:WardJump()
@@ -3953,59 +3513,59 @@ class "Katarina"
 
   function Katarina:LastHit()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("LastHit", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
+    if Config.LastHit.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if pos and Config:getParam("LastHit", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
+    if pos and Config.LastHit.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
       Cast(_W)
     end
-    if Config:getParam("LastHit", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
+    if Config.LastHit.E and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
       Cast(_E, self.Target, true)
     end
   end
 
   function Katarina:LaneClear()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("LaneClear", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+    if Config.LaneClear.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if pos and Config:getParam("LaneClear", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if pos and Config.LaneClear.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
-    if Config:getParam("LaneClear", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+    if Config.LaneClear.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
       Cast(_E, self.Target, true)
     end
   end
 
   function Katarina:Combo()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("Combo", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+    if Config.Combo.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if pos and Config:getParam("Combo", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if pos and Config.Combo.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
-    if Config:getParam("Combo", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+    if Config.Combo.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
       Cast(_E, self.Target, true)
     end
-    if Config:getParam("Combo", "R") and sReady[_R] and GetDistance(self.Target) < 200 and self.Target.health < GetDmg(_R, myHero, self.Target)*10 then
+    if Config.Combo.R and sReady[_R] and GetDistance(self.Target) < 200 and self.Target.health < GetDmg(_R, myHero, self.Target)*10 then
       Cast(_R)
     end
   end
 
   function Katarina:Harrass()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config:getParam("Harrass", "Q") and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+    if Config.Harrass.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
       Cast(_Q, self.Target, true)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if pos and Config:getParam("Harrass", "W") and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
+    if pos and Config.Harrass.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
-    if Config:getParam("Harrass", "E") and sReady[_E] and GetDistance(self.Target) < data[2].range then
+    if Config.Harrass.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
       Cast(_E, self.Target, true)
     end
   end
@@ -4014,48 +3574,52 @@ class "Katarina"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead and GetDistance(enemy) < 700 then
         local dmg = 0
-        for _,k in pairs({"Q","W","E"}) do
-          if Config:getParam("Killsteal", k) and sReady[_-1] then
-            dmg = dmg + GetDmg(_-1, myHero, enemy)
-          end
+        if Config.Killsteal.Q and sReady[_Q] then
+            dmg = dmg + GetDmg(_Q, myHero, enemy)
         end
-        if dmg+((sReady[_Q] and Config:getParam("Killsteal", "Q")) and myHero:CalcMagicDamage(enemy,15*myHero:GetSpellData(_Q).level+0.15*myHero.ap) or 0)+((myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0 and Config:getParam("Killsteal", "R")) and GetDmg(_R, myHero, enemy)*10 or 0) >= enemy.health then
-          if Config:getParam("Killsteal", "Q") and sReady[_Q] then
+        if Config.Killsteal.W and sReady[_W] then
+            dmg = dmg + GetDmg(_W, myHero, enemy)
+        end
+        if Config.Killsteal.E and sReady[_E] then
+            dmg = dmg + GetDmg(_E, myHero, enemy)
+        end
+        if dmg+((sReady[_Q] and Config.Killsteal.Q) and myHero:CalcMagicDamage(enemy,15*myHero:GetSpellData(_Q).level+0.15*myHero.ap) or 0)+((myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0 and Config.Killsteal.R) and GetDmg(_R, myHero, enemy)*10 or 0) >= enemy.health then
+          if Config.Killsteal.Q and sReady[_Q] then
             Cast(_Q, enemy, true)
-            if Config:getParam("Killsteal", "E") and sReady[_E] then
+            if Config.Killsteal.E and sReady[_E] then
               DelayAction(Cast, 0.25, {_E, enemy, true})
-              if Config:getParam("Killsteal", "W") and sReady[_W] then
+              if Config.Killsteal.W and sReady[_W] then
                 DelayAction(function() Cast(_W) end, 0.5)
-                if (Config:getParam("Killsteal", "R") and myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                if (Config.Killsteal.R and myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                   DelayAction(function() Cast(_R) end, 0.75)
                 end
               end
-            elseif Config:getParam("Killsteal", "W") and sReady[_W] then
+            elseif Config.Killsteal.W and sReady[_W] then
               pos, b = PredictPos(enemy)
               if pos and GetDistance(pos) < data[1].range then
                 DelayAction(function() Cast(_W) end, 0.25)
-                if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                if Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                   DelayAction(function() Cast(_R) end, 0.5)
                 end
               end
             end
-          elseif Config:getParam("Killsteal", "E") and sReady[_E] then
+          elseif Config.Killsteal.E and sReady[_E] then
             Cast(_E, enemy, true)
-            if Config:getParam("Killsteal", "W") and sReady[_W] then
+            if Config.Killsteal.W and sReady[_W] then
               DelayAction(function() Cast(_W) end, 0.25)
-              if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+              if Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.5)
               end
             end
-          elseif Config:getParam("Killsteal", "W") and sReady[_W] then
+          elseif Config.Killsteal.W and sReady[_W] then
             pos, b = PredictPos(enemy)
             if pos and GetDistance(pos) < data[1].range then
               Cast(_W)
-              if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+              if Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.25)
               end
             end
-          elseif GetDistance(enemy) < 250 and Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+          elseif GetDistance(enemy) < 250 and Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
             Cast(_R)
           end
         end
@@ -4073,6 +3637,9 @@ class "KogMaw"
   
   function KogMaw:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:Tick() end)
   end
@@ -4082,31 +3649,47 @@ class "KogMaw"
   end
 
   function KogMaw:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function KogMaw:LastHit()
     local minionTarget = GetLowestMinion(math.min(data[0].range, data[1].range()))
     if not minionTarget then return end
-    if GetDmg(_Q, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if GetDmg(_Q, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_Q, minionTarget, false, true, 2)
-    elseif GetDmg(_W, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    elseif GetDmg(_W, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_W, myHero:Attack(minionTarget))
-    elseif GetDmg(_E, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+    elseif GetDmg(_E, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_E, minionTarget2, false, true, 2)
     end
   end
@@ -4114,44 +3697,44 @@ class "KogMaw"
   function KogMaw:LaneClear()
     local minionTarget = GetLowestMinion(math.min(data[0].range, data[1].range()))
     if minionTarget then
-      if Config:getParam("LaneClear", "Q") and myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      if Config.LaneClear.Q and myHero:CanUseSpell(_Q) == READY and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
         Cast(_Q, minionTarget, false, true, 2)
       end
-      if Config:getParam("LaneClear", "W") and myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+      if Config.LaneClear.W and myHero:CanUseSpell(_W) == READY and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
         Cast(_W, myHero:Attack(minionTarget))
       end
     end
     minionTarget = GetLineFarmPosition(data[2].range, data[2].width)
     if minionTarget then
-      if Config:getParam("LaneClear", "E") and myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+      if Config.LaneClear.E and myHero:CanUseSpell(_E) == READY and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
         Cast(_E, minionTarget, false, true, 2)
       end
     end
   end
 
   function KogMaw:Combo()
-    if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY then
+    if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY then
       Cast(_Q, Target, false, true, 2)
     end
-    if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY then
+    if Config.Combo.W and myHero:CanUseSpell(_W) == READY then
       Cast(_W, myHero:Attack(Target))
     end
-    if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY then
+    if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
       Cast(_E, Target, false, true, 2)
     end
-    if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY then
+    if Config.Combo.R and myHero:CanUseSpell(_R) == READY then
       Cast(_R, Target, false, true, 2)
     end
   end
 
   function KogMaw:Harrass()
-    if Config:getParam("Harrass", "Q") and myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if Config.Harrass.Q and myHero:CanUseSpell(_Q) == READY and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       Cast(_Q, Target, false, true, 2)
     end
-    if Config:getParam("Harrass", "W") and myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if Config.Harrass.W and myHero:CanUseSpell(_W) == READY and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       Cast(_W, myHero:Attack(Target))
     end
-    if Config:getParam("Harrass", "E") and myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if Config.Harrass.E and myHero:CanUseSpell(_E) == READY and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
       Cast(_E, Target, false, true, 2)
     end
   end
@@ -4159,25 +3742,25 @@ class "KogMaw"
   function KogMaw:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
           DelayAction(function() Cast(_E, enemy, false, true, 1.2) end, data[2].delay)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
           DelayAction(function() Cast(_Q, enemy, false, true, 1.2) DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay) end, data[2].delay)
-        elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
           DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[2].delay)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.R and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
           DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, false, true, 2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -4194,6 +3777,9 @@ class "LeeSin"
 
   function LeeSin:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.Forcetarget = nil
     self.insecTarget = nil
@@ -4213,33 +3799,37 @@ class "LeeSin"
   end
 
   function LeeSin:Menu()
-    for _,s in pairs({"Combo", "Harrass", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    --for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-    --  Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    --end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Insec", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Jump", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
   end
 
   function LeeSin:InsecTicker()
-    if Config:getParam("Misc", "Insec") then
+    if Config.Misc.Insec then
       self:Insec()
     end
-    if Config:getParam("Misc", "Jump") then
+    if Config.Misc.Jump then
       self:WardJump()
     end
   end
@@ -4385,7 +3975,7 @@ class "LeeSin"
   end
 
   function LeeSin:LastHit()
-    if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q"))) and myHero:CanUseSpell(_Q) == READY then
+    if ((Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) and myHero:CanUseSpell(_Q) == READY then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg1 = GetDmg(_Q, myHero, winion)
         local MinionDmg2 = self:QDmg(winion)
@@ -4399,7 +3989,7 @@ class "LeeSin"
         end
       end
     end
-    if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E"))) and myHero:CanUseSpell(_W) == READY then
+    if ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and myHero:CanUseSpell(_W) == READY then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, 300) then
@@ -4410,7 +4000,7 @@ class "LeeSin"
   end
 
   function LeeSin:LaneClear()
-    if Config:getParam("LaneClear", "Q") and myHero:CanUseSpell(_Q) == READY then
+    if Config.LaneClear.Q and myHero:CanUseSpell(_Q) == READY then
       local minionTarget = nil
       for i, minion in pairs(Mobs.objects) do
         if minionTarget == nil then 
@@ -4433,7 +4023,7 @@ class "LeeSin"
         Cast(_Q, minionTarget, false, true, 1.5)
       end
     end
-    if Config:getParam("LaneClear", "E") and myHero:CanUseSpell(_E) == READY then
+    if Config.LaneClear.E and myHero:CanUseSpell(_E) == READY then
       BestPos, BestHit = GetFarmPosition(data[2].range, data[2].width)
       if BestHit > 1 and GetDistance(BestPos) < 150 then 
         Cast(_E)
@@ -4501,16 +4091,16 @@ class "LeeSin"
   function LeeSin:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+self:QDmg(enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+self:QDmg(enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
           DelayAction(function() if not self:IsFirstCast(_Q) then Cast(_Q) end end, data[0].delay+GetDistance(enemy, myHero.pos)/data[0].speed)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].width) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].width) then
           Cast(_E, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
           Cast(_R, enemy, true)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -4527,42 +4117,53 @@ class "Lux"
 
   function Lux:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:DetonateE() end)
     AddProcessSpellCallback(function(x,y) self:ShieldManager(x,y) end)
   end
 
   function Lux:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","E"}, slider = {50,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Misc:addParam("Wa", "Shield with W (auto)", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("manaW", "Min Mana % for shield", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Misc:addParam("Ea", "Detonate E (auto)", SCRIPT_PARAM_ONOFF, true)
   end
 
   function Lux:DetonateE()
-    if myHero:GetSpellData(_E).name == "luxlightstriketoggle" and Config:getParam("Misc", "Ea") then
+    if myHero:GetSpellData(_E).name == "luxlightstriketoggle" and Config.Misc.Ea then
       Cast(_E)
     end
   end
 
   function Lux:ShieldManager(unit, spell)
-    if not unit.isMe and unit.team ~= myHero.team and not IsRecalling(myHero) and Config:getParam("Misc", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if Config.Misc.Wa and not unit.isMe and unit.team ~= myHero.team and not IsRecalling(myHero) and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
       if spell.target and spell.target.isMe then
-        if Config:getParam("Misc", "Wa") and myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
+        if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
           Cast(_W, myHero)
         end
       elseif GetDistance(spell.endPos) < GetDistance(myHero.pos, myHero.minBBox) then
-        if Config:getParam("Misc", "Wa") and myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
+        if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
           Cast(_W, myHero)
         end
       end
@@ -4570,7 +4171,7 @@ class "Lux"
   end
 
   function Lux:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
         if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
@@ -4578,7 +4179,7 @@ class "Lux"
         end
       end
     end
-    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local EMinionDmg = GetDmg(_E, myHero, minion)
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
@@ -4589,13 +4190,13 @@ class "Lux"
   end
 
   function Lux:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = GetLowestMinion(data[_Q].range)
       if minionTarget ~= nil then
         Cast(_Q, minionTarget)
       end
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_E].range, data[_E].width)
       if BestHit > 1 then 
         Cast(_E, BestPos)
@@ -4604,17 +4205,17 @@ class "Lux"
   end
 
   function Lux:Combo()
-    if GetStacks(Target) > 0 and Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= Target.health then
+    if GetStacks(Target) > 0 and Config.Combo.R and myHero:CanUseSpell(_R) == READY and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= Target.health then
       Cast(_R, Target, false, true, 2)
     end
     if timeToShoot() then
-      if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
+      if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
         Cast(_Q, Target, false, true, 2)
       end
-      if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY then
+      if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
         Cast(_E, Target, false, true, 1.5)
       end
-      if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) >= Target.health then
+      if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) >= Target.health then
         Cast(_R, Target, false, true, 2)
       end
     end
@@ -4622,10 +4223,10 @@ class "Lux"
 
   function Lux:Harrass()
     if GetStacks(Target) == 0 then
-      if Config:getParam("Harrass", "Q") and myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      if Config.Harrass.Q and myHero:CanUseSpell(_Q) == READY and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
         Cast(_Q, Target, false, true, 2)
       end
-      if Config:getParam("Harrass", "E") and myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+      if Config.Harrass.E and myHero:CanUseSpell(_E) == READY and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
         Cast(_E, Target, false, true, 1.5)
       end
     end
@@ -4634,25 +4235,25 @@ class "Lux"
   function Lux:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
           DelayAction(function() Cast(_E, enemy, false, true, 1.2) end, data[2].delay)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
           DelayAction(function() Cast(_Q, enemy, false, true, 1.2) DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay) end, data[2].delay)
-        elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.2)
           DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[2].delay)
-        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.R and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
           DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, false, true, 2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -4669,38 +4270,56 @@ class "Malzahar"
 
   function Malzahar:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:OrbWalk() end)
   end
 
   function Malzahar:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Harrass", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {30,30,30}})
-    for _,s in pairs({"LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {65,50,30}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Malzahar:OrbWalk()
-    if (Config:getParam("Harrass", "Harrass") or Config:getParam("Combo", "Combo") or Config:getParam("LastHit", "LastHit") or Config:getParam("LaneClear", "LaneClear")) and heroCanMove() and GetDistance(mousePos, myHero.pos) > myHero.boundingRadius then
+    if (Config.kConfig.Harrass or Config.kConfig.Combo or Config.kConfig.LastHit or Config.kConfig.LaneClear) and heroCanMove() and GetDistance(mousePos, myHero.pos) > myHero.boundingRadius then
       myHero:MoveTo(mousePos.x, mousePos.z)
     end
   end
 
   function Malzahar:LastHit()
     if timeToShoot() then
-      if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+      if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
         for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
           local QMinionDmg = GetDmg(_Q, myHero, minion)
           if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
@@ -4708,7 +4327,7 @@ class "Malzahar"
           end
         end
       end
-      if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then    
+      if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then    
         for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do    
           local WMinionDmg = GetDmg(_W, myHero, minion)      
           if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range) then
@@ -4716,7 +4335,7 @@ class "Malzahar"
           end      
         end    
       end  
-      if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+      if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
         for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
           local EMinionDmg = GetDmg(_E, myHero, minion)
           if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
@@ -4735,19 +4354,19 @@ class "Malzahar"
 
   function Malzahar:LaneClear()
     if timeToShoot() then
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+      if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
         local minionTarget = GetLowestMinion(data[0].range)
         if minionTarget ~= nil then
           Cast(_Q, minionTarget, false, true, 1.2)
         end
       end
-      if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+      if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
         BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
         if BestHit > 1 then 
           Cast(_W, BestPos)
         end
       end  
-      if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+      if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
         local minionTarget = GetLowestMinion(data[2].range)
         if minionTarget ~= nil then
           Cast(_E, minionTarget, true)
@@ -4764,16 +4383,16 @@ class "Malzahar"
 
   function Malzahar:Combo()
     if timeToShoot() then
-      if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY then
+      if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY then
         Cast(_Q, Target, false, true, 1.5)
       end
-      if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY then
+      if Config.Combo.W and myHero:CanUseSpell(_W) == READY then
         Cast(_W, Target, false, true, 1.5)
       end
-      if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY then
+      if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
         Cast(_E, Target, true)
       end
-      if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY then
+      if Config.Combo.R and myHero:CanUseSpell(_R) == READY then
         Cast(_R, Target, true)
       end
     end
@@ -4784,13 +4403,13 @@ class "Malzahar"
 
   function Malzahar:Harrass()
     if timeToShoot() then
-      if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY then
+      if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY then
         Cast(_Q, Target, false, true, 1.5)
       end
-      if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY then
+      if Config.Combo.W and myHero:CanUseSpell(_W) == READY then
         Cast(_W, Target, false, true, 1.5)
       end
-      if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY then
+      if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
         Cast(_W, Target, true)
       end
     end
@@ -4802,15 +4421,15 @@ class "Malzahar"
   function Malzahar:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, false, true, 1.5)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)*2.5 and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy)*2.5 and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, true)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -4827,6 +4446,9 @@ class "Nidalee"
 
   function Nidalee:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.data = {
       Human  = {
@@ -4849,20 +4471,36 @@ class "Nidalee"
   end
 
   function Nidalee:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Harrass", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q"}, slider = {50}})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Combo", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Eas", "Heal with E (self)", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addDynamicParam("Eaa", "Heal with E (allies)", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("manaEs", "Mana E (self)", SCRIPT_PARAM_SLICE, 25, 0, 100, 0)
+    Config.Misc:addParam("healthEs", "Health E (self)", SCRIPT_PARAM_SLICE, 100, 0, 100, 0)
+    Config.Misc:addParam("manaEa", "Mana E (allies)", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Misc:addParam("healthEa", "Health E (allies)", SCRIPT_PARAM_SLICE, 35, 0, 100, 0)
+    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
   end
 
   function Nidalee:UpdateBuff(unit, buff, stacks)
@@ -4878,12 +4516,12 @@ class "Nidalee"
   end
 
   function Nidalee:Heal()
-    if not IsRecalling(myHero) and self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap then
+    if not IsRecalling(myHero) and self:IsHuman() and Config.Misc.Eas and Config.Misc.manaEs <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and myHero.health/myHero.maxHealth <= Config.Misc.healthEs/100 then
       Cast(_E, myHero, true)
     end
-    if not IsRecalling(myHero) and self:IsHuman() and Config:getParam("Misc", "Ea") and Config:getParam("Misc", "mana", "E") <= myHero.mana/myHero.maxMana*100 then
+    if not IsRecalling(myHero) and self:IsHuman() and Config.Misc.Eaa and Config.Misc.manaEa <= myHero.mana/myHero.maxMana*100 then
       for _,k in pairs(GetAllyHeroes()) do
-        if GetDistance(k) < self.data.Human[2].range and k.maxHealth-k.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and k.health/k.maxHealth <= 0.35 then
+        if GetDistance(k) < self.data.Human[2].range and k.maxHealth-k.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and k.health/k.maxHealth <= Config.Misc.healthEa/100 then
           Cast(_E, k, true)
         end
       end
@@ -4891,7 +4529,7 @@ class "Nidalee"
   end
 
   function Nidalee:Flee()
-    if Config:getParam("Combo", "Flee") then
+    if Config.Misc.Flee then
       if self:IsHuman() then
         Cast(_R)
       else
@@ -4917,31 +4555,31 @@ class "Nidalee"
 
   function Nidalee:Draw()
     if self:IsHuman() then
-      if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
+      if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[0].range, ARGB(255, 155, 155, 155))
       end
-      if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
+      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[1].range, ARGB(255, 155, 155, 155))
       end
-      if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
+      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[2].range, ARGB(255, 155, 155, 155))
       end
     else
-      if Config:getParam("Draws", "Q") and myHero:CanUseSpell(_Q) == READY then
+      if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, self:GetAARange(), ARGB(255, 155, 155, 155))
       end
-      if Config:getParam("Draws", "W") and myHero:CanUseSpell(_W) == READY then
+      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
         local drawPos = self:getMousePos()
         local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
         DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
         DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
         DrawText("W Jump", 15, barPos.x, barPos.y, ARGB(255, 155, 155, 155))
       end
-      if Config:getParam("Draws", "E") and myHero:CanUseSpell(_E) == READY then
+      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Cougar[2].range, ARGB(255, 155, 155, 155))
       end
     end
-    if Config:getParam("Draws", "DMG") then
+    if Config.Draws.DMG then
       for i,k in pairs(GetEnemyHeroes()) do
         local enemy = k
         if ValidTarget(enemy) then
@@ -4956,7 +4594,7 @@ class "Nidalee"
   end
 
   function Nidalee:DmgCalc()
-    if not Config:getParam("Draws", "DMG") then return end
+    if not Config.Draws.DMG then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy.visible then
         killTextTable[enemy.networkID].indicatorText = ""
@@ -4987,7 +4625,7 @@ class "Nidalee"
   end
 
   function Nidalee:Combo()
-    if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.5)
     end
     self:DoRWEQCombo(Target)
@@ -5001,34 +4639,34 @@ class "Nidalee"
 
   function Nidalee:DoRWEQCombo(unit)
     if not unit then return end
-    if unit and myHero:CanUseSpell(_R) == READY and GetStacks(unit) > 0 and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config:getParam("Combo", "R") then
+    if unit and myHero:CanUseSpell(_R) == READY and GetStacks(unit) > 0 and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.R then
       Cast(_R)
     end
-    if unit and myHero:CanUseSpell(_W) == READY and GetStacks(unit) > 0 and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config:getParam("Combo", "W") then
+    if unit and myHero:CanUseSpell(_W) == READY and GetStacks(unit) > 0 and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.W then
       Cast(_W, unit)
     end
     if unit and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
-      if unit and self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and not Config:getParam("Combo", "E") then
+      if unit and self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
           CastSpell(_Q, myHero:Attack(unit))
       elseif unit and self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
-        if unit and myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
+        if unit and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
           Cast(_E, unit)
         end
-        if unit and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config:getParam("Combo", "Q") and Config:getParam("Combo", "E") then
+        if unit and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
           CastSpell(_Q, myHero:Attack(unit))
         end
-        if unit and myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and not Config:getParam("Combo", "E") then
+        if unit and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
           CastSpell(_Q, myHero:Attack(unit))
         end
       elseif unit then
-        if unit and myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") then
+        if unit and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
           Cast(_E, unit)
         end
-        if unit and myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") then
+        if unit and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
           CastSpell(_Q, myHero:Attack(unit))
         end
       end
-      if unit and myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") then
+      if unit and myHero:CanUseSpell(_W) == READY and Config.Combo.W then
         if unit and GetDistance(unit) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(unit) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
           Cast(_W, unit)
         end
@@ -5055,14 +4693,14 @@ class "Nidalee"
 
   function Nidalee:Harrass()
     if self:IsHuman() then
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, self.data.Human[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, self.data.Human[0].range) then
         Cast(_Q, Target, false, true, 2)
       end
     else
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, self:GetAARange()) then
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, self:GetAARange()) then
         CastSpell(_Q, myHero:Attack(Target))
       end
-      if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, self.data.Cougar[2].range) then
+      if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, self.data.Cougar[2].range) then
         Cast(_E, Target)
       end
     end
@@ -5070,7 +4708,7 @@ class "Nidalee"
 
   function Nidalee:LastHit()
     if not self:IsHuman() then
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("LastHit", "Q") and ValidTarget(Target, data[0].range) then
+      if myHero:CanUseSpell(_Q) == READY and Config.LastHit.Q and ValidTarget(Target, data[0].range) then
         local minionTarget = GetLowestMinion(self:GetAARange())
         if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
           Cast(_Q, myHero:Attack(minionTarget))
@@ -5081,7 +4719,7 @@ class "Nidalee"
 
   function Nidalee:LaneClear()
     if not self:IsHuman() then
-      if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") then
+      if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q then
         local minionTarget = GetLowestMinion(self:GetAARange())
         if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
           Cast(_Q, myHero:Attack(minionTarget))
@@ -5091,7 +4729,7 @@ class "Nidalee"
           Cast(_Q, myHero:Attack(minionTarget))
         end
       end
-      if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") then
+      if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W then
         local pos, hit = GetFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
         if pos and GetDistance(pos) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(pos) <= self.data.Cougar[1].range+self.data.Cougar[1].width and hit > 0 then
           Cast(_W, pos)
@@ -5101,7 +4739,7 @@ class "Nidalee"
           Cast(_W, pos)
         end
       end
-      if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") then
+      if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E then
         local pos, hit = GetFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range/2)
         if pos and hit > 0 then
           Cast(_E, pos)
@@ -5117,12 +4755,12 @@ class "Nidalee"
   function Nidalee:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config.Killsteal.Q and ValidTarget(enemy, self.data.Human[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
-        if myHero:CanUseSpell(_Q) == READY and not self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self.data.Human[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and not self:IsHuman() and enemy.health < self:GetDmg(_Q, enemy, true) and Config.Killsteal.Q and ValidTarget(enemy, self.data.Human[0].range) then
           local pos, chance, ppos = UPL:Predict(_Q, myHero, enemy)
           if chance >= 2 then
             Cast(_R)
@@ -5130,23 +4768,23 @@ class "Nidalee"
           end
         end
         if not self:IsHuman() and EnemiesAround(enemy, 500) < 3 then
-          if myHero:CanUseSpell(_Q) == READY and enemy.health < self:GetDmg(_Q, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, self:GetAARange()) then
+          if myHero:CanUseSpell(_Q) == READY and enemy.health < self:GetDmg(_Q, enemy) and Config.Killsteal.Q and ValidTarget(enemy, self:GetAARange()) then
             Cast(_Q, myHero:Attack(enemy))
           end
-          if myHero:CanUseSpell(_W) == READY and enemy.health < self:GetDmg(_W, enemy) and Config:getParam("Killsteal", "W") then
+          if myHero:CanUseSpell(_W) == READY and enemy.health < self:GetDmg(_W, enemy) and Config.Killsteal.W then
             if GetDistance(enemy) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(enemy) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
               Cast(_W, enemy)
             end
           end
-          if myHero:CanUseSpell(_E) == READY and enemy.health < self:GetDmg(_E, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, self.data.Cougar[2].range) then
+          if myHero:CanUseSpell(_E) == READY and enemy.health < self:GetDmg(_E, enemy) and Config.Killsteal.E and ValidTarget(enemy, self.data.Cougar[2].range) then
             Cast(_E, enemy)
           end
         end
-        if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
+        if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, self.data.Cougar[1].range/2) then
           Cast(_Q, enemy, false, true, 1.2)
           DelayAction(function() self:DoRWEQCombo(enemy) end, 0.05+self.data.Human[0].delay+GetDistance(enemy)/self.data.Human[0].speed)
         end
-        if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and not self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "R") and ValidTarget(enemy, self.data.Cougar[1].range/2) then
+        if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and not self:IsHuman() and enemy.health < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, self.data.Cougar[1].range/2) then
           Cast(_R)
         end
         if GetStacks(enemy) > 0 and EnemiesAround(enemy, 500) < 3 and GetDistance(enemy)-self.data.Cougar[1].range*2 < 0 then
@@ -5219,6 +4857,9 @@ class "Orianna"
 
   function Orianna:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.Ball = nil
     AddTickCallback(function() self:TrackBall() end)
@@ -5232,41 +4873,53 @@ class "Orianna"
   end
 
   function Orianna:UltLogic()
-    if Config:getParam("Misc", "Ra") then
+    if Config.Misc.Ra then
       local enemies = 0
       if objHolder["TheDoomBall"] then
         enemies = EnemiesAround(objHolder["TheDoomBall"], data[3].width-myHero.boundingRadius)
       else
         enemies = EnemiesAround(myHero, data[3].width-myHero.boundingRadius)
       end
-      if enemies >= 3 then
+      if enemies >= Config.Misc.Re then
         CastSpell(_R)
       end
     end
   end
 
   function Orianna:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"Combo", "Harrass", "Killsteal"}) do
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W"}, slider = {30,50}})
-    end
-    Config:addParam({state = "Harrass", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {30,50,50}})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Ra", "Auto R", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, 0, 1, #GetEnemyHeroes(), 0)
   end
 
   function Orianna:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -5274,7 +4927,7 @@ class "Orianna"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmgQ = GetDmg(_Q, myHero, winion)
         local MinionDmgW = GetDmg(_W, myHero, winion)
@@ -5290,13 +4943,13 @@ class "Orianna"
   end
 
   function Orianna:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
+    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if BestHit > 1 then 
         CastSpell(_Q, BestPos.x, BestPos.z)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_W].width)
       if BestHit > 1 and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"], BestPos) < 50 then 
         Cast(_W)
@@ -5305,16 +4958,16 @@ class "Orianna"
   end
 
   function Orianna:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") then
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
       if objHolder["TheDoomBall"] then Cast(_Q, Target, false, true, 1.5, objHolder["TheDoomBall"]) else Cast(_Q, Target, false, true, 1.5, myHero) end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("Combo", "W") then
+    if myHero:CanUseSpell(_W) == READY and Config.Combo.W then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius >= GetDistance(Target) then
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius >= GetDistance(Target) then
       Cast(_E, myHero, true)
     end
-    if myHero:CanUseSpell(_R) == READY and Target.health < self:CalcRComboDmg(Target) and Config:getParam("Combo", "R") then
+    if myHero:CanUseSpell(_R) == READY and Target.health < self:CalcRComboDmg(Target) and Config.Combo.R then
       self:CastR(Target)
     end
   end
@@ -5328,13 +4981,13 @@ class "Orianna"
   end
 
   function Orianna:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       if objHolder["TheDoomBall"] then Cast(_Q, Target, false, true, 1.5, objHolder["TheDoomBall"]) else Cast(_Q, Target, false, true, 1.5, myHero) end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius >= GetDistance(Target) then
+    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius >= GetDistance(Target) then
       Cast(_E, myHero, true)
     end
   end
@@ -5343,19 +4996,19 @@ class "Orianna"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         local Ball = objHolder["TheDoomBall"] or myHero
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, Target, false, true, 1.5, Ball)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W then
           self:CastW(enemy)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, enemy) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(enemy) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, enemy) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(enemy) then
           Cast(_E, myHero)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R then
           self:CastR(enemy)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < self:CalcRComboDmg(enemy) and Config:getParam("Killsteal", "R") and Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "W") then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < self:CalcRComboDmg(enemy) and Config.Killsteal.R and Config.Killsteal.Q and Config.Killsteal.W then
           self:CastR(enemy)
           DelayAction(Cast, data[3].delay, {_Q, Target, false, true, 1.5, Ball})
           DelayAction(function() self:CastW(enemy) end, data[3].delay+data[0].delay+GetDistance(Ball,enemy)/data[0].speed)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -5388,12 +5041,12 @@ class "Rengar"
 
   function Rengar:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
-    self.oneShotTimer = 0
-    self.ultOn = false
-    self.osTarget = nil
-    self.isLeap = false
-    self.alertTicker = 0
+    self.lastEmpChange = 0
+    self.Target = nil
     self.keyStr = {[0] = "Q", [1] = "W", [2] = "E"}
     AddTickCallback(function() self:Tick() end)
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
@@ -5402,27 +5055,47 @@ class "Rengar"
   end
 
   function Rengar:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Empower", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Empower2", code = SCRIPT_PARAM_LIST, value = 1, list = {"Q", "W", "E"}})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Combo:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    if Smite ~= nil then Config.Combo:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    if Smite ~= nil then Config.Killsteal:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addParam("Empower", "Empower", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+    Config.Misc:addParam("Empower2", "Active Empower: ", SCRIPT_PARAM_LIST, 1, {"Q", "W", "E"})
   end
 
   function Rengar:Tick()
-    if Config:getParam("Misc", "Empower") then
-      local os = Config:getParam("Misc", "Empower2")
-      Config:incParamBy1("Misc", "Empower2")
-      if os ~= Config:getParam("Misc", "Empower2") then
-        PrintAlertRed("Switched Empoweredmode! Now using: "..self.keyStr[Config:getParam("Misc", "Empower2")-1])
+    if Config.Misc.Empower and self.lastEmpChange < GetInGameTimer() then
+      self.lastEmpChange = GetInGameTimer() +0.33
+      Config.Misc.Empower = false
+      local os = Config.Misc.Empower2
+      Config.Misc.Empower2 = Config.Misc.Empower2 + 1
+      if Config.Misc.Empower2 == 4 then Config.Misc.Empower2 = 1 end
+      if os ~= Config.Misc.Empower2 then
+        PrintAlertRed("Switched Empoweredmode! Now using: "..self.keyStr[Config.Misc.Empower2-1])
       end
+    end
+    if not self.Target then
+      self.ts:update()
+      self.Target = self.ts.target
     end
   end
 
@@ -5453,19 +5126,21 @@ class "Rengar"
   function Rengar:Animation(unit, ani)
     if unit and unit.isMe and ani then
       if ani == "Spell5" and loadedOrb:DoOrb() then
-        if Smite ~= nil and loadedOrb.IState then CastSpell(Smite, self.Target) end
-        if Ignite ~= nil and loadedOrb.IState then CastSpell(Ignite, self.Target) end
+        if self.Target and Smite ~= nil and Config.Combo.S then CastSpell(Smite, self.Target) end
+        if self.Target and Ignite ~= nil and Config.Combo.I then CastSpell(Ignite, self.Target) end
         loadedOrb.orbTable.lastAA = 0
-        if loadedOrb.State[_E] then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) end end, 1 / (myHero.attackSpeed * loadedOrb.orbTable.windUp) - GetLatency() / 2000) end
-        DelayAction(function() loadedOrb:WindUp(unit) end, 1 / (myHero.attackSpeed * loadedOrb.orbTable.windUp) - GetLatency() / 2000)
+        loadedOrb.orbTable.windUp = 0.01
+        if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) end end, 0.39 - GetLatency() / 2000) end
+        DelayAction(function() loadedOrb:WindUp(unit) end, 1 / (myHero.attackSpeed) - GetLatency() / 2000)
       end
     end
   end
 
   function Rengar:ProcessSpell(unit,spell)
     if unit and unit.isMe and spell and loadedOrb:DoOrb() then
-      if spell.name:lower():find("rengare") and loadedOrb.State[_W] then
-        Cast(_W, self.Target, false, true, 1)
+      if spell.name:lower():find("rengare") and (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W) then
+        loadedOrb.orbTable.lastAA = 0
+        Cast(_W)
       end
     end
   end
@@ -5483,23 +5158,43 @@ class "Rengar"
     end
   end
 
+  function Rengar:Combo()
+    if myHero.mana == 5 then
+      if Config.Misc.Empower2 == 2 then
+        Cast(_W, self.Target, false, true, 1)
+      elseif Config.Misc.Empower2 == 2 then
+        Cast(_E, self.Target, false, true, 2)
+      end
+    else
+      if Config.Combo.W and sReady[_W] then
+        Cast(_W, self.Target, false, true, 1)
+      end
+      if Config.Combo.E and sReady[_E] then
+        Cast(_E, self.Target, false, true, 1)
+      end
+    end
+  end
+
+  function Rengar:Harrass()
+  end
+
   function Rengar:LastHit()
-    if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if myHero.mana == 5 and Config.LaneClear.W and (myHero.health / myHero.maxHealth) * 100 < 90 then
       Cast(_W)
     else
-      if Config:getParam("LaneClear", "Q") then
+      if Config.LaneClear.Q then
         local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil and minionTarget.health < GetDmg(_Q, myHero, minionTarget) then
           CastSpell(_Q, myHero:Attack(minionTarget))
         end
       end
-      if Config:getParam("LaneClear", "W") then
+      if Config.LaneClear.W then
         local minionTarget = GetLowestMinion(data[1].range)
         if minionTarget ~= nil and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
           Cast(_W)
         end
       end
-      if Config:getParam("LaneClear", "E") then
+      if Config.LaneClear.E then
         local minionTarget = GetLowestMinion(data[2].range)
         if minionTarget ~= nil and minionTarget.health < GetDmg(_E, myHero, minionTarget) then
           Cast(_E, minionTarget, false, true, 1)
@@ -5509,44 +5204,44 @@ class "Rengar"
   end
 
   function Rengar:LaneClear()
-    if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if myHero.mana == 5 and Config.LaneClear.W and (myHero.health / myHero.maxHealth) * 100 < 90 then
       Cast(_W)
     else
-      if Config:getParam("LaneClear", "Q") then
+      if Config.LaneClear.Q then
         local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil then
           CastSpell(_Q, myHero:Attack(minionTarget))
         end
       end
-      if Config:getParam("LaneClear", "W") then
+      if Config.LaneClear.W then
         local pos, hit = GetFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
         if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
           Cast(_W)
         end
       end
-      if Config:getParam("LaneClear", "E") then
+      if Config.LaneClear.E then
         local minionTarget = GetLowestMinion(data[2].range)
         if minionTarget ~= nil then
           Cast(_E, minionTarget, false, true, 1)
         end
       end
     end
-    if myHero.mana == 5 and Config:getParam("LaneClear", "W") and (myHero.health / myHero.maxHealth) * 100 < 90 then
+    if myHero.mana == 5 and Config.LaneClear.W and (myHero.health / myHero.maxHealth) * 100 < 90 then
       Cast(_W)
     else
-      if Config:getParam("LaneClear", "Q") then
+      if Config.LaneClear.Q then
         local minionTarget = GetJMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil then
           CastSpell(_Q, myHero:Attack(minionTarget))
         end
       end
-      if Config:getParam("LaneClear", "W") then
+      if Config.LaneClear.W then
         local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
         if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
           Cast(_W)
         end
       end
-      if Config:getParam("LaneClear", "E") then
+      if Config.LaneClear.E then
         local minionTarget = GetJMinion(data[2].range)
         if minionTarget ~= nil then
           Cast(_E, minionTarget, false, true, 1)
@@ -5558,13 +5253,13 @@ class "Rengar"
   function Rengar:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           CastSpell(_Q, myHero:Attack(enemy))
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, false, true, 1)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, false, true, 1.5)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -5581,6 +5276,9 @@ class "Riven"
 
   function Riven:__init()
     self.ts = TargetSelector(TARGET_NEAR_MOUSE, 930, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.Target = Target
     self.QState = false
@@ -5599,22 +5297,25 @@ class "Riven"
   end
 
   function Riven:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "LastHit", name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "LastHit", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Misc", name = "Wa", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Misc", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Jump", key = string.byte("G"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Wa", "Auto stun with W", SCRIPT_PARAM_ONKEYDOWN, true)
+    Config.Misc:addParam("Wae", "Auto stun if X enemies", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
+    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
   end
 
   function Riven:Msg(Msg, Key)
@@ -5643,16 +5344,16 @@ class "Riven"
 
   function Riven:Draw()
     DrawLFC(myHero.x, myHero.y, myHero.z, self.orbTable.range, ARGB(255,255,255,255))
-    if Config:getParam("Draws", "Q") and sReady[_Q] then
+    if Config.Draws.Q and sReady[_Q] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(105,155,155,155))
     end
-    if Config:getParam("Draws", "W") and sReady[_W] then
+    if Config.Draws.W and sReady[_W] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[1].range, ARGB(105,155,155,155))
     end
-    if Config:getParam("Draws", "E") and sReady[_E] then
+    if Config.Draws.E and sReady[_E] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range, ARGB(255,255,255,255))
     end
-    if Config:getParam("Draws", "R") and sReady[_R] then
+    if Config.Draws.R and sReady[_R] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range, ARGB(255,255,255,255)) 
     end
     if self.movePos then
@@ -5660,7 +5361,7 @@ class "Riven"
       DrawCircle(self.movePos.x, self.movePos.y, self.movePos.z, 75, color) 
       self.movePos = nil
     end
-    if Config:getParam("Draws", "DMG") then
+    if Config.Draws.DMG then
       for i,k in pairs(GetEnemyHeroes()) do
         local enemy = k
         if ValidTarget(enemy) then
@@ -5677,7 +5378,7 @@ class "Riven"
   function Riven:Tick()
     self.orbTable.range = myHero.range + myHero.boundingRadius
     self.orbTable.trueRange = myHero.range + GetDistance(myHero.minBBox) + 1
-    if Config:getParam("Misc", "Flee") then
+    if Config.Misc.Flee then
       myHero:MoveTo(mousePos.x, mousePos.z)
       if sReady[_E] then
         Cast(_E, mousePos)
@@ -5686,7 +5387,7 @@ class "Riven"
         Cast(_Q, mousePos)
       end
     end
-    if Config:getParam("Misc", "Jump") then
+    if Config.Misc.Jump then
       self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
       self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
       if self.QCast < 2 then
@@ -5705,11 +5406,11 @@ class "Riven"
   end
 
   function Riven:DmgCalc()
-    if not Config:getParam("Draws", "DMG") then return end
+    if not Config.Draws.DMG then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy.visible then
         killTextTable[enemy.networkID].indicatorText = ""
-        local damageC  = self:CalcComboDmg(enemy, 0, not Config:getParam("Combo", "R"))
+        local damageC  = self:CalcComboDmg(enemy, 0, not Config.Combo.R)
         local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
         local damageS  = Smite and (20 + 8 * myHero.level) or 0
         if enemy.health < damageC+damageI then
@@ -5757,7 +5458,7 @@ class "Riven"
   end
 
   function Riven:OrbWalk()
-    if Config:getParam("LastHit", "LastHit") then
+    if Config.kConfig.LastHit then
       self.Target = GetLowestMinion(500)
       if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
         self.Target = nil
@@ -5766,16 +5467,16 @@ class "Riven"
         self.Target = GetJMinion(500)
       end
     end
-    if Config:getParam("LaneClear", "LaneClear") then
+    if Config.kConfig.LaneClear then
       self.Target = GetLowestMinion(500)
       if not self.Target then
         self.Target = GetJMinion(500)
       end
     end
-    if Config:getParam("Harrass", "Harrass") then
+    if Config.kConfig.Harrass then
       self.Target = Target
     end
-    if Config:getParam("Combo", "Combo") then
+    if Config.kConfig.Combo then
       self.Target = Target
     end
     if self.Forcetarget and ValidTarget(self.Forcetarget, self.orbTable.trueRange + 40) then
@@ -5801,30 +5502,30 @@ class "Riven"
   end
 
   function Riven:DoOrb()
-    if Config:getParam("Combo", "Combo") then
-      self.QState = Config:getParam("Combo", "Q")
-      self.WState = Config:getParam("Combo", "W")
+    if Config.kConfig.Combo then
+      self.QState = Config.Combo.Q
+      self.WState = Config.Combo.W
       self.IState = true
       self.orbTable.minionAA = 0
       return true
     end
-    if Config:getParam("Harrass", "Harrass") then
-      self.QState = Config:getParam("Harrass", "Q")
-      self.WState = Config:getParam("Harrass", "W")
+    if Config.kConfig.Harrass then
+      self.QState = Config.Harrass.Q
+      self.WState = Config.Harrass.W
       self.IState = true
       self.orbTable.minionAA = 0
       return true
     end
-    if Config:getParam("LastHit", "LastHit") then
-      self.QState = Config:getParam("LastHit", "Q")
-      self.WState = Config:getParam("LastHit", "W")
+    if Config.kConfig.LastHit then
+      self.QState = Config.LastHit.Q
+      self.WState = Config.LastHit.W
       self.IState = false
       self.orbTable.minionAA = 0.004
       return true
     end
-    if Config:getParam("LaneClear", "LaneClear") then
-      self.QState = Config:getParam("LaneClear", "Q")
-      self.WState = Config:getParam("LaneClear", "W")
+    if Config.kConfig.LaneClear then
+      self.QState = Config.LaneClear.Q
+      self.WState = Config.LaneClear.W
       self.IState = false
       self.orbTable.minionAA = 0.004
       return true
@@ -5944,17 +5645,17 @@ class "Riven"
 
   function Riven:Combo()
     if not self.Target then return end
-    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("Combo", "E") and GetDistance(self.Target) < data[2].range then
-      if Config:getParam("Combo", "R") and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
+      if Config.Combo.R and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
         Cast(_E, self.Target)
         DelayAction(function() Cast(_R) end, 0.075) 
       else
         CastSpell(_E, self.Target)
       end
     end
-    if Config:getParam("Combo", "R") and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
+    if Config.Combo.R and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
     if (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target) end
-    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config:getParam("Combo", "W") then
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
       CastSpell(_W)
     end
     if sReady[_Q] and not sReady[_E] and GetDistance(self.Target) > self.orbTable.trueRange + 30 then
@@ -5966,7 +5667,7 @@ class "Riven"
 
   function Riven:AutoW()
     for _,k in pairs(GetEnemyHeroes()) do
-      if sReady[_W] and ValidTarget(k, data[_W].range) and (2 <= EnemiesAround(k, data[_W].range)) then
+      if sReady[_W] and ValidTarget(k, data[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, data[_W].range)) then
         Cast(_W)
       end
     end
@@ -5974,20 +5675,20 @@ class "Riven"
 
   function Riven:Harrass()
     if not self.Target then return end
-    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("Harrass", "E") and GetDistance(self.Target) < data[2].range then
+    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config.Harrass.E and GetDistance(self.Target) < data[2].range then
       CastSpell(_E, self.Target)
     end
-    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config:getParam("Harrass", "W") then
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Harrass.W then
       CastSpell(_W)
     end
   end
 
   function Riven:LaneClear()
     if not self.Target then return end
-    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config:getParam("LaneClear", "E") and GetDistance(self.Target) < data[2].range then
+    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config.LaneClear.E and GetDistance(self.Target) < data[2].range then
       CastSpell(_E, self.Target)
     end
-    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config:getParam("LaneClear", "W") then
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.LaneClear.W then
       CastSpell(_W)
     end
     if sReady[_Q] and GetDistance(self.Target) > self.orbTable.trueRange + 36 then
@@ -6005,6 +5706,9 @@ class "Ryze"
 
   function Ryze:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 600, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     self.passiveTracker = 0
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
@@ -6024,22 +5728,39 @@ class "Ryze"
   end
 
   function Ryze:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "LaneClear", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    for _,s in pairs({"Harrass", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {30,50,50}})
-    end
-    Config:addParam({state = "LaneClear", name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E","R"}, slider = {30,50,50,50}})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaR", "Mana R", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Ryze:Msg(Msg, Key)
@@ -6090,13 +5811,13 @@ class "Ryze"
       target = GetLowestMinion(900)
     end
     if not target then return end
-    if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_E, myHero, target) then 
+    if ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_E, myHero, target) then 
       Cast(_Q, target, false, true, 1)
     end
-    if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_W, myHero, target) then 
+    if ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_W, myHero, target) then 
       Cast(_W, target, true)
     end
-    if ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "E") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_E, myHero, target) then 
+    if ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) and target.health < GetDmg(_E, myHero, target) then 
       Cast(_E, target, true)
     end
   end
@@ -6107,26 +5828,26 @@ class "Ryze"
       target = GetLowestMinion(900)
     end
     if target and GetDistance(target) < 900 then 
-      if Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then 
+      if Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then 
         local x1, x2, x3 = UPL:Predict(_Q, myHero, target) 
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") < myHero.mana/myHero.maxMana*100 then
+        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") < myHero.mana/myHero.maxMana*100 then 
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana*100 then
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then
           CastSpell(_W, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config:getParam("LaneClear", "R") and Config:getParam("LaneClear", "mana", "R") < myHero.mana/myHero.maxMana*100 then
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then
           CastSpell(_R, target) 
         end 
       else 
-        if Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") < myHero.mana/myHero.maxMana*100 then CastSpell(_W, target) end
-        if Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") < myHero.mana/myHero.maxMana*100 then CastSpell(_E, target) end 
+        if Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then CastSpell(_W, target) end
+        if Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then CastSpell(_E, target) end 
       end 
-      if self.passiveTracker == 4 and Config:getParam("LaneClear", "R") and Config:getParam("LaneClear", "mana", "R") < myHero.mana/myHero.maxMana*100 then 
+      if self.passiveTracker == 4 and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then 
         CastSpell(_R) 
       end 
     end 
@@ -6138,26 +5859,26 @@ class "Ryze"
       target = Forcetarget 
     end 
     if target and GetDistance(target) < 900 then 
-      if Config:getParam("Combo", "Q") then 
+      if Config.Combo.Q then 
         local x1, x2, x3 = UPL:Predict(_Q, myHero, target) 
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config:getParam("Combo", "Q") then
+        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.Combo.Q then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Combo", "E") then 
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Combo.E then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config:getParam("Combo", "W") then
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.Combo.W then
           CastSpell(_W, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config:getParam("Combo", "R") then
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config.Combo.R then
           CastSpell(_R, target) 
         end 
       else 
-        if Config:getParam("Combo", "W") then CastSpell(_W, target) end
-        if Config:getParam("Combo", "E") then CastSpell(_E, target) end 
+        if Config.Combo.W then CastSpell(_W, target) end
+        if Config.Combo.E then CastSpell(_E, target) end 
       end 
-      if self.passiveTracker == 4 and Config:getParam("Combo", "R") then 
+      if self.passiveTracker == 4 and Config.Combo.R then 
         CastSpell(_R) 
       end 
     end 
@@ -6169,22 +5890,22 @@ class "Ryze"
       target = Forcetarget 
     end 
     if target and GetDistance(target) < 900 then 
-      if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then 
+      if Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then 
         local x1, x2, x3 = UPL:Predict(_Q, myHero, target) 
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then 
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
           CastSpell(_W, target) 
         end 
       else 
-        if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana then CastSpell(_W, target) end
-        if Config:getParam("Harrass", "E") and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana then CastSpell(_E, target) end 
+        if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then CastSpell(_W, target) end
+        if Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then CastSpell(_E, target) end 
       end 
     end 
   end
@@ -6192,16 +5913,16 @@ class "Ryze"
   function Ryze:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 2)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, true)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
-        elseif myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "W") and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.W and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_W, enemy, true)
           DelayAction(function() Cast(_E, enemy, true) end, 0.25)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -6264,49 +5985,61 @@ class "Rumble"
 
   function Rumble:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:DoW() end)
     AddTickCallback(function() self:DoSomeUltLogic() end)
   end
 
   function Rumble:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Wa", "Auto Shield with W", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addParam("Ra", "Auto R", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("Rae", "Auto R if X enemies", SCRIPT_PARAM_SLICE, 3, 1, 5, 0)
   end
 
   function Rumble:DoW()
-    if Config:getParam("Misc", "Wa") and not IsRecalling(myHero) and myHero.mana < 40 then
+    if Config.Misc.Wa and not IsRecalling(myHero) and myHero.mana < 40 then
       CastSpell(_W)
     end
   end
 
   function Rumble:DoSomeUltLogic()
-    if Config:getParam("Misc", "Ra") then
+    if Config.Misc.Ra then
       local enemies = EnemiesAround(Target, 250)
-      if enemies >= 3 then
+      if enemies >= Config.Misc.Rae then
         Cast(_R, Target, false, true, 2)
       end
     end
-    if Config:getParam("Misc", "Ra") then
+    if Config.Misc.Ra then
       local enemies = EnemiesAround(Target, 250)
       local allies = AlliesAround(myHero, 500)
-      if enemies >= 2 and allies >= 2 then
+      if enemies >= Config.Misc.Rae-1 and allies >= Config.Misc.Rae-1 then
         Cast(_R, Target, false, true, 2)
       end
     end
   end
 
   function Rumble:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q"))) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -6314,7 +6047,7 @@ class "Rumble"
         end
       end
     end
-    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E")) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E"))) then
+    if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
@@ -6325,13 +6058,13 @@ class "Rumble"
   end
 
   function Rumble:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "Q") then
+    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if BestHit > 1 then 
         Cast(_Q, BestPos)
       end
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "E") then
+    if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E then
       local minionTarget = GetLowestMinion(data[2].range)
       if minionTarget ~= nil then
         Cast(_E, winion, false, true, 1.2)
@@ -6340,24 +6073,24 @@ class "Rumble"
   end
 
   function Rumble:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.2)
     end
-    if Config:getParam("Combo", "W") then Cast(_W) end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(Target, data[2].range) then
+    if Config.Combo.W then Cast(_W) end
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(Target, data[2].range) then
       Cast(_E, Target, false, true, 1.5)
     end
-    if Config:getParam("Combo", "R") and (GetDmg(_R, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 2)) and ValidTarget(Target, data[3].range) then
+    if Config.Combo.R and (GetDmg(_R, myHero, Target) >= Target.health or (EnemiesAround(Target, 500) > 2)) and ValidTarget(Target, data[3].range) then
       Cast(_R, Target, true)
     end
   end
 
   function Rumble:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.2)
     end
-    if Config:getParam("Harrass", "W") then Cast(_W) end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) then
+    if Config.Harrass.W then Cast(_W) end
+    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, data[2].range) then
       Cast(_E, Target, false, true, 1.5)
     end
   end
@@ -6365,13 +6098,13 @@ class "Rumble"
   function Rumble:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
-        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config:getParam("Killsteal", "R") and ValidTarget(enemy, data[3].range) then
+        elseif myHero:CanUseSpell(_R) == READY and enemy.health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_R, enemy, true)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -6388,34 +6121,42 @@ class "Talon"
 
   function Talon:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
   end
 
   function Talon:Menu()
-    for _,s in pairs({"Combo", "Harrass", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    end 
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    if Ignite ~= nil then Config:addParam({state = "Combo", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W"}, slider = {30,50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Talon:LastHit()
-    if myHero:GetSpellData(_Q).currentCd == 0 and not self.Target and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:GetSpellData(_Q).currentCd == 0 and not self.Target and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -6423,7 +6164,7 @@ class "Talon"
         end
       end
     end
-    if myHero:GetSpellData(_Q).currentCd > 0 and not self.Target and myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:GetSpellData(_Q).currentCd > 0 and not self.Target and myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_W, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
@@ -6434,12 +6175,12 @@ class "Talon"
   end
 
   function Talon:LaneClear()
-    if Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       if self.Target and GetDistance(self.Target) < data[0].range then
         CastSpell(_Q, myHero:Attack(self.Target))
       end
     end
-    if Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       pos, hit = GetFarmPosition(data[1].range, data[1].width)
       if pos and hit > 0 then
         Cast(_W, pos)
@@ -6448,22 +6189,22 @@ class "Talon"
   end
 
   function Talon:Combo()
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("Combo", "E") and ValidTarget(self.Target, data[2].range) then
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(self.Target, data[2].range) then
       Cast(_E, self.Target, true)
     end
-    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config:getParam("Combo", "R") and ValidTarget(self.Target, data[3].width) and self.Target.health < GetDmg(_Q, myHero, self.Target)+GetDmg(_W, myHero, self.Target)+GetDmg("AD", myHero, self.Target)+GetDmg(_R, myHero, self.Target) then
+    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config.Combo.R and ValidTarget(self.Target, data[3].width) and self.Target.health < GetDmg(_Q, myHero, self.Target)+GetDmg(_W, myHero, self.Target)+GetDmg("AD", myHero, self.Target)+GetDmg(_R, myHero, self.Target) then
       Cast(_R, self.Target, true)
     end
   end
 
   function Talon:Harrass()
-    if Config:getParam("Harrass", "E") and ValidTarget(Target, data[2].range) then
+    if Config.Harrass.E and ValidTarget(Target, data[2].range) then
       if myHero:CanUseSpell(_E) == READY then
         Cast(_E, self.Target, true)  
       end
-    elseif myHero:CanUseSpell(_Q) == READY and Config:getParam("Harrass", "Q") and ValidTarget(self.Target, data[0].range) then
+    elseif myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(self.Target, data[0].range) then
       CastSpell(_Q, myHero:Attack(self.Target))
-    elseif myHero:CanUseSpell(_W) == READY and Config:getParam("Harrass", "W") and ValidTarget(self.Target, data[1].range) then
+    elseif myHero:CanUseSpell(_W) == READY and Config.Harrass.W and ValidTarget(self.Target, data[1].range) then
       Cast(_W, self.Target, false, true, 2)
     end
   end
@@ -6473,45 +6214,51 @@ class "Talon"
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         local dmg = 0
         local c = 0
-        for _,k in pairs({"Q","W","E"}) do
-          if Config:getParam("Killsteal", k) and sReady[_-1] then
-            dmg = dmg + GetDmg(_-1, myHero, enemy) * ((k == "W" or k == "R") and 0.5 or 1)
+        if Config.Killsteal.Q and sReady[_Q] then
+            dmg = dmg + GetDmg(_Q, myHero, enemy)
             c = c + 1
-          end
+        end
+        if Config.Killsteal.W and sReady[_W] then
+            dmg = dmg + GetDmg(_W, myHero, enemy)
+            c = c + 1
+        end
+        if Config.Killsteal.E and sReady[_E] then
+            dmg = dmg + GetDmg(_E, myHero, enemy)
+            c = c + 1
         end
         dmg = dmg + (c > 0 and GetDmg("AD", myHero, enemy) or 0)
-        dmg = dmg*((sReady[_E]) and 1+0.03*myHero:GetSpellData(_E).level or 1)+((sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") and Config:getParam("Killsteal", "R") and GetDmg(_R, myHero, enemy)*2 or 0)
+        dmg = dmg*((sReady[_E]) and 1+0.03*myHero:GetSpellData(_E).level or 1)+((sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") and Config.Killsteal.R and GetDmg(_R, myHero, enemy)*2 or 0)
         if dmg >= enemy.health and EnemiesAround(enemy,750) < 3 then
-          if Config:getParam("Killsteal", "Q") and myHero:GetSpellData(_Q).currentCd == 0 and GetDistance(enemy) < data[2].range then
+          if Config.Killsteal.Q and myHero:GetSpellData(_Q).currentCd == 0 and GetDistance(enemy) < data[2].range then
             if GetDistance(enemy) < data[0].range then CastSpell(_Q, myHero:Attack(enemy)) end
-            if Config:getParam("Killsteal", "E") and sReady[_E] then
+            if Config.Killsteal.E and sReady[_E] then
               DelayAction(Cast, 0.25, {_E, enemy, true})
-              if Config:getParam("Killsteal", "W") and sReady[_W] then
+              if Config.Killsteal.W and sReady[_W] then
                 DelayAction(function() Cast(_W, enemy, false, true, 1) end, 0.5)
-                if (Config:getParam("Killsteal", "R") and myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+                if (Config.Killsteal.R and myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                   DelayAction(function() Cast(_R) end, 0.75)
                 end
               end
-            elseif Config:getParam("Killsteal", "W") and sReady[_W] then
+            elseif Config.Killsteal.W and sReady[_W] then
               DelayAction(function() Cast(_W, enemy, false, true, 1) end, 0.25)
-              if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+              if Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.5)
               end
             end
-          elseif Config:getParam("Killsteal", "E") and sReady[_E] and GetDistance(enemy) < data[2].range then
+          elseif Config.Killsteal.E and sReady[_E] and GetDistance(enemy) < data[2].range then
             Cast(_E, enemy, true)
-            if Config:getParam("Killsteal", "W") and sReady[_W] then
+            if Config.Killsteal.W and sReady[_W] then
               DelayAction(function() Cast(_W, enemy, false, true, 1) end, 0.25)
-              if Config:getParam("Killsteal", "R") and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
+              if Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
                 DelayAction(function() Cast(_R) end, 0.5)
               end
             end
-          elseif Config:getParam("Killsteal", "W") and sReady[_W] and GetDistance(enemy) < data[1].range then
+          elseif Config.Killsteal.W and sReady[_W] and GetDistance(enemy) < data[1].range then
             Cast(_W, enemy, false, true, 1)
-            if Config:getParam("Killsteal", "R") and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
+            if Config.Killsteal.R and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
               DelayAction(function() Cast(_R) end, 0.25)
             end
-          elseif GetDistance(enemy) < data[3].width and Config:getParam("Killsteal", "R") and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
+          elseif GetDistance(enemy) < data[3].width and Config.Killsteal.R and (sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") then
             Cast(_R)
           end
         end
@@ -6529,27 +6276,33 @@ class "Teemo"
 
   function Teemo:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
   end
 
   function Teemo:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    if Ignite ~= nil then Config:addParam({state = "Combo", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q"}, slider = {30}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Combo:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Teemo:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -6560,7 +6313,7 @@ class "Teemo"
   end
 
   function Teemo:LaneClear()
-    if Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -6571,22 +6324,22 @@ class "Teemo"
   end
 
   function Teemo:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, true)
     end
-    if Config:getParam("Combo", "Ignite") and ValidTarget(enemy, 600) and (Target.health < (50+20*myHero.level+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)*5*myHero.attackSpeed) or killTextTable[Target.networkID].indicatorText:find("Killable")) then
+    if Config.Combo.I and ValidTarget(enemy, 600) and (Target.health < (50+20*myHero.level+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)*5*myHero.attackSpeed) or killTextTable[Target.networkID].indicatorText:find("Killable")) then
       CastSpell(Ignite, Target)
     end
-    if Config:getParam("Combo", "R") and ValidTarget(Target, data[3].width) then
+    if Config.Combo.R and ValidTarget(Target, data[3].width) then
       Cast(_R, Target)
     end
   end
 
   function Teemo:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("Combo", "Q") and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, true)
     end
-    if Config:getParam("Combo", "R") and ValidTarget(Target, data[3].width) then
+    if Config.Combo.R and ValidTarget(Target, data[3].width) then
       Cast(_R, Target)
     end
   end
@@ -6594,14 +6347,14 @@ class "Teemo"
   function Teemo:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, true)
-        elseif enemy.health < GetDmg("AD", myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
+        elseif enemy.health < GetDmg("AD", myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
           myHero:Attack(enemy)
-        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg("AD", myHero, enemy)+GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy)+GetDmg("AD", myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.E and Config.Killsteal.Q and ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
           myHero:Attack(enemy)
           DelayAction(Cast, 0.2, {_Q, enemy, true})
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -6618,27 +6371,43 @@ class "Vayne"
 
   function Vayne:__init()
     self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:DoSomething() end)
   end
 
   function Vayne:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      --Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"E"}, slider = {50}})
-    end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addParam("offsetE", "Max E range %", SCRIPT_PARAM_LIST, 100, 0, 100, 0)
+    Config.Misc:addDynamicParam("Ea", "Auto E if can stun", SCRIPT_PARAM_ONOFF, true)
   end
 
   function Vayne:DoSomething()
-    if not Config:getParam("Misc", "Ea") then return end
+    if not Config.Misc.Ea then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy, 1000) and enemy ~= nil and not enemy.dead then
         self:MakeUnitHugTheWall(enemy)
@@ -6649,7 +6418,7 @@ class "Vayne"
   function Vayne:MakeUnitHugTheWall(unit)
     if not unit or unit.dead or not unit.visible then return end
     local x, y, z = UPL:Predict(_E, myHero, unit)
-    for _=10,(450-unit.boundingRadius)*Config:getParam("Misc", "offset", "E")/100,10 do
+    for _=10,(450-unit.boundingRadius)*Config.Misc.offsetE/100,10 do
       local dir = x+(x-myHero):normalized()*_
       if IsWall(D3DXVECTOR3(dir.x,dir.y,dir.z)) then
         Cast(_E, unit, true)
@@ -6685,11 +6454,11 @@ class "Vayne"
   function Vayne:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, myHero:Attack(enemy))
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -6706,28 +6475,48 @@ class "Volibear"
 
   function Volibear:__init()
     self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
   end
 
   function Volibear:Menu()
-    for _,s in pairs({"Combo", "Harrass", "LaneClear", "LastHit", "Killsteal"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    for _,s in pairs({"Harrass", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "mana", code = SCRIPT_PARAM_SLICE, text = {"Q","W","E"}, slider = {50,50,50}})
-    end
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
   function Volibear:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "Q") and Config:getParam("LastHit", "mana", "Q") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -6735,7 +6524,7 @@ class "Volibear"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "W") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_W, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
@@ -6743,7 +6532,7 @@ class "Volibear"
         end
       end
     end
-    if myHero:CanUseSpell(_E) == READY and ((Config:getParam("LastHit", "LastHit") and Config:getParam("LastHit", "E") and Config:getParam("LastHit", "mana", "W") <= 100*myHero.mana/myHero.maxMana) or (Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana)) then
+    if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
@@ -6754,7 +6543,7 @@ class "Volibear"
   end
 
   function Volibear:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "Q") and Config:getParam("LaneClear", "mana", "Q") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_Q) == READY and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = nil
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
@@ -6767,7 +6556,7 @@ class "Volibear"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "W") and Config:getParam("LaneClear", "mana", "W") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_W) == READY and Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = nil
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
@@ -6780,7 +6569,7 @@ class "Volibear"
         end
       end
     end
-    if myHero:CanUseSpell(_E) == READY and Config:getParam("LaneClear", "LaneClear") and Config:getParam("LaneClear", "E") and Config:getParam("LaneClear", "mana", "E") <= 100*myHero.mana/myHero.maxMana then
+    if myHero:CanUseSpell(_E) == READY and Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = nil
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
@@ -6796,30 +6585,30 @@ class "Volibear"
   end
 
   function Volibear:Combo()
-    if Config:getParam("Combo", "Q") and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
+    if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
       Cast(_Q)
     end
-    if Config:getParam("Combo", "W") and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
+    if Config.Combo.W and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
       if GetDmg(_W, Target, myHero) >= Target.health then
         Cast(_W, Target, true)
       end
     end
-    if Config:getParam("Combo", "E") and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(pos) < data[2].range then
+    if Config.Combo.E and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(pos) < data[2].range then
       Cast(_E)
     end
-    if Config:getParam("Combo", "R") and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
+    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
       Cast(_R, myHero:Attack(Target))
     end
   end
 
   function Volibear:Harrass()
-    if Config:getParam("Harrass", "Q") and Config:getParam("Harrass", "mana", "Q") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
+    if Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and ValidTarget(Target, data[0].range) then
       Cast(_Q)
     end
-    if Config:getParam("Harrass", "W") and Config:getParam("Harrass", "mana", "W") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
+    if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
       Cast(_W, Target, true)
     end
-    if Config:getParam("Harrass", "E") and GetDistance(pos) < data[2].range and Config:getParam("Harrass", "mana", "E") <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
+    if Config.Harrass.E and GetDistance(pos) < data[2].range and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
       Cast(_E)
     end
   end
@@ -6827,13 +6616,13 @@ class "Volibear"
   function Volibear:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config:getParam("Killsteal", "Q") and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q)
-        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config:getParam("Killsteal", "W") and ValidTarget(enemy, data[1].range) then
+        elseif myHero:CanUseSpell(_W) == READY and enemy.health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy, true)
-        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config:getParam("Killsteal", "E") and ValidTarget(enemy, data[2].range-enemy.boundingRadius) then
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range-enemy.boundingRadius) then
           Cast(_E)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config:getParam("Killsteal", "Ignite") and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
@@ -6850,13 +6639,16 @@ class "Yasuo"
 
   function Yasuo:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     self:Menu()
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
     AddTickCallback(function() self:Tick() end)
   end
 
   function Yasuo:Tick()
-    if Config:getParam("Misc", "Flee") then
+    if Config.Misc.Flee then
       self:Move(mousePos)
     end
   end
@@ -6878,7 +6670,7 @@ class "Yasuo"
   end
 
   function Yasuo:ProcessSpell(unit, spell)
-    if (Config:getParam("Misc", "Wa") or (Config:getParam("Combo", "Combo") and Config:getParam("Combo", "W"))) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
+    if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
       if myHero == spell.target and spell.name:lower():find("attack") and unit.range > 475 then
         local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
         Cast(_W, wPos)
@@ -6893,20 +6685,26 @@ class "Yasuo"
   end
 
   function Yasuo:Menu()
-    for _,s in pairs({"Combo", "Harrass", "Killsteal", "LaneClear", "LastHit"}) do
-      Config:addParam({state = s, name = "Q", code = SCRIPT_PARAM_ONOFF, value = true})
-      Config:addParam({state = s, name = "E", code = SCRIPT_PARAM_ONOFF, value = true})
-    end
-    Config:addParam({state = "Combo", name = "W", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Combo", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    Config:addParam({state = "Killsteal", name = "R", code = SCRIPT_PARAM_ONOFF, value = true})
-    if Ignite ~= nil then Config:addParam({state = "Killsteal", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true})
-                          Config:addParam({state = "Combo", name = "Ignite", code = SCRIPT_PARAM_ONOFF, value = true}) end
-    Config:addParam({state = "Combo", name = "Combo", key = 32, code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Harrass", name = "Harrass", key = string.byte("C"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LaneClear", name = "LaneClear", key = string.byte("V"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "LastHit", name = "LastHit", key = string.byte("X"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
-    Config:addParam({state = "Misc", name = "Flee", key = string.byte("T"), code = SCRIPT_PARAM_ONKEYDOWN, value = false})
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("Wa", "Auto Shield with W", SCRIPT_PARAM_ONOFF, true)
   end
 
   function Yasuo:LastHit()
@@ -6926,14 +6724,14 @@ class "Yasuo"
 
   function Yasuo:Combo()
     if not self.Target then return end
-    if GetDistance(self.Target) > loadedOrb.myRange and Config:getParam("Combo", "E") then
+    if GetDistance(self.Target) > loadedOrb.myRange and Config.Combo.E then
       if GetDistance(self.Target) < data[2].range and GetStacks(self.Target) == 0 then
         Cast(_E, self.Target, true)
       else
         self:Move(self.Target)
       end
     end
-    if self.Target.y > myHero.y+25 and Config:getParam("Combo", "R") then
+    if self.Target.y > myHero.y+25 and Config.Combo.R then
       if sReady[_Q] and GetDistance(self.Target) < data[0].range then
         myHero:Attack(self.Target)
       else
@@ -6944,7 +6742,7 @@ class "Yasuo"
 
   function Yasuo:Harrass()
     if not self.Target then return end
-    if GetDistance(self.Target) > loadedOrb.myRange and GetStacks(self.Target) == 0 and Config:getParam("Harrass", "E") then
+    if GetDistance(self.Target) > loadedOrb.myRange and GetStacks(self.Target) == 0 and Config.Harrass.E then
       Cast(_E, self.Target, true)
     end
   end
@@ -6952,13 +6750,13 @@ class "Yasuo"
   function Yasuo:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if enemy.y > myHero.y+25 and Config:getParam("Killsteal", "R") and GetDmg(_R,myHero,enemy) > enemy.health then
+        if enemy.y > myHero.y+25 and Config.Killsteal.R and GetDmg(_R,myHero,enemy) > enemy.health then
           Cast(_R, enemy, true)
-        elseif Config:getParam("Killsteal", "Q") and GetDmg(_Q,myHero,enemy) > enemy.health then
+        elseif Config.Killsteal.Q and GetDmg(_Q,myHero,enemy) > enemy.health then
           Cast(_Q, enemy, false, true, 1)
-        elseif Config:getParam("Killsteal", "E") and GetDmg(_E,myHero,enemy) > enemy.health then
+        elseif Config.Killsteal.E and GetDmg(_E,myHero,enemy) > enemy.health then
           Cast(_E, enemy, true)
-        elseif Config:getParam("Killsteal", "Q") and Config:getParam("Killsteal", "E") and GetDmg(_Q,myHero,enemy)+GetDmg(_E,myHero,enemy) > enemy.health then
+        elseif Config.Killsteal.Q and Config.Killsteal.E and GetDmg(_Q,myHero,enemy)+GetDmg(_E,myHero,enemy) > enemy.health then
           Cast(_E, enemy, true)
           DelayAction(function() Cast(_Q) end, 0.25)
         end
