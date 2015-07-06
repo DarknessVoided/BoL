@@ -1575,7 +1575,7 @@ class "SWalk"
 
   function SWalk:Orb(unit)
     if not ValidTarget(unit, myRange) then unit = Target end
-    if os.clock() > self.orbTable.lastAA + (self.Config.wtt and self.orbTable.animation or self.orbTable.windUp) and ValidTarget(unit, myRange) then
+    if os.clock() > self.orbTable.lastAA + self.orbTable.animation and ValidTarget(unit, myRange) then
       myHero:Attack(unit)
       if myHero.charName == "Kalista" then
         local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250 
