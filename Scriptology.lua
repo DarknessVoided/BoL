@@ -16,7 +16,7 @@
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.96
+_G.ScriptologyVersion    = 1.97
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -32,6 +32,13 @@ _G.ScriptologyDebug      = false
     for _,champ in pairs(champList) do
       supported[champ] = true
     end
+    if FileExist(LIB_PATH .. "/ImprovedScriptConfig.lua") then
+      require("ImprovedScriptConfig")
+    else 
+      ScriptologyMsg("Downloading ImprovedScriptConfig, please don't press F9")
+      DelayAction(function() DownloadFile("https://raw.github.com/Feez/BoL/master/Common/ImprovedScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."ImprovedScriptConfig.lua", function () ScriptologyMsg("Successfully downloaded ImprovedScriptConfig. Press F9 twice.") end) end, 3) 
+      return true
+    end  
     if supported[myHero.charName] then
       if ScriptologyAutoUpdate and Update() then
         return
@@ -40,8 +47,9 @@ _G.ScriptologyDebug      = false
       end
     else
       ScriptologyMsg("Your Champion is not supported (yet)!")
-      ScriptologyMsg("Loaded SWalk instead")
+      ScriptologyMsg("Loaded SWalk and SAwareness instead")
       LoadOrb()
+      SetupAwareness()
     end
   end
 
@@ -124,13 +132,6 @@ _G.ScriptologyDebug      = false
         return true
       end
     end
-    if FileExist(LIB_PATH .. "/ImprovedScriptConfig.lua") then
-      require("ImprovedScriptConfig")
-    else 
-      ScriptologyMsg("Downloading ImprovedScriptConfig, please don't press F9")
-      DelayAction(function() DownloadFile("https://raw.github.com/Feez/BoL/master/Common/ImprovedScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."ImprovedScriptConfig.lua", function () ScriptologyMsg("Successfully downloaded ImprovedScriptConfig. Press F9 twice.") end) end, 3) 
-      return true
-    end  
     return false
   end
 
@@ -162,6 +163,7 @@ _G.ScriptologyDebug      = false
     Config:addSubMenu("Key Settings","kConfig")
     if UPLloaded then UPL:AddToMenu(Cfg) end
     SetupOrbwalk()
+    SetupAwareness()
   end
 
   function Vars()
@@ -458,6 +460,12 @@ _G.ScriptologyDebug      = false
     Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
     JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
     sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
+  end
+
+  function SetupAwareness()
+    if not _G.PrinceViewVersion then
+      loadedAwareness = SAwareness()
+    end
   end
 
   function SetupOrbwalk()
@@ -1331,6 +1339,123 @@ _G.ScriptologyDebug      = false
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
+--[[ SAwareness - Inbuilt Awareness from here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "SAwareness"
+
+  function SAwareness:__init()
+    Cfg:addSubMenu("SAwareness", "SAwareness")
+    self.Config = Cfg.SAwareness
+    self.Config:addParam("i", "Cooldowns", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("cde", "Enemies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("cda", "Allies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("i", "Waypoints", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("wpe", "Enemies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("wpa", "Allies:", SCRIPT_PARAM_ONOFF, false)
+    for _,k in pairs(GetAllyHeroes()) do
+      self.Config.cd:addParam(k.charName, k.charName, SCRIPT_PARAM_ONOFF, true)
+    end
+    AddDrawCallback(function() self:Draw() end)
+    return self
+  end
+
+  function SAwareness:Draw()
+    local offset = 18
+    local nextOffset = 0
+    if self.Config.cde then
+      for _,k in pairs(GetEnemyHeroes()) do
+        local barPos = GetUnitHPBarPos(k)
+        local barOffset = GetUnitHPBarOffset(k)
+        drawPos = {barPos.x - 68 + barOffset.x * 150, barPos.y + barOffset.y * 50 + 12}
+        if k.visible and not k.dead then
+          for i=0,3 do
+            local cd = k:GetSpellData(i).currentCd
+            DrawText("|", offset, drawPos[1]+nextOffset+i*offset, drawPos[2], ARGB(105,250,250,250))
+            if cd > 0 and k:GetSpellData(i).level >= 1 then
+              DrawText(""..math.ceil(cd), offset, drawPos[1]+nextOffset+offset/2+i*offset, drawPos[2], ARGB(255,250,250,250))
+              if cd > 9 then nextOffset = nextOffset + offset/2 end
+              if cd > 99 then nextOffset = nextOffset + offset/2 end
+            elseif k:GetSpellData(i).level >= 1 then
+              DrawText("-", offset, drawPos[1]+nextOffset+offset/2+i*offset, drawPos[2], ARGB(255,0,250,0))
+            else
+              DrawText("-", offset, drawPos[1]+nextOffset+offset/2+i*offset, drawPos[2], ARGB(105,250,250,250))
+            end
+          end
+          DrawText("|", offset, drawPos[1]+nextOffset+4*offset, drawPos[2], ARGB(105,250,250,250))
+        end
+      end
+    end
+    if self.Config.cda then
+      for _,k in pairs(GetAllyHeroes()) do
+        local barPos = GetUnitHPBarPos(k)
+        local barOffset = GetUnitHPBarOffset(k)
+        drawPos = {barPos.x - 68 + barOffset.x * 150, barPos.y + barOffset.y * 50 + 12}
+        if k.visible and not k.dead then
+          for i=0,3 do
+            local cd = k:GetSpellData(i).currentCd
+            DrawText("|", offset, drawPos[1]+nextOffset+i*offset, drawPos[2], ARGB(105,250,250,250))
+            if cd > 0 and k:GetSpellData(i).level >= 1 then
+              DrawText(""..math.ceil(cd), offset, drawPos[1]+nextOffset+offset/2+i*offset, drawPos[2], ARGB(255,250,250,250))
+              if cd > 9 then nextOffset = nextOffset + offset/2 end
+              if cd > 99 then nextOffset = nextOffset + offset/2 end
+            elseif k:GetSpellData(i).level >= 1 then
+              DrawText("-", offset, drawPos[1]+nextOffset+offset/2+i*offset, drawPos[2], ARGB(255,0,250,0))
+            else
+              DrawText("-", offset, drawPos[1]+nextOffset+offset/2+i*offset, drawPos[2], ARGB(105,250,250,250))
+            end
+          end
+          DrawText("|", offset, drawPos[1]+nextOffset+4*offset, drawPos[2], ARGB(105,250,250,250))
+        end
+      end
+    end
+    if self.Config.wpe then
+      for i, k in ipairs(GetEnemyHeroes()) do
+        if k and k.hasMovePath and k.pathCount >= 2 then
+          local IndexPath = k:GetPath(k.pathIndex)
+          if IndexPath then
+            DrawCircle3D(IndexPath.x, IndexPath.y, IndexPath.z, 18, 1, ARGB(105,255,255,255), 32)
+            DrawLine3D(k.x, k.y, k.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(105, 255, 255, 255))
+          end
+          for i=k.pathIndex, k.pathCount-1 do
+            local Path = k:GetPath(i)
+            local Path2 = k:GetPath(i+1)
+            DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(105, 255, 255, 255))
+          end
+        end
+      end
+    end
+    if self.Config.wpa then
+      for i, k in ipairs(GetAllyHeroes()) do
+        if k and k.hasMovePath and k.pathCount >= 2 then
+          local IndexPath = k:GetPath(k.pathIndex)
+          if IndexPath then
+            DrawCircle3D(IndexPath.x, IndexPath.y, IndexPath.z, 18, 1, ARGB(105,255,255,255), 32)
+            DrawLine3D(k.x, k.y, k.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(105, 255, 255, 255))
+          end
+          for i=k.pathIndex, k.pathCount-1 do
+            local Path = k:GetPath(i)
+            local Path2 = k:GetPath(i+1)
+            DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(105, 255, 255, 255))
+          end
+        end
+      end
+    end
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ SAwareness - Inbuilt Awareness till here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 --[[ SWalk - Inbuilt OrbWalker from here ]]--
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -1349,7 +1474,7 @@ class "SWalk"
       self.aaResetTable3 = a3
     self.State = {}
     self.orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
-    self.myRange = myHero.range+myHero.boundingRadius*2
+    self.myRange = myHero.range+myHero.boundingRadius
     if Cfg then
       Cfg:addSubMenu("SWalk", "SWalk")
       self.Config = Cfg.SWalk
@@ -1388,6 +1513,10 @@ class "SWalk"
       self.Config:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
     end
     if not supported[myHero.charName] then
+      self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
+      Cfg:addSubMenu("Target Selector", "ts")
+      Cfg.ts:addTS(self.ts)
+      ArrangeTSPriorities()
       sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
       self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
@@ -1406,7 +1535,8 @@ class "SWalk"
   end
 
   function SWalk:OrbWalk()
-    myRange = myHero.range+myHero.boundingRadius*2
+    if not ScriptologyLoaded then self.ts:update() Target = self.ts.target end
+    myRange = myHero.range+myHero.boundingRadius
     if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
       dmg = GetDmg("AD",myHero,self.Target)
@@ -1445,7 +1575,7 @@ class "SWalk"
 
   function SWalk:Orb(unit)
     if not ValidTarget(unit, myRange) then unit = Target end
-    if os.clock() > self.orbTable.lastAA + self.orbTable.animation and ValidTarget(unit, myRange) then
+    if os.clock() > self.orbTable.lastAA + (self.Config.wtt and self.orbTable.animation or self.orbTable.windUp) and ValidTarget(unit, myRange) then
       myHero:Attack(unit)
       if myHero.charName == "Kalista" then
         local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250 
