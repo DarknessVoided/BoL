@@ -2402,6 +2402,12 @@ class "Blitzcrank"
       end
     end
 
+    if target and myHero:CanUseSpell(_R) == READY and Config.Combo.R then
+      if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
+        CastSpell(_R)
+      end
+    end
+
     if target and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if HitChance > 1.2 and GetDistance(CastPosition) <= data[0].range  then
