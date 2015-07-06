@@ -6593,7 +6593,7 @@ class "Volibear"
         Cast(_W, Target, true)
       end
     end
-    if Config.Combo.E and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(pos) < data[2].range then
+    if Config.Combo.E and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(Target) < data[2].range then
       Cast(_E)
     end
     if Config.Combo.R and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
