@@ -160,7 +160,7 @@ _G.ScriptologyDebug      = false
     Config.Draws:addParam("OpacityE", "Opacity E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Draws:addParam("OpacityR", "Opacity R", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config:addSubMenu("Key Settings","kConfig")
-    UPL:AddToMenu(Cfg)
+    if UPLloaded then UPL:AddToMenu(Cfg) end
     SetupOrbwalk()
   end
 
