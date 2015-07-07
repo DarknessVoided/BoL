@@ -3619,6 +3619,7 @@ class "Katarina"
   end
 
   function Katarina:Tick()
+    if loadedOrb.Target ~= nil then self.Target = loadedOrb.Target end
     if Config.Misc.Jump then self:WardJump() end
   end
 
