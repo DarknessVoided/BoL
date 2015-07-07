@@ -1535,7 +1535,7 @@ class "SWalk"
   end
 
   function SWalk:OrbWalk()
-    if not ScriptologyLoaded then self.ts:update() Target = self.ts.target end
+    if not supported[myHero.charName] and self.ts then self.ts:update() Target = self.ts.target end
     myRange = myHero.range+myHero.boundingRadius
     if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
