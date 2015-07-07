@@ -565,7 +565,7 @@ _G.ScriptologyDebug      = false
   -- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
     aaResetTable = { ["Diana"] = {_E}, ["Darius"] = {_W}, ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Sivir"] = {_W}, ["Talon"] = {_Q} }
   -- CastSpell(s, x, z)
-    aaResetTable2 = { ["Diana"] = {_Q}, ["Kalista"] = {_Q}, ["Lucian"] = {_E}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
+    aaResetTable2 = { ["Diana"] = {_Q}, ["Kalista"] = {_Q}, ["Lucian"] = {_E}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Vayne"] = {_Q}, ["Yasuo"] = {_Q} }
   -- CastSpell(s, t)
     aaResetTable3 = { ["Lucian"] = {_Q}, ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
     loadedOrb = SWalk(myHero.range < 500, aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName])
