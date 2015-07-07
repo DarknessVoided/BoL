@@ -3060,8 +3060,8 @@ class "Darius"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-    Config.Misc:addParam("offsetQ", "Max Q range %", SCRIPT_PARAM_LIST, 100, 0, 100, 0)
-    Config.Misc:addParam("offsetE", "Max E range %", SCRIPT_PARAM_LIST, 100, 0, 100, 0)
+    Config.Misc:addParam("offsetQ", "Max Q range %", SCRIPT_PARAM_SLICE, 100, 0, 100, 0)
+    Config.Misc:addParam("offsetE", "Max E range %", SCRIPT_PARAM_SLICE, 100, 0, 100, 0)
   end
 
   function Darius:LastHit()
