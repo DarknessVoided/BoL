@@ -379,7 +379,8 @@ _G.ScriptologyDebug      = false
           [_Q] = { range = 500, speed = math.huge, delay = 0.125, width = 55, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20*level+TotalDmg-10 end},
           [_W] = { range = 350},
           [_E] = { range = 475, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+20*level+AP end},
-          [_R] = { range = 1200, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end}
+          [_R] = { range = 1200, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+1.5*TotalDmg end},
+          [-1] = { range = 1200, speed = 1200, delay = 0.125, width = 65, type = "linear" }
         },
         ["Yorick"] = {
           [_Q] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+1.2*TotalDmg+TotalDmg end},
@@ -6953,18 +6954,46 @@ class "Volibear"
 class "Yasuo"
 
   function Yasuo:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[3].range, DAMAGE_PHYSICAL, false, true)
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
     self:Menu()
+    self.passiveTracker = false
+    self.passiveName = "yasuoq3w"
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
     AddTickCallback(function() self:Tick() end)
+    AddApplyBuffCallback(function(x,y,z) self:ApplyBuff(x,y,z) end)
+    AddUpdateBuffCallback(function(x,y,z) self:UpdateBuff(x,y,z) end)
+    AddRemoveBuffCallback(function(x,y) self:RemoveBuff(x,y) end)
+  end
+
+  function Yasuo:ApplyBuff(unit,source,buff)
+    if unit and unit == source and unit.isMe and buff.name == self.passiveName then
+      self.passiveTracker = true
+    end
+  end
+
+  function Yasuo:UpdateBuff(unit,buff,stacks)
+    if unit and unit.isMe and buff.name == self.passiveName then
+      self.passiveTracker = true
+    end
+  end
+
+  function Yasuo:RemoveBuff(unit,buff)
+    if unit and unit.isMe and buff.name == self.passiveName then
+      self.passiveTracker = false
+    end
   end
 
   function Yasuo:Tick()
     if Config.Misc.Flee then
       self:Move(mousePos)
+    end
+    if self.passiveTracker then
+      data[0].range = 1200
+    else
+      data[0].range = 500
     end
   end
 
@@ -7047,10 +7076,16 @@ class "Yasuo"
       end
     end
     if self.Target.y > myHero.y+25 and Config.Combo.R then
-      if sReady[_Q] and GetDistance(self.Target) < data[0].range then
+      if sReady[_Q] and GetDistance(self.Target) < 500 then
         myHero:Attack(self.Target)
       else
         Cast(_R, self.Target, true)
+      end
+    end
+    if sReady[_Q] and self.passiveTracker and GetDistance(self.Target) < 1200 then
+      local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, self.Target)
+      if HitChance >= 2 then
+        Cast(_Q, CastPosition)
       end
     end
   end
