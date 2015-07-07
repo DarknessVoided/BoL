@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.994
+_G.ScriptologyVersion    = 1.995
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -27,7 +27,7 @@ _G.ScriptologyDebug      = false
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Ekko", "Kalista", "Katarina", 
                   "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", "Ryze", "Rumble", 
                   "Talon", "Teemo", "Vayne", "Volibear", "Yasuo" }
-    Cfg = scriptConfig("Scriptology Loader", "Scriptology")
+    Cfg = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
     supported = {}
     for _,champ in pairs(champList) do
       supported[champ] = true
@@ -467,13 +467,13 @@ _G.ScriptologyDebug      = false
   end
 
   function SetupAwareness()
-    if not _G.PrinceViewVersion then
+    if _G.PrinceViewVersion == nil then
       loadedAwareness = SAwareness()
     end
   end
 
   function SetupEvade()
-    if not _G.Evadeee_Loaded then
+    if _G.Evadeee_Loaded == nil then
       loadedEvade = SEvade()
     end
   end
@@ -1585,12 +1585,13 @@ class "SWalk"
       self.Target, health = self:GetLowestPMinion(self.myRange)
       if not self.Target then
         self.Target = GetJMinion(self.myRange)
+      else
+        dmg = GetDmg("AD",myHero,self.Target)
+        if dmg and health ~= self.Target.health and (health >= dmg or self.Target.health-health-dmg <= 0) then
+          self.Target = nil
+        end
+        if health < 0 then self.Target = nil end
       end
-      dmg = GetDmg("AD",myHero,self.Target)
-      if self.Target and dmg and health ~= self.Target.health and (health >= dmg or self.Target.health-health-dmg <= 0) then
-        self.Target = nil
-      end
-      if health < 0 then self.Target = nil end
     end 
     if self.Config.kConfig.Harrass then
       self.Target = Target
@@ -3990,6 +3991,8 @@ class "LeeSin"
     self.Wards = {}
     self.casted, self.jumped = false, false
     self.oldPos = nil
+    self.passiveTracker = 0
+    self.passiveName = "blindmonkpassive_cosmetic"
     for i = 1, objManager.maxObjects do
       local object = objManager:GetObject(i)
       if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
@@ -4000,6 +4003,27 @@ class "LeeSin"
     AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
     AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
+    AddApplyBuffCallback(function(x,y,z) self:ApplyBuff(x,y,z) end)
+    AddUpdateBuffCallback(function(x,y,z) self:UpdateBuff(x,y,z) end)
+    AddRemoveBuffCallback(function(x,y) self:RemoveBuff(x,y) end)
+  end
+
+  function LeeSin:ApplyBuff(unit,source,buff)
+    if unit and unit == source and unit.isMe and buff.name == self.passiveName then
+      self.passiveTracker = 2
+    end
+  end
+
+  function LeeSin:UpdateBuff(unit,buff,stacks)
+    if unit and unit.isMe and buff.name == self.passiveName then
+      self.passiveTracker = stacks
+    end
+  end
+
+  function LeeSin:RemoveBuff(unit,buff)
+    if unit and unit.isMe and buff.name == self.passiveName then
+      self.passiveTracker = 0
+    end
   end
 
   function LeeSin:Menu()
@@ -4013,6 +4037,8 @@ class "LeeSin"
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Qf", "Safe Q to lasthit (jungle)", SCRIPT_PARAM_ONOFF, true)
+    if Smite ~= nil then Config.LaneClear:addParam("S", "Smite (jungle)", SCRIPT_PARAM_ONOFF, true) end
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -4020,6 +4046,7 @@ class "LeeSin"
     Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Smite ~= nil then Config.Killsteal:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
@@ -4204,43 +4231,43 @@ class "LeeSin"
   end
 
   function LeeSin:LaneClear()
-    if Config.LaneClear.Q and myHero:CanUseSpell(_Q) == READY then
-      local minionTarget = nil
-      for i, minion in pairs(Mobs.objects) do
-        if minionTarget == nil then 
-          minionTarget = minion
-        elseif minionTarget.health+minionTarget.shield >= minion.health+minion.shield and ValidTarget(minion, 1100) then
-          minionTarget = minion
-        end
-      end
-      if minionTarget ~= nil then
-        Cast(_Q, minionTarget, false, true, 1.5)
-      end
-      for i, minion in pairs(JMobs.objects) do
-        if minionTarget == nil then 
-          minionTarget = minion
-        elseif minionTarget.maxHealth < minion.maxHealth and GetDistance(minion) < 1100 then
-          minionTarget = minion
-        end
-      end
-      if minionTarget ~= nil then
-        Cast(_Q, minionTarget, false, true, 1.5)
+    if Config.LaneClear.Q and myHero:CanUseSpell(_Q) == READY and self.passiveTracker == 0 then
+      local minion = GetLowestMinion(1100)
+      if minion ~= nil then
+        Cast(_Q, minion, false, true, 1)
       end
     end
-    if Config.LaneClear.E and myHero:CanUseSpell(_E) == READY then
-      BestPos, BestHit = GetFarmPosition(data[2].range, data[2].width)
-      if BestHit > 1 and GetDistance(BestPos) < 150 then 
+    if Config.LaneClear.Q and myHero:CanUseSpell(_Q) == READY then
+      local minion = GetJMinion(1100)
+      if minion ~= nil and Config.LaneClear.Qf then
+        if self:QDmg(minion)+((Smite and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY) and math.max(20*myHero.level+370,30*myHero.level+330,40*myHero.level+240,50*myHero.level+100) or 0) > minion.health then
+          Cast(_Q, minion, false, true, 1)
+          if not self:IsFirstCast(_Q) and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY then
+            DelayAction(function() CastSpell(Smite, minion) end, data[0].delay)
+          end
+        end
+      elseif minion ~= nil and not Config.LaneClear.Qf then
+        Cast(_Q, minion, false, true, 1)
+      end
+    end
+    if Config.LaneClear.E and myHero:CanUseSpell(_E) == READY and self.passiveTracker == 0 then
+      local BestPos, BestHit = GetFarmPosition(data[2].range, data[2].width)
+      if BestHit >= 1 and GetDistance(BestPos) < 250 then 
         Cast(_E)
       end
-      for i, minion in pairs(JMobs.objects) do
-        if minionTarget == nil then 
-          minionTarget = minion
-        elseif minionTarget.maxHealth < minion.maxHealth and GetDistance(minion) < 350 then
-          minionTarget = minion
-        end
+      local minion = GetJMinion(data[2].width)
+      if minion and GetDistance(minion) < data[2].width then 
+        Cast(_E)
       end
-      if minionTarget ~= nil then
-        Cast(_E, minionTarget, false, true, 1.2)
+    end
+    if Config.LaneClear.W and myHero:CanUseSpell(_W) == READY and self.passiveTracker == 0 then
+      local minion = GetLowestMinion(myHero.range+myHero.boundingRadius)
+      if minion ~= nil then
+        Cast(_W, myHero, true)
+      end
+      local minion = GetJMinion(data[2].width)
+      if minion and GetDistance(minion) < data[2].width then 
+        Cast(_W, myHero, true)
       end
     end
   end
@@ -4306,6 +4333,8 @@ class "LeeSin"
           Cast(_R, enemy, true)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
+        elseif Smite and myHero:CanUseSpell(Smite) == READY and enemy.health < 20+8*myHero.level and Config.Killsteal.S and ValidTarget(enemy, 600) then
+          CastSpell(Smite, enemy)
         end
       end
     end
