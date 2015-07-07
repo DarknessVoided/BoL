@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.995
+_G.ScriptologyVersion    = 1.996
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -170,6 +170,7 @@ _G.ScriptologyDebug      = false
   function Vars()
     if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
     if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
+    if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
     killTextTable = {}
     for k,enemy in pairs(GetEnemyHeroes()) do
       killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = ""}
@@ -683,6 +684,11 @@ _G.ScriptologyDebug      = false
       if Config.Draws.R and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
         DrawLFC(myHero.x, myHero.y, myHero.z, type(data[3].range) == "function" and data[3].range() or data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config.Draws.OpacityR/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100)))
       end
+    end
+    if loadedClass.Forcetarget then
+      DrawLFC(loadedClass.Forcetarget.x, loadedClass.Forcetarget.y, loadedClass.Forcetarget.z, loadedClass.Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
+      DrawLFC(loadedClass.Forcetarget.x, loadedClass.Forcetarget.y, loadedClass.Forcetarget.z, loadedClass.Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
+      DrawLFC(loadedClass.Forcetarget.x, loadedClass.Forcetarget.y, loadedClass.Forcetarget.z, loadedClass.Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
     end
     --print(#objHolder)
     if objTrackList[myHero.charName] then
@@ -2316,6 +2322,7 @@ class "Azir"
     self.soldierToDash = nil
     self.Target = nil
     AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+    AddTickCallback(function() self:Tick() end)
   end
 
   function Azir:ProcessSpell(unit, spell)
@@ -2382,8 +2389,17 @@ class "Azir"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
-    Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+    Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+  end
+
+  function Azir:Tick()
+    if Config.Misc.Flee then
+      self:Flee()
+    end
+    if Config.Misc.Insec then
+      self:Insec()
+    end
   end
 
   function Azir:LastHit()
@@ -2411,11 +2427,11 @@ class "Azir"
 
   function Azir:Combo()
     if sReady[_W] and Config.Combo.W then
-      Cast(_W, self.Target)
+      Cast(_W, self.Target, false, true, 1)
     end
     if Config.Combo.Q and self:CountSoldiers() > 0 then
       for _,k in pairs(self:GetSoldiers()) do
-        Cast(_Q, self.Target, false, true, 1.5)
+        Cast(_Q, self.Target, false, true, 1)
       end
     end
     if self.Target and Config.Combo.E and self.Target.health < GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
@@ -2458,8 +2474,8 @@ class "Azir"
     if self:CountSoldiers() > 0 and self.soldierToDash then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * data[0].range
       if movePos then
-        Cast(_Q, movePos)
         Cast(_E, self.soldierToDash, true)
+        DelayAction(function() Cast(_Q, movePos) end, 0.25)
         DelayAction(function() self.soldierToDash = nil end, myHero:GetSpellData(_E).currentCd)
       end
     end
@@ -2482,11 +2498,11 @@ class "Azir"
       Cast(_W, enemy)
     end
     if self:CountSoldiers() > 0 and self.soldierToDash then
-      local movePos = myHero + (Vector(enemy) - myHero):normalized() * data[0].range + (Vector(enemy) - myHero):normalized():perpendicular() * data[1].width
+      local movePos = myHero + (Vector(enemy) - myHero):normalized() * data[0].range + (Vector(enemy) - myHero):normalized() * data[1].width
       if movePos then
         Cast(_Q, movePos)
         Cast(_E, self.soldierToDash, true)
-        DelayAction(function() Cast(_R, enemy, false, true, 1) end, 1)
+        DelayAction(function() Cast(_R, mousePos) end, 1)
         DelayAction(function() self.soldierToDash = nil end, 2)
       end
     end
@@ -3250,6 +3266,14 @@ class "Darius"
       Cast(_E, target)
     end
   end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "Diana"
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -4053,6 +4077,7 @@ class "LeeSin"
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("FInsec", "Flash Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("Z"))
     Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
   end
 
@@ -4060,13 +4085,16 @@ class "LeeSin"
     if Config.Misc.Insec then
       self:Insec()
     end
+    if Config.Misc.FInsec then
+      self:FInsec()
+    end
     if Config.Misc.Jump then
       self:WardJump()
     end
   end
 
   function LeeSin:Insec()
-    if myHero:GetSpellData(_R).currentCd ~= 0 then return end
+    if myHero:GetSpellData(_R).currentCd > 2 then return end
     self.insecTarget = self.Forcetarget or Target
     if self.insecTarget == nil then if GetDistance(mousePos,myHero.pos) > myHero.boundingRadius then myHero:MoveTo(mousePos.x, mousePos.z) end return end
     local insecTowards = nil
@@ -4079,29 +4107,58 @@ class "LeeSin"
     end
     if insecTowards == nil or _G.LeftMousDown then
       insecTowards = mousePos
-    else
+    end
+    if insecTowards == nil then return end
+    local pos, b = PredictPos(self.insecTarget)
+    local pos = pos or self.insecTarget
+    local movePos = self.insecTarget+(pos-insecTowards):normalized()*(self.insecTarget.boundingRadius+myHero.boundingRadius)
+    if GetDistance(movePos) < 250 then
+      CastSpell(_R, self.insecTarget) 
+      if sReady[_Q] then
+        DelayAction(function() Cast(_Q, self.insecTarget) end, 0.33)
+        DelayAction(function() Cast(_Q) end, 0.67)
+      end
       return
+    elseif GetDistance(movePos) > self.insecTarget.boundingRadius+myHero.boundingRadius and GetDistance(movePos) < 600 then
+      if self:Jump(movePos, myHero.boundingRadius, true) then
+        self.casted = false
+      elseif not self.casted then
+        slot = self:GetWardSlot()
+        if not slot or self.casted then return end
+        self.casted = true
+        CastSpell(slot, movePos.x, movePos.z)
+      end
+    elseif GetDistance(movePos) > self.insecTarget.boundingRadius+myHero.boundingRadius then 
+      myHero:MoveTo(movePos.x,movePos.z)
     end
-    CastPosition = insecTowards
-    if GetDistance(insecTowards, mousePos) > 50 then
-      CastPosition, HitChance, Position = UPL:Predict(_R, myHero, insecTowards)
-    end
-    CastPosition1 = Vector(self.insecTarget)-300*(Vector(CastPosition)-Vector(self.insecTarget)):normalized()
-    myHero:MoveTo(CastPosition1.x, CastPosition1.z)
-    local x, y, z = VectorPointProjectionOnLineSegment(myHero, CastPosition, self.insecTarget)
-    if GetDistance(myHero, CastPosition1) < 25 and z then
-      if myHero:CanUseSpell(_Q) then 
-        Cast(_Q, self.insecTarget)
-        DelayAction(function() Cast(_R, self.insecTarget, true) DelayAction(function() Cast(_Q) end, 0.33) end, data[0].delay+GetDistance(self.insecTarget, myHero.pos)/data[0].speed)
-      else
-        Cast(_R, self.insecTarget, true)
+  end
+
+  function LeeSin:FInsec()
+    if myHero:GetSpellData(_R).currentCd > 1 or not Flash or myHero:CanUseSpell(Flash) ~= READY then return end
+    self.insecTarget = self.Forcetarget or Target
+    if self.insecTarget == nil then if GetDistance(mousePos,myHero.pos) > myHero.boundingRadius then myHero:MoveTo(mousePos.x, mousePos.z) end return end
+    local insecTowards = nil
+    if #GetAllyHeroes() > 0 then
+      for _,unit in pairs(GetAllyHeroes()) do
+        if GetDistance(unit,insecTarget) < 2000 then
+          insecTowards = unit
+        end
       end
     end
-    if GetDistance(CastPosition1) > 300 and GetDistance(CastPosition1) < 600 then
-      if self:Jump(CastPosition1, 50, true) then return end
-      slot = self:GetWardSlot()
-      if not slot then return end
-      CastSpell(slot, CastPosition1.x, CastPosition1.z)
+    if insecTowards == nil or _G.LeftMousDown then
+      insecTowards = mousePos
+    end
+    if insecTowards == nil then return end
+    local pos, b = PredictPos(self.insecTarget)
+    local pos = pos or self.insecTarget
+    local movePos = self.insecTarget-(pos-insecTowards):normalized()*(self.insecTarget.boundingRadius+myHero.boundingRadius)
+    local movePos2 = self.insecTarget+(pos-insecTowards):normalized()*(self.insecTarget.boundingRadius+myHero.boundingRadius)
+    if GetDistance(movePos) < 150 then
+      CastSpell(_R, self.insecTarget) 
+      DelayAction(function() Cast(Flash, movePos2) end, 0.125)
+      return
+    elseif GetDistance(movePos) > self.insecTarget.boundingRadius+myHero.boundingRadius then 
+      myHero:MoveTo(movePos.x,movePos.z)
     end
   end
 
@@ -4122,7 +4179,7 @@ class "LeeSin"
           end
         end
       end
-      if starget and minD < 500 then
+      if starget and minD < starget.boundingRadius*2 then
         if self.Forcetarget and starget.charName == self.Forcetarget.charName then
           self.Forcetarget = nil
           ScriptologyMsg("Insec-target un-selected.")
@@ -4150,6 +4207,7 @@ class "LeeSin"
       slot = self:GetWardSlot()
       if not slot then return end
       CastSpell(slot, pos.x, pos.z)
+      self.casted = true
     end
   end
 
@@ -4273,8 +4331,9 @@ class "LeeSin"
   end
 
   function LeeSin:Combo()
-    if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, 400) and self:IsFirstCast(_E) then
-      Cast(_E, Target, false, true, 1.2)
+    local pos, b = PredictPos(Target)
+    if myHero:CanUseSpell(_E) == READY and pos and ValidTarget(Target, data[2].width) and GetDistanceSqr(pos,myHero) < data[2].width ^ 2 and self.passiveTracker == 0 then
+      Cast(_E)
     end
     if Target.health < GetDmg(_Q, myHero, Target)+GetDmg(_R, myHero, Target)+(Target.maxHealth-(Target.health-GetDmg(_R, myHero, Target)*0.08)) then
       if myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
@@ -4283,7 +4342,7 @@ class "LeeSin"
         Cast(_R, Target)
         DelayAction(Cast, 0.33, {_Q})
       end
-    elseif myHero:CanUseSpell(_Q) == READY and self:IsFirstCast(_Q) then
+    elseif myHero:CanUseSpell(_Q) == READY and self.passiveTracker == 0 then
       Cast(_Q, Target, false, true, 1.5)
     elseif Target ~= nil and GetStacks(Target) > 0 and GetDistance(Target) > myHero.range+myHero.boundingRadius*2 then
       Cast(_Q)
