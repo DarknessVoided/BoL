@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.991
+_G.ScriptologyVersion    = 1.992
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -47,9 +47,10 @@ _G.ScriptologyDebug      = false
       end
     else
       ScriptologyMsg("Your Champion is not supported (yet)!")
-      ScriptologyMsg("Loaded SWalk and SAwareness instead")
-      LoadOrb()
+      ScriptologyMsg("Loaded SAwareness, SEvade and SWalk to menu instead")
+      if not _G.Reborn_Initialised and not _G.MMA_Loaded then LoadOrb() end
       SetupAwareness()
+      SetupEvade()
     end
   end
 
@@ -176,9 +177,9 @@ _G.ScriptologyDebug      = false
     stackTable = {}
     championData = {
         ["Ahri"] = {
-          [_Q] = { range = 880, delay = 0.25, speed = 1600, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.35*AP end},
+          [_Q] = { range = 880, delay = 0.25, speed = 1600, width = 120, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.35*AP end},
           [_W] = { range = 600, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+25*level+0.4*AP end},
-          [_E] = { range = 950, delay = 0.25, speed = 1550, width = 60, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.5*AP end},
+          [_E] = { range = 900, delay = 0.25, speed = 1550, width = 65, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+35*level+0.5*AP end},
           [_R] = { range = 800, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+30+0.3*AP end}
         },
         ["Ashe"] = {
@@ -194,7 +195,7 @@ _G.ScriptologyDebug      = false
           [_R] = { speed = 1300, delay = 0.2, range = 500, width = 200, collision = false, aoe = true, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.5*AP end}
         },
         ["Blitzcrank"] = {
-          [_Q] = { speed = 1800, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 55*level+25+AP end},
+          [_Q] = { speed = 1800, delay = 0.25, range = 900, width = 70, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 55*level+25+AP end},
           [_W] = { range = 25000},
           [_E] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 2*TotalDmg end},
           [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 125*level+125+AP end}
@@ -456,6 +457,9 @@ _G.ScriptologyDebug      = false
     for k,v in pairs(data) do
       if v.type then UPL:AddSpell(k, v) end
     end
+    if UPL.SP and myHero.charName == "Blitzcrank" then
+      UPL.SP.SpellData[myHero.charName][_Q].collision = false
+    end
     Target = nil
     Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
     JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
@@ -465,6 +469,12 @@ _G.ScriptologyDebug      = false
   function SetupAwareness()
     if not _G.PrinceViewVersion then
       loadedAwareness = SAwareness()
+    end
+  end
+
+  function SetupEvade()
+    if not _G.Evadeee_Loaded then
+      loadedEvade = SEvade()
     end
   end
 
@@ -1442,6 +1452,30 @@ class "SAwareness"
         end
       end
     end
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ SAwareness - Inbuilt Awareness till here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--[[ SAwareness - Inbuilt Awareness from here ]]--
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "SEvade"
+
+  function SEvade:__init()
+    Cfg:addSubMenu("SEvade", "SEvade")
+    self.Config = Cfg.SEvade
+    self.Config:addParam("i", "Soon", SCRIPT_PARAM_INFO, "")
+    return self
   end
 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -2496,6 +2530,7 @@ class "Blitzcrank"
     Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    if Smite ~= nil then Config.Misc:addParam("S", "Smitegrab", SCRIPT_PARAM_ONOFF, true) end
   end
 
   function Blitzcrank:GetBestTarget(Range)
@@ -2538,10 +2573,22 @@ class "Blitzcrank"
     if target and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if HitChance > 1.2 and GetDistance(CastPosition) <= data[0].range  then
-        local Mcol = self.Col:GetMinionCollision(myHero, CastPosition)
-        local Mcol2 = self.Col:GetMinionCollision(myHero, target)
+        local Mcol, mcol = self.Col:GetMinionCollision(myHero, CastPosition)
+        local Mcol2, mcol2 = self.Col:GetMinionCollision(myHero, target)
         if not Mcol and not Mcol2 then
           CastSpell(_Q, CastPosition.x,  CastPosition.z)
+        elseif Smite and Config.Misc.S and mcol+mcol2 == 1 and myHero:CanUseSpell(Smite) == READY then
+          local minion = nil
+          for _,k in pairs(Mobs.objects) do
+            if not minion and k and GetDistanceSqr(k) < data[2].range*data[2].range then minion = k end
+            if minion and k and GetDistanceSqr(k,myHero)+GetDistanceSqr(k,CastPosition) < GetDistanceSqr(minion,myHero)+GetDistanceSqr(minion,CastPosition) and GetDistanceSqr(k) < data[2].range*data[2].range then
+              minion = k
+            end
+          end
+          if minion then
+            CastSpell(_Q, CastPosition.x,  CastPosition.z)
+            DelayAction(function() CastSpell(Smite, minion) end, GetDistance(minion) / data[_Q].speed + data[_Q].delay)
+          end
         end
       end
     end
