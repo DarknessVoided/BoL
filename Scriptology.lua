@@ -1729,7 +1729,11 @@ class "SWalk"
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
             if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
-              CastSpell(k, unit.x, unit.z)
+              if UPLloaded then
+                Cast(k, unit, false, true, 1)
+              else
+                CastSpell(k, unit.x, unit.z)
+              end
               return
             end
           end
