@@ -1536,6 +1536,7 @@ class "SWalk"
       end
     end
     self.Config:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("m", "Move", SCRIPT_PARAM_ONOFF, true)
     AddTickCallback(function() self:OrbWalk() end)
     AddDrawCallback(function() self:Draw() end)
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
@@ -1638,7 +1639,7 @@ class "SWalk"
           myHero:MoveTo(movePos.x, movePos.z)
         end
       end
-    elseif GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp + self.Config.cadj/1000) then
+    elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp + self.Config.cadj/1000) then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
       if self:DoOrb() and unit and valid and unit.type == myHero.type and self.melee and self.Config.wtt then
         if GetDistance(unit) > myHero.boundingRadius+unit.boundingRadius then
