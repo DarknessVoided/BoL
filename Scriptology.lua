@@ -1697,7 +1697,7 @@ class "SWalk"
       if spell.name:lower():find("attack") then
         self.orbTable.windUp = spell.windUpTime
         self.orbTable.animation = spell.animationTime
-        self.orbTable.lastAA = os.clock()
+        self.orbTable.lastAA = myHero.charName == "Kalista" and 0 or os.clock()
         DelayAction(function() self:WindUp(self.Target) end, 1 / (myHero.attackSpeed * 1 / (spell.windUpTime * myHero.attackSpeed)) - GetLatency() / 2000)
       end
     end
