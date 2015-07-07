@@ -73,8 +73,8 @@ return {
     },
     ["Diana"] = {
         [_Q] = { name = "DianaArc", speed = 2000, delay = 0.250, range = 830, width = 130, collision = false, aoe = false, type = "circular"},
-        [_W] = { name = "DianaOrbs" },
-        [_E] = { name = "DianaVortex" },
+        [_W] = { name = "DianaOrbs", range = 250 },
+        [_E] = { name = "DianaVortex", range = 395 },
         [_R] = { name = "DianaTeleport" }
     },
     ["DrMundo"] = {
