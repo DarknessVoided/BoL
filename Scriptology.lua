@@ -551,7 +551,7 @@ _G.ScriptologyDebug      = false
 
   function LoadOrb()
   -- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
-    aaResetTable = { ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Sivir"] = {_W}, ["Talon"] = {_Q} }
+    aaResetTable = { ["Darius"] = {_W}, ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Sivir"] = {_W}, ["Talon"] = {_Q} }
   -- CastSpell(s, x, z)
     aaResetTable2 = { ["Kalista"] = {_Q}, ["Lucian"] = {_E}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
   -- CastSpell(s, t)
