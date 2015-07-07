@@ -72,7 +72,7 @@ return {
         [_E] = { name = "", speed = 1500, delay = 0.550, range = 530, width = 0, collision = false, aoe = true, type = "cone"}
     },
     ["Diana"] = {
-        [_Q] = { name = "DianaArc", speed = 2000, delay = 0.250, range = 830, width = 0, collision = false, aoe = false, type = "circular"},
+        [_Q] = { name = "DianaArc", speed = 2000, delay = 0.250, range = 830, width = 130, collision = false, aoe = false, type = "circular"},
         [_W] = { name = "DianaOrbs" },
         [_E] = { name = "DianaVortex" },
         [_R] = { name = "DianaTeleport" }
