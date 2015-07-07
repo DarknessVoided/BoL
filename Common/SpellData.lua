@@ -411,7 +411,7 @@ return {
         [_R] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 375, collision = false, aoe = true, type = "circular"}
     },
     ["Yasuo"] = {
-        [_Q] =  { name = "", speed = math.huge, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"}
+        [_Q] =  { name = "YasuoQ", speed = math.huge, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"}
     },
     ["Yorick"] = {
         [_W] = { name = "", speed = math.huge, delay = 0.25, range = 600, width = 175, collision = false, aoe = true, type = "circular"}
