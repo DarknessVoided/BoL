@@ -2609,10 +2609,22 @@ class "Blitzcrank"
     if target and myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if HitChance > 1.5 and GetDistance(CastPosition) <= data[0].range  then
-        local Mcol = self.Col:GetMinionCollision(myHero, CastPosition)
-        local Mcol2 = self.Col:GetMinionCollision(myHero, target)
+        local Mcol, mcol = self.Col:GetMinionCollision(myHero, CastPosition)
+        local Mcol2, mcol2 = self.Col:GetMinionCollision(myHero, target)
         if not Mcol and not Mcol2 then
           CastSpell(_Q, CastPosition.x,  CastPosition.z)
+        elseif Smite and Config.Misc.S and mcol+mcol2 == 1 and myHero:CanUseSpell(Smite) == READY then
+          local minion = nil
+          for _,k in pairs(Mobs.objects) do
+            if not minion and k and GetDistanceSqr(k) < data[2].range*data[2].range then minion = k end
+            if minion and k and GetDistanceSqr(k,myHero)+GetDistanceSqr(k,CastPosition) < GetDistanceSqr(minion,myHero)+GetDistanceSqr(minion,CastPosition) and GetDistanceSqr(k) < data[2].range*data[2].range then
+              minion = k
+            end
+          end
+          if minion then
+            CastSpell(_Q, CastPosition.x,  CastPosition.z)
+            DelayAction(function() CastSpell(Smite, minion) end, GetDistance(minion) / data[_Q].speed + data[_Q].delay)
+          end
         end
       end
     end
