@@ -1524,6 +1524,8 @@ class "SWalk"
       self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
     end
     self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
+    self.Config:addParam("radj", "Reset AA adjustment", SCRIPT_PARAM_ONOFF, false)
+    self.Config:setCallback("radj", function(var) if var then self.Config.cadj = 0 self.Config.radc = false end end)
     local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     if self.aaResetTable then
       for _,k in pairs(self.aaResetTable) do
