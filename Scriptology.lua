@@ -358,7 +358,7 @@ _G.ScriptologyDebug      = false
           [_R] = { range = myHero.range, width = 250}
         },
         ["Vayne"] = {
-          [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
+          [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
           [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 10+10*level+((0.03+0.01*level)*target.maxHealth) end},
           [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.5*TotalDmg end},
           [_R] = { range = 1000}
@@ -1757,7 +1757,7 @@ class "SWalk"
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
             if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
-              if UPLloaded then
+              if UPLloaded and data[k].type then
                 Cast(k, unit, false, true, 1)
               else
                 CastSpell(k, unit.x, unit.z)
@@ -6729,7 +6729,7 @@ class "Vayne"
   end
 
   function Vayne:DoSomething()
-    if not Config.Misc.Ea then return end
+    if not Config.Misc.Ea or not sReady[_E] then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy, 1000) and enemy ~= nil and not enemy.dead then
         self:MakeUnitHugTheWall(enemy)
@@ -6738,9 +6738,9 @@ class "Vayne"
   end
 
   function Vayne:MakeUnitHugTheWall(unit)
-    if not unit or unit.dead or not unit.visible then return end
+    if not unit or unit.dead or not unit.visible or not sReady[_E] then return end
     local x, y, z = UPL:Predict(_E, myHero, unit)
-    for _=10,(450-unit.boundingRadius)*Config.Misc.offsetE/100,10 do
+    for _=0,(450-unit.boundingRadius)*Config.Misc.offsetE/100,50 do
       local dir = x+(x-myHero):normalized()*_
       if IsWall(D3DXVECTOR3(dir.x,dir.y,dir.z)) then
         Cast(_E, unit, true)
@@ -6754,7 +6754,9 @@ class "Vayne"
     if not target then
       target = GetLowestMinion(data[2].range)
     end
-    self:MakeUnitHugTheWall(Target)
+    if sReady[_E] and Config.LastHit.E and GetDmg(_E,myHero,target) >= target.health then
+      self:MakeUnitHugTheWall(target)
+    end
   end
 
   function Vayne:LaneClear()
@@ -6762,15 +6764,21 @@ class "Vayne"
     if not target then
       target = GetLowestMinion(data[2].range)
     end
-    self:MakeUnitHugTheWall(Target)
+    if sReady[_E] and Config.LaneClear.E then
+      self:MakeUnitHugTheWall(target)
+    end
   end
 
   function Vayne:Combo()
-    self:MakeUnitHugTheWall(Target)
+    if sReady[_E] and Config.Combo.E then
+      self:MakeUnitHugTheWall(Target)
+    end
   end
 
   function Vayne:Harrass()
-    self:MakeUnitHugTheWall(Target)
+    if sReady[_E] and Config.Harrass.E then
+      self:MakeUnitHugTheWall(Target)
+    end
   end
 
   function Vayne:Killsteal()
