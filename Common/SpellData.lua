@@ -412,7 +412,7 @@ return {
         [_R] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 375, collision = false, aoe = true, type = "circular"}
     },
     ["Yasuo"] = {
-        [_Q] =  { name = "YasuoQ", speed = math.huge, delay = 250, range = 475, width = 40, collision = false, aoe = false, type = "linear"}
+        [_Q] =  { name = "YasuoQ", speed = math.huge, delay = 0.25, range = 475, width = 40, collision = false, aoe = false, type = "linear"}
     },
     ["Yorick"] = {
         [_W] = { name = "", speed = math.huge, delay = 0.25, range = 600, width = 175, collision = false, aoe = true, type = "circular"}
@@ -422,7 +422,7 @@ return {
     },
     ["Zed"] = {
         [_Q] = { name = "ZedShuriken", speed = 1700, delay = 0.25, range = 900, width = 48, collision = false, aoe = false, type = "linear"},
-        [_E] = { name = "", speed = math.huge, delay = 0, range = 0, width = 300, collision = false, aoe = true, type = "circular"}
+        [_E] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 300, collision = false, aoe = true, type = "circular"}
     },
     ["Ziggs"] = {
         [_Q] = { name = "ZiggsQ", speed = 1750, delay = 0.25, range = 1400, width = 155, collision = true, aoe = false, type = "linear"},
