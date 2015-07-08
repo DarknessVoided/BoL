@@ -1531,7 +1531,7 @@ class "SEvade"
       end
     end
     self.Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addParam("drawfps", "Draw adjust(more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
+    self.Config:addParam("drawfps", "Draw adjust (more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
     self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("ed", "Extradistance", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
     self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic", "", "", ""})
