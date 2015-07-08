@@ -249,7 +249,7 @@ return {
         [_Q] = { name = "NautilusAnchorDrag", speed = 2000, delay = 0.250, range = 1080, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Nidalee"] = {
-        [_Q] = { name = "JavelinToss", speed = 1400, delay = 0.125, range = 1625, width = 37.5, collision = true, type = "linear"}
+        [_Q] = { name = "JavelinToss", speed = 1325, delay = 0.125, range = 1625, width = 37.5, collision = true, type = "linear"}
     },
     ["Nocturne"] = {
         [_Q] = { name = "NocturneDuskbringer", speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}

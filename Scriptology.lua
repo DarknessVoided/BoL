@@ -1534,8 +1534,8 @@ class "SEvade"
     self.Config:addParam("drawfps", "Draw adjust (more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
     self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
     self.Config:addDynamicParam("se", "Stop Evade", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("N"))
-    self.Config:addParam("ew", "Extrawidth", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
-    self.Config:addParam("er", "Extrarange", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
+    self.Config:addParam("ew", "Extrawidth", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
+    self.Config:addParam("er", "Extrarange", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
     self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic", "", "", ""})
   end
 
@@ -1557,15 +1557,16 @@ class "SEvade"
       local type  = self.data[spell.source.charName][spell.slot].type
       local b     = myHero.boundingRadius
       if speed ~= math.huge then
+        speed = speed * 2
         if type == "linear" then
           if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
             if GetDistanceSqr(spell.startPos,spell.endPos) < range * range + width * width + self.Config.er * self.Config.er then
               spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(range+width)
             end
-            local p = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()+delay-spell.startTime)-width)
-            if GetDistanceSqr(myHero,p) <= (width/2+self.Config.ew+b)^2 then
+            local p = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()+delay-spell.startTime)-width+self.Config.ew)
+            if GetDistanceSqr(myHero,p) <= (width+self.Config.ew+b)^2 then
               _G.Evade = true
-              self.m = self:FindSafeSpot(spell.startPos,p,width/2,b)
+              self.m = self:FindSafeSpot(spell.startPos,p,width,b)
               self.m.speed = speed
               self.m.startPos = Vector(spell.startPos)
               self.m.source = spell.source
