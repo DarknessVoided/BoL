@@ -1538,7 +1538,7 @@ class "SEvade"
   end
 
   function SEvade:Dodge()
-    if not self.Config.e then return end
+    if not self.Config.e then _G.Evade = false end
     if _G.Evade and self.m ~= nil then
       if (GetDistanceSqr(self.m,myHero) > myHero.boundingRadius*2 and GetDistanceSqr(self.m,myHero) < 300) or self.m.time < GetInGameTimer() then
         myHero:MoveTo(self.m.x,self.m.z)
