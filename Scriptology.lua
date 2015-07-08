@@ -48,7 +48,7 @@ _G.ScriptologyDebug      = false
     else
       ScriptologyMsg("Your Champion is not supported (yet)!")
       ScriptologyMsg("Loaded SAwareness, SEvade and SWalk to menu instead")
-      if not _G.Reborn_Initialised and not _G.MMA_Loaded then LoadOrb() end
+      if not _G.AutoCarry and not _G.Reborn_Loaded and not _G.MMA_Loaded then LoadOrb() end
       SetupAwareness()
       SetupEvade()
     end
@@ -1534,7 +1534,7 @@ class "SEvade"
     self.Config:addParam("drawfps", "Draw adjust(more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
     self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("ed", "Extradistance", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
-    self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic"})
+    self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic", "", "", ""})
   end
 
   function SEvade:Dodge()
