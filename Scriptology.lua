@@ -24,9 +24,9 @@ _G.ScriptologyDebug      = false
 -- { Global functions
 
   function OnLoad()
-    champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Ekko", "Kalista", "Katarina", 
-                  "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", "Ryze", "Rumble", 
-                  "Talon", "Teemo", "Vayne", "Volibear", "Yasuo" }
+    champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Diana", "Ekko", "Kalista", 
+                  "Katarina", "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", "Ryze", 
+                  "Rumble", "Talon", "Teemo", "Vayne", "Volibear", "Yasuo" }
     Cfg = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
     supported = {}
     for _,champ in pairs(champList) do

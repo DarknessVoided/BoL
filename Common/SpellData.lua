@@ -14,7 +14,7 @@ return {
         [_Q] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 365, collision = false, aoe = true, type = "circular"}
     },
     ["Amumu"] = {
-        [_Q] = { name = "", speed = 725, delay = 0.25, range = 1000, width = 100, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "BandageToss", speed = 725, delay = 0.25, range = 1000, width = 100, collision = true, aoe = false, type = "linear"}
     },
     ["Anivia"] = {
         [_Q] = { name = "", speed = 850, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"},
@@ -176,7 +176,7 @@ return {
     ["Kayle"] = {
     },
     ["Kennen"] = {
-        [_Q] = { name = "", speed = 1700, delay = 0.180, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "KennenShurikenHurlMissile1", speed = 1700, delay = 0.180, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["KhaZix"] = {
         [_W] = { name = "", speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"},
@@ -237,7 +237,7 @@ return {
         [_E] = { name = "", speed = math.huge, delay = 0.25, range = 700, width = 0, collision = false, aoe = true, type = "cone"}
     },
     ["Morgana"] = {
-        [_Q] = { name = "", speed = 1200, delay = 0.250, range = 1300, width = 80, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "DarkBindingMissile", speed = 1200, delay = 0.250, range = 1300, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Nami"] = {
         [_Q] = { name = "", speed = math.huge, delay = 0.8, range = 850, width = 0, collision = false, aoe = true, type = "circular"}
@@ -249,7 +249,7 @@ return {
         [_Q] = { name = "", speed = 2000, delay = 0.250, range = 1080, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Nidalee"] = {
-        [_Q] = { name = "", speed = 1325, delay = 0.25, range = 1625, width = 37.5, collision = true, type = "linear"}
+        [_Q] = { name = "JavelinToss", speed = 1325, delay = 0.25, range = 1625, width = 37.5, collision = true, type = "linear"}
     },
     ["Nocturne"] = {
         [_Q] = { name = "", speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
@@ -301,7 +301,7 @@ return {
         [_Q] = { name = "", speed = 1875, delay = 0.25, range = 900, width = 55, collision = true, aoe = false, type = "linear"},
     },
     ["Sejuani"] = {
-        [_R] = { name = "", speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
+        [_R] = { name = "SejuaniGlacialPrisonCast", speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
     },
     ["Shaco"] = {
     },
@@ -323,7 +323,7 @@ return {
         [_E] = { name = "", speed = 1200, delay = 0.600, range = 350, width = 60, collision = false, aoe = false, type = "linear"}
     },
     ["Sona"] = {
-        [_R] = { name = "", speed = 2400, delay = 0.5, range = 900, width = 160, collision = false, aoe = false, type = "linear"}
+        [_R] = { name = "SonaCrescendo", speed = 2400, delay = 0.5, range = 900, width = 160, collision = false, aoe = false, type = "linear"}
     },
     ["Soraka"] = {
         [_R] = { name = "", speed = 2400, delay = 0.25, range = 900, width = 160, collision = false, aoe = true, type = "circular"}
@@ -332,8 +332,9 @@ return {
         [_W] = { name = "", speed = math.huge, delay = 0.850, range = 900, width = 125, collision = false, aoe = true, type = "circular"}
     },
     ["Syndra"] = {
-        [_Q] = { name = "", speed = math.huge, delay = 0.600, range = 790, width = 125, collision = false, aoe = true, type = "circular"},
-        [_E] = { name = "", speed = 2500, delay = 0.250, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
+        [_Q] = { name = "SyndraQ", speed = math.huge, delay = 0.5, range = 790, width = 125, collision = false, aoe = true, type = "circular"},
+        [_W] = { name = "syndrawcast", speed = 1500, delay = 0.25, range = 825, width = 125, collision = false, aoe = true, type = "circular"}
+        [_E] = { name = "", speed = 2500, delay = 0.25, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
     },
     ["Talon"] = {
         [_W] = { name = "", speed = 900, delay = 0.7, range = 600, width = 200, collision = false, aoe = false, type = "cone"}
