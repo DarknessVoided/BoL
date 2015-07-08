@@ -1533,6 +1533,7 @@ class "SEvade"
     self.Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("drawfps", "Draw adjust (more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
     self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addDynamicParam("se", "Stop Evade", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("N"))
     self.Config:addParam("ed", "Extradistance", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
     self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic", "", "", ""})
   end
@@ -1540,7 +1541,7 @@ class "SEvade"
   function SEvade:Dodge()
     if not self.Config.e then _G.Evade = false end
     if _G.Evade and self.m ~= nil then
-      if (GetDistanceSqr(self.m,myHero) > myHero.boundingRadius*2 and GetDistanceSqr(self.m,myHero) < 300) or self.m.time < GetInGameTimer() then
+      if GetDistanceSqr(self.m,myHero) > myHero.boundingRadius*myHero.boundingRadius and GetDistanceSqr(self.m,myHero) < myHero.ms*myHero.ms and self.m.time > GetInGameTimer() and not self.Config.se then
         myHero:MoveTo(self.m.x,self.m.z)
         return
       else
@@ -1652,6 +1653,10 @@ class "SEvade"
     self.lastDrawn = os.clock()
     if _G.Evade and self.m then
       DrawCircle3D(self.m.x, self.m.y, self.m.z, myHero.boundingRadius, 2, ARGB(255, 255, 255, 255), 32)
+    end
+    if self.Config.se then
+      UpdateWindow()
+      DrawText("Evading Disabled", 20, WINDOW_W/2, WINDOW_H/4, ARGB(255, 255, 0, 0))
     end
     for _,spell in pairs(self.activeSpells) do
       local range = self.data[spell.source.charName][spell.slot].range
@@ -1881,6 +1886,7 @@ class "SWalk"
   end
 
   function SWalk:Orb(unit)
+    if _G.Evade then return end
     if not ValidTarget(unit, myRange) then unit = Target end
     local valid = false
     if myHero.charName == "Azir" then 
@@ -5135,6 +5141,24 @@ class "Nidalee"
         myHero:MoveTo(mousePos.x, mousePos.z)
       end
     end
+    if loadedEvade then
+      if _G.Evade and loadedEvade.m then
+        if sReady[_W] and not self:IsHuman() then
+          Cast(_W, loadedEvade.m)
+          if GetDistance(loadedEvade.m,myHero) < self.data.Cougar[_W].range then
+            _G.Evade = false
+            loadedEvade.m = nil
+          end
+        elseif sReady[_R] then
+          Cast(_R)
+          DelayAction(function() Cast(_W, loadedEvade.m) end, 0.25)
+          if GetDistance(loadedEvade.m,myHero) < self.data.Cougar[_W].range then
+            _G.Evade = false
+            loadedEvade.m = nil
+          end
+        end
+      end
+    end
   end
 
   function Nidalee:IsHuman()
@@ -7381,15 +7405,19 @@ class "Yasuo"
   end
 
   function Yasuo:Combo()
+    if not self.Target then self.Target = Target end
     if not self.Target then return end
     if GetDistance(self.Target) > loadedOrb.myRange and Config.Combo.E then
       if GetDistance(self.Target) < data[2].range and GetStacks(self.Target) == 0 then
         Cast(_E, self.Target, true)
+        if sReady[_Q] then
+          DelayAction(function() Cast(_Q, self.Target) end, 0.125)
+        end
       else
         self:Move(self.Target)
       end
     end
-    if self.Target.y > myHero.y+25 and Config.Combo.R then
+    if sReady[_R] and Config.Combo.R then
       if sReady[_Q] and GetDistance(self.Target) < 500 then
         myHero:Attack(self.Target)
       else
