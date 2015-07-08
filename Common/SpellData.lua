@@ -213,7 +213,7 @@ return {
     ["Lux"] = {
         [_Q] = { name = "LuxLightBinding", speed = 1350, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
         [_W] = { name = "LuxPrismaticWave", speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear" },
-        [_E] = { name = "LuxLightStrikeKugel", speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular" },
+        [_E] = { name = "LuxLightStrikeKugel", speed = 1275, delay = 0.25, range = 1100, width = 310, collision = false, type = "circular" },
         [_R] = { name = "LuxMaliceCannon", speed = math.huge, delay = 1, range = 3340, width = 250, collision = false, type = "linear" }
     },
     ["Malphite"] = {
