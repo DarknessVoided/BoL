@@ -1,11 +1,11 @@
 return {
     ["Aatrox"] = {
-        [_Q] = { name = "", speed = 450, delay = 0.25, range = 650, width = 150, collision = false, aoe = true, type = "circular"},
-        [_E] = { name = "", speed = 1200, delay = 0.25, range = 1000, width = 150, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "AatroxQ", speed = 450, delay = 0.25, range = 650, width = 150, collision = false, aoe = true, type = "circular"},
+        [_E] = { name = "AatroxE", speed = 1200, delay = 0.25, range = 1000, width = 150, collision = false, aoe = false, type = "linear"}
     },
     ["Ahri"] = {
-        [_Q] = { name = "", speed = 1600, delay = 0.25, range = 880, width = 120, collision = false, aoe = false, type = "linear"},
-        [_E] = { name = "", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "AhriOrbofDeception", speed = 1600, delay = 0.25, range = 880, width = 120, collision = false, aoe = false, type = "linear"},
+        [_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear"}
     },
     ["Akali"] = {
         [_E] = { name = "", speed = math.huge, delay = 0.125, range = 0, width = 325, collision = false, aoe = true, type = "circular"}
@@ -17,16 +17,16 @@ return {
         [_Q] = { name = "BandageToss", speed = 725, delay = 0.25, range = 1000, width = 100, collision = true, aoe = false, type = "linear"}
     },
     ["Anivia"] = {
-        [_Q] = { name = "", speed = 850, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"},
+        [_Q] = { name = "FlashFrostSpell", speed = 850, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"},
         [_R] = { name = "", speed = math.huge, delay = 0.100, range = 615, width = 350, collision = false, aoe = true, type = "circular"}
     },
     ["Annie"] = {
         [_W] = { name = "", speed = math.huge, delay = 0.25, range = 625, width = 250, collision = false, aoe = true, type = "cone"},
-        [_R] = { name = "", speed = math.huge, delay = 0.25, range = 600, width = 300, collision = false, aoe = true, type = "circular"}
+        [_R] = { name = "InfernalGuardian", speed = math.huge, delay = 0.25, range = 600, width = 300, collision = false, aoe = true, type = "circular"}
     },
     ["Ashe"] = {
         [_W] = { name = "", speed = 902, delay = 0.5, range = 1200, width = 100, collision = true, aoe = false, type = "cone"},
-        [_R] = { name = "", speed = 1600, delay = 0.5, range = 25000, width = 100, collision = true, aoe = false, type = "linear"}
+        [_R] = { name = "EnchantedCrystalArrow", speed = 1600, delay = 0.5, range = 25000, width = 100, collision = true, aoe = false, type = "linear"}
     },
     ["Azir"] = {
         [_Q] = { name = "AzirQ", speed = 500, delay = 0.250, range = 800, width = 100, collision = false, aoe = false, type = "linear"},
@@ -37,7 +37,7 @@ return {
         [_Q] = { name = "", speed = 1100, delay = 0.25, range = 850, width = 108, collision = true, aoe = false, type = "linear"}
     },
     ["Blitzcrank"] = {
-        [_Q] = { name = "", speed = 1800, delay = 0.250, range = 900, width = 70, collision = true, type = "linear"},
+        [_Q] = { name = "RocketGrabMissile", speed = 1800, delay = 0.250, range = 900, width = 70, collision = true, type = "linear"},
         [_R] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular"}
     },
     ["Brand"] = {
@@ -46,8 +46,8 @@ return {
         [_R] = { name = "BrandWildfire" }
     },
     ["Braum"] = {
-        [_Q] = { name = "", speed = 1600, delay = 225, range = 1000, width = 100, collision = false, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = 1250, delay = 500, range = 1250, width = 0, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "BraumQ", speed = 1600, delay = 225, range = 1000, width = 100, collision = false, aoe = false, type = "linear"},
+        [_R] = { name = "BraumR", speed = 1250, delay = 500, range = 1250, width = 0, collision = false, aoe = false, type = "linear"}
     },
     ["Caitlyn"] = {
         [_Q] = { name = "CaitlynPiltoverPeacemaker", speed = 2200, delay = 0.625, range = 1300, width = 0, collision = false, aoe = false, type = "linear"},
@@ -61,12 +61,12 @@ return {
         [_R] = { name = "CassiopeiaPetrifyingGaze", speed = math.huge, delay = 0.5, range = 825, width = 410, collision = false, aoe = true, type = "cone"}
     },
     ["Chogath"] = {
-        [_Q] = { name = "", speed = math.huge, delay = 0.25, range = 950, width = 300, collision = false, aoe = true, type = "circular"},
+        [_Q] = { name = "Rupture", speed = math.huge, delay = 0.25, range = 950, width = 300, collision = false, aoe = true, type = "circular"},
         [_W] = { name = "", speed = math.huge, delay = 0.5, range = 650, width = 275, collision = false, aoe = false, type = "linear"},
     },
     ["Corki"] = {
         [_Q] = { name = "", speed = 700, delay = 0.4, range = 825, width = 250, collision = false, aoe = false, type = "circular"},
-        [_R] = { name = "", speed = 2000, delay = 0.200, range = 1225, width = 60, collision = false, aoe = false, type = "linear"},
+        [_R] = { name = "MissileBarrage", speed = 2000, delay = 0.200, range = 1225, width = 60, collision = false, aoe = false, type = "linear"},
     },
     ["Darius"] = {
         [_E] = { name = "", speed = 1500, delay = 0.550, range = 530, width = 0, collision = false, aoe = true, type = "cone"}
@@ -78,11 +78,11 @@ return {
         [_R] = { name = "DianaTeleport" }
     },
     ["DrMundo"] = {
-        [_Q] = { name = "", speed = 2000, delay = 0.250, range = 1050, width = 75, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "InfectedCleaverMissile", speed = 2000, delay = 0.250, range = 1050, width = 75, collision = true, aoe = false, type = "linear"}
     },
     ["Draven"] = {
-        [_E] = { name = "", speed = 1400, delay = 0.250, range = 1100, width = 130, collision = false, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = 2000, delay = 0.5, range = 25000, width = 160, collision = false, aoe = false, type = "linear"}
+        [_E] = { name = "DravenDoubleShot", speed = 1400, delay = 0.250, range = 1100, width = 130, collision = false, aoe = false, type = "linear"},
+        [_R] = { name = "DravenRCast", speed = 2000, delay = 0.5, range = 25000, width = 160, collision = false, aoe = false, type = "linear"}
     },
     ["Ekko"] = {
         [_Q] = { name = "", speed = 1050, delay = 0.25, range = 925, width = 140, collision = false, aoe = false, type = "linear"},
@@ -90,25 +90,25 @@ return {
         [_R] = { name = "", speed = math.huge, delay = 0.5, range = 0, width = 400, collision = false, aoe = true, type = "circular"}
     },
     ["Elise"] = {
-        [_E] = { name = "", speed = 1450, delay = 0.250, range = 975, width = 70, collision = true, aoe = false, type = "linear"}
+        [_E] = { name = "EliseHumanE", speed = 1450, delay = 0.250, range = 975, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["Evelynn"] = {
         [_Q] = { name = "", speed = 1300, delay = 0.250, range = 650, width = 350, collision = false, aoe = true, type = "circular" }
     },
     ["Ezreal"] = {
-        [_Q] = { name = "", speed = 2000, delay = 0.25, range = 1200, width = 65, collision = true, aoe = false, type = "linear"},
-        [_W] = { name = "", speed = 1200, delay = 0.25, range = 900, width = 90, collision = false, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = 2000, delay = 1, range = 25000, width = 180, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "EzrealMysticShot", speed = 2000, delay = 0.25, range = 1200, width = 65, collision = true, aoe = false, type = "linear"},
+        [_W] = { name = "EzrealEssenceFlux", speed = 1200, delay = 0.25, range = 900, width = 90, collision = false, aoe = false, type = "linear"},
+        [_R] = { name = "EzrealTrueshotBarrage", speed = 2000, delay = 1, range = 25000, width = 180, collision = false, aoe = false, type = "linear"}
     },
     ["Fiddlesticks"] = {
     },
     ["Fiora"] = {
     },
     ["Fizz"] = {
-        [_R] = { name = "", speed = 1350, delay = 0.250, range = 1150, width = 100, collision = false, aoe = false, type = "linear"}
+        [_R] = { name = "FizzMarinerDoom", speed = 1350, delay = 0.250, range = 1150, width = 100, collision = false, aoe = false, type = "linear"}
     },
     ["Galio"] = {
-        [_Q] = { name = "", speed = 1300, delay = 0.25, range = 900, width = 250, collision = false, aoe = true, type = "circular"},
+        [_Q] = { name = "GalioResoluteSmite", speed = 1300, delay = 0.25, range = 900, width = 250, collision = false, aoe = true, type = "circular"},
         [_E] = { name = "", speed = 1200, delay = 0.25, range = 1000, width = 200, collision = false, aoe = false, type = "linear"}
     },
     ["Gangplank"] = {
@@ -141,7 +141,7 @@ return {
         [_R] = { name = "", speed = 1700, delay = 0.250, range = 1200, width = 25, collision = false, aoe = false, type = "linear"}
     },
     ["Janna"] = {
-        [_Q] = { name = "", speed = 1500, delay = 0.250, range = 1700, width = 150, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "HowlingGale", speed = 1500, delay = 0.250, range = 1700, width = 150, collision = false, aoe = false, type = "linear"}
     },
     ["JarvanIV"] = {
         [_Q] = { name = "", speed = 1400, delay = 0.2, range = 770, width = 0, collision = false, aoe = false, type = "linear"},
@@ -151,7 +151,7 @@ return {
         [_E] = { name = "", speed = math.huge, delay = 0.250, range = 0, width = 375, collision = false, aoe = true, type = "circular"}
     },
     ["Jayce"] = {
-        [_Q] = { name = "", speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "jayceshockblast", speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["Jinx"] = {
         [_W] = { name = "JinxWMissile", speed = 3000, delay = 0.600, range = 1400, width = 60, collision = true, aoe = false, type = "linear"},
@@ -162,10 +162,10 @@ return {
         [_Q] = { name = "", speed = 1750, delay = 0.25, range = 1375, width = 70, collision = true, aoe = false, type = "linear"},
     },
     ["Karma"] = {
-        [_Q] = { name = "", speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "KarmaQ", speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
     },
     ["Karthus"] = {
-        [_Q] = { name = "", speed = math.huge, delay = 0.75, range = 825, width = 120, collision = false, aoe = true, type = "circular"}
+        [_Q] = { name = "KarthusLayWasteA", speed = math.huge, delay = 0.75, range = 825, width = 120, collision = false, aoe = true, type = "circular"}
     },
     ["Kassadin"] = {
         [_E] = { name = "", speed = 2200, delay = 0, range = 650, width = 80, collision = false, aoe = false, type = "cone"},
@@ -179,16 +179,16 @@ return {
         [_Q] = { name = "KennenShurikenHurlMissile1", speed = 1700, delay = 0.180, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["KhaZix"] = {
-        [_W] = { name = "", speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"},
+        [_W] = { name = "KhazixW", speed = 1700, delay = 0.25, range = 1025, width = 70, collision = true, aoe = false, type = "linear"},
         [_E] = { name = "", speed = 400, delay = 0.25, range = 600, width = 325, collision = false, aoe = true, type = "circular"}
     },
     ["KogMaw"] = {
         [_Q] = { name = "", speed = 1725, delay = 0.125, range = 975, width = 80, collision = true, aoe = false, type = "linear"},
         [_E] = { name = "", speed = 1200, delay = 0.25, range = 1200, width = 120, collision = false, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = math.huge, delay = 0.65, range = 2200, width = 250, collision = false, aoe = true, type = "circular"}
+        [_R] = { name = "KogMawLivingArtillery", speed = math.huge, delay = 0.65, range = 2200, width = 250, collision = false, aoe = true, type = "circular"}
     },
     ["LeBlanc"] = {
-        [_E] = { name = "", speed = 1600, delay = 0.250, range = 960, width = 70, collision = true, aoe = false, type = "linear"}
+        [_E] = { name = "LeblancSoulShackle", speed = 1600, delay = 0.250, range = 960, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["LeeSin"] = {
         [_Q] = { name = "BlindMonkQOne", speed = 1750, delay = 0.25, range = 1000, width = 70, collision = true, aoe = false, type = "linear"},
@@ -196,8 +196,8 @@ return {
         [_R] = { name = "BlindMonkR", speed = 2000, delay = 0.25, range = 2000, width = 150, collision = false, aoe = false, type = "linear"}
     },
     ["Leona"] = {
-        [_E] = { name = "", speed = 2000, delay = 0.250, range = 875, width = 80, collision = false, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = 2000, delay = 0.250, range = 1200, width = 300, collision = false, aoe = true, type = "circular"}
+        [_E] = { name = "LeonaZenithBlade", speed = 2000, delay = 0.250, range = 875, width = 80, collision = false, aoe = false, type = "linear"},
+        [_R] = { name = "LeonaSolarFlare", speed = 2000, delay = 0.250, range = 1200, width = 300, collision = false, aoe = true, type = "circular"}
     },
     ["Lissandra"] = {
         [_Q] = { name = "", speed = 1800, delay = 0.250, range = 725, width = 20, collision = true, aoe = false, type = "linear"}
@@ -208,7 +208,7 @@ return {
         [_R] = { name = "LucianR" }
     },
     ["Lulu"] = {
-        [_Q] = { name = "", speed = 1400, delay = 0.250, range = 925, width = 80, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "LuluQ", speed = 1400, delay = 0.250, range = 925, width = 80, collision = false, aoe = false, type = "linear"}
     },
     ["Lux"] = {
         [_Q] = { name = "LuxLightBinding", speed = 1350, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear" },
@@ -220,7 +220,7 @@ return {
         [_R] = { name = "", speed = 1600, delay = 0.5, range = 900, width = 500, collision = false, aoe = true, type = "circular"}
     },
     ["Malzahar"] = {
-        [_Q] = { name = "", speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear"},
+        [_Q] = { name = "AlZaharCalloftheVoid1", speed = math.huge, delay = 0.5, range = 900, width = 100, collision = false, aoe = false, type = "linear"},
         [_W] = { name = "", speed = math.huge, delay = 0.5, range = 800, width = 250, collision = false, aoe = false, type = "circular"}
     },
     ["Maokai"] = {
@@ -240,30 +240,30 @@ return {
         [_Q] = { name = "DarkBindingMissile", speed = 1200, delay = 0.250, range = 1300, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Nami"] = {
-        [_Q] = { name = "", speed = math.huge, delay = 0.8, range = 850, width = 0, collision = false, aoe = true, type = "circular"}
+        [_Q] = { name = "NamiQ", speed = math.huge, delay = 0.8, range = 850, width = 0, collision = false, aoe = true, type = "circular"}
     },
     ["Nasus"] = {
         [_E] = { name = "", speed = math.huge, delay = 0.25, range = 450, width = 250, collision = false, aoe = true, type = "circular"}
     },
     ["Nautilus"] = {
-        [_Q] = { name = "", speed = 2000, delay = 0.250, range = 1080, width = 80, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "NautilusAnchorDrag", speed = 2000, delay = 0.250, range = 1080, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Nidalee"] = {
         [_Q] = { name = "JavelinToss", speed = 1325, delay = 0.25, range = 1625, width = 37.5, collision = true, type = "linear"}
     },
     ["Nocturne"] = {
-        [_Q] = { name = "", speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "NocturneDuskbringer", speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
     },
     ["Nunu"] = {
     },
     ["Olaf"] = {
-        [_Q] = { name = "", speed = 1600, delay = 0.25, range = 1000, width = 90, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "OlafAxeThrow", speed = 1600, delay = 0.25, range = 1000, width = 90, collision = false, aoe = false, type = "linear"}
     },
     ["Orianna"] = {
-        [_Q] = { name = "", speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear"},
+        [_Q] = { name = "OrianaIzunaCommand", speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear"},
         [_W] = { name = "", speed = math.huge, delay = 0.250, range = 0, width = 225, collision = false, aoe = true, type = "circular"},
         [_E] = { name = "", speed = 1800, delay = 0.250, range = 825, width = 80, collision = false, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular"}
+        [_R] = { name = "OrianaDetonateCommand", speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular"}
     },
     ["Pantheon"] = {
         [_E] = { name = "", speed = math.huge, delay = 0.250, range = 400, width = 100, collision = false, aoe = true, type = "cone"},
@@ -272,7 +272,7 @@ return {
     ["Poppy"] = {
     },
     ["Quinn"] = {
-        [_Q] = { name = "", speed = 1550, delay = 0.25, range = 1050, width = 80, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "QuinnQ", speed = 1550, delay = 0.25, range = 1050, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Rammus"] = {
     },
@@ -294,7 +294,7 @@ return {
     },
     ["Rumble"] = {
         [_Q] = { name = "", speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone"},
-        [_E] = { name = "", speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear"},
+        [_E] = { name = "RumbleGrenade", speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear"},
         [_R] = { name = "", speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear"}
     },
     ["Ryze"] = {
@@ -306,7 +306,7 @@ return {
     ["Shaco"] = {
     },
     ["Shen"] = {
-        [_E] = { name = "", speed = 1200, delay = 0.25, range = 600, width = 40, collision = false, aoe = false, type = "linear"}
+        [_E] = { name = "ShenShadowDash", speed = 1200, delay = 0.25, range = 600, width = 40, collision = false, aoe = false, type = "linear"}
     },
     ["Shyvana"] = {
         [_E] = { name = "", speed = 1500, delay = 0.250, range = 925, width = 60, collision = false, aoe = false, type = "linear"}
@@ -317,7 +317,7 @@ return {
         [_Q] = { name = "", speed = math.huge, delay = 0.125, range = 925, width = 250, collision = false, aoe = false, type = "cone"}
     },
     ["Sivir"] = {
-        [_Q] = { name = "", speed = 1330, delay = 0.250, range = 1075, width = 0, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "SivirQ", speed = 1330, delay = 0.250, range = 1075, width = 0, collision = false, aoe = false, type = "linear"}
     },
     ["Skarner"] = {
         [_E] = { name = "", speed = 1200, delay = 0.600, range = 350, width = 60, collision = false, aoe = false, type = "linear"}
@@ -329,7 +329,7 @@ return {
         [_R] = { name = "", speed = 2400, delay = 0.25, range = 900, width = 160, collision = false, aoe = true, type = "circular"}
     },
     ["Swain"] = {
-        [_W] = { name = "", speed = math.huge, delay = 0.850, range = 900, width = 125, collision = false, aoe = true, type = "circular"}
+        [_W] = { name = "SwainShadowGrasp", speed = math.huge, delay = 0.850, range = 900, width = 125, collision = false, aoe = true, type = "circular"}
     },
     ["Syndra"] = {
         [_Q] = { name = "SyndraQ", speed = math.huge, delay = 0.5, range = 790, width = 125, collision = false, aoe = true, type = "circular"},
@@ -345,7 +345,7 @@ return {
     ["Teemo"] = {
     },
     ["Thresh"] = {
-        [_Q] = { name = "", speed = 1825, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "ThreshQ", speed = 1825, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
     },
     ["Tristana"] = {
         [_Q] = { name = "", speed = 2100, delay = 0.25, range = 900, width = 125, collision = false, aoe = false, type = "circular"}
@@ -357,7 +357,7 @@ return {
         [_E] = { name = "", speed = 700, delay = 0.250, range = 650, width = 160, collision = false, aoe = false, type = "linear"}
     },
     ["TwistedFate"] = {
-        [_Q] = { name = "", speed = 1500, delay = 0.250, range = 1200, width = 80, collision = false, aoe = false, type = "cone"}
+        [_Q] = { name = "WildCards", speed = 1500, delay = 0.250, range = 1200, width = 80, collision = false, aoe = false, type = "cone"}
     },
     ["Twitch"] = {
         [_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
@@ -378,20 +378,20 @@ return {
     },
     ["Veigar"] = {
         [_Q] = { name = "", speed = 1200, delay = 0.25, range = 875, width = 75, collision = true, aoe = false, type = "linear"},
-        [_W] = { name = "", speed = 900, delay = 1.25, range = 900, width = 110, collision = false, aoe = true, type = "circular"}
+        [_W] = { name = "VeigarDarkMatter", speed = 900, delay = 1.25, range = 900, width = 110, collision = false, aoe = true, type = "circular"}
     },
     ["VelKoz"] = {
-        [_Q] = { name = "", speed = 1300, delay = 0.066, range = 1050, width = 50, collision = true, aoe = false, type = "linear"},
-        [_W] = { name = "", speed = 1700, delay = 0.064, range = 1050, width = 80, collision = false, aoe = false, type = "linear"},
-        [_E] = { name = "", speed = 1500, delay = 0.333, range = 850, width = 225, collision = false, aoe = true, type = "circular"},
-        [_R] = { name = "", speed = math.huge, delay = 0.333, range = 1550, width = 50, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "VelKozQ", speed = 1300, delay = 0.066, range = 1050, width = 50, collision = true, aoe = false, type = "linear"},
+        [_W] = { name = "VelKozW", speed = 1700, delay = 0.064, range = 1050, width = 80, collision = false, aoe = false, type = "linear"},
+        [_E] = { name = "VelKozE", speed = 1500, delay = 0.333, range = 850, width = 225, collision = false, aoe = true, type = "circular"},
+        [_R] = { name = "VelKozR", speed = math.huge, delay = 0.333, range = 1550, width = 50, collision = false, aoe = false, type = "linear"}
     },
     ["Vi"] = {
         [_Q] = { name = "", speed = 1500, delay = 0.25, range = 715, width = 55, collision = false, aoe = false, type = "linear"}
     },
     ["Viktor"] = {
         [_W] = { name = "", speed = 750, delay = 0.6, range = 700, width = 125, collision = false, aoe = true, type = "circular"},
-        [_E] = { name = "", speed = 1200, delay = 0.25, range = 1200, width = 0, collision = false, aoe = false, type = "linear"},
+        [_E] = { name = "ViktorDeathRay", speed = 1200, delay = 0.25, range = 1200, width = 0, collision = false, aoe = false, type = "linear"},
         [_R] = { name = "", speed = 1000, delay = 0.25, range = 700, width = 0, collision = false, aoe = true, type = "circular"}
     },
     ["Vladimir"] = {
@@ -421,11 +421,11 @@ return {
         [_Q] = { name = "", speed = 2500, delay = 0.110, range = 500, width = 110, collision = false, aoe = false, type = "linear"}
     },
     ["Zed"] = {
-        [_Q] = { name = "", speed = 1700, delay = 0.25, range = 900, width = 48, collision = false, aoe = false, type = "linear"},
+        [_Q] = { name = "ZedShuriken", speed = 1700, delay = 0.25, range = 900, width = 48, collision = false, aoe = false, type = "linear"},
         [_E] = { name = "", speed = math.huge, delay = 0, range = 0, width = 300, collision = false, aoe = true, type = "circular"}
     },
     ["Ziggs"] = {
-        [_Q] = { name = "", speed = 1750, delay = 0.25, range = 1400, width = 155, collision = true, aoe = false, type = "linear"},
+        [_Q] = { name = "ZiggsQ", speed = 1750, delay = 0.25, range = 1400, width = 155, collision = true, aoe = false, type = "linear"},
         [_W] = { name = "", speed = 1800, delay = 0.25, range = 970, width = 275, collision = false, aoe = true, type = "circular"},
         [_E] = { name = "", speed = 1750, delay = 0.12, range = 900, width = 350, collision = false, aoe = true, type = "circular"},
         [_R] = { name = "", speed = 1750, delay = 0.14, range = 5300, width = 525, collision = false, aoe = true, type = "circular"}
@@ -434,6 +434,7 @@ return {
         [_Q] = { name = "", speed = math.huge, delay = 0.5, range = 900, width = 150, collision = false, aoe = true, type = "circular"}
     },
     ["Zyra"] = {
+        [-1] = { name = "zyrapassivedeathmanager" },
         [_Q] = { name = "ZyraQFissure", speed = math.huge, delay = 0.7, range = 800, width = 85, collision = false, aoe = true, type = "circular"},
         [_E] = { name = "ZyraGraspingRoots", speed = 1150, delay = 0.25, range = 1100, width = 70, collision = false, aoe = false, type = "linear"},
         [_R] = { name = "ZyraBrambleZone", speed = math.huge, delay = 1, range = 1100, width = 500, collision=false, aoe = true, type = "circular"}
