@@ -1534,7 +1534,8 @@ class "SEvade"
     self.Config:addParam("drawfps", "Draw adjust (more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
     self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
     self.Config:addDynamicParam("se", "Stop Evade", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("N"))
-    self.Config:addParam("ed", "Extradistance", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
+    self.Config:addParam("ew", "Extrawidth", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
+    self.Config:addParam("er", "Extrarange", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
     self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic", "", "", ""})
   end
 
@@ -1549,8 +1550,8 @@ class "SEvade"
       end
     end
     for _,spell in pairs(self.activeSpells) do
-      local range = self.data[spell.source.charName][spell.slot].range
       local width = self.data[spell.source.charName][spell.slot].width
+      local range = self.data[spell.source.charName][spell.slot].range
       local speed = self.data[spell.source.charName][spell.slot].speed
       local delay = self.data[spell.source.charName][spell.slot].delay
       local type  = self.data[spell.source.charName][spell.slot].type
@@ -1558,11 +1559,11 @@ class "SEvade"
       if speed ~= math.huge then
         if type == "linear" then
           if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
-            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range then
-              spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*range
+            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range + width * width + self.Config.er * self.Config.er then
+              spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(range+width)
             end
             local p = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()+delay-spell.startTime)-width)
-            if GetDistanceSqr(myHero,p) <= (width/2+b)^2 then
+            if GetDistanceSqr(myHero,p) <= (width/2+self.Config.ew+b)^2 then
               _G.Evade = true
               self.m = self:FindSafeSpot(spell.startPos,p,width/2,b)
               self.m.speed = speed
@@ -1577,7 +1578,7 @@ class "SEvade"
         end
         if type == "circular" then
           if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
-            if GetDistanceSqr(myHero,spell.endPos) <= (width+b)^2 then
+            if GetDistanceSqr(myHero,spell.endPos) <= (width+self.Config.ew+b)^2 then
               _G.Evade = true
               self.m = self:FindSafeSpot(spell.startPos,spell.endPos,width,b)
               self.m.speed = speed
@@ -1593,7 +1594,7 @@ class "SEvade"
       elseif speed == math.huge then
         if type == "circular" then
           if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
-            if GetDistanceSqr(myHero,spell.endPos) <= (width+b)^2 then
+            if GetDistanceSqr(myHero,spell.endPos) <= (width+self.Config.ew+b)^2 then
               _G.Evade = true
               self.m = self:FindSafeSpot(spell.startPos,spell.endPos,width,b)
               self.m.speed = speed
@@ -1608,10 +1609,10 @@ class "SEvade"
         end
         if type == "linear" then
           if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
-            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range then
+            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range + self.Config.er * self.Config.er then
               spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*GetDistance(spell.startPos,myHero)
             end
-            if GetDistanceSqr(myHero,spell.endPos) < (width+b)^2 then
+            if GetDistanceSqr(myHero,spell.endPos) < (width+self.Config.ew+b)^2 then
               _G.Evade = true
               self.m = self:FindSafeSpot(spell.startPos,spell.endPos,width,b)
               self.m.speed = speed
@@ -1630,16 +1631,16 @@ class "SEvade"
 
   function SEvade:FindSafeSpot(s,p,w,b)
     if Target then
-      local pos1 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular()*(w+b)*0.75+Vector(Vector(Target)-myHero):normalized():perpendicular2()*(w+b+self.Config.ed)*0.75
-      local pos2 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular2()*(w+b)*0.75+Vector(Vector(Target)-myHero):normalized():perpendicular()*(w+b+self.Config.ed)*0.75
+      local pos1 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular()*(w+b)*0.75+Vector(Vector(Target)-myHero):normalized():perpendicular2()*(w+b+self.Config.ew)*0.75
+      local pos2 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular2()*(w+b)*0.75+Vector(Vector(Target)-myHero):normalized():perpendicular()*(w+b+self.Config.ew)*0.75
       if GetDistanceSqr(pos1,Target) < GetDistanceSqr(pos2,Target) and not IsWall(D3DXVECTOR3(pos1.x,pos1.y,pos1.z)) then
         return pos1
       else
         return pos2
       end
     else
-      local pos1 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular()*(w+b+self.Config.ed)
-      local pos2 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular2()*(w+b+self.Config.ed)
+      local pos1 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular()*(w+b+self.Config.ew)
+      local pos2 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular2()*(w+b+self.Config.ew)
       if GetDistanceSqr(pos1,s) < GetDistanceSqr(pos2,s) and not IsWall(D3DXVECTOR3(pos1.x,pos1.y,pos1.z)) then
         return pos1
       else
@@ -5149,7 +5150,7 @@ class "Nidalee"
             _G.Evade = false
             loadedEvade.m = nil
           end
-        elseif sReady[_R] then
+        elseif sReady[_R] and self:IsHuman() then
           Cast(_R)
           DelayAction(function() Cast(_W, loadedEvade.m) end, 0.25)
           if GetDistance(loadedEvade.m,myHero) < self.data.Cougar[_W].range then
