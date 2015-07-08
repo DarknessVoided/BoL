@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.9994
+_G.ScriptologyVersion    = 1.9995
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -165,6 +165,7 @@ _G.ScriptologyDebug      = false
     if UPL ~= nil then UPL:AddToMenu(Cfg) end
     SetupOrbwalk()
     SetupAwareness()
+    SetupEvade()
   end
 
   function Vars()
@@ -276,7 +277,7 @@ _G.ScriptologyDebug      = false
         ["Lux"] = {
           [_Q] = { speed = 1350, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
           [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear"},
-          [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 250, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
+          [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 325, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
           [_R] = { speed = math.huge, delay = 1, range = 3340, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
         },
         ["Malzahar"] = {
@@ -475,7 +476,7 @@ _G.ScriptologyDebug      = false
   end
 
   function SetupEvade()
-    if _G.Evadeee_Loaded == nil then
+    if _G.Evadeee_Loaded == nil and _G.Evade == nil then
       loadedEvade = SEvade()
     end
   end
@@ -567,7 +568,7 @@ _G.ScriptologyDebug      = false
   -- CastSpell(s, x, z) -> target
     aaResetTable2 = { ["Diana"] = {_Q}, ["Kalista"] = {_Q}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
   -- CastSpell(s, t)
-    aaResetTable3 = { ["Lucian"] = {_Q}, ["Teemo"] = {_Q}, ["Yasuo"] = {_R} }
+    aaResetTable3 = { ["Lucian"] = {_Q}, ["Teemo"] = {_Q}, ["Tristana"] = {_E}, ["Yasuo"] = {_R} }
   -- CastSpell(s, x, z) -> mouse
     aaResetTable4 = { ["Lucian"] = {_E},  ["Vayne"] = {_Q} }
     loadedOrb = SWalk(myHero.range < 500, aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName], aaResetTable4[myHero.charName])
@@ -1299,10 +1300,10 @@ _G.ScriptologyDebug      = false
       if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then pos, b = PredictPos(hero) if pos and GetDistance(pos, myHero) < GetDistance(hero, myHero) then c=c+1 end end end return c
   end
 
-  function PredictPos(target,delay)
+  function PredictPos(target,delay,speed)
     if not target then return end
     delay = delay or 0
-    speed = target.ms
+    speed = speed or target.ms
     dir = GetTargetDirection(target)
     if dir and target.isMoving then
       return Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*speed/8+Vector(dir.x, dir.y, dir.z):normalized()*target.ms*delay, GetDistance(target.minBBox, target.pos)
@@ -1405,9 +1406,9 @@ class "SAwareness"
 
   function SAwareness:Draw()
     local offset = 18
-    local nextOffset = 0
     if self.Config.cde then
       for _,k in pairs(GetEnemyHeroes()) do
+        local nextOffset = 0
         local barPos = GetUnitHPBarPos(k)
         local barOffset = GetUnitHPBarOffset(k)
         drawPos = {barPos.x - 68 + barOffset.x * 150, barPos.y + barOffset.y * 50 + 12}
@@ -1431,6 +1432,7 @@ class "SAwareness"
     end
     if self.Config.cda then
       for _,k in pairs(GetAllyHeroes()) do
+        local nextOffset = 0
         local barPos = GetUnitHPBarPos(k)
         local barOffset = GetUnitHPBarOffset(k)
         drawPos = {barPos.x - 68 + barOffset.x * 150, barPos.y + barOffset.y * 50 + 12}
@@ -1504,10 +1506,234 @@ class "SAwareness"
 class "SEvade"
 
   function SEvade:__init()
+    _G.Evade = false
     Cfg:addSubMenu("SEvade", "SEvade")
     self.Config = Cfg.SEvade
-    self.Config:addParam("i", "Soon", SCRIPT_PARAM_INFO, "")
+    self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+    self.activeSpells = {}
+    self.lastDrawn = 0
+    AddTickCallback(function() self:Dodge() end)
+    AddDrawCallback(function() self:Draw() end)
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
+    DelayAction(function() self:Load() end, 0)
+    if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
+  end
+
+  function SEvade:Load()
+    self.data = loadfile(LIB_PATH .. "SpellData.lua")()
+    for _,k in pairs(GetEnemyHeroes()) do
+      self.Config:addSubMenu(k.charName, k.charName)
+      for i=0,3 do
+        if self.data and self.data[k.charName] and self.data[k.charName][i] then
+          self.Config[k.charName]:addParam(self.str[i], "Evade "..self.str[i], SCRIPT_PARAM_ONOFF, true)
+        end
+      end
+    end
+    self.Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("drawfps", "Draw adjust(more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
+    self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("ed", "Extradistance", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
+    self.Config:addParam("p", "Pathfinding", SCRIPT_PARAM_LIST, 1, {"Basic"})
+  end
+
+  function SEvade:Dodge()
+    if not self.Config.e then return end
+    if _G.Evade and self.m ~= nil then
+      if GetDistanceSqr(self.m,myHero) > myHero.boundingRadius*2 and GetDistanceSqr(self.m,myHero) < 300 then
+        myHero:MoveTo(self.m.x,self.m.z)
+        return
+      else
+        _G.Evade = false
+      end
+    end
+    for _,spell in pairs(self.activeSpells) do
+      local range = self.data[spell.source.charName][spell.slot].range
+      local width = self.data[spell.source.charName][spell.slot].width
+      local speed = self.data[spell.source.charName][spell.slot].speed
+      local delay = self.data[spell.source.charName][spell.slot].delay
+      local type  = self.data[spell.source.charName][spell.slot].type
+      local b     = myHero.boundingRadius
+      if speed ~= math.huge then
+        if type == "linear" then
+          if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range then
+              spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*range
+            end
+            local p = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()+delay-spell.startTime)-width)
+            if GetDistanceSqr(myHero,p) <= (width/2+b)^2 then
+              _G.Evade = true
+              self.m = self:FindSafeSpot(spell.startPos,p,width/2,b)
+              self.m.speed = speed
+              self.m.startPos = Vector(spell.startPos)
+              self.m.source = spell.source
+              self.m.slot = spell.slot
+            end
+          else
+            table.remove(self.activeSpells, _)
+          end
+        end
+        if type == "circular" then
+          if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            if GetDistanceSqr(myHero,spell.endPos) <= (width+b)^2 then
+              _G.Evade = true
+              self.m = self:FindSafeSpot(spell.startPos,spell.endPos,width,b)
+              self.m.speed = speed
+              self.m.startPos = Vector(spell.startPos)
+              self.m.source = spell.source
+              self.m.slot = spell.slot
+            end
+          else
+            table.remove(self.activeSpells, _)
+          end
+        end
+      elseif speed == math.huge then
+        if type == "circular" then
+          if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            if GetDistanceSqr(myHero,spell.endPos) <= (width+b)^2 then
+              _G.Evade = true
+              self.m = self:FindSafeSpot(spell.startPos,spell.endPos,width,b)
+              self.m.speed = speed
+              self.m.startPos = Vector(spell.startPos)
+              self.m.source = spell.source
+              self.m.slot = spell.slot
+            end
+          else
+            table.remove(self.activeSpells, _)
+          end
+        end
+        if type == "linear" then
+          if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range then
+              spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*GetDistance(spell.startPos,myHero)
+            end
+            if GetDistanceSqr(myHero,spell.endPos) < (width+b)^2 then
+              _G.Evade = true
+              self.m = self:FindSafeSpot(spell.startPos,spell.endPos,width,b)
+              self.m.speed = speed
+              self.m.startPos = Vector(spell.startPos)
+              self.m.source = spell.source
+              self.m.slot = spell.slot
+            end
+          else
+            table.remove(self.activeSpells, _)
+          end
+        end
+      end
+    end
+  end
+
+  function SEvade:FindSafeSpot(s,p,w,b)
+    if Target then
+      local pos1 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular()*(w+b)*0.75+Vector(Vector(Target)-myHero):normalized():perpendicular2()*(w+b+self.Config.ed)*0.75
+      local pos2 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular2()*(w+b)*0.75+Vector(Vector(Target)-myHero):normalized():perpendicular()*(w+b+self.Config.ed)*0.75
+      if GetDistanceSqr(pos1,Target) < GetDistanceSqr(pos2,Target) and not IsWall(D3DXVECTOR3(pos1.x,pos1.y,pos1.z)) then
+        return pos1
+      else
+        return pos2
+      end
+    else
+      local pos1 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular()*(w+b+self.Config.ed)
+      local pos2 = myHero+Vector(Vector(myHero)-p):normalized():perpendicular2()*(w+b+self.Config.ed)
+      if GetDistanceSqr(pos1,s) < GetDistanceSqr(pos2,s) and not IsWall(D3DXVECTOR3(pos1.x,pos1.y,pos1.z)) then
+        return pos1
+      else
+        return pos2
+      end
+    end
+  end
+
+  function SEvade:Draw()
+    if not self.Config.d or not self.Config.drawfps or self.lastDrawn+self.Config.drawfps > os.clock() then return end
+    self.lastDrawn = os.clock()
+    if _G.Evade and self.m then
+      DrawCircle3D(self.m.x, self.m.y, self.m.z, myHero.boundingRadius, 2, ARGB(255, 255, 255, 255), 32)
+    end
+    for _,spell in pairs(self.activeSpells) do
+      local range = self.data[spell.source.charName][spell.slot].range
+      local width = self.data[spell.source.charName][spell.slot].width
+      local speed = self.data[spell.source.charName][spell.slot].speed
+      local delay = self.data[spell.source.charName][spell.slot].delay
+      local type  = self.data[spell.source.charName][spell.slot].type
+      if speed ~= math.huge then
+        if type == "linear" then
+          if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range then
+              spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*range
+            end
+            local pos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()-delay-spell.startTime)-width)
+            self:DrawRectangleOutline(spell.startPos, spell.endPos, pos, width)
+          end
+        end
+        if type == "circular" then
+          if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, 2, ARGB(255, 255, 255, 255), 32)
+            DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, 2, ARGB(255, 255, 255, 255), 32)
+          end
+        end
+      elseif speed == math.huge then
+        if type == "circular" then
+          if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, 2, ARGB(255, 255, 255, 255), 32)
+            DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, 2, ARGB(255, 255, 255, 255), 32)
+          end
+        end
+        if type == "linear" then
+          if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
+            if GetDistanceSqr(spell.startPos,spell.endPos) < range * range then
+              spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*range
+            end
+            self:DrawRectangleOutline(spell.startPos, spell.endPos, nil, width)
+          end
+        end
+      end
+    end
+  end
+
+  function SEvade:DrawRectangleOutline(startPos, endPos, pos, width)
+    local c1 = startPos+Vector(Vector(endPos)-startPos):perpendicular():normalized()*width/2
+    local c2 = startPos+Vector(Vector(endPos)-startPos):perpendicular2():normalized()*width/2
+    local c3 = endPos+Vector(Vector(startPos)-endPos):perpendicular():normalized()*width/2
+    local c4 = endPos+Vector(Vector(startPos)-endPos):perpendicular2():normalized()*width/2
+    DrawLine3D(c1.x,c1.y,c1.z,c2.x,c2.y,c2.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
+    DrawLine3D(c2.x,c2.y,c2.z,c3.x,c3.y,c3.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
+    DrawLine3D(c3.x,c3.y,c3.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
+    DrawLine3D(c1.x,c1.y,c1.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
+    local c1 = startPos+Vector(Vector(endPos)-startPos):perpendicular():normalized()*width
+    local c2 = startPos+Vector(Vector(endPos)-startPos):perpendicular2():normalized()*width
+    local c3 = endPos+Vector(Vector(startPos)-endPos):perpendicular():normalized()*width
+    local c4 = endPos+Vector(Vector(startPos)-endPos):perpendicular2():normalized()*width
+    DrawLine3D(c1.x,c1.y,c1.z,c2.x,c2.y,c2.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
+    DrawLine3D(c2.x,c2.y,c2.z,c3.x,c3.y,c3.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
+    DrawLine3D(c3.x,c3.y,c3.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
+    DrawLine3D(c1.x,c1.y,c1.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
+    if pos then
+      DrawCircle3D(pos.x, pos.y, pos.z, width/2, 1, ARGB(155, 255, 255, 255), 8)
+    end
+  end
+
+  function SEvade:GetGroundTime(unit, spell)
+    if unit.charName == "Lux" and spell == 2 then return 1 end
+    if unit.charName == "Lux" and spell == 3 then return 0.25 end
+    if unit.charName == "Ziggs" and spell == 1 then return 1 end
+    if unit.charName == "Ziggs" and spell == 2 then return 1 end
+    return 0
+  end
+
+  function SEvade:ProcessSpell(unit, spell)
+    if unit and spell and unit.team ~= myHero.team then
+      if spell.name:lower():find("attack") then return end
+      if self.data and self.data[unit.charName] then
+        for i=0,3 do
+          if self.Config[unit.charName][self.str[i]] and self.data[unit.charName][i].name == "" then
+            --print("Unsupported spell found!! "..unit.charName.." "..spell.name)
+          elseif self.Config[unit.charName][self.str[i]] and spell.name:find(self.data[unit.charName][i].name) then
+            s = {slot = i, source = unit, startTime = GetInGameTimer(), startPos = Vector(spell.startPos), endPos = Vector(spell.endPos), winUpTime = spell.windUpTime, name = spell.name}
+            table.insert(self.activeSpells, s)
+          end
+        end
+      end
+    end
   end
 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -7053,6 +7279,14 @@ class "Yasuo"
     else
       data[0].range = 500
     end
+    if loadedEvade then
+      if sReady[_W] and (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and _G.Evade and loadedEvade.m and loadedEvade.m.speed ~= math.huge and Config.Windwall[loadedEvade.m.source.charName..loadedEvade.str[loadedEvade.m.slot]] then
+        _G.Evade = false
+        local wPos = myHero + (Vector(loadedEvade.m.startPos) - myHero):normalized() * data[1].range 
+        loadedEvade.m = nil
+        Cast(_W, wPos)
+      end
+    end
   end
 
   function Yasuo:Move(x)
@@ -7072,15 +7306,17 @@ class "Yasuo"
   end
 
   function Yasuo:ProcessSpell(unit, spell)
-    if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
-      if myHero == spell.target and spell.name:lower():find("attack") and unit.range > 475 then
-        local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
-        Cast(_W, wPos)
-      elseif spell.endPos and not spell.target then
-        local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
-        if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
+    if not loadedEvade then
+      if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
+        if myHero == spell.target and spell.name:lower():find("attack") and unit.range > 475 then
           local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
           Cast(_W, wPos)
+        elseif spell.endPos and not spell.target then
+          local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
+          if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
+            local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
+            Cast(_W, wPos)
+          end
         end
       end
     end
@@ -7107,6 +7343,20 @@ class "Yasuo"
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
     Config.Misc:addDynamicParam("Wa", "Auto Shield with W", SCRIPT_PARAM_ONOFF, true)
+    DelayAction(function()
+        if loadedEvade then
+          Config:addSubMenu("Windwall", "Windwall")
+          for _,k in pairs(GetEnemyHeroes()) do
+            Config.Windwall:addParam(k.charName, k.charName, SCRIPT_PARAM_INFO, "")
+            for i=0,3 do
+              if loadedEvade.data and loadedEvade.data[k.charName] and loadedEvade.data[k.charName][i] and loadedEvade.data[k.charName][i].name and loadedEvade.data[k.charName][i].name ~= "" then
+                Config.Windwall:addParam(k.charName..loadedEvade.str[i], "Block "..loadedEvade.str[i], SCRIPT_PARAM_ONOFF, true)
+              end
+            end
+            Config.Windwall:addParam("", "", SCRIPT_PARAM_INFO, "")
+          end
+        end
+      end, 3)
   end
 
   function Yasuo:LastHit()
@@ -7158,13 +7408,18 @@ class "Yasuo"
   function Yasuo:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if enemy.y > myHero.y+25 and Config.Killsteal.R and GetDmg(_R,myHero,enemy) > enemy.health then
+        if enemy.y > myHero.y+25 and Config.Killsteal.R and GetDmg(_R,myHero,enemy) > enemy.health and GetDistance(enemy) < data[3].range then
           Cast(_R, enemy, true)
-        elseif Config.Killsteal.Q and GetDmg(_Q,myHero,enemy) > enemy.health then
+        elseif Config.Killsteal.Q and GetDmg(_Q,myHero,enemy) > enemy.health and GetDistance(enemy) < data[0].range then
           Cast(_Q, enemy, false, true, 1)
-        elseif Config.Killsteal.E and GetDmg(_E,myHero,enemy) > enemy.health then
+        elseif Config.Killsteal.Q and self.passiveTracker and GetDmg(_Q,myHero,enemy) > enemy.health and GetDistance(enemy) < 1200 then
+          local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, enemy)
+          if HitChance >= 2 then
+            Cast(_Q, CastPosition)
+          end
+        elseif Config.Killsteal.E and GetDmg(_E,myHero,enemy) > enemy.health and GetDistance(enemy) < data[2].range then
           Cast(_E, enemy, true)
-        elseif Config.Killsteal.Q and Config.Killsteal.E and GetDmg(_Q,myHero,enemy)+GetDmg(_E,myHero,enemy) > enemy.health then
+        elseif Config.Killsteal.Q and Config.Killsteal.E and GetDmg(_Q,myHero,enemy)+GetDmg(_E,myHero,enemy) > enemy.health and GetDistance(enemy) < data[2].range then
           Cast(_E, enemy, true)
           DelayAction(function() Cast(_Q) end, 0.25)
         end
