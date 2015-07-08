@@ -343,7 +343,8 @@ return {
     ["Teemo"] = {
     },
     ["Thresh"] = {
-        [_Q] = { name = "ThreshQ", speed = 1825, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "ThreshQ", speed = 1825, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear"},
+        [_E] = { name = "ThreshE", speed = math.huge, delay = 0.5, range = 450, width = 130, collision = true, aoe = false, type = "linear"}
     },
     ["Tristana"] = {
         [_Q] = { name = "", speed = 2100, delay = 0.25, range = 900, width = 125, collision = false, aoe = false, type = "circular"}
