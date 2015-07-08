@@ -293,12 +293,12 @@ return {
         [_R] = { name = "rivenizunablade", speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
     },
     ["Rumble"] = {
-        [_Q] = { name = "", speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone"},
-        [_E] = { name = "RumbleGrenade", speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear"},
-        [_R] = { name = "", speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "RumbleFlameThrower", speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone"},
+        [_E] = { name = "RumbleGrenadeMissile", speed = 1200, delay = 0.250, range = 850, width = 90, collision = true, aoe = false, type = "linear"},
+        [_R] = { name = "RumbleCarpetBomb", speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear"}
     },
     ["Ryze"] = {
-        [_Q] = { name = "", speed = 1875, delay = 0.25, range = 900, width = 55, collision = true, aoe = false, type = "linear"},
+        [_Q] = { name = "RyzeQ", speed = 1875, delay = 0.25, range = 880, width = 55, collision = true, aoe = false, type = "linear"},
     },
     ["Sejuani"] = {
         [_R] = { name = "SejuaniGlacialPrisonCast", speed = 1600, delay = 0.250, range = 1200, width = 110, collision = false, aoe = false, type = "linear"}
@@ -333,7 +333,7 @@ return {
     },
     ["Syndra"] = {
         [_Q] = { name = "SyndraQ", speed = math.huge, delay = 0.5, range = 790, width = 125, collision = false, aoe = true, type = "circular"},
-        [_W] = { name = "syndrawcast", speed = 1500, delay = 0.25, range = 825, width = 125, collision = false, aoe = true, type = "circular"}
+        [_W] = { name = "syndrawcast", speed = 1500, delay = 0.25, range = 825, width = 125, collision = false, aoe = true, type = "circular"},
         [_E] = { name = "", speed = 2500, delay = 0.25, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
     },
     ["Talon"] = {
@@ -365,8 +365,8 @@ return {
     ["Udyr"] = {
     },
     ["Urgot"] = {
-        [_Q] = { name = "", speed = 1600, delay = 0.2, range = 1400, width = 80, collision = true, aoe = false, type = "linear"},
-        [_E] = { name = "", speed = 1750, delay = 0.3, range = 920, width = 200, collision = false, aoe = true, type = "circular"}
+        [_Q] = { name = "UrgotHeatseekingLineMissile", speed = 1575, delay = 0.175, range = 1000, width = 80, collision = true, aoe = false, type = "linear"},
+        [_E] = { name = "UrgotPlasmaGrenade", speed = 1750, delay = 0.25, range = 890, width = 200, collision = false, aoe = true, type = "circular"}
     },
     ["Varus"] = {
         [_Q] = { name = "VarusQ", speed = 1500, delay = 0.5, range = 1475, width = 100, collision = false, aoe = false, type = "linear"},
