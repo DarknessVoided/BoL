@@ -1540,7 +1540,7 @@ class "SEvade"
   function SEvade:Dodge()
     if not self.Config.e then return end
     if _G.Evade and self.m ~= nil then
-      if GetDistanceSqr(self.m,myHero) > myHero.boundingRadius*2 and GetDistanceSqr(self.m,myHero) < 300 then
+      if (GetDistanceSqr(self.m,myHero) > myHero.boundingRadius*2 and GetDistanceSqr(self.m,myHero) < 300) or self.m.time < GetInGameTimer() then
         myHero:MoveTo(self.m.x,self.m.z)
         return
       else
@@ -1568,6 +1568,7 @@ class "SEvade"
               self.m.startPos = Vector(spell.startPos)
               self.m.source = spell.source
               self.m.slot = spell.slot
+              self.m.time = spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot)
             end
           else
             table.remove(self.activeSpells, _)
@@ -1582,6 +1583,7 @@ class "SEvade"
               self.m.startPos = Vector(spell.startPos)
               self.m.source = spell.source
               self.m.slot = spell.slot
+              self.m.time = spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot)
             end
           else
             table.remove(self.activeSpells, _)
@@ -1597,6 +1599,7 @@ class "SEvade"
               self.m.startPos = Vector(spell.startPos)
               self.m.source = spell.source
               self.m.slot = spell.slot
+              self.m.time = spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot)
             end
           else
             table.remove(self.activeSpells, _)
@@ -1614,6 +1617,7 @@ class "SEvade"
               self.m.startPos = Vector(spell.startPos)
               self.m.source = spell.source
               self.m.slot = spell.slot
+              self.m.time = spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot)
             end
           else
             table.remove(self.activeSpells, _)
@@ -7364,9 +7368,9 @@ class "Yasuo"
     if minion and GetStacks(minion) == 0 and minion.health < GetDmg(_E, myHero, minion) and loadedOrb.State[_E] then
       Cast(_E, minion, true)
     end
-    if minion and GetStacks(minion) == 0 and minion.health < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and loadedOrb.State[_Q] and loadedOrb.State[_E] then
+    if minion and GetStacks(minion) == 0 and minion.health < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and sReady[_Q] and sReady[_E] and loadedOrb.State[_Q] and loadedOrb.State[_E] then
       Cast(_E, minion, true)
-      DelayAction(function() Cast(_Q) end, 0.25)
+      DelayAction(function() Cast(_Q, minion) end, 0.125)
     end
   end
 
