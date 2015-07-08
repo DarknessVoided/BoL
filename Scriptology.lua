@@ -1683,12 +1683,16 @@ class "SEvade"
             end
             local pos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()-delay-spell.startTime)-width)
             self:DrawRectangleOutline(spell.startPos, spell.endPos, pos, width)
+          else
+            table.remove(self.activeSpells, _)
           end
         end
         if type == "circular" then
           if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
             DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, 2, ARGB(255, 255, 255, 255), 32)
             DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, 2, ARGB(255, 255, 255, 255), 32)
+          else
+            table.remove(self.activeSpells, _)
           end
         end
       elseif speed == math.huge then
@@ -1696,6 +1700,8 @@ class "SEvade"
           if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
             DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, 2, ARGB(255, 255, 255, 255), 32)
             DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, 2, ARGB(255, 255, 255, 255), 32)
+          else
+            table.remove(self.activeSpells, _)
           end
         end
         if type == "linear" then
@@ -1704,6 +1710,8 @@ class "SEvade"
               spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*range
             end
             self:DrawRectangleOutline(spell.startPos, spell.endPos, nil, width)
+          else
+            table.remove(self.activeSpells, _)
           end
         end
       end
