@@ -3747,9 +3747,11 @@ class "Kalista"
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("Er", "E if target walks out of range", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("Es", "E stacks if target walks out of range", SCRIPT_PARAM_SLICE, 5, 0, 20, 0)
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("Er", "E if target walks out of range", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Es", "E stacks if target walks out of range", SCRIPT_PARAM_SLICE, 5, 0, 20, 0)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -3859,7 +3861,7 @@ class "Kalista"
       if killableCounter > 0 and GetStacks(Target) > 0 then
         Cast(_E)
       end
-      if Config.Combo.Er and GetStacks(Target) > 0 then
+      if Config.Combo.Er and GetStacks(Target) >= Config.Combo.Es then
         pos, b = PredictPos(Target)
         pos2, b = PredictPos(myHero)
         if pos and pos2 and GetDistance(Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
@@ -3891,7 +3893,7 @@ class "Kalista"
       if killableCounter >= 1 and harrassUnit ~= nil then
         Cast(_E)
       end
-      if Config.Harrass.Er and GetStacks(Target) > 0 then
+      if Config.Harrass.Er and GetStacks(Target) > Config.Harrass.Es then
         pos, b = PredictPos(Target)
         pos2, b = PredictPos(myHero)
         if pos and pos2 and GetDistance(Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
