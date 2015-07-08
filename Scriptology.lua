@@ -5504,7 +5504,7 @@ class "Rengar"
 
   function Rengar:ProcessSpell(unit,spell)
     if unit and unit.isMe and spell and loadedOrb:DoOrb() then
-      if spell.name:lower():find("rengare") and (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W) then
+      if spell.name:lower():find("rengarefinal") and (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W) then
         loadedOrb.orbTable.lastAA = 0
         Cast(_W)
       end
