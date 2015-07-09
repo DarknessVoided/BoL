@@ -7890,7 +7890,9 @@ class "Yasuo"
       end
       if minion then
         Cast(_E, minion, true)
+        return true
       end
+      return false
     end
   end
 
@@ -7967,13 +7969,15 @@ class "Yasuo"
     if not self.Target then self.Target = Target end
     if not self.Target then return end
     if GetDistance(self.Target) > loadedOrb.myRange and Config.Combo.E then
-      if GetDistance(self.Target) < data[2].range and GetStacks(self.Target) == 0 then
+      if self:Move(self.Target) then
+        if sReady[_Q] then
+          DelayAction(function() Cast(_Q, self.Target) end, 0.125)
+        end
+      elseif GetDistance(self.Target) < data[2].range and GetDistance(self.Target) > data[2].range/2 and GetStacks(self.Target) == 0 then
         Cast(_E, self.Target, true)
         if sReady[_Q] then
           DelayAction(function() Cast(_Q, self.Target) end, 0.125)
         end
-      else
-        self:Move(self.Target)
       end
     end
     if sReady[_R] and Config.Combo.R then
