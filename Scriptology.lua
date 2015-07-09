@@ -1953,7 +1953,7 @@ class "SWalk"
       end
     elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp + self.Config.cadj/1000) then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and unit and valid and self.melee and self.Config.wtt then
+      if self:DoOrb() and unit and valid and unit.type == myHero.type and self.melee and self.Config.wtt then
         if GetDistance(unit) > myHero.boundingRadius+unit.boundingRadius then
           myHero:MoveTo(unit.x, unit.z)
         end
