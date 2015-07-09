@@ -1772,7 +1772,7 @@ class "SEvade"
       if spell.name:lower():find("attack") then return end
       if self.data and self.data[unit.charName] then
         for i=0,3 do
-          if self.Config[unit.charName][self.str[i]] and (self.data[unit.charName][i].name == "" or not self.data[unit.charName][i].name) then
+          if self.Config[unit.charName][self.str[i]] and (not self.data[unit.charName][i] or self.data[unit.charName][i].name == "" or not self.data[unit.charName][i].name) then
             --print("Unsupported spell found!! "..unit.charName.." "..spell.name)
           elseif self.Config[unit.charName][self.str[i]] and spell.name:find(self.data[unit.charName][i].name) then
             s = {slot = i, source = unit, startTime = GetInGameTimer(), startPos = Vector(spell.startPos), endPos = Vector(spell.endPos), winUpTime = spell.windUpTime, name = spell.name}
