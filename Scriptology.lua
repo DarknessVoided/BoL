@@ -3978,6 +3978,11 @@ class "Jax"
   end
 
   function Jax:Combo()
+    if not self.Target then self.Target = Target end
+    if not self.Target then return end
+    if GetDistance(self.Target) > myHero.range+self.Target+boundingRadius and GetDistance(self.Target) < data[0].range then
+      Cast(_Q, self.Target, true)
+    end
   end
 
   function Jax:Harrass()
