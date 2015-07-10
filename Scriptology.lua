@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.99992
+_G.ScriptologyVersion    = 1.99993
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -513,8 +513,7 @@ _G.ScriptologyDebug      = false
 
   function SetupOrbwalk()
     if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" or myHero.charName == "Talon" or myHero.charName == "Yasuo" then
-      if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" and myHero.charName ~= "Yasuo" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
-      if myHero.charName == "Riven" then return end
+      if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
       LoadOrb()
       DelayAction(function() ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end, 5)
     else
@@ -6204,16 +6203,14 @@ class "Riven"
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
     self:Menu()
-    self.Target = Target
-    self.QState = false
-    self.WState = false
+    self.Target = nil
     self.QCast  = 0
     self.movePos = nil
     self.rNow   = false
-    self.orbTable = { QDelay = 0, EDelay = 0, lastAA = 0, lastAction = 0, minionAA = 0, windUp = 3.75, animation = 0.625, range = myHero.range + myHero.boundingRadius, trueRange = myHero.range + GetDistance(myHero.minBBox) + 1 }
+    self.QDelay = 0
+    self.EDelay = 0
     AddDrawCallback(function() self:Draw() end)
     AddTickCallback(function() self:Tick() end)
-    AddTickCallback(function() self:OrbWalk() end)
     AddAnimationCallback(function(unit,ani) self:Animation(unit,ani) end)
     AddProcessSpellCallback(function(unit,spell) self:ProcessSpell(unit,spell) end)
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
@@ -6267,7 +6264,6 @@ class "Riven"
   end
 
   function Riven:Draw()
-    DrawLFC(myHero.x, myHero.y, myHero.z, self.orbTable.range, ARGB(255,255,255,255))
     if Config.Draws.Q and sReady[_Q] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(105,155,155,155))
     end
@@ -6300,14 +6296,13 @@ class "Riven"
   end
 
   function Riven:Tick()
-    self.orbTable.range = myHero.range + myHero.boundingRadius
-    self.orbTable.trueRange = myHero.range + GetDistance(myHero.minBBox) + 1
+    loadedOrb.myRange = myHero.range + GetDistance(myHero.minBBox) + 1
     if Config.Misc.Flee then
       myHero:MoveTo(mousePos.x, mousePos.z)
       if sReady[_E] then
         Cast(_E, mousePos)
       end
-      if not sReady[_E] and sReady[_Q] and self.orbTable.EDelay + 350 < GetTickCount() then
+      if not sReady[_E] and sReady[_Q] and self.EDelay + 350 < GetTickCount() then
         Cast(_Q, mousePos)
       end
     end
@@ -6357,11 +6352,9 @@ class "Riven"
   end
 
   function Riven:RecvPacket(p)
-    if p.header == 0x2A then
-      p.pos = 1
-      if p:DecodeF() == myHero.networkID then print("wut") end
+    if p.header == 0x2A and self.QCast == 3 and self.Target and p:DecodeF() == self.Target.networkdID then
       self:CastDance()
-      self:WindUp(myHero)
+      myHero:Attack(self.Target)--self:WindUp(myHero)
     end
   end
 
@@ -6383,126 +6376,13 @@ class "Riven"
     return dmg
   end
 
-  function Riven:OrbWalk()
-    if Config.kConfig.LastHit then
-      self.Target = GetLowestMinion(500)
-      if self.Target and self.Target.health > GetDmg("AD",myHero,self.Target) then
-        self.Target = nil
-      end
-      if not self.Target then
-        self.Target = GetJMinion(500)
-      end
-    end
-    if Config.kConfig.LaneClear then
-      self.Target = GetLowestMinion(500)
-      if not self.Target then
-        self.Target = GetJMinion(500)
-      end
-    end
-    if Config.kConfig.Harrass then
-      self.Target = Target
-    end
-    if Config.kConfig.Combo then
-      self.Target = Target
-    end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, self.orbTable.trueRange + 40) then
-      self.Target = self.Forcetarget
-    end
-    if self:DoOrb() then self:Orb(self.Target) end
-  end
-
-  function Riven:Orb(unit)
-    if not ValidTarget(unit, self.orbTable.trueRange + 40) then
-      unit = Target
-    end
-    if os.clock() > self.orbTable.lastAA + 1 / (myHero.attackSpeed * self.orbTable.animation) - 0.07 and ValidTarget(unit, self.orbTable.trueRange + 40) then
-      myHero:Attack(unit)
-    elseif GetDistance(mousePos) > myHero.boundingRadius and os.clock() > self.orbTable.lastAction + 1 / (myHero.attackSpeed * self.orbTable.windUp) + self.orbTable.minionAA then
-      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and unit and ValidTarget(unit, self.orbTable.trueRange) and unit.type == myHero.type then
-        myHero:MoveTo(unit.x, unit.z)
-      elseif GetDistance(mousePos) > 50 then
-        myHero:MoveTo(movePos.x, movePos.z)
-      end
-    end
-  end
-
-  function Riven:DoOrb()
-    if Config.kConfig.Combo then
-      self.QState = Config.Combo.Q
-      self.WState = Config.Combo.W
-      self.IState = true
-      self.orbTable.minionAA = 0
-      return true
-    end
-    if Config.kConfig.Harrass then
-      self.QState = Config.Harrass.Q
-      self.WState = Config.Harrass.W
-      self.IState = true
-      self.orbTable.minionAA = 0
-      return true
-    end
-    if Config.kConfig.LastHit then
-      self.QState = Config.LastHit.Q
-      self.WState = Config.LastHit.W
-      self.IState = false
-      self.orbTable.minionAA = 0.004
-      return true
-    end
-    if Config.kConfig.LaneClear then
-      self.QState = Config.LaneClear.Q
-      self.WState = Config.LaneClear.W
-      self.IState = false
-      self.orbTable.minionAA = 0.004
-      return true
-    end
-    self.QState = false
-    return false
-  end
-
-  function Riven:WindUp(unit)
-    if unit.isMe then
-      if self:DoOrb() and ValidTarget(self.Target) then
-        self:CastItems(self.Target) 
-        if sReady[_W] and GetDistance(self.Target) < data[1].range and self.WState then 
-          Cast(_W, self.Target)
-        elseif sReady[_Q] and ValidTarget(self.Target, 600) and self.QState then
-          if myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and self.QCast == 2 then
-            Cast(_R, self.Target)
-            DelayAction(function() Cast(_Q, self.Target) end, 0.137)
-          else
-            Cast(_Q, self.Target)
-          end
-        end
-      end
-    end
-  end
-
-  function Riven:CastItems(unit)
-    if not self.IState then return end
-    local i = {["ItemTiamatCleave"] = self.orbTable.range, ["YoumusBlade"] = self.orbTable.range}
-    local u = {["ItemSwordOfFeastAndFamine"] = 600}
-    for slot = ITEM_1, ITEM_6 do
-      if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
-        CastSpell(slot) 
-      end
-      if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
-        CastSpell(slot, unit)
-      end
-    end
-  end
-
   function Riven:Animation(unit,ani)
     if unit and unit.isMe and ani then
       if ani:find("Spell1a") or ani:find("Spell1b") or ani:find("Spell1c") then
-        self.orbTable.lastAction = os.clock() + 0.245
+        loadedOrb.orbTable.lastAction = os.clock() + 0.245
         if self.Target then
-          if VIP_USER and self.QCast == 3 and false then 
-            DelayAction(function() self:CastDance() end, 0.137)
-          else
-            local movePos = self.Target + (Vector(myHero) - self.Target):normalized() * (GetDistance(self.Target) + 62)
-            myHero:MoveTo(movePos.x, movePos.z)
-          end
+          local movePos = self.Target + (Vector(myHero) - self.Target):normalized() * (GetDistance(self.Target) + 62)
+          myHero:MoveTo(movePos.x, movePos.z)
         end
       end
     end
@@ -6520,58 +6400,51 @@ class "Riven"
 
   function Riven:ProcessSpell(unit,spell)
     if unit and unit.isMe and spell then
-      if spell.name:lower():find("attack") then
-        self.orbTable.windUp = 1 / (spell.windUpTime * myHero.attackSpeed)
-        self.orbTable.animation = 1 / (spell.animationTime * myHero.attackSpeed)
-        DelayAction(function() self:WindUp(unit) end, 1 / (myHero.attackSpeed * self.orbTable.windUp) + (self.QCast == 3 and 0.02 or 0) - GetLatency() / 2000 + self.orbTable.minionAA)
-      elseif spell.name == "RivenTriCleave" then
+      if spell.name == "RivenTriCleave" then
         self.QCast = self.QCast + 1
         if self.QCast == 4 then self.QCast = 1 end
-        self.orbTable.QDelay = os.clock()
-        if self.Target and self:DoOrb() then
+        self.QDelay = os.clock()
+        if self.Target and loadedOrb:DoOrb() then
           local movePos = self.Target + (Vector(myHero) - self.Target):normalized() * (GetDistance(self.Target) + 65)
           if movePos and GetDistance(self.Target) < 294 then
-            self.orbTable.lastAction = os.clock() + 0.85
+            loadedOrb.orbTable.lastAA = os.clock() + 0.85
             myHero:MoveTo(movePos.x, movePos.z)
           else
             myHero:MoveTo(mousePos.x, mousePos.z)
           end
         end
       elseif spell.name == "RivenMartyr" then
-        self.orbTable.lastAA = 0
-        if self.Target and self:DoOrb() and GetDistance(self.Target) < data[0].range then
-          self:CastItems(self.Target)
+        loadedOrb.orbTable.lastAA = 0
+        if self.Target and loadedOrb:DoOrb() and GetDistance(self.Target) < data[0].range then
+          loadedOrb:CastItems(self.Target)
           Cast(_Q, self.Target)
-          DelayAction(function() self:CastItems(self.Target) end, 0.134)
-          DelayAction(function() Cast(_Q, self.Target) end, 0.134)
-          DelayAction(function() self:CastItems(self.Target) end, 0.137)
-          DelayAction(function() Cast(_Q, self.Target) end, 0.137)
         end
       elseif spell.name == "ItemTiamatCleave" then
-        self.orbTable.lastAA = 0
-        if self.Target and self:DoOrb() and sReady[_Q] and GetDistance(self.Target) < data[0].range then
+        loadedOrb.orbTable.lastAA = 0
+        if self.Target and loadedOrb:DoOrb() and sReady[_Q] and GetDistance(self.Target) < data[0].range then
           DelayAction(function() if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end end, 0.137)
           DelayAction(function() Cast(_Q, self.Target) end, 0.137)
           DelayAction(function() if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end end, 0.139)
           DelayAction(function() Cast(_Q, self.Target) end, 0.139)
         end
       elseif spell.name == "RivenFengShuiEngine" or spell.name == "rivenizunablade" then
-        self.orbTable.lastAA = 0
+        loadedOrb.orbTable.lastAA = 0
         if self.Target and self:DoOrb() and GetDistance(self.Target) < data[0].range and self.QCast == 2 then
           self:CastItems(self.Target)
           if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end
           Cast(_Q, self.Target)
         end
       elseif spell.name == "RivenFeint" then
-        self.orbTable.EDelay = GetTickCount()
-        self.orbTable.lastAA = 0
+        self.EDelay = GetTickCount()
+        loadedOrb.orbTable.lastAA = 0
       end
     end
   end
 
   function Riven:Combo()
+    if not self.Target then self.Target = Target end
     if not self.Target then return end
-    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
+    if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
       if Config.Combo.R and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
         Cast(_E, self.Target)
         DelayAction(function() Cast(_R) end, 0.075) 
@@ -6584,8 +6457,8 @@ class "Riven"
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
       CastSpell(_W)
     end
-    if sReady[_Q] and not sReady[_E] and GetDistance(self.Target) > self.orbTable.trueRange + 30 then
-      if self.orbTable.EDelay + 300 < GetTickCount() and self.orbTable.QDelay + 1.2 < os.clock() then
+    if sReady[_Q] and not sReady[_E] and GetDistance(self.Target) > loadedOrb.myRange + 30 then
+      if self.EDelay + 300 < GetTickCount() and self.QDelay + 1.2 < os.clock() then
         Cast(_Q, Target)
       end
     end
