@@ -1271,26 +1271,26 @@ _G.ScriptologyDebug      = false
     end
   end
 
-  function CastPacket(spell)
-    local s = {0xAD, 0xED, 0x8D, 0xCD}
-    local p = CLoLPacket(0x0050)
-    p.vTable = 0xE73EF8
+  function CastPacket(spell, unit)
+    local s = {0x46, 0xEF, 0x0E, 0xCF}
+    local p = CLoLPacket(0x00DF)
+    p.vTable = 0xFDC49C
     p:EncodeF(myHero.networkID)
-    p:Encode4(0xF891B9F5)
-    p:Encode2(0xB4B1)
-    p:Encode2(0x0000)
-    p:Encode2(0xFDB1)
-    p:Encode2(0x0000)
-    p:Encode1(0xEE)
-    p:Encode1(0x6D)
-    p:Encode2(0x3D3D)
-    p:Encode1(0x3C)
-    p:Encode4(0x95959595)
-    p:Encode4(0x95959595)
+    p:Encode4(0x5C565F08)
+    p:Encode1(0xA5)
+    p:Encode4(unit and unit.networkdId or 0xD8D8D8D8)
+    p:Encode4(0xD8D8D8D8)
+    p:Encode1(0x4C)
+    p:Encode2(0x5D8A)
+    p:Encode2(0x4CD8)
+    p:Encode2(0x31B5)
+    p:Encode1(0x37)
     p:Encode1(s[spell+1])
-    p:Encode1(0xDC)
-    p:Encode2(0xE924)
-    p:Encode2(0x0000)
+    p:Encode1(0xD5)
+    p:Encode2(0x7373)
+    p:Encode2(0xB091)
+    p:Encode2(0xA652)
+    p:Encode1(0x06)
     SendPacket(p)
   end
 
@@ -6509,12 +6509,12 @@ class "Riven"
   end
 
   function Riven:CastDance()
-    p = CLoLPacket(242)
-    p.vTable = 15285260
+    local p = CLoLPacket(0x0031)
+    p.vTable = 0xEC5D08
     p:EncodeF(myHero.networkID)
-    p:Encode1(255)
-    p:Encode2(15871)
-    p:Encode2(62088)
+    p:Encode1(0x7D)
+    p:Encode2(0xC03A)
+    p:Encode2(0xB9EE)
     SendPacket(p)
   end
 
