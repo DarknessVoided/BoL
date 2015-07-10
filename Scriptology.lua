@@ -6352,9 +6352,9 @@ class "Riven"
   end
 
   function Riven:RecvPacket(p)
-    if p.header == 0x2A and self.QCast == 3 and self.Target and p:DecodeF() == self.Target.networkdID then
+    if p.header == 0x2A and self.QCast == 3 and self.Target and p:DecodeF() == self.Target.networkdID and loadedOrb:DoOrb() then
       self:CastDance()
-      myHero:Attack(self.Target)--self:WindUp(myHero)
+      myHero:Attack(self.Target)
     end
   end
 
