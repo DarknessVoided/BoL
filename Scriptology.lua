@@ -1551,9 +1551,8 @@ class "SEvade"
   end
 
   function SEvade:Load()
-    self.data = loadfile(LIB_PATH .. "SpellData.lua")()
     if FileExist(LIB_PATH .. "SpellData.lua") then
-      self.SpellData = loadfile(LIB_PATH .. "SpellData.lua")()
+      self.data = loadfile(LIB_PATH .. "SpellData.lua")()
     else
       DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function () end)
       DelayAction(function() self:Load() end, 0.5)
