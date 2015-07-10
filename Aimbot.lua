@@ -313,9 +313,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function OnLoad()
   Aim = nil
-  if Update() then
-    return
-  else
+  if not Update() then
     Aim = Aimbot()
     DelayAction(function() AutoupdaterMsg("Loaded the latest version (v"..AimbotVersion..")") end, 5)
   end
