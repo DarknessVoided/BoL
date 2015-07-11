@@ -37,7 +37,7 @@ _G.ScriptologyDebug      = false
     else 
       ScriptologyMsg("Downloading ImprovedScriptConfig, please don't press F9")
       DelayAction(function() DownloadFile("https://raw.github.com/Feez/BoL/master/Common/ImprovedScriptConfig.lua".."?rand="..math.random(1,10000), LIB_PATH.."ImprovedScriptConfig.lua", function () ScriptologyMsg("Successfully downloaded ImprovedScriptConfig. Press F9 twice.") end) end, 3) 
-      return true
+      return
     end  
     if supported[myHero.charName] then
       if ScriptologyAutoUpdate and Update() then
@@ -1912,7 +1912,7 @@ class "SWalk"
       self.Target = self.Forcetarget
     end
     if self:DoOrb() then
-      if ScriptologyLoaded and loadedClass.Target then loadedClass.Target = self.Target end
+      if ScriptologyLoaded then loadedClass.Target = self.Target end
       self:Orb(self.Target) 
     end
   end
