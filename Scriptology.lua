@@ -5882,7 +5882,7 @@ class "Orianna"
     if myHero:GetSpellData(_Q).currentCd < 1.5 then
       dmg = dmg + GetDmg(_Q, myHero, unit)
     end
-    return (GetDmg(_R, myHero, unit)+GetDmg("AD", myHero, unit))+dmg
+    return GetDmg(_R, myHero, unit)+dmg
   end
 
   function Orianna:Harrass()
