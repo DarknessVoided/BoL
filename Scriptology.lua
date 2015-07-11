@@ -16,10 +16,10 @@
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.99993
+_G.ScriptologyVersion    = 1.99994
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
-_G.ScriptologyDebug      = false
+_G.ScriptologyDebug      = true
 
 -- { Global functions
 
@@ -812,9 +812,14 @@ _G.ScriptologyDebug      = false
     if object and object.valid and object.name then
       for _,name in pairs(objTrackList[myHero.charName]) do
         if object.name == name then
-          if myHero.charName == "Ahri" and GetDistance(obj) < 500 then
-            objHolder[object.networkID] = object
-            objTimeHolder[object.networkID] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+          if myHero.charName == "Ahri" then
+            if GetDistance(obj) < 500 then
+              objHolder[object.networkID] = object
+              objTimeHolder[object.networkID] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+            end
+          elseif myHero.charName == "Orianna" then
+            objHolder[object.name] = object
+            objTimeHolder[object.name] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
           elseif myHero.charName ~= "Ahri" then
             objHolder[object.networkID] = object
             objTimeHolder[object.networkID] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
@@ -1235,7 +1240,7 @@ _G.ScriptologyDebug      = false
   function Cast(Spell, target, targeted, predict, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
     if not target and not targeted then
       if VIP_USER then
-          CastPacket(Spell)
+          Packet("S_CAST", {spellId = Spell}):send()
       else
           CastSpell(Spell)
       end
@@ -1268,29 +1273,6 @@ _G.ScriptologyDebug      = false
         Cast(Spell)
       end
     end
-  end
-
-  function CastPacket(spell)
-    local s = {0x46, 0xEF, 0x0E, 0xCF}
-    local p = CLoLPacket(0x00DF)
-    p.vTable = 0xFDC49C
-    p:EncodeF(myHero.networkID)
-    p:Encode4(0x5C565F08)
-    p:Encode1(0xA5)
-    p:Encode4(0xD8D8D8D8)
-    p:Encode4(0xD8D8D8D8)
-    p:Encode1(0x4C)
-    p:Encode2(0x5D8A)
-    p:Encode2(0x4CD8)
-    p:Encode2(0x31B5)
-    p:Encode1(0x37)
-    p:Encode1(s[spell+1])
-    p:Encode1(0xD5)
-    p:Encode2(0x7373)
-    p:Encode2(0xB091)
-    p:Encode2(0xA652)
-    p:Encode1(0x06)
-    SendPacket(p)
   end
 
   function EnemiesAround(Unit, range)
@@ -5941,7 +5923,8 @@ class "Orianna"
   function Orianna:CastW(unit)
     if myHero:CanUseSpell(_W) ~= READY or unit == nil or myHero.dead then return end
     local Ball = objHolder["TheDoomBall"] or myHero
-    if GetDistance(unit, Ball) < data[1].width-unit.boundingRadius then 
+    local pos, b = PredictPos(unit)
+    if pos and GetDistance(pos, Ball) < data[1].width-b then 
       Cast(_W)
     end  
   end
@@ -5949,7 +5932,9 @@ class "Orianna"
   function Orianna:CastR(unit)
     if myHero:CanUseSpell(_R) ~= READY or unit == nil or myHero.dead then return end
     local Ball = objHolder["TheDoomBall"] or myHero
-    if GetDistance(unit, Ball) < data[3].width-unit.boundingRadius then  
+    local pos, b = PredictPos(unit)
+    print(GetDistance(pos, Ball))
+    if pos and GetDistance(pos, Ball) < data[3].width-b then 
       Cast(_R) 
     end  
   end
