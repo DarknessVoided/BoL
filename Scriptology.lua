@@ -6421,7 +6421,7 @@ class "Riven"
         end
       elseif spell.name == "RivenFengShuiEngine" or spell.name == "rivenizunablade" then
         loadedOrb.orbTable.lastAA = 0
-        if self.Target and self:DoOrb() and GetDistance(self.Target) < data[0].range and self.QCast == 2 then
+        if self.Target and loadedOrb:DoOrb() and GetDistance(self.Target) < data[0].range and self.QCast == 2 then
           self:CastItems(self.Target)
           if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end
           Cast(_Q, self.Target)
@@ -6466,7 +6466,7 @@ class "Riven"
 
   function Riven:Harrass()
     if not self.Target then return end
-    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config.Harrass.E and GetDistance(self.Target) < data[2].range then
+    if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Harrass.E and GetDistance(self.Target) < data[2].range then
       CastSpell(_E, self.Target)
     end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Harrass.W then
@@ -6476,13 +6476,13 @@ class "Riven"
 
   function Riven:LaneClear()
     if not self.Target then return end
-    if GetDistance(self.Target) > self.orbTable.trueRange + 30 and sReady[_E] and Config.LaneClear.E and GetDistance(self.Target) < data[2].range then
+    if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.LaneClear.E and GetDistance(self.Target) < data[2].range then
       CastSpell(_E, self.Target)
     end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.LaneClear.W then
       CastSpell(_W)
     end
-    if sReady[_Q] and GetDistance(self.Target) > self.orbTable.trueRange + 36 then
+    if sReady[_Q] and GetDistance(self.Target) > loadedOrb.myRange + 36 then
       CastSpell(_Q, self.Target)
     end
   end
