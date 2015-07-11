@@ -5820,7 +5820,7 @@ class "Orianna"
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Ra", "Auto R", SCRIPT_PARAM_ONOFF, true)
-    Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, 0, 1, #GetEnemyHeroes(), 0)
+    Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
   end
 
   function Orianna:LastHit()
