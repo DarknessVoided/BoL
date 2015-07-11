@@ -6212,6 +6212,7 @@ class "Riven"
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
