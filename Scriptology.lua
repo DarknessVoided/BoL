@@ -6422,7 +6422,7 @@ class "Riven"
       elseif spell.name == "RivenFengShuiEngine" or spell.name == "rivenizunablade" then
         loadedOrb.orbTable.lastAA = 0
         if self.Target and loadedOrb:DoOrb() and GetDistance(self.Target) < data[0].range and self.QCast == 2 then
-          self:CastItems(self.Target)
+          loadedOrb:CastItems(self.Target)
           if self.Target and GetDistance(self.Target) < data[1].range then Cast(_W, self.Target) end
           Cast(_Q, self.Target)
         end
