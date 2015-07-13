@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.99998
+_G.ScriptologyVersion    = 1.99999
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -413,6 +413,19 @@ _G.ScriptologyDebug      = false
           [_E] = { range = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 100+100*level+source.addDamage*1.5 end},
           [_R] = { }
         }
+    }
+    gapcloserTable = {
+      ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Amumu"] = _Q, ["Corki"] = _W,
+      ["Diana"] = _R, ["Elise"] = _Q, ["Elise"] = _E, ["Fiddlesticks"] = _R, ["Fiora"] = _Q,
+      ["Fizz"] = _Q, ["Gnar"] = _E, ["Grags"] = _E, ["Graves"] = _E, ["Hecarim"] = _R,
+      ["Irelia"] = _Q, ["JarvanIV"] = _Q, ["Jax"] = _Q, ["Jayce"] = _Q, ["Katarina"] = _E, 
+      ["Kassadin"] = _R, ["Kennen"] = _E, ["KhaZix"] = _E, ["Lissandra"] = _E, ["LeBlanc"] = _W, 
+      ["LeeSin"] = _Q, ["Leona"] = _E, ["Lucian"] = _E, ["Malphite"] = _R, ["MasterYi"] = _Q, 
+      ["MonkeyKing"] = _E, ["Nautilus"] = _Q, ["Nocturne"] = _R, ["Olaf"] = _R, ["Pantheon"] = _W, 
+      ["Poppy"] = _E, ["RekSai"] = _E, ["Renekton"] = _E, ["Riven"] = _Q, ["Sejuani"] = _Q, 
+      ["Sion"] = _R, ["Shen"] = _E, ["Shyvana"] = _R, ["Talon"] = _E, ["Thresh"] = _Q, 
+      ["Tristana"] = _W, ["Tryndamere"] = _E, ["Udyr"] = _E, ["Volibear"] = _Q, ["Vi"] = _Q, 
+      ["XinZhao"] = _E, ["Yasuo"] = _E, ["Zac"] = _E, ["Ziggs"] = _W
     }
     lastAttack = 0
     lastWindup = 0
@@ -1550,8 +1563,7 @@ class "SEvade"
       end
     end
     self.Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addParam("drawfps", "Draw adjust (more = less lagg)", SCRIPT_PARAM_SLICE, 0, 0, 0.01, 3)
-    self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("e", "Evade", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("se", "Stop Evade", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("N"))
     self.Config:addParam("ew", "Extrawidth", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
     self.Config:addParam("er", "Extrarange", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
@@ -1670,8 +1682,6 @@ class "SEvade"
   end
 
   function SEvade:Draw()
-    if not self.Config.d or not self.Config.drawfps or self.lastDrawn+self.Config.drawfps > os.clock() then return end
-    self.lastDrawn = os.clock()
     if _G.Evade and self.m then
       DrawCircle3D(self.m.x, self.m.y, self.m.z, myHero.boundingRadius, 2, ARGB(255, 255, 255, 255), 32)
     end
@@ -6339,7 +6349,7 @@ class "Riven"
   end
 
   function Riven:RecvPacket(p)
-    if p.header == 0x2A and self.QCast == 3 and self.Target and p:DecodeF() == self.Target.networkdID and loadedOrb:DoOrb() then
+    if p.header == 0x2A and self.QCast == 3 and self.Target and p:DecodeF() == self.Target.networkID and loadedOrb:DoOrb() then
       self:CastDance()
       myHero:Attack(self.Target)
     end
@@ -7270,7 +7280,19 @@ class "Thresh"
     end
 
     if target and myHero:CanUseSpell(_E) == READY and Config.Combo.E and GetDistance(target,myHero) < data[2].range then
-      Cast(_E, target, false, true, 1)
+      local flayTowards = nil
+      if #GetAllyHeroes() > 0 then
+        for _,unit in pairs(GetAllyHeroes()) do
+          if GetDistance(unit) < 1000 then
+            flayTowards = unit
+          end
+        end
+      end
+      if flayTowards then
+        Cast(_E, flayTowards, false, true, 1, target)
+      else
+        Cast(_E, myHero, false, true, 1, target)
+      end
     end
 
     if target and myHero:CanUseSpell(_R) == READY and Config.Combo.R then
@@ -7411,8 +7433,12 @@ class "Vayne"
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
+    self.thrownSpell = {}
+    self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+    self.cdTable = {}
     self:Menu()
     AddTickCallback(function() self:DoSomething() end)
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
   end
 
   function Vayne:Menu()
@@ -7422,12 +7448,11 @@ class "Vayne"
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, false)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, false)
     Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
@@ -7441,9 +7466,30 @@ class "Vayne"
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addParam("offsetE", "Max E range %", SCRIPT_PARAM_SLICE, 100, 0, 100, 0)
     Config.Misc:addDynamicParam("Ea", "Auto E if can stun", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addDynamicParam("Eg", "Auto E on gapclose", SCRIPT_PARAM_ONOFF, true)
+    for _,k in pairs(GetEnemyHeroes()) do
+      if gapcloserTable[k.charName] then
+        Config.Misc:addParam(k.charName, "Use E on "..k.charName.." "..self.str[gapcloserTable[k.charName]], SCRIPT_PARAM_ONOFF, true)
+      end
+    end
   end
 
   function Vayne:DoSomething()
+    for _,k in pairs(GetEnemyHeroes()) do
+      self.cdTable[k.networkID] = {[_Q] = k:GetSpellData(_Q).currentCd, [_W] = k:GetSpellData(_W).currentCd, [_E] = k:GetSpellData(_E).currentCd, [_R] = k:GetSpellData(_R).currentCd}
+    end
+    if Config.Misc.Eg then 
+      for _,k in pairs(self.thrownSpell) do
+        if k.time + 3 > GetInGameTimer() and sReady[_E] then
+          if GetDistanceSqr(k.unit,myHero) < 450*450 then
+            print("Anti-gapclose on "..k.unit.charName.." "..self.str[k.spell])
+            Cast(_E, k.unit, true)
+          end
+        else
+          table.remove(self.thrownSpell, _)
+        end
+      end
+    end
     if not Config.Misc.Ea or not sReady[_E] then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy, 1000) and enemy ~= nil and not enemy.dead then
@@ -7452,16 +7498,33 @@ class "Vayne"
     end
   end
 
+  function Vayne:ProcessSpell(unit, spell)
+    if not Config.Misc.Eg or not gapcloserTable[unit.charName] or not Config.Misc[unit.charName] or not unit then return end
+    self:AssumeThrownskill(unit,spell.windUpTime)
+  end
+
+  function Vayne:AssumeThrownskill(source,delay) -- I'm a lazy bastard...
+    local tempCdTable = self.cdTable[source.networkID]
+    DelayAction(function()
+      for i=0,3 do
+        if tempCdTable and tempCdTable[i] == 0 and source:GetSpellData(i).currentCd > 0 and gapcloserTable[unit.charName] == i then
+          self.thrownSpell[#self.thrownSpell+1] = {spell = i, time = GetInGameTimer(), unit = source}
+        end
+      end
+    end, delay+0.05)
+  end
+
   function Vayne:MakeUnitHugTheWall(unit)
     if not unit or unit.dead or not unit.visible or not sReady[_E] then return end
     local x, y, z = UPL:Predict(_E, myHero, unit)
-    for _=0,(450-unit.boundingRadius)*Config.Misc.offsetE/100,50 do
-      local dir = x+(x-myHero):normalized()*_
+    for _=0,(450)*Config.Misc.offsetE/100,50 do
+      local dir = x+(Vector(x)-myHero):normalized()*_
       if IsWall(D3DXVECTOR3(dir.x,dir.y,dir.z)) then
         Cast(_E, unit, true)
-        return
+        return true
       end
     end
+    return false
   end
 
   function Vayne:LastHit()
