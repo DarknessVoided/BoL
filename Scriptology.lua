@@ -1812,7 +1812,7 @@ class "SWalk"
     -- CastSpell(s, x, z) <- mouse
       self.aaResetTable4 = a4
     self.State = {}
-    self.orbTable = { lastAA = 0, windUp = 4, animation = 0.5 }
+    self.orbTable = { lastAA = 0, windUp = 1, animation = 0.5 }
     self.myRange = myHero.range+myHero.boundingRadius
     if Cfg then
       Cfg:addSubMenu("SWalk", "SWalk")
