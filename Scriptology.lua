@@ -7737,11 +7737,11 @@ class "Yasuo"
     if sReady[_E] then
       local minion = nil
       for _,k in pairs(Mobs.objects) do
-        if not minion and k and GetStacks(k) == 0 and GetDistanceSqr(k) < data[2].range*data[2].range then minion = k end
+        local kPos = myHero+(Vector(k)-myHero):normalized()*data[2].range
+        if not minion and k and GetStacks(k) == 0 and GetDistanceSqr(k) < data[2].range*data[2].range and GetDistanceSqr(kPos,x) < GetDistanceSqr(myHero,x) then minion = k end
         if minion and k and GetStacks(k) == 0 and GetDistanceSqr(k) < data[2].range*data[2].range then
           local mPos = myHero+(Vector(minion)-myHero):normalized()*data[2].range
-          local kPos = myHero+(Vector(k)-myHero):normalized()*data[2].range
-          if GetDistanceSqr(mPos,x) < GetDistanceSqr(kPos,x) then
+          if GetDistanceSqr(mPos,x) < GetDistanceSqr(kPos,x) and GetDistanceSqr(mPos,x) < GetDistanceSqr(myHero,x) then
             minion = k
           end
         end
