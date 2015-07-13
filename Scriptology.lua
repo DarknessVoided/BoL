@@ -7472,6 +7472,7 @@ class "Vayne"
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
     self.thrownSpell = {}
+    self.lastCalc = 0
     self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     self.cdTable = {}
     self:Menu()
@@ -7516,17 +7517,13 @@ class "Vayne"
     for _,k in pairs(GetEnemyHeroes()) do
       self.cdTable[k.networkID] = {[_Q] = k:GetSpellData(_Q).currentCd, [_W] = k:GetSpellData(_W).currentCd, [_E] = k:GetSpellData(_E).currentCd, [_R] = k:GetSpellData(_R).currentCd}
     end
-    if Config.Misc.Eg then 
-      for _,k in pairs(self.thrownSpell) do
-        if k.time + 2 > GetInGameTimer() and sReady[_E] then
-          if GetDistanceSqr(k.unit,myHero) < 450*450 then
-            --print("Anti-gapclose on "..k.unit.charName.." "..self.str[k.spell])
-            Cast(_E, k.unit, true)
-          end
-        else
-          table.remove(self.thrownSpell, _)
-        end
+    if sReady[_E] and self.time and self.unit and self.time > GetInGameTimer() then
+      if GetDistanceSqr(self.unit,myHero) < 500*500 then
+        Cast(_E, unit, true)
       end
+    else
+      self.time = 0
+      self.unit = nil
     end
     if not Config.Misc.Ea or not sReady[_E] then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
@@ -7538,22 +7535,15 @@ class "Vayne"
 
   function Vayne:ProcessSpell(unit, spell)
     if not Config.Misc.Eg or not gapcloserTable[unit.charName] or not Config.Misc[unit.charName] or not unit then return end
-    self:AssumeThrownskill(unit,spell.windUpTime)
-  end
-
-  function Vayne:AssumeThrownskill(source,delay) -- I'm a lazy bastard...
-    local tempCdTable = self.cdTable[source.networkID]
-    DelayAction(function()
-      for i=0,3 do
-        if tempCdTable and tempCdTable[i] == 0 and source:GetSpellData(i).currentCd > 0 and gapcloserTable[unit.charName] == i then
-          self.thrownSpell[#self.thrownSpell+1] = {spell = i, time = GetInGameTimer(), unit = source}
-        end
-      end
-    end, delay+0.05)
+    if spell.name == (type(gapcloserTable[unit.charName]) == 'number' and unit:GetSpellData(gapcloserTable[unit.charName]).name or gapcloserTable[unit.charName]) and (spell.target == myHero or GetDistanceSqr(spell.endPos) < 1000*1000) then
+      self.time = GetInGameTimer() + 2
+      self.unit = unit
+    end
   end
 
   function Vayne:MakeUnitHugTheWall(unit)
-    if not unit or unit.dead or not unit.visible or not sReady[_E] then return end
+    if not unit or unit.dead or not unit.visible or not sReady[_E] or GetInGameTimer()-self.lastCalc < 0.1 then return end
+    self.lastCalc = GetInGameTimer()
     local x, y, z = UPL:Predict(_E, myHero, unit)
     for _=0,(450)*Config.Misc.offsetE/100,50 do
       local dir = x+(Vector(x)-myHero):normalized()*_
