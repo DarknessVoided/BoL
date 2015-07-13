@@ -415,7 +415,7 @@ _G.ScriptologyDebug      = false
         }
     }
     gapcloserTable = {
-      ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Amumu"] = _Q, ["Corki"] = _W,
+      ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Ahri"] = _R, ["Amumu"] = _Q, ["Corki"] = _W,
       ["Diana"] = _R, ["Elise"] = _Q, ["Elise"] = _E, ["Fiddlesticks"] = _R, ["Fiora"] = _Q,
       ["Fizz"] = _Q, ["Gnar"] = _E, ["Grags"] = _E, ["Graves"] = _E, ["Hecarim"] = _R,
       ["Irelia"] = _Q, ["JarvanIV"] = _Q, ["Jax"] = _Q, ["Jayce"] = "JayceToTheSkies", ["Katarina"] = _E, 
@@ -427,7 +427,6 @@ _G.ScriptologyDebug      = false
       ["Tristana"] = _W, ["Tryndamere"] = "Slash", ["Udyr"] = _E, ["Volibear"] = _Q, ["Vi"] = _Q, 
       ["XinZhao"] = _E, ["Yasuo"] = _E, ["Zac"] = _E, ["Ziggs"] = _W
     }
-    str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     lastAttack = 0
     lastWindup = 0
     previousWindUp = 0
@@ -1082,10 +1081,11 @@ _G.ScriptologyDebug      = false
     GapcloseTime = 0
     GapcloseUnit = nil
     GapcloseRange = range
+    str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     config:addDynamicParam("antigap", "Auto "..str[spell].." on gapclose", SCRIPT_PARAM_ONOFF, true)
     for _,k in pairs(GetEnemyHeroes()) do
       if gapcloserTable[k.charName] then
-        config:addParam(k.charName, "Use "..str[spell].." on "..k.charName.." "..str[gapcloserTable[k.charName]], SCRIPT_PARAM_ONOFF, true)
+        config:addParam(k.charName, "Use "..str[spell].." on "..k.charName.." "..(type(gapcloserTable[k.charName]) == 'number' and str[gapcloserTable[k.charName]] or (k.charName == "LeeSin" and "Q" or "E")), SCRIPT_PARAM_ONOFF, true)
       end
     end
     AddProcessSpellCallback(function(unit, spell)
@@ -2307,7 +2307,6 @@ class "Ahri"
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
     AddTickCallback(function() self:Tick() end)
     AddDrawCallback(function() self:Draw() end)
-    AddGapcloseCallback(_E, data[2].range)
   end
 
   function Ahri:Menu()
@@ -2342,6 +2341,7 @@ class "Ahri"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    AddGapcloseCallback(_E, data[2].range, Config.Misc)
   end
 
   function Ahri:ProcessSpell(unit, spell)
@@ -4272,7 +4272,7 @@ class "Katarina"
     self.oldPos = nil
     for i = 1, objManager.maxObjects do
       local object = objManager:GetObject(i)
-      if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
+      if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(object.name), "trinkettotem")) then
         table.insert(self.Wards, object)
       end
     end
@@ -4356,7 +4356,7 @@ class "Katarina"
 
   function Katarina:CreateObj(obj)
     if obj ~= nil and obj.valid then
-      if string.find(string.lower(obj.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
+      if string.find(string.lower(obj.name), "ward") or string.find(string.lower(obj.name), "trinkettotem") then
         table.insert(self.Wards, obj)
       end
     end
@@ -4666,7 +4666,7 @@ class "LeeSin"
     self.passiveName = "blindmonkpassive_cosmetic"
     for i = 1, objManager.maxObjects do
       local object = objManager:GetObject(i)
-      if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
+      if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(object.name), "trinkettotem")) then
         table.insert(self.Wards, object)
       end
     end
@@ -4726,6 +4726,7 @@ class "LeeSin"
     Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
     Config.Misc:addDynamicParam("FInsec", "Flash Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("Z"))
     Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+    AddGapcloseCallback(_E, data[2].range, Config.Misc)
   end
 
   function LeeSin:InsecTicker()
@@ -4887,7 +4888,7 @@ class "LeeSin"
 
   function LeeSin:CreateObj(obj)
     if obj ~= nil and obj.valid then
-      if string.find(string.lower(obj.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
+      if string.find(string.lower(obj.name), "ward") or string.find(string.lower(obj.name), "trinkettotem") then
         table.insert(self.Wards, obj)
       end
     end
