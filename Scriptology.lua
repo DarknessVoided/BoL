@@ -4336,7 +4336,17 @@ class "Katarina"
 
   function Katarina:GetWardSlot()
     for slot = ITEM_7, ITEM_1, -1 do
-      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
+        return slot
+      end
+    end
+    for slot = ITEM_7, ITEM_1, -1 do
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") and not string.find(string.lower(myHero:GetSpellData(slot).name), "vision")) then
+        return slot
+      end
+    end
+    for slot = ITEM_7, ITEM_1, -1 do
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and string.find(string.lower(myHero:GetSpellData(slot).name), "ward") then
         return slot
       end
     end
@@ -4857,7 +4867,17 @@ class "LeeSin"
 
   function LeeSin:GetWardSlot()
     for slot = ITEM_7, ITEM_1, -1 do
-      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
+        return slot
+      end
+    end
+    for slot = ITEM_7, ITEM_1, -1 do
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and (string.find(string.lower(myHero:GetSpellData(slot).name), "ward") and not string.find(string.lower(myHero:GetSpellData(slot).name), "vision")) then
+        return slot
+      end
+    end
+    for slot = ITEM_7, ITEM_1, -1 do
+      if myHero:GetSpellData(slot).name and myHero:CanUseSpell(slot) == READY and string.find(string.lower(myHero:GetSpellData(slot).name), "ward") then
         return slot
       end
     end
