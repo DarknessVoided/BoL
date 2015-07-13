@@ -7482,7 +7482,7 @@ class "Vayne"
       for _,k in pairs(self.thrownSpell) do
         if k.time + 3 > GetInGameTimer() and sReady[_E] then
           if GetDistanceSqr(k.unit,myHero) < 450*450 then
-            print("Anti-gapclose on "..k.unit.charName.." "..self.str[k.spell])
+            --print("Anti-gapclose on "..k.unit.charName.." "..self.str[k.spell])
             Cast(_E, k.unit, true)
           end
         else
