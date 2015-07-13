@@ -506,9 +506,11 @@ _G.ScriptologyDebug      = false
   end
 
   function SetupEvade()
-    if _G.Evadeee_Loaded == nil and _G.Evade == nil then
-      loadedEvade = SEvade()
-    end
+    DelayAction(function()
+      if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil then
+        loadedEvade = SEvade()
+      end
+    end, 3)
   end
 
   function SetupOrbwalk()
@@ -7755,17 +7757,15 @@ class "Yasuo"
   end
 
   function Yasuo:ProcessSpell(unit, spell)
-    if not loadedEvade then
-      if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
-        if myHero == spell.target and spell.name:lower():find("attack") and unit.range > 475 then
+    if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
+      if myHero == spell.target and spell.name:lower():find("attack") and (unit.range >= 450 or unit.isRanged) and Config.misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
+        local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
+        Cast(_W, wPos)
+      elseif spell.endPos and not spell.target and not loadedEvade or (_G.Evadeee_Loaded and _G.Evadeee_impossibleToEvade) then
+        local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
+        if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
           local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
           Cast(_W, wPos)
-        elseif spell.endPos and not spell.target then
-          local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
-          if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
-            local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
-            Cast(_W, wPos)
-          end
         end
       end
     end
@@ -7792,6 +7792,7 @@ class "Yasuo"
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
     Config.Misc:addDynamicParam("Wa", "Auto Shield with W", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addDynamicParam("Waa", "Auto Shield AAs with W", SCRIPT_PARAM_ONOFF, true)
     DelayAction(function()
         if loadedEvade then
           Config:addSubMenu("Windwall", "Windwall")
