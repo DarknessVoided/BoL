@@ -1366,6 +1366,8 @@ _G.ScriptologyDebug      = false
     for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
   end
 
+  _G.c3il = function(x) return math.ceil(x) end
+
   function GetLowestMinion(range)
     local minionTarget = nil
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
@@ -6629,16 +6631,17 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
+        if Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
+        end
+        if myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then
           CastSpell(_W, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then
           CastSpell(_R, target) 
-        end 
+        end
       else 
         if Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then CastSpell(_W, target) end
         if Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then CastSpell(_E, target) end 
@@ -6660,17 +6663,18 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.Combo.Q then
+        if Config.Combo.Q then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Combo.E then 
+        end
+        if myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.Combo.E then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and (myHero:GetSpellData(_R).level > 0 and myHero:GetSpellData(_R).currentCd > 0 or true) and Config.Combo.W then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.Combo.W then
           CastSpell(_W, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and Config.Combo.R then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config.Combo.R then
           CastSpell(_R, target) 
         end 
-      else 
+      else
         if Config.Combo.W then CastSpell(_W, target) end
         if Config.Combo.E then CastSpell(_E, target) end 
       end 
@@ -6691,14 +6695,15 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_E).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
+        if Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_W).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then 
+        end
+        if myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then 
           CastSpell(_E, target) 
-        elseif myHero:GetSpellData(_Q).currentCd > 0 and myHero:GetSpellData(_R).currentCd > 0 and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
+        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
           CastSpell(_W, target) 
-        end 
+        end
       else 
         if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then CastSpell(_W, target) end
         if Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then CastSpell(_E, target) end 
@@ -7480,7 +7485,7 @@ class "Vayne"
     end
     if Config.Misc.Eg then 
       for _,k in pairs(self.thrownSpell) do
-        if k.time + 3 > GetInGameTimer() and sReady[_E] then
+        if k.time + 2 > GetInGameTimer() and sReady[_E] then
           if GetDistanceSqr(k.unit,myHero) < 450*450 then
             --print("Anti-gapclose on "..k.unit.charName.." "..self.str[k.spell])
             Cast(_E, k.unit, true)
