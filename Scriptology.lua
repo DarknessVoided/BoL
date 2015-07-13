@@ -4238,7 +4238,7 @@ class "Katarina"
     self.oldPos = nil
     for i = 1, objManager.maxObjects do
       local object = objManager:GetObject(i)
-      if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
+      if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
         table.insert(self.Wards, object)
       end
     end
@@ -4322,7 +4322,7 @@ class "Katarina"
 
   function Katarina:CreateObj(obj)
     if obj ~= nil and obj.valid then
-      if string.find(string.lower(obj.name), "ward") then
+      if string.find(string.lower(obj.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
         table.insert(self.Wards, obj)
       end
     end
@@ -4632,7 +4632,7 @@ class "LeeSin"
     self.passiveName = "blindmonkpassive_cosmetic"
     for i = 1, objManager.maxObjects do
       local object = objManager:GetObject(i)
-      if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
+      if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
         table.insert(self.Wards, object)
       end
     end
@@ -4853,7 +4853,7 @@ class "LeeSin"
 
   function LeeSin:CreateObj(obj)
     if obj ~= nil and obj.valid then
-      if string.find(string.lower(obj.name), "ward") then
+      if string.find(string.lower(obj.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
         table.insert(self.Wards, obj)
       end
     end

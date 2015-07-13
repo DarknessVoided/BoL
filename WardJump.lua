@@ -9,7 +9,7 @@ function OnLoad()
 	casted, jumped = false, false
 	for i = 1, objManager.maxObjects do
 		local object = objManager:GetObject(i)
-		if object ~= nil and object.valid and string.find(string.lower(object.name), "ward") then
+		if object ~= nil and object.valid and (string.find(string.lower(object.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem")) then
 			table.insert(Wards, object)
 		end
 	end
@@ -67,7 +67,7 @@ end
 
 function OnCreateObj(obj)
 	if obj ~= nil and obj.valid then
-		if string.find(string.lower(obj.name), "ward") then
+		if string.find(string.lower(obj.name), "ward") or string.find(string.lower(myHero:GetSpellData(slot).name), "trinkettotem") then
 			table.insert(Wards, obj)
 		end
 	end
