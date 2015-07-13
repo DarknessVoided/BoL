@@ -4089,13 +4089,13 @@ class "Kalista"
       local killableCounterJ = 0
       for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
-        if winion ~= nil and EMinionDmg > winion.health and GetDistance(winion) < data[2].range then    
+        if winion ~= nil and EMinionDmg > winion.health+winion.shield and GetDistance(winion) < data[2].range then    
           killableCounter = killableCounter + 1
         end
       end
       for minion,winion in pairs(JMobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
-        if winion ~= nil and EMinionDmg > winion.health and GetDistance(winion) < data[2].range then
+        if winion ~= nil and EMinionDmg > winion.health+winion.shield and GetDistance(winion) < data[2].range then
           if (string.find(winion.charName, "Crab") or string.find(winion.charName, "Rift") or string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
             if not string.find(winion.charName, "Mini") then       
               killableCounterJ = killableCounterJ + 1
@@ -4133,7 +4133,7 @@ class "Kalista"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion, false, true, 1.2)
         end
       end
@@ -4149,13 +4149,13 @@ class "Kalista"
       Cast(_Q, Target, false, true, 1.5)
     end
     if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(Target, data[2].range) then
-      if GetDmg(_E, myHero, Target) >= Target.health then
+      if GetDmg(_E, myHero, Target) >= Target.health+Target.shield then
         Cast(_E)
       end
       local killableCounter = 0
       for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
-        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           killableCounter = killableCounter +1
         end   
       end   
@@ -4181,7 +4181,7 @@ class "Kalista"
       local killableCounter = 0
       for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
-        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           killableCounter = killableCounter +1
         end   
       end 
@@ -4207,11 +4207,11 @@ class "Kalista"
   function Kalista:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
+        if myHero:CanUseSpell(_E) == READY and enemy.health+enemy.shield < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E)
-        elseif myHero:CanUseSpell(_Q) == READY and enemy.health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
+        elseif myHero:CanUseSpell(_Q) == READY and enemy.health+enemy.shield < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health+enemy.shield < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
