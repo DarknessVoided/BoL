@@ -418,15 +418,16 @@ _G.ScriptologyDebug      = false
       ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Amumu"] = _Q, ["Corki"] = _W,
       ["Diana"] = _R, ["Elise"] = _Q, ["Elise"] = _E, ["Fiddlesticks"] = _R, ["Fiora"] = _Q,
       ["Fizz"] = _Q, ["Gnar"] = _E, ["Grags"] = _E, ["Graves"] = _E, ["Hecarim"] = _R,
-      ["Irelia"] = _Q, ["JarvanIV"] = _Q, ["Jax"] = _Q, ["Jayce"] = _Q, ["Katarina"] = _E, 
+      ["Irelia"] = _Q, ["JarvanIV"] = _Q, ["Jax"] = _Q, ["Jayce"] = "JayceToTheSkies", ["Katarina"] = _E, 
       ["Kassadin"] = _R, ["Kennen"] = _E, ["KhaZix"] = _E, ["Lissandra"] = _E, ["LeBlanc"] = _W, 
-      ["LeeSin"] = _Q, ["Leona"] = _E, ["Lucian"] = _E, ["Malphite"] = _R, ["MasterYi"] = _Q, 
+      ["LeeSin"] = "blindmonkqtwo", ["Leona"] = _E, ["Lucian"] = _E, ["Malphite"] = _R, ["MasterYi"] = _Q, 
       ["MonkeyKing"] = _E, ["Nautilus"] = _Q, ["Nocturne"] = _R, ["Olaf"] = _R, ["Pantheon"] = _W, 
       ["Poppy"] = _E, ["RekSai"] = _E, ["Renekton"] = _E, ["Riven"] = _Q, ["Sejuani"] = _Q, 
       ["Sion"] = _R, ["Shen"] = _E, ["Shyvana"] = _R, ["Talon"] = _E, ["Thresh"] = _Q, 
-      ["Tristana"] = _W, ["Tryndamere"] = _E, ["Udyr"] = _E, ["Volibear"] = _Q, ["Vi"] = _Q, 
+      ["Tristana"] = _W, ["Tryndamere"] = "Slash", ["Udyr"] = _E, ["Volibear"] = _Q, ["Vi"] = _Q, 
       ["XinZhao"] = _E, ["Yasuo"] = _E, ["Zac"] = _E, ["Ziggs"] = _W
     }
+    str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     lastAttack = 0
     lastWindup = 0
     previousWindUp = 0
@@ -1074,6 +1075,37 @@ _G.ScriptologyDebug      = false
         _SetPriority(priorityTable2.p5,  enemy, math.min(5, #GetEnemyHeroes()))
       end
     end
+  end
+
+  function AddGapcloseCallback(spell, range, config)
+    GapcloseSpell = spell
+    GapcloseTime = 0
+    GapcloseUnit = nil
+    GapcloseRange = range
+    config:addDynamicParam("antigap", "Auto "..str[spell].." on gapclose", SCRIPT_PARAM_ONOFF, true)
+    for _,k in pairs(GetEnemyHeroes()) do
+      if gapcloserTable[k.charName] then
+        config:addParam(k.charName, "Use "..str[spell].." on "..k.charName.." "..str[gapcloserTable[k.charName]], SCRIPT_PARAM_ONOFF, true)
+      end
+    end
+    AddProcessSpellCallback(function(unit, spell)
+      if not config.antigap or not gapcloserTable[unit.charName] or not config[unit.charName] or not unit then return end
+      if spell.name == (type(gapcloserTable[unit.charName]) == 'number' and unit:GetSpellData(gapcloserTable[unit.charName]).name or gapcloserTable[unit.charName]) and (spell.target == myHero or GetDistanceSqr(spell.endPos) < GapcloseRange*GapcloseRange*4) then
+        GapcloseTime = GetInGameTimer() + 2
+        GapcloseUnit = unit
+      end
+    end)
+    AddTickCallback(function()
+      if sReady[GapcloseSpell] and GapcloseTime and GapcloseUnit and GapcloseTime > GetInGameTimer() then
+        if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
+          Cast(GapcloseSpell, GapcloseUnit, true)
+          Cast(GapcloseSpell, GapcloseUnit, false, true, 2)
+        end
+      else
+        GapcloseTime = 0
+        GapcloseUnit = nil
+      end
+    end)
   end
 
   function DrawLFC(x, y, z, radius, color)
@@ -2275,6 +2307,7 @@ class "Ahri"
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
     AddTickCallback(function() self:Tick() end)
     AddDrawCallback(function() self:Draw() end)
+    AddGapcloseCallback(_E, data[2].range)
   end
 
   function Ahri:Menu()
@@ -2906,6 +2939,7 @@ class "Blitzcrank"
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     if Smite ~= nil then Config.Misc:addParam("S", "Smitegrab", SCRIPT_PARAM_ONOFF, true) end
+    AddGapcloseCallback(_Q, data[0].range, Config.Misc)
   end
 
   function Blitzcrank:GetBestTarget(Range)
@@ -5069,6 +5103,7 @@ class "Lux"
     Config.Misc:addParam("Wa", "Shield with W (auto)", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("manaW", "Min Mana % for shield", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Misc:addParam("Ea", "Detonate E (auto)", SCRIPT_PARAM_ONOFF, true)
+    AddGapcloseCallback(_Q, data[0].range, Config.Misc)
   end
 
   function Lux:DetonateE()
@@ -6269,6 +6304,7 @@ class "Riven"
     Config.Misc:addParam("Wae", "Auto stun if X enemies", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
     Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
     Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+    AddGapcloseCallback(_W, data[1].range, Config.Misc)
   end
 
   function Riven:Msg(Msg, Key)
@@ -6592,6 +6628,7 @@ class "Ryze"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    AddGapcloseCallback(_W, data[1].range, Config.Misc)
   end
 
   function Ryze:Msg(Msg, Key)
@@ -7290,6 +7327,7 @@ class "Thresh"
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     if Smite ~= nil then Config.Misc:addParam("S", "Smitegrab", SCRIPT_PARAM_ONOFF, true) end
+    AddGapcloseCallback(_Q, data[0].range, Config.Misc)
   end
 
   function Thresh:GetBestTarget(Range)
@@ -7471,13 +7509,10 @@ class "Vayne"
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
-    self.thrownSpell = {}
     self.lastCalc = 0
-    self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     self.cdTable = {}
     self:Menu()
     AddTickCallback(function() self:DoSomething() end)
-    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
   end
 
   function Vayne:Menu()
@@ -7505,39 +7540,18 @@ class "Vayne"
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addParam("offsetE", "Max E range %", SCRIPT_PARAM_SLICE, 100, 0, 100, 0)
     Config.Misc:addDynamicParam("Ea", "Auto E if can stun", SCRIPT_PARAM_ONOFF, true)
-    Config.Misc:addDynamicParam("Eg", "Auto E on gapclose", SCRIPT_PARAM_ONOFF, true)
-    for _,k in pairs(GetEnemyHeroes()) do
-      if gapcloserTable[k.charName] then
-        Config.Misc:addParam(k.charName, "Use E on "..k.charName.." "..self.str[gapcloserTable[k.charName]], SCRIPT_PARAM_ONOFF, true)
-      end
-    end
+    AddGapcloseCallback(_E, 500, Config.Misc)
   end
 
   function Vayne:DoSomething()
     for _,k in pairs(GetEnemyHeroes()) do
       self.cdTable[k.networkID] = {[_Q] = k:GetSpellData(_Q).currentCd, [_W] = k:GetSpellData(_W).currentCd, [_E] = k:GetSpellData(_E).currentCd, [_R] = k:GetSpellData(_R).currentCd}
     end
-    if sReady[_E] and self.time and self.unit and self.time > GetInGameTimer() then
-      if GetDistanceSqr(self.unit,myHero) < 500*500 then
-        Cast(_E, unit, true)
-      end
-    else
-      self.time = 0
-      self.unit = nil
-    end
     if not Config.Misc.Ea or not sReady[_E] then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy, 1000) and enemy ~= nil and not enemy.dead then
         self:MakeUnitHugTheWall(enemy)
       end
-    end
-  end
-
-  function Vayne:ProcessSpell(unit, spell)
-    if not Config.Misc.Eg or not gapcloserTable[unit.charName] or not Config.Misc[unit.charName] or not unit then return end
-    if spell.name == (type(gapcloserTable[unit.charName]) == 'number' and unit:GetSpellData(gapcloserTable[unit.charName]).name or gapcloserTable[unit.charName]) and (spell.target == myHero or GetDistanceSqr(spell.endPos) < 1000*1000) then
-      self.time = GetInGameTimer() + 2
-      self.unit = unit
     end
   end
 
