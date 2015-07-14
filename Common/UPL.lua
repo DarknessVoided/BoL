@@ -57,10 +57,23 @@ function UPL:__init()
       [_E] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
       [_R] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"}}
     self.predTable = {}
+
+    if FileExist(LIB_PATH .. "SPrediction.lua") then
+      require("SPrediction")
+      self.SP = SPrediction()
+      table.insert(self.predTable, "SPrediction")
+    end
+
     if FileExist(LIB_PATH .. "VPrediction.lua") then
       require("VPrediction")
       self.VP = VPrediction()
       table.insert(self.predTable, "VPrediction")
+    end
+
+    if FileExist(LIB_PATH .. "HPrediction.lua") then
+      require("HPrediction")
+      self.HP = HPrediction()
+      table.insert(self.predTable, "HPrediction")
     end
 
     if FileExist(LIB_PATH .. "Prodiction.lua") then
@@ -73,18 +86,7 @@ function UPL:__init()
       self.DP = DivinePred() 
       table.insert(self.predTable, "DivinePrediction")
     end
-
-    if FileExist(LIB_PATH .. "HPrediction.lua") then
-      require("HPrediction")
-      self.HP = HPrediction()
-      table.insert(self.predTable, "HPrediction")
-    end
-
-    if FileExist(LIB_PATH .. "SPrediction.lua") then
-      require("SPrediction")
-      self.SP = SPrediction()
-      table.insert(self.predTable, "SPrediction")
-    end
+    
     self:Update()
     DelayAction(function() self:Loaded() end, 3)
     return self
