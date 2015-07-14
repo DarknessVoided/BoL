@@ -6172,9 +6172,9 @@ class "Rengar"
         if self.Target and Smite ~= nil and Config.Combo.S then CastSpell(Smite, self.Target) end
         if self.Target and Ignite ~= nil and Config.Combo.I then CastSpell(Ignite, self.Target) end
         loadedOrb.orbTable.lastAA = 0
-        loadedOrb.orbTable.windUp = 0.01
+        loadedOrb.orbTable.animation = 0
         if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) end end, 0.39 - GetLatency() / 2000) end
-        DelayAction(function() loadedOrb:WindUp(unit) end, 1 / (myHero.attackSpeed) - GetLatency() / 2000)
+        DelayAction(function() loadedOrb:WindUp(self.Target) end, 1 / (myHero.attackSpeed) - GetLatency() / 2000)
       end
     end
   end
