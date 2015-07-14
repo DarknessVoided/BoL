@@ -2143,7 +2143,7 @@ class "SWalk"
             if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k)
-              return
+              return true
             end
           end
         end
@@ -2157,7 +2157,7 @@ class "SWalk"
               else
                 CastSpell(k, unit.x, unit.z)
               end
-              return
+              return true
             end
           end
         end
@@ -2167,7 +2167,7 @@ class "SWalk"
             if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k, unit)
-              return
+              return true
             end
           end
         end
@@ -2177,13 +2177,14 @@ class "SWalk"
             if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k, mousePos.x, mousePos.z)
-              return
+              return true
             end
           end
         end
       end
-      if self.IState and self.Config.i and self:CastItems(unit) then return end
+      if self.IState and self.Config.i then return self:CastItems(unit) end
     end
+    return false
   end
 
   function SWalk:CastItems(unit)
