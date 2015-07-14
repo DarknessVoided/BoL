@@ -385,7 +385,7 @@ _G.ScriptologyDebug      = false
         ["Vayne"] = {
           [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
           [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 10+10*level+((0.03+0.01*level)*target.maxHealth) end},
-          [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.5*TotalDmg end},
+          [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+35*level+0.5*TotalDmg end},
           [_R] = { range = 1000}
         },
         ["Viktor"] = {
@@ -7511,7 +7511,7 @@ class "Thresh"
 class "Vayne"
 
   function Vayne:__init()
-    self.ts = TargetSelector(TARGET_LOW_HP, 1500, DAMAGE_PHYSICAL, false, true)
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
@@ -7612,6 +7612,8 @@ class "Vayne"
           Cast(_Q, myHero:Attack(enemy))
         elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
+        elseif myHero:CanUseSpell(_E) == READY and enemy.health < GetDmg(_E, myHero, enemy)*2 and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
+          self:MakeUnitHugTheWall(enemy)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and enemy.health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
