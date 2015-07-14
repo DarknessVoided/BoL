@@ -16,7 +16,7 @@
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.999994
+_G.ScriptologyVersion    = 1.999995
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -1263,6 +1263,11 @@ _G.ScriptologyDebug      = false
       if GetMaladySlot() then
         APDmg = 15 + 0.15*AP
       end
+      if myHero.charName == "Teemo" then
+        APDmg = APDmg + data[_E].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target)
+      elseif myHero.charName == "Orianna" then
+        APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
+      end
     elseif type(spell) == "number" then
       if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
       if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
@@ -1852,7 +1857,7 @@ class "SWalk"
     -- CastSpell(s, x, z) <- mouse
       self.aaResetTable4 = a4
     self.State = {}
-    self.orbTable = { lastAA = 0, windUp = 1, animation = 0.5 }
+    self.orbTable = { lastAA = 0, windUp = 5, animation = 0.5 }
     self.myRange = myHero.range+myHero.boundingRadius
     if Cfg then
       Cfg:addSubMenu("SWalk", "SWalk")
@@ -1862,7 +1867,10 @@ class "SWalk"
     end
     self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
     self.Config:addParam("radj", "Reset AA adjustment", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addParam("lhadj", "Lasthit adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
+    self.Config:addParam("rlhadj", "Reset AA adjustment", SCRIPT_PARAM_ONOFF, false)
     self.Config:setCallback("radj", function(var) if var then self.Config.cadj = 0 self.Config.radj = false end end)
+    self.Config:setCallback("rlhadj", function(var) if var then self.Config.lhadj = 0 self.Config.rlhadj = false end end)
     local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     if self.aaResetTable then
       for _,k in pairs(self.aaResetTable) do
@@ -1925,6 +1933,9 @@ class "SWalk"
   end
 
   function SWalk:Draw()
+    if self.orbTable.windUp == 5 then
+      DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/8, ARGB(255,255,255,255))
+    end
     if not self.Config.d then return end
     DrawCircle3D(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, 1, ARGB(105,0,255,0), 32)
   end
@@ -1948,8 +1959,13 @@ class "SWalk"
         self.Target = GetJMinion(self.myRange)
       else
         dmg = GetDmg("AD",myHero,self.Target)
-        if dmg and health ~= self.Target.health and (health >= dmg or self.Target.health-health-dmg <= 0) then
-          self.Target = nil
+        if dmg and health-dmg > 0 then
+          mtarget, health = self:GetHighestPMinion(self.myRange)
+          if mtarget == self.Target then
+            self.Target = nil
+          else
+            self.Target = mtarget
+          end
         end
         if health < 0 then self.Target = nil end
       end
@@ -1960,8 +1976,12 @@ class "SWalk"
     if self.Config.kConfig.Combo then
       self.Target = Target
     end
-    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and ValidTarget(self.Forcetarget, self.myRange*1.2) then
+    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and ValidTarget(self.Forcetarget, self.myRange*1.5) then
       self.Target = self.Forcetarget
+    end
+    local t = GetTarget()
+    if t and ValidTarget(t, self.myRange) then
+      self.Target = t
     end
     if self:DoOrb() then
       if ScriptologyLoaded then loadedClass.Target = self.Target end
@@ -2040,11 +2060,27 @@ class "SWalk"
     local minionTarget = nil
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = VP:GetPredictedHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800), self.orbTable.windUp)
+      local hp = VP:GetPredictedHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800), self.orbTable.windUp+self.Config.lhadj/100)
       if minionTarget == nil then 
         minionTarget = minion
         health = hp
       elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
+        minionTarget = minion
+        health = hp
+      end
+    end
+    return minionTarget, health
+  end
+
+  function SWalk:GetHighestPMinion(range)
+    local minionTarget = nil
+    local health = 0
+    for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      local hp = VP:GetPredictedHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800), self.orbTable.windUp+self.Config.lhadj/100)
+      if minionTarget == nil then 
+        minionTarget = minion
+        health = hp
+      elseif health <= hp and hp > 0 and ValidTarget(minion, range) then
         minionTarget = minion
         health = hp
       end
