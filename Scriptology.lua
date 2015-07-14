@@ -7916,7 +7916,7 @@ class "Yasuo"
 
   function Yasuo:ProcessSpell(unit, spell)
     if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
-      if myHero == spell.target and spell.name:lower():find("attack") and (unit.range >= 450 or unit.isRanged) and Config.misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
+      if myHero == spell.target and spell.name:lower():find("attack") and (unit.range >= 450 or unit.isRanged) and Config.Misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
         local wPos = myHero + (Vector(unit) - myHero):normalized() * data[1].range 
         Cast(_W, wPos)
       elseif spell.endPos and not spell.target and not loadedEvade or (_G.Evadeee_Loaded and _G.Evadeee_impossibleToEvade) then
