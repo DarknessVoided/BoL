@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.01
+    _G.UPLversion = 2.1
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -135,26 +135,26 @@ function UPL:Predict(spell, source, Target)
     Target = source 
     source = myHero
   end
-  if not self:ValidRequest() then return Vector(Target), 0, Vector(Target) end
-  if self:ActivePred() == "VPrediction" then
+  if not self:ValidRequest() then return Vector(Target), -1, Vector(Target) end
+  if self:ActivePred(spell) == "VPrediction" then
       return self:VPredict(Target, self.spellData[spell], source)
-  elseif self:ActivePred() == "Prodiction" then
+  elseif self:ActivePred(spell) == "Prodiction" then
       local Position, info = Prodiction.GetPrediction(Target, self.spellData[spell].range, self.spellData[spell].speed, self.spellData[spell].delay, self.spellData[spell].width, source)
       if Position ~= nil and not info.mCollision() then
         return Position, 2, Vector(Target)
       else
         return Vector(Target), 0, Vector(Target)
       end
-  elseif self:ActivePred() == "DivinePrediction" then
+  elseif self:ActivePred(spell) == "DivinePrediction" then
       local State, Position, perc = self:DPredict(Target, self.spellData[spell], source)
       if perc ~= nil and Position ~= nil then
         return Position, 2, Vector(Target)
       else
         return Vector(Target), 0, Vector(Target)
       end
-  elseif self:ActivePred() == "HPrediction" then
+  elseif self:ActivePred(spell) == "HPrediction" then
       return self:HPredict(Target, spell, source)
-  elseif self:ActivePred() == "SPrediction" then
+  elseif self:ActivePred(spell) == "SPrediction" then
       return self.SP:Predict(spell, source, Target)
   end
 end
@@ -165,8 +165,9 @@ function UPL:AddToMenu(Config)
 end
 
 function UPL:AddToMenu2(Config, state)
-  Config:addParam({state = "Misc", name = "pred", code = SCRIPT_PARAM_LIST, value = self.ActiveP, list = self.predTable})
-  self.Config2 = Config
+  Config:addSubMenu("Prediction Menu", "UPL")
+  self.addToMenu2 = true
+  self.Config = Config.UPL
 end
 
 function UPL:AddSpell(spell, array)
@@ -175,6 +176,10 @@ function UPL:AddSpell(spell, array)
   else
     self.spellData[spell] = {speed = array.speed, delay = array.delay, range = array.range, width = array.width, collision = array.collision, aoe = array.aoe, type = array.type}
     if self.HP ~= nil then self:SetupHPredSpell(spell) end
+    if self.addToMenu2 then
+      str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+      self.Config:addParam(""..spell, str[spell].." Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable)
+    end
   end
 end
 
@@ -259,8 +264,8 @@ function UPL:ReturnPred(x)
     end
 end
 
-function UPL:ActivePred()
-    local int = self.Config and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.Config2 and self.Config2:getParam("Misc", "pred") or 1)
+function UPL:ActivePred(spell)
+    local int = self.Config and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.addToMenu2 and self.Config[""..spell] or 1)
     return tostring(self.predTable[int])
 end
 
