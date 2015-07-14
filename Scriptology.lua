@@ -2477,7 +2477,9 @@ class "Ahri"
       if sReady[_W] and Config.Combo.W and GetDistance(Target) < data[1].range then
         Cast(_W)
       end
-      self:CatchQ()
+      if Config.Combo.R then
+        self:CatchQ()
+      end
     end
     if GetRealHealth(Target) < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < data[3].range then
       local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
