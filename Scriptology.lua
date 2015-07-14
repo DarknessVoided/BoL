@@ -5480,6 +5480,7 @@ class "Nidalee"
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -5735,12 +5736,16 @@ class "Nidalee"
 
   function Nidalee:LaneClear()
     if self:IsHuman() then
-      if sReady[_Q] then
+      if sReady[_Q] and Config.LaneClear.Q then
         local minion = GetJMinion(self.data.Human[0].range)
+        local minionTarget = GetLowestMinion(self:GetAARange())
         if minion then
           Cast(_Q, minion, false, true, 1)
         end
-      else
+        if minionTarget then
+          Cast(_Q, minionTarget, false, true, 1)
+        end
+      elseif Config.LaneClear.R then
         Cast(_R)
       end
     end
@@ -5775,7 +5780,7 @@ class "Nidalee"
           Cast(_E, pos)
         end
       end
-      if not self:IsHuman() and not sReady[_Q] and not sReady[_E] and self.spearCooldownUntil < GetInGameTimer() then
+      if not self:IsHuman() and not sReady[_Q] and not sReady[_E] and self.spearCooldownUntil < GetInGameTimer() and Config.LaneClear.R then
         Cast(_R)
       end
     end
