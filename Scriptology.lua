@@ -1862,7 +1862,7 @@ class "SWalk"
     -- CastSpell(s, x, z) <- mouse
       self.aaResetTable4 = a4
     self.State = {}
-    self.orbTable = { lastAA = 0, windUp = 5, animation = 0.5 }
+    self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
     self.myRange = myHero.range+myHero.boundingRadius
     if Cfg then
       Cfg:addSubMenu("SWalk", "SWalk")
@@ -1938,7 +1938,7 @@ class "SWalk"
   end
 
   function SWalk:Draw()
-    if self.orbTable.windUp == 5 then
+    if self.orbTable.windUp == 13.37 or self.orbTable.animation == 13.37 then
       DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/8, ARGB(255,255,255,255))
     end
     if not self.Config.d then return end
@@ -2113,20 +2113,21 @@ class "SWalk"
   end
 
   function SWalk:ProcessSpell(unit, spell)
-    if unit and unit.isMe and spell and spell.name and not self.Config.pc then
+    if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") then
         self.orbTable.windUp = myHero.charName == "Kalista" and 0 or spell.windUpTime
         self.orbTable.animation = myHero.charName == "Kalista" and 0 or spell.animationTime
         self.orbTable.lastAA = myHero.charName == "Kalista" and 0 or os.clock()
-        DelayAction(function() self:WindUp(self.Target) end, 1 / (myHero.attackSpeed * 1 / (spell.windUpTime * myHero.attackSpeed)) - GetLatency() / 2000)
+        if not self.Config.pc then
+          DelayAction(function() self:WindUp(self.Target) end, spell.windUpTime - GetLatency() / 2000)
+        end
       end
     end
   end
 
   function SWalk:RecvPacket(p)
     if self.Config.pc and p.header == 0x2A then
-      if self.Target and p:DecodeF() == self.Target.networkID then
-        self.orbTable.lastAA = 0
+      if self.Target and p:DecodeF() == self.Target.networkID and self.orbTable.lastAA + self.orbTable.animation > os.clock() then
         self:WindUp(self.Target)
       end
     end
