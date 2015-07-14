@@ -1638,7 +1638,6 @@ class "SEvade"
       local type  = self.data[spell.source.charName][spell.slot].type
       local b     = myHero.boundingRadius
       if speed and speed ~= math.huge and type then
-        speed = speed * 2
         if type == "linear" then
           if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
             if GetDistanceSqr(spell.startPos,spell.endPos) < range * range + width * width + self.Config.er * self.Config.er then
@@ -1826,7 +1825,7 @@ class "SEvade"
           if self.Config[unit.charName][self.str[i]] and (not self.data[unit.charName][i] or self.data[unit.charName][i].name == "" or not self.data[unit.charName][i].name) then
             --print("Unsupported spell found!! "..unit.charName.." "..spell.name)
           elseif self.Config[unit.charName][self.str[i]] and spell.name:find(self.data[unit.charName][i].name) then
-            s = {slot = i, source = unit, startTime = GetInGameTimer(), startPos = Vector(spell.startPos), endPos = Vector(spell.endPos), winUpTime = spell.windUpTime, name = spell.name}
+            s = {slot = i, source = unit, startTime = GetInGameTimer(), startPos = Vector(unit), endPos = Vector(spell.endPos), winUpTime = spell.windUpTime, name = spell.name}
             table.insert(self.activeSpells, s)
           end
         end
