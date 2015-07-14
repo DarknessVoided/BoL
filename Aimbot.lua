@@ -305,7 +305,7 @@ _G.Champs = {
 
 if not _G.Champs[myHero.charName] then _G.Champs = nil collectgarbage() return end -- not supported :(
 
-AimbotVersion = 1.54
+AimbotVersion = 1.55
 
 --Scriptstatus Tracker
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("VILKJJKPQMO") 
@@ -387,7 +387,7 @@ end
 
 function Aimbot:Menu()
 
-  self.Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot2"..myHero.charName)
+  self.Config = scriptConfig("[Aimbot] "..myHero.charName, "Aimbot")
   
   self.Config:addSubMenu("Settings", "misc")
   self.Config.misc:addParam("pc", "Use Packets To Cast Spells", SCRIPT_PARAM_ONOFF, false)
@@ -398,7 +398,7 @@ function Aimbot:Menu()
   self.Config.skConfig:addParam("nfo", "0 = Off, 1 = Predict/Rather Mouse, ", SCRIPT_PARAM_INFO,"")
   self.Config.skConfig:addParam("nfn", "2 = Rather Predict/Mouse, 3 = Predict Only", SCRIPT_PARAM_INFO,"")
   for k,v in pairs(self.data) do
-    self.Config.skConfig:addParam(self.str[k], ""..self.str[k], SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
+    self.Config.skConfig:addParam(self.str[k]..myHero.charName, ""..self.str[k], SCRIPT_PARAM_SLICE, 2, 0, 3, 0)
     self.toAim[k] = true
     UPL:AddSpell(k, v)
   end
@@ -428,7 +428,7 @@ function Aimbot:Tick()
       for i, spell in pairs(self.data) do
           self.Target = self:GetCustomTarget(i)
           if self.Target == nil or self.Target.dead then return end
-          if ((self.secondCast or self.toCast[i]) and self.Config.skConfig[self.str[i]] > 0) and myHero:CanUseSpell(i) then
+          if ((self.secondCast or self.toCast[i]) and self.Config.skConfig[self.str[i]..myHero.charName] > 0) and myHero:CanUseSpell(i) then
               if self:IsJayceQ(i) then 
                 if myHero:CanUseSpell(_E) then 
                     self.data[_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
@@ -447,10 +447,10 @@ function Aimbot:Tick()
               elseif HitChance and HitChance >= 2 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
-              elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]] >= 1 then
+              elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]..myHero.charName] >= 1 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
-              elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]] >= 2 then
+              elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]..myHero.charName] >= 2 then
                   if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
                   self:CCastSpell(i, CastPosition)
               else
@@ -464,21 +464,21 @@ function Aimbot:Tick()
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       self:CCastSpell(i, CastPosition)
-                    elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]] >= 1 then
+                    elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]..myHero.charName] >= 1 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       self:CCastSpell(i, CastPosition)
-                    elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]] >= 2 then
+                    elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]..myHero.charName] >= 2 then
                       if not myHero:CanUseSpell(i) then return end
                       if debugMode then PrintChat("3 - Aimed skill! Precision: "..HitChance) end
                       self:CCastSpell(i, CastPosition)
                     end
                    end
                    if myHero:CanUseSpell(i) then
-                    if self.Config.skConfig[self.str[i]] <= 2 then if debugMode then PrintChat("3 - No better target found - to mouse") end self:CCastSpell(i, mousePos) end
+                    if self.Config.skConfig[self.str[i]..myHero.charName] <= 2 then if debugMode then PrintChat("3 - No better target found - to mouse") end self:CCastSpell(i, mousePos) end
                    end
                   else
-                    if self.Config.skConfig[self.str[i]] <= 2 then if debugMode then PrintChat("2 - To mouse") end self:CCastSpell(i, mousePos) end
+                    if self.Config.skConfig[self.str[i]..myHero.charName] <= 2 then if debugMode then PrintChat("2 - To mouse") end self:CCastSpell(i, mousePos) end
                   end
               end self.toCast[i] = false
           end
@@ -492,7 +492,7 @@ function Aimbot:EnemiesAround(Unit, range)
 end
 
 function Aimbot:Msg(msg, key)
-   if msg == KEY_DOWN and self.Config.skConfig["Q"] and self:IsChargeable(0) and myHero:CanUseSpell(_Q) == READY then
+   if msg == KEY_DOWN and self.Config.skConfig["Q"..myHero.charName] and self:IsChargeable(0) and myHero:CanUseSpell(_Q) == READY then
     DelayAction(function() if not self.secondCast and myHero:CanUseSpell(_Q) == READY then self.toCast[0] = true self.secondCast = true end end, 1.5)
    end
    if msg == KEY_UP and key == GetKey("Q") and self.toAim[0] and not self.secondCast then
@@ -638,24 +638,24 @@ function Aimbot:Draw()
 end
 
 function Aimbot:SendPacket(p)
-  if self.Config.tog and not self.Config.off and not myHero.dead and self:IsFirstCast() then
-    local head = p.header
-    if head == self.opcs[self.Config.misc.ser][1] then -- old: 0x00E9
-        p.pos=self.opcpos[self.Config.misc.ser]
-        local opc = p:Decode1()
-		if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
-        for i=0,3 do
-            if opc == self.opcs[self.Config.misc.ser][i+2] and not self.toCast[i] and self.toAim[i] and self.Config.skConfig[self.str[i]] > 0 and not self:IsChargeable(i) then -- old: 0x02
-              self.Target = self:GetCustomTarget(i)
-              if self.Target ~= nil then
-                p:Block()
-                p.skip(p, 1)
-    			self.toCast[i] = true
-              end
+    if self.Config.tog and not self.Config.off and not myHero.dead and self:IsFirstCast() then
+        local head = p.header
+        if head == self.opcs[self.Config.misc.ser][1] then -- old: 0x00E9
+            p.pos=self.opcpos[self.Config.misc.ser]
+            local opc = p:Decode1()
+    		if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
+            for i=0,3 do
+                if opc == self.opcs[self.Config.misc.ser][i+2] and not self.toCast[i] and self.toAim[i] and self.Config.skConfig[self.str[i]..myHero.charName] > 0 and not self:IsChargeable(i) then -- old: 0x02
+                    self.Target = self:GetCustomTarget(i)
+                    if self.Target ~= nil then
+                        p:Block()
+                        p.skip(p, 1)
+            			self.toCast[i] = true
+                    end
+                end
             end
         end
     end
-  end
 end
 
 function Aimbot:RecvPacket(p)
