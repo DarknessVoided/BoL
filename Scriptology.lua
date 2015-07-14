@@ -299,7 +299,7 @@ _G.ScriptologyDebug      = false
           [_R] = { speed = math.huge, delay = 0.5, range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.26*AP end}
         },
         ["Nidalee"] = {
-          [_Q] = { speed = 1337, delay = 0.125, range = 1525, width = 25, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1337, delay = 0.125, range = 1625, width = 42.5, collision = true, aoe = false, type = "linear"},
           [_W] = { range = 0},
           [_E] = { range = 0},
           [_R] = { range = 0}
