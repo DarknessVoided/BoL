@@ -1,0 +1,72 @@
+local loaded, QReady, WReady, EReady, RReady = false, false, false, false, false
+local QRange, WRange, ERange = 900, 600, 600
+
+Callback.Bind("Load", function()
+    if myHero.charName ~= 'Ryze' then return end 
+    Config = MenuConfig('Ryze')
+    Config:Menu('Keys','Keys')
+        Config.Keys:KeyBinding('Combo','Combo','SPACE')
+    Config:Menu('Combo','Combo')
+        Config.Combo:Boolean('Q', 'Use Q', true)
+        Config.Combo:Boolean('W', 'Use W', true)
+        Config.Combo:Boolean('E', 'Use E', true)
+        Config.Combo:Boolean('R', 'Use R', true)   
+    Config:Menu('Draws','Draws')
+        Config.Draws:Boolean('Q', 'Draw Q', true)
+        Config.Draws:Boolean('W', 'Draw W', true)
+        Config.Draws:Boolean('E', 'Draw E', true)
+    loaded = true
+    print("Ryze loaded")
+end)
+
+Callback.Bind("Tick", function()
+    Target = GetTarget(QRange)
+    Checks()
+    Combo()
+end)
+
+Callback.Bind("Draw", function()
+    if myHero == nil or myHero.z == nil or myHero.y == nil or myHero.z == nil or not loaded then return end
+    if Config.Draws.Q:Value() then
+        Graphics.DrawCircle(myHero.pos.x, myHero.pos.y, myHero.pos.z, 900, Graphics.ARGB(255, 0, 255, 255))
+    end
+    if Config.Draws.W:Value() then
+        Graphics.DrawCircle(myHero.pos.x, myHero.pos.y, myHero.pos.z, 600, Graphics.ARGB(255, 0, 255, 255))
+    end
+    if Config.Draws.E:Value() then
+        Graphics.DrawCircle(myHero.pos.x, myHero.pos.y, myHero.pos.z, 600, Graphics.ARGB(255, 0, 255, 255))
+    end
+end)
+
+function Checks()
+    QReady = myHero:GetSpellData(0).currentCd
+    WReady = myHero:GetSpellData(1).currentCd
+    EReady = myHero:GetSpellData(2).currentCd
+    RReady = myHero:GetSpellData(3).currentCd
+end
+
+function Combo()
+    if Target ~= nil and loaded and Config.Keys.Combo:Value() then 
+        if myHero.pos:DistanceTo(Target.pos) < QRange and QReady == 0 and Config.Combo.Q:Value() then
+            myHero:CastSpell(0, Target.pos.x, Target.pos.z)
+        elseif myHero.pos:DistanceTo(Target.pos) < WRange and WReady == 0 and QReady > 0.1 and Config.Combo.W:Value() then
+            myHero:CastSpell(1, Target)
+        elseif myHero.pos:DistanceTo(Target.pos) < ERange and EReady == 0 and QReady > 0.1 and WReady > 0.1 and Config.Combo.E:Value() then
+            myHero:CastSpell(2, Target)
+        elseif myHero.pos:DistanceTo(Target.pos) < QRange and RReady == 0 and QReady > 0.1 and WReady > 0.1 and EReady > 0.1 and Config.Combo.R:Value() then
+           myHero:CastSpell(3) 
+        end
+    end
+end
+
+function GetTarget(range) -- saw this at Ralphlol's Sona, no idea who wrote this
+    local tH, hp = nil, 1000000
+    for i = 0, Game.HeroCount() do
+        local h = Game.Hero(i)
+        if h and not h.isMe and h.team ~= myHero.team and h.visible and not h.dead and h.health > 0 and h.pos:DistanceTo(myHero.pos) < range * 0.95 and h.health < hp then
+            tH = h
+            hp = h.health
+        end 
+    end
+    return tH
+end

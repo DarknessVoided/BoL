@@ -6814,19 +6814,19 @@ class "Ryze"
   end
 
   function Ryze:ApplyBuff(unit, buff) 
-    if unit == nil or buff == nil then return end 
+    if unit == nil or not unit.isMe or buff == nil then return end 
     if buff.name == "ryzepassivestack" then self.passiveTracker = 1 end 
     if buff.name == "ryzepassivecharged" then self.passiveTracker = 5 end 
   end 
 
   function Ryze:UpdateBuff(unit, buff, stacks) 
-    if unit == nil or buff == nil then return end 
+    if unit == nil or not unit.isMe or buff == nil then return end 
     if buff.name == "ryzepassivestack" then self.passiveTracker = stacks end 
     if buff.name == "ryzepassivecharged" then self.passiveTracker = 5 end 
   end 
 
   function Ryze:RemoveBuff(unit, buff) 
-    if unit == nil or buff == nil then return end 
+    if unit == nil or not unit.isMe or buff == nil then return end 
     if buff.name == "ryzepassivestack" then self.passiveTracker = 0 end 
     if buff.name == "ryzepassivecharged" then self.passiveTracker = 0 end 
   end

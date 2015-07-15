@@ -1,0 +1,9 @@
+{
+	"name":"Ryze",
+	"addonId":"0FEE0289755291E86543DF46AB61F54B",
+	"version":"1.0.0",
+	"author":"Nebelwolfi",
+	"type":"ADDON",
+	"icon":"/resource/seasons-framework.userInterface/images/icon.png",
+	"requirements":""
+}
