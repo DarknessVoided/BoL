@@ -256,6 +256,12 @@ _G.ScriptologyDebug      = false
           [_E] = { range = myHero.range+2*myHero.boundingRadius},
           [_R] = { range = myHero.range+4*myHero.boundingRadius}
         },
+        ["Jayce"] = {
+          [_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"},
+          [_W] = { range = 0},
+          [_E] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"},
+          [_R] = { range = 0}
+        },
         ["Kalista"] = {
           [_Q] = { speed = 1750, delay = 0.25, range = 1275, width = 70, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
           [_W] = { delay = 1.5, range = 5500},
@@ -1995,7 +2001,7 @@ class "SWalk"
 
   function SWalk:Orb(unit)
     if _G.Evade then return end
-    if not ValidTarget(unit, myRange) then unit = Target end
+    if not ValidTarget(unit, self.myRange) then unit = Target end
     local valid = false
     if myHero.charName == "Azir" then 
       if ValidTarget(unit) then
@@ -2007,7 +2013,7 @@ class "SWalk"
       end
     end
     if not valid then
-      valid = ValidTarget(unit, myRange)
+      valid = ValidTarget(unit, self.myRange)
     end
     if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid and ValidTarget(unit) then
       myHero:Attack(unit)
@@ -4080,6 +4086,105 @@ class "Jax"
   end
 
   function Jax:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
+          CastSpell(_Q, enemy)
+        elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
+          Cast(_W, myHero:Attack(enemy))
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
+          CastSpell(Ignite, enemy)
+        end
+      end
+    end
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "Jayce"
+
+  function Jayce:__init()
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    Cfg:addSubMenu("Target Selector", "ts")
+    Cfg.ts:addTS(self.ts)
+    ArrangeTSPriorities()
+    self:Menu()
+    self.Target = nil
+    AddMsgCallback(function(x,y) self:Msg(x,y) end)
+  end
+
+  function Jayce:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Combo:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    if Smite ~= nil then Config.Combo:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    if Smite ~= nil then Config.Killsteal:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  end
+
+  function Jayce:Msg(Msg, Key)
+    if Msg == WM_LBUTTONDOWN then
+      local minD = 0
+      local starget = nil
+      for i, enemy in ipairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy) then
+          if GetDistance(enemy, mousePos) <= minD or starget == nil then
+            minD = GetDistance(enemy, mousePos)
+            starget = enemy
+          end
+        end
+      end
+      
+      if starget and minD < starget.boundingRadius*2 then
+        if self.Forcetarget and starget.charName == self.Forcetarget.charName then
+          self.Forcetarget = nil
+        else
+          self.Forcetarget = starget
+          ScriptologyMsg("New target selected: "..starget.charName.."")
+        end
+      end
+    end
+  end
+
+  function Jayce:Combo()
+    if not self.Target then self.Target = Target end
+    if not self.Target then return end
+    if GetDistance(self.Target) > myHero.range+self.Target+boundingRadius and GetDistance(self.Target) < data[0].range then
+      Cast(_Q, self.Target, true)
+    end
+  end
+
+  function Jayce:Harrass()
+  end
+
+  function Jayce:LastHit()
+  end
+
+  function Jayce:LaneClear()
+  end
+
+  function Jayce:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
