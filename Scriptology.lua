@@ -5607,6 +5607,7 @@ class "Nidalee"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Dw", "Use W to dodge", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addDynamicParam("Eas", "Heal with E (self)", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addDynamicParam("Eaa", "Heal with E (allies)", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("manaEs", "Mana E (self)", SCRIPT_PARAM_SLICE, 25, 0, 100, 0)
@@ -5650,7 +5651,7 @@ class "Nidalee"
         myHero:MoveTo(mousePos.x, mousePos.z)
       end
     end
-    if loadedEvade then
+    if loadedEvade and Config.Misc.Dw then
       if _G.Evade and loadedEvade.m then
         if sReady[_W] and not self:IsHuman() then
           Cast(_W, loadedEvade.m)
@@ -5660,7 +5661,7 @@ class "Nidalee"
           end
         elseif sReady[_R] and self:IsHuman() then
           Cast(_R)
-          DelayAction(function() Cast(_W, loadedEvade.m) end, 0.25)
+          DelayAction(function() Cast(_W, loadedEvade.m) end, 0.125)
           if GetDistance(loadedEvade.m,myHero) < self.data.Cougar[_W].range then
             _G.Evade = false
             loadedEvade.m = nil
