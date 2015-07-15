@@ -1969,7 +1969,6 @@ class "SWalk"
         self.Target = GetJMinion(self.myRange)
       else
         dmg = GetDmg("AD",myHero,self.Target)
-        print(dmg)
         if dmg and health-dmg > 0 then
           mtarget, health = self:GetHighestPMinion(self.myRange)
           if mtarget == self.Target and health ~= mtarget.health and #minionManager(MINION_ENEMY, self.myRange, myHero, MINION_SORT_HEALTH_ASC).objects > 1 then
