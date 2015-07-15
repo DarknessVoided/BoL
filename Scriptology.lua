@@ -8139,7 +8139,7 @@ class "Yasuo"
       end
     end
     if sReady[_Q] and self.passiveTracker and GetDistance(self.Target) < 1200 then
-      local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, self.Target)
+      local CastPosition, HitChance, Position = UPL:Predict(-2, myHero, self.Target)
       if HitChance >= 2 then
         Cast(_Q, CastPosition)
       end
@@ -8161,7 +8161,7 @@ class "Yasuo"
         elseif Config.Killsteal.Q and GetDmg(_Q,myHero,enemy) > GetRealHealth(enemy) and GetDistance(enemy) < data[0].range then
           Cast(_Q, enemy, false, true, 1)
         elseif Config.Killsteal.Q and self.passiveTracker and GetDmg(_Q,myHero,enemy) > GetRealHealth(enemy) and GetDistance(enemy) < 1200 then
-          local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, enemy)
+          local CastPosition, HitChance, Position = UPL:Predict(-2, myHero, enemy)
           if HitChance >= 2 then
             Cast(_Q, CastPosition)
           end
