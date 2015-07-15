@@ -5677,6 +5677,7 @@ class "Nidalee"
         elseif sReady[_R] and self:IsHuman() then
           Cast(_R)
           DelayAction(function() Cast(_W, loadedEvade.m) end, 0.125)
+          DelayAction(function() Cast(_R) end, 3*(1+unit.cdr))
           if GetDistance(loadedEvade.m,myHero) < self.data.Cougar[_W].range then
             _G.Evade = false
             loadedEvade.m = nil
@@ -7448,7 +7449,7 @@ class "Teemo"
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, true)
     end
-    if Config.Combo.I and ValidTarget(enemy, 600) and (Target.health < (50+20*myHero.level+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)*5*myHero.attackSpeed) or killTextTable[Target.networkID].indicatorText:find("Killable")) then
+    if Config.Combo.I and Ignite and myHero:CanUseSpell(Ignite) == READY and ValidTarget(Target, 600) and (GetRealHelth(Target) < (50+20*myHero.level+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)*5*myHero.attackSpeed) or killTextTable[Target.networkID].indicatorText:find("Killable")) then
       CastSpell(Ignite, Target)
     end
     if Config.Combo.R and ValidTarget(Target, data[3].width) then
