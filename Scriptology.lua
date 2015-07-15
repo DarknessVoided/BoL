@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.9999994
+_G.ScriptologyVersion    = 1.9999995
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -6859,15 +6859,14 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
+        if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        end
-        if myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
-          CastSpell(_E, target) 
-        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then
+        elseif sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_W, target) 
-        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then
+        elseif sReady[_E] and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
+          CastSpell(_E, target) 
+        elseif sReady[_R] and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_R, target) 
         end
       else 
@@ -6891,15 +6890,14 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if Config.Combo.Q then
+        if Config.Combo.Q and sReady[_Q] then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        end
-        if myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.Combo.E then 
-          CastSpell(_E, target) 
-        elseif myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_R) == COOLDOWN and Config.Combo.W then
+        elseif sReady[_W] and Config.Combo.W then 
           CastSpell(_W, target) 
-        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config.Combo.R then
+        elseif sReady[_E] and Config.Combo.E then 
+          CastSpell(_E, target) 
+        elseif sReady[_R] and Config.Combo.R then 
           CastSpell(_R, target) 
         end 
       else
@@ -6923,14 +6921,13 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
+        if sReady[_Q] and Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
-        end
-        if myHero:CanUseSpell(_Q) == COOLDOWN and myHero:CanUseSpell(_W) == COOLDOWN and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then 
-          CastSpell(_E, target) 
-        elseif myHero:CanUseSpell(_Q) == COOLDOWN and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
+        elseif sReady[_W] and Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_W, target) 
+        elseif sReady[_E] and Config.Harrass.E and Config.Harrass.manaE < myHero.mana/myHero.maxMana*100 then 
+          CastSpell(_E, target) 
         end
       else 
         if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then CastSpell(_W, target) end
