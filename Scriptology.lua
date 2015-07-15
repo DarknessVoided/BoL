@@ -2131,8 +2131,12 @@ class "SWalk"
   end
 
   function SWalk:RecvPacket(p)
-    if self.Config.pc and p.header == 0x2A then
-      if self.Target and p:DecodeF() == self.Target.networkID and self.orbTable.lastAA + self.orbTable.animation > os.clock() then
+    if self.Config.pc and p.header == 0x2A and p.vTable == 0xFD34B0 then
+      p.pos = 2
+      local nId1 = p:DecodeF()
+      p.pos = 8
+      local idd = p:Decode1() == 178
+      if self.Target and nId1 == self.Target.networkID and self.orbTable.lastAA + self.orbTable.animation > os.clock() then
         self:WindUp(self.Target)
       end
     end
@@ -7084,14 +7088,20 @@ class "Rumble"
     if Config.Misc.Ra then
       local enemies = EnemiesAround(Target, 250)
       if enemies >= Config.Misc.Rae then
-        Cast(_R, Target, false, true, 2)
+        local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, Target)
+        if CastPosition and HitChance >= 2 then
+          CastSpell3(_R, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))  
+        end
       end
     end
     if Config.Misc.Ra then
       local enemies = EnemiesAround(Target, 250)
       local allies = AlliesAround(myHero, 500)
       if enemies >= Config.Misc.Rae-1 and allies >= Config.Misc.Rae-1 then
-        Cast(_R, Target, false, true, 2)
+        local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, Target)
+        if CastPosition and HitChance >= 2 then
+          CastSpell3(_R, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))  
+        end
       end
     end
   end
@@ -7139,7 +7149,10 @@ class "Rumble"
       Cast(_E, Target, false, true, 1.5)
     end
     if Config.Combo.R and (GetDmg(_R, myHero, Target) >= GetRealHealth(Target) or (EnemiesAround(Target, 500) > 2)) and ValidTarget(Target, data[3].range) then
-      Cast(_R, Target, true)
+      local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, Target)
+      if CastPosition and HitChance >= 2 then
+        CastSpell3(_R, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))  
+      end
     end
   end
 
@@ -7161,7 +7174,10 @@ class "Rumble"
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy, true)
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy, true)
+          local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, Target)
+          if CastPosition and HitChance >= 2 then
+            CastSpell3(_R, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))  
+          end
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
@@ -7799,6 +7815,25 @@ class "Vayne"
           CastSpell(Ignite, enemy)
         end
       end
+    end
+  end
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+class "Viktor"
+  
+  function  Viktor:__init()
+    
+  end
+
+  function Viktor:Combo() -- soon, i swear
+    local CastPosition, HitChance, Position = UPL:Predict(_R, myHero, Target)
+    if CastPosition and HitChance >= 2 then
+      CastSpell3(_R, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))  
     end
   end
 
