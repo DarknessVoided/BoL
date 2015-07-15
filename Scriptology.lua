@@ -6895,7 +6895,7 @@ class "Ryze"
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
         elseif sReady[_R] and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then 
-          CastSpell(_R, target) 
+          CastSpell(_R) 
         elseif sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_W, target) 
         elseif sReady[_E] and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
