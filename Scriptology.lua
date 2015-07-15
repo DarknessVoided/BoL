@@ -6862,12 +6862,12 @@ class "Ryze"
         if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
+        elseif sReady[_R] and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then 
+          CastSpell(_R, target) 
         elseif sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_W, target) 
         elseif sReady[_E] and Config.LaneClear.E and Config.LaneClear.manaE < myHero.mana/myHero.maxMana*100 then 
           CastSpell(_E, target) 
-        elseif sReady[_R] and Config.LaneClear.R and Config.LaneClear.manaR < myHero.mana/myHero.maxMana*100 then 
-          CastSpell(_R, target) 
         end
       else 
         if Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then CastSpell(_W, target) end
@@ -6893,12 +6893,12 @@ class "Ryze"
         if Config.Combo.Q and sReady[_Q] then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
+        elseif sReady[_R] and Config.Combo.R then 
+          CastSpell(_R, target) 
         elseif sReady[_W] and Config.Combo.W then 
           CastSpell(_W, target) 
         elseif sReady[_E] and Config.Combo.E then 
           CastSpell(_E, target) 
-        elseif sReady[_R] and Config.Combo.R then 
-          CastSpell(_R, target) 
         end 
       else
         if Config.Combo.W then CastSpell(_W, target) end
