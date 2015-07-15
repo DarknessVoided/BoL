@@ -26,7 +26,7 @@ _G.ScriptologyDebug      = false
   function OnLoad()
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Diana", "Ekko", "Jax", 
                   "Kalista", "Katarina", "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", 
-                  "Ryze", "Rumble", "Talon", "Teemo", "Tahm", "Thresh", "Vayne", "Volibear", "Yasuo" }
+                  "Ryze", "Rumble", "Talon", "Teemo", "TahmKench", "Thresh", "Vayne", "Volibear", "Yasuo" }
     Cfg = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
     supported = {}
     for _,champ in pairs(champList) do
@@ -364,7 +364,7 @@ _G.ScriptologyDebug      = false
           [_E] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+40*level+0.6*TotalDmg end},
           [_R] = { range = 0, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+125*level+0.7*AP end}
         },
-        ["Tahm"] = {
+        ["TahmKench"] = {
           [_Q] = { range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 0 end},
           [_W] = { range = 500, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 0 end},
           [_E] = { range = 50, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 0 end},
@@ -470,7 +470,7 @@ _G.ScriptologyDebug      = false
         ["Nidalee"] = {
           "nidaleepassivehunted"
         },
-        ["Tahm"] = {
+        ["TahmKench"] = {
           "tahmpassive"
         },
         ["Yasuo"] = {
@@ -1866,6 +1866,7 @@ class "SWalk"
       self.aaResetTable3 = a3
     -- CastSpell(s, x, z) <- mouse
       self.aaResetTable4 = a4
+    self.orbDisabled = false
     self.State = {}
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
     self.myRange = myHero.range+myHero.boundingRadius
@@ -2000,7 +2001,7 @@ class "SWalk"
   end
 
   function SWalk:Orb(unit)
-    if _G.Evade then return end
+    if _G.Evade or self.orbDisabled then return end
     if not ValidTarget(unit, self.myRange) then unit = Target end
     local valid = false
     if myHero.charName == "Azir" then 
@@ -3241,7 +3242,7 @@ class "Brand"
       end
     end
     if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
-      BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
+      local BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
       if BestHit > 1 then 
         Cast(_W, BestPos)
       end
@@ -4113,8 +4114,22 @@ class "Jayce"
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
     self:Menu()
-    self.Target = nil
-    AddMsgCallback(function(x,y) self:Msg(x,y) end)
+    self.data = {
+      Melee  = {
+          [_Q] = { range = 1500},
+          [_W] = { range = 900},
+          [_E] = { range = 600}
+        },
+      Range = {
+          [_W] = { range = 350, width = 175},
+          [_E] = { range = 350}}
+    }
+    self.qCooldownUntil = 0
+    AddDrawCallback(function() self:Draw() end)
+    AddTickCallback(function() self:DmgCalc() end)
+    AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
+    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+    AddTickCallback(function() self:Flee() end)
   end
 
   function Jayce:Menu()
@@ -6309,7 +6324,7 @@ class "Rengar"
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, false, true, 1)
-      elseif Config.Misc.Empower2 == 2 then
+      elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, false, true, 2)
       end
     else
@@ -6323,6 +6338,20 @@ class "Rengar"
   end
 
   function Rengar:Harrass()
+    if myHero.mana == 5 then
+      if Config.Harrass.Empower2 == 2 then
+        Cast(_W, self.Target, false, true, 1)
+      elseif Config.Harrass.Empower2 == 3 then
+        Cast(_E, self.Target, false, true, 2)
+      end
+    else
+      if Config.Harrass.W and sReady[_W] then
+        Cast(_W, self.Target, false, true, 1)
+      end
+      if Config.Harrass.E and sReady[_E] then
+        Cast(_E, self.Target, false, true, 1)
+      end
+    end
   end
 
   function Rengar:LastHit()
@@ -6332,7 +6361,8 @@ class "Rengar"
       if Config.LaneClear.Q then
         local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil and minionTarget.health < GetDmg(_Q, myHero, minionTarget) then
-          CastSpell(_Q, myHero:Attack(minionTarget))
+          CastSpell(_Q)
+          loadedOrb:Orb(minionTarget)
         end
       end
       if Config.LaneClear.W then
@@ -6357,7 +6387,8 @@ class "Rengar"
       if Config.LaneClear.Q then
         local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil then
-          CastSpell(_Q, myHero:Attack(minionTarget))
+          CastSpell(_Q)
+          loadedOrb:Orb(minionTarget)
         end
       end
       if Config.LaneClear.W then
@@ -6379,7 +6410,8 @@ class "Rengar"
       if Config.LaneClear.Q then
         local minionTarget = GetJMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil then
-          CastSpell(_Q, myHero:Attack(minionTarget))
+          CastSpell(_Q)
+          loadedOrb:Orb(minionTarget)
         end
       end
       if Config.LaneClear.W then
@@ -6890,11 +6922,11 @@ class "Ryze"
         if x2 and x2 >= 1 then CastSpell(_Q, x1.x, x1.z) end 
       end
       if self.passiveTracker >= 5 then 
-        if Config.Combo.Q and sReady[_Q] then
+        if sReady[_Q] and Config.Combo.Q then
           local x1, x2, x3 = UPL.VP:GetLineCastPosition(target, 0.25, 55, 900, 1875, myHero, false) 
           if x2 and x2 >= 2 then CastSpell(_Q, x1.x, x1.z) end 
         elseif sReady[_R] and Config.Combo.R then 
-          CastSpell(_R, target) 
+          CastSpell(_R) 
         elseif sReady[_W] and Config.Combo.W then 
           CastSpell(_W, target) 
         elseif sReady[_E] and Config.Combo.E then 
@@ -7143,9 +7175,9 @@ class "Rumble"
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 
-class "Tahm"
+class "TahmKench"
 
-  function Tahm:__init()
+  function TahmKench:__init()
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
@@ -7153,7 +7185,7 @@ class "Tahm"
     self:Menu()
   end
 
-  function Tahm:Menu()
+  function TahmKench:Menu()
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -7181,19 +7213,19 @@ class "Tahm"
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   end
 
-  function Tahm:LastHit()
+  function TahmKench:LastHit()
   end
 
-  function Tahm:LaneClear()
+  function TahmKench:LaneClear()
   end
 
-  function Tahm:Combo()
+  function TahmKench:Combo()
   end
 
-  function Tahm:Harrass()
+  function TahmKench:Harrass()
   end
 
-  function Tahm:Killsteal()
+  function TahmKench:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       end
