@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.2
+    _G.UPLversion = 2.4
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -177,8 +177,8 @@ function UPL:AddSpell(spell, array)
     self.spellData[spell] = {speed = array.speed, delay = array.delay, range = array.range, width = array.width, collision = array.collision, aoe = array.aoe, type = array.type}
     if self.HP ~= nil then self:SetupHPredSpell(spell) end
     if self.addToMenu2 then
-      str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-      self.Config:addParam(""..spell, str[spell].." Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable)
+      str = {[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+      DelayAction(function() self.Config:addParam(""..spell, str[spell].." Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable) end, 1)
     end
   end
 end
