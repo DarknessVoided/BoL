@@ -44,11 +44,11 @@ function Combo()
         end
         if myHero.pos:DistanceTo(Target.pos) < QRange and cd(0) == 0 and Config.Combo.Q:Value() then
             myHero:CastSpell(0, Target.pos.x, Target.pos.z)
-        elseif myHero.pos:DistanceTo(Target.pos) < WRange and cd(1) == 0 and cd(0) > 0.1 and Config.Combo.W:Value() then
+        elseif myHero.pos:DistanceTo(Target.pos) < WRange and cd(1) == 0 and cd(0) > 0.05 and Config.Combo.W:Value() then
             myHero:CastSpell(1, Target)
-        elseif myHero.pos:DistanceTo(Target.pos) < ERange and cd(2) == 0 and cd(0) > 0.1 and cd(1) > 0.1 and Config.Combo.E:Value() then
+        elseif myHero.pos:DistanceTo(Target.pos) < ERange and cd(2) == 0 and cd(0) > 0.05 and cd(1) > 0.05 and Config.Combo.E:Value() then
             myHero:CastSpell(2, Target)
-        elseif myHero.pos:DistanceTo(Target.pos) < QRange and cd(3) == 0 and cd(0) > 0.1 and cd(1) > 0.1 and cd(2) > 0.1 and Config.Combo.R:Value() then
+        elseif myHero.pos:DistanceTo(Target.pos) < QRange and cd(3) == 0 and cd(0) > 0.05 and cd(1) > 0.05 and cd(2) > 0.05 and Config.Combo.R:Value() then
            myHero:CastSpell(3) 
         end
     end
