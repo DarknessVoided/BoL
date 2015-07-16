@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.9999998
+_G.ScriptologyVersion    = 1.9999999
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -265,7 +265,7 @@ _G.ScriptologyDebug      = false
         ["Kalista"] = {
           [_Q] = { speed = 1750, delay = 0.25, range = 1275, width = 70, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
           [_W] = { delay = 1.5, range = 5500},
-          [_E] = { delay = 0.50, range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.2 + 0.03 * (level-1))*TotalDmg) or 0 end},
+          [_E] = { delay = 0.50, range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.12 + 0.03 * level)*TotalDmg) or 0 end},
           [_R] = { range = 4000}
         },
         ["Katarina"] = {
@@ -1536,7 +1536,7 @@ class "SAwareness"
       end
     end
     if self.Config.wpe then
-      for i, k in ipairs(GetEnemyHeroes()) do
+      for i, k in pairs(GetEnemyHeroes()) do
         if k and k.hasMovePath and k.pathCount >= 2 then
           local IndexPath = k:GetPath(k.pathIndex)
           if IndexPath then
@@ -1552,7 +1552,7 @@ class "SAwareness"
       end
     end
     if self.Config.wpa then
-      for i, k in ipairs(GetAllyHeroes()) do
+      for i, k in pairs(GetAllyHeroes()) do
         if k and k.hasMovePath and k.pathCount >= 2 then
           local IndexPath = k:GetPath(k.pathIndex)
           if IndexPath then
@@ -3630,22 +3630,16 @@ class "Darius"
   end
 
   function Darius:Combo()
-    if lastWindup+0.25 > GetInGameTimer() then 
-      if myHero:CanUseSpell(_W) == READY then
-        CastSpell(_W, myHero:Attack(Target))
-      end
-    else
-      if myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
-        self:CastQ(Target)
-      elseif myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
-        Cast(_Q)
-      end
-      if myHero:CanUseSpell(_E) == READY then
-        self:CastE(Target)
-      end
-      if myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target)+Target.shield and Config.Combo.R then
-        Cast(_R, enemy, true)
-      end
+    if myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
+      self:CastQ(Target)
+    elseif myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
+      Cast(_Q)
+    end
+    if myHero:CanUseSpell(_E) == READY then
+      self:CastE(Target)
+    end
+    if myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) and Config.Combo.R then
+      Cast(_R, enemy, true)
     end
   end
 
@@ -3666,23 +3660,23 @@ class "Darius"
       local rDmg = ((GetDmg(_R, myHero, enemy)) or 0)
       local iDmg = (50 + 20 * myHero.level) / 5
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and GetRealHealth(enemy)+enemy.shield < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
+        if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) and GetRealHealth(enemy) < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
           Cast(_R, enemy, true)
-        elseif myHero:CanUseSpell(_Q) and GetRealHealth(enemy)+enemy.shield < qDmg and Config.Killsteal.Q and ValidTarget(enemy, 450) then
+        elseif myHero:CanUseSpell(_Q) and sReady[_Q] and GetRealHealth(enemy) < qDmg and Config.Killsteal.Q and ValidTarget(enemy, 450) then
           self:CastQ(enemy)
-        elseif myHero:CanUseSpell(_Q) and GetRealHealth(enemy)+enemy.shield < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
+        elseif myHero:CanUseSpell(_Q) and sReady[_Q] and GetRealHealth(enemy) < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
           Cast(_Q)
-        elseif myHero:CanUseSpell(_W) and GetRealHealth(enemy)+enemy.shield < wDmg and Config.Killsteal.W then
+        elseif myHero:CanUseSpell(_W) and sReady[_W] and GetRealHealth(enemy) < wDmg and Config.Killsteal.W then
           if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
             CastSpell(_W, myHero:Attack(enemy))
-          elseif ValidTarget(enemy, data[2].range*(Config.Misc.offsetE/100)) then
+          elseif ValidTarget(enemy, data[2].range*(Config.Misc.offsetE/100)) and sReady[_E] then
             self:CastE(enemy)
             DelayAction(function() CastSpell(_W, myHero:Attack(enemy)) end, 0.38)
           end
-        elseif myHero:CanUseSpell(_R) and GetRealHealth(enemy)+enemy.shield < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
+        elseif myHero:CanUseSpell(_R) and sReady[_R] and GetRealHealth(enemy) < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
           if ScriptologyDebug then print(rDmg)  end
           Cast(_R, enemy, true)
-        elseif GetRealHealth(enemy)+enemy.shield < iDmg and Config.Killsteal.I and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) then
+        elseif GetRealHealth(enemy) < iDmg and Config.Killsteal.I and ValidTarget(enemy, 600) and myHero:CanUseSpell(self.Ignite) == READY then
           CastSpell(Ignite, enemy)
         end
       end
@@ -4353,10 +4347,10 @@ class "Kalista"
 
   function Kalista:Combo()
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, Target, false, true, 1.5)
+      Cast(_Q, Target, false, true, 2)
     end
     if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(Target, data[2].range) then
-      if GetDmg(_E, myHero, Target) >= GetRealHealth(Target)+Target.shield+((Target.charName == "Blitzcrank" and not TargetHaveBuff("manabarriercooldown", Target)) and Target.mana/2 or 0) then
+      if GetDmg(_E, myHero, Target) >= GetRealHealth(Target)+((Target.charName == "Blitzcrank" and not TargetHaveBuff("manabarriercooldown", Target)) and Target.mana/2 or 0) then
         Cast(_E)
       end
       local killableCounter = 0
@@ -4381,7 +4375,7 @@ class "Kalista"
   
   function Kalista:Harrass()
     if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, Target, false, true, 1.2)
+      Cast(_Q, Target, false, true, 2)
     end
     if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, data[2].range) then
       local harrassUnit = nil
@@ -4418,7 +4412,7 @@ class "Kalista"
         if myHero:CanUseSpell(_E) == READY and health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E)
         elseif myHero:CanUseSpell(_Q) == READY and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
-          Cast(_Q, enemy, false, true, 1.2)
+          Cast(_Q, enemy, false, true, 2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
