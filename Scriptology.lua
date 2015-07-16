@@ -6500,9 +6500,9 @@ class "Rengar"
   end
 
   function Rengar:Menu()
-    Config.Combo:addDynamicParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.Combo:addDynamicParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-    Config.Combo:addDynamicParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     if Ignite ~= nil then Config.Combo:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     if Smite ~= nil then Config.Combo:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
