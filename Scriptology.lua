@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.9999999
+_G.ScriptologyVersion    = 1.99999991
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -25,8 +25,8 @@ _G.ScriptologyDebug      = false
 
   function OnLoad()
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Diana", "Ekko", "Jax", 
-                  "Kalista", "Katarina", "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", "Riven", 
-                  "Ryze", "Rumble", "Talon", "Teemo", "TahmKench", "Thresh", "Vayne", "Volibear", "Yasuo" }
+                  "Jayce", "Kalista", "Katarina", "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", 
+                  "Riven", "Ryze", "Rumble", "Talon", "Teemo", "TahmKench", "Thresh", "Vayne", "Volibear", "Yasuo" }
     Cfg = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
     supported = {}
     for _,champ in pairs(champList) do
@@ -257,9 +257,10 @@ _G.ScriptologyDebug      = false
           [_R] = { range = myHero.range+4*myHero.boundingRadius}
         },
         ["Jayce"] = {
-          [_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"},
+          [-1] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"},
           [_W] = { range = 0},
-          [_E] = { speed = 1300, delay = 0.15, range = 1150, width = 70, collision = true, aoe = false, type = "linear"},
+          [_E] = { range = 0},
           [_R] = { range = 0}
         },
         ["Kalista"] = {
@@ -614,7 +615,7 @@ _G.ScriptologyDebug      = false
 
   function LoadOrb()
   -- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
-    aaResetTable = { ["Diana"] = {_E}, ["Darius"] = {_W}, ["Hecarim"] = {_Q}, ["Jax"] = {_W}, ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Sivir"] = {_W}, ["Talon"] = {_Q} }
+    aaResetTable = { ["Diana"] = {_E}, ["Darius"] = {_W}, ["Hecarim"] = {_Q}, ["Jax"] = {_W}, ["Jayce"] = {_W}, ["Rengar"] = {_Q}, ["Riven"] = {_W}, ["Sivir"] = {_W}, ["Talon"] = {_Q} }
   -- CastSpell(s, x, z) -> target
     aaResetTable2 = { ["Diana"] = {_Q}, ["Kalista"] = {_Q}, ["Riven"] = {_Q}, ["Talon"] = {_W}, ["Yasuo"] = {_Q} }
   -- CastSpell(s, t)
@@ -720,11 +721,11 @@ _G.ScriptologyDebug      = false
       loadedClass:LaneClear()
     end
 
-    if myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
+    if myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" and myHero.charName ~= "Riven" then DmgCalc() end
   end
 
   function Draw()
-    if myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
+    if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
     if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
       DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255*Config.Draws.OpacityQ/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100)))
     end
@@ -1106,6 +1107,7 @@ _G.ScriptologyDebug      = false
       if sReady[GapcloseSpell] and GapcloseTime and GapcloseUnit and GapcloseTime > GetInGameTimer() then
         if GapcloseTargeted then
           if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
+            if myHero.charName == "Jayce" and loadedClass:IsRange() then Cast(_R) end
             Cast(GapcloseSpell, GapcloseUnit, true)
           end
         else 
@@ -1909,9 +1911,9 @@ class "SWalk"
     AddTickCallback(function() self:OrbWalk() end)
     AddDrawCallback(function() self:Draw() end)
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
-    if VIP_USER and self.melee then 
+    if self.melee and myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" then 
       self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
-      if VIP_USER then
+      if VIP_USER and myHero.charName ~= "Rengar" then
         self.Config:addParam("pc", "Use packet for animation cancel", SCRIPT_PARAM_ONOFF, true)
         AddRecvPacketCallback2(function(x) self:RecvPacket(x) end) 
       end
@@ -2134,9 +2136,7 @@ class "SWalk"
     if self.Config.pc and p.header == 0x2A and p.vTable == 0xFD34B0 then
       p.pos = 2
       local nId1 = p:DecodeF()
-      p.pos = 8
-      local idd = p:Decode1() == 178
-      if self.Target and nId1 == self.Target.networkID and self.orbTable.lastAA + self.orbTable.animation > os.clock() then
+      if self.Target and self.Target.type == myHero.type and nId1 == self.Target.networkID and self.orbTable.lastAA + self.orbTable.animation > os.clock() then
         self:WindUp(self.Target)
       end
     end
@@ -4069,7 +4069,7 @@ class "Jax"
   function Jax:Combo()
     if not self.Target then self.Target = Target end
     if not self.Target then return end
-    if GetDistance(self.Target) > myHero.range+self.Target+boundingRadius and GetDistance(self.Target) < data[0].range then
+    if GetDistance(self.Target) > myHero.range+self.Target.boundingRadius and GetDistance(self.Target) < data[0].range then
       Cast(_Q, self.Target, true)
     end
   end
@@ -4110,33 +4110,63 @@ class "Jayce"
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
-    self:Menu()
     self.data = {
       Melee  = {
-          [_Q] = { range = 1500},
-          [_W] = { range = 900},
-          [_E] = { range = 600}
+          [_Q] = { range = 600, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 40*level-10+source.addDamage end},
+          [_W] = { range = 285, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40+60*level+AP end},
+          [_E] = { range = 305, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.056+0.024*level)*target.maxHealth+10+30*level+source.addDamage end},
+          [_R] = { range = 1500}
         },
       Range = {
-          [_W] = { range = 350, width = 175},
-          [_E] = { range = 350}}
+          [_Q] = { range = 1150, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+50*level+1.2*source.addDamage end},
+          [_W] = { range = 565.5, dmgAD = function(AP, level, Level, TotalDmg, source, target) return TotalDmg*(0.62+0.08*level)*3 end},
+          [_E] = { range = 685},
+          [_R] = { range = 600}
+        }
     }
     self.qCooldownUntil = 0
-    AddDrawCallback(function() self:Draw() end)
+    self.wOnlineRange = false
+    self.Target = nil
+    self:Menu()
+    --[[
+    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)]]
+    AddTickCallback(function() self:Tick() end)
     AddTickCallback(function() self:DmgCalc() end)
-    AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
-    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-    AddTickCallback(function() self:Flee() end)
+    AddDrawCallback(function() self:Draw() end)
+    AddApplyBuffCallback(function(unit, source, buff) self:ApplyBuff(unit, source, buff) end)
+    AddRemoveBuffCallback(function(unit, buff) self:RemoveBuff(unit, buff) end)
+  end
+
+  function Jayce:Tick()
+    if Config.Misc.QE and sReady[_E] and sReady[_Q] and self:IsRange() then
+      local ePos = myHero+(Vector(mousePos)-myHero):normalized():perpendicular()*75+(myHero.isMoving and (Vector(mousePos)-myHero):normalized()*myHero.ms or Vector(0,0,0))
+      Cast(_E, ePos)
+      Cast(_Q, mousePos)
+      DelayAction(function() Cast(_Q, mousePos) end, 0.125)
+      DelayAction(function() Cast(_Q, mousePos) end, 0.25)
+    end
+  end
+
+  function Jayce:ApplyBuff(unit, source, buff)
+    if unit and unit.isMe and unit == source and buff and buff.name == "jaycehypercharge" then
+      self.wOnlineRange = true
+    end
+  end
+
+  function Jayce:RemoveBuff(unit, buff)
+    if unit and unit.isMe and buff and buff.name == "jaycehypercharge" then
+      self.wOnlineRange = false
+    end
   end
 
   function Jayce:Menu()
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     if Ignite ~= nil then Config.Combo:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     if Smite ~= nil then Config.Combo:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
@@ -4147,12 +4177,22 @@ class "Jayce"
     Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     if Smite ~= nil then Config.Killsteal:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("QE", "QE (to Mouse)", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    AddGapcloseCallback(_E, self.data.Melee[2].range, true, Config.Misc)
   end
 
   function Jayce:Msg(Msg, Key)
@@ -4179,32 +4219,273 @@ class "Jayce"
     end
   end
 
+  function Jayce:IsRange()
+    return (myHero:GetSpellData(_Q).name == "jayceshockblast")
+  end
+
   function Jayce:Combo()
     if not self.Target then self.Target = Target end
     if not self.Target then return end
-    if GetDistance(self.Target) > myHero.range+self.Target+boundingRadius and GetDistance(self.Target) < data[0].range then
-      Cast(_Q, self.Target, true)
+    if self:IsRange() then
+      if GetDistance(self.Target) < self.data.Range[0].range and Config.Combo.Q and sReady[_Q] and (not Config.Combo.E and not sReady[_E]) then
+        Cast(_Q, self.Target, false, true, 2)
+      elseif GetDistance(self.Target) < data[-1].range and Config.Combo.E and sReady[_E] and Config.Combo.Q and sReady[_Q] then
+        local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, self.Target)
+        if CastPosition and HitChance >= 1 then
+          local ePos = myHero+(Vector(CastPosition)-myHero):normalized():perpendicular()*75+(myHero.isMoving and (Vector(CastPosition)-myHero):normalized()*myHero.ms or Vector(0,0,0))
+          Cast(_E, ePos)
+          Cast(_Q, CastPosition)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.125)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.25)
+        end
+      elseif not loadedOrb and GetDistance(self.Target) < myHero.range+myHero.boundingRadius and Config.Combo.W and sReady[_W] then
+        Cast(_W)
+      elseif Config.Combo.R and sReady[_R] and not self.wOnlineRange and not sReady[_Q] and GetDistance(self.Target) < self.data.Range[_R].range then
+        if sReady[_W] and Config.Combo.W then Cast(_W) end
+        Cast(_R)
+        if Config.Combo.Q then
+          DelayAction(function() Cast(_Q, self.Target, true) end, 0.25)
+        end
+      end
+    else
+      if Config.Combo.Q and sReady[_Q] and GetDistance(self.Target) < self.data.Melee[_Q].range then
+        Cast(_Q, self.Target, true)
+      elseif not loadedOrb and GetDistance(self.Target) < myHero.range+myHero.boundingRadius and Config.Combo.W and sReady[_W] then
+        Cast(_W)
+      elseif Config.Combo.E and sReady[_E] and GetDistance(self.Target) < self.data.Melee[_E].range then
+        Cast(_Q, self.Target, true)
+      else
+        Cast(_R)
+      end
     end
   end
 
   function Jayce:Harrass()
+    if not self.Target then self.Target = Target end
+    if not self.Target then return end
+    if self:IsRange() then
+      if GetDistance(self.Target) < self.data.Range[0].range and Config.Combo.Q and sReady[_Q] and (not Config.Combo.E and not sReady[_E]) and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, false, true, 2)
+      elseif GetDistance(self.Target) < data[-1].range and Config.Combo.E and sReady[_E] and Config.Combo.Q and sReady[_Q] and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
+        local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, self.Target)
+        if CastPosition and HitChance >= 1 then
+          local ePos = myHero+(Vector(CastPosition)-myHero):normalized():perpendicular()*75+(myHero.isMoving and (Vector(CastPosition)-myHero):normalized()*myHero.ms or Vector(0,0,0))
+          Cast(_E, ePos)
+          Cast(_Q, CastPosition)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.125)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.25)
+        end
+      end
+    end
   end
 
   function Jayce:LastHit()
+    if not self.Target then self.Target = GetLowestMinion(myHero.range+myHero.boundingRadius) end
+    if not self.Target then return end
+    if self:IsRange() then
+      if GetDistance(self.Target) < self.data.Range[0].range and self:GetDmg(_Q, self.Target, true) and Config.Combo.Q and sReady[_Q] and (not Config.Combo.E and not sReady[_E]) and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, false, true, 2)
+      elseif GetDistance(self.Target) < data[-1].range and self:GetDmg(_Q, self.Target, true)*1.4 and Config.Combo.E and sReady[_E] and Config.Combo.Q and sReady[_Q] and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana then
+        local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, self.Target)
+        if CastPosition and HitChance >= 1 then
+          local ePos = myHero+(Vector(CastPosition)-myHero):normalized():perpendicular()*75+(myHero.isMoving and (Vector(CastPosition)-myHero):normalized()*myHero.ms or Vector(0,0,0))
+          Cast(_E, ePos)
+          Cast(_Q, CastPosition)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.125)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.25)
+        end
+      elseif not loadedOrb and GetDistance(self.Target) < myHero.range+myHero.boundingRadius and self:GetDmg(_W, self.Target, true) and Config.Combo.W and sReady[_W] and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana then
+        Cast(_W)
+      end
+    else
+      if Config.Combo.Q and sReady[_Q] and self:GetDmg(_Q, self.Target) and GetDistance(self.Target) < self.data.Melee[_Q].range and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, true)
+      elseif not loadedOrb and GetDistance(self.Target) < myHero.range+myHero.boundingRadius and self:GetDmg(_W, self.Target) and Config.Combo.W and sReady[_W] and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana then
+        Cast(_W)
+      elseif Config.Combo.E and sReady[_E] and self:GetDmg(_E, self.Target) and GetDistance(self.Target) < self.data.Melee[_E].range and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, true)
+      end
+    end
   end
 
   function Jayce:LaneClear()
+    if not self.Target then self.Target = GetLowestMinion(myHero.range+myHero.boundingRadius) end
+    if not self.Target then return end
+    if self:IsRange() then
+      if GetDistance(self.Target) < self.data.Range[0].range and Config.Combo.Q and sReady[_Q] and (not Config.Combo.E and not sReady[_E]) and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, false, true, 2)
+      elseif GetDistance(self.Target) < data[-1].range and Config.Combo.E and sReady[_E] and Config.Combo.Q and sReady[_Q] and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
+        local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, self.Target)
+        if CastPosition and HitChance >= 1 then
+          local ePos = myHero+(Vector(CastPosition)-myHero):normalized():perpendicular()*75+(myHero.isMoving and (Vector(CastPosition)-myHero):normalized()*myHero.ms or Vector(0,0,0))
+          Cast(_E, ePos)
+          Cast(_Q, CastPosition)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.125)
+          DelayAction(function() Cast(_Q, CastPosition) end, 0.25)
+        end
+      elseif not loadedOrb and GetDistance(self.Target) < myHero.range+myHero.boundingRadius and Config.Combo.W and sReady[_W] and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+        Cast(_W)
+      end
+    else
+      if Config.Combo.Q and sReady[_Q] and GetDistance(self.Target) < self.data.Melee[_Q].range and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, true)
+      elseif not loadedOrb and GetDistance(self.Target) < myHero.range+myHero.boundingRadius and Config.Combo.W and sReady[_W] and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+        Cast(_W)
+      elseif Config.Combo.E and sReady[_E] and GetDistance(self.Target) < self.data.Melee[_E].range and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, self.Target, true)
+      end
+    end
   end
 
   function Jayce:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
-          CastSpell(_Q, enemy)
-        elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
-          Cast(_W, myHero:Attack(enemy))
-        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
+        if self:IsRange() then
+          if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < self:GetDmg(_Q, enemy, true) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
+            Cast(_Q, enemy, false, true, 2)
+          elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < self:GetDmg(_Q, enemy, true)*1.4 and Config.Killsteal.Q and Config.Killsteal.E and ValidTarget(enemy, data[-1].range) then
+            local CastPosition, HitChance, Position = UPL:Predict(-1, myHero, enemy)
+            if CastPosition and HitChance >= 1 then
+              local ePos = myHero+(Vector(CastPosition)-myHero):normalized():perpendicular()*75+(myHero.isMoving and (Vector(CastPosition)-myHero):normalized()*myHero.ms or Vector(0,0,0))
+              Cast(_E, ePos)
+              Cast(_Q, CastPosition)
+              DelayAction(function() Cast(_Q, CastPosition) end, 0.125)
+              DelayAction(function() Cast(_Q, CastPosition) end, 0.25)
+            end
+          elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < self:GetDmg(_W, enemy, true) and Config.Killsteal.W and ValidTarget(enemy, self.data.Range[1].range) then
+            Cast(_W, myHero:Attack(enemy))
+          end
+        else
+          if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < self:GetDmg(_Q, enemy, false) and Config.Killsteal.Q and ValidTarget(enemy, self.data.Melee[0].range) then
+            Cast(_Q, enemy, true)
+          elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < self:GetDmg(_E, enemy, false) and Config.Killsteal.E and ValidTarget(enemy, self.data.Melee[0].range) then
+            Cast(_E, enemy, true)
+          end
+        end
+        if Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
+        end
+      end
+    end
+  end
+
+  function Jayce:GetDmg(spell, target, isRanged)
+    if target == nil then
+      return
+    end
+    local source           = myHero
+    local ADDmg            = 0
+    local APDmg            = 0
+    local TRUEDmg          = 0
+    local AP               = source.ap
+    local Level            = source.level
+    local TotalDmg         = source.totalDamage
+    local ArmorPen         = math.floor(source.armorPen)
+    local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+    local MagicPen         = math.floor(source.magicPen)
+    local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+
+    local Armor        = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+
+    if spell == "IGNITE" then
+      return 50+20*Level/2
+    elseif spell == "Tiamat" then
+      ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+    elseif spell == "AD" then
+      ADDmg = TotalDmg
+      if GetMaladySlot() then
+        APDmg = 15 + 0.15*AP
+      end
+    elseif type(spell) == "number" then
+      if isRanged then
+        if self.data.Range[spell].dmgAD then ADDmg = self.data.Range[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+        if self.data.Range[spell].dmgAP then APDmg = self.data.Range[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      else
+        if self.data.Melee[spell].dmgAD then ADDmg = self.data.Melee[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+        if self.data.Melee[spell].dmgAP then APDmg = self.data.Melee[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      end
+    end
+    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
+    return math.floor(dmg)
+  end
+
+  function Jayce:Draw()
+    if self:IsRange() then
+      if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Range[0].range, ARGB(255, 155, 155, 155))
+      end
+      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Range[1].range, ARGB(255, 155, 155, 155))
+      end
+      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Range[2].range, ARGB(255, 155, 155, 155))
+      end
+    else
+      if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Melee[0].range, ARGB(255, 155, 155, 155))
+      end
+      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Melee[1].range, ARGB(255, 155, 155, 155))
+      end
+      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Melee[2].range, ARGB(255, 155, 155, 155))
+      end
+    end
+    if Config.Draws.DMG then
+      for i,k in pairs(GetEnemyHeroes()) do
+        local enemy = k
+        if ValidTarget(enemy) then
+          local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+          local posX = barPos.x - 35
+          local posY = barPos.y - 50
+          DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 150, 255, 150))
+          DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
+        end
+      end
+    end
+  end
+
+  function Jayce:DmgCalc()
+    if not Config.Draws.DMG then return end
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy.visible then
+        killTextTable[enemy.networkID].indicatorText = ""
+        local damageAA = self:GetDmg("AD", enemy)
+        local damageQ1  = self:GetDmg(_Q, enemy, true) * (sReady[_E] and 1.4 or 1)
+        local damageW1  = self:GetDmg(_W, enemy, true)
+        local damageQ2  = self:GetDmg(_Q, enemy, false)
+        local damageW2  = self:GetDmg(_W, enemy, false)
+        local damageE2  = self:GetDmg(_E, enemy, false)
+        local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+        local damageS  = Smite and (20 + 8 * myHero.level) or 0
+        if damageQ1 > 0 and sReady[_Q] then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
+        end
+        if damageW1 > 0 then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."W"
+        end
+        if damageQ2 > 0 then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
+        end
+        if damageW2 > 0 then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."W"
+        end
+        if damageE2 > 0 then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."E"
+        end
+        if GetRealHealth(enemy) < damageQ1 + damageW1 + damageQ2 + damageW2 + damageE2 + damageI then
+          killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
+        else
+          local neededAA = math.floor(100 * (damageQ1 + damageW1 + damageQ2 + damageW2 + damageE2 + damageI) / (GetRealHealth(enemy)))
+          killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
+        end
+        local enemyDamageAA = GetDmg("AD", enemy, myHero)
+        local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+        if enemyNeededAA ~= 0 then         
+          killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
         end
       end
     end
@@ -6297,7 +6578,7 @@ class "Rengar"
         loadedOrb.orbTable.lastAA = 0
         loadedOrb.orbTable.animation = 0
         if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) Cast(_W) end end, GetDistance(self.Target) / (2500+myHero.ms) - GetLatency() / 2000) end
-        DelayAction(function() loadedOrb:WindUp(self.Target) end, 1 / (myHero.attackSpeed) - GetLatency() / 2000)
+        DelayAction(function() loadedOrb:WindUp(self.Target) end, 0.1 - GetLatency() / 2000)
       end
     end
   end
