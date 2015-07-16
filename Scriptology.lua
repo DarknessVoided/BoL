@@ -6578,7 +6578,7 @@ class "Rengar"
         loadedOrb.orbTable.lastAA = 0
         loadedOrb.orbTable.animation = 0
         if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) Cast(_W) end end, GetDistance(self.Target) / (2500+myHero.ms) - GetLatency() / 2000) end
-        DelayAction(function() loadedOrb:WindUp(self.Target) end, 0.1 - GetLatency() / 2000)
+        DelayAction(function() loadedOrb:WindUp(self.Target) end, 1 / myHero.attackSpeed - GetLatency() / 2000)
       end
     end
   end
