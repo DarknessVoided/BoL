@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.4
+    _G.UPLversion = 2.5
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -57,6 +57,13 @@ function UPL:__init()
       [_E] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"},
       [_R] = { speed = 0, delay = 0, range = 0, width = 0, collision = true, aoe = false, type = "linear"}}
     self.predTable = {}
+
+    if FileExist(LIB_PATH .. "SPrediction.lua") then
+      require("SPrediction")
+      self.SP = SPrediction()
+      table.insert(self.predTable, "SPrediction")
+    end
+    
     if FileExist(LIB_PATH .. "VPrediction.lua") then
       require("VPrediction")
       self.VP = VPrediction()
@@ -80,11 +87,6 @@ function UPL:__init()
       table.insert(self.predTable, "HPrediction")
     end
 
-    if FileExist(LIB_PATH .. "SPrediction.lua") then
-      require("SPrediction")
-      self.SP = SPrediction()
-      table.insert(self.predTable, "SPrediction")
-    end
     self:Update()
     DelayAction(function() self:Loaded() end, 3)
     return self
@@ -155,7 +157,7 @@ function UPL:Predict(spell, source, Target)
   elseif self:ActivePred(spell) == "HPrediction" then
       return self:HPredict(Target, spell, source)
   elseif self:ActivePred(spell) == "SPrediction" then
-      return self.SP:Predict(spell, source, Target)
+      return self.SP:Predict(Target, self.spellData[spell].range, self.spellData[spell].speed, self.spellData[spell].delay, self.spellData[spell].width, (myHero.charName == "Lux" or myHero.charName == "Veigar") and 2 or self.spellData[spell].collision, source)
   end
 end
 
@@ -178,7 +180,7 @@ function UPL:AddSpell(spell, array)
     if self.HP ~= nil then self:SetupHPredSpell(spell) end
     if self.addToMenu2 then
       str = {[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-      DelayAction(function() self.Config:addParam(""..spell, str[spell].." Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable) end, 1)
+      DelayAction(function() self.Config:addParam(str[spell], str[spell].." Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable) end, 1)
     end
   end
 end
@@ -265,7 +267,8 @@ function UPL:ReturnPred(x, spell)
 end
 
 function UPL:ActivePred(spell)
-    local int = not self.addToMenu2 and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.Config[""..spell] and self.Config[""..spell] or 1)
+    local str = {[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+    local int = not self.addToMenu2 and (self.Config.pred and self.Config.pred or self.ActiveP) or (self.Config[str[spell]] and self.Config[str[spell]] or 1)
     return tostring(self.predTable[int])
 end
 

@@ -8130,7 +8130,7 @@ class "Yasuo"
                 Config.Windwall:addParam(k.charName..loadedEvade.str[i], "Block "..loadedEvade.str[i], SCRIPT_PARAM_ONOFF, true)
               end
             end
-            Config.Windwall:addParam("", "", SCRIPT_PARAM_INFO, "")
+            Config.Windwall:addParam("info", "", SCRIPT_PARAM_INFO, "")
           end
         end
       end, 3)
