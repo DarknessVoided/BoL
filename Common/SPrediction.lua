@@ -17,23 +17,25 @@
             if Chance >= X then
                 CastSpell(_Q, Position.x, Position.y)
             end
+
             - Position is the predicted position of the target
                 If chance is 0 the target position will be returned instead
+
             - Chance can go from 0 to 3
                  0:  Will not hit
                  1:  50% Hitchance
                  2:  75% Hitchance
                  3: >90% Hitchance
+                 
             - Direction the target walks to
                 Vector otherwise nil
 ]]--     
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.5
+_G.SPredictionVersion    = 2.6
 
 class 'SPrediction' -- {
     function SPrediction:__init()
-        require("Collision")
         if SPredictionAutoUpdate then self:Update() end
         self.tickTable = {}
         AddTickCallback(function() self:Tick() end)
@@ -148,9 +150,7 @@ class 'SPrediction' -- {
         end
         if pos then
             baitLevel = self:GetBaitLevel(target)/100
-            if target.isMoving then
-                pos = pos-(pos-target)*baitLevel
-            end
+            if target.isMoving then pos = pos-(pos-target)*baitLevel end
             return pos, HitBox
         end
     end
@@ -169,32 +169,52 @@ class 'SPrediction' -- {
         local rangeOffset = range+width/2-(self:UnitFacingUnit(target, source) and HitBox or 0)
         local col1, col2, Mcol, mcol, Hcol, hcol, Mcol2, mcol2, Hcol2, hcol2, Mcol3, mcol3, Hcol3, hcol3 = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
         if collision then
-            col1 = Collision(range, speed, delay, width < 100 and 100 or width+25)
-            col2 = Collision(range, speed, delay, width)
-            Mcol, mcol = col1:GetMinionCollision(source, Position)
-            Hcol, hcol = col1:GetHeroCollision(source, Position)
-            Mcol2, mcol2 = col1:GetMinionCollision(source, target)
-            Hcol2, hcol2 = col1:GetHeroCollision(source, target)
-            Mcol3, mcol3 = col2:GetMinionCollision(source, Position)
-            Hcol3, hcol3 = col2:GetHeroCollision(source, Position)
+            col1 = Collision(self, range, speed, delay, width < 100 and 100 or width+25, source)
+            col2 = Collision(self, range, speed, delay, width, source)
+            Mcol, mcol = col1:Compute(minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects, source, Position)
+            Mcol2, mcol2 = col1:Compute(minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects, source, target)
+            Mcol3, mcol3 = col2:Compute(minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects, source, Position)
         end
         if self:GetDistance(Position, source) < rangeOffset * rangeOffset then
-            if collision == math.huge or ((not Hcol and not Mcol) or (#mcol+#hcol < collision)) then
-                if (not target.isMoving or baitLevel < 30) and (not collision or ((not Mcol2 and not Hcol2) or (#mcol2+#hcol2 < collision))) then
+            if collision == math.huge or not Mcol or mcol < collision then
+                if (not target.isMoving or baitLevel < 30) and (not collision or not Mcol2 or mcol2 < collision) then
                     hitChance = hitChance + 3
                 else
                     hitChance = hitChance + 2
                 end
-            elseif (not Mcol3 and not Hcol3) or (#mcol3+#hcol3 < collision) then
-                if not target.isMoving or baitLevel < 30 then
-                    hitChance = hitChance + 1
-                end
+            elseif not Mcol3 or mcol3 < collision then
+                if not target.isMoving or baitLevel < 30 then hitChance = hitChance + 1 end
                 hitChance = hitChance + 1
             end
         end
-        if Position and IsWall(D3DXVECTOR3(Position.x,Position.y,Position.z)) then
-            hitChance = hitChance-1
-        end
+        if Position and IsWall(D3DXVECTOR3(Position.x,Position.y,Position.z)) then hitChance = hitChance-1 end
         return Position, hitChance, self:PredictPos(target)
     end
+
+    class("Collision")
+
+        function Collision:__init(SP, range, speed, delay, width)
+            self.range = range
+            self.speed = speed
+            self.delay = delay
+            self.width = width
+            self.SP = SP
+            self.TotalWidths = {[48] = (48 + width) ^ 2, [60] = (60 + width) ^ 2}
+        end
+
+        function Collision:Compute(unitTable, startP, endP)
+            local numCollisions = 0
+            for i, minion in ipairs(unitTable) do
+                if minion.team ~= startP.team then
+                    local predP = self.SP:Predict(minion, self.range, self.speed, self.delay, self.width, false, startP)
+                    local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
+                    if OnSegment then
+                        if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius + self.width) ^ 2 then
+                            numCollisions = numCollisions + 1
+                        end
+                    end
+                end
+            end
+            return numCollisions>0, numCollisions
+        end
 -- }
