@@ -6,7 +6,6 @@
       ____) || |    | |  |  __/| (_| || || (__ | |_ | || (_) || | | |
      |_____/ |_|    |_|   \___| \__,_||_| \___| \__||_| \___/ |_| |_|
                                                                  
-       
         By Scriptologe a.k.a Nebelwolfi
 
         How To Use:
@@ -190,31 +189,32 @@ class 'SPrediction' -- {
         if Position and IsWall(D3DXVECTOR3(Position.x,Position.y,Position.z)) then hitChance = hitChance-1 end
         return Position, hitChance, self:PredictPos(target)
     end
+-- }
 
-    class("Collision")
+class("Collision") --{
 
-        function Collision:__init(SP, range, speed, delay, width)
-            self.range = range
-            self.speed = speed
-            self.delay = delay
-            self.width = width
-            self.SP = SP
-            self.TotalWidths = {[48] = (48 + width) ^ 2, [60] = (60 + width) ^ 2}
-        end
+    function Collision:__init(SP, range, speed, delay, width)
+        self.range = range
+        self.speed = speed
+        self.delay = delay
+        self.width = width
+        self.SP = SP
+        self.TotalWidths = {[48] = (48 + width) ^ 2, [60] = (60 + width) ^ 2}
+    end
 
-        function Collision:Compute(unitTable, startP, endP)
-            local numCollisions = 0
-            for i, minion in ipairs(unitTable) do
-                if minion.team ~= startP.team then
-                    local predP = self.SP:Predict(minion, self.range, self.speed, self.delay, self.width, false, startP)
-                    local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
-                    if OnSegment then
-                        if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius + self.width) ^ 2 then
-                            numCollisions = numCollisions + 1
-                        end
+    function Collision:Compute(unitTable, startP, endP)
+        local numCollisions = 0
+        for i, minion in ipairs(unitTable) do
+            if minion.team ~= startP.team then
+                local predP = self.SP:Predict(minion, self.range, self.speed, self.delay, self.width, false, startP)
+                local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
+                if OnSegment then
+                    if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius + self.width) ^ 2 then
+                        numCollisions = numCollisions + 1
                     end
                 end
             end
-            return numCollisions>0, numCollisions
         end
+        return numCollisions>0, numCollisions
+    end
 -- }
