@@ -6,12 +6,12 @@
       ____) || |    | |  |  __/| (_| || || (__ | |_ | || (_) || | | |
      |_____/ |_|    |_|   \___| \__,_||_| \___| \__||_| \___/ |_| |_|
                                                                  
+       
         By Scriptologe a.k.a Nebelwolfi
 
         How To Use:
             require("SPrediction")
             SP = SPrediction()
-
             Position, Chance, Direction = SP:Predict(_Q, myHero, Target)
             if Chance >= X then
                 CastSpell(_Q, Position.x, Position.y)
@@ -31,7 +31,7 @@
 ]]--     
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.6
+_G.SPredictionVersion    = 2.7
 
 class 'SPrediction' -- {
     function SPrediction:__init()
@@ -167,12 +167,15 @@ class 'SPrediction' -- {
         local baitLevel = self:GetBaitLevel(target)
         local rangeOffset = range+width/2-(self:UnitFacingUnit(target, source) and HitBox or 0)
         local col1, col2, Mcol, mcol, Hcol, hcol, Mcol2, mcol2, Hcol2, hcol2, Mcol3, mcol3, Hcol3, hcol3 = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
-        if collision then
-            col1 = Collision(self, range, speed, delay, width < 100 and 100 or width+25, source)
-            col2 = Collision(self, range, speed, delay, width, source)
-            Mcol, mcol = col1:Compute(minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects, source, Position)
-            Mcol2, mcol2 = col1:Compute(minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects, source, target)
-            Mcol3, mcol3 = col2:Compute(minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects, source, Position)
+        if collision ~= math.huge then
+            minions = minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects
+            if #minions > 0 then
+                col1 = Collision(self, range, speed, delay, width < 100 and 100 or width+25)
+                col2 = Collision(self, range, speed, delay, width)
+                Mcol, mcol = col1:Compute(minions, source, Position)
+                Mcol2, mcol2 = col1:Compute(minions, source, target)
+                Mcol3, mcol3 = col2:Compute(minions, source, Position)
+            end
         end
         if self:GetDistance(Position, source) < rangeOffset * rangeOffset then
             if collision == math.huge or not Mcol or mcol < collision then
@@ -189,10 +192,8 @@ class 'SPrediction' -- {
         if Position and IsWall(D3DXVECTOR3(Position.x,Position.y,Position.z)) then hitChance = hitChance-1 end
         return Position, hitChance, self:PredictPos(target)
     end
--- }
 
-class("Collision") --{
-
+class("Collision") -- {
     function Collision:__init(SP, range, speed, delay, width)
         self.range = range
         self.speed = speed
@@ -201,7 +202,6 @@ class("Collision") --{
         self.SP = SP
         self.TotalWidths = {[48] = (48 + width) ^ 2, [60] = (60 + width) ^ 2}
     end
-
     function Collision:Compute(unitTable, startP, endP)
         local numCollisions = 0
         for i, minion in ipairs(unitTable) do
