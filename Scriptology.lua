@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.99999993
+_G.ScriptologyVersion    = 1.99999995
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -26,7 +26,7 @@ _G.ScriptologyDebug      = false
   function OnLoad()
     champList = { "Ahri", "Ashe", "Azir", "Blitzcrank", "Brand", "Cassiopeia", "Darius", "Diana", "Ekko", "Jax", 
                   "Jayce", "Kalista", "Katarina", "KogMaw", "LeeSin", "Lux", "Malzahar", "Nidalee", "Orianna", "Rengar", 
-                  "Riven", "Ryze", "Rumble", "Talon", "Teemo", "TahmKench", "Thresh", "Vayne", "Volibear", "Yasuo" }
+                  "Ryze", "Rumble", "Talon", "Teemo", "TahmKench", "Thresh", "Vayne", "Volibear", "Yasuo" }
     Cfg = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
     supported = {}
     for _,champ in pairs(champList) do
@@ -307,7 +307,7 @@ _G.ScriptologyDebug      = false
         },
         ["Nidalee"] = {
           [_Q] = { speed = 1337, delay = 0.125, range = 1625, width = 42.5, collision = true, aoe = false, type = "linear"},
-          [_W] = { range = 0},
+          [_W] = { speed = math.huge, delay = 0.25, range = 900, width = 120, collision = true, aoe = false, type = "circular"},
           [_E] = { range = 0},
           [_R] = { range = 0}
         },
@@ -510,9 +510,6 @@ _G.ScriptologyDebug      = false
     for k,v in pairs(data) do
       if v.type then UPL:AddSpell(k, v) end
     end
-    if UPL and UPL.SP and (myHero.charName == "Blitzcrank" or myHero.charName == "Thresh") then
-      UPL.SP.SpellData[myHero.charName][_Q].collision = false
-    end
     Target = nil
     Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
     JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
@@ -530,11 +527,11 @@ _G.ScriptologyDebug      = false
       if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil then
         loadedEvade = SEvade()
       end
-    end, 3)
+    end, 8)
   end
 
   function SetupOrbwalk()
-    if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Rengar" or myHero.charName == "Riven" or myHero.charName == "Talon" or myHero.charName == "Yasuo" then
+    if myHero.charName == "Azir" or myHero.charName == "Malzahar" or myHero.charName == "Katarina" or myHero.charName == "Riven" or myHero.charName == "Talon" or myHero.charName == "Yasuo" then
       if myHero.charName ~= "Katarina" and myHero.charName ~= "Riven" then ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end
       LoadOrb()
       DelayAction(function() ScriptologyMsg("Inbuilt OrbWalker activated! Do not use any other") end, 5)
@@ -1447,7 +1444,6 @@ _G.ScriptologyDebug      = false
     return minionTarget
   end
 
-
   function GetJMinion(range)
     local minionTarget = nil
     for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
@@ -1858,7 +1854,7 @@ class "SEvade"
 class "SWalk"
 
   function SWalk:__init(m, a1, a2, a3, a4)
-    self.melee = m
+    self.melee = m or myHero.charName == "Rengar"
     -- CastSpell(s, myHero:Attack(t)) and CastSpell(s)
       self.aaResetTable = a1
     -- CastSpell(s, x, z) <- target
@@ -2399,6 +2395,7 @@ class "Ahri"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Qc", "Catch Q", SCRIPT_PARAM_ONOFF, true)
     AddGapcloseCallback(_E, data[2].range, false, Config.Misc)
   end
 
@@ -2491,31 +2488,23 @@ class "Ahri"
         self:CatchQ()
       end
     end
-    if GetRealHealth(Target) < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < data[3].range then
+    if Config.Combo.R and GetRealHealth(Target) < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < data[3].range then
       local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
       Cast(_R, ultPos)
-    elseif self.ultOn > GetInGameTimer()-10 and (not self.Orb or self.Orb.time < GetInGameTimer()-1.5) and GetDistance(Target) < data[3].range then
+    elseif Config.Combo.R and self.ultOn > GetInGameTimer()-10 and (not self.Orb or self.Orb.time < GetInGameTimer()-1.5) and GetDistance(Target) < data[3].range then
       local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
       Cast(_R, ultPos)
     end
   end
 
   function Ahri:CatchQ()
-    if Target and self.Orb and self.Orb.dir and self.Orb.time > GetInGameTimer()-1.5 then
-      --DisableOrbwalkerMovement()
+    if Target and self.Orb and self.Orb.dir and self.Orb.time > GetInGameTimer()-1.5  then
       local x,y,z = UPL.VP:GetLineCastPosition(Target, data[0].delay, data[0].width, data[0].range, data[0].speed, Vector(Vector(self.Orb.dir)+(Vector(self.Orb.dir)-myHero):normalized()*(data[0].range-GetDistance(self.Orb.dir))), data[0].collision)
       local x = Vector(self.Orb.dir)+(x-Vector(self.Orb.dir)):normalized()*(data[0].range)
       if self.ultOn > GetInGameTimer()-10 then
         x = Vector(x)-(Vector(Target)-myHero):normalized()*data[3].range
         Cast(_R,x)
-      else
-        --myHero:MoveTo(x.x,x.z)
       end
-      if x and GetDistance(x) < 50  then
-        --EnableOrbwalkerMovement()   
-      end 
-    else
-      --EnableOrbwalkerMovement() 
     end
   end
 
@@ -2538,7 +2527,6 @@ class "Ahri"
       if sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < data[1].range then
         Cast(_W)
       end
-      self:CatchQ()
     end
   end
 
@@ -4644,8 +4632,9 @@ class "Kalista"
         Cast(_E)
       end
       if Config.Combo.Er and GetStacks(Target) >= Config.Combo.Es then
-        pos, b = PredictPos(Target)
-        pos2, b = PredictPos(myHero)
+        pos, b = PredictPos(Target,0.25)
+        pos2, b = PredictPos(myHero,0.25)
+        pos2 = pos2 or myHero
         if pos and pos2 and GetDistance(Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
           Cast(_E)
         end
@@ -4676,8 +4665,9 @@ class "Kalista"
         Cast(_E)
       end
       if Config.Harrass.Er and GetStacks(Target) > Config.Harrass.Es then
-        pos, b = PredictPos(Target)
-        pos2, b = PredictPos(myHero)
+        pos, b = PredictPos(Target,0.25)
+        pos2, b = PredictPos(myHero,0.25)
+        pos2 = pos2 or myHero
         if pos and pos2 and GetDistance(Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
           Cast(_E)
         end
@@ -5889,6 +5879,7 @@ class "Nidalee"
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -6055,6 +6046,9 @@ class "Nidalee"
     if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.5)
     end
+    if myHero:CanUseSpell(_W) == READY and GetStacks(Target) == 0 and self:IsHuman() and Config.Combo.W and ValidTarget(Target, data[0].range) then
+      Cast(_W, Target, false, true, 1.5)
+    end
     self:DoRWEQCombo(Target)
     if not self:IsHuman() and GetDistance(Target) > 425 then
       Cast(_R)
@@ -6076,20 +6070,19 @@ class "Nidalee"
       if unit and self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
           CastSpell(_Q, myHero:Attack(unit))
       elseif unit and self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
-        if unit and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
+        if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
           Cast(_E, unit)
         end
-        if unit and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
+        if myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
           CastSpell(_Q, myHero:Attack(unit))
         end
-        if unit and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
+        if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
           CastSpell(_Q, myHero:Attack(unit))
         end
       elseif unit then
-        if unit and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
+        if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
           Cast(_E, unit)
-        end
-        if unit and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
+        elseif myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
           CastSpell(_Q, myHero:Attack(unit))
         end
       end
@@ -6119,7 +6112,7 @@ class "Nidalee"
   end
 
   function Nidalee:Harrass()
-    if self:IsHuman() then
+    if self:IsHuman() and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 then
       if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, self.data.Human[0].range) then
         Cast(_Q, Target, false, true, 2)
       end
@@ -6146,7 +6139,7 @@ class "Nidalee"
 
   function Nidalee:LaneClear()
     if self:IsHuman() then
-      if sReady[_Q] and Config.LaneClear.Q then
+      if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
         local minion = GetJMinion(self.data.Human[0].range)
         local minionTarget = GetLowestMinion(self:GetAARange())
         if minion then
@@ -6497,7 +6490,6 @@ class "Rengar"
     AddTickCallback(function() self:Tick() end)
     AddMsgCallback(function(x,y) self:Msg(x,y) end)
     AddAnimationCallback(function(x,y) self:Animation(x,y) end)
-    AddProcessSpellCallback(function(unit,spell) self:ProcessSpell(unit,spell) end)
   end
 
   function Rengar:Menu()
@@ -6571,23 +6563,17 @@ class "Rengar"
 
   function Rengar:Animation(unit, ani)
     if unit and unit.isMe and ani then
-      if ani == "Spell5" and loadedOrb:DoOrb() then
+      if ani == "Spell5" and (Config.kConfig.Combo or Config.kConfig.Harrass) then
         if not self.Target then self.Target = Target end
         if self.Target and Smite ~= nil and Config.Combo.S then CastSpell(Smite, self.Target) end
         if self.Target and Ignite ~= nil and Config.Combo.I then CastSpell(Ignite, self.Target) end
         if self.Target then DelayAction(function() self:CastHydra(self.Target) end, 0.1 - GetLatency() / 2000) end
-        loadedOrb.orbTable.lastAA = 0
-        loadedOrb.orbTable.animation = 0
-        if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) Cast(_W) end end, GetDistance(self.Target) / (2500+myHero.ms) - GetLatency() / 2000) end
-        DelayAction(function() loadedOrb:WindUp(self.Target) end, 1 / myHero.attackSpeed - GetLatency() / 2000)
-      end
-    end
-  end
-
-  function Rengar:ProcessSpell(unit,spell)
-    if unit and unit.isMe and spell and loadedOrb:DoOrb() then
-      if spell.name:lower():find("rengarefinal") and (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W) then
-        loadedOrb.orbTable.lastAA = 0
+        if loadedOrb then
+          loadedOrb.orbTable.lastAA = 0
+          loadedOrb.orbTable.animation = 0
+        end
+        if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) DelayAction(function() Cast(_W) end, 0.2) end end, GetDistance(self.Target) / (2500+myHero.ms) - GetLatency() / 2000) end
+        if self.Target then Cast(_Q) end
       end
     end
   end
@@ -6602,12 +6588,17 @@ class "Rengar"
 
   function Rengar:Combo()
     if myHero.mana == 5 then
-      if Config.Misc.Empower2 == 2 then
+      if Config.Misc.Empower2 == 1 then
+        Cast(_Q)
+      elseif Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, false, true, 1)
       elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, false, true, 2)
       end
     else
+      if Config.Combo.Q and sReady[_Q] then
+        Cast(_Q)
+      end
       if Config.Combo.W and sReady[_W] then
         Cast(_W, self.Target, false, true, 1)
       end
@@ -6619,12 +6610,17 @@ class "Rengar"
 
   function Rengar:Harrass()
     if myHero.mana == 5 then
-      if Config.Harrass.Empower2 == 2 then
+      if Config.Misc.Empower2 == 1 then
+        Cast(_Q)
+      elseif Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, false, true, 1)
-      elseif Config.Harrass.Empower2 == 3 then
+      elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, false, true, 2)
       end
     else
+      if Config.Harrass.Q and sReady[_Q] then
+        Cast(_Q)
+      end
       if Config.Harrass.W and sReady[_W] then
         Cast(_W, self.Target, false, true, 1)
       end
@@ -6642,7 +6638,7 @@ class "Rengar"
         local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil and minionTarget.health < GetDmg(_Q, myHero, minionTarget) then
           CastSpell(_Q)
-          loadedOrb:Orb(minionTarget)
+          if loadedOrb then loadedOrb:Orb(minionTarget) end
         end
       end
       if Config.LaneClear.W then
@@ -6668,7 +6664,7 @@ class "Rengar"
         local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil then
           CastSpell(_Q)
-          loadedOrb:Orb(minionTarget)
+          if loadedOrb then loadedOrb:Orb(minionTarget) end
         end
       end
       if Config.LaneClear.W then
@@ -6691,7 +6687,7 @@ class "Rengar"
         local minionTarget = GetJMinion(myHero.range+myHero.boundingRadius*2)
         if minionTarget ~= nil then
           CastSpell(_Q)
-          loadedOrb:Orb(minionTarget)
+          if loadedOrb then loadedOrb:Orb(minionTarget) end
         end
       end
       if Config.LaneClear.W then
