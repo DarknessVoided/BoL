@@ -266,7 +266,7 @@ _G.ScriptologyDebug      = false
         ["Kalista"] = {
           [_Q] = { speed = 1750, delay = 0.25, range = 1150, width = 70, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
           [_W] = { delay = 1.5, range = 5000},
-          [_E] = { range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (5+5*level + (0.12 + 0.03 * level)*TotalDmg) or 0 end},
+          [_E] = { range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.175 + 0.025 * level)*TotalDmg) or 0 end},
           [_R] = { range = 2000}
         },
         ["Katarina"] = {
@@ -515,6 +515,8 @@ _G.ScriptologyDebug      = false
     JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
     sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
   end
+
+  function kalE(x) if x <= 1 then return 10 else return kalE(x-1) + 2 + x end end
 
   function SetupAwareness()
     if _G.PrinceViewVersion == nil then
