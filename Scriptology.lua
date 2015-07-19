@@ -16,7 +16,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion    = 1.99999996
+_G.ScriptologyVersion    = 1.99999997
 _G.ScriptologyAutoUpdate = true
 _G.ScriptologyLoaded     = false
 _G.ScriptologyDebug      = false
@@ -571,17 +571,17 @@ _G.ScriptologyDebug      = false
         Cfg:addParam("SWalkl", "SWalk", SCRIPT_PARAM_ONOFF, false)
         DelayAction(function() Cfg.SWalkl = false end, 0.1)
         DelayAction(function() Cfg:setCallback("SWalkl", function(var) if var then LoadOrb() RemoveOw() end end) end, 0.25)
-        DelayAction(function() if Cfg.SWalkl ~= nil and not loadedOrb then LoadOrb() RemoveOw() end end, 60)
+        DelayAction(function() if Cfg.SWalkl ~= nil and not loadedAnWalker and not loadedOrb then LoadOrb() RemoveOw() end end, 60)
       end
     end
   end
 
   function LoadSxOrbWalk()
     require 'SxOrbWalk'
-    Cfg:addSubMenu("SxOrbWalk","SxOrbWalk")
-    SxOrb:LoadToMenu(Cfg.SxOrbWalk)
+    SxOrb:LoadToMenu()
     ScriptologyMsg("Loaded SxOrb.")
     RemoveOw()
+    loadedAnWalker = true
   end
 
   function LoadSOW()
@@ -592,6 +592,7 @@ _G.ScriptologyDebug      = false
     SOWVP:LoadToMenu(Cfg.SOW)
     ScriptologyMsg("Loaded SOW")
     RemoveOw()
+    loadedAnWalker = true
   end
 
   function RemoveOw()
@@ -622,6 +623,7 @@ _G.ScriptologyDebug      = false
   -- CastSpell(s, x, z) -> mouse
     aaResetTable4 = { ["Lucian"] = {_E},  ["Vayne"] = {_Q} }
     loadedOrb = SWalk(myHero.range < 450, aaResetTable[myHero.charName], aaResetTable2[myHero.charName], aaResetTable3[myHero.charName], aaResetTable4[myHero.charName])
+    loadedAnWalker = true
   end
 
   function DisableOrbwalkerMovement()
@@ -690,7 +692,7 @@ _G.ScriptologyDebug      = false
 
   function Tick()
     if myHero.charName ~= "Blitzcrank" and myHero.charName ~= "Thresh" then Target = GetCustomTarget() end
-    if Cfg.SWalkl ~= nil and not loadedOrb and Config.kConfig.Combo and not _G.Reborn_Initialised and not _G.MMA_Loaded then LoadOrb() RemoveOw() end
+    if Cfg.SWalkl ~= nil and not loadedAnWalker and not loadedOrb and Config.kConfig.Combo and not _G.Reborn_Initialised and not _G.MMA_Loaded then LoadOrb() RemoveOw() end
     Mobs:update()
     JMobs:update()
 
