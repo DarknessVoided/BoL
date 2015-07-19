@@ -266,7 +266,7 @@ _G.ScriptologyDebug      = false
         ["Kalista"] = {
           [_Q] = { speed = 1200, delay = 0.5, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
           [_W] = { delay = 1.5, range = 5000},
-          [_E] = { range = 1200, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.175 + 0.025 * level)*TotalDmg) or 0 end},
+          [_E] = { range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.175 + 0.025 * level)*TotalDmg) or 0 end},
           [_R] = { range = 2000}
         },
         ["Katarina"] = {
@@ -306,7 +306,7 @@ _G.ScriptologyDebug      = false
           [_R] = { speed = math.huge, delay = 0.5, range = 700, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+0.26*AP end}
         },
         ["Nidalee"] = {
-          [_Q] = { speed = 1337, delay = 0.125, range = 1625, width = 42.5, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1337, delay = 0.125, range = 1500, width = 42.5, collision = true, aoe = false, type = "linear"},
           [_W] = { speed = math.huge, delay = 0.25, range = 900, width = 120, collision = true, aoe = false, type = "circular"},
           [_E] = { range = 0},
           [_R] = { range = 0}
@@ -4525,12 +4525,12 @@ class "Kalista"
   function Kalista:Menu()
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-    Config.Combo:addParam("Er", "E if target walks out of range", SCRIPT_PARAM_ONOFF, true)
-    Config.Combo:addParam("Es", "-> at X stacks", SCRIPT_PARAM_SLICE, 5, 0, 20, 0)
+    Config.Combo:addParam("Er", "E if target walks out of range", SCRIPT_PARAM_ONOFF, false)
+    Config.Combo:addParam("Es", "-> at X stacks", SCRIPT_PARAM_SLICE, 10, 1, 20, 0)
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("Er", "E if target walks out of range", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("Es", "-> at X stacks", SCRIPT_PARAM_SLICE, 5, 0, 20, 0)
+    Config.Harrass:addParam("Er", "E if target walks out of range", SCRIPT_PARAM_ONOFF, false)
+    Config.Harrass:addParam("Es", "-> at X stacks", SCRIPT_PARAM_SLICE, 5, 1, 20, 0)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
