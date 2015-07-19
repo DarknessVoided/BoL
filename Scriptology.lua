@@ -556,7 +556,7 @@ _G.ScriptologyDebug      = false
         if FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
           Cfg:addParam("bfw", "Big Fat Orbwalker", SCRIPT_PARAM_ONOFF, false)
           DelayAction(function() Cfg.bfw = false end, 0.1)
-          DelayAction(function() Cfg:setCallback("bfw", function(var) if var then require "Big Fat Orbwalker" RemoveOw() end end) end, 0.25)
+          DelayAction(function() Cfg:setCallback("bfw", function(var) if var then require "Big Fat Orbwalker" RemoveOw() loadedAnWalker = true end end) end, 0.25)
         end
         if FileExist(LIB_PATH .. "SxOrbWalk.lua") then
           Cfg:addParam("SxOrbWalk", "SxOrbWalk", SCRIPT_PARAM_ONOFF, false)
