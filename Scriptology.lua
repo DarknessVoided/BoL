@@ -386,7 +386,7 @@ _G.ScriptologyDebug      = false
         ["Thresh"] = {
           [_Q] = { speed = 1825, delay = 0.25, range = 1050, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.8*AP end},
           [_W] = { range = 25000},
-          [_E] = { speed = math.huge, delay = 0.25, range = 450, width = 130, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 9*level+0.3*AP end},
+          [_E] = { speed = 2000, delay = 0.25, range = 450, width = 110, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 9*level+0.3*AP end},
           [_R] = { range = myHero.range, width = 250}
         },
         ["Vayne"] = {
@@ -2019,12 +2019,6 @@ class "SWalk"
     end
     if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid and ValidTarget(unit) then
       myHero:Attack(unit)
-      if myHero.charName == "Kalista" then
-        local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250 
-        if self:DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
-          myHero:MoveTo(movePos.x, movePos.z)
-        end
-      end
     elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp + self.Config.cadj/1000) then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
       if self:DoOrb() and unit and valid and unit.type == myHero.type and self.melee and self.Config.wtt then
@@ -2122,9 +2116,9 @@ class "SWalk"
   function SWalk:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") then
-        self.orbTable.windUp = myHero.charName == "Kalista" and 0 or spell.windUpTime
-        self.orbTable.animation = myHero.charName == "Kalista" and 0 or spell.animationTime
-        self.orbTable.lastAA = myHero.charName == "Kalista" and 0 or os.clock()
+        self.orbTable.windUp = spell.windUpTime
+        self.orbTable.animation = myHero.charName == "Kalista" and 1 / myHero.attackSpeed or spell.animationTime
+        self.orbTable.lastAA = os.clock()
         if not self.Config.pc then
           DelayAction(function() self:WindUp(self.Target) end, spell.windUpTime - GetLatency() / 2000)
         end
@@ -6195,7 +6189,7 @@ class "Nidalee"
 
   function Nidalee:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if enemy ~= nil and not enemy.dead then
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and GetRealHealth(enemy) < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config.Killsteal.Q and ValidTarget(enemy, self.data.Human[0].range) then
           Cast(_Q, enemy, false, true, 1.2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
