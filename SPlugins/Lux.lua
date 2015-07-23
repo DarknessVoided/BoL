@@ -2,6 +2,8 @@ class "Lux"
 
   function Lux:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    LoadUPL()
+    MakeData()
   end
 
   function Lux:Load()
@@ -99,17 +101,17 @@ class "Lux"
 
   function Lux:Combo()
     if GetStacks(Target) > 0 and Config.Combo.R and myHero:CanUseSpell(_R) == READY and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= GetRealHealth(Target) then
-      Cast(_R, Target, false, true, 2)
+      Cast(_R, Target, 2)
     end
-  if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
-    Cast(_Q, Target, false, true, 2)
-  end
-  if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
-    Cast(_E, Target, false, true, 1.5)
-  end
-  if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
-    Cast(_R, Target, false, true, 2)
-  end
+    if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
+      Cast(_Q, Target, 2)
+    end
+    if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
+      Cast(_E, Target, 1.5)
+    end
+    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
+      Cast(_R, Target, 2)
+    end
   end
 
   function Lux:Harrass()
@@ -127,23 +129,23 @@ class "Lux"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
-          Cast(_Q, enemy, false, true, 1.5)
+          Cast(_Q, enemy, 1.5)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, false, true, 1.2)
-          DelayAction(function() Cast(_E, enemy, false, true, 1.2) end, data[2].delay)
+          Cast(_E, enemy, 1.2)
+          DelayAction(function() Cast(_E, enemy, 1.2) end, data[2].delay)
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, false, true, 1.2)
+          Cast(_E, enemy, 1.2)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, false, true, 1.2)
-          DelayAction(function() Cast(_Q, enemy, false, true, 1.2) DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay) end, data[2].delay)
+          Cast(_E, enemy, 1.2)
+          DelayAction(function() Cast(_Q, enemy, 1.2) DelayAction(function() Cast(_R, enemy, 1.2) end, data[0].delay) end, data[2].delay)
         elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, false, true, 1.2)
-          DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[2].delay)
+          Cast(_E, enemy, 1.2)
+          DelayAction(function() Cast(_R, enemy, 1.2) end, data[2].delay)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.R and ValidTarget(enemy, data[0].range) then
-          Cast(_Q, enemy, false, true, 1.5)
-          DelayAction(function() Cast(_R, enemy, false, true, 1.2) end, data[0].delay)
+          Cast(_Q, enemy, 1.5)
+          DelayAction(function() Cast(_R, enemy, 1.2) end, data[0].delay)
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy, false, true, 2)
+          Cast(_R, enemy, 2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end

@@ -91,7 +91,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     LoadAwareness()
     LoadEvade()
     LoadOrb()
-    DelayAction(SilentUpdate, 5)
+    --DelayAction(SilentUpdate, 5)
   end
 
   function LoadAwareness()
@@ -143,6 +143,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       ScriptologyServerVersion = type(tonumber(ScriptologyServerData)) == "number" and tonumber(ScriptologyServerData) or nil
       if ScriptologyServerVersion then
         if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology Loader.lua".."?rand="..math.random(1,10000), SCRIPT_PATH.."Scriptology Loader.lua", function() end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
           return true
@@ -182,6 +183,22 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
           pcall(function() class:Tick() end)
         end
       end
+    end
+    if ScriptologyLoadedClasses[myHero.charName] then
+      Target = GetCustomTarget()
+      if Config.kConfig.Combo then
+        pcall(function() ScriptologyLoadedClasses[myHero.charName]:Combo() end)
+      end
+      if Config.kConfig.Harrass then
+        pcall(function() ScriptologyLoadedClasses[myHero.charName]:Harrass() end)
+      end
+      if Config.kConfig.LaneClear then
+        pcall(function() ScriptologyLoadedClasses[myHero.charName]:LaneClear() end)
+      end
+      if Config.kConfig.LastHit then
+        pcall(function() ScriptologyLoadedClasses[myHero.charName]:LastHit() end)
+      end
+      pcall(function() ScriptologyLoadedClasses[myHero.charName]:Killsteal() end)
     end
   end)
 
