@@ -2,8 +2,8 @@ class "SEvade"
 
   function SEvade:__init()
     _G.Evade = false
-    Cfg:addSubMenu("SEvade", "SEvade")
-    self.Config = Cfg.SEvade
+    ScriptologyConfig:addSubMenu("SEvade", "SEvade")
+    self.Config = ScriptologyConfig.SEvade
     self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     self.activeSpells = {}
     self.lastDrawn = 0
