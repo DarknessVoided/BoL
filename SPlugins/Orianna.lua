@@ -144,8 +144,8 @@ class "Orianna"
     if myHero:CanUseSpell(_E) == READY and Config.Combo.E and self.Ball then
       local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(self.Ball, myHero, Target)
       if OnSegment then
-        if GetDistanceSqr(ProjPoint, predP) < (Target.boundingRadius + data[2].width) ^ 2 then
-          Cast(_E, myHero, true)
+        if GetDistanceSqr(ProjPoint, Target) < (Target.boundingRadius + data[2].width) ^ 2 then
+          Cast(_E, myHero)
         end
       end
     end
