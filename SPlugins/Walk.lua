@@ -18,27 +18,6 @@ class "SWalk"
     self.Config:addParam("rlhadj", "Reset AA adjustment", SCRIPT_PARAM_ONOFF, false)
     self.Config:setCallback("radj", function(var) if var then self.Config.cadj = 0 self.Config.radj = false end end)
     self.Config:setCallback("rlhadj", function(var) if var then self.Config.lhadj = 0 self.Config.rlhadj = false end end)
-    local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-    if self.aaResetTable then
-      for _,k in pairs(self.aaResetTable) do
-        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
-      end
-    end
-    if self.aaResetTable2 then
-      for _,k in pairs(self.aaResetTable2) do
-        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
-      end
-    end
-    if self.aaResetTable3 then
-      for _,k in pairs(self.aaResetTable3) do
-        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
-      end
-    end
-    if self.aaResetTable4 then
-      for _,k in pairs(self.aaResetTable4) do
-        self.Config:addParam(str[k], "AA Reset with "..str[k], SCRIPT_PARAM_ONOFF, true)
-      end
-    end
     self.Config:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("m", "Move", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("a", "Attack", SCRIPT_PARAM_ONOFF, true)
@@ -203,7 +182,7 @@ class "SWalk"
     if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") then
         self.orbTable.windUp = spell.windUpTime + self.Config.cadj/1000
-        self.orbTable.animation = myHero.charName == "Kalista" and 1 / myHero.attackSpeed or spell.animationTime-spell.windUpTime
+        self.orbTable.animation = spell.animationTime
         self.orbTable.lastAA = os.clock()
         DelayAction(function() self:WindUp(self.Target) end, spell.windUpTime - GetLatency() / 2000)
       end
