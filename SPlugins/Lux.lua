@@ -128,7 +128,7 @@ class "Lux"
 
   function Lux:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+      if ValidTarget(enemy, data[3].range) then
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, enemy, 1.5)
         elseif myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
