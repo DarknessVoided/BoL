@@ -134,7 +134,6 @@ class "Orianna"
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
       local CastPosition, HitChance, Pos = UPL:Predict(_Q, self.Ball or myHero, Target)
       if HitChance and HitChance >= 1.5 then
-        --Cast(_Q, Target, 1.5, self.Ball)
         local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*Target.boundingRadius
         Cast(_Q, tPos, false)
       end
@@ -142,8 +141,13 @@ class "Orianna"
     if myHero:CanUseSpell(_W) == READY and Config.Combo.W then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, Target) and GetDistance(self.Ball)-self.Ball.boundingRadius >= GetDistance(Target) then
-      Cast(_E, myHero, true)
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and self.Ball then
+      local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(self.Ball, myHero, Target)
+      if OnSegment then
+        if GetDistanceSqr(ProjPoint, predP) < (Target.boundingRadius + data[2].width) ^ 2 then
+          Cast(_E, myHero, true)
+        end
+      end
     end
     if myHero:CanUseSpell(_R) == READY and GetRealHealth(Target) < self:CalcRComboDmg(Target) and Config.Combo.R then
       self:CastR(Target)
