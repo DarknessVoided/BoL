@@ -663,6 +663,163 @@
     return enemy
   end
 
+  function kalE(x) if x <= 1 then return 10 else return kalE(x-1) + 2 + x end end
+
+  function Draw()
+    if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or myHero.charName == "Riven" then return end
+    if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
+      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or data[0].range > 0 and data[0].range or data[0].width, ARGB(255*Config.Draws.OpacityQ/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100)))
+    end
+    if myHero.charName ~= "Orianna" then
+      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[1].range) == "function" and data[1].range() or data[1].range > 0 and data[1].range or data[1].width, ARGB(255*Config.Draws.OpacityW/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100)))
+      end
+      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
+        DrawLFC(myHero.x, myHero.y, myHero.z, data[2].range > 0 and data[2].range or data[2].width, ARGB(255*Config.Draws.OpacityE/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100)))
+      end
+      if Config.Draws.R and (myHero:CanUseSpell(_R) == READY or myHero.charName == "Katarina") then
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(data[3].range) == "function" and data[3].range() or data[3].range > 0 and data[3].range or data[3].width, ARGB(255*Config.Draws.OpacityR/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100)))
+      end
+    end
+    if Forcetarget then
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
+    end
+    if Config.Draws.DMG then
+      for i,k in pairs(GetEnemyHeroes()) do
+        local enemy = k
+        if ValidTarget(enemy) then
+          local barPos = WorldToScreen(D3DXVECTOR3(enemy.x, enemy.y, enemy.z))
+          local posX = barPos.x - 35
+          local posY = barPos.y - 50
+          -- Doing damage
+          if myHero.charName == "Kalista" then
+            DrawText(killTextTable[enemy.networkID].indicatorText, 20, posX, posY-5, ARGB(255,250,250,250))
+          else
+            DrawText(killTextTable[enemy.networkID].indicatorText, 18, posX, posY, ARGB(255, 50, 255, 50))
+          end
+         
+          -- Taking damage
+          DrawText(killTextTable[enemy.networkID].damageGettingText, 15, posX, posY + 15, ARGB(255, 255, 50, 50))
+        end
+      end
+      if myHero.charName == "Kalista" and myHero:CanUseSpell(_E) then
+        for minion,winion in pairs(Mobs.objects) do
+          damageE = GetDmg(_E, myHero, winion)
+          if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
+            if damageE > winion.health then
+              DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+            else
+              DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+            end
+          end
+        end
+        if Config.Misc.Ej then
+          for minion,winion in pairs(JMobs.objects) do
+            damageE = GetDmg(_E, myHero, winion)
+            if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
+              if damageE > winion.health then
+                DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+              else
+                DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+              end
+            end
+          end
+        end
+      end
+    end 
+  end
+
+  function Vars()
+    if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+    if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
+    if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
+    killTextTable = {}
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = ""}
+    end
+    Target = nil
+    Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
+    JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
+    sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
+  end
+
+  function DmgCalc()
+    if not Config.Draws.DMG then return end
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy.visible then
+        local health = GetRealHealth(enemy)
+        killTextTable[enemy.networkID].indicatorText = ""
+        if myHero.charName == "Kalista" then
+          local damageAA = GetDmg("AD", myHero, enemy)
+          local damageE  = GetDmg(_E, myHero, enemy)
+          if health < damageE then
+              killTextTable[enemy.networkID].indicatorText = "E Kill"
+              killTextTable[enemy.networkID].ready = myHero:CanUseSpell(_E)
+          end
+          if myHero:CanUseSpell(_E) == READY and health > damageE and damageE > 0 then
+            killTextTable[enemy.networkID].indicatorText = math.floor(damageE/health*100).."% E"
+          else
+            killTextTable[enemy.networkID].indicatorText = ""
+          end
+        else
+          local damageAA = GetDmg("AD", myHero, enemy)
+          local damageQ  = GetDmg(_Q, myHero, enemy)
+          local damageW  = myHero.charName == "KogMaw" and 0 or (myHero.charName == "Azir" and loadedClass:CountSoldiers(enemy) or 1) * GetDmg(_W, myHero, enemy)
+          local damageE  = GetDmg(_E, myHero, enemy)
+          local damageR  = GetDmg(_R, myHero, enemy)*(myHero.charName == "Katarina" and 10 or 1)
+          local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
+          local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+          local damageS  = Smite and (20 + 8 * myHero.level) or 0
+          local c = 0
+          damageQ = myHero:CanUseSpell(_Q) == READY and damageQ or 0
+          damageW = (myHero:CanUseSpell(_W) == READY or myHero.charName == "Azir") and damageW or 0
+          damageE = myHero:CanUseSpell(_E) == READY and damageE or 0
+          damageR = (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) and damageR or 0
+          if myHero:CanUseSpell(_Q) == READY and damageQ > 0 then
+            c = c + 1
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."Q"
+          end
+          if myHero:CanUseSpell(_W) == READY and damageW > 0 then
+            c = c + 1
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."W"
+          end
+          if myHero:CanUseSpell(_E) == READY and damageE > 0 then
+            c = c + 1
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."E"
+          end
+          if myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0 and damageR > 0 and myHero.charName ~= "Orianna" then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."R"
+          end
+          if myHero:CanUseSpell(_R) == READY and damageRC > 0 then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.."RQ"
+          end
+          if health < (GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy)+GetDmg(_R, myHero, enemy)+damageRC+((myHero.charName == "Talon" and c > 0) and damageAA or 0))*(myHero.charName == "Talon" and 1+0.03*myHero:GetSpellData(_E).level or 1) then
+            killTextTable[enemy.networkID].indicatorText = killTextTable[enemy.networkID].indicatorText.." Killable"
+          end
+          if myHero.charName == "Teemo" and health > damageQ+damageE+damageAA then
+            local neededAA = math.ceil((health) / (damageAA+damageE))
+            neededAA = neededAA < 1 and 1 or neededAA
+            killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
+          elseif myHero.charName == "Ashe" or myHero.charName == "Vayne" then
+            local neededAA = math.ceil((health-damageQ-damageW-damageE) / (damageAA))
+            neededAA = neededAA < 1 and 1 or neededAA
+            killTextTable[enemy.networkID].indicatorText = neededAA.." AA to Kill"
+          elseif health > (damageQ+damageW+damageE+damageR+(myHero.charName == "Talon" and damageAA*c/2 or 0))*(myHero.charName == "Talon" and 1+0.03*myHero:GetSpellData(_E).level or 1) then
+            local neededAA = math.ceil(100*((damageQ+damageW+damageE+damageR+(myHero.charName == "Talon" and damageAA*c/2 or 0))*(myHero.charName == "Talon" and 1+0.03*myHero:GetSpellData(_E).level or 1))/(health))
+            killTextTable[enemy.networkID].indicatorText = neededAA.." % Combodmg"
+          end
+        end
+        local enemyDamageAA = GetDmg("AD", enemy, myHero)
+        local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+        if enemyNeededAA ~= 0 then         
+          killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+        end
+      end
+    end
+  end
+
   function EnemiesAroundAndFacingMe(Unit, range)
     local c=0
     if Unit == nil then return 0 end

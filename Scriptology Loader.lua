@@ -34,6 +34,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     if FileExist(LIB_PATH .. "ScriptologyLib.lua") then
       require("ScriptologyLib")
       if pcall(require, "Scriptology - "..myHero.charName) then
+        Vars()
         ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
         _G.ScriptologyLoaded = true
         ScriptologyLoadedClasses[myHero.charName] = _G[myHero.charName]()
@@ -42,6 +43,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         if CheckForPlugin(myHero.charName) then
           DelayAction(function() 
             if pcall(require, "Scriptology - "..myHero.charName) then 
+              Vars()
               ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
               _G.ScriptologyLoaded = true
               ScriptologyLoadedClasses[myHero.charName] = _G[myHero.charName]()
@@ -204,10 +206,11 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
 
   AddDrawCallback(function()
     if ScriptologyLoaded then
-      for _, class in pairs(ScriptologyLoadedClasses) do
-        if class then
-          pcall(function() class:Draw() end)
-        end
+      if pcall(function() ScriptologyLoadedClasses[myHero.charName]:DmgCalc() end) then
+        ScriptologyLoadedClasses[myHero.charName]:Draw()
+      else
+        DmgCalc()
+        Draw()
       end
     end
   end)

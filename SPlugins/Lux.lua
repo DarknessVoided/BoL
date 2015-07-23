@@ -3,16 +3,14 @@ class "Lux"
   function Lux:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     LoadUPL()
-    MakeData()
   end
 
   function Lux:Load()
     ScriptologyConfig:addSubMenu("Target Selector", "ts")
     ScriptologyConfig.ts:addTS(targetSel)
     ArrangeTSPriorities()
+    MakeData()
     self:Menu()
-    AddTickCallback(function() self:DetonateE() end)
-    AddProcessSpellCallback(function(x,y) self:ShieldManager(x,y) end)
   end
 
   function Lux:Menu()
@@ -42,24 +40,27 @@ class "Lux"
     Config.Misc:addParam("Wa", "Shield with W (auto)", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("manaW", "Min Mana % for shield", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Misc:addParam("Ea", "Detonate E (auto)", SCRIPT_PARAM_ONOFF, true)
-    --AddGapcloseCallback(_Q, data[0].range, false, Config.Misc)
+    AddGapcloseCallback(_Q, data[0].range, false, Config.Misc)
   end
 
-  function Lux:DetonateE()
+  function Lux:Tick()
     if myHero:GetSpellData(_E).name == "luxlightstriketoggle" and Config.Misc.Ea then
       Cast(_E)
     end
   end
 
-  function Lux:ShieldManager(unit, spell)
+  function Lux:ProcessSpell(unit, spell)
     if unit and spell and not spell.name:lower():find("attack") and Config.Misc.Wa and unit.team ~= myHero.team and unit.type == myHero.type and not IsRecalling(myHero) and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
-      if spell.target and spell.target.isMe then
+      if spell.target then
         if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
-          Cast(_W, myHero)
+          Cast(_W, myHero, false)
         end
-      elseif GetDistance(spell.endPos) < GetDistance(myHero.pos, myHero.minBBox) then
-        if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
-          Cast(_W, myHero)
+      else
+        local makeUpPos = unit + (Vector(spell.endPos) - unit):normalized() * math.min(1250, GetDistance(unit))
+        if GetDistance(spell.endPos) < GetDistance(myHero.pos, myHero.minBBox)*3 or GetDistance(makeUpPos) < GetDistance(myHero.pos, myHero.minBBox)*3 then
+          if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
+            Cast(_W, myHero, false)
+          end
         end
       end
     end
@@ -70,7 +71,7 @@ class "Lux"
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
         if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
-          Cast(_Q, winion, false, true, 2)
+          Cast(_Q, winion, 2, false)
         end
       end
     end
@@ -78,7 +79,7 @@ class "Lux"
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local EMinionDmg = GetDmg(_E, myHero, minion)
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-          Cast(_E, winion, true)
+          Cast(_E, winion, false)
         end
       end
     end 
@@ -88,13 +89,13 @@ class "Lux"
     if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = GetLowestMinion(data[_Q].range)
       if minionTarget ~= nil then
-        Cast(_Q, minionTarget)
+        Cast(_Q, minionTarget, false)
       end
     end
     if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_E].range, data[_E].width)
       if BestHit > 1 then 
-        Cast(_E, BestPos)
+        Cast(_E, BestPos, false)
       end
     end  
   end
@@ -117,10 +118,10 @@ class "Lux"
   function Lux:Harrass()
     if GetStacks(Target) == 0 then
       if Config.Harrass.Q and myHero:CanUseSpell(_Q) == READY and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
-        Cast(_Q, Target, false, true, 2)
+        Cast(_Q, Target, 2)
       end
       if Config.Harrass.E and myHero:CanUseSpell(_E) == READY and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
-        Cast(_E, Target, false, true, 1.5)
+        Cast(_E, Target, 1.5)
       end
     end
   end
