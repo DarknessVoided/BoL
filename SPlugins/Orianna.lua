@@ -132,7 +132,12 @@ class "Orianna"
 
   function Orianna:Combo()
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
-      Cast(_Q, Target, 1.5, self.Ball)
+      local CastPosition, HitChance, Pos = UPL:Predict(_Q, self.Ball or myHero, Target)
+      if HitChance and HitChance >= 1.5 then
+        --Cast(_Q, Target, 1.5, self.Ball)
+        local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*Target.boundingRadius
+        Cast(_Q, tPos, false)
+      end
     end
     if myHero:CanUseSpell(_W) == READY and Config.Combo.W then
       self:CastW(Target)
