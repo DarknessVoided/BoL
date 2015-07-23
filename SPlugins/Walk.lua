@@ -144,7 +144,7 @@ class "SWalk"
     end
     if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid and ValidTarget(unit) then
       myHero:Attack(unit)
-    elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp + self.Config.cadj/1000) then
+    elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp) then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
       if self:DoOrb() and unit and valid and unit.type == myHero.type and self.melee and self.Config.wtt then
         if GetDistance(unit) > myHero.boundingRadius+unit.boundingRadius then
@@ -202,7 +202,7 @@ class "SWalk"
   function SWalk:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") then
-        self.orbTable.windUp = spell.windUpTime
+        self.orbTable.windUp = spell.windUpTime + self.Config.cadj/1000
         self.orbTable.animation = myHero.charName == "Kalista" and 1 / myHero.attackSpeed or spell.animationTime-spell.windUpTime
         self.orbTable.lastAA = os.clock()
         DelayAction(function() self:WindUp(self.Target) end, spell.windUpTime - GetLatency() / 2000)
