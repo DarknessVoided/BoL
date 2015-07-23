@@ -38,6 +38,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
         _G.ScriptologyLoaded = true
         ScriptologyLoadedClasses[myHero.charName] = _G[myHero.charName]()
+        AfterLoad()
       else
         ScriptologyMsg("Plugin: '"..myHero.charName.."' not found, checking online..")
         if CheckForPlugin(myHero.charName) then
@@ -47,11 +48,11 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
               ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
               _G.ScriptologyLoaded = true
               ScriptologyLoadedClasses[myHero.charName] = _G[myHero.charName]()
+              AfterLoad()
             end 
           end, 3)
         end
       end
-      AfterLoad()
     else
       DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
       DelayAction(Load, 2)
