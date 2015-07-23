@@ -2,10 +2,10 @@
 class "Orianna"
 
   function Orianna:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGIC, false, true)
     LoadUPL()
   end
-  
+
   function Orianna:Load()
     ScriptologyConfig:addSubMenu("Target Selector", "ts")
     ScriptologyConfig.ts:addTS(targetSel)

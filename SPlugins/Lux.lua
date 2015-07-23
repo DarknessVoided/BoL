@@ -1,7 +1,7 @@
 class "Lux"
 
   function Lux:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, false, true)
     LoadUPL()
   end
 
