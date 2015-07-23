@@ -93,7 +93,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     LoadAwareness()
     LoadEvade()
     LoadOrb()
-    --DelayAction(SilentUpdate, 5)
+    DelayAction(SilentUpdate, 5)
   end
 
   function LoadAwareness()
