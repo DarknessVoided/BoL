@@ -1,4 +1,3 @@
-
 class "Orianna"
 
   function Orianna:__init()
@@ -136,9 +135,6 @@ class "Orianna"
       if HitChance and HitChance >= 1.5 then
         local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*(Target.boundingRadius/2)
         Cast(_Q, tPos, false)
-        if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
-          DelayAction(function() Cast(_E, myHero) end, 0.25)
-        end
       end
     end
     if myHero:CanUseSpell(_W) == READY and Config.Combo.W then
