@@ -2,23 +2,22 @@
 class "Orianna"
 
   function Orianna:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
-    Cfg:addSubMenu("Target Selector", "ts")
-    Cfg.ts:addTS(self.ts)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+  end
+  
+  function Orianna:Load()
+    ScriptologyConfig:addSubMenu("Target Selector", "ts")
+    ScriptologyConfig.ts:addTS(targetSel)
     ArrangeTSPriorities()
     self:Menu()
+    MakeData()
     self.Ball = nil
-    AddTickCallback(function() self:TrackBall() end)
-    AddTickCallback(function() self:UltLogic() end)
   end
 
-  function Orianna:TrackBall()
+  function Orianna:Tick()
     if objHolder["TheDoomBall"] and (GetDistance(objHolder["TheDoomBall"], myHero.pos) <= myHero.boundingRadius*2+7 or GetDistance(objHolder["TheDoomBall"]) > 1250) then
       objHolder["TheDoomBall"] = nil
     end
-  end
-
-  function Orianna:UltLogic()
     if Config.Misc.Ra then
       local enemies = 0
       if objHolder["TheDoomBall"] then

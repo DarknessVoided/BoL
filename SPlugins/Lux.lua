@@ -9,8 +9,8 @@ class "Lux"
     ScriptologyConfig:addSubMenu("Target Selector", "ts")
     ScriptologyConfig.ts:addTS(targetSel)
     ArrangeTSPriorities()
-    MakeData()
     self:Menu()
+    MakeData()
   end
 
   function Lux:Menu()
