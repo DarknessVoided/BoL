@@ -1,12 +1,12 @@
 class "Lux"
 
   function Lux:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
   end
 
   function Lux:Load()
     ScriptologyConfig:addSubMenu("Target Selector", "ts")
-    ScriptologyConfig.ts:addTS(self.ts)
+    ScriptologyConfig.ts:addTS(targetSel)
     ArrangeTSPriorities()
     self:Menu()
     AddTickCallback(function() self:DetonateE() end)

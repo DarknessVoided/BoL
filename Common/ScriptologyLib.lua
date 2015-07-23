@@ -2,9 +2,10 @@
   function GetCustomTarget()
     if _G.MMA_Loaded and _G.MMA_Target() and _G.MMA_Target().type == myHero.type then return _G.MMA_Target() end
     if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    if not targetSel then return nil end
-    targetSel:update()
-    return targetSel.target
+    if targetSel then
+      targetSel:update()
+      return targetSel.target
+    end
   end
 
   function GetFarmPosition(range, width)
