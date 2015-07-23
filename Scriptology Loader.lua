@@ -207,12 +207,10 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
 
   AddDrawCallback(function()
     if ScriptologyLoaded then
-      if pcall(function() ScriptologyLoadedClasses[myHero.charName]:DmgCalc() end) then
-        ScriptologyLoadedClasses[myHero.charName]:Draw()
-      else
-        DmgCalc()
-        Draw()
-      end
+      DmgCalc()
+      Draw()
+      pcall(function() ScriptologyLoadedClasses[myHero.charName]:DmgCalc() end)
+      pcall(function() ScriptologyLoadedClasses[myHero.charName]:Draw() end)
     end
   end)
 

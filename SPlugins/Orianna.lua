@@ -16,19 +16,23 @@ class "Orianna"
   end
 
   function Orianna:Tick()
-    if objHolder["TheDoomBall"] and (GetDistance(objHolder["TheDoomBall"], myHero.pos) <= myHero.boundingRadius*2+7 or GetDistance(objHolder["TheDoomBall"]) > 1250) then
-      objHolder["TheDoomBall"] = nil
+    if self.Ball and (GetDistance(self.Ball) <= myHero.boundingRadius*2+7 or GetDistance(self.Ball) > 1250) then
+      self.Ball = nil
     end
     if Config.Misc.Ra then
-      local enemies = 0
-      if objHolder["TheDoomBall"] then
-        enemies = EnemiesAround(objHolder["TheDoomBall"], data[3].width-myHero.boundingRadius)
-      else
-        enemies = EnemiesAround(myHero, data[3].width-myHero.boundingRadius)
-      end
-      if enemies >= Config.Misc.Re then
+      if enemies >= EnemiesAround(self.Ball or myHero, data[3].width-myHero.boundingRadius) then
         CastSpell(_R)
       end
+    end
+  end
+
+  function Orianna:Draw()
+    if self.Ball then
+      DrawCircle(self.Ball.x-8, self.Ball.y, self.Ball.z+87, data[0].width-50, 0x111111)
+      for i=0,2 do
+        LagFree(self.Ball.x-8, self.Ball.y, self.Ball.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 3, (math.pi/4.5)*(i))
+      end 
+      LagFree(self.Ball.x-8, self.Ball.y, self.Ball.z+87, data[0].width-50, 3, ARGB(255, 75, 0, 230), 9, 0)
     end
   end
 
@@ -64,6 +68,12 @@ class "Orianna"
     Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
   end
 
+  function Orianna:CreateObj(obj)
+    if obj and obj.name and obj.name == "TheDoomBall" then
+      self.Ball = Vector(obj)
+    end
+  end
+
   function Orianna:LastHit()
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
@@ -77,12 +87,12 @@ class "Orianna"
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmgQ = GetDmg(_Q, myHero, winion)
         local MinionDmgW = GetDmg(_W, myHero, winion)
-        if MinionDmgQ and MinionDmgW >= winion.health and (objHolder["TheDoomBall"] and GetDistance(winion, objHolder["TheDoomBall"]) < data[1].width or GetDistance(winion) < data[1].width) then
+        if MinionDmgQ and MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
           Cast(_W)
         end
-        if myHero:CanUseSpell(_Q) == READY and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (objHolder["TheDoomBall"] and GetDistance(winion, objHolder["TheDoomBall"]) < data[1].width or GetDistance(winion) < data[1].width) then
-            Cast(_Q, winion, 1.2)
-            DelayAction(Cast, 0.25, {_W})
+        if myHero:CanUseSpell(_Q) == READY and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
+          Cast(_Q, winion, 1.2)
+          DelayAction(Cast, 0.25, {_W})
         end
       end
     end
@@ -97,7 +107,7 @@ class "Orianna"
     end
     if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_W].width)
-      if BestHit > 1 and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"], BestPos) < 50 then 
+      if BestHit > 1 and self.Ball and GetDistance(self.Ball, BestPos) < 50 then 
         Cast(_W)
       end
     end
@@ -105,12 +115,12 @@ class "Orianna"
 
   function Orianna:Combo()
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
-      Cast(_Q, Target, 1.5, objHolder["TheDoomBall"])
+      Cast(_Q, Target, 1.5, self.Ball)
     end
     if myHero:CanUseSpell(_W) == READY and Config.Combo.W then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius >= GetDistance(Target) then
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, Target) and GetDistance(self.Ball)-self.Ball.boundingRadius >= GetDistance(Target) then
       Cast(_E, myHero, true)
     end
     if myHero:CanUseSpell(_R) == READY and GetRealHealth(Target) < self:CalcRComboDmg(Target) and Config.Combo.R then
@@ -128,12 +138,12 @@ class "Orianna"
 
   function Orianna:Harrass()
     if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
-      Cast(_Q, Target, 1.5, objHolder["TheDoomBall"])
+      Cast(_Q, Target, 1.5, self.Ball)
     end
     if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, Target) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius >= GetDistance(Target) then
+    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, Target) and GetDistance(self.Ball)-self.Ball.boundingRadius >= GetDistance(Target) then
       Cast(_E, myHero)
     end
   end
@@ -141,12 +151,12 @@ class "Orianna"
   function Orianna:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        local Ball = objHolder["TheDoomBall"] or myHero
+        local Ball = self.Ball or myHero
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, Target, 1.5, Ball)
         elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W then
           self:CastW(enemy)
-        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and objHolder["TheDoomBall"] and GetDistance(objHolder["TheDoomBall"]) > 150 and VectorPointProjectionOnLineSegment(objHolder["TheDoomBall"], myHero, enemy) and GetDistance(objHolder["TheDoomBall"])-objHolder["TheDoomBall"].boundingRadius > GetDistance(enemy) then
+        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, enemy) and GetDistance(self.Ball)-self.Ball.boundingRadius > GetDistance(enemy) then
           Cast(_E, myHero)
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R then
           self:CastR(enemy)
@@ -163,7 +173,7 @@ class "Orianna"
 
   function Orianna:CastW(unit)
     if myHero:CanUseSpell(_W) ~= READY or unit == nil or myHero.dead then return end
-    local Ball = objHolder["TheDoomBall"] or myHero
+    local Ball = self.Ball or myHero
     local pos, b = PredictPos(unit)
     if pos and GetDistance(pos, Ball) < data[1].width-b then 
       Cast(_W)
@@ -172,7 +182,7 @@ class "Orianna"
 
   function Orianna:CastR(unit)
     if myHero:CanUseSpell(_R) ~= READY or unit == nil or myHero.dead then return end
-    local Ball = objHolder["TheDoomBall"] or myHero
+    local Ball = self.Ball or myHero
     local pos, b = PredictPos(unit, 0.5)
     if pos and GetDistance(pos, Ball) < data[3].width-b then 
       Cast(_R) 
