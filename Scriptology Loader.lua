@@ -224,11 +224,61 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     end
   end)
 
+  AddAnimationCallback(function(unit, ani)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:Animation(unit, ani) end)
+        end
+      end
+    end
+  end)
+
   AddCreateObjCallback(function(obj)
     if ScriptologyLoaded then
       for _, class in pairs(ScriptologyLoadedClasses) do
         if class then
           pcall(function() class:CreateObj(obj) end)
+        end
+      end
+    end
+  end)
+
+  AddDeleteObjCallback(function(obj)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:DeleteObj(obj) end)
+        end
+      end
+    end
+  end)
+
+  AddApplyBuffCallback(function(source, unit, buff)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:ApplyBuff(source, unit, buff) end)
+        end
+      end
+    end   
+  end)
+
+  AddUpdateBuffCallback(function(unit, buff, stacks)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:UpdateBuff(unit, buff, stacks) end)
+        end
+      end
+    end
+  end)
+
+  AddRemoveBuffCallback(function(unit, buff)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:RemoveBuff(unit, buff) end)
         end
       end
     end
