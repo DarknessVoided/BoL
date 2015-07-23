@@ -223,4 +223,14 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       end
     end
   end)
+
+  AddCreateObjCallback(function(obj)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:CreateObj(obj) end)
+        end
+      end
+    end
+  end)
 -- }

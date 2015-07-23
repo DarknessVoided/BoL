@@ -13,6 +13,12 @@ class "Orianna"
     self:Menu()
     MakeData()
     self.Ball = nil
+    for k=1,objManager.maxObjects,1 do
+      local object = objManager:getObject(k)
+      if object and object.valid and object.name and object.team == myHero.team and object.name == "TheDoomBall" then
+        self.Ball = object
+      end
+    end
   end
 
   function Orianna:Tick()
@@ -69,8 +75,19 @@ class "Orianna"
   end
 
   function Orianna:CreateObj(obj)
-    if obj and obj.name and obj.name == "TheDoomBall" then
+    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" then
       self.Ball = Vector(obj)
+    end
+  end
+
+  function Orianna:ProcessSpell(unit, spell)
+    if unit and spell and unit.isMe then
+      if spell.name == "OrianaIzunaCommand" then
+        self.Ball = nil
+      end
+      if spell.name == "OrianaRedactCommand" then
+        self.Ball = spell.target
+      end
     end
   end
 
