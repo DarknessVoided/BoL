@@ -52,15 +52,12 @@ class "SWalk"
     if self.aaResetTable or self.aaResetTable2 or self.aaResetTable3 or self.aaResetTable4 then
       self.Config:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
     end
-    if supported[myHero.charName] and myHero.charName ~= "Azir" then
-      DelayAction(function() if loadedClass and loadedClass.ts and loadedClass.ts.range > self.myRange then self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true) end end, 3)
-    end
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
     Cfg:addSubMenu("Target Selector", "ts")
     Cfg.ts:addTS(self.ts)
     ArrangeTSPriorities()
+    sReady = {}
     if not ScriptologyLoaded then
-      sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
       self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
       self.Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
@@ -125,7 +122,6 @@ class "SWalk"
       self.Target = t
     end
     if self:DoOrb() then
-      if ScriptologyLoaded then loadedClass.Target = self.Target end
       self:Orb(self.Target) 
     end
   end
@@ -161,34 +157,14 @@ class "SWalk"
   end
 
   function SWalk:DoOrb()
-    if not supported[myHero.charName] then
-      for _=0,3 do
-        sReady[_] = myHero:CanUseSpell(_) == READY
-      end
-      self.State[_Q] = true
-      self.State[_W] = true
-      self.State[_E] = true
-      self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
-      return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
+    for _=0,3 do
+      sReady[_] = myHero:CanUseSpell(_) == READY
     end
-    if (myHero.charName == "Katarina" or myHero.charName == "Malzahar") and ultOn and ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead then return false end
-    if self.Config.kConfig.Combo then
-      self.IState = true
-      return self:SetStates(Config.Combo)
-    end
-    if self.Config.kConfig.Harrass then
-      self.IState = true
-      return self:SetStates(Config.Harrass)
-    end
-    if self.Config.kConfig.LastHit then
-      self.IState = false
-      return self:SetStates(Config.LastHit)
-    end
-    if self.Config.kConfig.LaneClear then
-      self.IState = false
-      return self:SetStates(Config.LaneClear)
-    end
-    return false
+    self.State[_Q] = true
+    self.State[_W] = true
+    self.State[_E] = true
+    self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
+    return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
   end
 
   function SWalk:GetLowestPMinion(range)
@@ -221,25 +197,6 @@ class "SWalk"
       end
     end
     return minionTarget, health
-  end
-
-  function SWalk:SetStates(mode)
-    self.State[_Q] = mode.Q
-    self.State[_W] = mode.W
-    self.State[_E] = mode.E
-    if myHero.charName == "Rengar" and myHero.mana == 5 then
-      self.State[_Q] = false
-      self.State[_W] = false
-      self.State[_E] = false
-      if Config.Misc.Empower2 == 1 then
-        self.State[_Q] = true
-      elseif Config.Misc.Empower2 == 2 then
-        self.State[_W] = true
-      elseif Config.Misc.Empower2 == 3 then
-        self.State[_E] = true
-      end
-    end
-    return true
   end
 
   function SWalk:ProcessSpell(unit, spell)
