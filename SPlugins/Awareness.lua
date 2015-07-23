@@ -69,13 +69,13 @@ class "SAwareness"
         if k and k.hasMovePath and k.pathCount >= 2 then
           local IndexPath = k:GetPath(k.pathIndex)
           if IndexPath then
-            DrawCircle3D(IndexPath.x, IndexPath.y, IndexPath.z, 18, 1, ARGB(105,255,255,255), 32)
-            DrawLine3D(k.x, k.y, k.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(105, 255, 255, 255))
+            DrawCircle3D(IndexPath.x, 0, IndexPath.z, 18, 1, ARGB(105,255,255,255), 32)
+            DrawLine3D(k.x, 0, k.z, IndexPath.x, 0, IndexPath.z, 1, ARGB(105, 255, 255, 255))
           end
           for i=k.pathIndex, k.pathCount-1 do
             local Path = k:GetPath(i)
             local Path2 = k:GetPath(i+1)
-            DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(105, 255, 255, 255))
+            DrawLine3D(Path.x, 0, Path.z, Path2.x, 0, Path2.z, 1, ARGB(105, 255, 255, 255))
           end
         end
       end
@@ -85,13 +85,13 @@ class "SAwareness"
         if k and k.hasMovePath and k.pathCount >= 2 then
           local IndexPath = k:GetPath(k.pathIndex)
           if IndexPath then
-            DrawCircle3D(IndexPath.x, IndexPath.y, IndexPath.z, 18, 1, ARGB(105,255,255,255), 32)
-            DrawLine3D(k.x, k.y, k.z, IndexPath.x, IndexPath.y, IndexPath.z, 1, ARGB(105, 255, 255, 255))
+            DrawCircle3D(IndexPath.x, 0, IndexPath.z, 18, 1, ARGB(105,255,255,255), 32)
+            DrawLine3D(k.x, 0, k.z, IndexPath.x, 0, IndexPath.z, 1, ARGB(105, 255, 255, 255))
           end
           for i=k.pathIndex, k.pathCount-1 do
             local Path = k:GetPath(i)
             local Path2 = k:GetPath(i+1)
-            DrawLine3D(Path.x, Path.y, Path.z, Path2.x, Path2.y, Path2.z, 1, ARGB(105, 255, 255, 255))
+            DrawLine3D(Path.x, 0, Path.z, Path2.x, 0, Path2.z, 1, ARGB(105, 255, 255, 255))
           end
         end
       end

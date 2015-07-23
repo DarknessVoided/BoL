@@ -769,7 +769,7 @@
           local damageW  = myHero.charName == "KogMaw" and 0 or (myHero.charName == "Azir" and loadedClass:CountSoldiers(enemy) or 1) * GetDmg(_W, myHero, enemy)
           local damageE  = GetDmg(_E, myHero, enemy)
           local damageR  = GetDmg(_R, myHero, enemy)*(myHero.charName == "Katarina" and 10 or 1)
-          local damageRC  = (myHero.charName == "Orianna" and loadedClass:CalcRComboDmg(enemy) or 0)
+          local damageRC  = (myHero.charName == "Orianna" and ScriptologyLoadedClasses[myHero.charName]:CalcRComboDmg(enemy) or 0)
           local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
           local damageS  = Smite and (20 + 8 * myHero.level) or 0
           local c = 0
