@@ -3,6 +3,7 @@ class "Orianna"
 
   function Orianna:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    LoadUPL()
   end
   
   function Orianna:Load()
