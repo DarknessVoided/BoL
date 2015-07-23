@@ -2,7 +2,7 @@ class "SAwareness"
 
   function SAwareness:__init()
     ScriptologyConfig:addSubMenu("SAwareness", "SAwareness")
-    self.Config = Cfg.SAwareness
+    self.Config = ScriptologyConfig.SAwareness
     self.Config:addParam("i", "Cooldowns", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("cde", "Enemies:", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("cda", "Allies:", SCRIPT_PARAM_ONOFF, true)
