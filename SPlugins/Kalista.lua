@@ -9,6 +9,7 @@ class "Kalista"
       [_E] = { range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.175 + 0.025 * level)*TotalDmg) or 0 end},
       [_R] = { range = 2000}
     }
+    stackTable = {}
   end
 
   function Kalista:Load()
@@ -16,7 +17,7 @@ class "Kalista"
     self.soulMate = nil
     self.saveAlly = false
     for k,v in pairs(GetAllyHeroes()) do
-      if TargetHaveBuff("kalistacoopstrikeally", v) then
+      if UnitHaveBuff(v, "kalistacoopstrikeally") then
         self.soulMate = v
         Config.Misc:modifyParam("R", "text", "Save ally with R ("..self.soulMate.charName..")")
       end
@@ -31,6 +32,11 @@ class "Kalista"
       self.soulMate = spell.target
       Config.Misc:modifyParam("R", "text", "Save ally with R ("..self.soulMate.charName..")")
       ScriptologyMsg("Soulmate found: "..spell.target.charName)
+    end
+    if spell.name:lower():find("attack") and unit.isMe then
+      stackTable[spell.target.networkID] = GetStacks(spell.target) + 0.5
+    elseif spell.name:lower():find("kalistaexpunge") then
+      stackTable = {}
     end
     if not self.soulMate or unit.type ~= myHero.type then return end
     if Config.Misc.R and self.saveAlly and GetDistance(self.soulMate) < data[3].range and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or GetDistance(spell.endPos,self.soulMate) < self.soulMate.boundingRadius*3) then
@@ -115,6 +121,12 @@ class "Kalista"
         myHero:Attack(winion)
         myHero:MoveTo(mousePos.x, mousePos.z)
       end    
+    end
+    for _, unit in pairs(GetEnemyHeroes()) do
+      if unit.charName == "Nautilus" then print(UnitHaveBuff(unit, "kalistaexpungemarker")) end
+      if not UnitHaveBuff(unit, "kalistaexpungemarker") then
+        stackTable[unit.networkID] = 0
+      end
     end
   end
 
@@ -210,4 +222,8 @@ class "Kalista"
         end
       end
     end
+  end
+
+  function GetStacks(x)
+    return stackTable[x.networkID] or 0
   end

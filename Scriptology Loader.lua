@@ -130,12 +130,83 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   end
 
   function LoadOrb()
+    if _G.AutoCarry then
+          if _G.Reborn_Initialised then
+            ScriptologyMsg("Found SAC: Reborn")
+          else
+            ScriptologyMsg("Found SAC: Revamped")
+          end
+    elseif _G.Reborn_Loaded then
+          DelayAction(LoadOrb, 1)
+    elseif _G.MMA_Loaded then
+          ScriptologyMsg("Found MMA")
+    else
+          ScriptologyConfig:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_INFO, "")
+          if FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then
+            ScriptologyConfig:addParam("bfw", "Big Fat Orbwalker", SCRIPT_PARAM_ONOFF, false)
+            DelayAction(function() ScriptologyConfig.bfw = false end, 0.1)
+            DelayAction(function() ScriptologyConfig:setCallback("bfw", function(var) if var then require "Big Fat Orbwalker" RemoveOw() loadedAnWalker = true end end) end, 0.25)
+          end
+          if FileExist(LIB_PATH .. "SxOrbWalk.lua") then
+            ScriptologyConfig:addParam("SxOrbWalk", "SxOrbWalk", SCRIPT_PARAM_ONOFF, false)
+            DelayAction(function() ScriptologyConfig.SxOrbWalk = false end, 0.1)
+            DelayAction(function() ScriptologyConfig:setCallback("SxOrbWalk", function(var) if var then LoadSxOrbWalk() end end) end, 0.25)
+          end
+          if FileExist(LIB_PATH .. "SOW.lua") then
+            ScriptologyConfig:addParam("SOW", "SOW", SCRIPT_PARAM_ONOFF, false)
+            DelayAction(function() ScriptologyConfig.SOW = false end, 0.1)
+            DelayAction(function() ScriptologyConfig:setCallback("SOW", function(var) if var then LoadSOW() end end) end, 0.25)
+          end
+          ScriptologyConfig:addParam("SWalkl", "SWalk", SCRIPT_PARAM_ONOFF, false)
+          DelayAction(function() ScriptologyConfig.SWalkl = false end, 0.1)
+          DelayAction(function() ScriptologyConfig:setCallback("SWalkl", function(var) if var then LoadSWalk() RemoveOw() end end) end, 0.25)
+    end
+  end
+
+  function LoadSxOrbWalk()
+    require 'SxOrbWalk'
+    SxOrb:LoadToMenu()
+    ScriptologyMsg("Loaded SxOrb.")
+    RemoveOw()
+    loadedAnWalker = true
+  end
+
+  function LoadSOW()
+    require 'SOW'
+    require 'VPrediction'
+    SOWVP = SOW(VP)
+    Cfg:addSubMenu("SOW","SOW")
+    SOWVP:LoadToMenu(Cfg.SOW)
+    ScriptologyMsg("Loaded SOW")
+    RemoveOw()
+    loadedAnWalker = true
+  end
+
+  function RemoveOw()
+    DelayAction(function()
+      ScriptologyConfig:removeParam("info")
+      if ScriptologyConfig.bfw ~= nil then
+        ScriptologyConfig:removeParam("bfw")
+      end
+      if ScriptologyConfig.SOW ~= nil then
+        ScriptologyConfig:removeParam("SOW")
+      end
+      if ScriptologyConfig.SxOrbWalk ~= nil then
+        ScriptologyConfig:removeParam("SxOrbWalk")
+      end
+      if ScriptologyConfig.SWalkl ~= nil then
+        ScriptologyConfig:removeParam("SWalkl")
+      end
+    end, 0.05)
+  end
+
+  function LoadSWalk()
     if pcall(require, "Scriptology - Walk") then
       ScriptologyMsg("Plugin: 'Walk' loaded")
       SWalk(nil, ScriptologyConfig)
     else
       if CheckForPlugin("Walk") then
-        DelayAction(LoadOrb, 2)
+        DelayAction(LoadSWalk, 2)
       end
     end
   end

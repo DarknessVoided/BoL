@@ -704,10 +704,10 @@
   end
 
   function UnitHaveBuff(unit, buffName)
-    if unit and buff then
+    if unit and buffName then
       for i = 1, unit.buffCount do
         local buff = unit:getBuff(i)
-        if buff and buff.valid and buff.name ~= nil and buff.name == buffName then 
+        if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
           return true
         end
       end
