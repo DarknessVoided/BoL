@@ -213,7 +213,7 @@ class "Nidalee"
     if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config.Combo.Q and ValidTarget(Target, data[0].range) then
       Cast(_Q, Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_W) == READY and GetStacks(Target) == 0 and self:IsHuman() and Config.Combo.W and ValidTarget(Target, data[0].range) then
+    if myHero:CanUseSpell(_W) == READY and UnitHaveBuff(Target, "nidaleepassivehunted") and self:IsHuman() and Config.Combo.W and ValidTarget(Target, data[0].range) then
       Cast(_W, Target, false, true, 1.5)
     end
     self:DoRWEQCombo(Target)
@@ -227,10 +227,10 @@ class "Nidalee"
 
   function Nidalee:DoRWEQCombo(unit)
     if not unit then return end
-    if unit and myHero:CanUseSpell(_R) == READY and GetStacks(unit) > 0 and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.R then
+    if unit and myHero:CanUseSpell(_R) == READY and UnitHaveBuff(unit, "nidaleepassivehunted") and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.R then
       Cast(_R)
     end
-    if unit and myHero:CanUseSpell(_W) == READY and GetStacks(unit) > 0 and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.W then
+    if unit and myHero:CanUseSpell(_W) == READY and UnitHaveBuff(unit, "nidaleepassivehunted") and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.W then
       Cast(_W, unit)
     end
     if unit and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
@@ -391,7 +391,7 @@ class "Nidalee"
         if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and not self:IsHuman() and GetRealHealth(enemy) < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, self.data.Cougar[1].range/2) then
           Cast(_R)
         end
-        if GetStacks(enemy) > 0 and EnemiesAround(enemy, 500) < 3 and GetDistance(enemy)-self.data.Cougar[1].range*2 < 0 then
+        if UnitHaveBuff(unit, "nidaleepassivehunted") and EnemiesAround(enemy, 500) < 3 and GetDistance(enemy)-self.data.Cougar[1].range*2 < 0 then
           if GetRealHealth(enemy) < self:GetRWEQComboDmg(enemy,0) then
             self:DoRWEQCombo(enemy)
           end
@@ -440,7 +440,7 @@ class "Nidalee"
       end
     elseif not human then
       if spell == _Q then
-        APDmg = ((({[1]=4,[2]=20,[3]=50,[4]=90})[RLevel])+0.36*AP+0.75*TotalDmg)*(1+GetStacks(target)*0.33)*2.5*(target.maxHealth-target.health)/target.maxHealth--kanker
+        APDmg = ((({[1]=4,[2]=20,[3]=50,[4]=90})[RLevel])+0.36*AP+0.75*TotalDmg)*(1+UnitHaveBuff(target, "nidaleepassivehunted") and 0.33 or 0)*2.5*(target.maxHealth-target.health)/target.maxHealth--kanker
       elseif spell == _W then
         APDmg = 50*RLevel+0.45*AP
       elseif spell == _E then
