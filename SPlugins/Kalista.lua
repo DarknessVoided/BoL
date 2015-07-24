@@ -226,19 +226,19 @@ class "Kalista"
     end
   end
 
-  function ApplyBuff(unit, source, buff)
+  function Kalista:ApplyBuff(unit, source, buff)
     if Config.Misc.stackMethod == 1 and unit and source and source.isMe and buff and buff.name == "kalistaexpungemarker" then
       stackTable[unit.networkID] = 1
     end
   end
 
-  function UpdateBuff(unit, buff, stacks)
+  function Kalista:UpdateBuff(unit, buff, stacks)
     if Config.Misc.stackMethod == 1 and unit and buff and stacks and buff.name == "kalistaexpungemarker" then
       stackTable[unit.networkID] = stacks
     end
   end
 
-  function RemoveBuff(unit, buff)
+  function Kalista:RemoveBuff(unit, buff)
     if Config.Misc.stackMethod == 1 and unit and buff and buff.name == "kalistaexpungemarker" then
       stackTable[unit.networkID] = 0
     end
