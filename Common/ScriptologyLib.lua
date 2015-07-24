@@ -702,4 +702,16 @@
       end
     end
   end
+
+  function HaveBuff(unit, buffName)
+    if unit and buff then
+      for i = 1, unit.buffCount do
+        local buff = unit:getBuff(i)
+        if buff and buff.valid and buff.name ~= nil and buff.name == buffName then 
+          return true 
+        end
+      end
+    end
+    return false
+  end
 -- }
