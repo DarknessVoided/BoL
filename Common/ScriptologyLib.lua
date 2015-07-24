@@ -268,8 +268,7 @@
     end
   end
 
-  function MakeData()
-    data = championData[myHero.charName]
+  function FillUPL()
     for k,v in pairs(data) do
       if v.type then 
         UPL:AddSpell(k, v)
@@ -540,16 +539,8 @@
         APDmg = APDmg + data[_E].dmgAP(AP, myHero:GetSpellData(_E).level, Level, TotalDmg, source, target)
       elseif myHero.charName == "Orianna" then
         APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
-      elseif crit >= 0.9 then
-        ADDmg = ADDmg * 2
-      elseif crit >= 0.8 then
-        ADDmg = ADDmg * 1.8
-      elseif crit > 0.7 then
-        ADDmg = ADDmg * 1.6
-      elseif crit > 0.6 then
-        ADDmg = ADDmg * 1.4
-      elseif crit > 0.5 then
-        ADDmg = ADDmg * 1.33
+      else
+        ADDmg = ADDmg * (1 * crit)
       end
       if GetMaladySlot() then
         APDmg = 15 + 0.15*AP

@@ -2,7 +2,14 @@ class "Lux"
 
   function Lux:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, false, true)
+    data = {
+      [_Q] = { speed = 1350, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 10+50*level+0.7*AP end},
+      [_W] = { speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear"},
+      [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 325, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
+      [_R] = { speed = math.huge, delay = 1, range = 3340, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
+    }
     LoadUPL()
+    FillUPL()
   end
 
   function Lux:Load()
@@ -10,7 +17,6 @@ class "Lux"
     ScriptologyConfig.ts:addTS(targetSel)
     ArrangeTSPriorities()
     self:Menu()
-    MakeData()
   end
 
   function Lux:Menu()

@@ -2,7 +2,14 @@ class "Orianna"
 
   function Orianna:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGIC, false, true)
+    data = {
+      [_Q] = { speed = 1200, delay = 0.250, range = 825, width = 175, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.5*AP end},
+      [_W] = { speed = math.huge, delay = 0.250, range = 0, width = 225, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 25+45*level+0.7*AP end},
+      [_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = false, aoe = false, type = "targeted", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.3*AP end},
+      [_R] = { speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.7*AP end}
+    }
     LoadUPL()
+    FillUPL()
   end
 
   function Orianna:Load()
@@ -10,7 +17,6 @@ class "Orianna"
     ScriptologyConfig.ts:addTS(targetSel)
     ArrangeTSPriorities()
     self:Menu()
-    MakeData()
     self.Ball = nil
     for k=1,objManager.maxObjects,1 do
       local object = objManager:getObject(k)
