@@ -8,14 +8,18 @@ class "Lux"
       [_E] = { speed = 1275, delay = 0.25, range = 1100, width = 325, collision = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15+45*level+0.6*AP end},
       [_R] = { speed = math.huge, delay = 1, range = 3340, width = 200, collision = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 200+100*level+0.75*AP end}
     }
-    LoadUPL()
-    FillUPL()
   end
 
   function Lux:Load()
-    ScriptologyConfig:addSubMenu("Target Selector", "ts")
-    ScriptologyConfig.ts:addTS(targetSel)
-    ArrangeTSPriorities()
+    DelayAction(function()
+      LoadUPL()
+      FillUPL()
+    end, 0.25)
+    DelayAction(function()
+      ScriptologyConfig:addSubMenu("Target Selector", "ts")
+      ScriptologyConfig.ts:addTS(targetSel)
+      ArrangeTSPriorities()
+    end, 0.25)
     self:Menu()
   end
 

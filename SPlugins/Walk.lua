@@ -31,10 +31,14 @@ class "SWalk"
     if self.aaResetTable or self.aaResetTable2 or self.aaResetTable3 or self.aaResetTable4 then
       self.Config:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
     end
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
-    Cfg:addSubMenu("Target Selector", "ts")
-    Cfg.ts:addTS(self.ts)
-    ArrangeTSPriorities()
+    if not targetSel then
+      self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
+      Cfg:addSubMenu("Target Selector", "ts")
+      Cfg.ts:addTS(self.ts)
+      ArrangeTSPriorities()
+    else
+      self.ts = targetSel
+    end
     sReady = {}
     if not ScriptologyLoaded then
       self.Config:addSubMenu("Key Settings", "kConfig")
