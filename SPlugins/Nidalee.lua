@@ -20,6 +20,7 @@ class "Nidalee"
         }
     self.ludenStacks = 0
     self.spearCooldownUntil = 0
+    self.Target = nil
   end
 
   function Nidalee:Load()
@@ -200,14 +201,14 @@ class "Nidalee"
   end
 
   function Nidalee:Combo()
-    if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config.Combo.Q and ValidTarget(Target, data[0].range) then
-      Cast(_Q, Target, false, true, 1.5)
+    if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config.Combo.Q and ValidTarget(self.Target, data[0].range) then
+      Cast(_Q, self.Target, false, true, 1.5)
     end
-    if myHero:CanUseSpell(_W) == READY and UnitHaveBuff(Target, "nidaleepassivehunted") and self:IsHuman() and Config.Combo.W and ValidTarget(Target, data[0].range) then
-      Cast(_W, Target, false, true, 1.5)
+    if myHero:CanUseSpell(_W) == READY and UnitHaveBuff(Target, "nidaleepassivehunted") and self:IsHuman() and Config.Combo.W and ValidTarget(self.Target, data[0].range) then
+      Cast(_W, self.Target, false, true, 1.5)
     end
-    self:DoRWEQCombo(Target)
-    if not self:IsHuman() and GetDistance(Target) > 425 then
+    self:DoRWEQCombo(self.Target)
+    if not self:IsHuman() and GetDistance(self.Target) > 425 then
       Cast(_R)
     end
     if not self:IsHuman() and self.spearCooldownUntil < GetInGameTimer() then
@@ -270,15 +271,15 @@ class "Nidalee"
 
   function Nidalee:Harrass()
     if self:IsHuman() and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 then
-      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, self.data.Human[0].range) then
-        Cast(_Q, Target, false, true, 2)
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(self.Target, self.data.Human[0].range) then
+        Cast(_Q, self.Target, false, true, 2)
       end
     else
-      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, self:GetAARange()) then
-        CastSpell(_Q, myHero:Attack(Target))
+      if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(self.Target, self:GetAARange()) then
+        CastSpell(_Q, myHero:Attack(self.Target))
       end
-      if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, self.data.Cougar[2].range) then
-        Cast(_E, Target)
+      if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(self.Target, self.data.Cougar[2].range) then
+        Cast(_E, self.Target)
       end
     end
   end

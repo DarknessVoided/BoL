@@ -49,6 +49,8 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
               _G.ScriptologyLoaded = true
               ScriptologyLoadedClasses[myHero.charName] = _G[myHero.charName]()
               AfterLoad()
+            else
+              print("wtf did just happen")
             end 
           end, 3)
         else
@@ -261,7 +263,11 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       end
     end
     if ScriptologyLoadedClasses[myHero.charName] then
-      Target = GetCustomTarget()
+      if targetSel then
+        targetSel:update()
+        _G.Target = targetSel.target
+        ScriptologyLoadedClasses[myHero.charName].Target = targetSel.target
+      end
       if Config.kConfig.Combo then
         pcall(function() ScriptologyLoadedClasses[myHero.charName]:Combo() end)
       end
