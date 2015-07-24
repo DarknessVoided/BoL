@@ -66,3 +66,11 @@ class "Gangplank"
   		table.insert(barrels, {barrel = obj, time = GetInGameTimer()})
   	end
   end
+
+  function Gangplank:Combo()
+  	if myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and Config.Combo.E then
+  		Cast(_E, Target, false)
+  	elseif myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
+  		Cast(_Q, Target)
+  	end
+  end
