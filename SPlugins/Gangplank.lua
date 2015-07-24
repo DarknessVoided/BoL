@@ -76,6 +76,14 @@ class "Gangplank"
   	end
   end
 
+  function Gangplank:Harrass()
+  	if myHero:CanUseSpell(_E) == READY and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.E and GetDistance(self.Target) <= data[2].range and #GetBarrelsAround(self.Target) < 1 then
+  		Cast(_E, self.Target, 2)
+  	elseif myHero:CanUseSpell(_Q) == READY and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and Config.Harrass.Q and GetDistance(self.Target) <= data[0].range then
+  		Cast(_Q, self.Target)
+  	end
+  end
+
   function Gangplank:GetBarrelsAround(unit)
   	local result = {}
   	for _,k in pairs(barrels) do
