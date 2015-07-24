@@ -1,18 +1,19 @@
 class "Gangplank"
 
   function Gangplank:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_PHYSICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1000, DAMAGE_PHYSICAL, false, true)
     data = {
       [_Q] = { range = 625},
       [_W] = { range = 25000},
-      [_E] = { range = 1000},
+      [_E] = { range = 1000, speed = math.huge, delay = 1, width = 125, type = "circular"},
       [_R] = { range = 2000}
     }
     barrels = {}
+    self.Target = nil
   end
 
   function Gangplank:Load()
-    SetupMenu(false)
+    SetupMenu()
   end
 
   function Gangplank:Menu()
@@ -54,7 +55,7 @@ class "Gangplank"
 	end
 	if Config.Misc.Q then
   		for _,k in pairs(barrels) do
-			if GetDistance(k.barrel) < data[0].range and GetInGameTimer() >= k.time + 1 - GetDistance(k.barrel)/1000 - GetLatency() / 2000 then
+			if GetDistance(k.barrel) < data[0].range and GetInGameTimer() >= k.time + 1 - GetDistance(k.barrel)/1000 + GetLatency() / 2000 then
 				Cast(_Q, k.barrel)
 			end
   		end
@@ -68,9 +69,19 @@ class "Gangplank"
   end
 
   function Gangplank:Combo()
-  	if myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and Config.Combo.E then
-  		Cast(_E, Target, false)
-  	elseif myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
-  		Cast(_Q, Target)
+  	if myHero:CanUseSpell(_E) == READY and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and Config.Combo.E and GetDistance(self.Target) <= data[2].range and #GetBarrelsAround(self.Target) < 1 then
+  		Cast(_E, self.Target, 2)
+  	elseif myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and GetDistance(self.Target) <= data[0].range then
+  		Cast(_Q, self.Target)
   	end
+  end
+
+  function Gangplank:GetBarrelsAround(unit)
+  	local result = {}
+  	for _,k in pairs(barrels) do
+  		if k.barrel.health > 0 and GetDistance(k.barrel, unit) < data[2].width then
+  			table.insert(result, k.barrel)
+  		end
+  	end
+  	return result
   end
