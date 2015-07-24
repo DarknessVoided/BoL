@@ -150,17 +150,6 @@
     return false
   end
 
-  function IsRecalling(unit)
-    if unit == nil then if self == nil then return else unit = self end end
-    for i=1, unit.buffCount do
-     local buff = unit:getBuff(i)
-     if buff and buff.valid and buff.name then 
-      if string.find(buff.name, "recall") or string.find(buff.name, "Recall") or string.find(buff.name, "teleport") or string.find(buff.name, "Teleport") then return true end
-     end
-    end
-    return false
-  end
-
   function ArrangeTSPriorities()
     local priorityTable2 = {
         p5 = {"Alistar", "Amumu", "Blitzcrank", "Braum", "ChoGath", "DrMundo", "Garen", "Gnar", "Hecarim", "JarvanIV", "Leona", "Lulu", "Malphite", "Nasus", "Nautilus", "Nunu", "Olaf", "Rammus", "Renekton", "Sejuani", "Shen", "Shyvana", "Singed", "Sion", "Skarner", "Taric", "Thresh", "Volibear", "Warwick", "MonkeyKing", "Yorick", "Zac"},
@@ -704,7 +693,7 @@
   end
 
   function UnitHaveBuff(unit, buffName)
-    if unit and buffName then
+    if unit and buffName and unit.buffCount then
       for i = 1, unit.buffCount do
         local buff = unit:getBuff(i)
         if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
