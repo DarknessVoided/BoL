@@ -2,7 +2,7 @@
 class "Nidalee"
 
   function Nidalee:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     self.data = {
       Human  = {
           [_Q] = { speed = 1337, delay = 0.125, range = 1500, width = 25, collision = true, aoe = false, type = "linear"},
@@ -19,18 +19,12 @@ class "Nidalee"
           [_E] = { range = 0},
           [_R] = { range = 0}
         }
+    self.ludenStacks = 0
+    self.spearCooldownUntil = 0
   end
 
   function Nidalee:Load()
     SetupMenu()
-    self.ludenStacks = 0
-    self.spearCooldownUntil = 0
-    AddDrawCallback(function() self:Draw() end)
-    AddTickCallback(function() self:Heal() end)
-    AddTickCallback(function() self:DmgCalc() end)
-    AddUpdateBuffCallback(function(unit, buff, stacks) self:UpdateBuff(unit, buff, stacks) end)
-    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-    AddTickCallback(function() self:Flee() end)
   end
 
   function Nidalee:Menu()
@@ -81,7 +75,7 @@ class "Nidalee"
     if unit and unit.isMe and spell and spell.name and spell.name == "JavelinToss" then self.spearCooldownUntil = GetInGameTimer()+6*(1+unit.cdr) end
   end
 
-  function Nidalee:Heal()
+  function Nidalee:Tick()
     if not IsRecalling(myHero) and self:IsHuman() and Config.Misc.Eas and Config.Misc.manaEs <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and myHero.health/myHero.maxHealth <= Config.Misc.healthEs/100 then
       Cast(_E, myHero, true)
     end
@@ -92,9 +86,6 @@ class "Nidalee"
         end
       end
     end
-  end
-
-  function Nidalee:Flee()
     if Config.Misc.Flee then
       if self:IsHuman() then
         Cast(_R)
