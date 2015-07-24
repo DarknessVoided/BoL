@@ -326,7 +326,7 @@
   end
 
   function GetRealHealth(unit)
-    return unit.health
+    return math.ceil(unit.health + unit.shield)
   end
 
   function HaveBuff(unit, buffname)
