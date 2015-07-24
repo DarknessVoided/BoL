@@ -167,9 +167,12 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   function CheckForPlugin(name)
     local ScriptologyPlugin = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/SPlugins/"..name..".version")
     if ScriptologyPlugin then
-      ScriptologyMsg("Downloading plugin: '"..name.."'")
-      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/"..name..".lua?rand="..math.random(1,10000), LIB_PATH.."Scriptology - "..name..".lua", function() ScriptologyMsg("Downloaded plugin: '"..name.."'") end)
-      return true
+      ScriptologyPluginVersion = type(tonumber(ScriptologyPlugin)) == "number" and tonumber(ScriptologyPlugin) or nil
+      if ScriptologyPluginVersion then
+        ScriptologyMsg("Downloading plugin: '"..name.."'")
+        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/"..name..".lua?rand="..math.random(1,10000), LIB_PATH.."Scriptology - "..name..".lua", function() ScriptologyMsg("Downloaded plugin: '"..name.."'") end)
+        return true
+      end
     else
       ScriptologyMsg("Plugin not found")
     end
