@@ -193,6 +193,19 @@ class "SWalk"
     end
   end
 
+  RESET_SELF, RESET_PREDICT, RESET_TARGET, RESET_MOUSE = 1, 2, 3, 4
+  function SWalk:AddReset(Spell, type)
+    if type == RESET_SELF then
+      table.insert(aaResetTable, Spell)
+    elseif type == RESET_PREDICT then
+      table.insert(aaResetTable2, Spell)
+    elseif type == RESET_TARGET then
+      table.insert(aaResetTable3, Spell)
+    elseif type == RESET_MOUSE then
+      table.insert(aaResetTable4, Spell)
+    end
+  end
+
   function SWalk:WindUp(unit)
     if ValidTarget(unit) then
       local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
@@ -200,7 +213,7 @@ class "SWalk"
         if self.aaResetTable then
           for _,k in pairs(self.aaResetTable) do
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
-            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
+            if sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k)
               return true
@@ -210,7 +223,7 @@ class "SWalk"
         if self.aaResetTable2 then
           for _,k in pairs(self.aaResetTable2) do
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
-            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
+            if sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               if UPLloaded and data[k].type then
                 Cast(k, unit, false, true, 1)
@@ -224,7 +237,7 @@ class "SWalk"
         if self.aaResetTable3 then
           for _,k in pairs(self.aaResetTable3) do
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
-            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
+            if sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k, unit)
               return true
@@ -234,7 +247,7 @@ class "SWalk"
         if self.aaResetTable4 then
           for _,k in pairs(self.aaResetTable4) do
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
-            if self.Config[str[k]] and sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
+            if sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               self.orbTable.lastAA = 0
               CastSpell(k, mousePos.x, mousePos.z)
               return true
