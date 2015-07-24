@@ -11,7 +11,7 @@ class "Ahri"
     }
   end
 
-  function Kalista:Load()
+  function Ahri:Load()
     SetupMenu()
     self.Orb = nil
     self.ultOn = 0
