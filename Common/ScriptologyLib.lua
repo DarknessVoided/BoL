@@ -687,8 +687,4 @@
       end
     end
   end
-
-  function GetStacks(unit)
-    return 0
-  end
 -- }
