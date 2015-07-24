@@ -225,23 +225,23 @@ class "Nidalee"
       Cast(_W, unit)
     end
     if unit and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
-      if unit and self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
-          CastSpell(_Q, myHero:Attack(unit))
-      elseif unit and self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
+      if self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
+          CastSpell(_Q)
+      elseif self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
         if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
           Cast(_E, unit)
         end
         if myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
-          CastSpell(_Q, myHero:Attack(unit))
+          CastSpell(_Q)
         end
         if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
-          CastSpell(_Q, myHero:Attack(unit))
+          CastSpell(_Q)
         end
-      elseif unit then
+      else
         if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
           Cast(_E, unit)
         elseif myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
-          CastSpell(_Q, myHero:Attack(unit))
+          CastSpell(_Q)
         end
       end
       if unit and myHero:CanUseSpell(_W) == READY and Config.Combo.W then
@@ -431,7 +431,7 @@ class "Nidalee"
       end
     elseif not human then
       if spell == _Q then
-        APDmg = ((({[1]=4,[2]=20,[3]=50,[4]=90})[RLevel])+0.36*AP+0.75*TotalDmg)*(1+UnitHaveBuff(target, "nidaleepassivehunted") and 0.33 or 0)*2.5*(target.maxHealth-target.health)/target.maxHealth--kanker
+        APDmg = ((({[1]=4,[2]=20,[3]=50,[4]=90})[RLevel])+0.36*AP+0.75*TotalDmg)*(1+(UnitHaveBuff(target, "nidaleepassivehunted") and 0.33 or 0))*2.5*(target.maxHealth-target.health)/target.maxHealth--kanker
       elseif spell == _W then
         APDmg = 50*RLevel+0.45*AP
       elseif spell == _E then
