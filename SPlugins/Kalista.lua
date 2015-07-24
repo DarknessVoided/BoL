@@ -2,7 +2,7 @@
 class "Kalista"
 
   function Kalista:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_PHYSICAL, false, true)
     data = {
       [_Q] = { speed = 1200, delay = 0.5, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
       [_W] = { delay = 1.5, range = 5000},
@@ -22,8 +22,6 @@ class "Kalista"
         Config.Misc:modifyParam("R", "text", "Save ally with R ("..self.soulMate.charName..")")
       end
     end
-    AddTickCallback(function() self:Tick() end)
-    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
   end
 
   function Kalista:ProcessSpell(unit, spell)
@@ -35,7 +33,7 @@ class "Kalista"
     end
     if Config.Misc.stackMethod == 2 then
       if spell.name:lower():find("attack") and unit.isMe then
-        stackTable[spell.target.networkID] = GetStacks(spell.target) + 0.5
+        stackTable[spell.target.networkID] = GetStacks(spell.target) + 1
       elseif spell.name:lower():find("kalistaexpunge") then
         stackTable = {}
       end
