@@ -31,11 +31,13 @@
     end
   end
 
-  function SetupMenu()
-    DelayAction(function()
-      LoadUPL()
-      FillUPL()
-    end, 0.25)
+  function SetupMenu(notUpl)
+    if not notUpl then
+      DelayAction(function()
+        LoadUPL()
+        FillUPL()
+      end, 0.25)
+    end
     DelayAction(function()
       ScriptologyConfig:addSubMenu("Target Selector", "ts")
       ScriptologyConfig.ts:addTS(targetSel)
