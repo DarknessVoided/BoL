@@ -1,4 +1,3 @@
-
 class "Nidalee"
 
   function Nidalee:__init()
