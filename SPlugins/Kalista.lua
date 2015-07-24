@@ -33,10 +33,12 @@ class "Kalista"
       Config.Misc:modifyParam("R", "text", "Save ally with R ("..self.soulMate.charName..")")
       ScriptologyMsg("Soulmate found: "..spell.target.charName)
     end
-    if spell.name:lower():find("attack") and unit.isMe then
-      stackTable[spell.target.networkID] = GetStacks(spell.target) + 0.5
-    elseif spell.name:lower():find("kalistaexpunge") then
-      stackTable = {}
+    if Config.Misc.stackMethod == 2 then
+      if spell.name:lower():find("attack") and unit.isMe then
+        stackTable[spell.target.networkID] = GetStacks(spell.target) + 0.5
+      elseif spell.name:lower():find("kalistaexpunge") then
+        stackTable = {}
+      end
     end
     if not self.soulMate or unit.type ~= myHero.type then return end
     if Config.Misc.R and self.saveAlly and GetDistance(self.soulMate) < data[3].range and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or GetDistance(spell.endPos,self.soulMate) < self.soulMate.boundingRadius*3) then
@@ -75,6 +77,7 @@ class "Kalista"
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addParam("stackMethod", "Method to count stacks:", SCRIPT_PARAM_LIST, 1, {"BuffCallbacks", "Count + Buff"})--, "Objects"})
     Config.Misc:addDynamicParam("WallJump", "WallJump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
     Config.Misc:addParam("Ej", "Use E to steal Jungle", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("AAGap", "AAs as Gapcloser on minions", SCRIPT_PARAM_ONOFF, true)
@@ -122,10 +125,11 @@ class "Kalista"
         myHero:MoveTo(mousePos.x, mousePos.z)
       end    
     end
-    for _, unit in pairs(GetEnemyHeroes()) do
-      if unit.charName == "Nautilus" then print(UnitHaveBuff(unit, "kalistaexpungemarker")) end
-      if not UnitHaveBuff(unit, "kalistaexpungemarker") then
-        stackTable[unit.networkID] = 0
+    if Config.Misc.stackMethod == 2 then
+      for _, unit in pairs(GetEnemyHeroes()) do
+        if not UnitHaveBuff(unit, "kalistaexpungemarker") then
+          stackTable[unit.networkID] = 0
+        end
       end
     end
   end
@@ -221,6 +225,24 @@ class "Kalista"
           CastSpell(Smite, enemy)
         end
       end
+    end
+  end
+
+  function ApplyBuff(unit, source, buff)
+    if Config.Misc.stackMethod == 1 and unit and source and source.isMe and buff and buff.name == "kalistaexpungemarker" then
+      stackTable[unit.networkID] = 1
+    end
+  end
+
+  function UpdateBuff(unit, buff, stacks)
+    if Config.Misc.stackMethod == 1 and unit and buff and stacks and buff.name == "kalistaexpungemarker" then
+      stackTable[unit.networkID] = stacks
+    end
+  end
+
+  function RemoveBuff(unit, buff)
+    if Config.Misc.stackMethod == 1 and unit and buff and buff.name == "kalistaexpungemarker" then
+      stackTable[unit.networkID] = 0
     end
   end
 
