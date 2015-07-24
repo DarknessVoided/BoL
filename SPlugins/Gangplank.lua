@@ -55,7 +55,7 @@ class "Gangplank"
 	end
 	if Config.Misc.Q then
   		for _,k in pairs(barrels) do
-			if GetDistance(k.barrel) < data[0].range and GetInGameTimer() >= k.time + 1 - GetDistance(k.barrel)/1000 + GetLatency() / 2000 then
+			if GetDistance(k.barrel) < data[0].range and GetInGameTimer() >= k.time + (myHero.level >= 13 and 1.25 or myHero.level >= 7 and 2.25 or 3.25) - GetDistance(k.barrel)/1000 - GetLatency() / 2000 then
 				Cast(_Q, k.barrel)
 			end
   		end
