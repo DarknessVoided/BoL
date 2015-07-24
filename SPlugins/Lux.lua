@@ -11,16 +11,7 @@ class "Lux"
   end
 
   function Lux:Load()
-    DelayAction(function()
-      LoadUPL()
-      FillUPL()
-    end, 0.25)
-    DelayAction(function()
-      ScriptologyConfig:addSubMenu("Target Selector", "ts")
-      ScriptologyConfig.ts:addTS(targetSel)
-      ArrangeTSPriorities()
-    end, 0.25)
-    self:Menu()
+    SetupMenu()
   end
 
   function Lux:Menu()

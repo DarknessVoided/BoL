@@ -8,22 +8,10 @@ class "Orianna"
       [_E] = { speed = 1800, delay = 0.250, range = 825, width = 80, collision = false, aoe = false, type = "targeted", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+30*level+0.3*AP end},
       [_R] = { speed = math.huge, delay = 0.250, range = 0, width = 410, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 75+75*level+0.7*AP end}
     }
-    LoadUPL()
-    FillUPL()
   end
 
   function Orianna:Load()
-    ScriptologyConfig:addSubMenu("Target Selector", "ts")
-    ScriptologyConfig.ts:addTS(targetSel)
-    ArrangeTSPriorities()
-    self:Menu()
-    self.Ball = nil
-    for k=1,objManager.maxObjects,1 do
-      local object = objManager:getObject(k)
-      if object and object.valid and object.name and object.team == myHero.team and object.name == "TheDoomBall" then
-        self.Ball = object
-      end
-    end
+    SetupMenu()
   end
 
   function Orianna:Tick()
