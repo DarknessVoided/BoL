@@ -51,6 +51,8 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
               AfterLoad()
             end 
           end, 3)
+        else
+          AfterLoad()
         end
       end
     else
