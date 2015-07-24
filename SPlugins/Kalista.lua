@@ -10,6 +10,7 @@ class "Kalista"
       [_R] = { range = 2000}
     }
     stackTable = {}
+    self.Target = nil
   end
 
   function Kalista:Load()
@@ -148,11 +149,11 @@ class "Kalista"
   end
 
   function Kalista:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, Target, false, true, 2)
+    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(self.Target, data[0].range) and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
+      Cast(_Q, self.Target, false, true, 2)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(Target, data[2].range) then
-      if GetDmg(_E, myHero, Target) >= GetRealHealth(Target) then
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(self.Target, data[2].range) then
+      if GetDmg(_E, myHero, self.Target) >= GetRealHealth(self.Target) then
         Cast(_E)
       end
       local killableCounter = 0
@@ -162,14 +163,14 @@ class "Kalista"
           killableCounter = killableCounter +1
         end   
       end   
-      if killableCounter > 0 and GetStacks(Target) > 0 then
+      if killableCounter > 0 and GetStacks(self.Target) > 0 then
         Cast(_E)
       end
-      if Config.Combo.Er and GetStacks(Target) >= Config.Combo.Es then
-        pos, b = PredictPos(Target,0.25)
+      if Config.Combo.Er and GetStacks(self.Target) >= Config.Combo.Es then
+        pos, b = PredictPos(self.Target,0.25)
         pos2, b = PredictPos(myHero,0.25)
         pos2 = pos2 or myHero
-        if pos and pos2 and GetDistance(Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
+        if pos and pos2 and GetDistance(self.Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
           Cast(_E)
         end
       end
@@ -178,9 +179,9 @@ class "Kalista"
   
   function Kalista:Harrass()
     if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, Target, false, true, 2)
+      Cast(_Q, self.Target, false, true, 2)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, data[2].range) then
+    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(self.Target, data[2].range) then
       local harrassUnit = nil
       local killableCounter = 0
       for minion,winion in pairs(Mobs.objects) do
@@ -198,11 +199,11 @@ class "Kalista"
       if killableCounter >= 1 and harrassUnit ~= nil then
         Cast(_E)
       end
-      if Config.Harrass.Er and GetStacks(Target) > Config.Harrass.Es then
-        pos, b = PredictPos(Target,0.25)
+      if Config.Harrass.Er and GetStacks(self.Target) > Config.Harrass.Es then
+        pos, b = PredictPos(self.Target,0.25)
         pos2, b = PredictPos(myHero,0.25)
         pos2 = pos2 or myHero
-        if pos and pos2 and GetDistance(Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
+        if pos and pos2 and GetDistance(self.Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
           Cast(_E)
         end
       end
