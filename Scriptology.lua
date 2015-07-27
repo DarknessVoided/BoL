@@ -1273,6 +1273,16 @@ _G.ScriptologyDebug      = false
         APDmg = APDmg + data[_E].dmgAP(AP, myHero:GetSpellData(_E).level, Level, TotalDmg, source, target)
       elseif myHero.charName == "Orianna" then
         APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
+      elseif crit >= 0.9 then
+        ADDmg = ADDmg * 2
+      elseif crit >= 0.8 then
+        ADDmg = ADDmg * 1.8
+      elseif crit > 0.7 then
+        ADDmg = ADDmg * 1.6
+      elseif crit > 0.6 then
+        ADDmg = ADDmg * 1.4
+      elseif crit > 0.5 then
+        ADDmg = ADDmg * 1.33
       end
       if GetMaladySlot() then
         APDmg = 15 + 0.15*AP
@@ -1283,11 +1293,22 @@ _G.ScriptologyDebug      = false
       if data[spell].dmgTRUE then TRUEDmg =  data[spell].dmgTRUE(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
     end
     dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
-    return math.floor(dmg)
+    dmgMod = (HaveBuff(source, "summonerexhaust") and 0.6 or 1) * (HaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
+    return math.floor(dmg) * dmgMod
   end
 
   function GetRealHealth(unit)
-    return unit.health + unit.shield + ((unit.charName == "Blitzcrank" and not TargetHaveBuff("manabarriercooldown", unit)) and unit.mana/2 or 0)
+    return unit.health
+  end
+
+  function HaveBuff(unit, buffname)
+    for i = 1, unit.buffCount do
+      local buff = unit:getBuff(i)
+      if buff and buff.valid and buff.name ~= nil and buff.name:lower():find(buffname) and buff.endT > GetInGameTimer() then 
+        return true 
+      end
+    end
+    return false
   end
 
   function GetHydraSlot()
