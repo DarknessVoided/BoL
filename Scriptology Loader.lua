@@ -222,7 +222,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       if ScriptologyServerVersion then
         if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua".."?rand="..math.random(1,10000), SCRIPT_PATH.."Scriptology.lua", function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/"..GetCurrentEnv().FILE_NAME.."?rand="..math.random(1,10000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
           return true
         end
