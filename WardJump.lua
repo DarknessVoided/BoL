@@ -32,7 +32,7 @@ function WardJump()
 	if casted and jumped then casted, jumped = false, false
 	elseif (myHero:CanUseSpell(_W) == READY and myHero.charName == "LeeSin" and myHero:GetSpellData(_W).name == "BlindMonkWOne") or (myHero:CanUseSpell(_E) == READY and myHero.charName == "Katarina") or (myHero:CanUseSpell(_Q) == READY and myHero.charName == "Jax") then
 		local pos = getMousePos()
-		if Jump(pos, 150, true) then return end
+		if Jump(pos, 250, true) then return end
 		slot = GetWardSlot()
 		if not slot then return end
 		CastSpell(slot, pos.x, pos.z)
