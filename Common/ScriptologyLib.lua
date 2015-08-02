@@ -613,7 +613,8 @@
   end
 
   function Cast(Spell, target, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
-    if not target and not hitchance then
+    local pred = (hitchance and type(hitchance) == "number")
+    if not target and not pred then
       if VIP_USER then
         Packet("S_CAST", {spellId = Spell}):send()
         return true
@@ -621,7 +622,7 @@
         CastSpell(Spell)
         return true
       end
-    elseif target and target.networkID then
+    elseif target and target.networkID and not pred then
       if VIP_USER then
         Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
         return true
@@ -629,7 +630,7 @@
         CastSpell(Spell, target)
         return true
       end
-    elseif VectorType(target) and (not hitchance or type(hitchance) ~= "number") then
+    elseif VectorType(target) and not pred then
       xPos = target.x
       zPos = target.z
       if VIP_USER then
@@ -639,7 +640,7 @@
         CastSpell(Spell, xPos, zPos)
         return true
       end
-    elseif target and hitchance and type(hitchance) == "number" then
+    elseif target and pred then
       if not source then source = myHero end
       local CastPosition, HitChance, Position = UPL:Predict(Spell, source, target)
       if HitChance and HitChance >= hitchance then
