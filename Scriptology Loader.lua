@@ -50,7 +50,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
               ScriptologyLoadedClasses[myHero.charName] = _G[myHero.charName]()
               AfterLoad()
             else
-              print("wtf did just happen")
+              print("Error: Failed to load the plugin!")
             end 
           end, 3)
         else
