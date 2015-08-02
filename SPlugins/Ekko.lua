@@ -1,7 +1,7 @@
 class "Ekko"
 
   function Ekko:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     data = {
       [_Q] = { speed = 1050, delay = 0.25, range = 825, width = 140, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15*level+45+0.2*AP end},
       [_W] = { speed = math.huge, delay = 2, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
@@ -56,7 +56,7 @@ class "Ekko"
       for minion,winion in pairs(Mobs.objects) do
         local QMinionDmg = GetDmg(_Q, myHero, winion)
         if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
-          Cast(_Q, winion, false, true, 1.2)
+          Cast(_Q, winion, 1.2)
         end
       end
     end
@@ -81,10 +81,10 @@ class "Ekko"
 
   function Ekko:Combo()
     if Config.Combo.Q and ValidTarget(Target, data[0].range) then
-      Cast(_Q, Target, false, true, 1.2)
+      Cast(_Q, Target, 1.2)
     end
     if Config.Combo.W and ValidTarget(Target, data[1].range) then
-      Cast(_W, Target, false, true, 1)
+      Cast(_W, Target, 1)
     end
     if GetLichSlot() then
       if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config.Combo.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
@@ -101,7 +101,7 @@ class "Ekko"
 
   function Ekko:Harrass()
     if Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 and ValidTarget(Target, data[0].range) then
-      Cast(_Q, Target, false, true, 1.5)
+      Cast(_Q, Target, 1.5)
     end
     if GetLichSlot() then
       if myHero:GetSpellData(GetLichSlot()).currentCd == 0 and Config.Harrass.manaE < myHero.mana/myHero.maxMana*100 and Config.Harrass.E and ValidTarget(Target, data[2].range+(myHero.range+myHero.boundingRadius*2)*2) then
@@ -120,11 +120,11 @@ class "Ekko"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
-          Cast(_Q, enemy, false, true, 1.2)
+          Cast(_Q, enemy, 1.2)
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range+(myHero.range+myHero.boundingRadius)*2) then
           Cast(_E, enemy)
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy, false, true, 1.5, self:GetTwin())
+          Cast(_R, enemy, self:GetTwin())
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
