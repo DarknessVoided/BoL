@@ -165,17 +165,23 @@ class "Yasuo"
         end
       end
     end
-    if sReady[_R] and Config.Combo.R then
+    if sReady[_R] and Config.Combo.R and self.Target.y > myHero.y+5 or self.Target.y < myHero.y-5 then
       if sReady[_Q] and GetDistance(self.Target) < 500 then
         myHero:Attack(self.Target)
       else
         Cast(_R, self.Target)
       end
     end
-    if sReady[_Q] and self.passiveTracker and GetDistance(self.Target) < 1200 then
-      local CastPosition, HitChance, Position = UPL:Predict(-2, myHero, self.Target)
-      if HitChance >= 2 then
-        Cast(_Q, CastPosition)
+    if sReady[_Q] then
+      if self.passiveTracker and GetDistance(self.Target) < 1200 then
+        local CastPosition, HitChance, Position = UPL:Predict(-2, myHero, self.Target)
+        if HitChance >= 2 then
+          Cast(_Q, CastPosition)
+        end
+      else
+        if not myHero.isWindingUp then
+          Cast(_Q, self.Target, 2)
+        end
       end
     end
   end
