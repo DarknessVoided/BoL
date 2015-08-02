@@ -34,7 +34,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     if FileExist(LIB_PATH .. "ScriptologyLib.lua") then
       require("ScriptologyLib")
       _G.sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
-      AddTickCallback(function()for;_=0,5;do;sReady[_] = (myHero:CanUseSpell(_) == READY)end;end)
+      AddTickCallback(function()for _=0,5 do;sReady[_]=(myHero:CanUseSpell(_)==READY)end;end)
       if pcall(require, "Scriptology - "..myHero.charName) then
         Vars()
         ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")

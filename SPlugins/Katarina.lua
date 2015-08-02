@@ -163,9 +163,7 @@ class "Katarina"
 
   function Katarina:Combo()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    print(sReady[_Q])
     if Config.Combo.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
-    print("test2")
       Cast(_Q, self.Target)
     end
     pos, b = PredictPos(self.Target,0.25)
