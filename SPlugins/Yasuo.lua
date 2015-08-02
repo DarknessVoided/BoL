@@ -1,7 +1,7 @@
 class "Yasuo"
 
   function Yasuo:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[3].range, DAMAGE_PHYSICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[3].range, DAMAGE_PHYSICAL, false, true)
     data = {
       [_Q] = { range = 500, speed = math.huge, delay = 0.125, width = 55, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20*level+TotalDmg-10 end},
       [_W] = { range = 350},
