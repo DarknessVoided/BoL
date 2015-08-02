@@ -12,7 +12,7 @@ class "Katarina"
     self.Target = nil
   end
 
-  function Kalista:Load()
+  function Katarina:Load()
     SetupMenu()
     self.Wards = {}
     self.casted, self.jumped = false, false

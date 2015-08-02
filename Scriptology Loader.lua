@@ -43,6 +43,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         ScriptologyMsg("Plugin: '"..myHero.charName.."' not found, checking online..")
         if CheckForPlugin(myHero.charName) then
           DelayAction(function() 
+            --require("Scriptology - "..myHero.charName) -- debug
             if pcall(require, "Scriptology - "..myHero.charName) then 
               Vars()
               ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
