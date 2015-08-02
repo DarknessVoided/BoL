@@ -31,7 +31,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   end)
 
   function Load()
-    if FileExist(LIB_PATH .. "ScriptologyLib.lua") then
+    if FileExist(LIB_PATH .. "ScriptologyLib.lua") and FileExist(LIB_PATH .. "SPrediction.lua") then
       require("ScriptologyLib")
       _G.sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
       AddTickCallback(function()for _=0,5 do;sReady[_]=(myHero:CanUseSpell(_)==READY)end;end)
@@ -61,7 +61,11 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         end
       end
     else
-      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
+      if not FileExist(LIB_PATH .. "SPrediction.lua") then
+        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?rand="..math.random(1,10000), LIB_PATH.."SPrediction.lua", function() end)
+      elseif not FileExist(LIB_PATH .. "ScriptologyLib.lua") then
+        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
+      end
       DelayAction(Load, 2)
     end
   end
@@ -231,6 +235,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/"..GetCurrentEnv().FILE_NAME.."?rand="..math.random(1,10000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?rand="..math.random(1,10000), LIB_PATH.."SPrediction.lua", function() end)
           return true
         end
       end
