@@ -453,7 +453,7 @@
   end
 
   function DmgCalc()
-    if not Config.Draws.DMG then return end
+    if not Config or not Config.Draws or not Config.Draws.DMG then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy.visible then
         local health = GetRealHealth(enemy)
