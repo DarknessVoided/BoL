@@ -10,6 +10,8 @@ class "Katarina"
       [_R] = { range = 550, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+10*level+0.2*AP+0.3*source.addDamage end}
     }
     self.Target = nil
+    ultOn = 0
+    ultTarget = nil
   end
 
   function Katarina:Load()
@@ -26,7 +28,6 @@ class "Katarina"
   end
 
   function Katarina:Tick()
-    if loadedOrb.Target ~= nil then self.Target = loadedOrb.Target end
     if Config.Misc.Jump then self:WardJump() end
   end
 
@@ -135,42 +136,43 @@ class "Katarina"
   function Katarina:LastHit()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
     if Config.LastHit.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
-      Cast(_Q, self.Target, true)
+      Cast(_Q, self.Target)
     end
     pos, b = PredictPos(self.Target,0.25)
     if pos and Config.LastHit.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
       Cast(_W)
     end
     if Config.LastHit.E and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
-      Cast(_E, self.Target, true)
+      Cast(_E, self.Target)
     end
   end
 
   function Katarina:LaneClear()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
     if Config.LaneClear.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
-      Cast(_Q, self.Target, true)
+      Cast(_Q, self.Target)
     end
     pos, b = PredictPos(self.Target,0.25)
     if pos and Config.LaneClear.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
     if Config.LaneClear.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
-      Cast(_E, self.Target, true)
+      Cast(_E, self.Target)
     end
   end
 
   function Katarina:Combo()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
+    print(self.Target.charName)
     if Config.Combo.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
-      Cast(_Q, self.Target, true)
+      Cast(_Q, self.Target)
     end
     pos, b = PredictPos(self.Target,0.25)
     if pos and Config.Combo.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
     if Config.Combo.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
-      Cast(_E, self.Target, true)
+      Cast(_E, self.Target)
     end
     if Config.Combo.R and sReady[_R] and GetDistance(self.Target) < 200 and self.Target.health < GetDmg(_R, myHero, self.Target)*10 then
       Cast(_R)
@@ -180,14 +182,14 @@ class "Katarina"
   function Katarina:Harrass()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
     if Config.Harrass.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range then
-      Cast(_Q, self.Target, true)
+      Cast(_Q, self.Target)
     end
     pos, b = PredictPos(self.Target,0.25)
     if pos and Config.Harrass.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 then
       Cast(_W)
     end
     if Config.Harrass.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
-      Cast(_E, self.Target, true)
+      Cast(_E, self.Target)
     end
   end
 
@@ -206,9 +208,9 @@ class "Katarina"
         end
         if dmg+((sReady[_Q] and Config.Killsteal.Q) and myHero:CalcMagicDamage(enemy,15*myHero:GetSpellData(_Q).level+0.15*myHero.ap) or 0)+((myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0 and Config.Killsteal.R) and GetDmg(_R, myHero, enemy)*10 or 0) >= GetRealHealth(enemy) then
           if Config.Killsteal.Q and sReady[_Q] then
-            Cast(_Q, enemy, true)
+            Cast(_Q, enemy)
             if Config.Killsteal.E and sReady[_E] then
-              DelayAction(Cast, 0.25, {_E, enemy, true})
+              DelayAction(Cast, 0.25, {_E, enemy,})
               if Config.Killsteal.W and sReady[_W] then
                 DelayAction(function() Cast(_W) end, 0.5)
                 if (Config.Killsteal.R and myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
@@ -225,7 +227,7 @@ class "Katarina"
               end
             end
           elseif Config.Killsteal.E and sReady[_E] then
-            Cast(_E, enemy, true)
+            Cast(_E, enemy)
             if Config.Killsteal.W and sReady[_W] then
               DelayAction(function() Cast(_W) end, 0.25)
               if Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then

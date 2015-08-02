@@ -33,6 +33,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   function Load()
     if FileExist(LIB_PATH .. "ScriptologyLib.lua") then
       require("ScriptologyLib")
+      sReady = {}
       if pcall(require, "Scriptology - "..myHero.charName) then
         Vars()
         ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
@@ -43,7 +44,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         ScriptologyMsg("Plugin: '"..myHero.charName.."' not found, checking online..")
         if CheckForPlugin(myHero.charName) then
           DelayAction(function() 
-            --require("Scriptology - "..myHero.charName) -- debug
+            if ScriptologyDebug then require("Scriptology - "..myHero.charName) end
             if pcall(require, "Scriptology - "..myHero.charName) then 
               Vars()
               ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
@@ -80,9 +81,9 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         Config:addSubMenu("Misc","Misc")
         Config:addSubMenu("Draws","Draws")
         Config.Draws:addParam("Q", "Draw Q", SCRIPT_PARAM_ONOFF, true)
-      Config.Draws:addParam("W", "Draw W", SCRIPT_PARAM_ONOFF, true)
-      Config.Draws:addParam("E", "Draw E", SCRIPT_PARAM_ONOFF, true)
-      Config.Draws:addParam("R", "Draw R", SCRIPT_PARAM_ONOFF, true)
+        Config.Draws:addParam("W", "Draw W", SCRIPT_PARAM_ONOFF, true)
+        Config.Draws:addParam("E", "Draw E", SCRIPT_PARAM_ONOFF, true)
+        Config.Draws:addParam("R", "Draw R", SCRIPT_PARAM_ONOFF, true)
         Config.Draws:addParam("DMG", "Draw DMG", SCRIPT_PARAM_ONOFF, true)
         Config.Draws:addParam("LFC", "Use LFC", SCRIPT_PARAM_ONOFF, true)
         Config.Draws:addParam("OpacityQ", "Opacity Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
@@ -93,7 +94,11 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     end
     for _, class in pairs(ScriptologyLoadedClasses) do
       if class then
-        pcall(function() class:Load() end)
+        if ScriptologyDebug then
+          class:Load()
+        else
+          pcall(function() class:Load() end)
+        end
       end
     end
     LoadAwareness()
@@ -264,13 +269,20 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       end
     end
     if ScriptologyLoadedClasses[myHero.charName] then
+      for _,k in pairs({_Q,_W,_E,_R,SUMMONER_1,SUMMONER_2}) do
+        sReady[k] = myHero:CanUseSpell(k) == READY
+      end
       if targetSel then
         targetSel:update()
         _G.Target = targetSel.target
         ScriptologyLoadedClasses[myHero.charName].Target = targetSel.target
       end
       if Config.kConfig.Combo then
-        pcall(function() ScriptologyLoadedClasses[myHero.charName]:Combo() end)
+        if ScriptologyDebug then
+          ScriptologyLoadedClasses[myHero.charName]:Combo()
+        else
+          pcall(function() ScriptologyLoadedClasses[myHero.charName]:Combo() end)
+        end
       end
       if Config.kConfig.Harrass then
         pcall(function() ScriptologyLoadedClasses[myHero.charName]:Harrass() end)
