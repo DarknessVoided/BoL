@@ -225,10 +225,12 @@ class "SWalk"
           for _,k in pairs(self.aaResetTable2) do
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
             if sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
-              self.orbTable.lastAA = 0
               if UPLloaded and data[k].type then
-                Cast(k, unit, false, true, 1)
+                if Cast(k, unit, false, true, 1) then
+                  self.orbTable.lastAA = 0
+                end
               else
+                self.orbTable.lastAA = 0
                 CastSpell(k, unit.x, unit.z)
               end
               return true

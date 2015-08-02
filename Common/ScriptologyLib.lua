@@ -615,23 +615,29 @@
   function Cast(Spell, target, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
     if not target and not hitchance then
       if VIP_USER then
-          Packet("S_CAST", {spellId = Spell}):send()
+        Packet("S_CAST", {spellId = Spell}):send()
+        return true
       else
-          CastSpell(Spell)
+        CastSpell(Spell)
+        return true
       end
     elseif target and target.networkID then
       if VIP_USER then
-          Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
+        Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
+        return true
       else
-          CastSpell(Spell, target)
+        CastSpell(Spell, target)
+        return true
       end
     elseif VectorType(target) and (not hitchance or type(hitchance) ~= "number") then
       xPos = target.x
       zPos = target.z
       if VIP_USER then
         Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+        return true
       else
         CastSpell(Spell, xPos, zPos)
+        return true
       end
     elseif target and hitchance and type(hitchance) == "number" then
       if not source then source = myHero end
@@ -641,12 +647,14 @@
         zPos = CastPosition.z
         if VIP_USER then
           Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
+          return true
         else
           CastSpell(Spell, xPos, zPos)
+          return true
         end
-        Cast(Spell)
       end
     end
+    return false
   end
 
   function UnitHaveBuff(unit, buffName)
