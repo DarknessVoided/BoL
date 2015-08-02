@@ -46,13 +46,13 @@ class "Blitzcrank"
 
     if target and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
       if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
-        CastSpell(_E)
+        Cast(_E)
       end
     end
 
     if target and myHero:CanUseSpell(_R) == READY and Config.Combo.R then
       if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
-        CastSpell(_R)
+        Cast(_R)
       end
     end
 
@@ -61,12 +61,12 @@ class "Blitzcrank"
       if HitChance > 1.2 and GetDistance(CastPosition) <= data[0].range  then
         local Mcol, mcol = self.Col:GetMinionCollision(myHero, CastPosition)
         if not Mcol and not Mcol2 then
-          CastSpell(_Q, CastPosition)
+          Cast(_Q, CastPosition)
         elseif Smite and myHero:CanUseSpell(Smite) == READY and Config.Misc.S and Mcol and #mcol == 1 then
           local minion = mcol[1]
           if minion and GetDistance(minion) < 600 then
-            CastSpell(_Q, CastPosition)
-            DelayAction(function() CastSpell(Smite, minion) end, (GetDistance(minion) / 2) / data[_Q].speed + data[_Q].delay)
+            Cast(_Q, CastPosition)
+            DelayAction(function() Cast(Smite, minion) end, (GetDistance(minion) / 2) / data[_Q].speed + data[_Q].delay)
           end
         end
       end
@@ -81,7 +81,7 @@ class "Blitzcrank"
 
     if target and myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
       if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
-        CastSpell(_E)
+        Cast(_E)
       end
     end
     
@@ -91,7 +91,7 @@ class "Blitzcrank"
         local Mcol, mcol = self.Col:GetMinionCollision(myHero, CastPosition)
         local Mcol2, mcol2 = self.Col:GetMinionCollision(myHero, target)
         if not Mcol and not Mcol2 then
-          CastSpell(_Q, CastPosition)
+          Cast(_Q, CastPosition)
         elseif Smite and Config.Misc.S and mcol+mcol2 == 1 and myHero:CanUseSpell(Smite) == READY then
           local minion = nil
           for _,k in pairs(Mobs.objects) do
@@ -101,8 +101,8 @@ class "Blitzcrank"
             end
           end
           if minion then
-            CastSpell(_Q, CastPosition)
-            DelayAction(function() CastSpell(Smite, minion) end, GetDistance(minion) / data[_Q].speed + data[_Q].delay)
+            Cast(_Q, CastPosition)
+            DelayAction(function() Cast(Smite, minion) end, GetDistance(minion) / data[_Q].speed + data[_Q].delay)
           end
         end
       end
