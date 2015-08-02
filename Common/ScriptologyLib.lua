@@ -442,10 +442,14 @@
     for k,enemy in pairs(GetEnemyHeroes()) do
       killTextTable[enemy.networkID] = { indicatorText = "", damageGettingText = ""}
     end
-    Target = nil
-    Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
-    JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
-    sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
+    _G.Target = nil
+    _G.Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
+    _G.JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
+    mobTick, jmobTick = 0, 0
+    AddTickCallback(function() if mobTick > GetInGameTimer() then Mobs:update() mobTick = GetInGameTimer()+0.25 end end)
+    AddTickCallback(function() if jmobTick > GetInGameTimer() then JMobs:update() jmobTick = GetInGameTimer()+0.25 end end)
+    _G.sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
+    AddTickCallback(function()for _=0,5 do;sReady[_]=(myHero:CanUseSpell(_)==READY)end;end)
   end
 
   function DmgCalc()
@@ -621,7 +625,7 @@
       else
           CastSpell(Spell, target)
       end
-    elseif VectorType(target) and not hitchance then
+    elseif VectorType(target) and (not hitchance or type(hitchance) ~= "number") then
       xPos = target.x
       zPos = target.z
       if VIP_USER then
