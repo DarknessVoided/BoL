@@ -19,8 +19,8 @@ class "Yasuo"
       RemoveOw()
     end, 0.25)
     DelayAction(function()      
-      SWalker:AddReset(_Q, RESET_PREDICT)
-    end, 0.5)
+      _G.loadedOrb:AddReset(_Q, RESET_PREDICT)
+    end, 5)
     self.passiveTracker = false
     self.passiveName = "yasuoq3w"
   end

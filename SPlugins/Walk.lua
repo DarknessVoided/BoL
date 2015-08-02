@@ -2,6 +2,7 @@ class "SWalk"
 
   function SWalk:__init(m, Cfg)
     self.melee = m or myHero.range < 450 or myHero.charName == "Rengar"
+    aaResetTable, aaResetTable2, aaResetTable3, aaResetTable4 = {}, {}, {}, {}
     self.orbDisabled = false
     self.State = {}
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
@@ -33,13 +34,13 @@ class "SWalk"
     end
     if not targetSel then
       self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
-      Cfg:addSubMenu("Target Selector", "ts")
-      Cfg.ts:addTS(self.ts)
+      self.Config:addSubMenu("Target Selector", "ts")
+      self.Config.ts:addTS(self.ts)
       ArrangeTSPriorities()
     else
       self.ts = targetSel
     end
-    if not ScriptologyLoaded then
+    if not Cfg then
       sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
       self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
@@ -113,7 +114,7 @@ class "SWalk"
     if _G.Evade or self.orbDisabled then return end
     if not ValidTarget(unit, self.myRange) then unit = Target end
     local valid = false
-    if myHero.charName == "Azir" then 
+    if myHero.charName == "Azir" and ScriptologyLoaded then 
       if ValidTarget(unit) then
         for _,k in pairs(loadedClass.GetSoldiers()) do
           if GetDistance(k,unit) < data[_W].width and GetDistance(k) <= 850 then
