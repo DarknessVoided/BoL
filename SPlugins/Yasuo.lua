@@ -178,9 +178,9 @@ class "Yasuo"
         if HitChance >= 2 then
           Cast(_Q, CastPosition)
         end
-      else
+      elseif GetDistance(self.Target) < 500 then
         if not myHero.isWindingUp then
-          Cast(_Q, self.Target, 2)
+          Cast(_Q, self.Target, 1)
         end
       end
     end
