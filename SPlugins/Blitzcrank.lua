@@ -6,7 +6,7 @@ class "Blitzcrank"
     require "Collision"
     self.Forcetarget = nil
     data = {
-      [_Q] = { speed = 1800, delay = 0.25, range = 925, width = 70, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 55*level+25+AP end},
+      [_Q] = { speed = 1800, delay = 0.25, range = 1150, width = 70, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 55*level+25+AP end},
       [_W] = { range = 25000},
       [_E] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 2*TotalDmg end},
       [_R] = { speed = math.huge, delay = 0.25, range = 0, width = 600, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 125*level+125+AP end}
@@ -44,23 +44,11 @@ class "Blitzcrank"
       target = self.Forcetarget  
     end
 
-    if target and myHero:CanUseSpell(_E) == READY and Config.Combo.E then
-      if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
-        Cast(_E)
-      end
-    end
-
-    if target and myHero:CanUseSpell(_R) == READY and Config.Combo.R then
-      if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
-        Cast(_R)
-      end
-    end
-
     if target and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
-      if HitChance > 1.2 and GetDistance(CastPosition) <= data[0].range  then
+      if HitChance >= 1 and GetDistance(CastPosition) <= data[0].range  then
         local Mcol, mcol = self.Col:GetMinionCollision(myHero, CastPosition)
-        if not Mcol and not Mcol2 then
+        if not Mcol then
           Cast(_Q, CastPosition)
         elseif Smite and myHero:CanUseSpell(Smite) == READY and Config.Misc.S and Mcol and #mcol == 1 then
           local minion = mcol[1]
@@ -71,41 +59,45 @@ class "Blitzcrank"
         end
       end
     end
+
+    if target and myHero:CanUseSpell(_E) == READY and Config.Combo.E and (GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range)) then
+      Cast(_E)
+    end
+
+    if target and myHero:CanUseSpell(_R) == READY and Config.Combo.R then
+      if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
+        Cast(_R)
+      end
+    end
   end
 
   function Blitzcrank:Harrass()
-    local target = self:GetBestTarget(data[0].range)
+    local target = self.Target
     if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, data[0].range*2) then
       target = self.Forcetarget  
-    end
-
-    if target and myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
-      if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range) then
-        Cast(_E)
-      end
     end
     
     if target and myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       local CastPosition,  HitChance, HeroPosition = UPL:Predict(_Q, myHero, target)
       if HitChance > 1.5 and GetDistance(CastPosition) <= data[0].range  then
         local Mcol, mcol = self.Col:GetMinionCollision(myHero, CastPosition)
-        local Mcol2, mcol2 = self.Col:GetMinionCollision(myHero, target)
-        if not Mcol and not Mcol2 then
+        if not Mcol then
           Cast(_Q, CastPosition)
-        elseif Smite and Config.Misc.S and mcol+mcol2 == 1 and myHero:CanUseSpell(Smite) == READY then
-          local minion = nil
-          for _,k in pairs(Mobs.objects) do
-            if not minion and k and GetDistanceSqr(k) < data[2].range*data[2].range then minion = k end
-            if minion and k and GetDistanceSqr(k,myHero)+GetDistanceSqr(k,CastPosition) < GetDistanceSqr(minion,myHero)+GetDistanceSqr(minion,CastPosition) and GetDistanceSqr(k) < data[2].range*data[2].range then
-              minion = k
-            end
-          end
-          if minion then
+        elseif Smite and Config.Misc.S and #mcol == 1 and myHero:CanUseSpell(Smite) == READY then
+          local minion = mcol[1]
+          if minion and GetDistance(minion) < 600 then
             Cast(_Q, CastPosition)
             DelayAction(function() Cast(Smite, minion) end, GetDistance(minion) / data[_Q].speed + data[_Q].delay)
           end
         end
       end
+    end
+    if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, data[0].range*2) then
+      target = self.Forcetarget  
+    end
+
+    if target and myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and (GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < data[0].range)) then
+      Cast(_E)
     end
   end
 
