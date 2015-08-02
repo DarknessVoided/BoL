@@ -295,6 +295,17 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     end
   end)
 
+  AddMsgCallback(function(msg, key)
+    if ScriptologyLoaded then
+      for _, class in pairs(ScriptologyLoadedClasses) do
+        if class then
+          pcall(function() class:WndMsg(msg, key) end)
+          pcall(function() class:Msg(msg, key) end)
+        end
+      end
+    end
+  end)
+
   AddDrawCallback(function()
     if ScriptologyLoaded then
       DmgCalc()

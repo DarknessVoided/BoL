@@ -40,11 +40,13 @@ class "Orianna"
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("WE", "Prioritize", SCRIPT_PARAM_LIST, 1, {"W > E", "E > W"})
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("WE", "Prioritize", SCRIPT_PARAM_LIST, 1, {"W > E", "E > W"})
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -85,7 +87,7 @@ class "Orianna"
   end
 
   function Orianna:LastHit()
-    if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
+    if sReady[_Q] and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
@@ -93,14 +95,14 @@ class "Orianna"
         end
       end
     end
-    if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
+    if sReady[_W] and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmgQ = GetDmg(_Q, myHero, winion)
         local MinionDmgW = GetDmg(_W, myHero, winion)
         if MinionDmgQ and MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
           Cast(_W)
         end
-        if myHero:CanUseSpell(_Q) == READY and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
+        if sReady[_Q] and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
           Cast(_Q, winion, 1.2)
           DelayAction(Cast, 0.25, {_W})
         end
@@ -109,13 +111,13 @@ class "Orianna"
   end
 
   function Orianna:LaneClear()
-    if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
+    if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if BestHit > 1 then 
         CastSpell(_Q, BestPos)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+    if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_W].width)
       if BestHit > 1 and self.Ball and GetDistance(self.Ball, BestPos) < 50 then 
         Cast(_W)
@@ -124,17 +126,17 @@ class "Orianna"
   end
 
   function Orianna:Combo()
-    if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
+    if sReady[_Q] and Config.Combo.Q then
       local CastPosition, HitChance, Pos = UPL:Predict(_Q, self.Ball or myHero, Target)
       if HitChance and HitChance >= 1.5 then
         local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*(Target.boundingRadius/2)
         Cast(_Q, tPos)
       end
     end
-    if myHero:CanUseSpell(_W) == READY and Config.Combo.W then
+    if sReady[_W] and not (Config.Combo.WE == 2 and sReady[_E]) and Config.Combo.W then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Combo.E and self.Ball then
+    if sReady[_E] and not (Config.Combo.WE == 1 and sReady[_W]) and Config.Combo.E and self.Ball then
       local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(self.Ball, myHero, Target)
       if OnSegment then
         if GetDistanceSqr(ProjPoint, Target) < (Target.boundingRadius + data[2].width) ^ 2 then
@@ -142,7 +144,7 @@ class "Orianna"
         end
       end
     end
-    if myHero:CanUseSpell(_R) == READY and GetRealHealth(Target) < self:CalcRComboDmg(Target) and Config.Combo.R then
+    if sReady[_R] and GetRealHealth(Target) < self:CalcRComboDmg(Target) and Config.Combo.R then
       self:CastR(Target)
     end
   end
@@ -156,13 +158,13 @@ class "Orianna"
   end
 
   function Orianna:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
+    if sReady[_Q] and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       Cast(_Q, Target, 1.5, self.Ball)
     end
-    if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
+    if sReady[_W] and not (Config.Harrass.WE == 2 and sReady[_E]) and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and self.Ball and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
+    if sReady[_E] and not (Config.Harrass.WE == 1 and sReady[_W]) and Config.Harrass.E and self.Ball and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
       local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(self.Ball, myHero, Target)
       if OnSegment then
         if GetDistanceSqr(ProjPoint, Target) < (Target.boundingRadius + data[2].width) ^ 2 then
@@ -176,15 +178,15 @@ class "Orianna"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         local Ball = self.Ball or myHero
-        if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
+        if sReady[_Q] and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, Target, 1.5, Ball)
-        elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W then
+        elseif sReady[_W] and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W then
           self:CastW(enemy)
-        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, enemy) and GetDistance(self.Ball)-self.Ball.boundingRadius > GetDistance(enemy) then
+        elseif sReady[_E] and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, enemy) and GetDistance(self.Ball)-self.Ball.boundingRadius > GetDistance(enemy) then
           Cast(_E, myHero)
-        elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R then
+        elseif sReady[_R] and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R then
           self:CastR(enemy)
-        elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < self:CalcRComboDmg(enemy) and Config.Killsteal.R and Config.Killsteal.Q and Config.Killsteal.W then
+        elseif sReady[_R] and GetRealHealth(enemy) < self:CalcRComboDmg(enemy) and Config.Killsteal.R and Config.Killsteal.Q and Config.Killsteal.W then
           self:CastR(enemy)
           DelayAction(Cast, data[3].delay, {_Q, Target, 1.5, Ball})
           DelayAction(function() self:CastW(enemy) end, data[3].delay+data[0].delay+GetDistance(Ball,enemy)/data[0].speed)
