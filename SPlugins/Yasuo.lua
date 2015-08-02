@@ -9,6 +9,7 @@ class "Yasuo"
       [-2] = { range = 1200, speed = 1200, delay = 0.125, width = 65, type = "linear" }
     }
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[3].range, DAMAGE_PHYSICAL, false, true)
+    self.Target = nil
   end
 
   function Yasuo:Load()
@@ -17,6 +18,9 @@ class "Yasuo"
       LoadSWalk() 
       RemoveOw()
     end, 0.25)
+    DelayAction(function()      
+      SWalker:AddReset(_Q, RESET_PREDICT)
+    end, 0.5)
     self.passiveTracker = false
     self.passiveName = "yasuoq3w"
   end
@@ -149,8 +153,6 @@ class "Yasuo"
   end
 
   function Yasuo:Combo()
-    if not self.Target then self.Target = Target end
-    if not self.Target then return end
     if GetDistance(self.Target) > loadedOrb.myRange and Config.Combo.E then
       if self:Move(self.Target) then
         if sReady[_Q] then

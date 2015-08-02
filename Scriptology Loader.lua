@@ -216,7 +216,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   function _G.LoadSWalk()
     if pcall(require, "Scriptology - Walk") then
       ScriptologyMsg("Plugin: 'Walk' loaded")
-      SWalk(nil, ScriptologyConfig)
+      _G.SWalker = SWalk(nil, ScriptologyConfig)
       loadedAnWalker = true
     else
       if CheckForPlugin("Walk") then

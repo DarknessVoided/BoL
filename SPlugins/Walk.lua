@@ -39,8 +39,8 @@ class "SWalk"
     else
       self.ts = targetSel
     end
-    sReady = {}
     if not ScriptologyLoaded then
+      sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
       self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
       self.Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
@@ -193,7 +193,7 @@ class "SWalk"
     end
   end
 
-  RESET_SELF, RESET_PREDICT, RESET_TARGET, RESET_MOUSE = 1, 2, 3, 4
+  RESET_SELF, RESET_PREDICT, RESET_TARGET, RESET_MOUSE = 111, 222, 333, 444
   function SWalk:AddReset(Spell, type)
     if type == RESET_SELF then
       table.insert(aaResetTable, Spell)
