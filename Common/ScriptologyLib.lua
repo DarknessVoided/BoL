@@ -46,15 +46,6 @@
     ScriptologyLoadedClasses[myHero.charName]:Menu()
   end
 
-  function GetCustomTarget()
-    if _G.MMA_Loaded and _G.MMA_Target() and _G.MMA_Target().type == myHero.type then return _G.MMA_Target() end
-    if _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then return _G.AutoCarry.Attack_Crosshair.target end
-    if targetSel then
-      targetSel:update()
-      return targetSel.target
-    end
-  end
-
   function GetFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
@@ -346,44 +337,6 @@
     return nil
   end
 
-  function Cast(Spell, target, targeted, predict, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
-    if not target and not targeted then
-      if VIP_USER then
-          Packet("S_CAST", {spellId = Spell}):send()
-      else
-          CastSpell(Spell)
-      end
-    elseif target and targeted then
-      if VIP_USER then
-          Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
-      else
-          CastSpell(Spell, target)
-      end
-    elseif target and not targeted and not predict then
-      xPos = target.x
-      zPos = target.z
-      if VIP_USER then
-        Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-      else
-        CastSpell(Spell, xPos, zPos)
-      end
-    elseif target and not targeted and predict then
-      if not source then source = myHero end
-      if not hitchance then hitchance = 2 end
-      local CastPosition, HitChance, Position = UPL:Predict(Spell, source, target)
-      if HitChance and HitChance >= hitchance then
-        xPos = CastPosition.x
-        zPos = CastPosition.z
-        if VIP_USER then
-          Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-        else
-          CastSpell(Spell, xPos, zPos)
-        end
-        Cast(Spell)
-      end
-    end
-  end
-
   function EnemiesAround(Unit, range)
     local c=0
     if Unit == nil then return 0 end
@@ -662,13 +615,13 @@
       else
           CastSpell(Spell)
       end
-    elseif target and hitchance == nil then
+    elseif target and target.networkID then
       if VIP_USER then
           Packet("S_CAST", {spellId = Spell, targetNetworkId = target.networkID}):send()
       else
           CastSpell(Spell, target)
       end
-    elseif target and hitchance == false then
+    elseif VectorType(target) then
       xPos = target.x
       zPos = target.z
       if VIP_USER then
