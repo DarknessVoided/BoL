@@ -162,8 +162,13 @@ class "Orianna"
     if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
       self:CastW(Target)
     end
-    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and self.Ball and GetDistance(self.Ball) > 150 and VectorPointProjectionOnLineSegment(self.Ball, myHero, Target) and GetDistance(self.Ball)-self.Ball.boundingRadius >= GetDistance(Target) then
-      Cast(_E, myHero)
+    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and self.Ball and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
+      local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(self.Ball, myHero, Target)
+      if OnSegment then
+        if GetDistanceSqr(ProjPoint, Target) < (Target.boundingRadius + data[2].width) ^ 2 then
+          Cast(_E, myHero)
+        end
+      end
     end
   end
 
