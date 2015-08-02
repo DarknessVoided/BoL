@@ -93,7 +93,7 @@ class "Brand"
     if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       local BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
       if BestHit > 1 then 
-        Cast(_W, BestPos, false)
+        Cast(_W, BestPos)
       end
     end
     if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then

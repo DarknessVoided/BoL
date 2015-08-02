@@ -138,7 +138,7 @@ class "Kalista"
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
-          Cast(_Q, winion, false, true, 1.2)
+          Cast(_Q, winion, 1.2)
         end
       end
     end
@@ -150,7 +150,7 @@ class "Kalista"
 
   function Kalista:Combo()
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(self.Target, data[0].range) and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, self.Target, false, true, 2)
+      Cast(_Q, self.Target, 2)
     end
     if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(self.Target, data[2].range) then
       if GetDmg(_E, myHero, self.Target) >= GetRealHealth(self.Target) then
@@ -179,7 +179,7 @@ class "Kalista"
   
   function Kalista:Harrass()
     if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, self.Target, false, true, 2)
+      Cast(_Q, self.Target, 2)
     end
     if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(self.Target, data[2].range) then
       local harrassUnit = nil
@@ -217,7 +217,7 @@ class "Kalista"
         if myHero:CanUseSpell(_E) == READY and GetStacks(enemy) > 0 and health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) and GetDistance(enemy) < data[2].range then
           Cast(_E)
         elseif myHero:CanUseSpell(_Q) == READY and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) and GetDistance(enemy) < data[0].range then
-          Cast(_Q, enemy, false, true, 2)
+          Cast(_Q, enemy, 2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         elseif Smite and myHero:CanUseSpell(Smite) == READY and GetRealHealth(enemy) < 20+8*myHero.level and Config.Killsteal.S and ValidTarget(enemy, 600) then

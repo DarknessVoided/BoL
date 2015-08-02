@@ -54,13 +54,13 @@ class "Lux"
     if unit and spell and not spell.name:lower():find("attack") and Config.Misc.Wa and unit.team ~= myHero.team and unit.type == myHero.type and not IsRecalling(myHero) and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
       if spell.target then
         if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
-          Cast(_W, myHero, false)
+          Cast(_W, myHero)
         end
       else
         local makeUpPos = unit + (Vector(spell.endPos) - unit):normalized() * math.min(1250, GetDistance(unit))
         if GetDistance(spell.endPos) < GetDistance(myHero.pos, myHero.minBBox)*3 or GetDistance(makeUpPos) < GetDistance(myHero.pos, myHero.minBBox)*3 then
           if myHero:CanUseSpell(_W) == READY and myHero.health/myHero.maxHealth < 0.85 then
-            Cast(_W, myHero, false)
+            Cast(_W, myHero)
           end
         end
       end
@@ -72,7 +72,7 @@ class "Lux"
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
         if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
-          Cast(_Q, winion, 2, false)
+          Cast(_Q, winion, 2)
         end
       end
     end
@@ -80,7 +80,7 @@ class "Lux"
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local EMinionDmg = GetDmg(_E, myHero, minion)
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-          Cast(_E, winion, false)
+          Cast(_E, winion)
         end
       end
     end 
@@ -90,13 +90,13 @@ class "Lux"
     if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       local minionTarget = GetLowestMinion(data[_Q].range)
       if minionTarget ~= nil then
-        Cast(_Q, minionTarget, false)
+        Cast(_Q, minionTarget)
       end
     end
     if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       BestPos, BestHit = GetFarmPosition(data[_E].range, data[_E].width)
       if BestHit > 1 then 
-        Cast(_E, BestPos, false)
+        Cast(_E, BestPos)
       end
     end  
   end

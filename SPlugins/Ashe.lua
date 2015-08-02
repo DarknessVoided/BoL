@@ -54,7 +54,7 @@ class "Ashe"
     if Config.Misc.AimR then
       for _,k in pairs(GetEnemyHeroes()) do
         if not k.dead and GetDistance(k,mousePos) < 750 then
-          Cast(_R, k, false, true, 2)
+          Cast(_R, k, 2)
         end
       end
     end
@@ -110,10 +110,10 @@ class "Ashe"
       end
     end
     if Config.Combo.W and ValidTarget(Target, data[1].range) then
-      Cast(_W, Target, false, true, 1.5)
+      Cast(_W, Target, 1.5)
     end
     if Config.Combo.R and GetDistance(Target) < myHero.range*2+myHero.boundingRadius*4 and GetDmg(_R, myHero, Target)+GetDmg("AD", myHero, Target)+GetDmg(_W, myHero, Target) < GetRealHealth(Target) then
-      Cast(_R, Target, false, true, 1.5)
+      Cast(_R, Target, 1.5)
     end
   end
 
@@ -124,7 +124,7 @@ class "Ashe"
       end
     end
     if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
-      Cast(_W, Target, false, true, 1.5)
+      Cast(_W, Target, 1.5)
     end
   end
 
@@ -134,9 +134,9 @@ class "Ashe"
         if myHero:CanUseSpell(_Q) == READY and self:QReady() and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           CastSpell(_Q, myHero:Attack(enemy))
         elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
-          Cast(_W, enemy, false, true, 1.5)
+          Cast(_W, enemy, 1.5)
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and GetDistance(enemy) < 2500 then
-          Cast(_R, enemy, false, true, 1.5)
+          Cast(_R, enemy, 1.5)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end

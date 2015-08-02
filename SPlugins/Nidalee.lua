@@ -202,10 +202,10 @@ class "Nidalee"
 
   function Nidalee:Combo()
     if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and Config.Combo.Q and ValidTarget(self.Target, data[0].range) then
-      Cast(_Q, self.Target, false, true, 1.5)
+      Cast(_Q, self.Target, 1.5)
     end
     if myHero:CanUseSpell(_W) == READY and UnitHaveBuff(Target, "nidaleepassivehunted") and self:IsHuman() and Config.Combo.W and ValidTarget(self.Target, data[0].range) then
-      Cast(_W, self.Target, false, true, 1.5)
+      Cast(_W, self.Target, 1.5)
     end
     self:DoRWEQCombo(self.Target)
     if not self:IsHuman() and GetDistance(self.Target) > 425 then
@@ -272,7 +272,7 @@ class "Nidalee"
   function Nidalee:Harrass()
     if self:IsHuman() and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 then
       if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(self.Target, self.data.Human[0].range) then
-        Cast(_Q, self.Target, false, true, 2)
+        Cast(_Q, self.Target, 2)
       end
     else
       if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(self.Target, self:GetAARange()) then
@@ -301,10 +301,10 @@ class "Nidalee"
         local minion = GetJMinion(self.data.Human[0].range)
         local minionTarget = GetLowestMinion(self:GetAARange())
         if minion then
-          Cast(_Q, minion, false, true, 1)
+          Cast(_Q, minion, 1)
         end
         if minionTarget then
-          Cast(_Q, minionTarget, false, true, 1)
+          Cast(_Q, minionTarget, 1)
         end
       elseif Config.LaneClear.R then
         Cast(_R)
@@ -351,7 +351,7 @@ class "Nidalee"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and self:IsHuman() and GetRealHealth(enemy) < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config.Killsteal.Q and ValidTarget(enemy, self.data.Human[0].range) then
-          Cast(_Q, enemy, false, true, 1.2)
+          Cast(_Q, enemy, 1.2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
@@ -359,7 +359,7 @@ class "Nidalee"
           local pos, chance, ppos = UPL:Predict(_Q, myHero, enemy)
           if chance >= 2 then
             Cast(_R)
-            DelayAction(function() Cast(_Q, enemy, false, true, 1.5) end, 0.125)
+            DelayAction(function() Cast(_Q, enemy, 1.5) end, 0.125)
           end
         end
         if not self:IsHuman() and EnemiesAround(enemy, 500) < 3 then
@@ -376,7 +376,7 @@ class "Nidalee"
           end
         end
         if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and self:IsHuman() and GetRealHealth(enemy) < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, self.data.Cougar[1].range/2) then
-          Cast(_Q, enemy, false, true, 1.2)
+          Cast(_Q, enemy, 1.2)
           DelayAction(function() self:DoRWEQCombo(enemy) end, 0.05+self.data.Human[0].delay+GetDistance(enemy)/self.data.Human[0].speed)
         end
         if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and not self:IsHuman() and GetRealHealth(enemy) < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, self.data.Cougar[1].range/2) then

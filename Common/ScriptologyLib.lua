@@ -621,7 +621,7 @@
       else
           CastSpell(Spell, target)
       end
-    elseif VectorType(target) then
+    elseif VectorType(target) and not hitchance then
       xPos = target.x
       zPos = target.z
       if VIP_USER then

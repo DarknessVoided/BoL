@@ -112,7 +112,7 @@ class "Orianna"
     if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if BestHit > 1 then 
-        CastSpell(_Q, BestPos, false)
+        CastSpell(_Q, BestPos)
       end
     end
     if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
@@ -128,7 +128,7 @@ class "Orianna"
       local CastPosition, HitChance, Pos = UPL:Predict(_Q, self.Ball or myHero, Target)
       if HitChance and HitChance >= 1.5 then
         local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*(Target.boundingRadius/2)
-        Cast(_Q, tPos, false)
+        Cast(_Q, tPos)
       end
     end
     if myHero:CanUseSpell(_W) == READY and Config.Combo.W then

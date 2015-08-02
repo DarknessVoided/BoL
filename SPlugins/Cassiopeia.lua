@@ -60,13 +60,13 @@ class "Cassiopeia"
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
-          Cast(_E, minion, true)
+          Cast(_E, minion)
         end      
       end   
       for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
-          Cast(_E, minion, true)
+          Cast(_E, minion)
         end      
       end    
     end  
@@ -78,13 +78,13 @@ class "Cassiopeia"
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-          Cast(_E, minion, true)
+          Cast(_E, minion)
         end      
       end   
       for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
-          Cast(_E, minion, true)
+          Cast(_E, minion)
         end      
       end    
     end  
@@ -126,12 +126,12 @@ class "Cassiopeia"
     if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       for minion,winion in pairs(Mobs.objects) do
         if winion ~= nil and GetStacks(winion) > 0 then
-          Cast(_E, winion, true)
+          Cast(_E, winion)
         end
       end
       for minion,winion in pairs(JMobs.objects) do
         if winion ~= nil and GetStacks(winion) > 0 then
-          Cast(_E, winion, true)
+          Cast(_E, winion)
         end
       end
     end
@@ -139,31 +139,31 @@ class "Cassiopeia"
 
   function Cassiopeia:Combo()
     if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
-      Cast(_Q, Target, false, true, 1.5)
+      Cast(_Q, Target, 1.5)
     end
     if myHero:CanUseSpell(_W) == READY and Config.Combo.W and ValidTarget(Target, data[1].range) then
-      Cast(_W, Target, false, true, 1.5)
+      Cast(_W, Target, 1.5)
     end
     if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config.Combo.E and ValidTarget(Target, data[2].range) then
       if GetStacks(Target) > 0 then
-        Cast(_E, Target, true)
+        Cast(_E, Target)
       end
     end
     if Config.Combo.R and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= GetRealHealth(Target) or (EnemiesAroundAndFacingMe(Target, 500) > 1 and GetStacks(Target) > 0)) and ValidTarget(Target, data[3].range) then
-      Cast(_R, Target, true)
+      Cast(_R, Target)
     end
   end
 
   function Cassiopeia:Harrass()
     if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, data[0].range) and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
-      Cast(_Q, Target, false, true, 1.5)
+      Cast(_Q, Target, 1.5)
     end
     if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and ValidTarget(Target, data[1].range) and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
-      Cast(_W, Target, false, true, 1.5)
+      Cast(_W, Target, 1.5)
     end
     if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config.Harrass.E and ValidTarget(Target, data[2].range) and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
       if GetStacks(Target) > 0 then
-        Cast(_E, Target, true)
+        Cast(_E, Target)
       end
     end
   end
@@ -172,16 +172,16 @@ class "Cassiopeia"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
-          Cast(_Q, enemy, false, true, 1.2)
+          Cast(_Q, enemy, 1.2)
         elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
-          Cast(_W, enemy, false, true, 1.5)
+          Cast(_W, enemy, 1.5)
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, true)
+          Cast(_E, enemy)
         elseif GetRealHealth(enemy) < GetDmg(_E, myHero, enemy)*2 and GetStacks(enemy) > 0 and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy, true)
-          DelayAction(Cast, 0.55, {_E, enemy, true})
+          Cast(_E, enemy)
+          DelayAction(Cast, 0.55, {_E, enemy})
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
-          Cast(_R, enemy, false, true, 2)
+          Cast(_R, enemy, 2)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
