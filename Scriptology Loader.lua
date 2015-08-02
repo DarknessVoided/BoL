@@ -195,7 +195,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     loadedAnWalker = true
   end
 
-  function RemoveOw()
+  function _G.RemoveOw()
     DelayAction(function()
       ScriptologyConfig:removeParam("info")
       if ScriptologyConfig.bfw ~= nil then
@@ -213,10 +213,11 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     end, 0.05)
   end
 
-  function LoadSWalk()
+  function _G.LoadSWalk()
     if pcall(require, "Scriptology - Walk") then
       ScriptologyMsg("Plugin: 'Walk' loaded")
       SWalk(nil, ScriptologyConfig)
+      loadedAnWalker = true
     else
       if CheckForPlugin("Walk") then
         DelayAction(LoadSWalk, 2)

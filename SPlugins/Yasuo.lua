@@ -13,6 +13,10 @@ class "Yasuo"
 
   function Yasuo:Load()
     SetupMenu()
+    DelayAction(function()
+      LoadSWalk() 
+      RemoveOw()
+    end, 0.25)
     self.passiveTracker = false
     self.passiveName = "yasuoq3w"
   end
