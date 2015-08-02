@@ -228,12 +228,13 @@ class "SWalk"
               if UPLloaded and data[k].type then
                 if Cast(k, unit, false, true, 1) then
                   self.orbTable.lastAA = 0
+                  return true
                 end
               else
                 self.orbTable.lastAA = 0
                 CastSpell(k, unit.x, unit.z)
+                return true
               end
-              return true
             end
           end
         end
