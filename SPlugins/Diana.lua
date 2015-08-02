@@ -3,7 +3,7 @@
 class "Diana"
 
   function Diana:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 835, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 835, DAMAGE_MAGICAL, false, true)
     data = {
       [_Q] = { speed = 1500, delay = 0.250, range = 835, width = 130, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35*level+45+0.2*AP end },
       [_W] = { range = 250, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 12*level+10+0.2*AP end },
@@ -27,10 +27,7 @@ class "Diana"
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -42,10 +39,7 @@ class "Diana"
     Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
@@ -134,19 +128,24 @@ class "Diana"
   end
 
   function Diana:LastHit()
-    if sReady[_Q] and Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 then
-      Cast(_Q, Target, 1.5)
+    if sReady[_Q] and Config.Harrass.Q and Config.LastHit.manaQ < myHero.mana/myHero.maxMana*100 then
+      for minion,winion in pairs(Mobs.objects) do
+        local MinionDmg = GetDmg(_Q, myHero, winion)
+        if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+          Cast(_Q, winion, 1)
+        end
+      end
     end
   end
 
   function Diana:LaneClear()
-    if sReady[_Q] and Config.LastHit.Q and Config.LastHit.manaQ < myHero.mana/myHero.maxMana*100 then
+    if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
       BestPos, BestHit = GetFarmPosition(data[_Q].range, data[_Q].width)
       if BestHit > 1 then 
         CastSpell(_Q, BestPos)
       end
     end
-    if sReady[_W] and Config.LastHit.W and Config.LastHit.manaW < myHero.mana/myHero.maxMana*100 and GetDistance(Target) < data[_W].range then
+    if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 and GetDistance(Target) < data[_W].range then
       BestPos, BestHit = GetFarmPosition(data[_W].range, data[_W].width)
       if BestHit > 1 and GetDistance(BestPos) < 250 then 
         CastSpell(_W)
