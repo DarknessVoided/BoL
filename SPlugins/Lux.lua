@@ -105,14 +105,15 @@ class "Lux"
     if UnitHaveBuff(Target, "luxilluminati") and Config.Combo.R and myHero:CanUseSpell(_R) == READY and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= GetRealHealth(Target) then
       Cast(_R, Target, 2)
     end
-    if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
-      Cast(_Q, Target, 2)
-    end
     if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
       Cast(_E, Target, 1.5)
-    end
-    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
-      Cast(_R, Target, 2)
+    elseif not myHero.isWindingUp then
+      if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
+        Cast(_Q, Target, 2)
+      end
+      if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
+        Cast(_R, Target, 2)
+      end
     end
   end
 
