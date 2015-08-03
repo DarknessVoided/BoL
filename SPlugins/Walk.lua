@@ -2,7 +2,7 @@ class "SWalk"
 
   function SWalk:__init(m, Cfg)
     self.melee = m or myHero.range < 450 or myHero.charName == "Rengar"
-    aaResetTable, aaResetTable2, aaResetTable3, aaResetTable4 = {}, {}, {}, {}
+    self.aaResetTable, self.aaResetTable2, self.aaResetTable3, self.aaResetTable4 = {}, {}, {}, {}
     self.orbDisabled = false
     self.State = {}
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
@@ -197,13 +197,13 @@ class "SWalk"
   RESET_SELF, RESET_PREDICT, RESET_TARGET, RESET_MOUSE = 111, 222, 333, 444
   function SWalk:AddReset(Spell, type)
     if type == RESET_SELF then
-      table.insert(aaResetTable, Spell)
+      table.insert(self.aaResetTable, Spell)
     elseif type == RESET_PREDICT then
-      table.insert(aaResetTable2, Spell)
+      table.insert(self.aaResetTable2, Spell)
     elseif type == RESET_TARGET then
-      table.insert(aaResetTable3, Spell)
+      table.insert(self.aaResetTable3, Spell)
     elseif type == RESET_MOUSE then
-      table.insert(aaResetTable4, Spell)
+      table.insert(self.aaResetTable4, Spell)
     end
   end
 
@@ -226,7 +226,7 @@ class "SWalk"
             range = ScriptologyLoaded and (data[k].range > 0 and data[k].range or data[k].width) or self.myRange
             if sReady[k] and self.State[k] and GetDistanceSqr(unit) < range * range then
               if UPLloaded and data[k].type then
-                if Cast(k, unit, false, true, 1) then
+                if Cast(k, unit, 1) then
                   self.orbTable.lastAA = 0
                   return true
                 end

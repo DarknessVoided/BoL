@@ -137,39 +137,3 @@ class "Riven"
     end
     return dmg
   end
-
-  function Riven:ProcessSpell(unit, spell)
-    if unit and unit.isMe and spell and spell.name then
-      if spell.name:lower():find("attack") then
-        if self.QAA then
-          print("attack1")
-          DelayAction(function() 
-            print("attack2")
-            Cast(_Q, self.Target.pos or spell.target.pos or myHero.pos) 
-          end, spell.windUpTime + GetLatency()/2000)
-        end
-      elseif spell.name == "RivenTriCleave" then
-        self.QCast = self.QCast + 1
-        DelayAction(function() if not sReady[_Q] then self.QCast = 0 end end, 4)
-        if self.Target and self.QAA then
-          if GetDistance(self.Target) < 294 then
-            print("move")
-            local movePos = Vector(myHero) - (Vector(self.Target) - myHero):normalized() * 40
-            if GetDistance(movePos, self.Target) > 294 then
-              movePos = Vector(myHero) + (Vector(self.Target) - myHero):normalized() * 40
-              myHero:MoveTo(movePos.x, movePos.z)
-            else
-              myHero:MoveTo(movePos.x, movePos.z)
-              loadedOrb.orbTable.lastAA = 0
-            end
-          end
-        end
-      end
-    end
-  end
-
-  function Riven:Combo()
-    if sReady[_Q] and GetDistance(self.Target) < data[0].range and not myHero.isWindingUp and self.QCast == 0 then
-      --Cast(_Q, self.Target.pos)
-    end
-  end
