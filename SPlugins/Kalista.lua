@@ -1,4 +1,3 @@
-
 class "Kalista"
 
   function Kalista:__init()
