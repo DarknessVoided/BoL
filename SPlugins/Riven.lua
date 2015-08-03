@@ -65,7 +65,7 @@ class "Riven"
       self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
       self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
       if self.QCast < 2 then
-        Cast(_Q, myHero)
+        Cast(_Q, myHero.pos)
       end
       if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
         myHero:MoveTo(self.movePos.x, self.movePos.z)
@@ -203,20 +203,61 @@ class "Riven"
   function Riven:Combo()
     if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
       if Config.Combo.R and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
-        Cast(_E, self.Target)
+        Cast(_E, self.Target.pos)
         DelayAction(function() Cast(_R) end, 0.075) 
       else
-        CastSpell(_E, self.Target)
+        Cast(_E, self.Target.pos)
       end
     end
     if myHero.isWindingUp and Config.Combo.R and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
-    if myHero.isWindingUp and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target) end
+    if myHero.isWindingUp and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
-      CastSpell(_W)
+      Cast(_W)
     end
     if sReady[_Q] and not sReady[_E] and GetDistance(self.Target) > loadedOrb.myRange + 30 then
       if self.EDelay + 300 < GetTickCount() and self.QDelay + 1.2 < os.clock() then
-        Cast(_Q, Target)
+        Cast(_Q, self.Target.pos)
+      end
+    end
+  end
+
+  function Riven:Harrass()
+    if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Harrass.E and GetDistance(self.Target) < data[2].range then
+      Cast(_E, self.Target.pos)
+    end
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Harrass.W then
+      Cast(_W)
+    end
+  end
+
+  function Riven:LaneClear()
+    local minion = GetJMinion(450)
+    if not minion then
+      minion = GetClosestMinion(450)
+    end
+    if GetDistance(minion) > loadedOrb.myRange + 30 and sReady[_E] and Config.LaneClear.E and GetDistance(minion) < data[2].range then
+      Cast(_E, minion.pos)
+    end
+    if sReady[_E] and minion.team > 200 then
+      Cast(_E, minion.pos)
+    end
+    if sReady[_W] and GetDistance(minion) < data[1].range and Config.LaneClear.W then
+      Cast(_W)
+    end
+    if sReady[_Q] and GetDistance(minion) > loadedOrb.myRange + 36 then
+      Cast(_Q, minion.pos)
+    end
+  end
+
+  function Riven:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        local health = GetRealHealth(enemy)
+        if Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
+          CastSpell(Ignite, enemy)
+        elseif Smite and myHero:CanUseSpell(Smite) == READY and GetRealHealth(enemy) < 20+8*myHero.level and Config.Killsteal.S and ValidTarget(enemy, 600) then
+          CastSpell(Smite, enemy)
+        end
       end
     end
   end
