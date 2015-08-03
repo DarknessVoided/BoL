@@ -52,6 +52,45 @@ class "Riven"
 
   function Riven:Tick()
     self.QAA = Config.Misc.QAA or (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
+    if Config.Misc.Flee then
+      myHero:MoveTo(mousePos.x, mousePos.z)
+      if sReady[_E] then
+        Cast(_E, mousePos)
+      end
+      if not sReady[_E] and sReady[_Q] and self.EDelay + 350 < GetTickCount() then
+        Cast(_Q, mousePos)
+      end
+    end
+    if Config.Misc.Jump then
+      self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
+      self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
+      if self.QCast < 2 then
+        Cast(_Q, myHero)
+      end
+      if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
+        myHero:MoveTo(self.movePos.x, self.movePos.z)
+      else
+        if sReady[_Q] then
+          Cast(_Q, mousePos)
+        end
+      end
+    end
+    for _,k in pairs(GetEnemyHeroes()) do
+      if sReady[_W] and ValidTarget(k, data[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, data[_W].range)) then
+        Cast(_W)
+      end
+    end
+  end
+
+  function Riven:ProcessSpell(unit,spell)
+    if unit and unit.isMe and spell then
+      if spell.name == "RivenTriCleave" then
+        self.QCast = self.QCast + 1
+        DelayAction(function() if not sReady[_Q] then self.QCast = 0 end end, 4)
+      elseif spell.name == "RivenFeint" then
+        self.EDelay = GetTickCount()
+      end
+    end
   end
 
   function Riven:Msg(Msg, Key)
@@ -70,6 +109,7 @@ class "Riven"
       if starget and minD < starget.boundingRadius*2 then
         if self.Forcetarget and starget.charName == self.Forcetarget.charName then
           self.Forcetarget = nil
+          ScriptologyMsg("Target un-selected.")
         else
           self.Forcetarget = starget
           ScriptologyMsg("New target selected: "..starget.charName.."")
@@ -113,6 +153,11 @@ class "Riven"
     end
     if Config.Draws.R and sReady[_R] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[3].range, ARGB(255,255,255,255)) 
+    end
+    if self.Forcetarget then
+      DrawLFC(self.Forcetarget.x, self.Forcetarget.y, self.Forcetarget.z, self.Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
+      DrawLFC(self.Forcetarget.x, self.Forcetarget.y, self.Forcetarget.z, self.Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
+      DrawLFC(self.Forcetarget.x, self.Forcetarget.y, self.Forcetarget.z, self.Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
     end
     if self.movePos then
       local color = IsWall(D3DXVECTOR3(self.movePos.x,self.movePos.y,self.movePos.z)) and ARGB(255,255,0,0) or ARGB(255,255,255,255)
@@ -164,8 +209,8 @@ class "Riven"
         CastSpell(_E, self.Target)
       end
     end
-    if Config.Combo.R and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
-    if (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target) end
+    if myHero.isWindingUp and Config.Combo.R and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
+    if myHero.isWindingUp and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target) end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
       CastSpell(_W)
     end
