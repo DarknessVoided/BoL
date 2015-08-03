@@ -280,6 +280,10 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         ScriptologyLoadedClasses[myHero.charName].Target = targetSel.target
       end
       if Config.kConfig.Combo then
+        if ScriptologyConfig.SWalkl ~= nil and not loadedAnWalker then
+          LoadSWalk() 
+          RemoveOw()
+        end
         if ScriptologyDebug then
           ScriptologyLoadedClasses[myHero.charName]:Combo()
         else

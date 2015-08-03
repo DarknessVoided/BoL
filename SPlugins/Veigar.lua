@@ -2,9 +2,9 @@ class "Veigar"
 	function Veigar:__init()
 		targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_MAGIC, false, true)
 		data = {
-		  [_Q] = { speed = 1200, delay = 0.5, range = 1150, width = 40, collision = true, aoe = false, type = "linear"},
-		  [_W] = { delay = 1.5, range = 5000},
-		  [_E] = { range = 1000},
+		  [_Q] = { speed = 2000, delay = 0.25, range = 950, width = 70, collision = true, aoe = false, type = "linear"},
+		  [_W] = { speed = math.huge, delay = 1.35, range = 900, width = 225, collision = false, aoe = false, type = "circular"},
+		  [_E] = { speed = math.huge, delay = 0.5, range = 700, width = 80, collision = false, aoe = false, type = "circular"},
 		  [_R] = { range = 2000}
 		}
 		self.Target = nil
@@ -44,6 +44,23 @@ class "Veigar"
 		Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
 		Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
 		Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-		Config.Misc:addDynamicParam("Ra", "Auto R", SCRIPT_PARAM_ONOFF, true)
-		Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
+		Config.Misc:addDynamicParam("Ea", "Auto E", SCRIPT_PARAM_ONOFF, true)
+		Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
+	end
+
+	function Veigar:Combo()
+		if sReady[_Q] and Config.Combo.Q then
+			Cast(_Q, self.Target, 2)
+		end
+		if sReady[_W] and Config.Combo.W then
+			Cast(_W, self.Target, 2)
+		end
+		if sReady[_E] and Config.Combo.E then
+			local CastPos, HitChance = UPL:Predict(_E, myHero, self.Target)
+			if CastPos and HitChance >= 1 then
+				local ePos = CastPos + Vector(CastPos - (self.Target.isMoving and self.Target or myHero)):normalized()*225
+				Cast(_E, ePos)
+				DelayAction(function() Cast(_W, CastPos) end, 0.25)
+			end
+		end
 	end
