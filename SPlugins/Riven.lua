@@ -154,10 +154,10 @@ class "Riven"
         if self.Target and self.QAA then
           if GetDistance(self.Target) < 294 then
             print("move")
-            local movePos = Vector(myHero) - (Vector(self.Target) - myHero):normalized() * 35
+            local movePos = Vector(myHero) - (Vector(self.Target) - myHero):normalized() * 55
             myHero:MoveTo(movePos.x, movePos.z)
+            loadedOrb.orbTable.lastAA = 0
           end
-          loadedOrb.orbTable.lastAA = 0
         end
       end
     end
