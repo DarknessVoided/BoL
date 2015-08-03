@@ -14,6 +14,13 @@ class "Riven"
 
   function Riven:Load()
     SetupMenu()
+    DelayAction(function()
+      LoadSWalk() 
+      RemoveOw()
+    end, 0.25)
+    DelayAction(function()      
+      _G.loadedOrb:AddReset(_Q, RESET_PREDICT)
+    end, 2.5)
   end
 
   function Riven:Menu()
@@ -138,5 +145,11 @@ class "Riven"
           end
         end
       end
+    end
+  end
+
+  function Riven:Combo()
+    if sReady[_Q] and GetDistance(self.Target) < data[0].range and not myHero.isWindingUp then
+      Cast(_Q, self.Target, 2)
     end
   end
