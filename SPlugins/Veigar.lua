@@ -52,15 +52,14 @@ class "Veigar"
 		if sReady[_Q] and Config.Combo.Q then
 			Cast(_Q, self.Target, 2)
 		end
-		if sReady[_W] and Config.Combo.W then
-			Cast(_W, self.Target, 2)
-		end
 		if sReady[_E] and Config.Combo.E then
 			local CastPos, HitChance = UPL:Predict(_E, myHero, self.Target)
 			if CastPos and HitChance >= 1 then
-				local ePos = CastPos + Vector(CastPos - (self.Target.isMoving and self.Target or myHero)):normalized()*225
+				local ePos = CastPos + Vector(CastPos - (self.Target.isMoving and self.Target or myHero)):normalized()*(self.Target.ms/4)
 				Cast(_E, ePos)
 				DelayAction(function() Cast(_W, CastPos) end, 0.25)
 			end
+		elseif sReady[_W] and Config.Combo.W then
+			Cast(_W, self.Target, 2)
 		end
 	end

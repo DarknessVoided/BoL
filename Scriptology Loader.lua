@@ -60,9 +60,9 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       end
     else
       if not FileExist(LIB_PATH .. "SPrediction.lua") then
-        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?rand="..math.random(1,10000), LIB_PATH.."SPrediction.lua", function() end)
+        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?no-cache="..math.random(1, 25000), LIB_PATH.."SPrediction.lua", function() end)
       elseif not FileExist(LIB_PATH .. "ScriptologyLib.lua") then
-        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
+        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?no-cache="..math.random(1, 25000), LIB_PATH.."ScriptologyLib.lua", function() end)
       end
       DelayAction(Load, 2)
     end
@@ -226,15 +226,15 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   end
 
   function Update()
-    local ScriptologyServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Scriptology.version")
+    local ScriptologyServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Scriptology.version?no-cache="..math.random(1, 25000))
     if ScriptologyServerData then
       ScriptologyServerVersion = type(tonumber(ScriptologyServerData)) == "number" and tonumber(ScriptologyServerData) or nil
       if ScriptologyServerVersion then
         if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?rand="..math.random(1,10000), LIB_PATH.."UPL.lua", function () end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/"..GetCurrentEnv().FILE_NAME.."?rand="..math.random(1,10000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?rand="..math.random(1,10000), LIB_PATH.."ScriptologyLib.lua", function() end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?rand="..math.random(1,10000), LIB_PATH.."SPrediction.lua", function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?no-cache="..math.random(1, 25000), LIB_PATH.."UPL.lua", function () end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/"..GetCurrentEnv().FILE_NAME.."?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?no-cache="..math.random(1, 25000), LIB_PATH.."ScriptologyLib.lua", function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?no-cache="..math.random(1, 25000), LIB_PATH.."SPrediction.lua", function() end)
           return true
         end
       end
@@ -246,7 +246,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
 
   function SilentUpdate()
     for _, k in pairs(ScriptologyLoadedClasses) do
-      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/".._..".lua?rand="..math.random(1,10000), LIB_PATH.."Scriptology - ".._..".lua", function() end)
+      DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/".._..".lua?no-cache="..math.random(1, 25000), LIB_PATH.."Scriptology - ".._..".lua", function() end)
     end
   end
 
@@ -256,7 +256,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       ScriptologyPluginVersion = type(tonumber(ScriptologyPlugin)) == "number" and tonumber(ScriptologyPlugin) or nil
       if ScriptologyPluginVersion then
         ScriptologyMsg("Downloading plugin: '"..name.."'")
-        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/"..name..".lua?rand="..math.random(1,10000), LIB_PATH.."Scriptology - "..name..".lua", function() ScriptologyMsg("Downloaded plugin: '"..name.."'") end)
+        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/"..name..".lua?no-cache="..math.random(1, 25000), LIB_PATH.."Scriptology - "..name..".lua", function() ScriptologyMsg("Downloaded plugin: '"..name.."'") end)
         return true
       end
     else
