@@ -64,7 +64,7 @@ class "SWalk"
 
   function SWalk:OrbWalk()
     if self.ts then self.ts:update() if self.ts.target then Target = self.ts.target end end
-    self.myRange = myHero.range+myHero.boundingRadius
+    self.myRange = myHero.range+myHero.boundingRadius+(Target and Target.boundingRadius or 0)
     if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
       dmg = GetDmg("AD",myHero,self.Target)

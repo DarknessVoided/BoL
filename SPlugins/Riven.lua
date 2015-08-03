@@ -146,7 +146,7 @@ class "Riven"
           DelayAction(function() 
             print("attack2")
             Cast(_Q, self.Target.pos or spell.target.pos or myHero.pos) 
-          end, 0.137 + GetLatency()/2000)
+          end, spell.windUpTime + GetLatency()/2000)
         end
       elseif spell.name == "RivenTriCleave" then
         self.QCast = self.QCast + 1
@@ -154,7 +154,7 @@ class "Riven"
         if self.Target and self.QAA then
           if GetDistance(self.Target) < 294 then
             print("move")
-            local movePos = Vector(myHero) - (Vector(self.Target) - myHero):normalized() * 55
+            local movePos = Vector(myHero) - (Vector(self.Target) - myHero):normalized() * 45
             myHero:MoveTo(movePos.x, movePos.z)
             loadedOrb.orbTable.lastAA = 0
           end
@@ -165,6 +165,6 @@ class "Riven"
 
   function Riven:Combo()
     if sReady[_Q] and GetDistance(self.Target) < data[0].range and not myHero.isWindingUp and self.QCast == 0 then
-      Cast(_Q, self.Target.pos)
+      --Cast(_Q, self.Target.pos)
     end
   end
