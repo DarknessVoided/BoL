@@ -18,9 +18,6 @@ class "Yasuo"
       LoadSWalk() 
       RemoveOw()
     end, 0.25)
-    DelayAction(function()      
-      _G.loadedOrb:AddReset(_Q, RESET_PREDICT)
-    end, 2.5)
     self.passiveTracker = false
     self.passiveName = "yasuoq3w"
   end

@@ -10,10 +10,11 @@ class "Riven"
     }
     self.Target = nil
     self.QAA = false
+    self.QCast = 0
   end
 
   function Riven:Load()
-    SetupMenu()
+    SetupMenu(true)
     DelayAction(function()
       LoadSWalk() 
       RemoveOw()
@@ -77,6 +78,13 @@ class "Riven"
   end
 
   function Riven:Draw()
+    local barPos = WorldToScreen(D3DXVECTOR3(myHero.x, myHero.y, myHero.z))
+    local posX = barPos.x - 35
+    local posY = barPos.y - 50
+    DrawText("Q stacks: "..self.QCast, 18, posX, posY, ARGB(255, 250, 255, 250))
+    DrawText("Last AA: "..loadedOrb.orbTable.lastAA, 18, posX, posY+20, ARGB(255, 250, 255, 250))
+    local rwu = ((loadedOrb.orbTable.lastAA+loadedOrb.orbTable.windUp)-os.clock())
+    DrawText("Remaining Windup: "..(rwu > 0 and rwu or 0), 18, posX, posY+40, ARGB(255, 250, 255, 250))
     if Config.Draws.Q and sReady[_Q] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(105,155,155,155))
     end
@@ -132,24 +140,31 @@ class "Riven"
 
   function Riven:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
-      if spell.name == "RivenTriCleave" then
+      if spell.name:lower():find("attack") then
+        if self.QAA then
+          print("attack1")
+          DelayAction(function() 
+            print("attack2")
+            Cast(_Q, self.Target.pos or spell.target.pos or myHero.pos) 
+          end, 0.137 + GetLatency()/2000)
+        end
+      elseif spell.name == "RivenTriCleave" then
         self.QCast = self.QCast + 1
-        if self.QCast == 4 then self.QCast = 1 end
+        DelayAction(function() if not sReady[_Q] then self.QCast = 0 end end, 4)
         if self.Target and self.QAA then
-          local movePos = self.Target + (Vector(myHero) - self.Target):normalized() * (GetDistance(self.Target) + 65)
-          if movePos and GetDistance(self.Target) < 294 then
-            loadedOrb.orbTable.lastAA = os.clock() + 0.85
+          if GetDistance(self.Target) < 294 then
+            print("move")
+            local movePos = Vector(myHero) - (Vector(self.Target) - myHero):normalized() * 35
             myHero:MoveTo(movePos.x, movePos.z)
-          else
-            myHero:MoveTo(mousePos.x, mousePos.z)
           end
+          loadedOrb.orbTable.lastAA = 0
         end
       end
     end
   end
 
   function Riven:Combo()
-    if sReady[_Q] and GetDistance(self.Target) < data[0].range and not myHero.isWindingUp then
-      Cast(_Q, self.Target, 2)
+    if sReady[_Q] and GetDistance(self.Target) < data[0].range and not myHero.isWindingUp and self.QCast == 0 then
+      Cast(_Q, self.Target.pos)
     end
   end
