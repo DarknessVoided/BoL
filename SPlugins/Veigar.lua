@@ -54,8 +54,8 @@ class "Veigar"
 		end
 		if sReady[_E] and Config.Combo.E and (not Config.Combo.WE or (sReady[_W] and Config.Combo.W)) then
     		local pos, b = PredictPos(self.Target, 0.5)
-    		if GetDistance(pos) < data[_E].range+250 then
-    			local ep = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
+    		if GetDistance(pos) < data[_E].range+350 then
+    			local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
     			local epl = (Vector(myHero) - ep):len()
     			local ept = ep
     			ep = ep + (Vector(myHero) - ep):normalized() * math.min(epl, data[_E].range)
@@ -69,4 +69,16 @@ class "Veigar"
 		if sReady[_R] and Config.Combo.R then
 			Cast(_R, self.Target)
 		end
+	end
+
+	function Veigar:Harrass()
+	end
+
+	function Veigar:LastHit()
+	end
+
+	function Veigar:LaneClear()
+	end
+
+	function Veigar:Killsteal()
 	end
