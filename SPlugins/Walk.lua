@@ -29,9 +29,6 @@ class "SWalk"
     if self.melee and myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" then 
       self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
     end
-    if self.aaResetTable or self.aaResetTable2 or self.aaResetTable3 or self.aaResetTable4 then
-      self.Config:addParam("aar", "Reset AA only in combo/harrass", SCRIPT_PARAM_ONOFF, true)
-    end
     if not targetSel then
       self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
       self.Config:addSubMenu("Target Selector", "ts")
@@ -131,7 +128,7 @@ class "SWalk"
     elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp) then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
       if self:DoOrb() and ValidTarget(unit, self.myRange+125) and unit.type == myHero.type and self.melee and self.Config.wtt then
-        if GetDistance(unit) > (myHero.boundingRadius+unit.boundingRadius) then
+        if GetDistance(unit) > self.myRange then
           myHero:MoveTo(unit.x, unit.z)
         end
       elseif self:DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
@@ -144,9 +141,9 @@ class "SWalk"
     for _=0,3 do
       sReady[_] = myHero:CanUseSpell(_) == READY
     end
-    self.State[_Q] = true
-    self.State[_W] = true
-    self.State[_E] = true
+    self.State[_Q] = not ScriptologyLoaded or (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
+    self.State[_W] = not ScriptologyLoaded or (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W) or (Config.kConfig.LastHit and Config.LastHit.W) or (Config.kConfig.LaneClear and Config.LaneClear.W)
+    self.State[_E] = not ScriptologyLoaded or (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) or (Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)
     self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
     return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
   end

@@ -21,6 +21,7 @@ class "Riven"
     end, 0.25)
     DelayAction(function()      
       _G.loadedOrb:AddReset(_Q, RESET_PREDICT)
+      _G.loadedOrb:AddReset(_W, RESET_SELF)
     end, 2.5)
   end
 
