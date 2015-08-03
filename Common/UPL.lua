@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.6
+    _G.UPLversion = 2.61
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -293,7 +293,7 @@ function UPL:TimeRequest(spell)
     if self:ActivePred(spell) == "VPrediction" or self:ActivePred(spell) == "HPrediction" or self:ActivePred(spell) == "SPrediction" then
       return 0.001
     elseif self:ActivePred(spell) == "DivinePrediction" then
-      return 0.25
+      return 0.2
     else
       return 0.01
     end

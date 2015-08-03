@@ -3,8 +3,8 @@ class "Veigar"
 		targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_MAGIC, false, true)
 		data = {
 		  [_Q] = { speed = 2000, delay = 0.25, range = 950, width = 70, collision = true, aoe = false, type = "linear"},
-		  [_W] = { speed = math.huge, delay = 1.35, range = 900, width = 225, collision = false, aoe = false, type = "circular"},
-		  [_E] = { speed = math.huge, delay = 0.5, range = 700, width = 80, collision = false, aoe = false, type = "circular"},
+		  [_W] = { speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular"},
+		  [_E] = { speed = math.huge, delay = 0.5, range = 700, width = 275, collision = false, aoe = false, type = "circular"},
 		  [_R] = { range = 2000}
 		}
 		self.Target = nil
@@ -19,7 +19,7 @@ class "Veigar"
 		Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 		Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
 		Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-		Config.Combo:addParam("WE", "Prioritize", SCRIPT_PARAM_LIST, 1, {"W > E", "E > W"})
+		Config.Combo:addParam("WE", "Only E with W", SCRIPT_PARAM_ONOFF, true)
 		Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 		Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 		Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -52,14 +52,21 @@ class "Veigar"
 		if sReady[_Q] and Config.Combo.Q then
 			Cast(_Q, self.Target, 2)
 		end
-		if sReady[_E] and Config.Combo.E then
-			local CastPos, HitChance = UPL:Predict(_E, myHero, self.Target)
-			if CastPos and HitChance >= 1 then
-				local ePos = CastPos + Vector(CastPos - (self.Target.isMoving and self.Target or myHero)):normalized()*(self.Target.ms/4)
-				Cast(_E, ePos)
-				DelayAction(function() Cast(_W, CastPos) end, 0.25)
-			end
+		if sReady[_E] and Config.Combo.E and (not Config.Combo.WE or (sReady[_W] and Config.Combo.W)) then
+    		local pos, b = PredictPos(self.Target, 0.5)
+    		if GetDistance(pos) < data[_E].range+250 then
+    			local ep = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
+    			local epl = (Vector(myHero) - ep):len()
+    			local ept = ep
+    			ep = ep + (Vector(myHero) - ep):normalized() * math.min(epl, data[_E].range)
+    			ep = GetDistance(ep) == 0 and ept or ep
+    			Cast(_E, ep)
+				if sReady[_W] and Config.Combo.W then DelayAction(function() Cast(_W, pos) end, 0.25) end
+    		end
 		elseif sReady[_W] and Config.Combo.W then
 			Cast(_W, self.Target, 2)
+		end
+		if sReady[_R] and Config.Combo.R then
+			Cast(_R, self.Target)
 		end
 	end

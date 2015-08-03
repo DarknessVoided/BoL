@@ -417,9 +417,9 @@
           damageE = GetDmg(_E, myHero, winion)
           if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
             if damageE > winion.health then
-              DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+              DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
             else
-              DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+              DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
             end
           end
         end
@@ -428,9 +428,9 @@
             damageE = GetDmg(_E, myHero, winion)
             if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
               if damageE > winion.health then
-                DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+                DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
               else
-                DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, TARGB({255,250,250,250}), 0)
+                DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
               end
             end
           end
@@ -451,8 +451,8 @@
     _G.Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
     _G.JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
     mobTick, jmobTick = 0, 0
-    AddTickCallback(function() if mobTick > GetInGameTimer() then Mobs:update() mobTick = GetInGameTimer()+0.25 end end)
-    AddTickCallback(function() if jmobTick > GetInGameTimer() then JMobs:update() jmobTick = GetInGameTimer()+0.25 end end)
+    AddTickCallback(function() Mobs:update() end)
+    AddTickCallback(function() JMobs:update() end)
     _G.sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
     AddTickCallback(function()for _=0,5 do;sReady[_]=(myHero:CanUseSpell(_)==READY)end;end)
   end
