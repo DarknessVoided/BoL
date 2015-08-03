@@ -205,11 +205,16 @@
         if GapcloseTargeted then
           if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
             if myHero.charName == "Jayce" and loadedClass:IsRange() then Cast(_R) end
-            Cast(GapcloseSpell, GapcloseUnit, true)
+            Cast(GapcloseSpell, GapcloseUnit)
           end
         else 
-          if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange*4 then
-            Cast(GapcloseSpell, GapcloseUnit, false, true, 1)
+          if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
+            if UPLloaded then
+              Cast(GapcloseSpell, GapcloseUnit, 1)
+            else
+              Cast(GapcloseSpell, GapcloseUnit)
+              Cast(GapcloseSpell)
+            end
           end
         end
       else
@@ -648,11 +653,12 @@
         zPos = CastPosition.z
         if VIP_USER then
           Packet("S_CAST", {spellId = Spell, fromX = xPos, fromY = zPos, toX = xPos, toY = zPos}):send()
-          return true
+          Packet("S_CAST", {spellId = Spell}):send()
         else
           CastSpell(Spell, xPos, zPos)
-          return true
+          Cast(Spell)
         end
+        return true
       end
     end
     return false

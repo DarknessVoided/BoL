@@ -78,14 +78,30 @@ class "Riven"
     end
   end
 
+  function Riven:DmgCalc()
+    if not Config.Draws.DMG then return end
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy.visible then
+        killTextTable[enemy.networkID].indicatorText = ""
+        local damageC  = self:CalcComboDmg(enemy, 0, not Config.Combo.R)
+        local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
+        local damageS  = Smite and (20 + 8 * myHero.level) or 0
+        if GetRealHealth(enemy) < damageC+damageI then
+          killTextTable[enemy.networkID].indicatorText = "Kill!!"
+        else
+          local neededAA = math.floor(100 * (damageC+damageI) / (GetRealHealth(enemy)))
+          killTextTable[enemy.networkID].indicatorText = neededAA.."% Combo dmg"
+        end
+        local enemyDamageAA = GetDmg("AD", enemy, myHero)
+        local enemyNeededAA = not enemyDamageAA and 0 or math.ceil(myHero.health / enemyDamageAA)   
+        if enemyNeededAA ~= 0 then         
+          killTextTable[enemy.networkID].damageGettingText = enemy.charName .. " kills me with " .. enemyNeededAA .. " hits"
+        end
+      end
+    end
+  end
+
   function Riven:Draw()
-    local barPos = WorldToScreen(D3DXVECTOR3(myHero.x, myHero.y, myHero.z))
-    local posX = barPos.x - 35
-    local posY = barPos.y - 50
-    DrawText("Q stacks: "..self.QCast, 18, posX, posY, ARGB(255, 250, 255, 250))
-    DrawText("Last AA: "..loadedOrb.orbTable.lastAA, 18, posX, posY+20, ARGB(255, 250, 255, 250))
-    local rwu = ((loadedOrb.orbTable.lastAA+loadedOrb.orbTable.windUp)-os.clock())
-    DrawText("Remaining Windup: "..(rwu > 0 and rwu or 0), 18, posX, posY+40, ARGB(255, 250, 255, 250))
     if Config.Draws.Q and sReady[_Q] then
       DrawLFC(myHero.x, myHero.y, myHero.z, data[0].range, ARGB(105,155,155,155))
     end
@@ -137,4 +153,25 @@ class "Riven"
       dmg = dmg + GetDmg(_R,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
     end
     return dmg
+  end
+
+  function Riven:Combo()
+    if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
+      if Config.Combo.R and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        Cast(_E, self.Target)
+        DelayAction(function() Cast(_R) end, 0.075) 
+      else
+        CastSpell(_E, self.Target)
+      end
+    end
+    if Config.Combo.R and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
+    if (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target) end
+    if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
+      CastSpell(_W)
+    end
+    if sReady[_Q] and not sReady[_E] and GetDistance(self.Target) > loadedOrb.myRange + 30 then
+      if self.EDelay + 300 < GetTickCount() and self.QDelay + 1.2 < os.clock() then
+        Cast(_Q, Target)
+      end
+    end
   end
