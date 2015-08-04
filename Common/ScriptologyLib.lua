@@ -562,6 +562,15 @@
     end
   end
 
+  function contains(table, value)
+    for _, n in pairs(table) do 
+      if value == n then 
+        return true 
+      end 
+    end 
+    return false 
+  end
+
   function GetTargetDirection(target)
     local wp = GetWayPoints(target)
     if #wp == 1 then

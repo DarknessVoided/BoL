@@ -17,10 +17,12 @@ class "Darius"
   end
 
   function Darius:Menu()
-    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("Qd", "Use Q (outer)", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("Qs", "Use Q (inner)", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Qd", "Use Q (outer)", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Qs", "Use Q (inner)", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
@@ -90,15 +92,15 @@ class "Darius"
   end
 
   function Darius:Combo()
-    if myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
+    if Config.Combo.Qd and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
       self:CastQ(Target)
-    elseif myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
+    elseif Config.Combo.Qs and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
       Cast(_Q)
     end
-    if myHero:CanUseSpell(_E) == READY then
+    if Config.Combo.Q and myHero:CanUseSpell(_E) == READY then
       self:CastE(Target)
     end
-    if myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) and Config.Combo.R then
+    if Config.Combo.Q and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) and Config.Combo.R then
       Cast(_R, enemy)
     end
   end
@@ -116,8 +118,10 @@ class "Darius"
   end
 
   function Darius:Harrass()
-    if Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
+    if Config.Harrass.Qd and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
       self:CastQ(Target)
+    elseif Config.Harrass.Qs and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
+      Cast(_Q)
     end
   end
 

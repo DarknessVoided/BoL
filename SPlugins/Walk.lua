@@ -43,6 +43,8 @@ class "SWalk"
     else
       self.Config.kConfig = ScriptologyConfig[myHero.charName].kConfig
     end
+    self.altAttacks = { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
+    self.resetAttacks = { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
   end
@@ -183,7 +185,7 @@ class "SWalk"
 
   function SWalk:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
-      if spell.name:lower():find("attack") then
+      if spell.name:lower():find("attack") or contains(self.altAttacks, spell.name) or contains(self.resetAttacks, spell.name) then
         local windUp = spell.windUpTime + self.Config.cadj/1000
         self.orbTable.windUp = windUp
         self.orbTable.animation = spell.animationTime
