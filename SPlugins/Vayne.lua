@@ -14,6 +14,7 @@ class "Vayne"
     SetupMenu(true)
     self.lastCalc = 0
     self.cdTable = {}
+    self.roll = false
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
   end
 
@@ -46,6 +47,7 @@ class "Vayne"
   end
 
   function Vayne:Tick()
+    self.roll = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
     if loadedAnWalker and loadedOrb and not addedAAreset then
       addedAAreset = true
       loadedOrb:AddReset(_Q, RESET_MOUSE)
@@ -60,7 +62,7 @@ class "Vayne"
 
   function Vayne:ProcessSpell()
     if unit and spell and unit.isMe and spell.name then
-      if spell.name:lower():find("attack") and not loadedOrb then
+      if spell.name:lower():find("attack") and not loadedOrb and self.roll then
         if sReady[_Q] then
           Cast(_Q, mousePos)
         end
