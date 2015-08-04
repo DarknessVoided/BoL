@@ -30,11 +30,12 @@ end
 
 function WardJump()
 	if casted and jumped then 
-		casted, jumped = false, false
+		DelayAction(function() casted, jumped = false, false end, 0.25)
 	elseif (myHero:CanUseSpell(toCast[myHero.charName]) == READY and myHero:GetSpellData(_W).name == "BlindMonkWOne") 
 		or (myHero:CanUseSpell(toCast[myHero.charName]) == READY and myHero.charName ~= "LeeSin") then
 		local pos = Vector(myHero) - (Vector(myHero) - mousePos):normalized() * (myHero.charName == "LeeSin" and 600 or 700)
 		if Jump(pos, 250) then return end
+		DelayAction(function() Jump(pos, 250) end, 0.25)
 		slot = GetWardSlot()
 		if not slot or casted then return end
 		CastSpell(slot, pos.x, pos.z)
@@ -57,9 +58,16 @@ function Jump(pos, range)
 			return true
 		end
 	end
-	table.sort(Wards, function(x,y) return GetDistance(x) < GetDistance(y) end)
 	for i, ward in ipairs(Wards) do
 		if (GetDistance(ward, pos) <= range) then
+			CastSpell(toCast[myHero.charName], ward)
+			jumped = true
+			return true
+		end
+	end
+	for _=#Wards, 1 do
+		local ward = Wards[_]
+		if ward and (GetDistance(ward, pos) <= range) then
 			CastSpell(toCast[myHero.charName], ward)
 			jumped = true
 			return true
