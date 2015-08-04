@@ -405,6 +405,12 @@
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
     end
+    if ScriptologyLoadedClasses[myHero.charName].Forcetarget then
+      local Forcetarget = ScriptologyLoadedClasses[myHero.charName].Forcetarget
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
+    end
     if Config.Draws.DMG then
       for i,k in pairs(GetEnemyHeroes()) do
         local enemy = k
