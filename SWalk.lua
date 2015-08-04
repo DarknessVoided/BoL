@@ -1,9 +1,9 @@
-function Onload()
+function OnLoad()
   DelayAction(function()
     if not _G.SWalkLoaded then
-      SWalk()
+      sw = SWalk()
     end
-  end, 0.25)
+  end, 0.5)
 end
 
 class "SWalk"
@@ -50,6 +50,7 @@ class "SWalk"
     if not UPLloaded then require("HPrediction") HP = HPrediction() else HP = UPL.HP end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     _G.SWalkLoaded = true
+    print("<font color=\"#6699ff\"><b>[Scriptology Walker]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
     return self
   end
 
@@ -166,6 +167,18 @@ class "SWalk"
     return minionTarget, health
   end
 
+  function GetJMinion(range)
+    local minionTarget = nil
+    for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
+      if minionTarget == nil then 
+        minionTarget = minion
+      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) then
+        minionTarget = minion
+      end
+    end
+    return minionTarget
+  end
+
   function SWalk:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
@@ -233,9 +246,6 @@ class "SWalk"
             end
         end
     end
-    for i=1, #table, 1 do
-
-    end
     local enemies = #GetEnemyHeroes()
     if priorityTable2~=nil and type(priorityTable2) == "table" and enemies > 0 then
       for i, enemy in ipairs(GetEnemyHeroes()) do
@@ -246,4 +256,59 @@ class "SWalk"
         _SetPriority(priorityTable2.p5, enemy, math.min(5, #GetEnemyHeroes()))
       end
     end
+  end
+
+  function Set(list)
+    local set = {}
+    for _, l in ipairs(list) do 
+      set[l] = true 
+    end
+    return set
+  end
+
+  function GetDmg(spell, source, target)
+    if target == nil or source == nil then
+      return
+    end
+    local ADDmg            = 0
+    local APDmg            = 0
+    local TRUEDmg          = 0
+    local AP               = source.ap
+    local Level            = source.level
+    local TotalDmg         = source.totalDamage
+    local crit = myHero.critChance
+    local crdm = myHero.critDmg
+    local ArmorPen         = math.floor(source.armorPen)
+    local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+    local MagicPen         = math.floor(source.magicPen)
+    local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+
+    local Armor        = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+
+    ADDmg = TotalDmg
+    if myHero.charName == "Ashe" then
+      ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
+    elseif myHero.charName == "Teemo" then
+      APDmg = APDmg + 10*myHero:GetSpellData(_E).level+0.3*AP
+    elseif myHero.charName == "Orianna" then
+      APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
+    end
+    if GetMaladySlot() then
+      APDmg = 15 + 0.15*AP
+    end
+
+    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    return math.floor(dmg) * (TargetHaveBuff("summonerexhaust", source) and 0.6 or 1)
+  end
+
+  function GetMaladySlot()
+    for slot = ITEM_1, ITEM_7, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "malady")) then
+        return slot
+      end
+    end
+    return nil
   end

@@ -243,6 +243,10 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     end
     return false
   end
+  
+  function ScriptologyMsg(msg) 
+    print("<font color=\"#6699ff\"><b>[Scriptology Loader]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+  end
 
   function SilentUpdate()
     DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/Walk.lua?no-cache="..math.random(1, 25000), LIB_PATH.."Scriptology - Walk.lua", function() end)
