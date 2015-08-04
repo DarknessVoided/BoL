@@ -1,6 +1,8 @@
 function Onload()
   DelayAction(function()
-
+    if not _G.SWalkLoaded then
+      SWalk()
+    end
   end, 0.25)
 end
 
@@ -8,9 +10,7 @@ class "SWalk"
 
   function SWalk:__init(Cfg)
     self.melee = myHero.range < 450 or myHero.charName == "Rengar"
-    self.aaResetTable, self.aaResetTable2, self.aaResetTable3, self.aaResetTable4 = {}, {}, {}, {}
     self.orbDisabled = false
-    self.State = {}
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
     self.myRange = myHero.range+myHero.boundingRadius
     if Cfg then
@@ -32,7 +32,7 @@ class "SWalk"
     AddTickCallback(function() self:OrbWalk() end)
     AddDrawCallback(function() self:Draw() end)
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
-    if self.melee and myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" then 
+    if self.melee and myHero.charName ~= "Elise" and myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" then 
       self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
     end
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
@@ -41,7 +41,7 @@ class "SWalk"
     ArrangeTSPriorities()
     sReady = {}
     self.Config:addSubMenu("Key Settings", "kConfig")
-    self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
     self.Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     self.Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     self.Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
@@ -49,6 +49,7 @@ class "SWalk"
     self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
     if not UPLloaded then require("HPrediction") HP = HPrediction() else HP = UPL.HP end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
+    _G.SWalkLoaded = true
     return self
   end
 
@@ -99,11 +100,6 @@ class "SWalk"
     if self.Config.kConfig.Combo then
       self.Target = Target
     end
-    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and (self.Config.kConfig.Harrass or self.Config.kConfig.Combo) then
-      local t = self.Target
-      self.Target = (loadedClass and loadedClass.Forcetarget or self.Forcetarget or Forcetarget)
-      self.Target = ValidTarget(self.Target, self.myRange*1.25) and self.Target or t
-    end
     local t = GetTarget()
     if t and ValidTarget(t, self.myRange) and (self.Config.kConfig.LaneClear or self.Config.kConfig.Combo) then
       self.Target = t
@@ -114,27 +110,14 @@ class "SWalk"
   end
 
   function SWalk:Orb(unit)
-    if _G.Evade or self.orbDisabled then return end
-    if not ValidTarget(unit, self.myRange) then unit = Target end
-    local valid = false
-    if myHero.charName == "Azir" and ScriptologyLoaded then 
-      if ValidTarget(unit) then
-        for _,k in pairs(loadedClass.GetSoldiers()) do
-          if GetDistance(k,unit) < data[_W].width and GetDistance(k) <= 850 then
-            valid = true
-          end
-        end
-      end
-    end
-    if not valid then
-      valid = ValidTarget(unit, self.myRange)
-    end
-    if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid and ValidTarget(unit) then
+    if _G.Evade or _G.Evading or _G.evade or _G.evading or self.orbDisabled then return end
+    local valid = ValidTarget(unit, self.myRange)
+    if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid then
       myHero:Attack(unit)
     elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp) then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and ValidTarget(unit, self.myRange+125) and unit.type == myHero.type and self.melee and self.Config.wtt then
-        if GetDistance(unit) > self.myRange then
+      if self:DoOrb() and ValidTarget(unit, self.myRange) and unit.type == myHero.type and self.melee and self.Config.wtt then
+        if GetDistance(unit) > myHero.boundingRadius + unit.boundingRadius then
           myHero:MoveTo(unit.x, unit.z)
         end
       elseif self:DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
@@ -156,7 +139,7 @@ class "SWalk"
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
       local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.lhadj/100 + 0.07)
-      if minionTarget == nil then 
+      if minionTarget == nil and hp > 0 then 
         minionTarget = minion
         health = hp
       elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
@@ -224,4 +207,43 @@ class "SWalk"
       end
     end
     return false
+  end
+
+  function ArrangeTSPriorities() -- last seen at "I don't even know who"
+    local priorityTable2 = {
+        p5 = {"Alistar", "Amumu", "Blitzcrank", "Braum", "ChoGath", "DrMundo", "Garen", "Gnar", "Hecarim", "JarvanIV", "Leona", "Lulu", "Malphite", "Nasus", "Nautilus", "Nunu", "Olaf", "Rammus", "Renekton", "Sejuani", "Shen", "Shyvana", "Singed", "Sion", "Skarner", "Taric", "Thresh", "Volibear", "Warwick", "MonkeyKing", "Yorick", "Zac"},
+        p4 = {"Aatrox", "Darius", "Elise", "Evelynn", "Galio", "Gangplank", "Gragas", "Irelia", "Jax","LeeSin", "Maokai", "Morgana", "Nocturne", "Pantheon", "Poppy", "Rengar", "Rumble", "Ryze", "Swain","Trundle", "Tryndamere", "Udyr", "Urgot", "Vi", "XinZhao", "RekSai"},
+        p3 = {"Akali", "Diana", "Fiddlesticks", "Fiora", "Fizz", "Heimerdinger", "Janna", "Jayce", "Kassadin","Kayle", "KhaZix", "Lissandra", "Mordekaiser", "Nami", "Nidalee", "Riven", "Shaco", "Sona", "Soraka", "TahmKench" "Vladimir", "Yasuo", "Zilean", "Zyra"},
+        p2 = {"Ahri", "Anivia", "Annie",  "Brand",  "Cassiopeia", "Ekko", "Karma", "Karthus", "Katarina", "Kennen", "LeBlanc",  "Lux", "Malzahar", "MasterYi", "Orianna", "Syndra", "Talon",  "TwistedFate", "Veigar", "VelKoz", "Viktor", "Xerath", "Zed", "Ziggs" },
+        p1 = {"Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jinx", "Kalista", "KogMaw", "Lucian", "MissFortune", "Quinn", "Sivir", "Teemo", "Tristana", "Twitch", "Varus", "Vayne"},
+    }
+     local priorityOrder = {
+        [1] = {1,1,1,1,1},
+        [2] = {1,1,2,2,2},
+        [3] = {1,1,2,3,3},
+        [4] = {1,2,3,4,4},
+        [5] = {1,2,3,4,5},
+    }
+    local function _SetPriority(table, hero, priority)
+        if table ~= nil and hero ~= nil and priority ~= nil and type(table) == "table" then
+            for i=1, #table, 1 do
+                if hero.charName:find(table[i]) ~= nil and type(priority) == "number" then
+                    TS_SetHeroPriority(priority, hero.charName)
+                end
+            end
+        end
+    end
+    for i=1, #table, 1 do
+
+    end
+    local enemies = #GetEnemyHeroes()
+    if priorityTable2~=nil and type(priorityTable2) == "table" and enemies > 0 then
+      for i, enemy in ipairs(GetEnemyHeroes()) do
+        _SetPriority(priorityTable2.p1, enemy, math.min(1, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p2, enemy, math.min(2, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p3, enemy, math.min(3, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p4, enemy, math.min(4, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p5, enemy, math.min(5, #GetEnemyHeroes()))
+      end
+    end
   end
