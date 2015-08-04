@@ -16,6 +16,7 @@ class "Rengar"
     self.lastEmpChange = 0
     self.Target = nil
     self.keyStr = {[0] = "Q", [1] = "W", [2] = "E"}
+    self.doQ = false
   end
 
   function Rengar:Menu()
@@ -47,6 +48,7 @@ class "Rengar"
   end
 
   function Rengar:Tick()
+    self.doQ = (myHero.mana == 5 and Config.Misc.Empower2 == 1) or (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
     if Config.Misc.Empower and self.lastEmpChange < GetInGameTimer() then
       self.lastEmpChange = GetInGameTimer() + 0.33
       Config.Misc.Empower = false
@@ -54,7 +56,7 @@ class "Rengar"
       Config.Misc.Empower2 = Config.Misc.Empower2 + 1
       if Config.Misc.Empower2 == 4 then Config.Misc.Empower2 = 1 end
       if os ~= Config.Misc.Empower2 then
-        PrintAlert("Switched Empoweredmode! Now using: "..self.keyStr[Config.Misc.Empower2-1])
+        PrintAlert("Switched Empoweredmode! Now using: "..self.keyStr[Config.Misc.Empower2-1], 0.25, 0xff, 0x00, 0x00)
       end
     end
   end
@@ -109,19 +111,23 @@ class "Rengar"
     end
   end
 
+  function Rengar:ProcessSpell(unit, spell)
+    if unit and spell and unit.isMe and spell.name then
+      if spell.name:lower():find("attack") and self.doQ then
+        DelayAction(function() Cast(_Q) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
+      end
+    end
+  end
+
   function Rengar:Combo()
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
-        Cast(_Q)
       elseif Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, 1)
       elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, 2)
       end
     else
-      if Config.Combo.Q and sReady[_Q] then
-        Cast(_Q)
-      end
       if Config.Combo.W and sReady[_W] then
         Cast(_W, self.Target, 1)
       end
@@ -134,16 +140,12 @@ class "Rengar"
   function Rengar:Harrass()
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
-        Cast(_Q)
       elseif Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, 1)
       elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, 2)
       end
     else
-      if Config.Harrass.Q and sReady[_Q] then
-        Cast(_Q)
-      end
       if Config.Harrass.W and sReady[_W] then
         Cast(_W, self.Target, 1)
       end
@@ -157,13 +159,6 @@ class "Rengar"
     if myHero.mana == 5 and Config.LaneClear.W and (myHero.health / myHero.maxHealth) * 100 < 90 then
       Cast(_W)
     else
-      if Config.LaneClear.Q then
-        local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
-        if minionTarget ~= nil and minionTarget.health < GetDmg(_Q, myHero, minionTarget) then
-          CastSpell(_Q)
-          if loadedOrb then loadedOrb:Orb(minionTarget) end
-        end
-      end
       if Config.LaneClear.W then
         local minionTarget = GetLowestMinion(data[1].range)
         if minionTarget ~= nil and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
@@ -183,13 +178,6 @@ class "Rengar"
     if myHero.mana == 5 and Config.LaneClear.W and (myHero.health / myHero.maxHealth) * 100 < 90 then
       Cast(_W)
     else
-      if Config.LaneClear.Q then
-        local minionTarget = GetLowestMinion(myHero.range+myHero.boundingRadius*2)
-        if minionTarget ~= nil then
-          CastSpell(_Q)
-          if loadedOrb then loadedOrb:Orb(minionTarget) end
-        end
-      end
       if Config.LaneClear.W then
         local pos, hit = GetFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
         if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
@@ -206,13 +194,6 @@ class "Rengar"
     if myHero.mana == 5 and Config.LaneClear.W and (myHero.health / myHero.maxHealth) * 100 < 90 then
       Cast(_W)
     else
-      if Config.LaneClear.Q then
-        local minionTarget = GetJMinion(myHero.range+myHero.boundingRadius*2)
-        if minionTarget ~= nil then
-          CastSpell(_Q)
-          if loadedOrb then loadedOrb:Orb(minionTarget) end
-        end
-      end
       if Config.LaneClear.W then
         local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
         if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
