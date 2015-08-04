@@ -183,10 +183,10 @@ class "SWalk"
   function SWalk:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") then
-        self.orbTable.windUp = spell.windUpTime + self.Config.cadj/1000
+        self.orbTable.windUp = spell.windUpTime
         self.orbTable.animation = spell.animationTime
-        self.orbTable.lastAA = os.clock()
-        DelayAction(function() self:WindUp(self.Target) end, spell.windUpTime - GetLatency() / 2000)
+        self.orbTable.lastAA = os.clock() + self.Config.cadj/1000
+        DelayAction(function() self:WindUp(self.Target) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
       end
     end
   end
