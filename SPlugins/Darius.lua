@@ -101,7 +101,7 @@ class "Darius"
     if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
       self:CastE(Target)
     end
-    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) and Config.Combo.R then
+    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) then
       Cast(_R, Target)
     end
   end
