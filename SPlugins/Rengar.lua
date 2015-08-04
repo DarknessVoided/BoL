@@ -122,6 +122,7 @@ class "Rengar"
   function Rengar:Combo()
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
+        Cast(_Q)
       elseif Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, 1)
       elseif Config.Misc.Empower2 == 3 then
@@ -140,6 +141,7 @@ class "Rengar"
   function Rengar:Harrass()
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
+        Cast(_Q)
       elseif Config.Misc.Empower2 == 2 then
         Cast(_W, self.Target, 1)
       elseif Config.Misc.Empower2 == 3 then
