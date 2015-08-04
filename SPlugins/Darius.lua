@@ -21,6 +21,7 @@ class "Darius"
     Config.Combo:addParam("Qs", "Use Q (inner)", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("Qd", "Use Q (outer)", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("Qs", "Use Q (inner)", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
@@ -97,20 +98,16 @@ class "Darius"
     elseif Config.Combo.Qs and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
       Cast(_Q)
     end
-    if Config.Combo.Q and myHero:CanUseSpell(_E) == READY then
+    if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
       self:CastE(Target)
     end
-    if Config.Combo.Q and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) and Config.Combo.R then
-      Cast(_R, enemy)
+    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and GetDmg(_R, myHero, Target) > GetRealHealth(Target) and Config.Combo.R then
+      Cast(_R, Target)
     end
   end
 
   function Darius:Tick()
     self.doW = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana) or (Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana)
-    if loadedAnWalker and loadedOrb and not addedAAreset then
-      addedAAreset = true
-      loadedOrb:AddReset(_W, RESET_SELF)
-    end
   end
 
   function Darius:ProcessSpell(unit, spell)
