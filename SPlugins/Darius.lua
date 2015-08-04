@@ -119,9 +119,9 @@ class "Darius"
   end
 
   function Darius:Harrass()
-    if Config.Harrass.Qd and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
+    if Config.Harrass.Qd and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) >= 250 then
       self:CastQ(Target)
-    elseif Config.Harrass.Qs and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
+    elseif Config.Harrass.Qs and Config.Harrass.manaQ < myHero.mana/myHero.maxMana*100 and myHero:CanUseSpell(_Q) == READY and GetDistance(Target) < 250 then
       Cast(_Q)
     end
   end
