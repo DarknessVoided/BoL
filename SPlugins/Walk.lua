@@ -45,6 +45,7 @@ class "SWalk"
     end
     self.altAttacks = { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
     self.resetAttacks = { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
+    if not UPLloaded then require("HPrediction") HP = HPrediction() else HP = UPL.HP end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
   end
@@ -67,11 +68,9 @@ class "SWalk"
     self.myRange = myHero.range+myHero.boundingRadius+(Target and Target.boundingRadius or 0)
     if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
-      dmg = GetDmg("AD",myHero,self.Target)
-      if self.Target and dmg and self.Target.health >= dmg then 
-        if health >= dmg then
-          self.Target = nil
-        end
+      dmg = GetDmg("AD", myHero, self.Target)
+      if self.Target and dmg and health > dmg then
+        self.Target = nil
       end
       if health < 0 then self.Target = nil end
     end
@@ -98,11 +97,13 @@ class "SWalk"
     if self.Config.kConfig.Combo then
       self.Target = Target
     end
-    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and ValidTarget(self.Forcetarget, self.myRange*1.5) then
-      self.Target = self.Forcetarget
+    if (self.Forcetarget or Forcetarget or (loadedClass and loadedClass.Forcetarget)) and (self.Config.kConfig.Harrass or self.Config.kConfig.Combo) then
+      local t = self.Target
+      self.Target = (loadedClass and loadedClass.Forcetarget or self.Forcetarget or Forcetarget)
+      self.Target = ValidTarget(self.Target, self.myRange*1.25) and self.Target or t
     end
     local t = GetTarget()
-    if t and ValidTarget(t, self.myRange) then
+    if t and ValidTarget(t, self.myRange) and (self.Config.kConfig.LaneClear or self.Config.kConfig.Combo) then
       self.Target = t
     end
     if self:DoOrb() then
@@ -155,7 +156,7 @@ class "SWalk"
     local minionTarget = nil
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = VP:GetPredictedHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800), self.orbTable.windUp+self.Config.lhadj/100)
+      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp+self.Config.lhadj/100)
       if minionTarget == nil then 
         minionTarget = minion
         health = hp
@@ -171,7 +172,7 @@ class "SWalk"
     local minionTarget = nil
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = VP:GetPredictedHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800), self.orbTable.windUp+self.Config.lhadj/100)
+      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp+self.Config.lhadj/100)
       if minionTarget == nil then 
         minionTarget = minion
         health = hp

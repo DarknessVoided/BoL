@@ -306,7 +306,7 @@
       elseif myHero.charName == "Orianna" then
         APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
       else
-        ADDmg = ADDmg * (1 * crit)
+        ADDmg = ADDmg * (1 + crit)
       end
       if GetMaladySlot() then
         APDmg = 15 + 0.15*AP
