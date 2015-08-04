@@ -245,6 +245,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
   end
 
   function SilentUpdate()
+    DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/Walk.lua?no-cache="..math.random(1, 25000), LIB_PATH.."Scriptology - Walk.lua", function() end)
     for _, k in pairs(ScriptologyLoadedClasses) do
       DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SPlugins/".._..".lua?no-cache="..math.random(1, 25000), LIB_PATH.."Scriptology - ".._..".lua", function() end)
     end
