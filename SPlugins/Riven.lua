@@ -8,12 +8,6 @@ class "Riven"
       [_E] = { range = 390},
       [_R] = { range = 930, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*source.addDamage)*(math.min(3,math.max(1,4*(target.maxHealth-target.health)/target.maxHealth))) end},
     }
-    cancelTable = {
-      [_Q] = { {}, {}, {} },
-      [_W] = { },
-      [_E] = { },
-      [_R] = { {}, {} },
-    }
     self.Target = nil
     self.QAA = false
     self.QCast = 0
