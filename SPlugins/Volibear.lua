@@ -11,7 +11,7 @@ class "Volibear"
   end
 
   function Volibear:Load()
-    SetupMenu()
+    SetupMenu(true)
   end
 
   function Volibear:Menu()
@@ -61,7 +61,7 @@ class "Volibear"
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_W, myHero, winion)
         if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
-          Cast(_W, winion, true)
+          Cast(_W, winion)
         end
       end
     end
@@ -98,7 +98,7 @@ class "Volibear"
           minionTarget = winion
         end
         if minionTarget ~= nil then
-          Cast(_W, minionTarget, true)
+          Cast(_W, minionTarget)
         end
       end
     end
@@ -123,7 +123,7 @@ class "Volibear"
     end
     if Config.Combo.W and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
       if GetDmg(_W, Target, myHero) >= GetRealHealth(Target) then
-        Cast(_W, Target, true)
+        Cast(_W, Target)
       end
     end
     if Config.Combo.E and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(Target) < data[2].range then
@@ -139,7 +139,7 @@ class "Volibear"
       Cast(_Q)
     end
     if Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
-      Cast(_W, Target, true)
+      Cast(_W, Target)
     end
     if Config.Harrass.E and GetDistance(pos) < data[2].range and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
       Cast(_E)
@@ -152,7 +152,7 @@ class "Volibear"
         if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q)
         elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
-          Cast(_W, enemy, true)
+          Cast(_W, enemy)
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range-enemy.boundingRadius) then
           Cast(_E)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
