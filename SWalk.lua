@@ -1,4 +1,4 @@
-_G.SWalkVersion = 0.1
+_G.SWalkVersion = 0.2
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
 function OnLoad()
@@ -15,6 +15,8 @@ class "SWalk"
     self.melee = myHero.range < 450 or myHero.charName == "Rengar"
     self.orbDisabled = false
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
+    self.doAA = true
+    self.doMove = true
     self.myRange = myHero.range+myHero.boundingRadius
     if Cfg then
       Cfg:addSubMenu("SWalk", "SWalk")
@@ -91,6 +93,9 @@ class "SWalk"
   function SWalk:OrbWalk()
     self.ts.range = self.myRange
     self.ts:update()
+    if self.fPos and GetDistance(self.fPos) < myHero.boundingRadius then
+      self.fPos = nil
+    end
     local Target = nil
     if self.ts.target then 
       Target = self.ts.target 
@@ -131,6 +136,9 @@ class "SWalk"
     if t and ValidTarget(t, self.myRange) and (self.Config.kConfig.LaneClear or self.Config.kConfig.Combo) then
       self.Target = t
     end
+    if self.Forcetarget and ValidTarget(self.Forcetarget, self.myRange) then
+      self.Target = self.Forcetarget
+    end
     if self:DoOrb() then
       self:Orb(self.Target) 
     end
@@ -139,10 +147,10 @@ class "SWalk"
   function SWalk:Orb(unit)
     if _G.Evade or _G.Evading or _G.evade or _G.evading or self.orbDisabled then return end
     local valid = ValidTarget(unit, self.myRange)
-    if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid then
+    if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid and self.doAA then
       myHero:Attack(unit)
-    elseif self.Config.m and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp) then
-      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 250
+    elseif self.Config.m and self.doMove and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp) then
+      local movePos = myHero + (Vector(self.fPos or mousePos) - myHero):normalized() * 250
       if self:DoOrb() and ValidTarget(unit, self.myRange) and unit.type == myHero.type and self.melee and self.Config.wtt then
         if GetDistance(unit) > myHero.boundingRadius + unit.boundingRadius then
           myHero:MoveTo(unit.x, unit.z)
@@ -159,6 +167,27 @@ class "SWalk"
     end
     self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
     return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
+  end
+
+  function SWalk:SetAA(bool)
+    self.doAA = bool
+  end
+
+  function SWalk:SetMove(bool)
+    self.doMove = bool
+  end
+
+  function SWalk:SetOrb(bool)
+    self.doAA = bool
+    self.doMove = bool
+  end
+
+  function SWalk:SetTarget(unit)
+    self.Forcetarget = unit
+  end
+
+  function SWalk:ForcePos(pos)
+    self.fPos = pos
   end
 
   function SWalk:GetLowestPMinion(range)
