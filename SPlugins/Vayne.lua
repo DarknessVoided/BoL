@@ -56,7 +56,7 @@ class "Vayne"
     end
   end
 
-  function Vayne:ProcessSpell()
+  function Vayne:ProcessSpell(unit, spell)
     if unit and spell and unit.isMe and spell.name then
       if spell.name:lower():find("attack") and self.roll then
         if sReady[_Q] then
