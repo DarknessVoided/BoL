@@ -331,7 +331,7 @@ class "SWalk"
 
   function GetMaladySlot()
     for slot = ITEM_1, ITEM_7, 1 do
-      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "malady")) then
+      if myHero:GetSpellData(slot).name and myHero:GetSpellData(slot).name:lower():find("malady") then
         return slot
       end
     end
