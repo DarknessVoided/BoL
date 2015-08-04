@@ -26,8 +26,6 @@ class "Vayne"
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, false)
-    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, false)
     Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
@@ -35,8 +33,6 @@ class "Vayne"
     Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
@@ -78,16 +74,6 @@ class "Vayne"
       end
     end
     return false
-  end
-
-  function Vayne:LastHit()
-    target = GetJMinion(data[2].range)
-    if not target then
-      target = GetLowestMinion(data[2].range)
-    end
-    if sReady[_E] and Config.LastHit.E and GetDmg(_E,myHero,target) >= target.health then
-      self:MakeUnitHugTheWall(target)
-    end
   end
 
   function Vayne:LaneClear()
