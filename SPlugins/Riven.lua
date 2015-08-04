@@ -8,6 +8,12 @@ class "Riven"
       [_E] = { range = 390},
       [_R] = { range = 930, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (40+40*level+0.6*source.addDamage)*(math.min(3,math.max(1,4*(target.maxHealth-target.health)/target.maxHealth))) end},
     }
+    cancelTable = {
+      [_Q] = { {}, {}, {} },
+      [_W] = { },
+      [_E] = { },
+      [_R] = { {}, {} },
+    }
     self.Target = nil
     self.QAA = false
     self.QCast = 0
@@ -29,7 +35,7 @@ class "Riven"
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("Rm", "Use R mode", SCRIPT_PARAM_LIST, 3, { "Never", "On hard kill", "Smart", "Always" })
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -87,10 +93,45 @@ class "Riven"
       if spell.name == "RivenTriCleave" then
         self.QCast = self.QCast + 1
         DelayAction(function() if not sReady[_Q] then self.QCast = 0 end end, 4)
+        self:AfterQ()
       elseif spell.name == "RivenFeint" then
         self.EDelay = GetTickCount()
+        if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= self.Target.health) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= self.Target.health) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+          Cast(_R) 
+          DelayAction(function() 
+            if self.Target and GetDistance(self.Target) < data[0].range then
+              Cast(_Q, self.Target.pos) 
+            end
+          end, 0.137)
+        end
+      elseif spell.name:lower():find("attack") then
+        if self.QAA and self.QCast > 0 then 
+          DelayAction(function() 
+            if self:CastHydra() then
+              Cast(_Q, self.Target.pos) 
+            else
+            end
+          end, spell.windUpTime - GetLatency() / 2000 + 0.07)
+        end
       end
     end
+  end
+
+  function Riven:CastHydra()
+    for slot = ITEM_1, ITEM_6 do
+      if myHero:GetSpellData(slot).name == "ItemTiamatCleave" 
+      and myHero:CanUseSpell(slot) == READY then
+        CastSpell(slot) 
+        return true
+      end
+    end
+    return false
+  end
+
+  function Riven:AfterQ()
+    local movePos = target+(Vector(myHero)-target):normalized()*(62)
+    myHero:MoveTo(movePos.x, movePos.z)
+    return true
   end
 
   function Riven:Msg(Msg, Key)
@@ -123,7 +164,7 @@ class "Riven"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy.visible then
         killTextTable[enemy.networkID].indicatorText = ""
-        local damageC  = self:CalcComboDmg(enemy, 0, not Config.Combo.R)
+        local damageC  = self:CalcComboDmg(enemy, 0, Config.Combo.Rm == 1)
         local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
         local damageS  = Smite and (20 + 8 * myHero.level) or 0
         if GetRealHealth(enemy) < damageC+damageI then
@@ -193,6 +234,9 @@ class "Riven"
     if sReady[_W] then
       dmg = dmg + GetDmg(_W,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
     end
+    if Ignite and myHero:CanUseSpell(Ignite) == READY then
+      dmg = dmg + GetDmg("IGNITE", myHero, unit)
+    end
     if (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine") and not disableUlt then
       unit.health = unit.health-dmg
       dmg = dmg + GetDmg(_R,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
@@ -209,8 +253,8 @@ class "Riven"
         Cast(_E, self.Target.pos)
       end
     end
-    if myHero.isWindingUp and Config.Combo.R and GetDistance(self.Target) < data[2].range and self:CalcComboDmg(self.Target, 0) >= self.Target.health and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then Cast(_R) end
-    if myHero.isWindingUp and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if myHero.isWindingUp and Config.Combo.Rm > 1 and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,self.Target) >= self.Target.health and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
       Cast(_W)
     end
