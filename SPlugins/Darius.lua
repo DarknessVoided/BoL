@@ -8,6 +8,7 @@ class "Darius"
       [_E] = { range = 550},
       [_R] = { range = 450, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return math.floor(70+90*level+0.75*myHero.addDamage+0.2*GetStacks(target)*(70+90*level+0.75*myHero.addDamage)) end}
     }
+    stackTable = {}
     self.doW = false
   end
 
@@ -165,4 +166,26 @@ class "Darius"
     if GetDistance(target) < data[2].range*(Config.Misc.offsetE/100)-dist then
       Cast(_E, target)
     end
+  end
+
+  function Darius:ApplyBuff(unit, source, buff)
+    if unit and source and source.isMe and buff and buff.name == "dariushemo" then
+      stackTable[unit.networkID] = 1
+    end
+  end
+
+  function Darius:UpdateBuff(unit, buff, stacks)
+    if unit and buff and stacks and buff.name == "dariushemo" then
+      stackTable[unit.networkID] = stacks
+    end
+  end
+
+  function Darius:RemoveBuff(unit, buff)
+    if unit and buff and buff.name == "dariushemo" then
+      stackTable[unit.networkID] = 0
+    end
+  end
+
+  function GetStacks(x)
+    return stackTable[x.networkID] or 0
   end
