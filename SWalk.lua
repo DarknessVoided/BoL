@@ -301,16 +301,16 @@ class "SWalk"
     local AP               = source.ap
     local Level            = source.level
     local TotalDmg         = source.totalDamage
-    local crit = myHero.critChance
-    local crdm = myHero.critDmg
+    local crit             = myHero.critChance
+    local crdm             = myHero.critDmg
     local ArmorPen         = math.floor(source.armorPen)
     local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
     local MagicPen         = math.floor(source.magicPen)
     local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
 
-    local Armor        = target.armor*ArmorPenPercent-ArmorPen
-    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
-    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local Armor             = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent      = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicArmor        = target.magicArmor*MagicPenPercent-MagicPen
     local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
 
     ADDmg = TotalDmg
