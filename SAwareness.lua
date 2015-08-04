@@ -1,4 +1,4 @@
-_G.SAwarenessVersion = 0.2
+_G.SAwarenessVersion = 0.3
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("REHGLKDMKFG") 
 
 function OnLoad()
@@ -21,12 +21,17 @@ class "SAwareness"
     self.Config:addParam("i", "Waypoints", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("wpe", "Enemies:", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("wpa", "Allies:", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("war", "Enemy Wards", SCRIPT_PARAM_ONOFF, true)
     AddDrawCallback(function() self:Draw() end)
     AddUnloadCallback(function() self:Unload() end)
+    AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
+    AddDeleteObjCallback(function(obj) self:DeleteObj(obj) end)
     UpdateWindow()
     self:Load()
     self:Update()
     self.offset = 18
+    self.enemyWards = {}
     return self
   end
 
@@ -43,7 +48,7 @@ class "SAwareness"
         self.Sprites[k.charName] = createSprite(SPRITE_PATH.."SAwareness//champs//"..k.charName..".png")
       else
         DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness/champs/"..k.charName..".png?no-cache="..math.random(1, 25000), SPRITE_PATH.."SAwareness//champs//"..k.charName..".png", function() end)
-        DelayAction(function() self:Load() end, 0.2)
+        DelayAction(function() self:Load() end, 0.5)
         return
       end
       for i = 0, 1 do 
@@ -52,7 +57,7 @@ class "SAwareness"
           self.Sprites[v] = createSprite(SPRITE_PATH.."SAwareness//summoners//"..v..".png")
         else
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness/summoners/"..v..".png?no-cache="..math.random(1, 25000), SPRITE_PATH.."SAwareness//summoners//"..v..".png", function() end)
-          DelayAction(function() self:Load() end, 0.2)
+          DelayAction(function() self:Load() end, 0.5)
           return
         end
       end
@@ -64,6 +69,28 @@ class "SAwareness"
   function SAwareness:Unload()
     for _,k in pairs(self.Sprites) do
         k:Release()
+    end
+  end
+
+  function SAwareness:CreateObj(obj)
+    local objName = obj.name:lower()
+    if obj and obj.team ~= myHero.team and objName:find("ward") and not objName:find("idle") then
+      if objName:find("sight") or (objName:find("vision") and obj.maxMana == 180) then
+        table.insert(self.enemyWards, {object = obj, time = GetInGameTimer()})
+      elseif objName:find("vision") and obj.maxMana == 5 then
+        table.insert(self.enemyWards, {object = obj, time = math.huge})
+      end
+    end
+  end
+
+  function SAwareness:DeleteObj(obj)
+    local objName = obj.name:lower()
+    if obj and obj.team ~= myHero.team and objName:find("ward") then
+      for _, k in pairs(self.enemyWards) do
+        if k.object == obj then
+          k = nil
+        end
+      end
     end
   end
 
@@ -95,6 +122,7 @@ class "SAwareness"
     self:DrawWPE()
     self:DrawWPA()
     self:DrawSCD()
+    self:DrawWAR()
   end
 
   function SAwareness:DrawCDE()
@@ -219,6 +247,30 @@ class "SAwareness"
           end
         end
         i = i + 1
+      end
+    end
+  end
+
+  function SAwareness:DrawWAR()
+    if self.Config.war and self.enemyWards then
+      for _, k in pairs(self.enemyWards) do
+        if k.time ~= math.huge then
+          if k.time + 180 >= GetInGameTimer() then
+            DrawCircle3D(k.object.x, k.object.y, k.object.z, 100, 1, ARGB(105,255,255,255), 32)
+            local barPos = WorldToScreen(D3DXVECTOR3(k.object.x, k.object.y, k.object.z))
+            local posX = barPos.x
+            local posY = barPos.y
+            DrawText((math.floor((k.time+180-GetInGameTimer()))).."s", 25, posX, posY, ARGB(255, 255, 0, 0))
+          else
+            k = nil
+          end
+        else
+          DrawCircle3D(k.object.x, k.object.y, k.object.z, 100, 1, ARGB(105,255,255,255), 32)
+          local barPos = WorldToScreen(D3DXVECTOR3(k.object.x, k.object.y, k.object.z))
+          local posX = barPos.x
+          local posY = barPos.y
+          DrawText("Vision Ward", 20, posX, posY, ARGB(255, 255, 0, 0))
+        end
       end
     end
   end
