@@ -186,7 +186,7 @@ class "SWalk"
 
   function SWalk:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
-      if spell.name:lower():find("attack") or contains(self.altAttacks, spell.name:lower()) then
+      if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
         local windUp = spell.windUpTime + self.Config.cadj/1000
         self.orbTable.windUp = windUp
         self.orbTable.animation = spell.animationTime
@@ -195,7 +195,7 @@ class "SWalk"
           self:WindUp(self.Target) 
         end, windUp - GetLatency() / 2000 + 0.07)
       end
-      if contains(self.resetAttacks, spell.name:lower()) then
+      if self.resetAttacks[spell.name:lower()] then
         self.orbTable.lastAA = 0
       end
     end
@@ -266,7 +266,11 @@ class "SWalk"
           end
         end
       end
-      if self.IState and self.Config.i then return self:CastItems(unit) end
+      if self.IState and self.Config.i then 
+        if self:CastItems(unit) then
+          self.orbTable.lastAA = 0
+        end
+      end
     end
     return false
   end
