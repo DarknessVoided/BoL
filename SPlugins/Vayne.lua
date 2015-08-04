@@ -1,7 +1,7 @@
 class "Vayne"
 
   function Vayne:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
     data = {
       [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
       [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 10+10*level+((0.03+0.01*level)*target.maxHealth) end},
@@ -48,10 +48,6 @@ class "Vayne"
 
   function Vayne:Tick()
     self.roll = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
-    if loadedAnWalker and loadedOrb and not addedAAreset then
-      addedAAreset = true
-      loadedOrb:AddReset(_Q, RESET_MOUSE)
-    end
     if not Config.Misc.Ea or not sReady[_E] then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy, 1000) and enemy ~= nil and not enemy.dead then
@@ -62,7 +58,7 @@ class "Vayne"
 
   function Vayne:ProcessSpell()
     if unit and spell and unit.isMe and spell.name then
-      if spell.name:lower():find("attack") and not loadedOrb and self.roll then
+      if spell.name:lower():find("attack") and self.roll then
         if sReady[_Q] then
           Cast(_Q, mousePos)
         end

@@ -1,13 +1,14 @@
 class "Darius"
 
   function Darius:__init()
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, math.max(550,myHero.range+myHero.boundingRadius*2), DAMAGE_PHYSICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, math.max(550,myHero.range+myHero.boundingRadius*2), DAMAGE_PHYSICAL, false, true)
     data = {
       [_Q] = { range = 0, width = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 35*level+35+0.7*TotalDmg end},
       [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return TotalDmg+0.2*level*TotalDmg end},
       [_E] = { range = 550},
       [_R] = { range = 450, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return math.floor(70+90*level+0.75*myHero.addDamage+0.2*GetStacks(target)*(70+90*level+0.75*myHero.addDamage)) end}
     }
+    self.doW = false
   end
 
   function Darius:Load()
@@ -101,12 +102,21 @@ class "Darius"
     end
   end
 
+  function Darius:Tick()
+    self.doW = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harrass and Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana) or (Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana)
+  end
+
+  function Darius:ProcessSpell(unit, spell)
+    if unit and spell and unit.isMe and spell.name then
+      if spell.name:lower():find("attack") and self.doW then
+        DelayAction(function() Cast(_W) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
+      end
+    end
+  end
+
   function Darius:Harrass()
     if Config.Harrass.Q and Config.Harrass.manaQ < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY then
       self:CastQ(Target)
-    end
-    if Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana and myHero:CanUseSpell(_W) == READY then
-      self:CastW(Target)
     end
   end
 

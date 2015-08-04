@@ -1,5 +1,3 @@
-
-
 class "Diana"
 
   function Diana:__init()
@@ -30,7 +28,6 @@ class "Diana"
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     if Smite ~= nil then Config.Killsteal:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
@@ -116,6 +113,9 @@ class "Diana"
     if sReady[_W] and GetDistance(Target) < data[_W].range then
       Cast(_W)
     end
+    if sReady[_E] and GetDistance(Target) < data[_E].range then
+      Cast(_E)
+    end
   end
 
   function Diana:Harrass()
@@ -124,6 +124,9 @@ class "Diana"
     end
     if sReady[_W] and Config.Harrass.W and Config.Harrass.manaW < myHero.mana/myHero.maxMana*100 and GetDistance(Target) < data[_W].range then
       Cast(_W)
+    end
+    if sReady[_E] and Config.Harrass.E and Config.Harrass.manaE < myHero.mana/myHero.maxMana*100 and GetDistance(Target) < data[_E].range then
+      Cast(_E)
     end
   end
 
@@ -160,8 +163,6 @@ class "Diana"
           Cast(_Q, enemy, 1.5)
         elseif myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and ValidTarget(enemy, data[1].range) then
           Cast(_W, enemy)
-        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
-          Cast(_E, enemy)
         elseif myHero:CanUseSpell(_R) == READY and myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
           Cast(_Q, enemy, 1)
           DelayAction(function() Cast(_R, enemy) end, 0.25 + GetLatency() / 2000)

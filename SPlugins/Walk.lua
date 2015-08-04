@@ -29,14 +29,10 @@ class "SWalk"
     if self.melee and myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" then 
       self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
     end
-    if not targetSel then
-      self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
-      self.Config:addSubMenu("Target Selector", "ts")
-      self.Config.ts:addTS(self.ts)
-      ArrangeTSPriorities()
-    else
-      self.ts = targetSel
-    end
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
+    self.Config:addSubMenu("Target Selector", "ts")
+    self.Config.ts:addTS(self.ts)
+    ArrangeTSPriorities()
     if not Cfg then
       sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
@@ -60,7 +56,12 @@ class "SWalk"
   end
 
   function SWalk:OrbWalk()
-    if self.ts then self.ts:update() if self.ts.target then Target = self.ts.target end end
+    self.ts.range = self.myRange
+    self.ts:update()
+    local Target = nil
+    if self.ts.target then 
+      Target = self.ts.target 
+    end
     self.myRange = myHero.range+myHero.boundingRadius+(Target and Target.boundingRadius or 0)
     if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)

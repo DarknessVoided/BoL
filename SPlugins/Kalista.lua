@@ -26,7 +26,7 @@ class "Kalista"
 
   function Kalista:ProcessSpell(unit, spell)
     if not unit or not spell then return end
-    if spell.name == "KalistaPSpellCast" and GetDistance then 
+    if spell.name == "KalistaPSpellCast" and GetDistance(spell.target) < 1000 then 
       self.soulMate = spell.target
       Config.Misc:modifyParam("R", "text", "Save ally with R ("..self.soulMate.charName..")")
       ScriptologyMsg("Soulmate found: "..spell.target.charName)

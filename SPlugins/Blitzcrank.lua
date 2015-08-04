@@ -13,7 +13,6 @@ class "Blitzcrank"
     }
     self.Col = Collision(data[0].range, data[0].speed, data[0].delay, data[0].width+30)
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, data[0].range, DAMAGE_MAGIC, false, true)
-    self.Target = nil
   end
 
   function Blitzcrank:Load()

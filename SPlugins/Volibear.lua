@@ -1,7 +1,7 @@
 class "Volibear"
 
   function Volibear:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1000, DAMAGE_PHYSICAL, false, true)
     data = {
       [_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 30*level+TotalDmg end},
       [_W] = { range = myHero.range*2+myHero.boundingRadius+25, dmgAD = function(AP, level, Level, TotalDmg, source, target) return ((1+(target.maxHealth-target.health)/target.maxHealth))*(45*level+35+0.15*(source.maxHealth-(440+86*Level))) end},
@@ -17,6 +17,7 @@ class "Volibear"
   function Volibear:Menu()
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("Ws", "Save W (execute)", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -122,15 +123,23 @@ class "Volibear"
       Cast(_Q)
     end
     if Config.Combo.W and myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
-      if GetDmg(_W, Target, myHero) >= GetRealHealth(Target) then
+      if Config.Combo.Ws then
+        if GetDmg(_W, Target, myHero) >= GetRealHealth(Target) then
+          Cast(_W, Target)
+        end
+      else
         Cast(_W, Target)
       end
     end
     if Config.Combo.E and myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and GetDistance(Target) < data[2].range then
       Cast(_E)
     end
-    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and EnemiesAround(myHero, 500) > 1 and ValidTarget(Target, data[3].range) then
-      Cast(_R, myHero:Attack(Target))
+    if Config.Combo.R and myHero:CanUseSpell(_R) == READY and ValidTarget(Target, data[3].range) then
+      if EnemiesAround(myHero, 500) > 1 then
+        Cast(_R)
+      elseif GetDmg("AD", myHero, Target)*(5+1.337) <= Target.health then
+        Cast(_R)
+      end
     end
   end
 
