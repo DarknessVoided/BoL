@@ -155,7 +155,7 @@ class "SWalk"
     local minionTarget = nil
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp+self.Config.lhadj/100)
+      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.lhadj/100 + 0.07)
       if minionTarget == nil then 
         minionTarget = minion
         health = hp
@@ -171,7 +171,7 @@ class "SWalk"
     local minionTarget = nil
     local health = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp+self.Config.lhadj/100)
+      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.lhadj/100 + 0.07)
       if minionTarget == nil then 
         minionTarget = minion
         health = hp
@@ -187,7 +187,7 @@ class "SWalk"
     if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
         local windUp = spell.windUpTime + self.Config.cadj/1000
-        self.orbTable.windUp = windUp
+        self.orbTable.windUp = windUp + 0.07
         self.orbTable.animation = spell.animationTime
         self.orbTable.lastAA = os.clock()
         DelayAction(function() 
