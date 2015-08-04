@@ -60,7 +60,7 @@ class "Vayne"
     if unit and spell and unit.isMe and spell.name then
       if spell.name:lower():find("attack") and self.roll then
         if sReady[_Q] then
-          Cast(_Q, mousePos)
+          DelayAction(function() Cast(_Q, mousePos) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
         end
       end
     end
