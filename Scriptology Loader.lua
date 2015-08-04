@@ -232,7 +232,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
       if ScriptologyServerVersion then
         if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/UPL.lua".."?no-cache="..math.random(1, 25000), LIB_PATH.."UPL.lua", function () end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/"..GetCurrentEnv().FILE_NAME.."?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology Loader.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?no-cache="..math.random(1, 25000), LIB_PATH.."ScriptologyLib.lua", function() end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SPrediction.lua?no-cache="..math.random(1, 25000), LIB_PATH.."SPrediction.lua", function() end)
           return true
@@ -243,7 +243,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
     end
     return false
   end
-  
+
   function ScriptologyMsg(msg) 
     print("<font color=\"#6699ff\"><b>[Scriptology Loader]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
   end

@@ -1,3 +1,5 @@
+_G.SWalkVersion = 0.1
+
 function OnLoad()
   DelayAction(function()
     if not _G.SWalkLoaded then
@@ -50,8 +52,27 @@ class "SWalk"
     if not UPLloaded then require("HPrediction") HP = HPrediction() else HP = UPL.HP end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     _G.SWalkLoaded = true
-    print("<font color=\"#6699ff\"><b>[Scriptology Walker]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
+    print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
+    self:Update()
     return self
+  end
+
+  function SWalk:Update()
+    local SWalkServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/SWalk.version?no-cache="..math.random(1, 25000))
+    if SWalkServerData then
+      local SWalkServerVersion = type(tonumber(SWalkServerData)) == "number" and tonumber(SWalkServerData) or nil
+      if SWalkServerVersion then
+        if tonumber(SWalkVersion) < SWalkServerVersion then
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), LUA_PATH..GetCurrentEnv().FILE_NAME, function() end)
+          print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..SWalkVersion.." -> v"..SWalkServerVersion..")</font>")
+          return true
+        end
+      end
+    else
+      print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>")
+    end
+    return false
   end
 
   function SWalk:Draw()
