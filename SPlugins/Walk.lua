@@ -33,7 +33,7 @@ class "SWalk"
     self.Config:addSubMenu("Target Selector", "ts")
     self.Config.ts:addTS(self.ts)
     ArrangeTSPriorities()
-    if not Cfg then
+    if not Cfg or not ScriptologyConfig[myHero.charName] or not ScriptologyConfig[myHero.charName].kConfig then
       sReady = {}
       self.Config:addSubMenu("Key Settings", "kConfig")
       self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
@@ -74,6 +74,7 @@ class "SWalk"
       Target = self.ts.target 
     end
     self.myRange = myHero.range+myHero.boundingRadius+(Target and Target.boundingRadius or 0)
+    if not self.Config.kConfig then return end
     if self.Config.kConfig.LastHit then
       self.Target, health = self:GetLowestPMinion(self.myRange)
       dmg = GetDmg("AD", myHero, self.Target)
