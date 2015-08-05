@@ -84,7 +84,6 @@ class "Riven"
 
   function Riven:ProcessSpell(unit,spell)
     if unit and unit.isMe and spell then
-      print(spell.name)
       if spell.name == "RivenTriCleave" then
         self.QCast = self.QCast + 1
         DelayAction(function() if not sReady[_Q] then self.QCast = 0 end end, 4)
