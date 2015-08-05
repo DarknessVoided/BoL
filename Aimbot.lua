@@ -305,7 +305,7 @@ _G.Champs = {
 
 if not _G.Champs[myHero.charName] then _G.Champs = nil collectgarbage() return end -- not supported :(
 
-AimbotVersion = 1.57
+AimbotVersion = 1.58
 
 --Scriptstatus Tracker
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKJJKPQMO") 
@@ -368,7 +368,6 @@ function Aimbot:__init()
   AddMsgCallback(function(x,y) self:Msg(x,y) end)
   HookPackets()
   AddSendPacketCallback(function(p) self:SendPacket(p) end)
-  AddRecvPacketCallback2(function(p) self:RecvPacket(p) end)
 end
 function Aimbot:Vars()
     self.data = _G.Champs[myHero.charName]
@@ -426,11 +425,11 @@ function Aimbot:Tick()
   --if Config.lh and not myHero.dead and not recall then 
   --end
   -- [[ Real aimbot part ]] --
-  if self.Config.tog and not self.Config.off and not myHero.dead and self:IsFirstCast() and (self.toCast[0] or self.toCast[1] or self.toCast[2] or self.toCast[3] or self.secondCast) then -- 
+  if self.Config.tog and not self.Config.off and not myHero.dead and self:IsFirstCast() and (self.toCast[0] or self.toCast[1] or self.toCast[2] or self.toCast[3]) and not self.secondCast then -- 
       for i, spell in pairs(self.data) do
           self.Target = self:GetCustomTarget(i)
           if self.Target == nil or self.Target.dead then return end
-          if ((self.secondCast or self.toCast[i]) and self.Config.skConfig[self.str[i]..myHero.charName] > 0) and myHero:CanUseSpell(i) then
+          if self.toCast[i] and self.Config.skConfig[self.str[i]..myHero.charName] > 0 and myHero:CanUseSpell(i) then
               if self:IsJayceQ(i) then 
                 if myHero:CanUseSpell(_E) then 
                     self.data[_Q] = { speed = 2350, delay = 0.15, range = 1750, width = 70, collision = true, aoe = false, type = "linear"}
@@ -494,9 +493,6 @@ function Aimbot:EnemiesAround(Unit, range)
 end
 
 function Aimbot:Msg(msg, key)
-   if msg == KEY_DOWN and self.Config.skConfig["Q"..myHero.charName] and self:IsChargeable(0) and myHero:CanUseSpell(_Q) == READY then
-    DelayAction(function() if not self.secondCast and myHero:CanUseSpell(_Q) == READY then self.toCast[0] = true self.secondCast = true end end, 1.5)
-   end
    if msg == KEY_UP and key == GetKey("Q") and self.toAim[0] and not self.secondCast then
      self.toCast[0] = false
      self.secondCast = false
@@ -645,14 +641,18 @@ function Aimbot:SendPacket(p)
         if head == self.opcs[self.Config.misc.ser][1] then -- old: 0x00E9
             p.pos=self.opcpos[self.Config.misc.ser]
             local opc = p:Decode1()
-    		if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
+            if debugMode then print("Opcode "..('0x%02X'):format(opc)) end
             for i=0,3 do
-                if opc == self.opcs[self.Config.misc.ser][i+2] and not self.toCast[i] and self.toAim[i] and self.Config.skConfig[self.str[i]..myHero.charName] > 0 and not self:IsChargeable(i) then -- old: 0x02
+                if opc == self.opcs[self.Config.misc.ser][i+2] and not self.toCast[i] and self.toAim[i] and self.Config.skConfig[self.str[i]..myHero.charName] > 0 then -- old: 0x02
                     self.Target = self:GetCustomTarget(i)
                     if self.Target ~= nil then
-                        p:Block()
-                        p.skip(p, 1)
-            			self.toCast[i] = true
+                        if self:IsChargeable(i) then
+                            self:CastCharged(i)
+                        else
+                            p:Block()
+                            p.skip(p, 1)
+                            self.toCast[i] = true
+                        end
                     end
                 end
             end
@@ -660,14 +660,30 @@ function Aimbot:SendPacket(p)
     end
 end
 
-function Aimbot:RecvPacket(p)
-  if self.Config.tog and not self.Config.off and not myHero.dead then
-    local head = p.header
-    if head == 0x22 and self:IsChargeable(_Q) then
-      self.toCast[_Q] = true
-      self.secondCast = true
+function Aimbot:CastCharged(i)
+    self.secondCast = true
+    for j = 0.250, 1.500, 0.250 do
+        DelayAction(function()
+            local v = self.data[i]
+            v.range = v.range + math.min(v.range, i*500)
+            UPL:AddSpell(i, v)
+            local CastPosition, HitChance, Position = UPL:Predict(i, myHero, self.Target)
+            if debugMode then PrintChat("1 - Attempt to aim!") end
+            if HitChance and HitChance >= 3 then
+              if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              self:CCastSpell(i, CastPosition)
+            elseif HitChance and HitChance >= 2 then
+              if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              self:CCastSpell(i, CastPosition)
+            elseif HitChance and HitChance >= 1.5 and self.Config.skConfig[self.str[i]..myHero.charName] >= 1 then
+              if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              self:CCastSpell(i, CastPosition)
+            elseif HitChance and HitChance >= 1 and self.Config.skConfig[self.str[i]..myHero.charName] >= 2 then
+              if debugMode then PrintChat("2 - Aimed skill! Precision: "..HitChance) end
+              self:CCastSpell(i, CastPosition)
+          end
+        end, j)
     end
-  end
 end
 
 function Aimbot:GetCustomTarget(i)
@@ -691,17 +707,17 @@ function Aimbot:GetCustomTarget(i)
 end
 
 function Aimbot:GetNextCustomTarget(i, tar)
-	local targ = nil
-	for _, unit in pairs(GetEnemyHeroes()) do
-		if targ and targ.valid and unit and unit.valid and unit ~= tar then
-			if GetDistance(unit, mousePos) < GetDistance(targ, mousePos) then
-				targ = unit
-			end
-		else
-			targ = unit
-		end
-	end
-	return targ
+    local targ = nil
+    for _, unit in pairs(GetEnemyHeroes()) do
+        if targ and targ.valid and unit and unit.valid and unit ~= tar then
+            if GetDistance(unit, mousePos) < GetDistance(targ, mousePos) then
+                targ = unit
+            end
+        else
+            targ = unit
+        end
+    end
+    return targ
 end
 
 --[[ Packet Cast Helper ]]--
