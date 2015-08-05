@@ -170,7 +170,7 @@ class "SEvade"
               spell.endPos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*range
             end
             local pos = spell.startPos+Vector(Vector(spell.endPos)-spell.startPos):normalized()*(speed*(GetInGameTimer()-delay-spell.startTime)-width)
-            self:DrawRectangleOutline(spell.startPos, spell.endPos, pos, width)
+            self:DrawRectangleOutline(spell.startPos, spell.endPos, (spell.startTime+delay < GetInGameTimer() and pos or nil), width)
           else
             table.remove(self.activeSpells, _)
           end
