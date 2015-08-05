@@ -48,7 +48,8 @@ class "Rengar"
   end
 
   function Rengar:Tick()
-    self.doQ = (myHero.mana == 5 and Config.Misc.Empower2 == 1) or (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
+    self.doQ = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harrass and Config.Harrass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
+    self.doQ = (myHero.mana == 5 and (Config.Misc.Empower2 == 1 and self.doQ) or self.doQ)
     if Config.Misc.Empower and self.lastEmpChange < GetInGameTimer() then
       self.lastEmpChange = GetInGameTimer() + 0.33
       Config.Misc.Empower = false
