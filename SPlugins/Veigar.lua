@@ -109,7 +109,7 @@ class "Veigar"
 		      end
 		    end
 		    if BestHit > 0 then
-				CastSpell(_Q, BestPos.x, BestPos.z)
+				Cast(_Q, BestPos.pos) -- wat
 		    end
 		end
 	end
@@ -130,7 +130,7 @@ class "Veigar"
 		if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
 			local BestPos, BestHit = GetLineFarmPosition(data[0].range, data[0].width)
 			if BestPos and BestHit > 0 then
-				CastSpell(_Q, BestPos.x, BestPos.z)
+				Cast(_Q, BestPos.pos) -- wat
 			end
 		end
 		if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
