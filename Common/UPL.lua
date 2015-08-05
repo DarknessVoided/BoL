@@ -39,7 +39,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.61
+    _G.UPLversion = 2.62
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -191,8 +191,7 @@ end
 
 function UPL:HPredict(Target, spell, source)
   local col = self.spellData[spell].collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
-  local x1, x2, x3 = self.HP:GetPredict(self.HPSpells[spell], Target, source, col)
-  return x1, x2*2, x3
+  return self.HP:GetPredict(self.HPSpells[spell], Target, source, col)
 end
 
 function UPL:SetupHPredSpell(spell)
