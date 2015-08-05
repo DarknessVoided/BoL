@@ -98,7 +98,7 @@ class "Veigar"
 		    source = source or myHero
 		    local objects = minionManager(MINION_ENEMY, data[0].range, source, MINION_SORT_HEALTH_ASC).objects
 		    for i, object in ipairs(objects) do
-		      local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
+		      local EndPos = Vector(source) + data[0].range * (Vector(object) - Vector(source)):normalized()
 		      local hit = self:CountObjectsOnLineSegment(source, EndPos, data[0].width, objects)
 		      if hit > BestHit then
 		        BestHit = hit
