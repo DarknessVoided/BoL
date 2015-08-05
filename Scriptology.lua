@@ -17,8 +17,8 @@ _G.ScriptologyVersion       = 2.01
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyDebug         = false
 _G.ScriptologyLoaded        = false
-_G.ScriptologyLoadedClasses     = {}
-_G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
+_G.ScriptologyLoadedClasses = {}
+_G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
 
 -- { Scriptology Loader
 
