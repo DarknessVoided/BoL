@@ -49,7 +49,7 @@ class "Veigar"
 			Cast(_Q, self.Target, 2)
 		end
 		if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W then
-    		local pos, b = PredictPos(self.Target, 0.5)
+    		local pos, b = PredictPos(self.Target, 0.125)
     		if GetDistance(pos) < data[_E].range+350 then
     			local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
     			local epl = (Vector(myHero) - ep):len()
@@ -74,7 +74,7 @@ class "Veigar"
 			Cast(_Q, self.Target, 2)
 		end
 		if sReady[_E] and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
-    		local pos, b = PredictPos(self.Target, 0.5)
+    		local pos, b = PredictPos(self.Target, 0.125)
     		if GetDistance(pos) < data[_E].range+350 then
     			local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
     			local epl = (Vector(myHero) - ep):len()
@@ -99,7 +99,7 @@ class "Veigar"
 		    local objects = minionManager(MINION_ENEMY, data[0].range, source, MINION_SORT_HEALTH_ASC).objects
 		    for i, object in ipairs(objects) do
 		      local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
-		      local hit = CountObjectsOnLineSegment(source, EndPos, data[0].width, objects)
+		      local hit = self:CountObjectsOnLineSegment(source, EndPos, data[0].width, objects)
 		      if hit > BestHit then
 		        BestHit = hit
 		        BestPos = object
@@ -108,13 +108,27 @@ class "Veigar"
 		        end
 		      end
 		    end
-		    return BestPos, BestHit
+		    if BestHit > 0 then
+		    	Cast(_Q, BestPos)
+		    end
 		end
+	end
+
+	function Veigar:CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
+	    local n = 0
+	    for i, object in ipairs(objects) do
+	      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
+	      local w = width
+	      if isOnSegment and object.health <= GetDmg(_Q, myHero, object) and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+	        n = n + 1
+	      end
+	    end
+	    return n
 	end
 
 	function Veigar:LaneClear()
 		if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
-			local BestPos, BestHit = GetLineFarmPosition(data[1].range, data[1].width)
+			local BestPos, BestHit = GetLineFarmPosition(data[0].range, data[0].width)
 			if BestPos and BestHit > 0 then
 				Cast(_Q, BestPos)
 			end
