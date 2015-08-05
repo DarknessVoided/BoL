@@ -240,6 +240,7 @@ _G.ScriptologyConfig      = scriptConfig("Scriptology Loader", "Scriptology"..my
         if tonumber(ScriptologyVersion) < ScriptologyServerVersion then
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Scriptology.lua", function() end)
           DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/ScriptologyLib.lua".."?no-cache="..math.random(1, 25000), LIB_PATH.."ScriptologyLib.lua", function() end)
+          ScriptologyMsg("Updated") 
           return true
         end
       end
