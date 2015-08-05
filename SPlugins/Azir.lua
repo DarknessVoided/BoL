@@ -9,6 +9,17 @@ class "Azir"
       [_R] = { range = 750, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 40*level+30+0.3*AP end}
     }
     self.Target = nil
+    objHolder = {}
+    objTimeHolder = {}
+  end
+
+  function CreateObj(object)
+    if object and object.valid and object.name then
+      if object.name == "AzirSoldier" then
+        objHolder[object.networkID] = object
+        objTimeHolder[object.networkID] = GetInGameTimer() + objTimeTrackList[myHero.charName][_]
+      end
+    end
   end
 
   function Azir:Load()
