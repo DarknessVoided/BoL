@@ -30,10 +30,15 @@
                 Vector otherwise nil
 ]]--     
 
+--Scriptstatus Tracker
+assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("TGJIJONKHOK") 
+--Scriptstatus Tracker
+
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.7
+_G.SPredictionVersion    = 2.8
 
 class 'SPrediction' -- {
+
     function SPrediction:__init()
         if SPredictionAutoUpdate then self:Update() end
         self.tickTable = {}
@@ -58,13 +63,13 @@ class 'SPrediction' -- {
       self:Msg("Loaded the latest version (v"..SPredictionVersion..")")
     end
 
-    function SPrediction:Msg(msg, title) print("<font color=\"#6699ff\"><b>[SPrediction]: "..(title or myHero.charName).." - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>")  end
+    function SPrediction:Msg(msg) print("<font color=\"#6699ff\"><b>[SPrediction]: </b></font> <font color=\"#FFFFFF\">"..msg..".</font>")  end
 
     function SPrediction:Tick()
         for i=1,heroManager.iCount do 
             unit = heroManager:GetHero(i)
             if unit ~= nil then
-                while self.tickTable[unit.networkID] and self.tickTable[unit.networkID][1] and self.tickTable[unit.networkID][1].time < GetInGameTimer() - 1.337 do
+                while self.tickTable[unit.networkID] and self.tickTable[unit.networkID][1] and self.tickTable[unit.networkID][1].time < GetInGameTimer() - 1.25 do
                     table.remove(self.tickTable[unit.networkID], 1)
                 end
             end
@@ -89,7 +94,7 @@ class 'SPrediction' -- {
                     baitLevel = baitLevel + (1/(j-i+1)) * (dirPerc <= 100 and dirPerc or 100)
                 end
             end
-            baitLevel = baitLevel < 0 and 0 or baitLevel / 2
+            baitLevel = baitLevel < 0 and 0 or baitLevel / 3
         end
         return baitLevel
     end
@@ -193,15 +198,18 @@ class 'SPrediction' -- {
         return Position, hitChance, self:PredictPos(target)
     end
 
+-- }
+
 class("Collision") -- {
+
     function Collision:__init(SP, range, speed, delay, width)
         self.range = range
         self.speed = speed
         self.delay = delay
         self.width = width
         self.SP = SP
-        self.TotalWidths = {[48] = (48 + width) ^ 2, [60] = (60 + width) ^ 2}
     end
+
     function Collision:Compute(unitTable, startP, endP)
         local numCollisions = 0
         for i, minion in ipairs(unitTable) do
@@ -217,4 +225,5 @@ class("Collision") -- {
         end
         return numCollisions>0, numCollisions
     end
+
 -- }
