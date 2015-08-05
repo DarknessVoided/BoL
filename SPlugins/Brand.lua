@@ -105,33 +105,33 @@ class "Brand"
           minionTarget = winion
         end
       end
-      if minionTarget ~= nil and (stackTable[minionTarget.networkID] and stackTable[minionTarget.networkID] > 0) then
-        Cast(_E, winion)
+      if minionTarget ~= nil and UnitHaveBuff(minionTarget, "brandablaze") then
+        Cast(_E, minionTarget)
       end
     end
   end
 
   function Brand:Combo()
-    if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Combo.E then
+    if (myHero:CanUseSpell(_E) == READY or UnitHaveBuff(Target, "brandablaze")) and Config.Combo.E then
       if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) then
         Cast(_E, Target)
       end
       if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
-        if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+        if UnitHaveBuff(Target, "brandablaze") then
           Cast(_Q, Target, 1.2)
         end
       end
       if myHero:CanUseSpell(_W) == READY and Config.Combo.W and ValidTarget(Target, data[1].range) then
-        if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+        if UnitHaveBuff(Target, "brandablaze") then
           Cast(_W, Target, 1.5)
         end
       end
-    elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Combo.W then
+    elseif (myHero:CanUseSpell(_W) == READY or UnitHaveBuff(Target, "brandablaze")) and Config.Combo.W then
       if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) then
         Cast(_W, Target, 1.5)
       end
       if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and ValidTarget(Target, data[0].range) then
-        if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+        if UnitHaveBuff(Target, "brandablaze") then
           Cast(_Q, Target, 1.2)
         end
       end
@@ -140,32 +140,32 @@ class "Brand"
         Cast(_Q, Target, 1.5)
       end
     end
-    if Config.Combo.R and (GetDmg(_R, myHero, Target) >= GetRealHealth(Target) or (EnemiesAround(Target, 500) > 1 and stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and ValidTarget(Target, data[3].range) then
+    if Config.Combo.R and (GetDmg(_R, myHero, Target) >= GetRealHealth(Target) or (EnemiesAround(Target, 500) > 1 and UnitHaveBuff(Target, "brandablaze")) and ValidTarget(Target, data[3].range) then
       Cast(_R, Target)
     end
   end
 
   function Brand:Harrass()
-    if (myHero:CanUseSpell(_E) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Harrass.E then
+    if (myHero:CanUseSpell(_E) == READY or UnitHaveBuff(Target, "brandablaze")) and Config.Harrass.E then
       if myHero:CanUseSpell(_E) == READY and ValidTarget(Target, data[2].range) and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
         Cast(_E, Target)
       end
       if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[0].range) then
-        if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+        if UnitHaveBuff(Target, "brandablaze") then
           Cast(_Q, Target, 1.2)
         end
       end
       if myHero:CanUseSpell(_W) == READY and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and ValidTarget(Target, data[1].range) then
-        if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+        if UnitHaveBuff(Target, "brandablaze") then
           Cast(_W, Target, 1.5)
         end
       end
-    elseif (myHero:CanUseSpell(_W) == READY or (stackTable[Target.networkID] and stackTable[Target.networkID] > 0)) and Config.Harrass.W then
+    elseif (myHero:CanUseSpell(_W) == READY or (UnitHaveBuff(Target, "brandablaze"))) and Config.Harrass.W then
       if myHero:CanUseSpell(_W) == READY and ValidTarget(Target, data[1].range) and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
         Cast(_W, Target, 1.5)
       end
       if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, data[0].range) and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
-        if stackTable[Target.networkID] and stackTable[Target.networkID] > 0 then
+        if UnitHaveBuff(Target, "brandablaze") then
           Cast(_Q, Target, 1.2)
         end
       end
