@@ -21,7 +21,6 @@ class "SAwareness"
     AddDeleteObjCallback(function(obj) self:DeleteObj(obj) end)
     AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
     UpdateWindow()
-    self:Update()
     self.offset = 18
     self.enemyWards = {}
     self.activeSpells = {}
@@ -59,7 +58,6 @@ class "SAwareness"
       end
     end
     self.loadedSprites = true
-    print("<font color=\"#6699ff\"><b>[Scriptology Awareness]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
   end
 
   function SAwareness:LoadSSR()
@@ -115,28 +113,6 @@ class "SAwareness"
         end
       end
     end
-  end
-
-  function SAwareness:Update()
-    local SAwarenessServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/SAwareness.version?no-cache="..math.random(1, 25000))
-    if SAwarenessServerData then
-      local SAwarenessServerVersion = type(tonumber(SAwarenessServerData)) == "number" and tonumber(SAwarenessServerData) or nil
-      if SAwarenessServerVersion then
-        if tonumber(SAwarenessVersion) < SAwarenessServerVersion then
-          if FileExist(SCRIPT_PATH..GetCurrentEnv().FILE_NAME) then
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
-          end
-          if FileExist(LIB_PATH..GetCurrentEnv().FILE_NAME) then
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness.lua?no-cache="..math.random(1, 25000), LIB_PATH..GetCurrentEnv().FILE_NAME, function() end)
-          end
-          print("<font color=\"#6699ff\"><b>[Scriptology Awareness]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..SAwarenessVersion.." -> v"..SAwarenessServerVersion..")</font>")
-          return true
-        end
-      end
-    else
-      print("<font color=\"#6699ff\"><b>[Scriptology Awareness]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>")
-    end
-    return false
   end
 
   function SAwareness:Draw()
