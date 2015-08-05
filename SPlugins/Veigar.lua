@@ -49,7 +49,7 @@ class "Veigar"
 			Cast(_Q, self.Target, 2)
 		end
 		if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W then
-    		local pos, b = PredictPos(self.Target, 0.125)
+    		local pos, b = PredictPos(self.Target)
     		if GetDistance(pos) < data[_E].range+350 then
     			local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
     			local epl = (Vector(myHero) - ep):len()
@@ -74,7 +74,7 @@ class "Veigar"
 			Cast(_Q, self.Target, 2)
 		end
 		if sReady[_E] and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
-    		local pos, b = PredictPos(self.Target, 0.125)
+    		local pos, b = PredictPos(self.Target)
     		if GetDistance(pos) < data[_E].range+350 then
     			local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
     			local epl = (Vector(myHero) - ep):len()
