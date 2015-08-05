@@ -59,13 +59,13 @@ class "Cassiopeia"
     if Config.LastHit.E and not Config.kConfig.Combo and not Config.kConfig.Harrass then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
-        if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= minion.health and UnitHaveBuff(minion, "poison") and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end      
       end   
       for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
-        if EMinionDmg >= minion.health and GetStacks(minion) > 0 and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= minion.health and UnitHaveBuff(minion, "poison") and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end      
       end    
@@ -125,12 +125,12 @@ class "Cassiopeia"
     if self.lastE > GetInGameTimer() then return end
     if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       for minion,winion in pairs(Mobs.objects) do
-        if winion ~= nil and GetStacks(winion) > 0 then
+        if winion ~= nil and UnitHaveBuff(winion, "poison") then
           Cast(_E, winion)
         end
       end
       for minion,winion in pairs(JMobs.objects) do
-        if winion ~= nil and GetStacks(winion) > 0 then
+        if winion ~= nil and UnitHaveBuff(winion, "poison") then
           Cast(_E, winion)
         end
       end
@@ -145,11 +145,11 @@ class "Cassiopeia"
       Cast(_W, Target, 1.5)
     end
     if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config.Combo.E and ValidTarget(Target, data[2].range) then
-      if GetStacks(Target) > 0 then
+      if UnitHaveBuff(Target, "poison") then
         Cast(_E, Target)
       end
     end
-    if Config.Combo.R and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= GetRealHealth(Target) or (EnemiesAroundAndFacingMe(Target, 500) > 1 and GetStacks(Target) > 0)) and ValidTarget(Target, data[3].range) then
+    if Config.Combo.R and (GetDmg(_R, myHero, Target) + 2*GetDmg(_E, myHero, Target) >= GetRealHealth(Target) or (EnemiesAroundAndFacingMe(Target, 500) > 1 and UnitHaveBuff(Target, "poison"))) and ValidTarget(Target, data[3].range) then
       Cast(_R, Target)
     end
   end
@@ -162,7 +162,7 @@ class "Cassiopeia"
       Cast(_W, Target, 1.5)
     end
     if myHero:CanUseSpell(_E) == READY and self.lastE < GetInGameTimer() and Config.Harrass.E and ValidTarget(Target, data[2].range) and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana then
-      if GetStacks(Target) > 0 then
+      if UnitHaveBuff(Target, "poison") then
         Cast(_E, Target)
       end
     end
@@ -177,7 +177,7 @@ class "Cassiopeia"
           Cast(_W, enemy, 1.5)
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy)
-        elseif GetRealHealth(enemy) < GetDmg(_E, myHero, enemy)*2 and GetStacks(enemy) > 0 and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
+        elseif GetRealHealth(enemy) < GetDmg(_E, myHero, enemy)*2 and UnitHaveBuff(enemy, "poison") and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy)
           DelayAction(Cast, 0.55, {_E, enemy})
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, data[3].range) then
