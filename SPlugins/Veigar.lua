@@ -58,7 +58,7 @@ class "Veigar"
     			ep = GetDistance(ep) == 0 and ept or ep
     			Cast(_E, ep)
 				if sReady[_W] and Config.Combo.W then 
-					DelayAction(function() Cast(_W, pos) end, 0.33) 
+					DelayAction(function() Cast(_W, self.Target.pos) end, 0.33) 
 				end
     		end
 		elseif sReady[_W] and Config.Combo.W and not Config.Combo.WE then
