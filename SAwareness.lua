@@ -271,9 +271,11 @@ class "SAwareness"
         DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height*scale*i+15*i, s.width, 10, ARGB(255, 255, 0, 0))
         DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height*scale*i+15*i, s.width*(k.health/k.maxHealth), 10, ARGB(255, 0, 255, 0))
         DrawText(""..math.ceil(k.health), 12, WINDOW_W-s.width+s.width/4, WINDOW_H/4+s.height*scale*i+15*i-1, ARGB(255,255,255,255))
-        DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height-10+s.height*scale*i+15*i, s.width, 10, ARGB(105, 105, 105, 105))
-        DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height-10+s.height*scale*i+15*i, s.width*(k.mana/k.maxMana), 10, ARGB(255, 0, 0, 255))
-        DrawText(""..math.ceil(k.mana), 12, WINDOW_W-s.width+s.width/4, WINDOW_H/4+s.height-10+s.height*scale*i+15*i-1, ARGB(255,255,255,255))
+        if k.maxMana > 0 then
+          DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height-10+s.height*scale*i+15*i, s.width, 10, ARGB(105, 105, 105, 105))
+          DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height-10+s.height*scale*i+15*i, s.width*(k.mana/k.maxMana), 10, ARGB(255, 0, 0, 255))
+          DrawText(""..math.ceil(k.mana), 12, WINDOW_W-s.width+s.width/4, WINDOW_H/4+s.height-10+s.height*scale*i+15*i-1, ARGB(255,255,255,255))
+        end
         for j = 4, 5 do
           local si = self.Sprites[k:GetSpellData(j).name]
           local cd = k:GetSpellData(j).currentCd

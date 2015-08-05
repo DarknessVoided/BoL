@@ -11,7 +11,7 @@ class "Teemo"
   end
 
   function Teemo:Load()
-    SetupMenu()
+    SetupMenu(true)
   end
 
   function Teemo:Menu()
