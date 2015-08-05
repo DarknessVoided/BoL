@@ -4,7 +4,7 @@ class "Nidalee"
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     self.data = {
       Human  = {
-          [_Q] = { speed = 1337, delay = 0.125, range = 1500, width = 25, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 25, collision = true, aoe = false, type = "linear"},
           [_W] = { range = 900},
           [_E] = { range = 600}
         },
@@ -13,7 +13,7 @@ class "Nidalee"
           [_E] = { range = 350}}
     }
     data = {
-          [_Q] = { speed = 1337, delay = 0.125, range = 1500, width = 42.5, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 42.5, collision = true, aoe = false, type = "linear"},
           [_W] = { speed = math.huge, delay = 0.25, range = 900, width = 120, collision = true, aoe = false, type = "circular"},
           [_E] = { range = 0},
           [_R] = { range = 0}
@@ -425,7 +425,7 @@ class "Nidalee"
       APDmg = (GetLichSlot() and source.damage*0.75+0.5*AP or 0)
     elseif human then
       if spell == _Q then
-        APDmg = (25+25*QLevel+0.4*AP)*math.max(1,math.min(3,GetDistance(target.pos)/1250*3))--kanker
+        APDmg = (30+20*QLevel+0.4*AP)*math.max(1,math.min(3,GetDistance(target.pos)/1250*3))--kanker
       elseif spell == _W then
       elseif spell == _E then
       end
