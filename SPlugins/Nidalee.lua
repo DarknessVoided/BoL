@@ -222,14 +222,14 @@ class "Nidalee"
       Cast(_R)
     end
     if unit and myHero:CanUseSpell(_W) == READY and UnitHaveBuff(unit, "nidaleepassivehunted") and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.W then
-      Cast(_W, unit)
+      Cast(_W, unit.pos)
     end
     if unit and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
       if self:GetDmg(_Q,unit) >= unit.health and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and not Config.Combo.E then
           CastSpell(_Q)
       elseif self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
         if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
-          Cast(_E, unit)
+          Cast(_E, unit.pos)
         end
         if myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
           CastSpell(_Q)
@@ -239,14 +239,14 @@ class "Nidalee"
         end
       else
         if myHero:CanUseSpell(_E) == READY and Config.Combo.E then
-          Cast(_E, unit)
+          Cast(_E, unit.pos)
         elseif myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
           CastSpell(_Q)
         end
       end
       if unit and myHero:CanUseSpell(_W) == READY and Config.Combo.W then
         if unit and GetDistance(unit) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(unit) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
-          Cast(_W, unit)
+          Cast(_W, unit.pos)
         end
       end
     end
@@ -279,7 +279,7 @@ class "Nidalee"
         CastSpell(_Q, myHero:Attack(self.Target))
       end
       if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(self.Target, self.data.Cougar[2].range) then
-        Cast(_E, self.Target)
+        Cast(_E, self.Target.pos)
       end
     end
   end
@@ -368,11 +368,11 @@ class "Nidalee"
           end
           if myHero:CanUseSpell(_W) == READY and GetRealHealth(enemy) < self:GetDmg(_W, enemy) and Config.Killsteal.W then
             if GetDistance(enemy) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(enemy) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
-              Cast(_W, enemy)
+              Cast(_W, enemy.pos)
             end
           end
           if myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < self:GetDmg(_E, enemy) and Config.Killsteal.E and ValidTarget(enemy, self.data.Cougar[2].range) then
-            Cast(_E, enemy)
+            Cast(_E, enemy.pos)
           end
         end
         if myHero:CanUseSpell(_Q) == READY and EnemiesAround(enemy, 500) < 3 and self:IsHuman() and GetRealHealth(enemy) < self:GetRWEQComboDmg(enemy,self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy)) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R and ValidTarget(enemy, self.data.Cougar[1].range/2) then
