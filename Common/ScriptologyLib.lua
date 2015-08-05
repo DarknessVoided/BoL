@@ -69,7 +69,7 @@
     local objects = minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects
     for i, object in ipairs(objects) do
       local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
-      if hit > BestHit then
+      if hit > BestHit and minion.health < 100000 then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
@@ -634,9 +634,9 @@
   function GetJMinion(range)
     local minionTarget = nil
     for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      if minionTarget == nil then 
+      if minionTarget == nil and minion.health < 100000 then 
         minionTarget = minion
-      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) then
+      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and minion.health < 100000 then
         minionTarget = minion
       end
     end
