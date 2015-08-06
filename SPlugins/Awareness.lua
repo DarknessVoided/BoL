@@ -5,8 +5,13 @@ class "SAwareness"
     self.Config = ScriptologyConfig.SAwareness
     self.Config:addParam("i", "Cooldowns", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("cde", "Enemies:", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addParam("scd", "Enemies: (summoners)", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("cda", "Allies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("i", "Hud:", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("sce", "Enemies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("sizee", "-> Size", SCRIPT_PARAM_SLICE, 1.5, 0.25, 2.25, 2)
+    self.Config:addParam("sca", "Allies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("sizea", "-> Size", SCRIPT_PARAM_SLICE, 1.5, 0.25, 2.25, 2)
     self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("i", "Waypoints", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("wpe", "Enemies:", SCRIPT_PARAM_ONOFF, true)
@@ -14,7 +19,9 @@ class "SAwareness"
     self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("war", "Enemy Wards", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
-    self.Config:addParam("ssr", "Enemy Skillshots", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addParam("ssr", "Enemy Skillshots", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("jdt", "Jungletimer", SCRIPT_PARAM_ONOFF, true)
     AddDrawCallback(function() self:Draw() end)
     AddUnloadCallback(function() self:Unload() end)
     AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
@@ -27,6 +34,9 @@ class "SAwareness"
     self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     self:Load()
     self:LoadSSR()
+    self:LoadJungletable()
+    self.allyTable = {table.unpack(GetAllyHeroes())}
+    table.insert(self.allyTable, myHero)
     return self
   end
 
@@ -120,7 +130,8 @@ class "SAwareness"
     self:DrawCDA()
     self:DrawWPE()
     self:DrawWPA()
-    self:DrawSCD()
+    self:DrawSCE()
+    self:DrawSCA()
     self:DrawWAR()
     self:DrawSSR()
     self:DrawJDT()
@@ -228,29 +239,88 @@ class "SAwareness"
     end
   end
 
-  function SAwareness:DrawSCD()
-    if self.Config.scd and self.loadedSprites then
+  function SAwareness:DrawSCE()
+    if self.Config.sce and self.loadedSprites then
       local i = 0
       for _, k in pairs(GetEnemyHeroes()) do
-        local scale = 0.85
+        local scale = 0.85*self.Config.sizee
         local s = self.Sprites[k.charName]
-        s:Draw(WINDOW_W-s.width,WINDOW_H/4+s.height*scale*i+15*i,255)
-        DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height*scale*i+15*i, s.width, 10, ARGB(255, 255, 0, 0))
-        DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height*scale*i+15*i, s.width*(k.health/k.maxHealth), 10, ARGB(255, 0, 255, 0))
-        DrawText(""..math.ceil(k.health), 12, WINDOW_W-s.width+s.width/4, WINDOW_H/4+s.height*scale*i+15*i-1, ARGB(255,255,255,255))
+        s:SetScale(self.Config.sizee, self.Config.sizee)
+        s:Draw(WINDOW_W-s.width*self.Config.sizee,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee,255)
+        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(255, 255, 0, 0))
+        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.health/k.maxHealth), 10*self.Config.sizee, ARGB(255, 0x62, 0x98, 0x00))
+        for j = -1*self.Config.sizee, 1*self.Config.sizee do
+            for l = -1*self.Config.sizee, 1*self.Config.sizee do
+                DrawText(""..math.ceil(k.health), 12*self.Config.sizee, math.floor(WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1+l), ARGB(255, 0, 0, 0))
+            end
+        end
+        DrawText(""..math.ceil(k.health), 12*self.Config.sizee, WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1, ARGB(255,255,255,255))
         if k.maxMana > 0 then
-          DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height-10+s.height*scale*i+15*i, s.width, 10, ARGB(105, 105, 105, 105))
-          DrawRectangle(WINDOW_W-s.width, WINDOW_H/4+s.height-10+s.height*scale*i+15*i, s.width*(k.mana/k.maxMana), 10, ARGB(255, 0, 0, 255))
-          DrawText(""..math.ceil(k.mana), 12, WINDOW_W-s.width+s.width/4, WINDOW_H/4+s.height-10+s.height*scale*i+15*i-1, ARGB(255,255,255,255))
+          DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(155, 105, 105, 105))
+          DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.mana/k.maxMana), 10*self.Config.sizee, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x03, 0x41, 0xCB))
+          for j = -1*self.Config.sizee, 1*self.Config.sizee do
+              for l = -1*self.Config.sizee, 1*self.Config.sizee do
+                  DrawText(""..math.ceil(k.mana), 12*self.Config.sizee, math.floor(WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4+j), math.floor(WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee-1+l), ARGB(255, 0, 0, 0))
+              end
+          end
+          DrawText(""..math.ceil(k.mana), 12*self.Config.sizee, WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee-1, ARGB(255,255,255,255))
         end
         for j = 4, 5 do
           local si = self.Sprites[k:GetSpellData(j).name]
           local cd = k:GetSpellData(j).currentCd
           si:SetScale(scale,scale)
-          si:Draw(WINDOW_W-s.width-si.width*scale,WINDOW_H/4+s.height*scale*i+15*i+(j-4)*si.height*scale,255)
+          si:Draw(WINDOW_W-s.width*self.Config.sizee-si.width*scale,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee+(j-4)*si.height*scale,255)
           if cd > 0 then
-            local x = WINDOW_W-s.width-si.width*scale+2
-            local y = WINDOW_H/4+s.height*scale*i+6+15*i+(j-4)*si.height*scale
+            local x = WINDOW_W-s.width*self.Config.sizee-si.width*scale+2
+            local y = WINDOW_H/4+s.height*scale*i+6+15*i*self.Config.sizee+(j-4)*si.height*scale
+            for j = -1, 1 do
+                for k = -1, 1 do
+                    DrawText(""..math.ceil(cd), self.offset, math.floor(x+j), math.floor(y+k), ARGB(255, 0, 0, 0))
+                end
+            end
+            DrawText(""..math.ceil(cd), self.offset, x, y, ARGB(255,255,0,0))
+          end
+        end
+        i = i + 1
+      end
+    end
+  end
+
+  function SAwareness:DrawSCA()
+    if self.Config.sca and self.loadedSprites then
+      local i = 0
+      for _, k in pairs(self.allyTable) do
+        local scale = 0.85*self.Config.sizea
+        local s = self.Sprites[k.charName]
+        s:SetScale(self.Config.sizea, self.Config.sizea)
+        s:Draw(0,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea,255)
+        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(255, 255, 0, 0))
+        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.health/k.maxHealth), 10*self.Config.sizea, ARGB(255, 0x62, 0x98, 0x00))
+        DrawRectangle(0+s.width*self.Config.sizea*(k.health/k.maxHealth), WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.shield/k.maxHealth), 10*self.Config.sizea, ARGB(255, 255, 255, 255))
+        for j = -1*self.Config.sizea, 1*self.Config.sizea do
+            for l = -1*self.Config.sizea, 1*self.Config.sizea do
+                DrawText(""..math.ceil(k.health), 12*self.Config.sizea, math.floor(s.width*self.Config.sizea/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1+l), ARGB(255, 0, 0, 0))
+            end
+        end
+        DrawText(""..math.ceil(k.health), 12*self.Config.sizea, s.width*self.Config.sizea/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1, ARGB(255,255,255,255))
+        if k.maxMana > 0 then
+          DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(155, 105, 105, 105))
+          DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.mana/k.maxMana), 10*self.Config.sizea, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x03, 0x41, 0xCB))
+          for j = -1*self.Config.sizea, 1*self.Config.sizea do
+              for l = -1*self.Config.sizea, 1*self.Config.sizea do
+                  DrawText(""..math.ceil(k.mana), 12*self.Config.sizea, math.floor(s.width*self.Config.sizea/4+j), math.floor(WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea-1+l), ARGB(255, 0, 0, 0))
+              end
+          end
+          DrawText(""..math.ceil(k.mana), 12*self.Config.sizea, s.width*self.Config.sizea/4, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea-1, ARGB(255,255,255,255))
+        end
+        for j = 4, 5 do
+          local si = self.Sprites[k:GetSpellData(j).name]
+          local cd = k:GetSpellData(j).currentCd
+          si:SetScale(scale,scale)
+          si:Draw(s.width*self.Config.sizea,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea+(j-4)*si.height*scale,255)
+          if cd > 0 then
+            local x = s.width*self.Config.sizea+2
+            local y = WINDOW_H/4+s.height*scale*i+6+15*i*self.Config.sizea+(j-4)*si.height*scale
             for j = -1, 1 do
                 for k = -1, 1 do
                     DrawText(""..math.ceil(cd), self.offset, math.floor(x+j), math.floor(y+k), ARGB(255, 0, 0, 0))
@@ -373,4 +443,25 @@ class "SAwareness"
     if pos then
       DrawCircle3D(pos.x, pos.y, pos.z, width/2, 1, ARGB(155, 255, 255, 255), 8)
     end
+  end
+
+  function SAwareness:LoadJungletable()
+    self.jungleTable = { -- ty PewPewPew
+        { ['time'] = 300, ['mapPos'] = GetMinimap(Vector(3850, 60, 7880)),  }, --Blue Side Blue Buff
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(3800, 60, 6500)),  }, --Blue Side Wolves
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(7000, 60, 5400)),  }, --Blue Side Raptors
+        { ['time'] = 300, ['mapPos'] = GetMinimap(Vector(7800, 60, 4000)),  }, --Blue Side Red Buff
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(8400, 60, 2700)),  }, --Blue Side Krugs
+        { ['time'] = 360, ['mapPos'] = GetMinimap(Vector(9866, 60, 4414)),  }, --Dragon
+        { ['time'] = 300, ['mapPos'] = GetMinimap(Vector(10950, 60, 7030)), }, --Red Side Blue Buff
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(11000, 60, 8400)), }, --Red Side Wolves
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(7850, 60, 9500)),  }, --Red Side Raptors
+        { ['time'] = 300, ['mapPos'] = GetMinimap(Vector(7100, 60, 10900)), }, --Red Side Red Buff
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(6400, 60, 12250)), }, --Red Side Krugs
+        { ['time'] = 420, ['mapPos'] = GetMinimap(Vector(4950, 60, 10400)), }, --Baron
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(2200, 60, 8500)),  }, --Blue Side Gromp
+        { ['time'] = 100, ['mapPos'] = GetMinimap(Vector(12600, 60, 6400)), }, --Red Side Gromp
+        { ['time'] = 180, ['mapPos'] = GetMinimap(Vector(10500, 60, 5170)), }, --Dragon Crab
+        { ['time'] = 180, ['mapPos'] = GetMinimap(Vector(4400, 60, 9600)),  }, --Baron Crab
+    }
   end

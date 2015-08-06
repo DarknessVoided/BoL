@@ -35,6 +35,8 @@
     if not notUpl then
       DelayAction(function()
         LoadUPL()
+      end, 0.125)
+      DelayAction(function()
         FillUPL()
       end, 0.25)
     end
