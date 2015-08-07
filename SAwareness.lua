@@ -1,4 +1,4 @@
-_G.SAwarenessVersion = 0.5
+_G.SAwarenessVersion = 0.6
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("REHGLKDMKFG") 
 
 function OnLoad()
@@ -9,7 +9,7 @@ function OnLoad()
   end, 0.5)
 end
 
-class "SAwareness"
+class "SAwareness" -- {
 
   function SAwareness:__init()
     self.Config = scriptConfig("SAwareness", "SAwareness")
@@ -29,9 +29,15 @@ class "SAwareness"
     self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("war", "Enemy Wards", SCRIPT_PARAM_ONOFF, true)
     self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("msr", "My Skill Ranges", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("esr", "Enemy Skill Ranges", SCRIPT_PARAM_ONOFF, false)
     self.Config:addParam("ssr", "Enemy Skillshots", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("ssl", "-> Visibility", SCRIPT_PARAM_SLICE, 1, 1, 5, 0)
     self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
     self.Config:addParam("jdt", "Jungletimer", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("i", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("LFC", "Lag Free Circles", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addParam("LFL", "-> Line Width", SCRIPT_PARAM_SLICE, 1, 1, 5, 0)
     AddDrawCallback(function() self:Draw() end)
     AddUnloadCallback(function() self:Unload() end)
     AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
@@ -45,6 +51,7 @@ class "SAwareness"
     self.str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
     self:Load()
     self:LoadSSR()
+    self:LoadMSR()
     self:LoadJungletable()
     self.allyTable = {table.unpack(GetAllyHeroes())}
     table.insert(self.allyTable, myHero)
@@ -89,6 +96,17 @@ class "SAwareness"
     else
       DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function () end)
       DelayAction(function() self:LoadSSR() end, 0.5)
+      return
+    end
+  end
+
+  function SAwareness:LoadMSR()
+    if FileExist(LIB_PATH .. "GetSpellRange.lua") then
+      require("GetSpellRange")
+      self.loadedMSR = true
+    else
+      DownloadFile("https://raw.githubusercontent.com/pvpsuite/BoL/master/Scripts/Common/GetSpellRange.lua".."?rand="..math.random(1,10000), LIB_PATH.."GetSpellRange.lua", function () end)
+      DelayAction(function() self:LoadMSR() end, 0.5)
       return
     end
   end
@@ -168,6 +186,8 @@ class "SAwareness"
     self:DrawSCA()
     self:DrawWAR()
     self:DrawSSR()
+    self:DrawMSR()
+    self:DrawESR()
     self:DrawJDT()
   end
 
@@ -414,8 +434,8 @@ class "SAwareness"
           end
           if type == "circular" then
             if spell.startTime+range/speed+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
-              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, 2, ARGB(255, 255, 255, 255), 32)
-              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, 2, ARGB(255, 255, 255, 255), 32)
+              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, self.Config.ssl, ARGB(255, 255, 255, 255), 32)
+              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, self.Config.ssl, ARGB(255, 255, 255, 255), 32)
             else
               table.remove(self.activeSpells, _)
             end
@@ -423,8 +443,8 @@ class "SAwareness"
         elseif speed == math.huge then
           if type == "circular" then
             if spell.startTime+delay+self:GetGroundTime(spell.source, spell.slot) > GetInGameTimer() then
-              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, 2, ARGB(255, 255, 255, 255), 32)
-              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, 2, ARGB(255, 255, 255, 255), 32)
+              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width, self.Config.ssl, ARGB(255, 255, 255, 255), 32)
+              DrawCircle3D(spell.endPos.x, spell.endPos.y, spell.endPos.z, width-10, self.Config.ssl, ARGB(255, 255, 255, 255), 32)
             else
               table.remove(self.activeSpells, _)
             end
@@ -438,6 +458,26 @@ class "SAwareness"
             else
               table.remove(self.activeSpells, _)
             end
+          end
+        end
+      end
+    end
+  end
+
+  function SAwareness:DrawMSR()
+    if self.Config.msr and self.loadedMSR then
+      for _, k in pairs({'Q', 'W', 'E', 'R'}) do
+        SCircle(myHero, GetSpellRange(myHero.charName, k, myHero:GetSpellData(_-1).level), self.Config.LFC, self.Config.LFL):Draw(0x7F00FF00)
+      end
+    end
+  end
+
+  function SAwareness:DrawESR()
+    if self.Config.esr and self.loadedMSR then
+      for _, enemy in pairs(GetEnemyHeroes()) do
+        if enemy.visible and not enemy.dead then
+          for _, k in pairs({'Q', 'W', 'E', 'R'}) do
+            SCircle(enemy, GetSpellRange(enemy.charName, k, enemy:GetSpellData(_-1).level), self.Config.LFC, self.Config.LFL):Draw(0x7FFF0000)
           end
         end
       end
@@ -462,20 +502,20 @@ class "SAwareness"
     local c2 = startPos+Vector(Vector(endPos)-startPos):perpendicular2():normalized()*width/2
     local c3 = endPos+Vector(Vector(startPos)-endPos):perpendicular():normalized()*width/2
     local c4 = endPos+Vector(Vector(startPos)-endPos):perpendicular2():normalized()*width/2
-    DrawLine3D(c1.x,c1.y,c1.z,c2.x,c2.y,c2.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
-    DrawLine3D(c2.x,c2.y,c2.z,c3.x,c3.y,c3.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
-    DrawLine3D(c3.x,c3.y,c3.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
-    DrawLine3D(c1.x,c1.y,c1.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(55, 255, 255, 255))
+    DrawLine3D(c1.x,c1.y,c1.z,c2.x,c2.y,c2.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 55*self.Config.ssl), 255, 255, 255))
+    DrawLine3D(c2.x,c2.y,c2.z,c3.x,c3.y,c3.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 55*self.Config.ssl), 255, 255, 255))
+    DrawLine3D(c3.x,c3.y,c3.z,c4.x,c4.y,c4.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 55*self.Config.ssl), 255, 255, 255))
+    DrawLine3D(c1.x,c1.y,c1.z,c4.x,c4.y,c4.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 55*self.Config.ssl), 255, 255, 255))
     local c1 = startPos+Vector(Vector(endPos)-startPos):perpendicular():normalized()*width
     local c2 = startPos+Vector(Vector(endPos)-startPos):perpendicular2():normalized()*width
     local c3 = endPos+Vector(Vector(startPos)-endPos):perpendicular():normalized()*width
     local c4 = endPos+Vector(Vector(startPos)-endPos):perpendicular2():normalized()*width
-    DrawLine3D(c1.x,c1.y,c1.z,c2.x,c2.y,c2.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
-    DrawLine3D(c2.x,c2.y,c2.z,c3.x,c3.y,c3.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
-    DrawLine3D(c3.x,c3.y,c3.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
-    DrawLine3D(c1.x,c1.y,c1.z,c4.x,c4.y,c4.z,math.ceil(width/100),ARGB(25, 255, 255, 255))
+    DrawLine3D(c1.x,c1.y,c1.z,c2.x,c2.y,c2.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 25*self.Config.ssl), 255, 255, 255))
+    DrawLine3D(c2.x,c2.y,c2.z,c3.x,c3.y,c3.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 25*self.Config.ssl), 255, 255, 255))
+    DrawLine3D(c3.x,c3.y,c3.z,c4.x,c4.y,c4.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 25*self.Config.ssl), 255, 255, 255))
+    DrawLine3D(c1.x,c1.y,c1.z,c4.x,c4.y,c4.z,math.ceil(width/100)+self.Config.ssl,ARGB(math.min(255, 25*self.Config.ssl), 255, 255, 255))
     if pos then
-      DrawCircle3D(pos.x, pos.y, pos.z, width/2, 1, ARGB(155, 255, 255, 255), 8)
+      DrawCircle3D(pos.x, pos.y, pos.z, width/2, self.Config.ssl, ARGB(155, 255, 255, 255), 8)
     end
   end
 
@@ -499,3 +539,27 @@ class "SAwareness"
         { ['time'] = 180, ['mapPos'] = GetMinimap(Vector(4400, 60, 9600)),  }, --Baron Crab
     }
   end
+
+-- }
+
+class 'SCircle' -- {
+
+  function SCircle:__init(x, y, z, r, LFC, LFL)
+    local pos = type(x) ~= "number" and x or nil
+    self.x = pos and pos.x or x
+    self.y = pos and pos.y or y
+    self.z = pos and pos.z or z
+    self.r = pos and y or r
+    self.LFC = pos and z or LFC
+    self.LFL = pos and r or LFL
+  end
+
+  function SCircle:Draw(color)
+    if self.LFC then
+      DrawCircle3D(self.x, self.y, self.z, self.r, self.LFL, color or 0xffffffff, 32)
+    else
+      DrawCircle(self.x, self.y, self.z, self.r, color or 0xffffffff)
+    end
+  end
+
+-- }
