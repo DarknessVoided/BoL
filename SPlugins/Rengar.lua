@@ -98,7 +98,7 @@ class "Rengar"
           loadedOrb.orbTable.lastAA = 0
           loadedOrb.orbTable.animation = 0
         end
-        if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) DelayAction(function() Cast(_W) end, 0.2) end end, GetDistance(self.Target) / (2500+myHero.ms) - GetLatency() / 2000) end
+        if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harrass and Config.Harrass.E) then DelayAction(function() if self.Target then CastSpell(_E, self.Target.x, self.Target.z) DelayAction(function() Cast(_W) end, 0.5) end end, GetDistance(self.Target) / (2500+myHero.ms) - GetLatency() / 2000) end
         if self.Target then Cast(_Q) end
       end
     end
@@ -124,13 +124,13 @@ class "Rengar"
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
         Cast(_Q)
-      elseif Config.Misc.Empower2 == 2 then
+      elseif Config.Misc.Empower2 == 2 and GetDistance(self.Target) < data[1].range then
         Cast(_W, self.Target, 1)
       elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, 2)
       end
     else
-      if Config.Combo.W and sReady[_W] then
+      if Config.Combo.W and sReady[_W] and GetDistance(self.Target) < data[1].range then
         Cast(_W, self.Target, 1)
       end
       if Config.Combo.E and sReady[_E] then
@@ -143,13 +143,13 @@ class "Rengar"
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
         Cast(_Q)
-      elseif Config.Misc.Empower2 == 2 then
+      elseif Config.Misc.Empower2 == 2 and GetDistance(self.Target) < data[1].range then
         Cast(_W, self.Target, 1)
       elseif Config.Misc.Empower2 == 3 then
         Cast(_E, self.Target, 2)
       end
     else
-      if Config.Harrass.W and sReady[_W] then
+      if Config.Harrass.W and sReady[_W] and GetDistance(self.Target) < data[1].range then
         Cast(_W, self.Target, 1)
       end
       if Config.Harrass.E and sReady[_E] then
