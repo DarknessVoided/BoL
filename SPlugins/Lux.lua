@@ -107,7 +107,7 @@ class "Lux"
     end
     if Config.Combo.E and myHero:CanUseSpell(_E) == READY then
       Cast(_E, Target, 1.5)
-    elseif not myHero.isWindingUp then
+    else
       if Config.Combo.Q and myHero:CanUseSpell(_Q) == READY and myHero:CanUseSpell(_E) ~= READY then
         Cast(_Q, Target, 2)
       end

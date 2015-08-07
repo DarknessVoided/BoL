@@ -253,10 +253,10 @@ class "Riven"
         Cast(_E, self.Target.pos)
       end
     end
-    if myHero.isWindingUp and Config.Combo.Rm > 1 and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if Config.Combo.Rm > 1 and GetDmg(_R,myHero,self.Target) >= self.Target.health and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if Config.Combo.Rm > 1 and self.Target.health/self.Target.maxHealth <= 0.25 and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
-    if not myHero.isWindingUp and Config.Combo.Rm > 1 and self.QCast == 2 and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if Config.Combo.Rm > 1 and self.QCast == 2 and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
       Cast(_W)
     end
