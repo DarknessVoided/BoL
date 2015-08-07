@@ -29,12 +29,8 @@ class "SWalk" -- {
       local SWalkServerVersion = type(tonumber(SWalkServerData)) == "number" and tonumber(SWalkServerData) or nil
       if SWalkServerVersion then
         if tonumber(SWalkVersion) < SWalkServerVersion then
-          if FileExist(SCRIPT_PATH..GetCurrentEnv().FILE_NAME) then
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
-          end
-          if FileExist(LIB_PATH..GetCurrentEnv().FILE_NAME) then
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), LIB_PATH..GetCurrentEnv().FILE_NAME, function() end)
-          end
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."SWalk.lua", function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), LIB_PATH.."SWalk.lua", function() end)
           print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..SWalkVersion.." -> v"..SWalkServerVersion..")</font>")
           return true
         end
