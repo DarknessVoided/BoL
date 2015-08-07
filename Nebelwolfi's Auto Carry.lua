@@ -1,53 +1,51 @@
-_G.SWalkVersion = 0.3
+_G.NebelwolfisAutoCarryVersion = 0.3
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
-function OnLoad()
-  DelayAction(function()
-    if not _G.SWalkLoaded then
-      sw = SWalk()
-    end
-  end, 0.5)
-end
+DelayAction(function()
+  if not _G.NebelwolfisAutoCarryLoaded then
+    sw = NebelwolfisAutoCarry()
+  end
+end, 0)
 
-class "SWalk" -- {
+class "NebelwolfisAutoCarry" -- {
 
-  function SWalk:__init(Cfg)
+  function NebelwolfisAutoCarry:__init(Cfg)
     self.altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
     self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
     if not UPLloaded then require("HPrediction") self.HP = HPrediction() else self.HP = UPL.HP end
     if not UPLloaded then require("VPrediction") self.VP = VPrediction() else self.VP = UPL.VP end
     self:Load(Cfg)
-    _G.SWalkLoaded = true
-    print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
+    _G.NebelwolfisAutoCarryLoaded = true
+    print("<font color=\"#6699ff\"><b>[Nebelwolfi's Auto Carry]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
     self:Update()
     return self
   end
 
-  function SWalk:Update()
-    local SWalkServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/SWalk.version?no-cache="..math.random(1, 25000))
-    if SWalkServerData then
-      local SWalkServerVersion = type(tonumber(SWalkServerData)) == "number" and tonumber(SWalkServerData) or nil
-      if SWalkServerVersion then
-        if tonumber(SWalkVersion) < SWalkServerVersion then
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."SWalk.lua", function() end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SWalk.lua?no-cache="..math.random(1, 25000), LIB_PATH.."SWalk.lua", function() end)
-          print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..SWalkVersion.." -> v"..SWalkServerVersion..")</font>")
+  function NebelwolfisAutoCarry:Update()
+    local NebelwolfisAutoCarryServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Nebelwolfi's Auto Carry.version?no-cache="..math.random(1, 25000))
+    if NebelwolfisAutoCarryServerData then
+      local NebelwolfisAutoCarryServerVersion = type(tonumber(NebelwolfisAutoCarryServerData)) == "number" and tonumber(NebelwolfisAutoCarryServerData) or nil
+      if NebelwolfisAutoCarryServerVersion then
+        if tonumber(NebelwolfisAutoCarryVersion) < NebelwolfisAutoCarryServerVersion then
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Nebelwolfi's Auto Carry.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Nebelwolfi's Auto Carry.lua", function() end)
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Nebelwolfi's Auto Carry.lua?no-cache="..math.random(1, 25000), LIB_PATH.."Nebelwolfi's Auto Carry.lua", function() end)
+          print("<font color=\"#6699ff\"><b>[Nebelwolfi's Auto Carry]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..NebelwolfisAutoCarryVersion.." -> v"..NebelwolfisAutoCarryServerVersion..")</font>")
           return true
         end
       end
     else
-      print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>")
+      print("<font color=\"#6699ff\"><b>[Nebelwolfi's Auto Carry]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>")
     end
     return false
   end
 
-  function SWalk:Load(Cfg)
+  function NebelwolfisAutoCarry:Load(Cfg)
     self:LoadVars(Cfg)
     self:LoadMenu()
     self:LoadCallbacks()
   end
 
-  function SWalk:LoadVars(Cfg)
+  function NebelwolfisAutoCarry:LoadVars(Cfg)
     self.melee = myHero.range < 450 or myHero.charName == "Rengar"
     self.orbDisabled = false
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
@@ -58,14 +56,14 @@ class "SWalk" -- {
     self.Target = nil
     ArrangeTSPriorities()
     if Cfg then
-      Cfg:addSubMenu("SWalk", "SWalk")
-      self.Config = Cfg.SWalk
+      Cfg:addSubMenu("NebelwolfisAutoCarry", "NebelwolfisAutoCarry")
+      self.Config = Cfg.NebelwolfisAutoCarry
     else
-      self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
+      self.Config = scriptConfig("NebelwolfisAutoCarry", "SW"..myHero.charName)
     end    
   end
 
-  function SWalk:LoadMenu()
+  function NebelwolfisAutoCarry:LoadMenu()
     self.Config:addSubMenu("Modes", "m")
       self.Config.m:addSubMenu("Carry Mode", "Combo")
         self.Config.m.Combo:addParam("Attack", "Attack", SCRIPT_PARAM_ONOFF, true)
@@ -151,16 +149,16 @@ class "SWalk" -- {
       self.Config.t:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
       self.Config.t:addParam("lhadj", "Lasthit adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
     self.Config:addParam("info1", "", SCRIPT_PARAM_INFO, "")
-    self.Config:addParam("info2", "Version:", SCRIPT_PARAM_INFO, "v"..SWalkVersion)
+    self.Config:addParam("info2", "Version:", SCRIPT_PARAM_INFO, "v"..NebelwolfisAutoCarryVersion)
   end
 
-  function SWalk:LoadCallbacks()
+  function NebelwolfisAutoCarry:LoadCallbacks()
     AddTickCallback(function() self:Tick() end)
     AddDrawCallback(function() self:Draw() end)
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
   end
 
-  function SWalk:Tick()
+  function NebelwolfisAutoCarry:Tick()
     self.Target = self:AcquireTarget()
     self.myRange = myHero.range+myHero.boundingRadius+(self.Target and self.Target.boundingRadius or myHero.boundingRadius)
     if self.fPos and GetDistance(self.fPos) < myHero.boundingRadius then
@@ -171,19 +169,19 @@ class "SWalk" -- {
     end
   end
 
-  function SWalk:DoOrb()
+  function NebelwolfisAutoCarry:DoOrb()
     return self.Config.k.Combo or (IsKeyDown(1) and self.Config.k.Mouse == 2) or self.Config.k.Harass or self.Config.k.LastHit or self.Config.k.LaneClear
   end
 
-  function SWalk:DoAA()
+  function NebelwolfisAutoCarry:DoAA()
     return self.doAA and ((self.Config.k.Combo or (IsKeyDown(1) and self.Config.k.Mouse == 2)) and self.Config.m.Combo.Attack) or (self.Config.k.Harass and self.Config.m.Harass.Attack) or (self.Config.k.LastHit and self.Config.m.LastHit.Attack) or (self.Config.k.LaneClear and self.Config.m.LaneClear.Attack)
   end
 
-  function SWalk:DoMove()
+  function NebelwolfisAutoCarry:DoMove()
     return self.doMove and ((self.Config.k.Combo or (IsKeyDown(1) and self.Config.k.Mouse == 2)) and self.Config.m.Combo.Move) or (self.Config.k.Harass and self.Config.m.Harass.Move) or (self.Config.k.LastHit and self.Config.m.LastHit.Move) or (self.Config.k.LaneClear and self.Config.m.LaneClear.Move)
   end
 
-  function SWalk:Orb(unit)
+  function NebelwolfisAutoCarry:Orb(unit)
     if self:TimeToAttack() and unit then
       self:Attack(unit)
     elseif self:TimeToMove() then
@@ -199,15 +197,15 @@ class "SWalk" -- {
     end
   end
 
-  function SWalk:TimeToAttack()
+  function NebelwolfisAutoCarry:TimeToAttack()
     return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.animation and self:DoAA()
   end
 
-  function SWalk:TimeToMove()
+  function NebelwolfisAutoCarry:TimeToMove()
     return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.windUp + self.Config.t.cadj and self:DoMove()
   end
 
-  function SWalk:Draw()
+  function NebelwolfisAutoCarry:Draw()
     if (self.orbTable.windUp == 13.37 or self.orbTable.animation == 13.37) and self.Config.s.WindUpNoticeStart then
       DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/6, ARGB(255,255,255,255))
     end
@@ -261,7 +259,7 @@ class "SWalk" -- {
     end
   end
 
-  function SWalk:ProcessSpell(unit, spell)
+  function NebelwolfisAutoCarry:ProcessSpell(unit, spell)
     if unit and spell and spell.name then
       if unit.isMe then
         if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
@@ -284,7 +282,7 @@ class "SWalk" -- {
     end
   end
 
-  function SWalk:WindUp(unit)
+  function NebelwolfisAutoCarry:WindUp(unit)
     local Items = {
       ["ItemSwordOfFeastAndFamine"]   = { id = 3153, config = "BRK", range = 450, target = true},
       ["BilgewaterCutlass"]           = { id = 3144, config = "BWC", range = 450, target = true},
@@ -317,7 +315,7 @@ class "SWalk" -- {
     end
   end
 
-  function SWalk:AcquireTarget()
+  function NebelwolfisAutoCarry:AcquireTarget()
     local Target = nil
     self.ts:update()
     self.ts.range = self.melee and self.myRange*2 or self.myRange
@@ -404,12 +402,12 @@ class "SWalk" -- {
     return Target
   end
 
-  function SWalk:Attack(unit)
+  function NebelwolfisAutoCarry:Attack(unit)
     if _G.Evade or _G.Evading or _G.evade or _G.evading or not self:DoAA() or not ValidTarget(unit) then return end
     myHero:Attack(unit)
   end
 
-  function SWalk:Move(pos)
+  function NebelwolfisAutoCarry:Move(pos)
     if _G.Evade or _G.Evading or _G.evade or _G.evading or not self:DoMove() or not pos then return end
     if self.Config.s.OverHeroStopMove then
       local movePos = myHero + (Vector(pos) - myHero):normalized() * myHero.boundingRadius * 2
@@ -427,35 +425,35 @@ class "SWalk" -- {
     end
   end
 
-  function SWalk:SetAA(bool)
+  function NebelwolfisAutoCarry:SetAA(bool)
     self.doAA = bool
   end
 
-  function SWalk:SetMove(bool)
+  function NebelwolfisAutoCarry:SetMove(bool)
     self.doMove = bool
   end
 
-  function SWalk:SetOrb(bool)
+  function NebelwolfisAutoCarry:SetOrb(bool)
     self.doAA = bool
     self.doMove = bool
   end
 
-  function SWalk:SetTarget(unit)
+  function NebelwolfisAutoCarry:SetTarget(unit)
     self.Forcetarget = unit
   end
 
-  function SWalk:GetTarget()
+  function NebelwolfisAutoCarry:GetTarget()
     if not self.Target then
       self.Target = self:AcquireTarget()
     end
     return self.Target
   end
 
-  function SWalk:ForcePos(pos)
+  function NebelwolfisAutoCarry:ForcePos(pos)
     self.fPos = pos
   end
 
-  function SWalk:GetLowestPMinion(range)
+  function NebelwolfisAutoCarry:GetLowestPMinion(range)
     local minionTarget = nil
     local health, health2 = 0, 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
@@ -474,7 +472,7 @@ class "SWalk" -- {
     return minionTarget, health, health2
   end
 
-  function SWalk:GetHighestPMinion(range)
+  function NebelwolfisAutoCarry:GetHighestPMinion(range)
     local minionTarget = nil
     local health = 0
     local count = 0
@@ -492,7 +490,7 @@ class "SWalk" -- {
     return minionTarget, health, count
   end
 
-  function SWalk:GetDmg(source, target, freeze)
+  function NebelwolfisAutoCarry:GetDmg(source, target, freeze)
     if target == nil or source == nil then
       return
     end
@@ -551,7 +549,7 @@ class "SWalk" -- {
     end
     dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
     dmg = math.floor(dmg*dmgMod) * (TargetHaveBuff("summonerexhaust", source) and 0.6 or 1)
-    --print("[SWalk] "..source.charName.." will do "..dmg.." dmg on "..target.charName)
+    --print("[NebelwolfisAutoCarry] "..source.charName.." will do "..dmg.." dmg on "..target.charName)
     return dmg
   end
 
