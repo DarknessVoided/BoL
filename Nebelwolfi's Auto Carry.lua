@@ -18,6 +18,7 @@ class "NebelwolfisAutoCarry" -- {
     _G.NebelwolfisAutoCarryLoaded = true
     print("<font color=\"#6699ff\"><b>[Nebelwolfi's Auto Carry]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
     self:Update()
+    _G.NebelwolfisAutoCarry = self
     return self
   end
 
