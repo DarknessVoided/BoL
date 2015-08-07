@@ -10,12 +10,12 @@ end, 0)
 class "NebelwolfisAutoCarry" -- {
 
   function NebelwolfisAutoCarry:__init(Cfg)
+    _G.NebelwolfisAutoCarryLoaded = true
     self.altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
     self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
     if not UPLloaded then require("HPrediction") self.HP = HPrediction() else self.HP = UPL.HP end
     if not UPLloaded then require("VPrediction") self.VP = VPrediction() else self.VP = UPL.VP end
     self:Load(Cfg)
-    _G.NebelwolfisAutoCarryLoaded = true
     print("<font color=\"#6699ff\"><b>[Nebelwolfi's Auto Carry]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
     self:Update()
     _G.NebelwolfisAutoCarry = self
