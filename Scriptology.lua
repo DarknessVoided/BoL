@@ -160,6 +160,8 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
           DelayAction(LoadOrb, 1)
     elseif _G.MMA_Loaded then
           ScriptologyMsg("Found MMA")
+    elseif _G.NebelwolfisOrbWalkerInit then
+          ScriptologyMsg("Found NOW")
     else
           ScriptologyConfig:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_INFO, "")
           if FileExist(LIB_PATH .. "Big Fat Orbwalker.lua") then

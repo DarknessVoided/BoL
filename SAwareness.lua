@@ -301,8 +301,8 @@ class "SAwareness" -- {
         local s = self.Sprites[k.charName]
         s:SetScale(self.Config.sizee, self.Config.sizee)
         s:Draw(WINDOW_W-s.width*self.Config.sizee,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee,255)
-        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(255, 255, 0, 0))
-        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.health/k.maxHealth), 10*self.Config.sizee, ARGB(255, 0x62, 0x98, 0x00))
+        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(255, 0xDD, 0x26, 0x00))
+        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.health/k.maxHealth), 10*self.Config.sizee, ARGB(255, 0x61, 0x98, 0x02))
         for j = -1*self.Config.sizee, 1*self.Config.sizee do
             for l = -1*self.Config.sizee, 1*self.Config.sizee do
                 DrawText(""..math.ceil(k.health), 12*self.Config.sizee, math.floor(WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1+l), ARGB(255, 0, 0, 0))
@@ -311,7 +311,7 @@ class "SAwareness" -- {
         DrawText(""..math.ceil(k.health), 12*self.Config.sizee, WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1, ARGB(255,255,255,255))
         if k.maxMana > 0 then
           DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(155, 105, 105, 105))
-          DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.mana/k.maxMana), 10*self.Config.sizee, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x03, 0x41, 0xCB))
+          DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.mana/k.maxMana), 10*self.Config.sizee, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x11, 0x3F, 0xAA))
           for j = -1*self.Config.sizee, 1*self.Config.sizee do
               for l = -1*self.Config.sizee, 1*self.Config.sizee do
                   DrawText(""..math.ceil(k.mana), 12*self.Config.sizee, math.floor(WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4+j), math.floor(WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee-1+l), ARGB(255, 0, 0, 0))
@@ -348,8 +348,8 @@ class "SAwareness" -- {
         local s = self.Sprites[k.charName]
         s:SetScale(self.Config.sizea, self.Config.sizea)
         s:Draw(0,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea,255)
-        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(255, 255, 0, 0))
-        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.health/k.maxHealth), 10*self.Config.sizea, ARGB(255, 0x62, 0x98, 0x00))
+        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(255, 0xDD, 0x26, 0x00))
+        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.health/k.maxHealth), 10*self.Config.sizea, ARGB(255, 0x61, 0x98, 0x02))
         DrawRectangle(0+s.width*self.Config.sizea*(k.health/k.maxHealth), WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.shield/k.maxHealth), 10*self.Config.sizea, ARGB(255, 255, 255, 255))
         for j = -1*self.Config.sizea, 1*self.Config.sizea do
             for l = -1*self.Config.sizea, 1*self.Config.sizea do
@@ -359,7 +359,7 @@ class "SAwareness" -- {
         DrawText(""..math.ceil(k.health), 12*self.Config.sizea, s.width*self.Config.sizea/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1, ARGB(255,255,255,255))
         if k.maxMana > 0 then
           DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(155, 105, 105, 105))
-          DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.mana/k.maxMana), 10*self.Config.sizea, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x03, 0x41, 0xCB))
+          DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.mana/k.maxMana), 10*self.Config.sizea, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x11, 0x3F, 0xAA))
           for j = -1*self.Config.sizea, 1*self.Config.sizea do
               for l = -1*self.Config.sizea, 1*self.Config.sizea do
                   DrawText(""..math.ceil(k.mana), 12*self.Config.sizea, math.floor(s.width*self.Config.sizea/4+j), math.floor(WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea-1+l), ARGB(255, 0, 0, 0))
