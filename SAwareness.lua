@@ -161,11 +161,11 @@ class "SAwareness" -- {
       local SAwarenessServerVersion = type(tonumber(SAwarenessServerData)) == "number" and tonumber(SAwarenessServerData) or nil
       if SAwarenessServerVersion then
         if tonumber(SAwarenessVersion) < SAwarenessServerVersion then
-          if FileExist(SCRIPT_PATH..GetCurrentEnv().FILE_NAME) then
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH..GetCurrentEnv().FILE_NAME, function() end)
+          if FileExist(SCRIPT_PATH.."SAwareness.lua") then
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."SAwareness.lua", function() end)
           end
-          if FileExist(LIB_PATH..GetCurrentEnv().FILE_NAME) then
-            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness.lua?no-cache="..math.random(1, 25000), LIB_PATH..GetCurrentEnv().FILE_NAME, function() end)
+          if FileExist(LIB_PATH.."SAwareness.lua") then
+            DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/SAwareness.lua?no-cache="..math.random(1, 25000), LIB_PATH.."SAwareness.lua", function() end)
           end
           print("<font color=\"#6699ff\"><b>[Scriptology Awareness]:</b></font> <font color=\"#FFFFFF\">Updated. (v"..SAwarenessVersion.." -> v"..SAwarenessServerVersion..")</font>")
           return true
