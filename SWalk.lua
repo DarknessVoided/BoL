@@ -445,6 +445,9 @@ class "SWalk" -- {
   end
 
   function SWalk:GetTarget()
+    if not self.Target then
+      self.Target = self:AcquireTarget()
+    end
     return self.Target
   end
 
