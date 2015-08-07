@@ -3,7 +3,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 DelayAction(function()
   if not _G.NebelwolfisAutoCarryLoaded then
-    sw = NebelwolfisAutoCarry()
+    nac = NebelwolfisAutoCarry()
   end
 end, 0)
 
