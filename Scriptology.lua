@@ -161,6 +161,8 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
     elseif _G.MMA_Loaded then
           ScriptologyMsg("Found MMA")
     elseif _G.NebelwolfisOrbWalkerInit then
+          DelayAction(LoadOrb, 1)
+    elseif _G.NebelwolfisOrbWalkerLoaded then
           ScriptologyMsg("Found NOW")
     else
           ScriptologyConfig:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_INFO, "")
