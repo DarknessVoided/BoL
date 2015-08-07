@@ -1,4 +1,4 @@
-_G.SWalkVersion = 0.2
+_G.SWalkVersion = 0.3
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
 function OnLoad()
@@ -9,51 +9,14 @@ function OnLoad()
   end, 0.5)
 end
 
-class "SWalk"
+class "SWalk" -- {
 
   function SWalk:__init(Cfg)
-    self.melee = myHero.range < 450 or myHero.charName == "Rengar"
-    self.orbDisabled = false
-    self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
-    self.doAA = true
-    self.doMove = true
-    self.myRange = myHero.range+myHero.boundingRadius
-    if Cfg then
-      Cfg:addSubMenu("SWalk", "SWalk")
-      self.Config = Cfg.SWalk
-    else
-      self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
-    end
-    self.Config:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
-    self.Config:addParam("radj", "Reset AA adjustment", SCRIPT_PARAM_ONOFF, false)
-    self.Config:addParam("lhadj", "Lasthit adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
-    self.Config:addParam("rlhadj", "Reset AA adjustment", SCRIPT_PARAM_ONOFF, false)
-    self.Config:setCallback("radj", function(var) if var then self.Config.cadj = 0 self.Config.radj = false end end)
-    self.Config:setCallback("rlhadj", function(var) if var then self.Config.lhadj = 0 self.Config.rlhadj = false end end)
-    self.Config:addParam("i", "Use items", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addParam("m", "Move", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addParam("a", "Attack", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
-    AddTickCallback(function() self:OrbWalk() end)
-    AddDrawCallback(function() self:Draw() end)
-    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
-    if self.melee and myHero.charName ~= "Elise" and myHero.charName ~= "Jayce" and myHero.charName ~= "Nidalee" then 
-      self.Config:addParam("wtt", "Walk to Target", SCRIPT_PARAM_ONOFF, true) 
-    end
-    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
-    self.Config:addSubMenu("Target Selector", "ts")
-    self.Config.ts:addTS(self.ts)
-    ArrangeTSPriorities()
-    sReady = {}
-    self.Config:addSubMenu("Key Settings", "kConfig")
-    self.Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
-    self.Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-    self.Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
-    self.Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     self.altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
     self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
-    if not UPLloaded then require("HPrediction") HP = HPrediction() else HP = UPL.HP end
-    if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
+    if not UPLloaded then require("HPrediction") self.HP = HPrediction() else self.HP = UPL.HP end
+    if not UPLloaded then require("VPrediction") self.VP = VPrediction() else self.VP = UPL.VP end
+    self:Load(Cfg)
     _G.SWalkLoaded = true
     print("<font color=\"#6699ff\"><b>[Scriptology Walker]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
     self:Update()
@@ -82,91 +45,390 @@ class "SWalk"
     return false
   end
 
-  function SWalk:Draw()
-    if self.orbTable.windUp == 13.37 or self.orbTable.animation == 13.37 then
-      DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/8, ARGB(255,255,255,255))
-    end
-    if not self.Config.d then return end
-    DrawCircle3D(myHero.x, myHero.y, myHero.z, myHero.range+myHero.boundingRadius, 1, ARGB(105,0,255,0), 32)
+  function SWalk:Load(Cfg)
+    self:LoadVars(Cfg)
+    self:LoadMenu()
+    self:LoadCallbacks()
   end
 
-  function SWalk:OrbWalk()
-    self.ts.range = self.myRange
-    self.ts:update()
+  function SWalk:LoadVars(Cfg)
+    self.melee = myHero.range < 450 or myHero.charName == "Rengar"
+    self.orbDisabled = false
+    self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
+    self.doAA = true
+    self.doMove = true
+    self.myRange = myHero.range+myHero.boundingRadius*2
+    self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
+    self.Target = nil
+    ArrangeTSPriorities()
+    if Cfg then
+      Cfg:addSubMenu("SWalk", "SWalk")
+      self.Config = Cfg.SWalk
+    else
+      self.Config = scriptConfig("SWalk", "SW"..myHero.charName)
+    end    
+  end
+
+  function SWalk:LoadMenu()
+    self.Config:addSubMenu("Modes", "m")
+      self.Config.m:addSubMenu("Carry Mode", "Combo")
+        self.Config.m.Combo:addParam("Attack", "Attack", SCRIPT_PARAM_ONOFF, true)
+        self.Config.m.Combo:addParam("Move", "Move", SCRIPT_PARAM_ONOFF, true)
+      self.Config.m:addSubMenu("Harass Mode", "Harass")
+        self.Config.m.Harass:addParam("Priority", "Priority", SCRIPT_PARAM_LIST, 1, {"LastHit", "Harass"})
+        self.Config.m.Harass:addParam("Attack", "Attack", SCRIPT_PARAM_ONOFF, true)
+        self.Config.m.Harass:addParam("Move", "Move", SCRIPT_PARAM_ONOFF, true)
+      self.Config.m:addSubMenu("LastHit Mode", "LastHit")
+        self.Config.m.LastHit:addParam("AttackE", "Attack Enemy on Lasthit (Anti-Farm)", SCRIPT_PARAM_ONOFF, true)
+        self.Config.m.LastHit:addParam("Attack", "Attack", SCRIPT_PARAM_ONOFF, true)
+        self.Config.m.LastHit:addParam("Move", "Move", SCRIPT_PARAM_ONOFF, true)
+      self.Config.m:addSubMenu("LaneClear Mode", "LaneClear")
+        --self.Config.m.LaneClear:addParam("AttackW", "Attack Wards", SCRIPT_PARAM_ONOFF, true) -- soon
+        self.Config.m.LaneClear:addParam("Attack", "Attack", SCRIPT_PARAM_ONOFF, true)
+        self.Config.m.LaneClear:addParam("Move", "Move", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addSubMenu("Hotkeys", "k")
+      self.Config.k:addParam("info", "                    Mode Hotkeys", SCRIPT_PARAM_INFO, "")
+      self.Config.k:addDynamicParam("Combo", "Carry Mode", SCRIPT_PARAM_ONKEYDOWN, false, string.byte(" "))
+      self.Config.k:addDynamicParam("Harass", "Harass Mode", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+      self.Config.k:addDynamicParam("LastHit", "LastHit Mode", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+      self.Config.k:addDynamicParam("LaneClear", "LaneClear Mode", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+      self.Config.k:addParam("info", "", SCRIPT_PARAM_INFO, "")
+      self.Config.k:addParam("info", "                    Other Hotkeys", SCRIPT_PARAM_INFO, "")
+      self.Config.k:addParam("Mouse", "Left-Click Action", SCRIPT_PARAM_LIST, 1, {"None", "Carry Mode", "Target Lock"})
+      self.Config.k:addParam("TargetLock", "Target Lock", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+      self.Config.k:addParam("LaneFreeze", "Lane Freeze (F1)", SCRIPT_PARAM_ONKEYTOGGLE, false, 112)
+    self.Config:addSubMenu("Settings", "s")
+      self.Config.s:addParam("Buildings", "Attack Selected Buildings", SCRIPT_PARAM_ONOFF, true)
+      self.Config.s:addParam("WindUpNoticeStart", "Show AA notice on GameStart", SCRIPT_PARAM_ONOFF, true)
+      self.Config.s:addParam("OverHeroStopMove", "Mouse over Hero to stop move", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addSubMenu("Target Selector", "ts")
+      self.Config.ts:addTS(self.ts)
+    self.Config:addSubMenu("Items", "i")
+      self.Config.i:addSubMenu("Carry Mode", "Combo")
+        self.Config.i.Combo:addParam("BRK", "Blade of the Ruined King", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("BWC", "Bilgewater Cutlass", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("HXG", "Hextech Gunblade", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("HYDRA", "Ravenous Hydra", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("TIAMAT", "Tiamat", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("ENT", "Entropy", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("YGB", "Yomuu's Ghostblade", SCRIPT_PARAM_ONOFF, true)
+      self.Config.i:addSubMenu("Harass Mode", "Harass")
+        self.Config.i.Harass:addParam("BRK", "Blade of the Ruined King", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("BWC", "Bilgewater Cutlass", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("HXG", "Hextech Gunblade", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("HYDRA", "Ravenous Hydra", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("TIAMAT", "Tiamat", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("ENT", "Entropy", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("YGB", "Yomuu's Ghostblade", SCRIPT_PARAM_ONOFF, true)
+      self.Config.i:addSubMenu("Farm Modes", "Farm")
+        self.Config.i.Farm:addParam("BRK", "Blade of the Ruined King", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("BWC", "Bilgewater Cutlass", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("HXG", "Hextech Gunblade", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("HYDRA", "Ravenous Hydra", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("TIAMAT", "Tiamat", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("ENT", "Entropy", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("YGB", "Yomuu's Ghostblade", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("info", "", SCRIPT_PARAM_INFO, "")
+        self.Config.i.Farm:addParam("tialast", "Use Tiamat/Hydra to Lasthit", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addSubMenu("Farm Settings", "f")
+      self.Config.f:addSubMenu("Masteries", "m")
+        self.Config.f.m:addParam("Butcher", "Butcher", SCRIPT_PARAM_ONOFF, false)
+        self.Config.f.m:addParam("ArcaneBlade", "Arcane Blade", SCRIPT_PARAM_ONOFF, false)
+        self.Config.f.m:addParam("Havoc", "Havoc", SCRIPT_PARAM_ONOFF, false)
+        self.Config.f.m:addParam("DESword", "Double-Edged Sword", SCRIPT_PARAM_ONOFF, false)
+        self.Config.f.m:addParam("Executioner", "Executioner", SCRIPT_PARAM_SLICE, 0, 0, 3, 0)
+      self.Config.f:addParam("l", "LaneClear method", SCRIPT_PARAM_LIST, 1, {"Highest", "Stick to 1"})
+    if self.melee then
+      self.Config:addSubMenu("Melee Settings", "melee")
+        self.Config.melee:addParam("wtt", "Walk/Stick to target", SCRIPT_PARAM_ONOFF, true)
+    end
+    self.Config:addSubMenu("Draw Settings", "d")
+      self.Config.d:addSubMenu("Minion Drawing", "md")
+      self.Config.d.md:addParam("HPB", "Draw Cut HP Bars (LastHit Mode)", SCRIPT_PARAM_ONOFF, true)
+      self.Config.d.md:addParam("LHI", "Draw LastHit Indicator (LastHit Mode)", SCRIPT_PARAM_ONOFF, true)
+      self.Config.d.md:addParam("HPBa", "Always Draw Cut HP Bars", SCRIPT_PARAM_ONOFF, true)
+      self.Config.d.md:addParam("LHIa", "Always Draw LastHit Indicator", SCRIPT_PARAM_ONOFF, true)
+      self.Config.d:addParam("AAS", "Own AA Circle", SCRIPT_PARAM_ONOFF, true)
+      self.Config.d:addParam("AAE", "Enemy AA Circles", SCRIPT_PARAM_ONOFF, true)
+      self.Config.d:addParam("LFC", "Lag Free Circles", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addSubMenu("Timing Settings", "t")
+      self.Config.t:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
+      self.Config.t:addParam("lhadj", "Lasthit adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
+    self.Config:addParam("info1", "", SCRIPT_PARAM_INFO, "")
+    self.Config:addParam("info2", "Version:", SCRIPT_PARAM_INFO, "v"..SWalkVersion)
+  end
+
+  function SWalk:LoadCallbacks()
+    AddTickCallback(function() self:Tick() end)
+    AddDrawCallback(function() self:Draw() end)
+    AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
+  end
+
+  function SWalk:Tick()
+    self.Target = self:AcquireTarget()
+    self.myRange = myHero.range+myHero.boundingRadius+(self.Target and self.Target.boundingRadius or myHero.boundingRadius)
     if self.fPos and GetDistance(self.fPos) < myHero.boundingRadius then
       self.fPos = nil
     end
-    local Target = nil
-    if self.ts.target then 
-      Target = self.ts.target 
-    end
-    self.myRange = myHero.range+myHero.boundingRadius+(Target and Target.boundingRadius or 0)
-    if self.Config.kConfig.LastHit then
-      self.Target, health = self:GetLowestPMinion(self.myRange)
-      dmg = GetDmg("AD", myHero, self.Target)
-      if self.Target and dmg and health > dmg then
-        self.Target = nil
-      end
-      if health < 0 then self.Target = nil end
-    end
-    if self.Config.kConfig.LaneClear then
-      self.Target, health = self:GetLowestPMinion(self.myRange)
-      if not self.Target then
-        self.Target = GetJMinion(self.myRange)
-      else
-        dmg = GetDmg("AD",myHero,self.Target)
-        if dmg and health-dmg > 0 then
-          mtarget, health = self:GetHighestPMinion(self.myRange)
-          if mtarget == self.Target and health ~= mtarget.health and #minionManager(MINION_ENEMY, self.myRange, myHero, MINION_SORT_HEALTH_ASC).objects > 1 then
-            self.Target = nil
-          else
-            self.Target = mtarget
-          end
-        end
-        if health < 0 then self.Target = nil end
-      end
-    end 
-    if self.Config.kConfig.Harrass then
-      self.Target = Target
-    end
-    if self.Config.kConfig.Combo then
-      self.Target = Target
-    end
-    local t = GetTarget()
-    if t and ValidTarget(t, self.myRange) and (self.Config.kConfig.LaneClear or self.Config.kConfig.Combo) then
-      self.Target = t
-    end
-    if self.Forcetarget and ValidTarget(self.Forcetarget, self.myRange) then
-      self.Target = self.Forcetarget
-    end
     if self:DoOrb() then
-      self:Orb(self.Target) 
-    end
-  end
-
-  function SWalk:Orb(unit)
-    if _G.Evade or _G.Evading or _G.evade or _G.evading or self.orbDisabled then return end
-    local valid = ValidTarget(unit, self.myRange)
-    if self.Config.a and os.clock() > self.orbTable.lastAA + self.orbTable.animation and valid and self.doAA then
-      myHero:Attack(unit)
-    elseif self.Config.m and self.doMove and GetDistance(mousePos) > myHero.boundingRadius and (self.Config.pc and os.clock() > self.orbTable.lastAA or os.clock() > self.orbTable.lastAA + self.orbTable.windUp) then
-      local movePos = myHero + (Vector(self.fPos or mousePos) - myHero):normalized() * 250
-      if self:DoOrb() and ValidTarget(unit, self.myRange) and unit.type == myHero.type and self.melee and self.Config.wtt then
-        if GetDistance(unit) > myHero.boundingRadius + unit.boundingRadius then
-          myHero:MoveTo(unit.x, unit.z)
-        end
-      elseif self:DoOrb() and GetDistance(mousePos) > myHero.boundingRadius then
-        myHero:MoveTo(movePos.x, movePos.z)
-      end
+      self:Orb(self.Target)
     end
   end
 
   function SWalk:DoOrb()
-    for _=0,3 do
-      sReady[_] = myHero:CanUseSpell(_) == READY
+    return self.Config.k.Combo or (IsKeyDown(1) and self.Config.k.Mouse == 2) or self.Config.k.Harass or self.Config.k.LastHit or self.Config.k.LaneClear
+  end
+
+  function SWalk:DoAA()
+    return self.doAA and ((self.Config.k.Combo or (IsKeyDown(1) and self.Config.k.Mouse == 2)) and self.Config.m.Combo.Attack) or (self.Config.k.Harass and self.Config.m.Harass.Attack) or (self.Config.k.LastHit and self.Config.m.LastHit.Attack) or (self.Config.k.LaneClear and self.Config.m.LaneClear.Attack)
+  end
+
+  function SWalk:DoMove()
+    return self.doMove and ((self.Config.k.Combo or (IsKeyDown(1) and self.Config.k.Mouse == 2)) and self.Config.m.Combo.Move) or (self.Config.k.Harass and self.Config.m.Harass.Move) or (self.Config.k.LastHit and self.Config.m.LastHit.Move) or (self.Config.k.LaneClear and self.Config.m.LaneClear.Move)
+  end
+
+  function SWalk:Orb(unit)
+    if self:TimeToAttack() and unit then
+      self:Attack(unit)
+    elseif self:TimeToMove() then
+      local pos = nil
+      if self.melee and self.Config.melee.wtt and unit and unit.type == myHero.type then
+        if GetDistance(unit) > GetDistance(myHero.minBBox) + GetDistance(unit.minBBox) then
+          pos = unit.pos
+        end
+      else
+        pos = mousePos
+      end
+      self:Move(self.fPos or pos)
     end
-    self.IState = self.Config.kConfig.Combo or self.Config.kConfig.Harrass
-    return self.Config.kConfig.Combo or self.Config.kConfig.Harrass or self.Config.kConfig.LastHit or self.Config.kConfig.LaneClear
+  end
+
+  function SWalk:TimeToAttack()
+    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.animation and self:DoAA()
+  end
+
+  function SWalk:TimeToMove()
+    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.windUp + self.Config.t.cadj and self:DoMove()
+  end
+
+  function SWalk:Draw()
+    if (self.orbTable.windUp == 13.37 or self.orbTable.animation == 13.37) and self.Config.s.WindUpNoticeStart then
+      DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/6, ARGB(255,255,255,255))
+    end
+    if self.Config.d.AAS then
+      SCircle(myHero, myHero.range+GetDistance(myHero.minBBox), self.Config.d.LFC):Draw(0x7F00FF00)
+    end
+    if self.Config.d.AAE then
+      for _, enemy in pairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy, self.myRange*2) then
+          SCircle(enemy, enemy.range+GetDistance(enemy,enemy.minBBox), self.Config.d.LFC):Draw(0x7FFF0000)
+        end
+      end
+    end
+    if (self.Forcetarget or self.Locktarget) and self.Target then
+      SCircle(self.Target, self.Target.boundingRadius*2-10, self.Config.d.LFC):Draw(0xFFFF0000)
+      SCircle(self.Target, self.Target.boundingRadius*2-5, self.Config.d.LFC):Draw(0xFFFF0000)
+      SCircle(self.Target, self.Target.boundingRadius*2, self.Config.d.LFC):Draw(0xFFFF0000)
+      local barPos = WorldToScreen(D3DXVECTOR3(self.Target.x, self.Target.y, self.Target.z))
+      DrawText("Target-Lock", 18, barPos.x - 35, barPos.y, ARGB(255, 255, 255, 255))
+    end
+    if self.Config.d.md.HPB and self.Config.k.LastHit or self.Config.d.md.HPBa then
+      for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
+        local barPos = GetUnitHPBarPos(minion)
+        local barOffset = GetUnitHPBarOffset(minion)
+        local drawPos = {x = barPos.x + barOffset.x - 32, y = barPos.y + barOffset.y - 2.5}
+        DrawRectangleOutline(drawPos.x, drawPos.y, 63, 5, 0x5f000000, 2)
+        local dmg = self:GetDmg(myHero, minion)
+        local width = 63 * dmg / minion.maxHealth
+        local loss = 63 * (minion.maxHealth - minion.health) / minion.maxHealth
+        for _ = 0, 63 - loss - width, width do
+          DrawRectangleOutline(drawPos.x + _, drawPos.y, width, 5, 0x5f000000, 1)
+        end
+      end
+    end
+    if self.Config.d.md.LHI and self.Config.k.LastHit or self.Config.d.md.LHIa then
+      for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
+        local hp = self.HP:PredictHealth(minion, (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+        local hp2 = self.HP:PredictHealth(minion, 2 * (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+        local barPos = GetUnitHPBarPos(minion)
+        local barOffset = GetUnitHPBarOffset(minion)
+        local drawPos = {x = barPos.x + barOffset.x - 62, y = barPos.y + barOffset.y - 15}
+        dmg = self:GetDmg(myHero, minion)
+        if dmg and (hp <= dmg or minion.health <= dmg) then
+          DrawText(">>", 30, drawPos.x, drawPos.y, 0xFF00FF00)
+          DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFF00FF00)
+        elseif dmg and (hp2 <= dmg or minion.health <= dmg*2) then
+          DrawText(">>", 30, drawPos.x, drawPos.y, 0xFFFFFFFF)
+          DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFFFFFFFF)
+        end
+      end
+    end
+  end
+
+  function SWalk:ProcessSpell(unit, spell)
+    if unit and spell and spell.name then
+      if unit.isMe then
+        if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
+          local windUp = spell.windUpTime
+          self.orbTable.windUp = windUp
+          self.orbTable.animation = spell.animationTime
+          self.orbTable.lastAA = os.clock() + GetLatency() / 2000
+          DelayAction(function() 
+            self:WindUp(self.Target) 
+          end, windUp)
+        end
+        if self.resetAttacks[spell.name:lower()] then
+          self.orbTable.lastAA = os.clock() - GetLatency() / 2000 - self.orbTable.animation
+        end
+      elseif unit.team ~= myHero.team and unit.type == myHero.type then
+        if ValidTarget(unit, self.myRange) and self:TimeToAttack() and (spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()]) and spell.target.type ~= myHero.type and self.Config.m.LastHit.AttackE and self.Config.k.LastHit and spell.target.health <= self:GetDmg(unit, spell.target) then
+          myHero:Attack(unit)
+        end
+      end
+    end
+  end
+
+  function SWalk:WindUp(unit)
+    local Items = {
+      ["ItemSwordOfFeastAndFamine"]   = { id = 3153, config = "BRK", range = 450, target = true},
+      ["BilgewaterCutlass"]           = { id = 3144, config = "BWC", range = 450, target = true},
+      ["HextechGunblade"]             = { id = 3146, config = "HXG", range = 700, target = true},
+      ["OdinEntropicClaymore"]        = { id = 3184, config = "ENT", range = 350, target = false},
+      ["ItemTiamatCleave"]            = { id = 3074, config = "HYDRA", range = 350, target = false},
+      ["ItemTiamatCleave"]            = { id = 3077, config = "TIAMAT", range = 350, target = false},
+      ["YoumusBlade"]                 = { id = 3142, config = "YGB", range = 600, target = false},
+    }
+    local Config = self.Config.k.Combo and self.Config.i.Combo or self.Config.k.Harass and self.Config.i.Harass or self.Config.k.LastHit and self.Config.i.LastHit or self.Config.k.LaneClear and self.Config.i.LaneClear or nil
+    if Config and ValidTarget(unit, 700) then
+      for slot = ITEM_1, ITEM_6 do
+        local item = Items[myHero:GetSpellData(slot).name]
+        if item then
+          if Config[item.config] and GetDistance(unit) < item.range and myHero:CanUseSpell(slot) == READY then
+            if item.target and unit.type == myHero.type then
+              CastSpell(slot, unit)
+            else
+              if unit.type ~= myHero.type and (item.id == 3077 or item.id == 3074) and Config.tialast then
+                if unit.health < GetDmg(myHero, unit)*0.6 then
+                  CastSpell(slot)
+                end
+              else
+                CastSpell(slot)
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  function SWalk:AcquireTarget()
+    local Target = nil
+    self.ts:update()
+    self.ts.range = self.melee and self.myRange*2 or self.myRange
+    Target = self.ts.target
+    if self.Config.k.Harass then
+      target, health = self:GetLowestPMinion(self.myRange)
+      dmg = self:GetDmg(myHero, target)
+      if target and dmg and health <= dmg and (self.Config.Priority == 1 or not Target) then
+        Target = target
+      end
+    elseif self.Config.k.LastHit then
+      target, health = self:GetLowestPMinion(self.myRange)
+      dmg = self:GetDmg(myHero, target, self.Config.k.LaneFreeze)
+      if target and dmg and health <= dmg then
+        Target = target
+      end
+      if health < 0 then 
+        Target = nil 
+      end
+    elseif self.Config.k.LaneClear then
+      local t = GetTarget()
+      if t and ValidTarget(t, self.myRange) and self.Config.s.Buildings and (t.type == "obj_AI_Turret" or t.type == "obj_HQ" or t.type == "obj_BarracksDampener") and t.team ~= myHero.team then
+        Target, health = self:GetLowestPMinion(self.myRange)
+        dmg = self:GetDmg(myHero, Target)
+        if Target and dmg and health > dmg then
+          Target = t
+        end
+        if health < 0 then Target = t end
+      else
+        Target = GetJMinion(self.myRange)
+        if not Target then
+          target, health, health2 = self:GetLowestPMinion(self.myRange)
+          dmg = self:GetDmg(myHero,target)
+          if dmg and health > dmg and health2 > dmg then
+            if self.Config.f.l == 1 then
+              mtarget, health, count = self:GetHighestPMinion(self.myRange)
+              if mtarget == target and health ~= mtarget.health and count > 0 then
+                Target = nil
+              else
+                Target = mtarget
+              end
+            elseif self.Config.f.l == 2 then
+              if self.Target and self.Target.type == obj_AI_Minion then
+                Target = self.Target
+              else
+                if health2 and health and dmg and health2 < dmg and health > dmg then
+                  Target = nil
+                else
+                  Target = target
+                end
+              end
+            end
+          else
+            if health2 and health and dmg and health2 <= dmg and health > dmg then
+              Target = nil
+            else
+              Target = target
+            end
+          end
+        end
+      end
+    else
+      local t = GetTarget()
+      if t and ValidTarget(t, self.myRange) and self.Config.k.Combo and self.Config.s.Buildings and (t.type == "obj_AI_Turret" or t.type == "obj_HQ" or t.type == "obj_BarracksDampener") and t.team ~= myHero.team then
+        Target = t
+      end
+      if (self.Config.k.TargetLock or (IsKeyDown(1) and self.Config.k.Mouse == 3)) then
+        if ValidTarget(Target) and not self.Locktarget then
+          self.Locktarget = Target
+        elseif self.Locktarget and ValidTarget(self.Locktarget, self.myRange*1.5) then
+          Target = self.Locktarget
+        else
+          self.Locktarget = nil
+        end
+      else
+        self.Locktarget = nil
+      end
+      if self.Forcetarget and ValidTarget(self.Forcetarget, self.myRange*1.5) then
+        Target = self.Forcetarget
+      else
+        self.Forcetarget = nil
+      end
+    end
+    return Target
+  end
+
+  function SWalk:Attack(unit)
+    if _G.Evade or _G.Evading or _G.evade or _G.evading or not self:DoAA() or not ValidTarget(unit) then return end
+    myHero:Attack(unit)
+  end
+
+  function SWalk:Move(pos)
+    if _G.Evade or _G.Evading or _G.evade or _G.evading or not self:DoMove() or not pos then return end
+    if self.Config.s.OverHeroStopMove then
+      local movePos = myHero + (Vector(pos) - myHero):normalized() * myHero.boundingRadius * 2
+      if GetDistance(pos) > myHero.boundingRadius then
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    else
+      local movePos = myHero + (Vector(pos) - myHero):normalized() * 250
+      if GetDistance(pos) > myHero.boundingRadius then
+        myHero:MoveTo(movePos.x, movePos.z)
+      else
+        local movePos = myHero + (Vector(pos) - myHero):normalized() * 250
+        myHero:MoveTo(movePos.x, movePos.z)
+      end
+    end
   end
 
   function SWalk:SetAA(bool)
@@ -186,31 +448,40 @@ class "SWalk"
     self.Forcetarget = unit
   end
 
+  function SWalk:GetTarget()
+    return self.Target
+  end
+
   function SWalk:ForcePos(pos)
     self.fPos = pos
   end
 
   function SWalk:GetLowestPMinion(range)
     local minionTarget = nil
-    local health = 0
+    local health, health2 = 0, 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.lhadj/100 - 0.07)
+      local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+      local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
       if minionTarget == nil and hp > 0 then 
         minionTarget = minion
         health = hp
+        health2 = hp2
       elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
         minionTarget = minion
         health = hp
+        health2 = hp2
       end
     end
-    return minionTarget, health
+    return minionTarget, health, health2
   end
 
   function SWalk:GetHighestPMinion(range)
     local minionTarget = nil
     local health = 0
+    local count = 0
     for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = HP:PredictHealth(minion,  GetDistance(myHero, minion) / (VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.lhadj/100 - 0.07)
+      count = count + 1
+      local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
       if minionTarget == nil then 
         minionTarget = minion
         health = hp
@@ -219,62 +490,107 @@ class "SWalk"
         health = hp
       end
     end
-    return minionTarget, health
+    return minionTarget, health, count
   end
+
+  function SWalk:GetDmg(source, target, freeze)
+    if target == nil or source == nil then
+      return
+    end
+    local ADDmg            = 0
+    local APDmg            = 0
+    local TRUEDmg          = 0
+    local AP               = source.ap
+    local Level            = source.level
+    local TotalDmg         = source.totalDamage
+    local crit             = myHero.critChance
+    local crdm             = myHero.critDmg
+    local ArmorPen         = math.floor(source.armorPen)
+    local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+    local MagicPen         = math.floor(source.magicPen)
+    local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+
+    local Armor             = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent      = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicArmor        = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+
+    ADDmg = freeze and source.damage or TotalDmg
+    if source.charName == "Ashe" then
+      ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
+    elseif source.charName == "Kalista" then
+      ADDmg = ADDmg * 0.9
+    elseif source.charName == "Teemo" then
+      APDmg = APDmg + 10*myHero:GetSpellData(_E).level+0.3*AP
+    elseif source.charName == "Orianna" then
+      APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
+    end
+    if GetMaladySlot() then
+      APDmg = 15 + 0.15*AP
+    end
+
+    dmgMod = 1
+    if source == myHero and not freeze then
+      if target.type ~= myHero.type then
+        if self.Config.f.m.Butcher then
+          TRUEDmg = TRUEDmg + 2
+        end
+      elseif self.Config.f.m.Executioner > 0 then
+        if target.health/target.maxHealth < (.2 + .15 * self.Config.f.m.Executioner) then
+          dmgMod = dmgMod + .05
+        end
+      end
+      if self.Config.f.m.ArcaneBlade then
+        APDmg = APDmg + 0.05*AP
+      end
+      if self.Config.f.m.Havoc then
+        dmgMod = dmgMod + .03
+      end
+      if self.Config.f.m.DESword then
+        dmgMod = dmgMod + (self.melee and .02 or .015)
+      end
+    end
+    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    dmg = math.floor(dmg*dmgMod) * (TargetHaveBuff("summonerexhaust", source) and 0.6 or 1)
+    --print("[SWalk] "..source.charName.." will do "..dmg.." dmg on "..target.charName)
+    return dmg
+  end
+
+-- }
+
+class 'SCircle' -- {
+
+  function SCircle:__init(x, y, z, r, LFC)
+    local pos = type(x) ~= "number" and x or nil
+    self.x = pos and pos.x or x
+    self.y = pos and pos.y or y
+    self.z = pos and pos.z or z
+    self.r = pos and y or r
+    self.LFC = pos and z or LFC
+  end
+
+  function SCircle:Draw(color)
+    if self.LFC then
+      DrawCircle3D(self.x, self.y, self.z, self.r, 1, color or 0xffffffff, 32)
+    else
+      DrawCircle(self.x, self.y, self.z, self.r, color or 0xffffffff)
+    end
+  end
+
+-- }
 
   function GetJMinion(range)
     local minionTarget = nil
     for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      if minionTarget == nil and minion.health < 100000 then 
-        minionTarget = minion
+      if minionTarget == nil then
+        if minion.health < 100000 then 
+          minionTarget = minion
+        end
       elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and minion.health < 100000 then
         minionTarget = minion
       end
     end
     return minionTarget
-  end
-
-  function SWalk:ProcessSpell(unit, spell)
-    if unit and unit.isMe and spell and spell.name then
-      if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
-        local windUp = spell.windUpTime + self.Config.cadj/1000
-        self.orbTable.windUp = windUp + 0.07
-        self.orbTable.animation = spell.animationTime
-        self.orbTable.lastAA = os.clock()
-        DelayAction(function() 
-          self:WindUp(self.Target) 
-        end, windUp - GetLatency() / 2000 + 0.07)
-      end
-      if self.resetAttacks[spell.name:lower()] then
-        self.orbTable.lastAA = 0
-      end
-    end
-  end
-
-  function SWalk:WindUp(unit)
-    if ValidTarget(unit) then
-      if self.IState and self.Config.i then 
-        if self:CastItems(unit) then
-          self.orbTable.lastAA = 0
-        end
-      end
-    end
-  end
-
-  function SWalk:CastItems(unit)
-    local i = {["ItemTiamatCleave"] = self.myRange, ["YoumusBlade"] = self.myRange}
-    local u = {["ItemSwordOfFeastAndFamine"] = 600}
-    for slot = ITEM_1, ITEM_6 do
-      if i[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= i[myHero:GetSpellData(slot).name] then
-        CastSpell(slot) 
-        return true
-      end
-      if u[myHero:GetSpellData(slot).name] and myHero:CanUseSpell(slot) == READY and GetDistance(unit) <= u[myHero:GetSpellData(slot).name] then
-        CastSpell(slot, unit) 
-        return true
-      end
-    end
-    return false
   end
 
   function ArrangeTSPriorities() -- last seen at "I don't even know who"
@@ -319,44 +635,6 @@ class "SWalk"
       set[l] = true 
     end
     return set
-  end
-
-  function GetDmg(spell, source, target)
-    if target == nil or source == nil then
-      return
-    end
-    local ADDmg            = 0
-    local APDmg            = 0
-    local TRUEDmg          = 0
-    local AP               = source.ap
-    local Level            = source.level
-    local TotalDmg         = source.totalDamage
-    local crit             = myHero.critChance
-    local crdm             = myHero.critDmg
-    local ArmorPen         = math.floor(source.armorPen)
-    local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
-    local MagicPen         = math.floor(source.magicPen)
-    local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
-
-    local Armor             = target.armor*ArmorPenPercent-ArmorPen
-    local ArmorPercent      = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
-    local MagicArmor        = target.magicArmor*MagicPenPercent-MagicPen
-    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
-
-    ADDmg = TotalDmg
-    if myHero.charName == "Ashe" then
-      ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
-    elseif myHero.charName == "Teemo" then
-      APDmg = APDmg + 10*myHero:GetSpellData(_E).level+0.3*AP
-    elseif myHero.charName == "Orianna" then
-      APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
-    end
-    if GetMaladySlot() then
-      APDmg = 15 + 0.15*AP
-    end
-
-    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
-    return math.floor(dmg) * (TargetHaveBuff("summonerexhaust", source) and 0.6 or 1)
   end
 
   function GetMaladySlot()
