@@ -7502,9 +7502,14 @@ class "Yasuo"
     _G.Target = nil
     _G.Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
     _G.JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
-    mobTick, jmobTick = 0, 0
-    AddTickCallback(function() Mobs:update() end)
-    AddTickCallback(function() JMobs:update() end)
+    mobTick = 0
+    AddTickCallback(function() 
+      if mobTick < GetTickCount() then
+        Mobs:update() 
+        JMobs:update() 
+        mobTick = GetTickCount() + 200
+      end
+    end)
     _G.sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
     AddTickCallback(function()for _=0,5 do;sReady[_]=(myHero:CanUseSpell(_)==READY)end;end)
   end
