@@ -328,6 +328,7 @@
   end
 
   function GetRealHealth(unit)
+    if not unit then return 0 end
     return math.ceil(unit.health + unit.shield)
   end
 
