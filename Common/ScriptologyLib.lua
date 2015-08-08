@@ -24,10 +24,14 @@
   end
 
   function FillUPL()
-    for k,v in pairs(data) do
-      if v.type then 
-        UPL:AddSpell(k, v)
+    if _G.UPLloaded then
+      for k,v in pairs(data) do
+        if v.type then 
+          UPL:AddSpell(k, v)
+        end
       end
+    else
+      DelayAction(FillUPL, 1)
     end
   end
 
@@ -45,7 +49,7 @@
       ScriptologyConfig.ts:addTS(targetSel)
       ArrangeTSPriorities()
     end, 0.25)
-    ScriptologyLoadedClasses[myHero.charName]:Menu()
+    loadedSPlugin:Menu()
   end
 
   function GetFarmPosition(range, width)
@@ -407,8 +411,8 @@
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
     end
-    if ScriptologyLoadedClasses[myHero.charName].Forcetarget then
-      local Forcetarget = ScriptologyLoadedClasses[myHero.charName].Forcetarget
+    if loadedSPlugin and loadedSPlugin.Forcetarget ~= nil then
+      local Forcetarget = loadedSPlugin.Forcetarget
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
@@ -497,10 +501,10 @@
         else
           local damageAA = GetDmg("AD", myHero, enemy)
           local damageQ  = GetDmg(_Q, myHero, enemy)
-          local damageW  = myHero.charName == "KogMaw" and 0 or (myHero.charName == "Azir" and ScriptologyLoadedClasses[myHero.charName]:CountSoldiers(enemy) or 1) * GetDmg(_W, myHero, enemy)
+          local damageW  = myHero.charName == "KogMaw" and 0 or (myHero.charName == "Azir" and loadedSPlugin:CountSoldiers(enemy) or 1) * GetDmg(_W, myHero, enemy)
           local damageE  = GetDmg(_E, myHero, enemy)
           local damageR  = GetDmg(_R, myHero, enemy)*(myHero.charName == "Katarina" and 10 or 1)
-          local damageRC  = (myHero.charName == "Orianna" and ScriptologyLoadedClasses[myHero.charName]:CalcRComboDmg(enemy) or 0)
+          local damageRC  = (myHero.charName == "Orianna" and loadedSPlugin:CalcRComboDmg(enemy) or 0)
           local damageI  = Ignite and (GetDmg("IGNITE", myHero, enemy)) or 0
           local damageS  = Smite and (20 + 8 * myHero.level) or 0
           local c = 0
