@@ -16,6 +16,10 @@ class "Katarina"
 
   function Katarina:Load()
     SetupMenu(true)
+    DelayAction(function()
+      LoadSWalk() 
+      RemoveOw()
+    end, 0.25)
     self.Wards = {}
     self.casted, self.jumped = false, false
     self.oldPos = nil
@@ -29,6 +33,17 @@ class "Katarina"
 
   function Katarina:Tick()
     if Config.Misc.Jump then self:WardJump() end
+  end
+
+  function Katarina:ProcessSpell(unit, spell)
+    if unit and unit.isMe and spell then
+      if string.find(spell.name, "NetherGrasp") or spell.name:lower():find("katarinar") then
+        _G.loadedOrb.orbDisabled = true
+        ultOn = GetInGameTimer()+2.5
+        ultTarget = self.Target
+        DelayAction(function() _G.loadedOrb.orbDisabled = false end, 2.5)
+      end
+    end
   end
 
   function Katarina:Menu()

@@ -12,7 +12,22 @@ class "Malzahar"
 
 	function Malzahar:Load()
 		SetupMenu()
+    DelayAction(function()
+      LoadSWalk() 
+      RemoveOw()
+    end, 0.25)
 	end
+  
+  function Malzahar:ProcessSpell(unit, spell)
+    if unit and unit.isMe and spell then
+      if string.find(spell.name, "NetherGrasp") or spell.name:lower():find("katarinar") then
+        _G.loadedOrb.orbDisabled = true
+        ultOn = GetInGameTimer()+2.5
+        ultTarget = Target
+        DelayAction(function() _G.loadedOrb.orbDisabled = false end, 2.5)
+      end
+    end
+  end
 
 	function Malzahar:Menu()
 		Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
