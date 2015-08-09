@@ -134,7 +134,7 @@ class "NebelwolfisOrbWalker" -- {
         self.Config.f.m:addParam("DESword", "Double-Edged Sword", SCRIPT_PARAM_ONOFF, false)
         self.Config.f.m:addParam("Executioner", "Executioner", SCRIPT_PARAM_SLICE, 0, 0, 3, 0)
       self.Config.f:addParam("l", "LaneClear method", SCRIPT_PARAM_LIST, 1, {"Highest", "Stick to 1"})
-    if self.melee then
+    if myHero.range < 450 or myHero.charName == "Rengar" then
       self.Config:addSubMenu("Melee Settings", "melee")
         self.Config.melee:addParam("wtt", "Walk/Stick to target", SCRIPT_PARAM_ONOFF, true)
     end
