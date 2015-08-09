@@ -7124,7 +7124,7 @@ class "Yasuo"
       local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
       if hit > BestHit then
         BestHit = hit
-        BestPos = object
+        BestPos = Vector(object)
         if BestHit == #objects then
           break
         end
