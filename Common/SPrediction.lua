@@ -35,7 +35,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.81
+_G.SPredictionVersion    = 2.82
 
 class 'SPrediction' -- {
 
@@ -217,7 +217,7 @@ class("Collision") -- {
                 local predP = self.SP:Predict(minion, self.range, self.speed, self.delay, self.width, false, startP)
                 local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
                 if OnSegment then
-                    if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius + self.width) ^ 2 then
+                    if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius * 2 + self.width) ^ 2 then
                         numCollisions = numCollisions + 1
                     end
                 end
