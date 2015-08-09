@@ -6,7 +6,7 @@ DelayAction(function()
   if not _G.NebelwolfisOrbWalkerLoaded then
     now = NebelwolfisOrbWalker()
   end
-end, 0)
+end, 0.25)
 
 class "NebelwolfisOrbWalker" -- {
 

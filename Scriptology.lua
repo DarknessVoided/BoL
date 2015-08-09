@@ -4012,7 +4012,7 @@ class "Nidalee"
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
     self.data = {
       Human  = {
-          [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 25, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 37.5, collision = true, aoe = false, type = "linear"},
           [_W] = { range = 900},
           [_E] = { range = 600}
         },
@@ -4021,7 +4021,7 @@ class "Nidalee"
           [_E] = { range = 350}}
     }
     data = {
-          [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 42.5, collision = true, aoe = false, type = "linear"},
+          [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 37.5, collision = true, aoe = false, type = "linear"},
           [_W] = { speed = math.huge, delay = 0.25, range = 900, width = 120, collision = true, aoe = false, type = "circular"},
           [_E] = { range = 0},
           [_R] = { range = 0}
