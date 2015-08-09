@@ -94,7 +94,7 @@ class 'SPrediction' -- {
                     baitLevel = baitLevel + (1/(j-i+1)) * (dirPerc <= 100 and dirPerc or 100)
                 end
             end
-            baitLevel = baitLevel < 0 and 0 or baitLevel / 3
+            baitLevel = baitLevel < 0 and 0 or baitLevel / 2
         end
         return baitLevel
     end
