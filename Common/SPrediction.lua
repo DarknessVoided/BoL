@@ -35,7 +35,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.8
+_G.SPredictionVersion    = 2.81
 
 class 'SPrediction' -- {
 
@@ -173,7 +173,7 @@ class 'SPrediction' -- {
         local rangeOffset = range+width/2-(self:UnitFacingUnit(target, source) and HitBox or 0)
         local col1, col2, Mcol, mcol, Hcol, hcol, Mcol2, mcol2, Hcol2, hcol2, Mcol3, mcol3, Hcol3, hcol3 = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
         if collision ~= math.huge then
-            minions = minionManager(MINION_ALL, range, target, MINION_SORT_HEALTH_ASC).objects
+            minions = minionManager(MINION_ENEMY, range, target, MINION_SORT_HEALTH_ASC).objects
             if #minions > 0 then
                 col1 = Collision(self, range, speed, delay, width < 100 and 100 or width+25)
                 col2 = Collision(self, range, speed, delay, width)
