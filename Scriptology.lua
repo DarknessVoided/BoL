@@ -6325,7 +6325,7 @@ class "Viktor"
       local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, Target)
       if CastPosition and HitChance >= 2 then
         if GetDistance(CastPosition) > 525 then
-          local CastPosition2 = myHero - Vector(CastPosition-myHero):normalized()*525
+          local CastPosition2 = myHero - (Vector(CastPosition)-myHero):normalized()*525
           CastSpell3(_E, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))
         else
           CastSpell3(_E, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))
