@@ -6266,6 +6266,74 @@ class "Veigar"
       end
   end
 
+class "Viktor"
+
+  function Viktor:__init()
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1000, DAMAGE_PHYSICAL, false, true)
+    data = {
+      [_Q] = { range = 666, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20*level+20+0.2*AP end},
+      [_W] = { range = 700, speed = math.huge, delay = 0.25, width = 240, collision = false, aoe = false, type = "circular" },
+      [_E] = { speed = 2000, delay = 0.25, range = 525, width = 80, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45*level+25+0.7*AP end},
+      [_R] = { range = 700, speed = math.huge, delay = 0.5, width = 240, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 50+115*level+0.65*AP end}
+    }
+  end
+
+  function Viktor:Load()
+    SetupMenu()
+    UPL:AddSpell(_E, { speed = 2000, delay = 0.25, range = 875, width = 80, collision = false, aoe = false, type = "linear"})
+  end
+
+  function Viktor:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+  end
+
+  function Viktor:Combo()
+    if Config.Combo.Q and sReady[_Q] then
+      Cast(_Q, Target)
+    end
+    if Config.Combo.E and sReady[_E] then
+      local CastPosition, HitChance, Position = UPL:Predict(_E, myHero, Target)
+      if CastPosition and HitChance >= 2 then
+        if GetDistance(CastPosition) > 525 then
+          local CastPosition2 = myHero - Vector(CastPosition-myHero):normalized()*525
+          CastSpell3(_E, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))
+        else
+          CastSpell3(_E, D3DXVECTOR3(Target.x, Target.y, Target.z), D3DXVECTOR3(CastPosition.x, CastPosition.y, CastPosition.z))
+        end
+      end
+    end
+  end
+
 class "Volibear"
 
   function Volibear:__init()
