@@ -13,7 +13,7 @@
 assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAAAdQAABBkBAAGUAAAAKQACBBkBAAGVAAAAKQICBHwCAAAQAAAAEBgAAAGNsYXNzAAQNAAAAU2NyaXB0U3RhdHVzAAQHAAAAX19pbml0AAQLAAAAU2VuZFVwZGF0ZQACAAAAAgAAAAgAAAACAAotAAAAhkBAAMaAQAAGwUAABwFBAkFBAQAdgQABRsFAAEcBwQKBgQEAXYEAAYbBQACHAUEDwcEBAJ2BAAHGwUAAxwHBAwECAgDdgQABBsJAAAcCQQRBQgIAHYIAARYBAgLdAAABnYAAAAqAAIAKQACFhgBDAMHAAgCdgAABCoCAhQqAw4aGAEQAx8BCAMfAwwHdAIAAnYAAAAqAgIeMQEQAAYEEAJ1AgAGGwEQA5QAAAJ1AAAEfAIAAFAAAAAQFAAAAaHdpZAAEDQAAAEJhc2U2NEVuY29kZQAECQAAAHRvc3RyaW5nAAQDAAAAb3MABAcAAABnZXRlbnYABBUAAABQUk9DRVNTT1JfSURFTlRJRklFUgAECQAAAFVTRVJOQU1FAAQNAAAAQ09NUFVURVJOQU1FAAQQAAAAUFJPQ0VTU09SX0xFVkVMAAQTAAAAUFJPQ0VTU09SX1JFVklTSU9OAAQEAAAAS2V5AAQHAAAAc29ja2V0AAQIAAAAcmVxdWlyZQAECgAAAGdhbWVTdGF0ZQAABAQAAAB0Y3AABAcAAABhc3NlcnQABAsAAABTZW5kVXBkYXRlAAMAAAAAAADwPwQUAAAAQWRkQnVnc3BsYXRDYWxsYmFjawABAAAACAAAAAgAAAAAAAMFAAAABQAAAAwAQACBQAAAHUCAAR8AgAACAAAABAsAAABTZW5kVXBkYXRlAAMAAAAAAAAAQAAAAAABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAUAAAAIAAAACAAAAAgAAAAIAAAACAAAAAAAAAABAAAABQAAAHNlbGYAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAtAAAAAwAAAAMAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABgAAAAYAAAAGAAAABgAAAAUAAAADAAAAAwAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAHAAAABwAAAAcAAAAIAAAACAAAAAgAAAAIAAAAAgAAAAUAAABzZWxmAAAAAAAtAAAAAgAAAGEAAAAAAC0AAAABAAAABQAAAF9FTlYACQAAAA4AAAACAA0XAAAAhwBAAIxAQAEBgQAAQcEAAJ1AAAKHAEAAjABBAQFBAQBHgUEAgcEBAMcBQgABwgEAQAKAAIHCAQDGQkIAx4LCBQHDAgAWAQMCnUCAAYcAQACMAEMBnUAAAR8AgAANAAAABAQAAAB0Y3AABAgAAABjb25uZWN0AAQRAAAAc2NyaXB0c3RhdHVzLm5ldAADAAAAAAAAVEAEBQAAAHNlbmQABAsAAABHRVQgL3N5bmMtAAQEAAAAS2V5AAQCAAAALQAEBQAAAGh3aWQABAcAAABteUhlcm8ABAkAAABjaGFyTmFtZQAEJgAAACBIVFRQLzEuMA0KSG9zdDogc2NyaXB0c3RhdHVzLm5ldA0KDQoABAYAAABjbG9zZQAAAAAAAQAAAAAAEAAAAEBvYmZ1c2NhdGVkLmx1YQAXAAAACgAAAAoAAAAKAAAACgAAAAoAAAALAAAACwAAAAsAAAALAAAADAAAAAwAAAANAAAADQAAAA0AAAAOAAAADgAAAA4AAAAOAAAACwAAAA4AAAAOAAAADgAAAA4AAAACAAAABQAAAHNlbGYAAAAAABcAAAACAAAAYQAAAAAAFwAAAAEAAAAFAAAAX0VOVgABAAAAAQAQAAAAQG9iZnVzY2F0ZWQubHVhAAoAAAABAAAAAQAAAAEAAAACAAAACAAAAAIAAAAJAAAADgAAAAkAAAAOAAAAAAAAAAEAAAAFAAAAX0VOVgA="), nil, "bt", _ENV))() ScriptStatus("XKNMLMRLJJP") ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion       = 2.06
+_G.ScriptologyVersion       = 2.07
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyDebug         = false
 _G.ScriptologyLoaded        = false
@@ -68,51 +68,61 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
         Config:addSubMenu("Key Settings","kConfig")
     end
     if loadedSPlugin then
-      if ScriptologyDebug then
+      if loadedSPlugin.Load then
         loadedSPlugin:Load()
-      else
-        pcall(function() loadedSPlugin:Load() end)
       end
 
       if loadedSPlugin.ApplyBuff ~= nil then
         AddApplyBuffCallback(function(source, unit, buff)
-          pcall(function() loadedSPlugin:ApplyBuff(source, unit, buff) end)
+          loadedSPlugin:ApplyBuff(source, unit, buff)
         end)
       end
 
       if loadedSPlugin.UpdateBuff ~= nil then
         AddUpdateBuffCallback(function(unit, buff, stacks)
-          pcall(function() loadedSPlugin:UpdateBuff(unit, buff, stacks) end)
+          loadedSPlugin:UpdateBuff(unit, buff, stacks)
         end)
       end
 
       if loadedSPlugin.RemoveBuff ~= nil then
         AddRemoveBuffCallback(function(unit, buff)
-            pcall(function() loadedSPlugin:RemoveBuff(unit, buff) end)
+          loadedSPlugin:RemoveBuff(unit, buff)
         end)
       end
 
       if loadedSPlugin.ProcessSpell ~= nil then
         AddProcessSpellCallback(function(unit, spell)
-          pcall(function() loadedSPlugin:ProcessSpell(unit, spell) end)
+          loadedSPlugin:ProcessSpell(unit, spell)
         end)
       end
 
       if loadedSPlugin.Animation ~= nil then
         AddAnimationCallback(function(unit, ani)
-          pcall(function() loadedSPlugin:Animation(unit, ani) end)
+          loadedSPlugin:Animation(unit, ani)
         end)
       end
 
       if loadedSPlugin.CreateObj ~= nil then
         AddCreateObjCallback(function(obj)
-          pcall(function() loadedSPlugin:CreateObj(obj) end)
+          loadedSPlugin:CreateObj(obj)
         end)
       end
 
       if loadedSPlugin.DeleteObj ~= nil then
         AddDeleteObjCallback(function(obj)
-          pcall(function() loadedSPlugin:DeleteObj(obj) end)
+          loadedSPlugin:DeleteObj(obj)
+        end)
+      end
+
+      if loadedSPlugin and loadedSPlugin.WndMsg then
+        AddMsgCallback(function(msg, key)
+          loadedSPlugin:WndMsg(msg, key)
+        end)
+      end
+
+      if loadedSPlugin and loadedSPlugin.Msg then
+        AddMsgCallback(function(msg, key)
+          loadedSPlugin:Msg(msg, key)
         end)
       end
     end
@@ -143,19 +153,19 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
 
   function LoadOrb()
     if _G.AutoCarry then
-          if _G.Reborn_Initialised then
-            ScriptologyMsg("Found SAC: Reborn")
-          else
-            ScriptologyMsg("Found SAC: Revamped")
-          end
+      if _G.Reborn_Initialised then
+        ScriptologyMsg("Found SAC: Reborn")
+      else
+        ScriptologyMsg("Found SAC: Revamped")
+      end
     elseif _G.Reborn_Loaded then
-          DelayAction(LoadOrb, 1)
+      DelayAction(LoadOrb, 1)
     elseif _G.MMA_Loaded then
-          ScriptologyMsg("Found MMA")
+      ScriptologyMsg("Found MMA")
     elseif _G.NebelwolfisOrbWalkerInit then
-          DelayAction(LoadOrb, 1)
+      DelayAction(LoadOrb, 1)
     elseif _G.NebelwolfisOrbWalkerLoaded then
-          ScriptologyMsg("Found NOW")
+      ScriptologyMsg("Found NOW")
     else
       if not FileExist(LIB_PATH .. "Nebelwolfi's Orb Walker.lua") then
         DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.lua?no-cache="..math.random(1, 25000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() end)
@@ -165,7 +175,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
           ScriptologyMsg("Plugin: 'Walk' loaded")
           _G.loadedOrb = SWalk(nil, ScriptologyConfig)
           loadedAnWalker = true
-        else
+        elseif not NebelwolfisOrbWalkerInit then
           require("Nebelwolfi's Orb Walker")
           myNOW = NebelwolfisOrbWalker()
         end
@@ -195,43 +205,26 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
   end
 
   gTick=0;AddTickCallback(function()
+    if loadedSPlugin.Tick then loadedSPlugin:Tick() end
+    if loadedSPlugin.Killsteal then loadedSPlugin:Killsteal() end
     if loadedSPlugin and gTick < GetTickCount() then
-      gTick = GetTickCount() + 200
-      pcall(function() loadedSPlugin:Tick() end)
+      gTick = GetTickCount() + 100
       if targetSel then
         targetSel:update()
         _G.Target = targetSel.target
         loadedSPlugin.Target = targetSel.target
       end
-      if Config.kConfig.Combo and ValidTarget(Target) then
-        if ScriptologyConfig.SWalkl ~= nil and not loadedAnWalker then
-          LoadSWalk() 
-          RemoveOw()
-        end
-        if ScriptologyDebug then
-          loadedSPlugin:Combo()
-        else
-          pcall(function() loadedSPlugin:Combo() end)
-        end
+      if Config.kConfig.Combo and loadedSPlugin.Combo and ValidTarget(Target) then
+        loadedSPlugin:Combo()
       end
-      if Config.kConfig.Harrass and ValidTarget(Target) then
-        pcall(function() loadedSPlugin:Harrass() end)
+      if Config.kConfig.Harrass and loadedSPlugin.Harrass and ValidTarget(Target) then
+        loadedSPlugin:Harrass()
       end
-      if Config.kConfig.LaneClear then
-        pcall(function() loadedSPlugin:LaneClear() end)
+      if Config.kConfig.LaneClear and loadedSPlugin.LaneClear then
+        loadedSPlugin:LaneClear()
       end
-      if Config.kConfig.LastHit or Config.kConfig.LaneClear then
-        pcall(function() loadedSPlugin:LastHit() end)
-      end
-      pcall(function() loadedSPlugin:Killsteal() end)
-    end
-  end)
-
-  AddMsgCallback(function(msg, key)
-    if ScriptologyLoaded then
-      if loadedSPlugin then
-        pcall(function() loadedSPlugin:WndMsg(msg, key) end)
-        pcall(function() loadedSPlugin:Msg(msg, key) end)
+      if (Config.kConfig.LastHit or Config.kConfig.LaneClear) and loadedSPlugin.LastHit then
+        loadedSPlugin:LastHit()
       end
     end
   end)
@@ -239,18 +232,20 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
   dTick=0;AddDrawCallback(function()
     if ScriptologyLoaded then
       if dTick < GetTickCount() then
-        dTick = GetTickCount() + 200
+        dTick = GetTickCount() + 250
         DmgCalc()
-        pcall(function() loadedSPlugin:DmgCalc() end)
+        if loadedSPlugin.DmgCalc then
+          loadedSPlugin:DmgCalc()
+        end
       end
       Draw()
-      pcall(function() loadedSPlugin:Draw() end)
+      if loadedSPlugin.Draw then
+        loadedSPlugin:Draw()
+      end
     end
   end)
+
 -- }
-
-
----------------- Plugins ----------------
 
 class "Ahri"
 
@@ -333,19 +328,19 @@ class "Ahri"
   function Ahri:LastHit()
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       minion = GetLowestMinion(data[_Q].range)
-      if minion and minion.health < GetDmg(_Q, myHero, minion) then 
+      if minion and GetRealHealth(minion) < GetDmg(_Q, myHero, minion) then 
         Cast(_Q, minion)
       end
     end
     if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       minion = GetClosestMinion(data[_W].range)
-      if minion and minion.health < GetDmg(_W, myHero, minion) then 
+      if minion and GetRealHealth(minion) < GetDmg(_W, myHero, minion) then 
         Cast(_W)
       end
     end
     if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       minion = GetLowestMinion(data[_E].range)
-      if minion and minion.health < GetDmg(_E, myHero, minion) then 
+      if minion and GetRealHealth(minion) < GetDmg(_E, myHero, minion) then 
         Cast(_E, minion)
       end
     end
@@ -360,13 +355,13 @@ class "Ahri"
     end
     if myHero:CanUseSpell(_W) == READY and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
       minion = GetClosestMinion(data[_W].range)
-      if minion and minion.health < GetDmg(_W, myHero, minion) then 
+      if minion and GetRealHealth(minion) < GetDmg(_W, myHero, minion) then 
         Cast(_W)
       end
     end
     if myHero:CanUseSpell(_E) == READY and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
       minion = GetLowestMinion(data[_E].range)
-      if minion and minion.health < GetDmg(_E, myHero, minion) then 
+      if minion and GetRealHealth(minion) < GetDmg(_E, myHero, minion) then 
         Cast(_E, minion)
       end
     end
@@ -480,7 +475,6 @@ class "Ahri"
     end
   end
   
-
 class "Ashe"
 
   function Ashe:__init()
@@ -546,7 +540,7 @@ class "Ashe"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, data[0].range, player, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+        if QMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[0].range) then
           if self:QReady() then
             Cast(_Q) 
             myHero:Attack(minion)
@@ -557,7 +551,7 @@ class "Ashe"
     if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
         local WMinionDmg = GetDmg(_W, myHero, minion)
-        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range+data[1].width) then
+        if WMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[1].range+data[1].width) then
           Cast(_W, minion)
         end
       end    
@@ -575,7 +569,7 @@ class "Ashe"
       for i, minion in pairs(minionManager(MINION_ENEMY, data[1].range, player, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.health >= minion.health and ValidTarget(minion, data[1].range) then
+        elseif GetRealHealth(minionTarget) >= GetRealHealth(minion) and ValidTarget(minion, data[1].range) then
           minionTarget = minion
         end
       end
@@ -863,13 +857,13 @@ class "SAwareness"
         s:SetScale(self.Config.sizee, self.Config.sizee)
         s:Draw(WINDOW_W-s.width*self.Config.sizee,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee,255)
         DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(255, 255, 0, 0))
-        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.health/k.maxHealth), 10*self.Config.sizee, ARGB(255, 0x62, 0x98, 0x00))
+        DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(GetRealHealth(k)/k.maxHealth), 10*self.Config.sizee, ARGB(255, 0x62, 0x98, 0x00))
         for j = -1*self.Config.sizee, 1*self.Config.sizee do
             for l = -1*self.Config.sizee, 1*self.Config.sizee do
-                DrawText(""..math.ceil(k.health), 12*self.Config.sizee, math.floor(WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1+l), ARGB(255, 0, 0, 0))
+                DrawText(""..math.ceil(GetRealHealth(k)), 12*self.Config.sizee, math.floor(WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1+l), ARGB(255, 0, 0, 0))
             end
         end
-        DrawText(""..math.ceil(k.health), 12*self.Config.sizee, WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1, ARGB(255,255,255,255))
+        DrawText(""..math.ceil(GetRealHealth(k)), 12*self.Config.sizee, WINDOW_W-s.width*self.Config.sizee+s.width*self.Config.sizee/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizee-1, ARGB(255,255,255,255))
         if k.maxMana > 0 then
           DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee, 10*self.Config.sizee, ARGB(155, 105, 105, 105))
           DrawRectangle(WINDOW_W-s.width*self.Config.sizee, WINDOW_H/4+s.height*self.Config.sizee-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizee, s.width*self.Config.sizee*(k.mana/k.maxMana), 10*self.Config.sizee, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x03, 0x41, 0xCB))
@@ -910,14 +904,14 @@ class "SAwareness"
         s:SetScale(self.Config.sizea, self.Config.sizea)
         s:Draw(0,WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea,255)
         DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(255, 255, 0, 0))
-        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.health/k.maxHealth), 10*self.Config.sizea, ARGB(255, 0x62, 0x98, 0x00))
-        DrawRectangle(0+s.width*self.Config.sizea*(k.health/k.maxHealth), WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.shield/k.maxHealth), 10*self.Config.sizea, ARGB(255, 255, 255, 255))
+        DrawRectangle(0, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(GetRealHealth(k)/k.maxHealth), 10*self.Config.sizea, ARGB(255, 0x62, 0x98, 0x00))
+        DrawRectangle(0+s.width*self.Config.sizea*(GetRealHealth(k)/k.maxHealth), WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.shield/k.maxHealth), 10*self.Config.sizea, ARGB(255, 255, 255, 255))
         for j = -1*self.Config.sizea, 1*self.Config.sizea do
             for l = -1*self.Config.sizea, 1*self.Config.sizea do
-                DrawText(""..math.ceil(k.health), 12*self.Config.sizea, math.floor(s.width*self.Config.sizea/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1+l), ARGB(255, 0, 0, 0))
+                DrawText(""..math.ceil(GetRealHealth(k)), 12*self.Config.sizea, math.floor(s.width*self.Config.sizea/4+j), math.floor(WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1+l), ARGB(255, 0, 0, 0))
             end
         end
-        DrawText(""..math.ceil(k.health), 12*self.Config.sizea, s.width*self.Config.sizea/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1, ARGB(255,255,255,255))
+        DrawText(""..math.ceil(GetRealHealth(k)), 12*self.Config.sizea, s.width*self.Config.sizea/4, WINDOW_H/4+s.height*scale*i+15*i*self.Config.sizea-1, ARGB(255,255,255,255))
         if k.maxMana > 0 then
           DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea, 10*self.Config.sizea, ARGB(155, 105, 105, 105))
           DrawRectangle(0, WINDOW_H/4+s.height*self.Config.sizea-10*self.Config.sizea+s.height*scale*i+15*i*self.Config.sizea, s.width*self.Config.sizea*(k.mana/k.maxMana), 10*self.Config.sizea, (k.charName == "Rumble" and k.mana >= 50 and k.mana < 100) and ARGB(255, 0xEA, 0x72, 0x0C) or (k.charName == "Aatrox" or k.charName == "Shyvana" or k.charName == "Tryndamere" or (k.charName == "Rengar" and k.mana == 5) or (k.charName == "Rumble" and k.mana == 100)) and ARGB(255, 0xDD, 0x25, 0x00) or (k.charName == "Yasuo" or k.charName == "Mordekaiser" or (k.charName == "Rengar" and k.mana < 5) or (k.charName == "Rumble" and k.mana < 50)) and ARGB(255, 255, 255, 255) or k.maxMana == 200 and ARGB(255, 0xE5, 0xBB, 0x05) or ARGB(255, 0x03, 0x41, 0xCB))
@@ -1139,7 +1133,7 @@ class "Azir"
     if self.Target and self.Target.type ~= myHero.type and self:CountSoldiers() < 1 and sReady[_W] and ((Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_W, self.Target.pos)
     end
-    if ((Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) and self.Target and self:CountSoldiers() > 0 and GetDmg(_Q, myHero, self.Target)*self:CountSoldiers() > self.Target.health then
+    if ((Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) and self.Target and self:CountSoldiers() > 0 and GetDmg(_Q, myHero, self.Target)*self:CountSoldiers() > GetRealHealth(self.Target) then
       Cast(_Q, self.Target.pos)
     end
   end
@@ -1171,7 +1165,7 @@ class "Azir"
         Cast(_Q, self.Target)
       end
     end
-    if self.Target and Config.Combo.E and self.Target.health < GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
+    if self.Target and Config.Combo.E and GetRealHealth(self.Target) < GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
       for _,k in pairs(self:GetSoldiers()) do
         local x, y, z = VectorPointProjectionOnLineSegment(myHero, k, self.Target)
         if x and y and z then
@@ -1179,7 +1173,7 @@ class "Azir"
         end
       end
     end
-    if self.Target and Config.Combo.R and self.Target.health < GetDmg(_R,myHero,self.Target)+GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
+    if self.Target and Config.Combo.R and GetRealHealth(self.Target) < GetDmg(_R,myHero,self.Target)+GetDmg(_E,myHero,self.Target)+self:CountSoldiers()*GetDmg(_W,myHero,self.Target)+GetDmg(_Q,myHero,self.Target) then
       Cast(_R,self.Target,2)
     end
   end
@@ -1259,8 +1253,6 @@ class "Azir"
       end
     end
   end
-
-
 
 class "Blitzcrank"
 
@@ -1423,8 +1415,6 @@ class "Blitzcrank"
     end
   end
 
-
-
 class "Cassiopeia"
 
   function Cassiopeia:__init()
@@ -1485,13 +1475,13 @@ class "Cassiopeia"
     if Config.LastHit.E and not Config.kConfig.Combo and not Config.kConfig.Harrass then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
-        if EMinionDmg >= minion.health and UnitHaveBuff(minion, "poison") and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= GetRealHealth(minion) and UnitHaveBuff(minion, "poison") and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end      
       end   
       for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
-        if EMinionDmg >= minion.health and UnitHaveBuff(minion, "poison") and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= GetRealHealth(minion) and UnitHaveBuff(minion, "poison") and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end      
       end    
@@ -1503,13 +1493,13 @@ class "Cassiopeia"
     if Config.LastHit.E then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end      
       end   
       for i, minion in pairs(minionManager(MINION_JUNGLE, 825, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local EMinionDmg = GetDmg(_E, myHero, minion)  
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end      
       end    
@@ -1526,14 +1516,14 @@ class "Cassiopeia"
         for minion,winion in pairs(Mobs.objects) do
           if minionTarget == nil then 
             minionTarget = winion
-          elseif minionTarget.health < winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+          elseif GetRealHealth(minionTarget) < GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
             minionTarget = winion
           end
         end
         for minion,winion in pairs(JMobs.objects) do
           if minionTarget == nil then 
             minionTarget = winion
-          elseif minionTarget.health < winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+          elseif GetRealHealth(minionTarget) < GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
             minionTarget = winion
           end
         end
@@ -1670,9 +1660,9 @@ class "Darius"
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg1 = self:GetDmg("Q1", myHero, winion)
         local MinionDmg2 = self:GetDmg("Q", myHero, winion)
-        if MinionDmg1 and MinionDmg1 >= winion.health+winion.shield and ValidTarget(winion, 450) then
+        if MinionDmg1 and MinionDmg1 >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, 450) then
           CastQ(winion)
-        elseif MinionDmg2 and MinionDmg2 >= winion.health+winion.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
+        elseif MinionDmg2 and MinionDmg2 >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
           Cast(_Q)
         end
       end
@@ -1680,7 +1670,7 @@ class "Darius"
     if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = self:GetDmg("W", myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, myHero.range+myHero.boundingRadius) then
           CastSpell(_W, myHero:Attack(winion))
         end
       end
@@ -1699,7 +1689,7 @@ class "Darius"
       for i, minion in pairs(minionManager(MINION_ENEMY, 250, myHero, MINION_SORT_HEALTH_ASC).objects) do
         if minionTarget == nil then 
           minionTarget = minion
-        elseif minionTarget.health+minionTarget.shield >= minion.health+minion.shield and ValidTarget(minion, 250) then
+        elseif GetRealHealth(minionTarget)+minionTarget.shield >= GetRealHealth(minion)+minion.shield and ValidTarget(minion, 250) then
           minionTarget = minion
         end
       end
@@ -1948,7 +1938,7 @@ class "Diana"
     if sReady[_Q] and Config.Harrass.Q and Config.LastHit.manaQ < myHero.mana/myHero.maxMana*100 then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion, 1)
         end
       end
@@ -2137,7 +2127,7 @@ class "Ekko"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local QMinionDmg = GetDmg(_Q, myHero, winion)
-        if QMinionDmg and QMinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if QMinionDmg and QMinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion, 1.2)
         end
       end
@@ -2145,7 +2135,7 @@ class "Ekko"
     if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range+myHero.range+myHero.boundingRadius) and GetDistance(winion) < data[2].range+myHero.range+myHero.boundingRadius then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[2].range+myHero.range+myHero.boundingRadius) and GetDistance(winion) < data[2].range+myHero.range+myHero.boundingRadius then
           Cast(_E, winion.pos)
         end
       end
@@ -2659,13 +2649,13 @@ class "Kalista"
       local killableCounterJ = 0
       for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
-        if winion ~= nil and EMinionDmg > winion.health+winion.shield and GetDistance(winion) < data[2].range then    
+        if winion ~= nil and winion.health > 0 and EMinionDmg-5 > GetRealHealth(winion) and GetDistance(winion) < data[2].range then    
           killableCounter = killableCounter + 1
         end
       end
       for minion,winion in pairs(JMobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
-        if winion ~= nil and EMinionDmg > winion.health+winion.shield and GetDistance(winion) < data[2].range then
+        if winion ~= nil and winion.health > 0 and EMinionDmg-5 > GetRealHealth(winion) and GetDistance(winion) < data[2].range then
           if (string.find(winion.charName, "Crab") or string.find(winion.charName, "Rift") or string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
             if not string.find(winion.charName, "Mini") then       
               killableCounterJ = killableCounterJ + 1
@@ -2702,7 +2692,7 @@ class "Kalista"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion, 1.2)
         end
       end
@@ -2724,17 +2714,16 @@ class "Kalista"
       local killableCounter = 0
       for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
-        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        if winion ~= nil and winion.health > 0 and EMinionDmg and EMinionDmg >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           killableCounter = killableCounter +1
         end   
       end   
-      if killableCounter > 0 and GetStacks(self.Target) > 0 then
+      if killableCounter > 0 and GetStacks(self.Target) > 0 and self.Target.health > 0 then
         Cast(_E)
       end
       if Config.Combo.Er and GetStacks(self.Target) >= Config.Combo.Es then
         pos, b = PredictPos(self.Target,0.25)
         pos2, b = PredictPos(myHero,0.25)
-        pos2 = pos2 or myHero
         if pos and pos2 and GetDistance(self.Target) <= data[2].range and GetDistance(pos,pos2) > data[2].range then
           Cast(_E)
         end
@@ -2751,7 +2740,7 @@ class "Kalista"
       local killableCounter = 0
       for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
-        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        if winion ~= nil and EMinionDmg and EMinionDmg >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           killableCounter = killableCounter +1
         end   
       end 
@@ -2813,7 +2802,6 @@ class "Kalista"
   function GetStacks(x)
     return stackTable[x.networkID] or 0
   end
-
 
 class "Katarina"
 
@@ -2962,14 +2950,14 @@ class "Katarina"
 
   function Katarina:LastHit()
     if ultOn >= GetInGameTimer() and ultTarget and not ultTarget.dead or not self.Target then return end
-    if Config.LastHit.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range and self.Target.health < GetDmg(_Q, myHero, self.Target) then
+    if Config.LastHit.Q and sReady[_Q] and GetDistance(self.Target) < data[0].range and GetRealHealth(self.Target) < GetDmg(_Q, myHero, self.Target) then
       Cast(_Q, self.Target)
     end
     pos, b = PredictPos(self.Target,0.25)
-    if pos and Config.LastHit.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and self.Target.health < GetDmg(_W, myHero, self.Target) then
+    if pos and Config.LastHit.W and sReady[_W] and GetDistance(pos) < data[1].range+b/2 and GetRealHealth(self.Target) < GetDmg(_W, myHero, self.Target) then
       Cast(_W)
     end
-    if Config.LastHit.E and sReady[_E] and GetDistance(self.Target) < data[2].range and self.Target.health < GetDmg(_E, myHero, self.Target) then
+    if Config.LastHit.E and sReady[_E] and GetDistance(self.Target) < data[2].range and GetRealHealth(self.Target) < GetDmg(_E, myHero, self.Target) then
       Cast(_E, self.Target)
     end
   end
@@ -3000,7 +2988,7 @@ class "Katarina"
     if Config.Combo.E and sReady[_E] and GetDistance(self.Target) < data[2].range then
       Cast(_E, self.Target)
     end
-    if Config.Combo.R and sReady[_R] and GetDistance(self.Target) < 200 and self.Target.health < GetDmg(_R, myHero, self.Target)*10 then
+    if Config.Combo.R and sReady[_R] and GetDistance(self.Target) < 200 and GetRealHealth(self.Target) < GetDmg(_R, myHero, self.Target)*10 then
       Cast(_R)
     end
   end
@@ -3076,7 +3064,6 @@ class "Katarina"
     end
   end
 
-
 class "KogMaw"
   
   function KogMaw:__init()
@@ -3134,11 +3121,11 @@ class "KogMaw"
   function KogMaw:LastHit()
     local minionTarget = GetLowestMinion(math.min(data[0].range, data[1].range()))
     if not minionTarget then return end
-    if GetDmg(_Q, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
+    if GetDmg(_Q, myHero, minionTarget) > GetRealHealth(minionTarget) and myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_Q, minionTarget, 2)
-    elseif GetDmg(_W, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
+    elseif GetDmg(_W, myHero, minionTarget) > GetRealHealth(minionTarget) and myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_W, myHero:Attack(minionTarget))
-    elseif GetDmg(_E, myHero, minionTarget) > minionTarget.health and myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
+    elseif GetDmg(_E, myHero, minionTarget) > GetRealHealth(minionTarget) and myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       Cast(_E, minionTarget, 2)
     end
   end
@@ -3493,12 +3480,12 @@ class "LeeSin"
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg1 = GetDmg(_Q, myHero, winion)
         local MinionDmg2 = self:QDmg(winion)
-        if MinionDmg1 and MinionDmg1 >= winion.health+winion.shield and ValidTarget(winion, 1100) then
+        if MinionDmg1 and MinionDmg1 >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, 1100) then
           Cast(_Q, winion, 1.5)
-        elseif MinionDmg2 and MinionDmg1 and MinionDmg1+MinionDmg2 >= winion.health+winion.shield and ValidTarget(winion, 1100) then
+        elseif MinionDmg2 and MinionDmg1 and MinionDmg1+MinionDmg2 >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, 1100) then
           Cast(_Q, winion, 1.5)
           DelayAction(Cast, 0.33, {_Q})
-        elseif MinionDmg2 and MinionDmg2 >= winion.health+winion.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
+        elseif MinionDmg2 and MinionDmg2 >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, 250) and GetDistance(winion) < 250 then
           DelayAction(Cast, 0.33, {_Q})
         end
       end
@@ -3506,7 +3493,7 @@ class "LeeSin"
     if ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and myHero:CanUseSpell(_W) == READY then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health+winion.shield and ValidTarget(winion, 300) then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion)+winion.shield and ValidTarget(winion, 300) then
           Cast(_E)
         end
       end
@@ -3523,7 +3510,7 @@ class "LeeSin"
     if Config.LaneClear.Q and myHero:CanUseSpell(_Q) == READY then
       local minion = GetJMinion(1100)
       if minion ~= nil and Config.LaneClear.Qf then
-        if self:QDmg(minion)+((Smite and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY) and math.max(20*myHero.level+370,30*myHero.level+330,40*myHero.level+240,50*myHero.level+100) or 0) > minion.health then
+        if self:QDmg(minion)+((Smite and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY) and math.max(20*myHero.level+370,30*myHero.level+330,40*myHero.level+240,50*myHero.level+100) or 0) > GetRealHealth(minion) then
           Cast(_Q, minion, 1)
           if not self:IsFirstCast(_Q) and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY then
             DelayAction(function() CastSpell(Smite, minion) end, data[0].delay)
@@ -3697,7 +3684,7 @@ class "Lux"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+        if QMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[0].range) then
           Cast(_Q, winion, 2)
         end
       end
@@ -3705,7 +3692,7 @@ class "Lux"
     if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local EMinionDmg = GetDmg(_E, myHero, minion)
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[2].range) then
           Cast(_E, winion)
         end
       end
@@ -3781,7 +3768,6 @@ class "Lux"
     end
   end
 
-
 class "Malzahar"
 
   function Malzahar:__init()
@@ -3847,7 +3833,7 @@ class "Malzahar"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local QMinionDmg = GetDmg(_Q, myHero, minion)
-        if QMinionDmg >= minion.health and ValidTarget(minion, data[0].range) then
+        if QMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[0].range) then
           Cast(_Q, minion, 1.2)
         end
       end
@@ -3855,7 +3841,7 @@ class "Malzahar"
     if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then    
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do    
         local WMinionDmg = GetDmg(_W, myHero, minion)      
-        if WMinionDmg >= minion.health and ValidTarget(minion, data[1].range) then
+        if WMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[1].range) then
           Cast(_W, minion, 1.5)
         end      
       end    
@@ -3863,7 +3849,7 @@ class "Malzahar"
     if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaE <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for i, minion in pairs(minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC).objects) do
         local EMinionDmg = GetDmg(_E, myHero, minion)
-        if EMinionDmg >= minion.health and ValidTarget(minion, data[2].range) then
+        if EMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, data[2].range) then
           Cast(_E, minion)
         end
       end
@@ -4019,7 +4005,7 @@ class "Nidalee"
     end
     if not UnitHaveBuff(myHero, "recall") and self:IsHuman() and Config.Misc.Eaa and Config.Misc.manaEa <= myHero.mana/myHero.maxMana*100 then
       for _,k in pairs(GetAllyHeroes()) do
-        if GetDistance(k) < self.data.Human[2].range and k.maxHealth-k.health < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and k.health/k.maxHealth <= Config.Misc.healthEa/100 then
+        if GetDistance(k) < self.data.Human[2].range and k.maxHealth-GetRealHealth(k) < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and GetRealHealth(k)/k.maxHealth <= Config.Misc.healthEa/100 then
           Cast(_E, k)
         end
       end
@@ -4226,7 +4212,7 @@ class "Nidalee"
     if not self:IsHuman() then
       if myHero:CanUseSpell(_Q) == READY and Config.LastHit.Q and ValidTarget(Target, data[0].range) then
         local minionTarget = GetLowestMinion(self:GetAARange())
-        if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
+        if minionTarget and GetRealHealth(minionTarget) < self:GetDmg(_Q, minionTarget) then
           Cast(_Q, myHero:Attack(minionTarget))
         end
       end
@@ -4251,7 +4237,7 @@ class "Nidalee"
     if not self:IsHuman() then
       if myHero:CanUseSpell(_Q) == READY and Config.LaneClear.Q then
         local minionTarget = GetLowestMinion(self:GetAARange())
-        if minionTarget and minionTarget.health < self:GetDmg(_Q, minionTarget) then
+        if minionTarget and GetRealHealth(minionTarget) < self:GetDmg(_Q, minionTarget) then
           Cast(_Q, myHero:Attack(minionTarget))
         end
         minionTarget = GetJMinion(self:GetAARange())
@@ -4472,7 +4458,7 @@ class "Orianna"
     if sReady[_Q] and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion, 1.2)
         end
       end
@@ -4481,10 +4467,10 @@ class "Orianna"
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmgQ = GetDmg(_Q, myHero, winion)
         local MinionDmgW = GetDmg(_W, myHero, winion)
-        if MinionDmgQ and MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
+        if MinionDmgQ and MinionDmgW >= GetRealHealth(winion) and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
           Cast(_W)
         end
-        if sReady[_Q] and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= winion.health and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
+        if sReady[_Q] and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= GetRealHealth(winion) and (self.Ball and GetDistance(winion, self.Ball) < data[1].width or GetDistance(winion) < data[1].width) then
           Cast(_Q, winion, 1.2)
           DelayAction(Cast, 0.25, {_W})
         end
@@ -4763,13 +4749,13 @@ class "Rengar"
     else
       if Config.LaneClear.W then
         local minionTarget = GetLowestMinion(data[1].range)
-        if minionTarget ~= nil and minionTarget.health < GetDmg(_W, myHero, minionTarget) then
+        if minionTarget ~= nil and GetRealHealth(minionTarget) < GetDmg(_W, myHero, minionTarget) then
           Cast(_W)
         end
       end
       if Config.LaneClear.E then
         local minionTarget = GetLowestMinion(data[2].range)
-        if minionTarget ~= nil and minionTarget.health < GetDmg(_E, myHero, minionTarget) then
+        if minionTarget ~= nil and GetRealHealth(minionTarget) < GetDmg(_E, myHero, minionTarget) then
           Cast(_E, minionTarget, 1)
         end
       end
@@ -4917,7 +4903,7 @@ class "Riven"
         end
       elseif spell.name == "RivenFeint" then
         self.EDelay = GetTickCount()
-        if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and ((Config.Combo.Rm == 4 or EnemiesAround(self.Target, 450) > 1) or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= self.Target.health) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= self.Target.health) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and ((Config.Combo.Rm == 4 or EnemiesAround(self.Target, 450) > 1) or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(self.Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
           Cast(_R) 
           DelayAction(function() 
             if self.Target and GetDistance(self.Target) < data[0].range then
@@ -5071,16 +5057,16 @@ class "Riven"
 
   function Riven:Combo()
     if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
-      if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and ((Config.Combo.Rm == 4 or EnemiesAround(self.Target, 450) > 1) or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= self.Target.health) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= self.Target.health) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+      if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and ((Config.Combo.Rm == 4 or EnemiesAround(self.Target, 450) > 1) or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(self.Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
         Cast(_E, self.Target.pos)
         DelayAction(function() Cast(_R) end, 0.075) 
       else
         Cast(_E, self.Target.pos)
       end
     end
-    if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= self.Target.health) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
-    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,self.Target) >= self.Target.health and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
-    if Config.Combo.Rm > 1 and self.Target.health/self.Target.maxHealth <= 0.25 and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,self.Target)+GetDmg(_Q,myHero,self.Target)+GetDmg("AD",myHero,self.Target)+self:DmgP(self.Target,myHero.totalDamage*1.2) >= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,self.Target) >= GetRealHealth(self.Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
+    if Config.Combo.Rm > 1 and GetRealHealth(self.Target)/self.Target.maxHealth <= 0.25 and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if Config.Combo.Rm > 1 and self.QCast == 2 and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, self.Target.pos) end
     if sReady[_W] and GetDistance(self.Target) < data[1].range and Config.Combo.W then
       Cast(_W)
@@ -5201,7 +5187,7 @@ class "Rumble"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion)
         end
       end
@@ -5209,7 +5195,7 @@ class "Rumble"
     if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           Cast(_E, winion, 1.2)
         end
       end
@@ -5602,7 +5588,7 @@ class "Talon"
     if myHero:GetSpellData(_Q).currentCd == 0 and not self.Target and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           CastSpell(_Q, myHero:Attack(winion))
         end
       end
@@ -5610,7 +5596,7 @@ class "Talon"
     if myHero:GetSpellData(_Q).currentCd > 0 and not self.Target and myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_W, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
           Cast(_W, winion)
         end
       end
@@ -5635,7 +5621,7 @@ class "Talon"
     if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(self.Target, data[2].range) then
       Cast(_E, self.Target, true)
     end
-    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config.Combo.R and ValidTarget(self.Target, data[3].width) and self.Target.health < GetDmg(_Q, myHero, self.Target)+GetDmg(_W, myHero, self.Target)+GetDmg("AD", myHero, self.Target)+GetDmg(_R, myHero, self.Target) then
+    if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config.Combo.R and ValidTarget(self.Target, data[3].width) and GetRealHealth(self.Target) < GetDmg(_Q, myHero, self.Target)+GetDmg(_W, myHero, self.Target)+GetDmg("AD", myHero, self.Target)+GetDmg(_R, myHero, self.Target) then
       Cast(_R, self.Target, true)
     end
   end
@@ -5748,7 +5734,7 @@ class "Teemo"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion)
         end
       end
@@ -5759,7 +5745,7 @@ class "Teemo"
     if Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q, winion)
         end
       end
@@ -5995,11 +5981,12 @@ class "Vayne"
   function Vayne:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_PHYSICAL, false, true)
     data = {
-      [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (0.25+0.05*level)*TotalDmg+TotalDmg end},
+      [_Q] = { range = 450, dmgAD = function(AP, level, Level, TotalDmg, source, target) return (1.25+0.05*level)*TotalDmg end},
       [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(AP, level, Level, TotalDmg, source, target) return 10+10*level+((0.03+0.01*level)*target.maxHealth) end},
-      [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+35*level+0.5*TotalDmg end},
+      [_E] = { speed = 2000, delay = 0.25, range = 1000, width = 0, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 10+35*level+0.5*source.addDamage end},
       [_R] = { range = 1000}
     }
+    stackTable = {}
   end
 
   function Vayne:Load()
@@ -6008,6 +5995,17 @@ class "Vayne"
     self.cdTable = {}
     self.roll = false
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
+    if not UPLloaded and not _G.HP then 
+      require("HPrediction") 
+      self.HP = HPrediction() 
+      _G.HP = self.HP 
+    else 
+      if UPLloaded then
+        self.HP = UPL.HP 
+      elseif _G.HP then
+        self.HP = _G.HP
+      end
+    end
   end
 
   function Vayne:Menu()
@@ -6051,6 +6049,10 @@ class "Vayne"
           DelayAction(function() Cast(_Q, mousePos) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
         end
       end
+      if spell.name:lower():find("attack") and spell.target.type == myHero.type and Config.Killsteal.E and myHero:CanUseSpell(_E) == READY and GetRealHealth(spell.target) < GetDmg(_E, myHero, spell.target)+GetDmg("AD", myHero, spell.target)+(GetStacks(spell.target) == 1 and GetDmg(_W, myHero, spell.target) or 0) and ValidTarget(spell.target, data[2].range) then
+        local t = spell.target
+        DelayAction(function() Cast(_E, t) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
+      end
     end
   end
 
@@ -6093,17 +6095,39 @@ class "Vayne"
   function Vayne:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
-        if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
+        if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.Q and ValidTarget(enemy, data[0].range) then
           Cast(_Q, myHero:Attack(enemy))
-        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and self.HP:PredictHealth(enemy, (math.min(data[2].range, GetDistance(myHero, enemy)) / (2000) + 0.25)) < GetDmg(_E, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           Cast(_E, enemy)
-        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy)*2 and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
+        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy)*2+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E and ValidTarget(enemy, data[2].range) then
           self:MakeUnitHugTheWall(enemy)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
         end
       end
     end
+  end
+
+  function Vayne:ApplyBuff(unit, source, buff)
+    if unit and source and source.isMe and buff and buff.name == "vaynesilvereddebuff" then
+      stackTable[unit.networkID] = 1
+    end
+  end
+
+  function Vayne:UpdateBuff(unit, buff, stacks)
+    if unit and buff and stacks and buff.name == "vaynesilvereddebuff" then
+      stackTable[unit.networkID] = stacks
+    end
+  end
+
+  function Vayne:RemoveBuff(unit, buff)
+    if unit and buff and buff.name == "vaynesilvereddebuff" then
+      stackTable[unit.networkID] = 0
+    end
+  end
+
+  function GetStacks(x)
+    return stackTable[x.networkID] or 0
   end
 
 class "Veigar"
@@ -6389,7 +6413,7 @@ class "Volibear"
     if myHero:CanUseSpell(_Q) == READY and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           Cast(_Q)
         end
       end
@@ -6397,7 +6421,7 @@ class "Volibear"
     if myHero:CanUseSpell(_W) == READY and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_W, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
           Cast(_W, winion)
         end
       end
@@ -6405,7 +6429,7 @@ class "Volibear"
     if myHero:CanUseSpell(_E) == READY and ((Config.kConfig.LastHit and Config.LastHit.E and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_E, myHero, winion)
-        if MinionDmg and MinionDmg >= winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        if MinionDmg and MinionDmg >= GetRealHealth(winion) and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           Cast(_E)
         end
       end
@@ -6418,7 +6442,7 @@ class "Volibear"
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
           minionTarget = winion
-        elseif minionTarget.health < winion.health and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
+        elseif GetRealHealth(minionTarget) < GetRealHealth(winion) and ValidTarget(winion, data[0].range) and GetDistance(winion) < data[0].range then
           minionTarget = winion
         end
         if minionTarget ~= nil then
@@ -6431,7 +6455,7 @@ class "Volibear"
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
           minionTarget = winion
-        elseif minionTarget.health < winion.health and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
+        elseif GetRealHealth(minionTarget) < GetRealHealth(winion) and ValidTarget(winion, data[1].range) and GetDistance(winion) < data[1].range then
           minionTarget = winion
         end
         if minionTarget ~= nil then
@@ -6444,7 +6468,7 @@ class "Volibear"
       for minion,winion in pairs(Mobs.objects) do
         if minionTarget == nil then 
           minionTarget = winion
-        elseif minionTarget.health < winion.health and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
+        elseif GetRealHealth(minionTarget) < GetRealHealth(winion) and ValidTarget(winion, data[2].range) and GetDistance(winion) < data[2].range then
           minionTarget = winion
         end
         if minionTarget ~= nil then
@@ -6825,10 +6849,6 @@ class "Yasuo"
 
   function Yasuo:Load()
     SetupMenu()
-    DelayAction(function()
-      LoadSWalk() 
-      RemoveOw()
-    end, 0.25)
     self.passiveTracker = false
     self.passiveName = "yasuoq3w"
   end
@@ -6947,10 +6967,10 @@ class "Yasuo"
 
   function Yasuo:LastHit()
     local minion = GetLowestMinion(data[2].range)
-    if minion and not UnitHaveBuff(k, "YasuoDashWrapper") and minion.health < GetDmg(_E, myHero, minion) and loadedOrb.State[_E] then
+    if minion and not UnitHaveBuff(k, "YasuoDashWrapper") and GetRealHealth(minion) < GetDmg(_E, myHero, minion) and loadedOrb.State[_E] then
       Cast(_E, minion)
     end
-    if minion and not UnitHaveBuff(k, "YasuoDashWrapper") and minion.health < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and sReady[_Q] and sReady[_E] and loadedOrb.State[_Q] and loadedOrb.State[_E] then
+    if minion and not UnitHaveBuff(k, "YasuoDashWrapper") and GetRealHealth(minion) < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and sReady[_Q] and sReady[_E] and loadedOrb.State[_Q] and loadedOrb.State[_E] then
       Cast(_E, minion)
       DelayAction(function() Cast(_Q, minion) end, 0.125)
     end
@@ -7327,7 +7347,7 @@ class "Yasuo"
     local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
 
     local Armor        = target.armor*ArmorPenPercent-ArmorPen
-    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or 0--math.ceil(Armor*100/(100-Armor))/100
     local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
     local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
 
@@ -7337,25 +7357,28 @@ class "Yasuo"
     if spell == "IGNITE" then
       return 50+20*Level/2
     elseif spell == "Tiamat" then
-      ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+      ADDmg = (GetHydraSlot() and source:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
     elseif spell == "AD" then
       ADDmg = TotalDmg
-      if myHero.charName == "Ashe" then
+      if source.charName == "Ashe" then
         ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
-      elseif myHero.charName == "Teemo" then
-        APDmg = APDmg + data[_E].dmgAP(AP, myHero:GetSpellData(_E).level, Level, TotalDmg, source, target)
-      elseif myHero.charName == "Orianna" then
+      elseif source.charName == "Teemo" then
+        APDmg = APDmg + data[_E].dmgAP(AP, source:GetSpellData(_E).level, Level, TotalDmg, source, target)
+      elseif source.charName == "Orianna" then
         APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
       else
         ADDmg = ADDmg * (1 + crit)
+      end
+      if source.charName == "Vayne" and GetStacks(target) == 2 then
+        TRUEDmg = TRUEDmg + data[_W].dmgTRUE(AP, source:GetSpellData(_W).level, Level, TotalDmg, source, target)
       end
       if GetMaladySlot() then
         APDmg = 15 + 0.15*AP
       end
     elseif type(spell) == "number" then
-      if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-      if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-      if data[spell].dmgTRUE then TRUEDmg =  data[spell].dmgTRUE(AP, myHero:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      if data[spell].dmgTRUE then TRUEDmg = data[spell].dmgTRUE(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
     end
     dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
     dmgMod = (HaveBuff(source, "summonerexhaust") and 0.6 or 1) * (HaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
@@ -7363,7 +7386,7 @@ class "Yasuo"
   end
 
   function GetRealHealth(unit)
-    if not unit then return 0 end
+    if not unit then return math.huge end
     return math.ceil(unit.health + unit.shield)
   end
 
@@ -7475,10 +7498,10 @@ class "Yasuo"
         for minion,winion in pairs(Mobs.objects) do
           damageE = GetDmg(_E, myHero, winion)
           if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
-            if damageE > winion.health then
+            if damageE > GetRealHealth(winion) then
               DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
             else
-              DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
+              DrawText3D(math.floor(damageE/GetRealHealth(winion)*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
             end
           end
         end
@@ -7486,10 +7509,10 @@ class "Yasuo"
           for minion,winion in pairs(JMobs.objects) do
             damageE = GetDmg(_E, myHero, winion)
             if winion ~= nil and GetStacks(winion) > 0 and GetDistance(winion) <= 1000 and not winion.dead and winion.team ~= myHero.team then
-              if damageE > winion.health then
+              if damageE > GetRealHealth(winion) then
                 DrawText3D("E Kill", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
               else
-                DrawText3D(math.floor(damageE/winion.health*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
+                DrawText3D(math.floor(damageE/GetRealHealth(winion)*100).."%", winion.x-45, winion.y-45, winion.z+45, 20, ARGB(255,250,250,250), 0)
               end
             end
           end
@@ -7659,7 +7682,7 @@ class "Yasuo"
     for i, minion in pairs(Mobs.objects) do
       if minionTarget == nil then 
         minionTarget = minion
-      elseif minionTarget.health >= minion.health and ValidTarget(minion, range) then
+      elseif GetRealHealth(minionTarget) >= GetRealHealth(minion) and ValidTarget(minion, range) then
         minionTarget = minion
       end
     end
@@ -7682,10 +7705,10 @@ class "Yasuo"
     local minionTarget = nil
     for i, minion in pairs(JMobs.objects) do
       if minionTarget == nil and GetDistanceSqr(minion) < range * range then
-        if minion.health < 100000 then 
+        if GetRealHealth(minion) < 100000 then 
           minionTarget = minion
         end
-      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and minion.health < 100000 then
+      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and GetRealHealth(minion) < 100000 then
         minionTarget = minion
       end
     end

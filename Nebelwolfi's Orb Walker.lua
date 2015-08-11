@@ -14,7 +14,17 @@ class "NebelwolfisOrbWalker" -- {
     _G.NebelwolfisOrbWalkerLoaded = true
     self.altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
     self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
-    if not UPLloaded then require("HPrediction") self.HP = HPrediction() else self.HP = UPL.HP end
+    if not UPLloaded and not _G.HP then 
+      require("HPrediction") 
+      self.HP = HPrediction() 
+      _G.HP = self.HP 
+    else 
+      if UPLloaded then
+        self.HP = UPL.HP 
+      elseif _G.HP then
+        self.HP = _G.HP
+      end
+    end
     if not UPLloaded then require("VPrediction") self.VP = VPrediction() else self.VP = UPL.VP end
     self:Load(Cfg)
     print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">loaded.</font>") 
