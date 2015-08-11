@@ -165,12 +165,12 @@ class "NebelwolfisOrbWalker" -- {
   end
 
   function NebelwolfisOrbWalker:Tick()
-    self.Target = self:AcquireTarget()
-    self.myRange = myHero.range+myHero.boundingRadius+(self.Target and self.Target.boundingRadius or myHero.boundingRadius)
     if self.fPos and GetDistance(self.fPos) < myHero.boundingRadius then
       self.fPos = nil
     end
     if self:DoOrb() then
+      self.Target = self:AcquireTarget()
+      self.myRange = myHero.range+myHero.boundingRadius+(self.Target and self.Target.boundingRadius or myHero.boundingRadius)
       self:Orb(self.Target)
     end
   end
