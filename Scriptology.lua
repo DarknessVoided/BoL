@@ -4906,7 +4906,7 @@ class "Riven"
         end
       elseif spell.name == "RivenFeint" then
         self.EDelay = GetTickCount()
-        if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and ((Config.Combo.Rm == 4 or EnemiesAround(self.Target, 450) > 1) or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(self.Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(self.Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(self.Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true)*0.67 <= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
           Cast(_R) 
           DelayAction(function() 
             if self.Target and GetDistance(self.Target) < data[0].range then
@@ -5062,7 +5062,7 @@ class "Riven"
 
   function Riven:Combo()
     if GetDistance(self.Target) > loadedOrb.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(self.Target) < data[2].range then
-      if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and ((Config.Combo.Rm == 4 or EnemiesAround(self.Target, 450) > 1) or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(self.Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true) <= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+      if self.Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(self.Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(self.Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(self.Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(self.Target, 0, true)*0.67 <= GetRealHealth(self.Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
         Cast(_E, self.Target.pos)
         DelayAction(function() Cast(_R) end, 0.075) 
       else
