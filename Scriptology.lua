@@ -13,7 +13,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("XKNMLMRLJJP") ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion       = 2.07
+_G.ScriptologyVersion       = 2.08
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyDebug         = false
 _G.ScriptologyLoaded        = false
@@ -6578,7 +6578,17 @@ class "SWalk"
     end
     self.altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
     self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
-    if not UPLloaded then require("HPrediction") HP = HPrediction() else HP = UPL.HP end
+    if not UPLloaded and not _G.HP then 
+      require("HPrediction") 
+      self.HP = HPrediction() 
+      _G.HP = self.HP 
+    else 
+      if UPLloaded then
+        self.HP = UPL.HP 
+      elseif _G.HP then
+        self.HP = _G.HP
+      end
+    end
     if not UPLloaded then require("VPrediction") VP = VPrediction() else VP = UPL.VP end
     return self
   end
@@ -6895,21 +6905,24 @@ class "Yasuo"
     if sReady[_E] then
       local minion = nil
       for _,k in pairs(Mobs.objects) do
-        local kPos = myHero+(Vector(k)-myHero):normalized()*data[2].range
-        if not minion and k and not UnitHaveBuff(k, "YasuoDashWrapper") and GetDistanceSqr(k) < data[2].range*data[2].range and GetDistanceSqr(kPos,x) < GetDistanceSqr(myHero,x) then minion = k end
-        if minion and k and not UnitHaveBuff(k, "YasuoDashWrapper") and GetDistanceSqr(k) < data[2].range*data[2].range then
-          local mPos = myHero+(Vector(minion)-myHero):normalized()*data[2].range
-          if GetDistanceSqr(mPos,x) < GetDistanceSqr(kPos,x) and GetDistanceSqr(mPos,x) < GetDistanceSqr(myHero,x) then
+        local kPos = myHero+(Vector(k)-myHero):normalized()*475
+        if not UnitHaveBuff(k, "YasuoDashWrapper") and GetDistanceSqr(k) < 475*475 and GetDistanceSqr(kPos,x) < GetDistanceSqr(x) then
+          if not minion then
             minion = k
+          else
+            local mPos = myHero+(Vector(minion)-myHero):normalized()*475
+            if GetDistanceSqr(x, kPos) < GetDistanceSqr(x, mPos) then
+              minion = k
+            end
           end
         end
       end
       if minion then
-        Cast(_E, minion, true)
+        Cast(_E, minion)
         return true
       end
-      return false
     end
+    return false
   end
 
   function Yasuo:ProcessSpell(unit, spell)
@@ -6924,6 +6937,10 @@ class "Yasuo"
           Cast(_W, wPos)
         end
       end
+    end
+    if unit and spell and unit.isMe and spell.name and spell.name:lower():find("attack") and ((Config.kConfig.LastHit and GetDmg(_Q, myHero, spell.target) > spell.target.health and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
+      local t = spell.target
+      DelayAction(function() Cast(_Q, t.pos) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
     end
   end
 
@@ -6967,12 +6984,12 @@ class "Yasuo"
 
   function Yasuo:LastHit()
     local minion = GetLowestMinion(data[2].range)
-    if minion and not UnitHaveBuff(k, "YasuoDashWrapper") and GetRealHealth(minion) < GetDmg(_E, myHero, minion) and loadedOrb.State[_E] then
+    if ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and minion and not UnitHaveBuff(minion, "YasuoDashWrapper") and GetRealHealth(minion) < GetDmg(_E, myHero, minion) then
       Cast(_E, minion)
     end
-    if minion and not UnitHaveBuff(k, "YasuoDashWrapper") and GetRealHealth(minion) < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and sReady[_Q] and sReady[_E] and loadedOrb.State[_Q] and loadedOrb.State[_E] then
+    if ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.E)) and minion and GetDistance(minion) > 475/2 and GetDistance(minion) < 475 and not UnitHaveBuff(minion, "YasuoDashWrapper") and GetRealHealth(minion) < GetDmg(_Q, myHero, minion)+GetDmg(_E, myHero, minion) and sReady[_Q] and sReady[_E] then
       Cast(_E, minion)
-      DelayAction(function() Cast(_Q, minion) end, 0.125)
+      DelayAction(function() Cast(_Q) end, 0.125)
     end
   end
 
@@ -6981,19 +6998,19 @@ class "Yasuo"
   end
 
   function Yasuo:Combo()
-    if GetDistance(self.Target) > loadedOrb.myRange and Config.Combo.E then
+    if GetDistance(self.Target) > myHero.range+GetDistance(myHero.minBBox) and Config.Combo.E then
       if self:Move(self.Target) then
         if sReady[_Q] then
-          DelayAction(function() Cast(_Q, self.Target) end, 0.125)
+          DelayAction(function() Cast(_Q) end, 0.125)
         end
       elseif GetDistance(self.Target) < data[2].range and GetDistance(self.Target) > data[2].range/2 and not UnitHaveBuff(self.Target, "YasuoDashWrapper") then
         Cast(_E, self.Target)
         if sReady[_Q] then
-          DelayAction(function() Cast(_Q, self.Target) end, 0.125)
+          DelayAction(function() Cast(_Q) end, 0.125)
         end
       end
     end
-    if sReady[_R] and Config.Combo.R and self.Target.y > myHero.y+5 or self.Target.y < myHero.y-5 then
+    if sReady[_R] and Config.Combo.R and self.Target.y > myHero.y or self.Target.y < myHero.y then
       if sReady[_Q] and GetDistance(self.Target) < 500 then
         myHero:Attack(self.Target)
       else
@@ -7027,7 +7044,7 @@ class "Yasuo"
         end
       end
     end
-    if GetDistance(self.Target) > loadedOrb.myRange and not UnitHaveBuff(self.Target, "YasuoDashWrapper") and Config.Harrass.E then
+    if GetDistance(self.Target) > myHero.range+GetDistance(myHero.minBBox) and not UnitHaveBuff(self.Target, "YasuoDashWrapper") and Config.Harrass.E then
       Cast(_E, self.Target)
     end
   end
