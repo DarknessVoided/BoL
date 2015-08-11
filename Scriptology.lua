@@ -4826,6 +4826,8 @@ class "Riven"
     self.Target = nil
     self.QAA = false
     self.QCast = 0
+    self.QDelay = 0
+    self.EDelay = 0
   end
 
   function Riven:Load()
@@ -4896,9 +4898,10 @@ class "Riven"
   function Riven:ProcessSpell(unit,spell)
     if unit and unit.isMe and spell then
       if spell.name == "RivenTriCleave" then
+        self.QDelay = os.clock()
         self.QCast = self.QCast + 1
         DelayAction(function() if not sReady[_Q] then self.QCast = 0 end end, 4)
-        if self.QAA and self.QCast < 3 then 
+        if self.QAA and self.QCast < 3 and Target then 
           self:AfterQ()
         end
       elseif spell.name == "RivenFeint" then
@@ -4912,17 +4915,19 @@ class "Riven"
           end, 0.137)
         end
       elseif spell.name:lower():find("attack") then
-        if self.QAA and self.QCast > 0 then 
+        if self.QAA then 
           DelayAction(function() 
-            if self:CastHydra() and ValidTarget(self.Target) then
-              Cast(_Q, self.Target.pos) 
-            else
+            if ValidTarget(self.Target) then
+              if Config.kConfig.Combo or Config.kConfig.Harrass then self:CastHydra() end
+              Cast(_Q, self.Target.pos)
             end
           end, spell.windUpTime - GetLatency() / 2000 + 0.07)
         end
       elseif spell.name:lower():find("rivenizunablade") then
         if self.Target and Config.kConfig.Combo and Config.Combo.Rm > 1 then
-          Cast(_Q, self.Target.pos)
+          DelayAction(function() 
+            Cast(_Q, self.Target.pos)
+          end, spell.windUpTime - GetLatency() / 2000 + 0.07)
         end
       end
     end
@@ -4940,7 +4945,7 @@ class "Riven"
   end
 
   function Riven:AfterQ()
-    local movePos = target+(Vector(myHero)-target):normalized()*(62)
+    local movePos = Target+(Vector(myHero)-Target):normalized()*(62)
     myHero:MoveTo(movePos.x, movePos.z)
     return true
   end
@@ -5092,7 +5097,8 @@ class "Riven"
     if not minion then
       minion = GetClosestMinion(450)
     end
-    if GetDistance(minion) > loadedOrb.myRange + 30 and sReady[_E] and Config.LaneClear.E and GetDistance(minion) < data[2].range then
+    if not minion then return end
+    if GetDistance(minion) > loadedOrb.myRange + 30 and sReady[_E] and Config.LaneClear.E then
       Cast(_E, minion.pos)
     end
     if sReady[_E] and minion.team > 200 then
@@ -5100,9 +5106,6 @@ class "Riven"
     end
     if sReady[_W] and GetDistance(minion) < data[1].range and Config.LaneClear.W then
       Cast(_W)
-    end
-    if sReady[_Q] and GetDistance(minion) > loadedOrb.myRange + 36 then
-      Cast(_Q, minion.pos)
     end
   end
 
@@ -6659,7 +6662,7 @@ class "SWalk"
       self.Target = t
     end
     if self:DoOrb() then
-      self:Orb(self.Target) 
+      self:Orb(self.Target)
     end
   end
 
@@ -7709,9 +7712,9 @@ class "Yasuo"
   function GetClosestMinion(range)
     local minionTarget = nil
     for i, minion in pairs(Mobs.objects) do
-      if minionTarget == nil and GetDistanceSqr(minion) < range * range then 
+      if minionTarget == nil and minion and GetDistanceSqr(minion) < range * range then 
         minionTarget = minion
-      elseif GetDistanceSqr(minionTarget) > GetDistanceSqr(minion) and ValidTarget(minion, range) then
+      elseif minionTarget and GetDistanceSqr(minionTarget) > GetDistanceSqr(minion) and ValidTarget(minion, range) then
         minionTarget = minion
       end
     end
@@ -7721,11 +7724,11 @@ class "Yasuo"
   function GetJMinion(range)
     local minionTarget = nil
     for i, minion in pairs(JMobs.objects) do
-      if minionTarget == nil and GetDistanceSqr(minion) < range * range then
+      if minionTarget == nil and minion and GetDistanceSqr(minion) < range * range then
         if GetRealHealth(minion) < 100000 then 
           minionTarget = minion
         end
-      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and GetRealHealth(minion) < 100000 then
+      elseif minionTarget and minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and GetRealHealth(minion) < 100000 then
         minionTarget = minion
       end
     end
