@@ -42,7 +42,7 @@ return {
     },
     ["Brand"] = {
         [_Q] = { name = "BrandBlaze", speed = 1200, delay = 0.5, range = 1050, width = 80, collision = false, aoe = false, type = "linear"},
-        [_W] = { name = "BrandFissure", speed = 900, delay = 0.25, range = 1050, width = 275, collision = false, aoe = false, type = "linear"},
+        [_W] = { name = "BrandFissure", speed = 900, delay = 0.25, range = 1050, width = 275, collision = false, aoe = false, type = "circular"},
         [_R] = { name = "BrandWildfire" }
     },
     ["Braum"] = {
