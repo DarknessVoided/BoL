@@ -6223,7 +6223,7 @@ class "Veigar"
       Cast(_Q, self.Target, 2)
     end
     if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W then
-        if GetDistance(pos) < data[_E].range+350 then
+        if GetDistance(self.Target) < data[_E].range+350 then
           local ep  = Vector(self.Target) + (Vector(self.Target) - myHero):normalized() * 350
           local epl = (Vector(myHero) - ep):len()
           local ept = ep
