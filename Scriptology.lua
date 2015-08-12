@@ -6166,10 +6166,11 @@ class "Vayne"
   end
 
 class "Veigar"
+
   function Veigar:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_MAGIC, false, true)
     data = {
-      [_Q] = { speed = 1275, delay = 0.25, range = 875, width = 75, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.6*AP end},
+      [_Q] = { speed = 1200, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.6*AP end},
       [_W] = { speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 70+50*level+AP end},
       [_E] = { speed = math.huge, delay = 0.5, range = 725, width = 275, collision = false, aoe = false, type = "circular"},
       [_R] = { range = 650, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 125+125*level+AP+target.ap end} -- 250 / 375 / 500 (+ 100% AP) (+ 80% of target's AP)
@@ -6177,9 +6178,9 @@ class "Veigar"
     self.Target = nil
   end
 
-    function Veigar:Load()
-      SetupMenu()
-    end
+  function Veigar:Load()
+    SetupMenu()
+  end
 
   function Veigar:Menu()
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
