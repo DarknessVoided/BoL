@@ -105,7 +105,7 @@ class "SAwareness" -- {
       require("GetSpellRange")
       self.loadedMSR = true
     else
-      DownloadFile("https://raw.githubusercontent.com/pvpsuite/BoL/master/Scripts/Common/GetSpellRange.lua".."?rand="..math.random(1,10000), LIB_PATH.."GetSpellRange.lua", function () end)
+      DownloadFile("https://raw.githubusercontent.com/nebelwolfi/BoL/master/Common/GetSpellRange.lua".."?rand="..math.random(1,10000), LIB_PATH.."GetSpellRange.lua", function () end)
       DelayAction(function() self:LoadMSR() end, 0.5)
       return
     end
