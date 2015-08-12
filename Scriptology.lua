@@ -6169,7 +6169,7 @@ class "Veigar"
   function Veigar:__init()
     targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1150, DAMAGE_MAGIC, false, true)
     data = {
-      [_Q] = { speed = 2000, delay = 0.25, range = 950, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.6*AP end},
+      [_Q] = { speed = 1200, delay = 0.25, range = 875, width = 75, collision = true, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.6*AP end},
       [_W] = { speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 70+50*level+AP end},
       [_E] = { speed = math.huge, delay = 0.5, range = 725, width = 275, collision = false, aoe = false, type = "circular"},
       [_R] = { range = 650, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 125+125*level+AP+target.ap end} -- 250 / 375 / 500 (+ 100% AP) (+ 80% of target's AP)
@@ -6218,26 +6218,33 @@ class "Veigar"
     end
   end
 
+  function Veigar:LandE(target)
+    local CastPosition, HitChance, Position = UPL:Predict(_W, myHero, target)
+    if HitChance >= 1 and GetDistance(CastPosition) < data[_E].range+350 then
+      local ep  = Vector(target) + (Vector(CastPosition) - myHero):normalized() * 350
+      local epl = (Vector(myHero) - ep):len()
+      local ept = ep
+      ep = ep + (Vector(myHero) - ep):normalized() * math.min(epl, data[_E].range)
+      ep = GetDistance(ep) == 0 and ept or ep
+      Cast(_E, ep)
+      return true
+    end
+    return false
+  end
+
   function Veigar:Combo()
     if sReady[_Q] and Config.Combo.Q then
       Cast(_Q, self.Target, 2)
     end
+    if UnitHaveBuff(self.Target, "veigareventhorizonstun") and sReady[_W] and Config.Combo.W then
+      Cast(_W, self.Target.pos)
+    end
     if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W then
-        if GetDistance(self.Target) < data[_E].range+350 then
-          local ep  = Vector(self.Target) + (Vector(self.Target) - myHero):normalized() * 350
-          local epl = (Vector(myHero) - ep):len()
-          local ept = ep
-          ep = ep + (Vector(myHero) - ep):normalized() * math.min(epl, data[_E].range)
-          ep = GetDistance(ep) == 0 and ept or ep
-          Cast(_E, ep)
-          if sReady[_W] and Config.Combo.W then 
-            DelayAction(function() Cast(_W, self.Target.pos) end, 0.33) 
-          end
-        end
+      self:LandE(self.Target)
     elseif sReady[_W] and Config.Combo.W and not Config.Combo.WE then
       Cast(_W, self.Target, 2)
     end
-    if sReady[_R] and Config.Combo.R and target.health < GetDmg(_R, myHero, target) then
+    if sReady[_R] and Config.Combo.R and self.Target.health < GetDmg(_R, myHero, self.Target) then
       Cast(_R, self.Target)
     end
   end
@@ -6246,19 +6253,11 @@ class "Veigar"
     if sReady[_Q] and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
       Cast(_Q, self.Target, 2)
     end
+    if UnitHaveBuff(self.Target, "veigareventhorizonstun") and sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
+      Cast(_W, self.Target.pos)
+    end
     if sReady[_E] and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana then
-        local pos, b = PredictPos(self.Target)
-        if GetDistance(pos) < data[_E].range+350 then
-          local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
-          local epl = (Vector(myHero) - ep):len()
-          local ept = ep
-          ep = ep + (Vector(myHero) - ep):normalized() * math.min(epl, data[_E].range)
-          ep = GetDistance(ep) == 0 and ept or ep
-          Cast(_E, ep)
-        if sReady[_W] and Config.Combo.W then 
-          DelayAction(function() Cast(_W, self.Target.pos) end, 0.33) 
-        end
-        end
+      Cast(_W, self.Target.pos)
     elseif sReady[_W] and Config.Harrass.W and Config.Harrass.manaW <= 100*myHero.mana/myHero.maxMana and not Config.Harrass.WE then
       Cast(_W, self.Target, 2)
     end
@@ -6290,10 +6289,10 @@ class "Veigar"
   function Veigar:CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
       local n = 0
       for i, object in ipairs(objects) do
-        local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
+        local pointSegment, _, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
         local w = width
-        if _G.HP then
-          local predHp = _G.HP:PredictHealth(object, math.min(data[0].range, GetDistance(myHero, minion)) / data[0].speed + data[0].delay)
+        if UPL.HP then
+          local predHp = UPL.HP:PredictHealth(object, math.min(data[0].range, GetDistance(myHero, object)) / data[0].speed + data[0].delay)
           if isOnSegment and predHp <= GetDmg(_Q, myHero, object) and predHp > 0 and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
             n = n + 1
           end
@@ -6333,6 +6332,13 @@ class "Veigar"
             CastSpell(Ignite, enemy)
           elseif Smite and myHero:CanUseSpell(Smite) == READY and GetRealHealth(enemy) < 20+8*myHero.level and Config.Killsteal.S and ValidTarget(enemy, 600) then
             CastSpell(Smite, enemy)
+          end
+          if health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_R, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E and Config.Killsteal.R then
+            if self:LandE(enemy) then
+              Cast(_W, enemy.pos)
+              DelayAction(function() Cast(_Q, enemy.pos) end, 0.25)
+              DelayAction(function() Cast(_R, enemy) end, 0.5)
+            end
           end
         end
       end
