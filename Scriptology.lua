@@ -6281,7 +6281,7 @@ class "Veigar"
           end
         end
         if BestHit > 0 then
-        Cast(_Q, BestPos, 1) -- wat
+        Cast(_Q, BestPos, 2) -- wat
         end
     end
   end
