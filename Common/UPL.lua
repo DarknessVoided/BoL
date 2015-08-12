@@ -38,7 +38,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.64
+    _G.UPLversion = 2.65
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -60,9 +60,11 @@ function UPL:__init()
     if FileExist(LIB_PATH .. "SPrediction.lua") then
       if _G.SP then
         self.SP = _G.SP
+        table.insert(self.predTable, "SPrediction")
       else
         require("SPrediction")
         self.SP = SPrediction()
+        _G.SP = self.SP
         table.insert(self.predTable, "SPrediction")
       end
     end
@@ -70,9 +72,11 @@ function UPL:__init()
     if FileExist(LIB_PATH .. "VPrediction.lua") then
       if _G.VP then
         self.VP = _G.VP
+        table.insert(self.predTable, "VPrediction")
       else
         require("VPrediction")
         self.VP = VPrediction()
+        _G.VP = self.VP
         table.insert(self.predTable, "VPrediction")
       end
     end
@@ -91,9 +95,11 @@ function UPL:__init()
     if FileExist(LIB_PATH .. "HPrediction.lua") then
       if _G.HP then
         self.HP = _G.HP
+        table.insert(self.predTable, "HPrediction")
       else
         require("HPrediction")
         self.HP = HPrediction()
+        _G.HP = self.HP
         table.insert(self.predTable, "HPrediction")
       end
     end
