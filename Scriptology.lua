@@ -13,11 +13,12 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("XKNMLMRLJJP") ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion       = 2.1
+_G.ScriptologyVersion       = 2.11
 _G.ScriptologyAutoUpdate    = true
-_G.ScriptologyDebug         = false
-_G.ScriptologyLoaded        = false
 _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
+
+_G.ScriptologyLoadAwareness = false
+_G.ScriptologyLoadEvade     = true
 
 -- { Scriptology Loader
 
@@ -133,7 +134,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
   end
 
   function LoadAwareness()
-    if _G.PrinceViewVersion == nil then
+    if _G.PrinceViewVersion == nil and ScriptologyLoadAwareness then
       ScriptologyMsg("Plugin: 'Awareness' loaded")
       SAwareness()
     end
@@ -141,7 +142,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
 
   function LoadEvade()
       DelayAction(function()
-        if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil then
+        if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil and ScriptologyLoadEvade then
           LoadEvade2()
         end
       end, 10)
@@ -206,35 +207,37 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
   end
 
   gTick=0;AddTickCallback(function()
-    if loadedSPlugin.Tick then loadedSPlugin:Tick() end
-    if loadedSPlugin.Killsteal then loadedSPlugin:Killsteal() end
-    if loadedSPlugin and gTick < GetTickCount() then
-      gTick = GetTickCount() + 100
-      if targetSel then
-        targetSel:update()
-        _G.Target = targetSel.target
-        loadedSPlugin.Target = targetSel.target
-      end
-      if loadedSPlugin.Forcetarget or Forcetarget then
-        local fT = loadedSPlugin.Forcetarget or Forcetarget
-        if ValidTarget(fT) then
-          _G.Target = fT
-          loadedSPlugin.Target = fT
-        else
-          fT = nil
+    if loadedSPlugin then
+      if loadedSPlugin.Tick then loadedSPlugin:Tick() end
+      if loadedSPlugin.Killsteal then loadedSPlugin:Killsteal() end
+      if gTick < GetTickCount() then
+        gTick = GetTickCount() + 100
+        if targetSel then
+          targetSel:update()
+          _G.Target = targetSel.target
+          loadedSPlugin.Target = targetSel.target
         end
-      end
-      if Config.kConfig.Combo and loadedSPlugin.Combo and ValidTarget(Target) then
-        loadedSPlugin:Combo()
-      end
-      if Config.kConfig.Harrass and loadedSPlugin.Harrass and ValidTarget(Target) then
-        loadedSPlugin:Harrass()
-      end
-      if Config.kConfig.LaneClear and loadedSPlugin.LaneClear then
-        loadedSPlugin:LaneClear()
-      end
-      if (Config.kConfig.LastHit or Config.kConfig.LaneClear) and loadedSPlugin.LastHit then
-        loadedSPlugin:LastHit()
+        if loadedSPlugin.Forcetarget or Forcetarget then
+          local fT = loadedSPlugin.Forcetarget or Forcetarget
+          if ValidTarget(fT) then
+            _G.Target = fT
+            loadedSPlugin.Target = fT
+          else
+            fT = nil
+          end
+        end
+        if Config.kConfig.Combo and loadedSPlugin.Combo and ValidTarget(Target) then
+          loadedSPlugin:Combo()
+        end
+        if Config.kConfig.Harrass and loadedSPlugin.Harrass and ValidTarget(Target) then
+          loadedSPlugin:Harrass()
+        end
+        if Config.kConfig.LaneClear and loadedSPlugin.LaneClear then
+          loadedSPlugin:LaneClear()
+        end
+        if (Config.kConfig.LastHit or Config.kConfig.LaneClear) and loadedSPlugin.LastHit then
+          loadedSPlugin:LastHit()
+        end
       end
     end
   end)
@@ -1428,7 +1431,7 @@ class "Blitzcrank"
 class "Cassiopeia"
 
   function Cassiopeia:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST, 900, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST, 900, DAMAGE_MAGIC, false, true)
     self.lastE = 0
     data = {
       [_Q] = { speed = math.huge, delay = 0.25, range = 850, width = 100, collision = false, aoe = true, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 45+30*level+0.45*AP end},
@@ -1815,7 +1818,7 @@ class "Darius"
 class "Diana"
 
   function Diana:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 835, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 835, DAMAGE_MAGIC, false, true)
     data = {
       [_Q] = { speed = 1500, delay = 0.250, range = 835, width = 130, collision = false, aoe = false, type = "circular", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35*level+45+0.2*AP end },
       [_W] = { range = 250, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 12*level+10+0.2*AP end },
@@ -1994,7 +1997,7 @@ class "Diana"
 class "Ekko"
 
   function Ekko:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, false, true)
     data = {
       [_Q] = { speed = 1050, delay = 0.25, range = 825, width = 140, collision = false, aoe = false, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 15*level+45+0.2*AP end},
       [_W] = { speed = math.huge, delay = 2, range = 1050, width = 450, collision = false, aoe = true, type = "circular"},
@@ -2816,7 +2819,7 @@ class "Kalista"
 class "Katarina"
 
   function Katarina:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST, 700, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST, 700, DAMAGE_MAGIC, false, true)
     data = {
       [_Q] = { range = 675, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+25*level+0.45*AP end},
       [_W] = { range = 375, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 5+35*level+0.25*AP+0.6*TotalDmg end},
@@ -3077,7 +3080,7 @@ class "Katarina"
 class "KogMaw"
   
   function KogMaw:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 900, DAMAGE_MAGIC, false, true)
     data = {
       [_Q] = { range = 975, delay = 0.25, speed = 1600, width = 80, type = "linear", dmgAP = function(AP, level, Level, TotalDmg, source, target) return 30+50*level+0.5*AP end},
       [_W] = { range = function() return myHero.range + myHero.boundingRadius*2 + 110+20*myHero:GetSpellData(_W).level end, dmgAP = function(AP, level, Level, TotalDmg, source, target) return target.maxHealth*0.01*(level+1)+0.01*AP+TotalDmg end},
@@ -3935,7 +3938,7 @@ class "Malzahar"
 class "Nidalee"
 
   function Nidalee:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, false, true)
     self.data = {
       Human  = {
           [_Q] = { speed = 1337, delay = 0.25, range = 1500, width = 37.5, collision = true, aoe = false, type = "linear"},
@@ -5149,7 +5152,7 @@ class "Riven"
 class "Rumble"
 
   function Rumble:__init()
-    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGICAL, false, true)
+    targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1500, DAMAGE_MAGIC, false, true)
     data = {
       [_Q] = { range = 310, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-10+20*level+(0.35+0.05*level)*TotalDmg end},
       [_W] = { range = 265, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 20+30*level+TotalDmg end},
@@ -5645,11 +5648,14 @@ class "Talon"
   end
 
   function Talon:Combo()
+    if myHero:CanUseSpell(_E) == READY and Config.Combo.W and ValidTarget(self.Target, data[1].range) then
+      Cast(_W, self.Target, 2)
+    end
     if myHero:CanUseSpell(_E) == READY and Config.Combo.E and ValidTarget(self.Target, data[2].range) then
-      Cast(_E, self.Target, true)
+      Cast(_E, self.Target)
     end
     if myHero:CanUseSpell(_E) ~= READY and myHero:CanUseSpell(_R) == READY and Config.Combo.R and ValidTarget(self.Target, data[3].width) and GetRealHealth(self.Target) < GetDmg(_Q, myHero, self.Target)+GetDmg(_W, myHero, self.Target)+GetDmg("AD", myHero, self.Target)+GetDmg(_R, myHero, self.Target) then
-      Cast(_R, self.Target, true)
+      Cast(_R, self.Target, 2)
     end
   end
 
@@ -5725,7 +5731,7 @@ class "Talon"
 class "Teemo"
 
   function Teemo:__init()
-   targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, myHero.range+myHero.boundingRadius*3, DAMAGE_MAGICAL, false, true)
+   targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, myHero.range+myHero.boundingRadius*3, DAMAGE_MAGIC, false, true)
     data = {
       [_Q] = { range = myHero.range+myHero.boundingRadius*3, dmgAP = function(AP, level, Level, TotalDmg, source, target) return 35+45*level+0.8*AP end},
       [_W] = { range = 25000},
