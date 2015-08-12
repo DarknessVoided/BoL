@@ -6223,17 +6223,16 @@ class "Veigar"
       Cast(_Q, self.Target, 2)
     end
     if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W then
-        local pos, b = PredictPos(self.Target)
         if GetDistance(pos) < data[_E].range+350 then
-          local ep  = Vector(self.Target) + (Vector(pos) - (self.Target.isMoving and self.Target or myHero)):normalized() * 350
+          local ep  = Vector(self.Target) + (Vector(self.Target) - myHero):normalized() * 350
           local epl = (Vector(myHero) - ep):len()
           local ept = ep
           ep = ep + (Vector(myHero) - ep):normalized() * math.min(epl, data[_E].range)
           ep = GetDistance(ep) == 0 and ept or ep
           Cast(_E, ep)
-        if sReady[_W] and Config.Combo.W then 
-          DelayAction(function() Cast(_W, self.Target.pos) end, 0.33) 
-        end
+          if sReady[_W] and Config.Combo.W then 
+            DelayAction(function() Cast(_W, self.Target.pos) end, 0.33) 
+          end
         end
     elseif sReady[_W] and Config.Combo.W and not Config.Combo.WE then
       Cast(_W, self.Target, 2)
