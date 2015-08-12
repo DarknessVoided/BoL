@@ -13,7 +13,7 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("XKNMLMRLJJP") ScriptStatus("TGJIHINHFFL") 
 --Scriptstatus Tracker
 
-_G.ScriptologyVersion       = 2.09
+_G.ScriptologyVersion       = 2.1
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyDebug         = false
 _G.ScriptologyLoaded        = false
@@ -61,6 +61,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
         Config.Draws:addParam("R", "Draw R", SCRIPT_PARAM_ONOFF, true)
         Config.Draws:addParam("DMG", "Draw DMG", SCRIPT_PARAM_ONOFF, true)
         Config.Draws:addParam("LFC", "Use LFC", SCRIPT_PARAM_ONOFF, true)
+        Config.Draws:addParam("PermaShow", "Perma Show", SCRIPT_PARAM_ONOFF, true)
         Config.Draws:addParam("OpacityQ", "Opacity Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
         Config.Draws:addParam("OpacityW", "Opacity W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
         Config.Draws:addParam("OpacityE", "Opacity E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
@@ -213,6 +214,15 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology"..
         targetSel:update()
         _G.Target = targetSel.target
         loadedSPlugin.Target = targetSel.target
+      end
+      if loadedSPlugin.Forcetarget or Forcetarget then
+        local fT = loadedSPlugin.Forcetarget or Forcetarget
+        if ValidTarget(fT) then
+          _G.Target = fT
+          loadedSPlugin.Target = fT
+        else
+          fT = nil
+        end
       end
       if Config.kConfig.Combo and loadedSPlugin.Combo and ValidTarget(Target) then
         loadedSPlugin:Combo()
@@ -1371,7 +1381,7 @@ class "Blitzcrank"
   end
 
   function Blitzcrank:Draw()
-    local target = self:GetBestTarget(data[0].range)
+    local target = self.Target
     if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, data[0].range*2) then
       target = self.Forcetarget  
     end
@@ -4706,6 +4716,13 @@ class "Rengar"
   end
 
   function Rengar:Combo()
+    if UnitHaveBuff(myHero, "rengarpassivebuff") then 
+      if IsWallOfGrass(D3DXVECTOR3(myHero.x, myHero.y, myHero.z)) and not IsWallOfGrass(D3DXVECTOR3(self.Target.x,self.Target.y,self.Target.z)) then
+        return 
+      elseif TargetHaveBuff("RengarR", myHero) then
+        return 
+      end
+    end
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
         Cast(_Q)
@@ -4725,6 +4742,13 @@ class "Rengar"
   end
 
   function Rengar:Harrass()
+    if UnitHaveBuff(myHero, "rengarpassivebuff") then 
+      if IsWallOfGrass(D3DXVECTOR3(myHero)) and not IsWallOfGrass(D3DXVECTOR3(self.Target)) then
+        return 
+      elseif TargetHaveBuff("RengarR", myHero) then
+        return 
+      end
+    end
     if myHero.mana == 5 then
       if Config.Misc.Empower2 == 1 then
         Cast(_Q)
@@ -4784,7 +4808,7 @@ class "Rengar"
     else
       if Config.LaneClear.W then
         local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
-        if hit and hit > 1 and pos ~= nil and GetDistance(pos) < 150 then
+        if hit and hit >= 1 and pos ~= nil and GetDistance(pos) < 150 then
           Cast(_W)
         end
       end
@@ -6176,9 +6200,16 @@ class "Veigar"
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
     Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LastHit2", "Last hit", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Ea", "Auto E", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
+  end
+
+  function Veigar:Tick()
+    if Config.kConfig.LastHit2 then
+      self:LastHit()
+    end
   end
 
   function Veigar:Combo()
@@ -6256,8 +6287,15 @@ class "Veigar"
       for i, object in ipairs(objects) do
         local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
         local w = width
-        if isOnSegment and object.health <= GetDmg(_Q, myHero, object) and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
-          n = n + 1
+        if _G.HP then
+          local predHp = _G.HP:PredictHealth(object, math.min(data[0].range, GetDistance(myHero, minion)) / data[0].speed + data[0].delay)
+          if isOnSegment and predHp <= GetDmg(_Q, myHero, object) and predHp > 0 and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+            n = n + 1
+          end
+        else
+          if isOnSegment and object.health <= GetDmg(_Q, myHero, object) and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+            n = n + 1
+          end
         end
       end
       return n
