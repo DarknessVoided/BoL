@@ -1,0 +1,398 @@
+-- { Nebelwolfi's Orb Walker
+
+local orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
+local orbDisabled = false
+local doAA = true
+local doMove = true
+local myRange = 500
+local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
+
+	Callback.Bind("Load", function()
+	    _G.enemyHeroes 				   = {}
+	    LoadEnemyHeroes()
+	    _G.NebelwolfisOrbWalkerVersion = 0.35
+	    _G.NebelwolfisOrbWalkerInit    = true
+	    PreLoad()
+	end)
+
+	function LoadEnemyHeroes()
+		if myHero then
+		    for i = 0,Game.HeroCount() do
+			  local hero = Game.Hero(i)
+			  if hero.team ~= myHero.team then
+			  	table.insert(enemyHeroes, hero)
+			  end
+			end
+		else
+			DelayAction(LoadEnemyHeroes, 1)
+		end
+	end
+
+	local delayedActions, delayedActionsExecuter = {}, nil
+	function DelayAction(func, delay, args) --delay in seconds
+	    if not delayedActionsExecuter then
+	        function delayedActionsExecuter()
+	            for t, funcs in pairs(delayedActions) do
+	                if t <= os.clock() then
+	                    for _, f in ipairs(funcs) do if f.func then f.func(unpack(f.args or {})) end end
+	                    delayedActions[t] = nil
+	                end
+	            end
+	        end;Callback.Bind("Tick", delayedActionsExecuter)
+	    end
+	    local t = os.clock() + (delay or 0)
+	    if delayedActions[t] then table.insert(delayedActions[t], { func = func, args = args })
+	    else delayedActions[t] = { { func = func, args = args } }
+	    end
+	end
+
+	function Set(list)
+	    local set = {}
+	    for _, l in ipairs(list) do 
+	      set[l] = true 
+	    end
+	    return set
+	end
+
+	function PreLoad()
+		if myHero then
+			Load()
+		else
+			DelayAction(PreLoad, 1)
+		end
+	end
+
+	function Load()
+	    _G.NebelwolfisOrbWalkerLoaded = true
+	    altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
+	    resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq" }
+	    MakeMenu()
+	    Msg("Loaded")
+	end
+
+	function Msg(msg) 
+		Game.Chat.Print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]:</b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+	end
+
+	function MakeMenu()
+		Config:Section("MenuHeader", "Nebelwolfis Orb Walker")
+		Config:Menu("m", "Modes")
+			Config.m:Section("MenuHeader", "Modes")
+			Config.m:Menu("Combo", "Carry Mode")
+				Config.m.Combo:Section("MenuHeader", "Carry Mode")
+		        Config.m.Combo:Boolean("Attack", "Attack", true)
+		        Config.m.Combo:Boolean("Move", "Move", true)
+			Config.m:Menu("Harass", "Harass Mode")
+				Config.m.Harass:Section("MenuHeader", "Harass Mode")
+	        	Config.m.Harass:DropDown("Priority", "Priority", 1, {"LastHit", "Harass"})
+		        Config.m.Harass:Boolean("Attack", "Attack", true)
+		        Config.m.Harass:Boolean("Move", "Move", true)
+			Config.m:Menu("LastHit", "LastHit Mode")
+				Config.m.LastHit:Section("MenuHeader", "LastHit Mode")
+		        Config.m.LastHit:Boolean("AttackE", "Attack Enemy on Lasthit (Anti-Farm)", true)
+		        Config.m.LastHit:Boolean("Attack", "Attack", true)
+		        Config.m.LastHit:Boolean("Move", "Move", true)
+			Config.m:Menu("LaneClear", "LaneClear Mode")
+				Config.m.LaneClear:Section("MenuHeader", "LaneClear Mode")
+		        Config.m.LaneClear:Boolean("Attack", "Attack", true)
+		        Config.m.LaneClear:Boolean("Move", "Move", true)
+		Config:Menu("k", "Hotkeys")
+			Config.k:Section("MenuHeader", "Hotkeys")
+	        Config.k:KeyBinding("Combo", "Carry Mode", " ", false, false)
+	        Config.k:KeyBinding("Harass", "Harass Mode", "C", false, false)
+	        Config.k:KeyBinding("LastHit", "LastHit Mode", "X", false, false)
+	        Config.k:KeyBinding("LaneClear", "LaneClear Mode", "V", false, false)
+			Config.k:Section("MenuHeader", "Other Hotkeys")
+	        Config.k:DropDown("Mouse", "Left-Click Action", 1, {"None", "Carry Mode", "Target Lock"})
+	        Config.k:KeyBinding("TargetLock", "Target Lock", "G", false, false)
+	        Config.k:KeyBinding("LaneFreeze", "Lane Freeze (F1)", "F1", false, false)
+		Config:Menu("s", "Settings")
+			Config.s:Section("MenuHeader", "Settings")
+	    	Config.s:Boolean("Buildings", "Attack Selected Buildings", true)
+	    	Config.s:Boolean("WindUpNoticeStart", "Show AA notice on GameStart", true)
+	    	Config.s:Boolean("OverHeroStopMove", "Mouse over Hero to stop move", false)
+	    Config:Menu("i", "Items")
+			Config.i:Menu("Combo", "Carry Mode")
+				Config.i.Combo:Section("MenuHeader", "Carry Mode")
+				Config.i.Combo:Boolean("BRK", "Blade of the Ruined King", true)
+				Config.i.Combo:Boolean("BWC", "Bilgewater Cutlass", true)
+				Config.i.Combo:Boolean("HXG", "Hextech Gunblade", true)
+				Config.i.Combo:Boolean("HYDRA", "Ravenous Hydra", true)
+				Config.i.Combo:Boolean("TIAMAT", "Tiamat", true)
+				Config.i.Combo:Boolean("ENT", "Entropy", true)
+				Config.i.Combo:Boolean("YGB", "Yomuu's Ghostblade", true)
+	    	Config.i:Menu("Harass", "Harass Mode")
+				Config.i.Harass:Section("MenuHeader", "Harass Mode")
+				Config.i.Harass:Boolean("BRK", "Blade of the Ruined King", true)
+				Config.i.Harass:Boolean("BWC", "Bilgewater Cutlass", true)
+				Config.i.Harass:Boolean("HXG", "Hextech Gunblade", true)
+				Config.i.Harass:Boolean("HYDRA", "Ravenous Hydra", true)
+				Config.i.Harass:Boolean("TIAMAT", "Tiamat", true)
+				Config.i.Harass:Boolean("ENT", "Entropy", true)
+				Config.i.Harass:Boolean("YGB", "Yomuu's Ghostblade", true)
+			Config.i:Menu("Farm", "Farm Modes")
+				Config.i.Farm:Section("MenuHeader", "Farm Mode")
+				Config.i.Farm:Boolean("BRK", "Blade of the Ruined King", true)
+				Config.i.Farm:Boolean("BWC", "Bilgewater Cutlass", true)
+				Config.i.Farm:Boolean("HXG", "Hextech Gunblade", true)
+				Config.i.Farm:Boolean("HYDRA", "Ravenous Hydra", true)
+				Config.i.Farm:Boolean("TIAMAT", "Tiamat", true)
+				Config.i.Farm:Boolean("ENT", "Entropy", true)
+				Config.i.Farm:Boolean("YGB", "Yomuu's Ghostblade", true)
+				Config.i.Farm:Section("MenuHeader", "")
+				Config.i.Farm:Boolean("tialast", "Use Tiamat/Hydra to Lasthit", true)
+		Config:Menu("f", "Farm Settings")
+			Config.f:Section("MenuHeader", "Farm Settings")
+			Config.f:Menu("m", "Masteries")
+				Config.f.m:Section("MenuHeader", "Masteries")
+				Config.f.m:Boolean("Butcher", "Butcher", false)
+				Config.f.m:Boolean("ArcaneBlade", "Arcane Blade", false)
+				Config.f.m:Boolean("Havoc", "Havoc", false)
+				Config.f.m:Boolean("DESword", "Double-Edged Sword", false)
+				Config.f.m:DropDown("Executioner", "Executioner", 1, {"0", "1", "2", "3"})
+		if myHero.range < 450 or myHero.charName == "Rengar" then
+			Config:Menu("melee", "Melee Settings")
+				Config.melee:Section("MenuHeader", "Melee Settings")
+				Config.melee:Boolean("wtt", "Walk/Stick to target", true)
+		end
+		Config:Menu("d", "Draw Settings")
+			Config.d:Section("MenuHeader", "Draw Settings")
+			Config.d:Menu("md", "Minion Drawing")
+				Config.d.md:Section("MenuHeader", "Minion Drawing")
+				Config.d.md:Boolean("HPB", "Draw Cut HP Bars (LastHit Mode)", true)
+				Config.d.md:Boolean("LHI", "Draw LastHit Indicator (LastHit Mode)", true)
+				Config.d.md:Boolean("HPBa", "Always Draw Cut HP Bars", false)
+				Config.d.md:Boolean("LHIa", "Always Draw LastHit Indicator", false)
+			Config.d:Boolean("AAS", "Own AA Circle", true)
+			Config.d:ColorPick("AASC", "Own AA Circle Color", Graphics.ARGB(0x7F, 0x00, 0xFF, 0x00))
+			Config.d:Boolean("AAE", "Enemy AA Circles", true)
+			Config.d:ColorPick("AAEC", "Enemy AA Circle Color", Graphics.ARGB(0x7F, 0xFF, 0x00, 0x00))
+	end
+
+	Callback.Bind("Draw", function()
+		if not NebelwolfisOrbWalkerLoaded then return end
+	    if (orbTable.windUp == 13.37 or orbTable.animation == 13.37) and Config.s.WindUpNoticeStart:Value() then
+	      Graphics.DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/6, Graphics.ARGB(255,255,255,255))
+	    end
+	    if Config.d.AAS:Value() then
+	      Graphics.DrawCircle(myHero.x, myHero.y, myHero.z, myRange, Config.d.AASC:Value())
+	    end
+	    if Config.d.AAE:Value() then
+	      for _, enemy in pairs(enemyHeroes) do
+	        if enemy.valid then
+	      		Graphics.DrawCircle(enemy.x, enemy.y, enemy.z, enemy.range+enemy.pos:DistanceTo(enemy.minBBox), Config.d.AAEC:Value())
+	        end
+	      end
+	    end
+	end)
+
+	Callback.Bind("ProcessSpell", function(unit, spell)
+		if not NebelwolfisOrbWalkerLoaded then return end
+	    if unit and spell and spell.name then
+	      	if unit.isMe then
+	        	if spell.name:lower():find("attack") or altAttacks[spell.name:lower()] then
+	          		local windUp = spell.windUpTime
+	          		orbTable.windUp = windUp
+	          		orbTable.animation = spell.animationTime
+	          		orbTable.lastAA = os.clock() + Game.Latency() / 2000
+	        	end
+	        	if resetAttacks[spell.name:lower()] then
+	          		orbTable.lastAA = os.clock() - Game.Latency() / 2000 - orbTable.animation
+	        	end
+	    	elseif unit.team ~= myHero.team and unit.type == myHero.type then
+	    		if ValidTarget(unit, myRange) and TimeToAttack() and (spell.name:lower():find("attack") or altAttacks[spell.name:lower()]) and spell.target.type ~= myHero.type and Config.m.LastHit.AttackE:Value() and Config.k.LastHit:Value() and spell.target.health <= GetDmg(unit, spell.target) then
+	        		myHero:Attack(unit)
+	        	end
+	    	end
+	    end
+	end)
+
+	Callback.Bind("Tick", function()
+		if not NebelwolfisOrbWalkerLoaded then return end
+		myRange = myHero.range+myHero.pos:DistanceTo(myHero.minBBox)
+		if DoOrb() then
+			Target = AcquireTarget()
+			Orb(Target)
+		end
+	end)
+
+	function Orb(unit)
+	    if TimeToAttack() and unit and unit.valid and not unit.dead and myHero.pos:DistanceTo(unit.pos) < myRange then
+	      Attack(unit)
+	    elseif TimeToMove() then
+	      local pos = nil
+	      if melee and Config.melee.wtt:Value() and unit and unit.type == myHero.type then
+	        if GetDistance(unit) > GetDistance(myHero.minBBox) + GetDistance(unit.minBBox) then
+	          pos = unit.pos
+	        end
+	      else
+	        pos = mousePos
+	      end
+	      Move(fPos or pos)
+	    end
+	end
+
+	function Attack(unit)
+		if not DoAA() or not unit.valid then return end
+		myHero:Attack(unit)
+	end
+
+	function Move(pos)
+		if not DoMove() or not pos then return end
+		if Config.s.OverHeroStopMove then
+			local movePos = Geometry.Vector3(myHero.pos) + (Geometry.Vector3(pos) - Geometry.Vector3(myHero.pos)):Normalize() * myHero.boundingRadius * 2
+			if myHero.pos:DistanceTo(pos) > myHero.boundingRadius then
+				myHero:Move(movePos.x, movePos.z)
+			end
+		else
+			local movePos = Geometry.Vector3(myHero.pos) + (Geometry.Vector3(pos) - Geometry.Vector3(myHero.pos)):Normalize() * 250
+			myHero:Move(movePos.x, movePos.z)
+		end
+	end
+
+	function DoOrb()
+    	return Config.k.Combo:Value() or (Keyboard.IsKeyDown(1) and Config.k.Mouse == 2) or Config.k.Harass:Value() or Config.k.LastHit:Value() or Config.k.LaneClear:Value()
+	end
+
+	function DoAA()
+    	return doAA and ((Config.k.Combo:Value() or (Keyboard.IsKeyDown(1) and Config.k.Mouse == 2)) and Config.m.Combo.Attack:Value()) or (Config.k.Harass:Value() and Config.m.Harass.Attack:Value()) or (Config.k.LastHit:Value() and Config.m.LastHit.Attack:Value()) or (Config.k.LaneClear:Value() and Config.m.LaneClear.Attack:Value())
+	end
+
+	function DoMove()
+    	return doMove and ((Config.k.Combo:Value() or (Keyboard.IsKeyDown(1) and Config.k.Mouse == 2)) and Config.m.Combo.Move:Value()) or (Config.k.Harass:Value() and Config.m.Harass.Move:Value()) or (Config.k.LastHit:Value() and Config.m.LastHit.Move:Value()) or (Config.k.LaneClear:Value() and Config.m.LaneClear.Move:Value())
+	end
+
+	function TimeToAttack()
+		return os.clock() - Game.Latency() / 2000 > orbTable.lastAA + orbTable.animation and DoAA()
+	end
+
+	function TimeToMove()
+		return os.clock() - Game.Latency() / 2000 > orbTable.lastAA + orbTable.windUp and DoMove()
+	end
+
+	function AcquireTarget()
+		local target = nil
+		if Config.k.Combo:Value() then
+			target = GetTarget(myRange)
+		else
+			local t = minionManager.ClosestMinion(myHero.pos, 300-myHero.team)
+			if t and t.valid and t.pos:DistanceTo(myHero.pos) < myRange then
+				target = t
+			end
+		end
+		return target
+	end
+
+	function GetTarget(range)
+	    local target, steps = nil, 10000
+	    for _, k in pairs(enemyHeroes) do
+	        local step = k.health / myHero:CalcDamage(k, 100)
+	        if k and k.valid and k.pos:DistanceTo(myHero.pos) < range and step < steps then
+	            target = k
+	            steps = step
+	        end
+	    end
+	    return target
+	end
+
+	function PrepareToMakeMinionManager()
+		if myHero then
+			MakeMinionManager()
+		else
+			DelayAction(PrepareMakeMinionManager, 1)
+		end
+	end
+
+	function MakeMinionManager()
+		_G.MINION_ALL, _G.MINION_ENEMY, _G.MINION_ALLY, _G.MINION_JUNGLE = 0, 300-myHero.team, myHero.team, 300
+		local manager = {}
+		manager.objects = {}
+		for i = 0,Game.ObjectCount() do
+			local obj = Game.Object(i)
+			if obj and obj.valid and obj.type == "obj_AI_Minion" then
+				manager.objects[obj.networkID] = obj
+			end
+		end
+		manager.maxObjects = function(team)
+							    local m = 0
+							    for _,k in pairs(manager.objects) do 
+							    	if k and k.valid and not k.dead then
+								    	if team then
+								    		if (team == 0 or k.team == team) then
+								    			m = m + 1
+								    		end
+								    	else
+								        	m = m + 1 
+								        end
+							    	else
+							    		manager.objects[_] = nil
+								    end
+							    end
+							    return m
+							end
+		manager.GetAllMinions = function()
+							    local m = {}
+							    for _,k in pairs(manager.objects) do 
+							    	if k and k.valid and not k.dead then
+							    		table.insert(m, k)
+							    	else
+							    		manager.objects[_] = nil
+							        end
+							    end
+							    return m
+							end
+		manager.GetMinions = function(team, pos, range)
+							    local m = {}
+							    for _,k in pairs(manager.GetAllMinions()) do 
+							    	if team then
+							    		if pos and range then
+							    			if (team == 0 or k.team == team) and k.pos:DistanceTo(pos) < range then
+									    		table.insert(m, k)
+									    	end
+							    		elseif (team == 0 or k.team == team) then
+							    			table.insert(m, k)
+							    		end
+							    	else
+							    		table.insert(m, k)
+							    	end
+							    end
+							    return m
+							end
+		manager.ClosestMinion = function(pos, team)
+								    local minion = nil
+								    for k,v in pairs(manager.GetAllMinions()) do 
+								        if not minion and v and v.valid and not v.dead and (team == 0 or v.team == team) then minion = v end
+								        if minion and v and v.valid and not v.dead and (team == 0 or v.team == team) and minion.pos:DistanceTo(pos) > v.pos:DistanceTo(pos) then
+								            minion = v
+								        end
+								    end
+								    return minion
+								end
+		manager.GetHighestMinion = function(pos, range, team)
+								    local minion = nil
+								    for k,v in pairs(manager.GetAllMinions()) do 
+								        if not minion and v and (team == 0 or v.team == team) and v.pos:DistanceTo(pos) < range then minion = v end
+								        if minion and v and (team == 0 or v.team == team) and v.pos:DistanceTo(pos) < range and v.health > minion.health then
+								            minion = v
+								        end
+								    end
+								    return minion
+								end
+		manager.GetLowestMinion = function(pos, range, team)
+								    local minion = nil
+								    for k,v in pairs(manager.GetAllMinions()) do 
+								        if not minion and v and (team == 0 or v.team == team) and v.pos:DistanceTo(pos) < range then minion = v end
+								        if minion and v and (team == 0 or v.team == team) and v.pos:DistanceTo(pos) < range and v.health < minion.health then
+								            minion = v
+								        end
+								    end
+								    return minion
+								end
+		_G.minionManager = manager
+		Callback.Bind("CreateObj", function(obj)
+			if obj and obj.type == "obj_AI_Minion" then
+				table.insert(minionManager.objects, obj)
+			end
+		end)
+	end;PrepareToMakeMinionManager()
+-- }
