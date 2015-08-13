@@ -272,12 +272,36 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 
 	function AcquireTarget()
 		local target = nil
+		local t1 = minionManager.GetHighestMinion(myHero.pos, myRange, 300-myHero.team)
+		local t2 = minionManager.GetLowestMinion(myHero.pos, myRange, 300-myHero.team)
 		if Config.k.Combo:Value() then
 			target = GetTarget(myRange)
-		else
-			local t = minionManager.ClosestMinion(myHero.pos, 300-myHero.team)
-			if t and t.valid and t.pos:DistanceTo(myHero.pos) < myRange then
-				target = t
+		elseif Config.k.Harass:Value() then
+			if Config.m.Harass.Priority:Value() == 1 then
+				if t2 and t2.valid and t2.pos:DistanceTo(myHero.pos) < myRange and t2.health < myHero:CalcDamage(t2, myHero.totalDamage) then
+					target = t2
+				else
+					target = GetTarget(myRange)
+				end
+			else
+				target = GetTarget(myRange)
+				if not target then
+					if t2 and t2.valid and t2.pos:DistanceTo(myHero.pos) < myRange and t2.health < myHero:CalcDamage(t2, myHero.totalDamage) then
+						target = t2
+					end
+				end
+			end
+		elseif Config.k.LastHit:Value() then
+			if t2 and t2.valid and t2.pos:DistanceTo(myHero.pos) < myRange and t2.health < myHero:CalcDamage(t2, myHero.totalDamage) then
+				target = t2
+			end
+		elseif Config.k.LaneClear:Value() then
+			if t1 and t1.valid and t1.pos:DistanceTo(myHero.pos) < myRange then
+				if t2 and t2.valid and t2.pos:DistanceTo(myHero.pos) < myRange and t2.health < myHero:CalcDamage(t2, myHero.totalDamage) then
+					target = t2
+				else
+					target = t1
+				end
 			end
 		end
 		return target
