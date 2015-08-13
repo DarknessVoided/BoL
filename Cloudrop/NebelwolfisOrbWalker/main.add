@@ -205,7 +205,6 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 		    		if unit.valid and myHero.pos:DistanceTo(unit.pos) < myRange and TimeToAttack() and (spell.name:lower():find("attack") or altAttacks[spell.name:lower()]) and spell.target.type ~= myHero.type and Config.m.LastHit.AttackE:Value() and Config.k.LastHit:Value() and spell.target.health <= GetDmg(unit, spell.target) then
 		        		myHero:Attack(unit)
 		        	end
-		    		minionAATable[spell.target.networkID] = {source = unit, dmg = unit:CalcDamage(spell.target, unit.totalDamage), time = unit.pos:DistanceTo(spell.target.pos)/projspeed}
 		    	end
 		    end
 		    if spell.target.type == "obj_AI_Minion" and spell.name:lower():find("attack") then
