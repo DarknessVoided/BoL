@@ -180,7 +180,7 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 	    end
 	    if Config.d.AAE:Value() then
 	      for _, enemy in pairs(enemyHeroes) do
-	        if enemy.valid then
+	        if enemy.valid and not enemy.dead and enemy.visible then
 	      		Graphics.DrawCircle(enemy.x, enemy.y, enemy.z, enemy.range+enemy.pos:DistanceTo(enemy.minBBox), Config.d.AAEC:Value())
 	        end
 	      end
@@ -215,7 +215,7 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 			    	if not AATable[target.networkID] then AATable[target.networkID] = {} end
 			    	AATable[target.networkID][timer] = {source = unit, dmg = unit:CalcDamage(spell.target, unit.totalDamage), time = os.clock() + timer}
 			    	DelayAction(function() AATable[target.networkID][timer] = nil end, timer)
-			end
+			    end
 		    end
 	    end
 	end) 
