@@ -310,6 +310,7 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 		local target = nil
 		local t1 = minionManager.GetHighestMinion(myHero.pos, myRange, 300-myHero.team)
 		local t2 = minionManager.GetLowestMinion(myHero.pos, myRange, 300-myHero.team)
+		local t3 = minionManager.ClosestMinion(myHero.pos, 300)
 		if Config.k.Combo:Value() then
 			target = GetTarget(myRange)
 		elseif Config.k.Harass:Value() then
@@ -338,6 +339,9 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 				else
 					target = t1
 				end
+			end
+			if not target then
+				target = t3
 			end
 		end
 		return target

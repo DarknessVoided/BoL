@@ -578,7 +578,7 @@ Class "Kalista"
     if sReady[_E] and Config.Harrass.E:Value() and ValidTarget(self.Target, data[2].range) then
       local harrassUnit = nil
       local killableCounter = 0
-      for minion,winion in pairs(Mobs.objects) do
+      for minion,winion in pairs(_G.minionManager.GetMinions(MINION_ENEMY)) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
         if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and myHero.pos:DistanceTo(winion.pos) < data[2].range then
           killableCounter = killableCounter +1
