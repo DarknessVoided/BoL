@@ -207,7 +207,7 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 		        	end
 		    	end
 		    end
-		    if spell.target.type == "obj_AI_Minion" and spell.name:lower():find("attack") then
+		    if spell.target and spell.target.type == "obj_AI_Minion" and spell.name:lower():find("attack") then
 		    	local timer = unit.pos:DistanceTo(spell.target.pos)/GetProjectileSpeed(unit)
 		    	local target = spell.target
 		    	if not AATable[target.networkID] then AATable[target.networkID] = {} end
