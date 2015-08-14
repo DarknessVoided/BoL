@@ -482,6 +482,9 @@ Class "Kalista"
       stackTable[spell.target.networkID] = GetStacks(spell.target) + 1
       Game.Chat.Print(""..GetStacks(spell.target))
     end
+    if Config.Misc.Ed:Value() and unit.team ~= myHero.team and myHero.health/myHero.maxHealth < 0.125 and (myHero == spell.target or myHero.pos:DistanceTo(spell.endPos) < myHero.boundingRadius*3) then
+      Cast(_E)    
+    end
     if not self.soulMate or unit.type ~= myHero.type then return end
     if Config.Misc.R:Value() and self.saveAlly and myHero.pos:DistanceTo(self.soulMate.pos) < data[3].range and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or self.soulMate.pos:DistanceTo(spell.endPos) < self.soulMate.boundingRadius*3) then
       Cast(_R)
