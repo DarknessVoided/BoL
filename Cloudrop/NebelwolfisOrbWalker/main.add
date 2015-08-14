@@ -333,15 +333,15 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 				target = t2
 			end
 		elseif Config.k.LaneClear:Value() then
-			if t1 and t1.valid and t1.pos:DistanceTo(myHero.pos) < myRange then
+			if not target and t3 and t3.pos:DistanceTo(myHero.pos) < myRange then
+				target = t3
+			end
+			if not target and t1 and t1.valid and t1.pos:DistanceTo(myHero.pos) < myRange then
 				if t2 and t2.valid and t2.pos:DistanceTo(myHero.pos) < myRange and t2.health < myHero:CalcDamage(t2, myHero.totalDamage) then
 					target = t2
 				else
 					target = t1
 				end
-			end
-			if not target then
-				target = t3
 			end
 		end
 		return target
