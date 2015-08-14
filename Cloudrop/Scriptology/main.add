@@ -43,7 +43,7 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     if loadedSPlugin then
       if loadedSPlugin.Tick then loadedSPlugin:Tick() end
       if loadedSPlugin.Killsteal then loadedSPlugin:Killsteal() end
-      _G.Target = GetTarget(1000)
+      _G.Target = GetTarget(myHero.range+myHero.pos:DistanceTo(myHero.minBBox))
       if Config.kConfig.Combo:Value() and loadedSPlugin.Combo and ValidTarget(Target) then
         loadedSPlugin:Combo()
       end
@@ -463,6 +463,8 @@ Class "Kalista"
     Config.kConfig:KeyBinding("LastHit", "Last hit", "X", false, false)
     Config.kConfig:KeyBinding("LaneClear", "Lane Clear", "V", false, false)
     Config.Misc:Boolean("Ej", "Use E to steal Jungle", true)
+    Config.Misc:Boolean("Ea", "Use E always if it", true)
+    Config.Misc:DropDown("Eaa", "executes X Minions", 4, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     Config.Misc:Boolean("Ed", "Use E if you are about to die", true)
     Config.Misc:Boolean("AAGap", "AAs as Gapcloser on minions", true)
     Config.Misc:Boolean("R", "Save ally with R (none bound)", true)
@@ -502,7 +504,7 @@ Class "Kalista"
   end
 
   function Kalista:Tick()
-    if sReady[_E] and ((Config.kConfig.LastHit:Value() and Config.LastHit.E:Value()) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.E:Value()) or Config.Misc.Ej:Value()) then
+    if sReady[_E] and ((Config.kConfig.LastHit:Value() and Config.LastHit.E:Value()) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.E:Value()) or Config.Misc.Ej:Value() or Config.Misc.Ea:Value()) then
       local killableCounter = 0
       local killableCounterJ = 0 
       for minion,winion in pairs(_G.minionManager.GetMinions(MINION_ENEMY)) do
@@ -521,7 +523,7 @@ Class "Kalista"
           end
         end
       end
-      if (Config.kConfig.LaneClear:Value() and killableCounter >= Config.LaneClear.Ea:Value()) or (Config.kConfig.LastHit:Value() and killableCounter >= Config.LastHit.Ea:Value()) or (Config.Misc.Ej:Value() and killableCounterJ >= 1) then
+      if (Config.kConfig.LaneClear:Value() and killableCounter >= Config.LaneClear.Ea:Value()) or (Config.kConfig.LastHit:Value() and killableCounter >= Config.LastHit.Ea:Value()) or (Config.Misc.Ej:Value() and killableCounterJ >= 1) or (Config.Misc.Ea:Value() and killableCounter+killableCounterJ >= Config.Misc.Eaa:Value()) then
         Cast(_E)
       end
     end
