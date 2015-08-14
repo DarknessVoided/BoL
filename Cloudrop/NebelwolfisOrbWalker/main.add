@@ -208,11 +208,14 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 		    	end
 		    end
 		    if spell.target and spell.target.type == "obj_AI_Minion" and spell.name:lower():find("attack") then
-		    	local timer = unit.pos:DistanceTo(spell.target.pos)/GetProjectileSpeed(unit)
-		    	local target = spell.target
-		    	if not AATable[target.networkID] then AATable[target.networkID] = {} end
-		    	AATable[target.networkID][timer] = {source = unit, dmg = unit:CalcDamage(spell.target, unit.totalDamage), time = os.clock() + timer}
-		    	DelayAction(function() AATable[target.networkID][timer] = nil end, timer)
+		    	local speed = GetProjectileSpeed(unit)
+		    	if speed < math.huge then
+			    	local timer = unit.pos:DistanceTo(spell.target.pos)/speed
+			    	local target = spell.target
+			    	if not AATable[target.networkID] then AATable[target.networkID] = {} end
+			    	AATable[target.networkID][timer] = {source = unit, dmg = unit:CalcDamage(spell.target, unit.totalDamage), time = os.clock() + timer}
+			    	DelayAction(function() AATable[target.networkID][timer] = nil end, timer)
+			end
 		    end
 	    end
 	end) 
