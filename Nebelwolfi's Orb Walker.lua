@@ -276,7 +276,7 @@ class "NebelwolfisOrbWalker" -- {
     if unit and spell and spell.name then
       if unit.isMe then
         if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
-          local windUp = spell.windUpTime
+          local windUp = myHero.charName == "Kalista" and 0 or spell.windUpTime
           self.orbTable.windUp = windUp
           self.orbTable.animation = spell.animationTime
           self.orbTable.lastAA = os.clock() + GetLatency() / 2000

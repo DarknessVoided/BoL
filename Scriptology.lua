@@ -2794,7 +2794,7 @@ class "Kalista"
     end
   end
 
-  function Kalista:ApplyBuff(unit, source, buff)
+  function Kalista:ApplyBuff(source, unit, buff)
     if Config.Misc.stackMethod == 1 and unit and source and source.isMe and buff and buff.name == "kalistaexpungemarker" then
       stackTable[unit.networkID] = 1
     end
