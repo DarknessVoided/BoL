@@ -214,10 +214,6 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 			    	local target = spell.target
 			    	if not AATable[target.networkID] then AATable[target.networkID] = {} end
 			    	AATable[target.networkID][timer] = {source = unit, dmg = unit:CalcDamage(spell.target, unit.totalDamage), time = os.clock() + timer}
-<<<<<<< HEAD
-=======
-			    	DelayAction(function() AATable[target.networkID][timer] = nil end, timer)
->>>>>>> origin/master
 			    end
 		    end
 	    end
