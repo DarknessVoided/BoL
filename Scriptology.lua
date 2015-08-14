@@ -1793,7 +1793,7 @@ class "Darius"
     end
   end
 
-  function Darius:ApplyBuff(unit, source, buff)
+  function Darius:ApplyBuff(source, unit, buff)
     if unit and source and source.isMe and buff and buff.name == "dariushemo" then
       stackTable[unit.networkID] = 1
     end
@@ -6143,7 +6143,7 @@ class "Vayne"
     end
   end
 
-  function Vayne:ApplyBuff(unit, source, buff)
+  function Vayne:ApplyBuff(source, unit, buff)
     if unit and source and source.isMe and buff and buff.name == "vaynesilvereddebuff" then
       stackTable[unit.networkID] = 1
     end
