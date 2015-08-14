@@ -5862,7 +5862,6 @@ class "Thresh"
 
   function Thresh:Combo()
     local target = self.Target
-    local target = self:GetBestTarget(data[0].range)
     if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, data[0].range*2) then
       target = self.Forcetarget  
     end
@@ -5915,7 +5914,6 @@ class "Thresh"
 
   function Thresh:Harrass()
     local target = self.Target
-    local target = self:GetBestTarget(data[0].range)
     if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, data[0].range*2) then
       target = self.Forcetarget  
     end
@@ -5965,7 +5963,7 @@ class "Thresh"
   end
 
   function Thresh:Draw()
-    local target = self:GetBestTarget(data[0].range)
+    local target = self.Target
     if self.Forcetarget ~= nil and ValidTarget(self.Forcetarget, data[0].range*2) then
       target = self.Forcetarget  
     end
