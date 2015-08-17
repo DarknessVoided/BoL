@@ -1,6 +1,6 @@
 _G.OneTickOneActionDelay = 0.03
 
-functions, lastTickT, lastTickF = {}, 0, 0
+local functions, lastTickT, lastTickF = {}, 0, 0
 function AddTick(func, id)
 	if lastTickF == 0 then
 		AddTickCallback(OneTickOneAction)
