@@ -157,7 +157,10 @@ return {
         [_R] = { name = "JinxR", speed = 1700, delay = 0.600, range = 20000, width = 120, collision = false, aoe = true, type = "circular"}
     },
     ["Kalista"] = {
-        [_Q] = { name = "KalistaMysticShot", speed = 1750, delay = 0.25, range = 1375, width = 70, collision = true, aoe = false, type = "linear"},
+        [_Q] = { name = "KalistaMysticShot", speed = 1700, delay = 0.25, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(source, target) return 0-50+60*myHero:GetSpellData(_Q).level+myHero.totalDamage end},
+        [_W] = { delay = 1.5, range = 5000},
+        [_E] = { range = 1000, dmgAD = function(source, target, stacks) return stacks > 0 and (10 + (10 * myHero:GetSpellData(_E).level) + (myHero.totalDamage * 0.6)) + (stacks-1) * (({10, 14, 19, 25, 31})[myHero:GetSpellData(_E).level] + (0.175 + 0.025 * myHero:GetSpellData(_E).level)*myHero.totalDamage) or 0 end},
+        [_R] = { range = 2000}
     },
     ["Karma"] = {
         [_Q] = { name = "KarmaQ", speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
