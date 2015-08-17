@@ -247,7 +247,7 @@ return {
         [_Q] = { name = "NautilusAnchorDrag", speed = 2000, delay = 0.250, range = 1080, width = 80, collision = true, aoe = false, type = "linear"}
     },
     ["Nidalee"] = {
-        [_Q] = { name = "JavelinToss", speed = 1350, delay = 0.125, range = 1625, width = 37.5, collision = true, type = "linear"}
+        [_Q] = { name = "JavelinToss", speed = 1350, delay = 0.25, range = 1625, width = 37.5, collision = true, type = "linear"}
     },
     ["Nocturne"] = {
         [_Q] = { name = "NocturneDuskbringer", speed = 1400, delay = 0.250, range = 1125, width = 60, collision = false, aoe = false, type = "linear"}
@@ -376,8 +376,10 @@ return {
         [_E] = { name = "", speed = 2000, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear"}
     },
     ["Veigar"] = {
-        [_Q] = { name = "", speed = 1200, delay = 0.25, range = 875, width = 75, collision = true, aoe = false, type = "linear"},
-        [_W] = { name = "VeigarDarkMatter", speed = 900, delay = 1.25, range = 900, width = 110, collision = false, aoe = true, type = "circular"}
+        [_Q] = { speed = 1200, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+45*source:GetSpellData(_Q).level+0.6*myHero.ap end},
+        [_W] = { speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 70+50*source:GetSpellData(_W).level+myHero.ap end},
+      [_E] = { speed = math.huge, delay = 0.5, range = 725, width = 275, collision = false, aoe = false, type = "circular"},
+      [_R] = { range = 650, dmgAP = function(source, target) return 125+125*source:GetSpellData(_R).level+source.ap+target.ap end}
     },
     ["VelKoz"] = {
         [_Q] = { name = "VelKozQ", speed = 1300, delay = 0.066, range = 1050, width = 50, collision = true, aoe = false, type = "linear"},
