@@ -69,7 +69,10 @@ return {
         [_R] = { name = "MissileBarrage", speed = 2000, delay = 0.200, range = 1225, width = 60, collision = false, aoe = false, type = "linear"},
     },
     ["Darius"] = {
-        [_E] = { name = "", speed = 1500, delay = 0.550, range = 530, width = 0.25, collision = false, aoe = true, type = "cone"}
+        [_Q] = { range = 0, width = 450, dmgAD = function(source, target) return 35*source:GetSpellData(_Q).level+35+0.7*source.totalDamage end},
+        [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage+0.2*source:GetSpellData(_W).level*source.totalDamage end},
+        [_E] = { name = "", speed = 1500, delay = 0.550, range = 530, width = 0.25, collision = false, aoe = true, type = "cone"},
+        [_R] = { range = 450, dmgTRUE = function(source, target, stacks) return math.floor(70+90*source:GetSpellData(_R).level+0.75*source.addDamage+0.2*stacks*(70+90*source:GetSpellData(_R).level+0.75*source.addDamage)) end}
     },
     ["Diana"] = {
         [_Q] = { name = "DianaArc", speed = 1500, delay = 0.250, range = 830, width = 130, collision = false, aoe = false, type = "circular"},
