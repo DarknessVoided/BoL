@@ -59,7 +59,7 @@ class "NebelwolfisOrbWalker" -- {
 
   function NebelwolfisOrbWalker:LoadVars(Cfg)
     DelayAction(function()
-      self.melee = myHero.range < 450 or myHero.charName == "Rengar"
+      self.melee = (myHero.range < 450 or myHero.charName == "Rengar") and myHero.charName ~= "Nidalee" and myHero.charName ~= "Jayce" and myHero.charName ~= "Elise"
     end, 2)
     self.orbDisabled = false
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
