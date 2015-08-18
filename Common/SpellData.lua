@@ -4,8 +4,10 @@ return {
         [_E] = { name = "AatroxE", speed = 1200, delay = 0.25, range = 1000, width = 150, collision = false, aoe = false, type = "linear"}
     },
     ["Ahri"] = {
-        [_Q] = { name = "AhriOrbofDeception", speed = 1600, delay = 0.25, range = 880, width = 120, collision = false, aoe = false, type = "linear"},
-        [_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear"}
+        [_Q] = { name = "AhriOrbofDeception", speed = 2500, delay = 0.25, range = 880, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(source, target) return 15+25*source:GetSpellData(_Q).level+0.35*source.ap end},
+        [_W] = { range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
+        [_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_E).level+0.5*source.ap end},
+        [_R] = { range = 750, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
     },
     ["Akali"] = {
         [_E] = { name = "", speed = math.huge, delay = 0.125, range = 0, width = 325, collision = false, aoe = true, type = "circular"}
