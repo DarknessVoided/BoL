@@ -180,6 +180,10 @@ return {
         [_R] = { name = "", speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
     },
     ["Katarina"] = {
+        [_Q] = { range = 675, dmgAP = function(source, target) return 35+25*source:GetSpellData(_Q).level+0.45*source.ap end},
+        [_W] = { range = 375, dmgAP = function(source, target) return 5+35*source:GetSpellData(_W).level+0.25*source.ap+0.6*source.totalDamage end},
+        [_E] = { range = 700, dmgAP = function(source, target) return 10+30*source:GetSpellData(_E).level+0.25*source.ap end},
+        [_R] = { range = 550, dmgAP = function(source, target) return 30+10*source:GetSpellData(_R).level+0.2*source.ap+0.3*source.addDamage end}
     },
     ["Kayle"] = {
     },
