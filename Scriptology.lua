@@ -1933,7 +1933,7 @@ class "Yorick"
     if sReady[_Q] and Config.Misc.WallJump then
       local MyPos = Vector(myHero.x, myHero.y, myHero.z)
       local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
-      local drawPos = MyPos - (MyPos - MousePos):normalized() * 325
+      local drawPos = MyPos - (MyPos - MousePos):normalized() * 300
       local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
       DrawLFC(drawPos.x, drawPos.y, drawPos.z, myHero.boundingRadius*2, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
       DrawLFC(drawPos.x, drawPos.y, drawPos.z, 2*myHero.boundingRadius/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
@@ -1985,7 +1985,7 @@ class "Yorick"
   function Kalista:Tick()
     if Config.Misc.WallJump then
       local movePos1 = myHero + (Vector(mousePos) - myHero):normalized() * 150
-      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 325
+      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 300
       local movePos3 = myHero + (Vector(mousePos) - myHero):normalized() * 65
       if IsWall(D3DXVECTOR3(movePos1.x, movePos1.y, movePos1.z)) then
         if not IsWall(D3DXVECTOR3(movePos2.x, movePos2.y, movePos2.z)) then
