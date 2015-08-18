@@ -160,9 +160,9 @@ return {
         [_R] = { name = "JinxR", speed = 1700, delay = 0.600, range = 20000, width = 120, collision = false, aoe = true, type = "circular"}
     },
     ["Kalista"] = {
-        [_Q] = { name = "KalistaMysticShot", speed = 1700, delay = 0.25, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(source, target) return 0-50+60*myHero:GetSpellData(_Q).level+myHero.totalDamage end},
+        [_Q] = { name = "KalistaMysticShot", speed = 1700, delay = 0.25, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(source, target) return 0-50+60*source:GetSpellData(_Q).level+source.totalDamage end},
         [_W] = { delay = 1.5, range = 5000},
-        [_E] = { range = 1000, dmgAD = function(source, target, stacks) return stacks > 0 and (10 + (10 * myHero:GetSpellData(_E).level) + (myHero.totalDamage * 0.6)) + (stacks-1) * (({10, 14, 19, 25, 31})[myHero:GetSpellData(_E).level] + (0.175 + 0.025 * myHero:GetSpellData(_E).level)*myHero.totalDamage) or 0 end},
+        [_E] = { range = 1000, dmgAD = function(source, target, stacks) return stacks > 0 and (10 + (10 * source:GetSpellData(_E).level) + (source.totalDamage * 0.6)) + (stacks-1) * (({10, 14, 19, 25, 31})[source:GetSpellData(_E).level] + (0.175 + 0.025 * source:GetSpellData(_E).level)*source.totalDamage) or 0 end},
         [_R] = { range = 2000}
     },
     ["Karma"] = {
@@ -379,14 +379,14 @@ return {
         [_R] = { name = "VarusR", speed = 1200, delay = 0.5, range = 800, width = 100, collision = false, aoe = false, type = "linear"}
     },
     ["Vayne"] = {
-        [_Q] = { range = 450, dmgAD = function(source, target) return (1.25+0.05*source:GetSpellData(_Q).level)*myHero.totalDamage end},
+        [_Q] = { range = 450, dmgAD = function(source, target) return (1.25+0.05*source:GetSpellData(_Q).level)*source.totalDamage end},
         [_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(source, target) return 10+10*source:GetSpellData(_W).level+((0.03+0.01*source:GetSpellData(_W).level)*target.maxHealth) end},
         [_E] = { name = "", speed = 2000, delay = 0.25, range = 1000, width = 0, collision = false, aoe = false, type = "linear", dmgAD = function(source, target) return 10+35*source:GetSpellData(_E).level+0.5*source.addDamage end},
         [_R] = { range = 1000}
     },
     ["Veigar"] = {
-        [_Q] = { speed = 1200, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+45*source:GetSpellData(_Q).level+0.6*myHero.ap end},
-        [_W] = { name = "VeigarDarkMatter", speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 70+50*source:GetSpellData(_W).level+myHero.ap end},
+        [_Q] = { speed = 1200, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+45*source:GetSpellData(_Q).level+0.6*source.ap end},
+        [_W] = { name = "VeigarDarkMatter", speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 70+50*source:GetSpellData(_W).level+source.ap end},
         [_E] = { speed = math.huge, delay = 0.5, range = 725, width = 275, collision = false, aoe = false, type = "circular"},
         [_R] = { range = 650, dmgAP = function(source, target) return 125+125*source:GetSpellData(_R).level+source.ap+target.ap end}
     },
