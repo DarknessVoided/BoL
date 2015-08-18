@@ -2621,8 +2621,8 @@ class "Yorick"
         if hit == 0 then
           pos, hit = GetJFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
         end
-        if pos and GetDistanceSqr(pos) < 150^2 and hit > 0 then
-          Cast(_W, pos)
+        if pos and GetDistanceSqr(pos) < 275^2 and hit > 0 then
+          Cast(_E, pos)
         end
       end
     end
