@@ -2582,6 +2582,52 @@ class "Yorick"
     end
   end
 
+  function Nidalee:LastHit()
+    if not self:IsHuman() then
+      for _, minion in pairs(Mobs.objects) do
+        local health = GetRealHealth(minion)
+        if sReady[_Q] and GetDmg(_Q, myHero, minion) >= health and GetDistanceSqr(minion) < self:GetAARange()^2 then
+          CastSpell(_Q, myHero:Attack(minion))
+          return;
+        end
+        for _=1,2 do
+          if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < self.data.Cougar[_].range^2 then
+            Cast(_, minion)
+            return;
+          end
+        end
+      end
+    end
+  end
+
+  function Nidalee:LaneClear()
+    if not self:IsHuman() then
+      for _, minion in pairs(Mobs.objects) do
+        if sReady[_Q] and GetDistanceSqr(minion) < self:GetAARange()^2 then
+          CastSpell(_Q, myHero:Attack(minion))
+        end
+      end
+      if sReady[_W] and Config.LaneClear.W then
+        local pos, hit = GetFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
+        if hit == 0 then
+          pos, hit = GetJFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
+        end
+        if pos and GetDistance(pos) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(pos) <= self.data.Cougar[1].range+self.data.Cougar[1].width and hit > 0 then
+          Cast(_W, pos)
+        end
+      end
+      if sReady[_E] and Config.LaneClear.E then
+        local pos, hit = GetFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
+        if hit == 0 then
+          pos, hit = GetJFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
+        end
+        if pos and GetDistanceSqr(pos) < 150^2 and hit > 0 then
+          Cast(_W, pos)
+        end
+      end
+    end
+  end
+
   function Nidalee:Killsteal()
     for k,enemy in pairs(GetEnemyHeroes()) do
       if enemy and not enemy.dead and enemy.visible then
