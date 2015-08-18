@@ -422,7 +422,11 @@ return {
         [_R] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 375, collision = false, aoe = true, type = "circular"}
     },
     ["Yasuo"] = {
-        [_Q] =  { name = "YasuoQ", speed = math.huge, delay = 0.25, range = 475, width = 40, collision = false, aoe = false, type = "linear"}
+        [_Q] = { name = "YasuoQ", speed = math.huge, delay = 0.25, range = 475, width = 40, collision = false, aoe = false, type = "linear", dmgAD = function(source, target) return 20*source:GetSpellData(_Q).level+source.totalDamage-10 end},
+        [_W] = { range = 350},
+        [_E] = { range = 475, dmgAP = function(source, target) return 50+20*source:GetSpellData(_E).level+source.ap end},
+        [_R] = { range = 1200, dmgAD = function(source, target) return 100+100*source:GetSpellData(_R).level+1.5*source.totalDamage end},
+        [-2] = { range = 1200, speed = 1200, delay = 0.125, width = 65, type = "linear" }
     },
     ["Yorick"] = {
         [_W] = { name = "", speed = math.huge, delay = 0.25, range = 600, width = 175, collision = false, aoe = true, type = "circular"}
