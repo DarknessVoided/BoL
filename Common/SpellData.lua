@@ -304,7 +304,7 @@ return {
         [_R] = { name = "RumbleCarpetBomb", speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear"}
     },
     ["Ryze"] = {
-        [_Q] = { name = "RyzeQ", speed = 1875, delay = 0.25, range = 880, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_Q).level+0.55*source.ap+(0.015+0.05*source:GetSpellData(_Q).level)*source.maxMana end},
+        [_Q] = { name = "RyzeQ", speed = 1875, delay = 0.25, range = 880, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+25*source:GetSpellData(_Q).level+0.55*source.ap+(0.015+0.05*source:GetSpellData(_Q).level)*source.maxMana end},
         [_W] = { name = "", range = 600, dmgAP = function(source, target) return 60+20*source:GetSpellData(_W).level+0.4*source.ap+0.025*source.maxMana end},
         [_E] = { name = "", range = 600, dmgAP = function(source, target) return 34+16*source:GetSpellData(_E).level+0.3*source.ap+0.02*source.maxMana end},
         [_R] = { name = "", range = 900}
