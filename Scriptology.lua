@@ -1953,6 +1953,15 @@ class "Yorick"
         end
       end
     end
+    if sReady[_W] and Config.Misc.WallJump then
+      local MyPos = Vector(myHero.x, myHero.y, myHero.z)
+      local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
+      local drawPos - (MyPos - MousePos):normalized() * 300
+      local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
+      DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
+      DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
+      DrawText("W Jump", 15, barPos.x, barPos.y, ARGB(255, 155, 155, 155))
+    end
   end
 
   function Kalista:ProcessSpell(unit, spell)
@@ -2376,7 +2385,7 @@ class "Yorick"
     end
     if Config.Misc.WallJump then
       local movePos1 = myHero + (Vector(mousePos) - myHero):normalized() * 150
-      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 300
+      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 350
       if IsWall(D3DXVECTOR3(movePos1.x, movePos1.y, movePos1.z)) and not IsWall(D3DXVECTOR3(movePos2.x, movePos2.y, movePos2.z)) then
         CastSpell(_W, movePos2.x, movePos2.z)
       else
@@ -2401,27 +2410,27 @@ class "Yorick"
 
   function Nidalee:Draw()
     if self:IsHuman() then
-      if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
+      if Config.Draws.Q and sReady[_Q] then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[0].range, ARGB(255, 155, 155, 155))
       end
-      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
+      if Config.Draws.W and sReady[_W] then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[1].range, ARGB(255, 155, 155, 155))
       end
-      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
+      if Config.Draws.E and sReady[_E] then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Human[2].range, ARGB(255, 155, 155, 155))
       end
     else
-      if Config.Draws.Q and myHero:CanUseSpell(_Q) == READY then
+      if Config.Draws.Q and sReady[_Q] then
         DrawLFC(myHero.x, myHero.y, myHero.z, self:GetAARange(), ARGB(255, 155, 155, 155))
       end
-      if Config.Draws.W and myHero:CanUseSpell(_W) == READY then
+      if Config.Draws.W and sReady[_W] then
         local drawPos = self:getMousePos()
         local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
         DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
         DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
         DrawText("W Jump", 15, barPos.x, barPos.y, ARGB(255, 155, 155, 155))
       end
-      if Config.Draws.E and myHero:CanUseSpell(_E) == READY then
+      if Config.Draws.E and sReady[_E] then
         DrawLFC(myHero.x, myHero.y, myHero.z, self.data.Cougar[2].range, ARGB(255, 155, 155, 155))
       end
     end
