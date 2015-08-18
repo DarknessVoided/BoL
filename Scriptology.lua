@@ -1930,6 +1930,15 @@ class "Yorick"
   end
 
   function Kalista:Draw()
+    if sReady[_Q] and Config.Misc.WallJump then
+      local MyPos = Vector(myHero.x, myHero.y, myHero.z)
+      local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
+      local drawPos = MyPos - (MyPos - MousePos):normalized() * 325
+      local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
+      DrawLFC(drawPos.x, drawPos.y, drawPos.z, myHero.boundingRadius*2, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
+      DrawLFC(drawPos.x, drawPos.y, drawPos.z, 2*myHero.boundingRadius/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
+      DrawText("WallJump", 15, barPos.x, barPos.y, ARGB(255, 155, 155, 155))
+    end
     if not Config.Draws.DMG or not sReady[_E] then return end
     for _, minion in pairs(Mobs.objects) do
       if minion and not minion.dead and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
@@ -1952,15 +1961,6 @@ class "Yorick"
           DrawText3D(math.floor(damageE/health*100).."%", minion.x-45, minion.y-45, minion.z+45, 20, ARGB(255,250,250,250), 0)
         end
       end
-    end
-    if sReady[_W] and Config.Misc.WallJump then
-      local MyPos = Vector(myHero.x, myHero.y, myHero.z)
-      local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
-      local drawPos = MyPos - (MyPos - MousePos):normalized() * 300
-      local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
-      DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
-      DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
-      DrawText("W Jump", 15, barPos.x, barPos.y, ARGB(255, 155, 155, 155))
     end
   end
 
@@ -1985,12 +1985,17 @@ class "Yorick"
   function Kalista:Tick()
     if Config.Misc.WallJump then
       local movePos1 = myHero + (Vector(mousePos) - myHero):normalized() * 150
-      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 300
-      if IsWall(D3DXVECTOR3(movePos1.x, movePos1.y, movePos1.z)) and not IsWall(D3DXVECTOR3(movePos2.x, movePos2.y, movePos2.z)) then
-        CastSpell(_Q, movePos2.x, movePos2.z)
-        myHero:MoveTo(movePos2.x, movePos2.z)
+      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 325
+      local movePos3 = myHero + (Vector(mousePos) - myHero):normalized() * 65
+      if IsWall(D3DXVECTOR3(movePos1.x, movePos1.y, movePos1.z)) then
+        if not IsWall(D3DXVECTOR3(movePos2.x, movePos2.y, movePos2.z)) then
+          CastSpell(_Q, movePos2.x, movePos2.z)
+          myHero:MoveTo(movePos2.x, movePos2.z)
+        else
+          myHero:MoveTo(movePos3.x, movePos3.z)
+        end
       else
-        myHero:MoveTo(mousePos.x, mousePos.z)
+        myHero:MoveTo(movePos1.x, movePos1.z)
       end
     end
     if self.soulMate and self.soulMate.health/self.soulMate.maxHealth < Config.Misc.Rhp/100 then
