@@ -2378,8 +2378,7 @@ class "Yorick"
       local movePos1 = myHero + (Vector(mousePos) - myHero):normalized() * 150
       local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 300
       if IsWall(D3DXVECTOR3(movePos1.x, movePos1.y, movePos1.z)) and not IsWall(D3DXVECTOR3(movePos2.x, movePos2.y, movePos2.z)) then
-        CastSpell(_Q, movePos2.x, movePos2.z)
-        myHero:MoveTo(movePos2.x, movePos2.z)
+        CastSpell(_W, movePos2.x, movePos2.z)
       else
         myHero:MoveTo(mousePos.x, mousePos.z)
       end
