@@ -1956,7 +1956,7 @@ class "Yorick"
     if sReady[_W] and Config.Misc.WallJump then
       local MyPos = Vector(myHero.x, myHero.y, myHero.z)
       local MousePos = Vector(mousePos.x, mousePos.y, mousePos.z)
-      local drawPos - (MyPos - MousePos):normalized() * 300
+      local drawPos = MyPos - (MyPos - MousePos):normalized() * 300
       local barPos = WorldToScreen(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z))
       DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
       DrawLFC(drawPos.x, drawPos.y, drawPos.z, self.data.Cougar[1].width/3, IsWall(D3DXVECTOR3(drawPos.x, drawPos.y, drawPos.z)) and ARGB(255,255,0,0) or ARGB(255, 155, 155, 155))
