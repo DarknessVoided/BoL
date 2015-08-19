@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.2
+_G.ScriptologyVersion     = 2.201
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -1433,7 +1433,7 @@ class "Yorick"
       end
     end
     if self.grabsThrown > 0 and self.grabsLanded > 0 then
-      DrawText("Total HitChance: "..(math.ceil(100*self.grabsThrown/self.grabsLanded)).."%", 25, WINDOW_W/8, WINDOW_H/4, ARGB(255, 255, 255, 255))
+      DrawText("Total HitChance: "..(math.ceil(100*self.grabsLanded/self.grabsThrown)).."%", 25, WINDOW_W/8, WINDOW_H/4, ARGB(255, 255, 255, 255))
     end
     DrawText("Grabs thrown: "..self.grabsThrown, 25, WINDOW_W/8, WINDOW_H/4 + 25, ARGB(255, 255, 255, 255))
     DrawText("Grabs landed: "..self.grabsLanded, 25, WINDOW_W/8, WINDOW_H/4 + 50, ARGB(255, 255, 255, 255))
@@ -2614,6 +2614,16 @@ class "Yorick"
   end
 
   function Nidalee:LaneClear()
+    if self:IsHuman() then
+      if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
+        local minion = GetJMinion(self.data.Human[0].range) or GetClosestMinion(myHero)
+        if minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < self.data.Human[_Q].range^2 then
+          Cast(_Q, minion)
+        end
+      elseif Config.LaneClear.R then
+        Cast(_R)
+      end
+    end
     if not self:IsHuman() then
       for _, minion in pairs(Mobs.objects) do
         if sReady[_Q] and GetDistanceSqr(minion) < self:GetAARange()^2 then
@@ -2637,6 +2647,9 @@ class "Yorick"
         if pos and GetDistanceSqr(pos) < 275^2 and hit > 0 then
           Cast(_E, pos)
         end
+      end
+      if not self:IsHuman() and not sReady[_Q] and not sReady[_E] and self.spearCooldownUntil < os.clock() and Config.LaneClear.R then
+        Cast(_R)
       end
     end
   end
@@ -2745,7 +2758,7 @@ class "Yorick"
       self.Ball = nil
     end
     if Config.Misc.Ra then
-      if enemies >= EnemiesAround(self.Ball or myHero, myHeroSpellData[3].width-myHero.boundingRadius) then
+      if Config.Misc.Re >= EnemiesAround(self.Ball or myHero, myHeroSpellData[3].width-myHero.boundingRadius) then
         CastSpell(_R)
       end   
     end
