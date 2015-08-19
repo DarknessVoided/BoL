@@ -2797,7 +2797,6 @@ class "Yorick"
   function Orianna:Combo()
     if sReady[_Q] and Config.Combo.Q then
       local CastPosition, HitChance, Pos = Predict(_Q, self.Ball or myHero, Target)
-      print(HitChance)
       if HitChance and HitChance >= ScriptologyConfig.Prediction.Combo["pred"..str[_Q].."val"] then
         local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*(Target.boundingRadius/2)
         Cast(_Q, tPos)
@@ -2981,11 +2980,11 @@ class "Yorick"
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    --[[Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end]]
     Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
