@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.214
+_G.ScriptologyVersion     = 2.215
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -943,13 +943,13 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
     return unit.health
   end
 
-  function GetClosestMinion(range)
+  function GetClosestMinion(pos)
     local minionTarget = nil
     for i, minion in pairs(Mobs.objects) do
-      if minion and minion.visible and not minion.dead and GetDistanceSqr(minion) < range*range then
+      if minion and minion.visible and not minion.dead then
         if minionTarget == nil then 
           minionTarget = minion
-        elseif GetDistance(minionTarget) > GetDistance(minion) then
+        elseif GetDistanceSqr(minionTarget,pos) > GetDistanceSqr(minion,pos) then
           minionTarget = minion
         end
       end
@@ -3415,6 +3415,7 @@ class "Yorick"
   end
 
 -- { Nidalee
+
   function Nidalee:__init()
     self.data = {
       Human  = {
@@ -3731,7 +3732,7 @@ class "Yorick"
     if self:IsHuman() then
       if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
         local minion = GetJMinion(self.data.Human[0].range) or GetClosestMinion(myHero)
-        if minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < self.data.Human[_Q].range^2 then
+        if minion and GetDistanceSqr(minion) < self.data.Human[_Q].range^2 then
           Cast(_Q, minion)
         end
       elseif Config.LaneClear.R then
@@ -3744,22 +3745,27 @@ class "Yorick"
           CastSpell(_Q, myHero:Attack(minion))
         end
       end
+      for _, minion in pairs(JMobs.objects) do
+        if sReady[_Q] and GetDistanceSqr(minion) < self:GetAARange()^2 then
+          CastSpell(_Q, myHero:Attack(minion))
+        end
+      end
       if sReady[_W] and Config.LaneClear.W then
         local pos, hit = GetFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
         if hit == 0 then
           pos, hit = GetJFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
         end
         if pos and GetDistance(pos) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(pos) <= self.data.Cougar[1].range+self.data.Cougar[1].width and hit > 0 then
-          Cast(_W, pos)
+          CastSpell(_W, pos.x, pos.z)
         end
       end
       if sReady[_E] and Config.LaneClear.E then
         local pos, hit = GetFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
-        if hit == 0 then
+        if pos and hit == 0 then
           pos, hit = GetJFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
         end
         if pos and GetDistanceSqr(pos) < 275^2 and hit > 0 then
-          Cast(_E, pos)
+          CastSpell(_E, pos.x, pos.z)
         end
       end
       if not self:IsHuman() and not sReady[_Q] and not sReady[_E] and self.spearCooldownUntil < os.clock() and Config.LaneClear.R then
