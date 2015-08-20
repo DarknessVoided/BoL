@@ -2107,10 +2107,10 @@ class "Yorick"
         elseif myHero:CanUseSpell(_Q) and sReady[_Q] and health < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
           Cast(_Q)
         elseif myHero:CanUseSpell(_W) and sReady[_W] and health < wDmg and Config.Killsteal.W then
-          if ValidTarget(enemy, myHero.range+myHero.boundingRadius) then
+          if GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
             CastSpell(_W, myHero:Attack(enemy))
-          elseif ValidTarget(enemy, myHeroSpellData[2].range*(Config.Misc.offsetE/100)) and sReady[_E] then
-            self:CastE(enemy)
+          elseif GetDistanceSqr(enemy) < (myHeroSpellData[_E].range)^2 and sReady[_E] then
+            Cast(_E, enemy)
             DelayAction(function() CastSpell(_W, myHero:Attack(enemy)) end, 0.38)
           end
         elseif myHero:CanUseSpell(_R) and sReady[_R] and health < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
