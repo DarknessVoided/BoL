@@ -253,15 +253,17 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
           predictionStringTable = {}
           for _, k in pairs({VP = "VPrediction", SP = "SPrediction", HP = "HPrediction"}) do
             if FileExist(LIB_PATH .. k .. ".lua") then
-              require(k)
               if _G[_] then
                 Prediction[_] = _G[_]
+                table.insert(predictionStringTable, k)
               else
-                require(k)
-                _G[_] = _G[k]()
-                Prediction[_] = _G[_]
+                if pcall(function() require(k) end) then
+                  if pcall(function() _G[_] = _G[k]() end) then
+                    Prediction[_] = _G[_]
+                    table.insert(predictionStringTable, k)
+                  end
+                end
               end
-              table.insert(predictionStringTable, k)
             end
           end
           table.sort(predictionStringTable)
@@ -3087,6 +3089,18 @@ class "Yorick"
     Config.Misc:addParam("info2", "Leftclick an object to select insect direction", SCRIPT_PARAM_INFO, "")
   end
 
+  function LeeSin:Tick()
+    if Config.Misc.Insec then
+      for _, enemy in pairs(GetEnemyHeroes()) do
+        if enemy and not enemy.dead and enemy.visible and GetDistanceSqr(enemy) < 475*475 then
+          CastSpell(_R, enemy)
+          return;
+        end
+      end
+      myHero:MoveTo(mousePos.x, mousePos.z)
+    end
+  end
+
   function LeeSin:ApplyBuff(unit,source,buff)
     if unit and unit == source and unit.isMe and buff.name == self.passiveName then
       self.passiveTracker = 2
@@ -3102,6 +3116,17 @@ class "Yorick"
   function LeeSin:RemoveBuff(unit,buff)
     if unit and unit.isMe and buff.name == self.passiveName then
       self.passiveTracker = 0
+    end
+  end
+
+  function LeeSin:ProcessSpell(unit, spell)
+    if unit and spell and unit.isMe and spell.name == "BlindMonkRKick" and Config.Misc.Insec then
+      local pos = Vector(myHero) + Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
+      CastSpell(4, pos.x, pos.z)
+      pos = Vector(myHero) - Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
+      DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.25)
+      DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.33)
+      DelayAction(function() CastSpell(_Q) end, 0.40)
     end
   end
 
