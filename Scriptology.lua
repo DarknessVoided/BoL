@@ -471,6 +471,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
           end)
           if buffToTrackForStacks then
             AddApplyBuffCallback(function(unit, source, buff)
+              print(buff.name)
               if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
                 stackTable[unit.networkID] = 1
               end
@@ -1264,7 +1265,6 @@ class "Yorick"
 
   function Ahri:CreateObj(obj)
     if obj and obj.name == "missile" and obj.spellOwner.isMe and obj.projectileID == self.tempOrbNID then-- and GetDistance(obj) > 175 then
-      print("hi")
       self.Orb = obj
     end
   end
@@ -2035,10 +2035,13 @@ class "Yorick"
   end
 
   function Darius:Combo()
-    if Config.Combo.Qd and sReady[_Q] and GetDistance(Target) >= 250 then
-      self:CastQOuter(Target)
-    elseif Config.Combo.Qs and sReady[_Q] and GetDistance(Target) < 250 then
-      Cast(_Q)
+    for _, enemy in pairs(GetEnemyHeroes()) do
+      local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Combo"])
+      if Config.Combo.Qd and sReady[_Q] and GetDistance(Position) >= 250 and HitChance >= ScriptologyConfig.Prediction["Combo"].Q then
+        CastSpell(_Q)
+      elseif Config.Combo.Qs and sReady[_Q] and GetDistance(Position) < 250 and HitChance >= ScriptologyConfig.Prediction["Combo"].Q then
+        CastSpell(_Q)
+      end
     end
     if Config.Combo.E and sReady[_E] then
       Cast(_E, Target)
@@ -2049,18 +2052,27 @@ class "Yorick"
   end
 
   function Darius:Harass()
-    if Config.Harass.Qd and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100 and sReady[_Q] and GetDistance(Target) >= 250 then
-      self:CastQOuter(Target)
-    elseif Config.Harass.Qs and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100 and sReady[_Q] and GetDistance(Target) < 250 then
-      Cast(_Q)
+    if sReady[_Q] and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100 then
+      for _, enemy in pairs(GetEnemyHeroes()) do
+        local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Harass"])
+        if Config.Harass.Qd and sReady[_Q] and GetDistance(Position) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"].Q then
+          CastSpell(_Q)
+        elseif Config.Harass.Qs and sReady[_Q] and GetDistance(Position) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"].Q then
+          CastSpell(_Q)
+        end
+      end
     end
   end
 
   function Darius:LaneClear()
     if sReady[_Q] and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
-      BestPos, BestHit = GetFarmPosition(0, myHeroSpellData[0].width)
-      if BestHit > 1 and GetDistance(BestPos) < 150 then 
-        Cast(_Q)
+      BestPos, BestHit = GetFarmPosition(myHeroSpellData[0].width, myHeroSpellData[0].width)
+      if BestHit > 0 and GetDistance(BestPos) < myHero.ms*0.75 then 
+        CastSpell(_Q)
+      end
+      BestPos, BestHit = GetJFarmPosition(myHeroSpellData[0].width, myHeroSpellData[0].width)
+      if BestHit > 0 and GetDistance(BestPos) < myHero.ms*0.75 then 
+        CastSpell(_Q)
       end
     end
   end
@@ -2068,11 +2080,11 @@ class "Yorick"
   function Darius:LastHit()
     if sReady[_Q] and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana)) then
       for minion,winion in pairs(Mobs.objects) do
-        local MinionDmg1 = GetDmg(_Q, myHero, winion)*1.5
-        local MinionDmg2 = GetDmg(_Q, myHero, winion)
+        local MinionDmg1 = GetDmg(_Q, myHero, winion)
+        local MinionDmg2 = GetDmg(_Q, myHero, winion)/1
         local health = GetRealHealth(winion)
         if MinionDmg2 and MinionDmg2 >= health and ValidTarget(winion, 450) then
-          Cast(_Q)
+          CastSpell(_Q)
         elseif MinionDmg1 and MinionDmg1 >= health and ValidTarget(winion, 450) then
           CastQOuter(winion)
         end
@@ -2115,7 +2127,7 @@ class "Yorick"
     if target == nil then return end
     local dist = target.ms < 350 and 0 or (Vector(myHero.x-target.x, myHero.y-target.y, myHero.z-target.z):len() < 0 and 25 or 0)
     if GetDistance(target) < myHeroSpellData[0].width*(Config.Misc.offsetQ/100)-dist and GetDistance(target) >= 250 then
-      Cast(_Q)
+      CastSpell(_Q)
     end
   end
 
