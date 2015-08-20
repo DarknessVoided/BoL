@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.212
+_G.ScriptologyVersion     = 2.213
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
