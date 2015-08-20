@@ -2375,26 +2375,25 @@ class "Yorick"
 
   function Ekko:Draw()
     for _, obj in pairs(objHolder) do
-        if objTimeHolder[_] and objTimeHolder[_] < math.huge then
-          if objTimeHolder[_] > os.clock() then 
-            local pos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
-            if (obj.name:find("Ekko_Base_Q") and Config.Draws.Q) or (obj.name:find("Ekko_Base_W") and Config.Draws.W) then 
-              DrawText((math.floor((objTimeHolder[_]-os.clock())*100)/100).."s", 25, pos.x-35, pos.y-50, ARGB(255, 255, 0, 0)) end 
-            end
-          else
-            objHolder[_] = nil
-            objTimeHolder[_] = nil
+      if objTimeHolder[_] and objTimeHolder[_] < math.huge then
+        if objTimeHolder[_] > os.clock() then 
+          local pos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
+          if (obj.name:find("Ekko_Base_Q") and Config.Draws.Q) or (obj.name:find("Ekko_Base_W") and Config.Draws.W) then 
+            DrawText((math.floor((objTimeHolder[_]-os.clock())*100)/100).."s", 25, pos.x-35, pos.y-50, ARGB(255, 255, 0, 0)) end 
           end
+        else
+          objHolder[_] = nil
+          objTimeHolder[_] = nil
         end
-        if obj.name == "Ekko" and Config.Draws.R then 
-          DrawLFT(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(155, 155, 150, 250)) 
-          DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(255, 155, 150, 250))
-        elseif obj.name:find("Ekko_Base_Q") and Config.Draws.Q then 
-          DrawLine3D(myHero.x, myHero.y, myHero.z, obj.x, obj.y, obj.z, 1, ARGB(255, 155, 150, 250)) 
-          DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[0].width, ARGB(255, 155, 150, 250))
-        elseif obj.name:find("Ekko_Base_W") and Config.Draws.W then
-          DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[1].width, ARGB(255, 155, 150, 250))
-        end
+      end
+      if obj.name == "Ekko" and Config.Draws.R then 
+        DrawLFT(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(155, 155, 150, 250)) 
+        DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(255, 155, 150, 250))
+      elseif obj.name:find("Ekko_Base_Q") and Config.Draws.Q then 
+        DrawLine3D(myHero.x, myHero.y, myHero.z, obj.x, obj.y, obj.z, 1, ARGB(255, 155, 150, 250)) 
+        DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[0].width, ARGB(255, 155, 150, 250))
+      elseif obj.name:find("Ekko_Base_W") and Config.Draws.W then
+        DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[1].width, ARGB(255, 155, 150, 250))
       end
     end
   end
