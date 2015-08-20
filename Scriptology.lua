@@ -953,6 +953,20 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
     return minionTarget
   end
 
+  function GetJMinion(range)
+    local minionTarget = nil
+    for i, minion in pairs(JMobs.objects) do
+      if minionTarget == nil and minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < range * range then
+        if GetRealHealth(minion) < 100000 then 
+          minionTarget = minion
+        end
+      elseif minionTarget and not minion.dead and minion.visible and minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and GetRealHealth(minion) < 100000 then
+        minionTarget = minion
+      end
+    end
+    return minionTarget
+  end
+
   function GetFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
