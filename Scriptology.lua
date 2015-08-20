@@ -20,7 +20,11 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
 
     function Update()
       local serverdata = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Scriptology.version?no-cache="..math.random(1, 25000))
-      if serverdata and serverdata ~= nil and tonumber(serverdata) ~= nil and type(tonumber(serverdata)) == "number" and tonumber(serverdata) > ScriptologyVersion then
+      if serverdata and serverdata ~= nil and tonumber(serverdata) ~= nil and type(tonumber(serverdata)) == "number" then
+        if tonumber(serverdata) > ScriptologyVersion then
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Scriptology.lua", function() DelayAction(Msg, 3, {"Updated from v"..ScriptologyVersion.." to "..serverdata..". Please press F9 twice to reload."}) end)
+        end
+      else
         DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Scriptology.lua", function() DelayAction(Msg, 3, {"Updated from v"..ScriptologyVersion.." to "..serverdata..". Please press F9 twice to reload."}) end)
       end
     end
@@ -956,12 +960,12 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
   function GetJMinion(range)
     local minionTarget = nil
     for i, minion in pairs(JMobs.objects) do
-      if minionTarget == nil and minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < range * range then
-        if GetRealHealth(minion) < 100000 then 
+      if minion and minion.visible and not minion.dead and GetDistanceSqr(minion) < range * range and minion.maxHealth < 1000000 then
+        if not minionTarget then
+          minionTarget = minion
+        elseif minionTarget.maxHealth < minion.maxHealth then
           minionTarget = minion
         end
-      elseif minionTarget and not minion.dead and minion.visible and minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and GetRealHealth(minion) < 100000 then
-        minionTarget = minion
       end
     end
     return minionTarget
