@@ -3083,8 +3083,8 @@ class "Yorick"
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
-    Config.Misc:addDynamicParam("FInsec", "Flash Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("Z"))
-    Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+    Config.Misc:addParam("info1", "Leftclick an enemy to select insect target", SCRIPT_PARAM_INFO, "")
+    Config.Misc:addParam("info2", "Leftclick an object to select insect direction", SCRIPT_PARAM_INFO, "")
   end
 
   function LeeSin:ApplyBuff(unit,source,buff)
