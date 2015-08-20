@@ -5,9 +5,9 @@ return {
 	},
 	["Ahri"] = {
 		[_Q] = { name = "AhriOrbofDeception", speed = 2500, delay = 0.25, range = 880, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(source, target) return 15+25*source:GetSpellData(_Q).level+0.35*source.ap end},
-		[_W] = { range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
+		[_W] = { name = "", range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
 		[_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_E).level+0.5*source.ap end},
-		[_R] = { range = 750, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
+		[_R] = { name = "", range = 750, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
 	},
 	["Akali"] = {
 		[_E] = { name = "", speed = math.huge, delay = 0.125, range = 0, width = 325, collision = false, aoe = true, type = "circular"}
@@ -40,8 +40,8 @@ return {
 	},
 	["Blitzcrank"] = {
 		[_Q] = { name = "RocketGrabMissile", speed = 1800, delay = 0.250, range = 900, width = 70, collision = true, type = "linear", dmgAP = function(source, target) return 55*source:GetSpellData(_Q).level+25+source.ap end},
-		[_W] = { range = 2500},
-		[_E] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return 2*source.totalDamage end},
+		[_W] = { name = "", range = 2500},
+		[_E] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return 2*source.totalDamage end},
 		[_R] = { name = "StaticField", speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 125*source:GetSpellData(_R).level+125+source.ap end}
 	},
 	["Brand"] = {
@@ -74,9 +74,9 @@ return {
 	},
 	["Darius"] = {
 		[_Q] = { name = "", speed = math.huge, delay = 0.75, range = 0, width = 450, type = "circular", dmgAD = function(source, target) return 20*source:GetSpellData(_Q).level+(0.9 + 0.1 * source:GetSpellData(_Q).level)*source.totalDamage end},
-		[_W] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage*1.4 end},
+		[_W] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage*1.4 end},
 		[_E] = { name = "", speed = 1500, delay = 0.25, range = 530, width = 0.25, collision = false, aoe = true, type = "cone"},
-		[_R] = { range = 450, dmgTRUE = function(source, target, stacks) return math.floor(10*source:GetSpellData(_R).level+0.75*source.addDamage+0.2*stacks*(10*source:GetSpellData(_R).level+0.75*source.addDamage)) end}
+		[_R] = { name = "", range = 450, dmgTRUE = function(source, target, stacks) return math.floor(10*source:GetSpellData(_R).level+0.75*source.addDamage+0.2*stacks*(10*source:GetSpellData(_R).level+0.75*source.addDamage)) end}
 	},
 	["Diana"] = {
 		[_Q] = { name = "DianaArc", speed = 1500, delay = 0.250, range = 835, width = 130, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 35*source:GetSpellData(_Q).level+45+0.2*source.ap end},
@@ -168,9 +168,9 @@ return {
 	},
 	["Kalista"] = {
 		[_Q] = { name = "KalistaMysticShot", speed = 1700, delay = 0.25, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(source, target) return 0-50+60*source:GetSpellData(_Q).level+source.totalDamage end},
-		[_W] = { delay = 1.5, range = 5000},
-		[_E] = { range = 1000, dmgAD = function(source, target, stacks) return stacks > 0 and (10 + (10 * source:GetSpellData(_E).level) + (source.totalDamage * 0.6)) + (stacks-1) * (({10, 14, 19, 25, 31})[source:GetSpellData(_E).level] + (0.175 + 0.025 * source:GetSpellData(_E).level)*source.totalDamage) or 0 end},
-		[_R] = { range = 2000}
+		[_W] = { name = "", delay = 1.5, range = 5000},
+		[_E] = { name = "", range = 1000, dmgAD = function(source, target, stacks) return stacks > 0 and (10 + (10 * source:GetSpellData(_E).level) + (source.totalDamage * 0.6)) + (stacks-1) * (({10, 14, 19, 25, 31})[source:GetSpellData(_E).level] + (0.175 + 0.025 * source:GetSpellData(_E).level)*source.totalDamage) or 0 end},
+		[_R] = { name = "", range = 2000}
 	},
 	["Karma"] = {
 		[_Q] = { name = "KarmaQ", speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
@@ -183,10 +183,10 @@ return {
 		[_R] = { name = "", speed = math.huge, delay = 0.5, range = 500, width = 150, collision = false, aoe = true, type = "circular"}
 	},
 	["Katarina"] = {
-		[_Q] = { range = 675, dmgAP = function(source, target) return 35+25*source:GetSpellData(_Q).level+0.45*source.ap end},
-		[_W] = { range = 375, dmgAP = function(source, target) return 5+35*source:GetSpellData(_W).level+0.25*source.ap+0.6*source.addDamage end},
-		[_E] = { range = 700, dmgAP = function(source, target) return 10+30*source:GetSpellData(_E).level+0.25*source.ap end},
-		[_R] = { range = 550, dmgAP = function(source, target) return 15+20*source:GetSpellData(_R).level+0.25*source.ap+0.375*source.addDamage end}
+		[_Q] = { name = "", range = 675, dmgAP = function(source, target) return 35+25*source:GetSpellData(_Q).level+0.45*source.ap end},
+		[_W] = { name = "", range = 375, dmgAP = function(source, target) return 5+35*source:GetSpellData(_W).level+0.25*source.ap+0.6*source.addDamage end},
+		[_E] = { name = "", range = 700, dmgAP = function(source, target) return 10+30*source:GetSpellData(_E).level+0.25*source.ap end},
+		[_R] = { name = "", range = 550, dmgAP = function(source, target) return 15+20*source:GetSpellData(_R).level+0.25*source.ap+0.375*source.addDamage end}
 	},
 	["Kayle"] = {
 	},
@@ -357,7 +357,7 @@ return {
 		[_E] = { name = "", speed = 2500, delay = 0.25, range = 700, width = 45, collision = false, aoe = true, type = "cone"}
 	},
 	["Talon"] = {
-		[_Q] = { range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage+30*source:GetSpellData(_Q).level+0.3*(source.addDamage) end},
+		[_Q] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage+30*source:GetSpellData(_Q).level+0.3*(source.addDamage) end},
 		[_W] = { name = "", speed = 900, delay = 0.25, range = 600, width = 200, collision = false, aoe = false, type = "cone", dmgAD = function(source, target) return 2*(5+25*source:GetSpellData(_W).level+0.6*(source.addDamage)) end},
 		[_E] = { name = "", range = 700},
 		[_R] = { name = "", speed = math.huge, delay = 0.25, range = 0, width = 650, collision = false, aoe = false, type = "circular", dmgAD = function(source, target) return 2*(70+50*source:GetSpellData(_R).level+0.75*(source.addDamage)) end}
@@ -388,7 +388,7 @@ return {
 		[_Q] = { name = "WildCards", speed = 1500, delay = 0.250, range = 1200, width = 80, collision = false, aoe = false, type = "cone"}
 	},
 	["Twitch"] = {
-		[_W] = {speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
+		[_W] = { name = "", speed = 1750, delay = 0.250, range = 950, width = 275, collision = false, aoe = true, type = "circular"}
 	},
 	["Udyr"] = {
 	},
@@ -402,16 +402,16 @@ return {
 		[_R] = { name = "VarusR", speed = 1200, delay = 0.5, range = 800, width = 100, collision = false, aoe = false, type = "linear"}
 	},
 	["Vayne"] = {
-		[_Q] = { range = 450, dmgAD = function(source, target) return (1.25+0.05*source:GetSpellData(_Q).level)*source.totalDamage end},
-		[_W] = { range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(source, target) return 10+10*source:GetSpellData(_W).level+((0.03+0.01*source:GetSpellData(_W).level)*target.maxHealth) end},
+		[_Q] = { name = "", range = 450, dmgAD = function(source, target) return (1.25+0.05*source:GetSpellData(_Q).level)*source.totalDamage end},
+		[_W] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgTRUE = function(source, target) return 10+10*source:GetSpellData(_W).level+((0.03+0.01*source:GetSpellData(_W).level)*target.maxHealth) end},
 		[_E] = { name = "", speed = 2000, delay = 0.25, range = 650, width = 0, collision = false, aoe = false, type = "linear", dmgAD = function(source, target) return 10+35*source:GetSpellData(_E).level+0.5*source.addDamage end},
-		[_R] = { range = 1000}
+		[_R] = { name = "", range = 1000}
 	},
 	["Veigar"] = {
-		[_Q] = { speed = 1200, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+45*source:GetSpellData(_Q).level+0.6*source.ap end},
+		[_Q] = { name = "", speed = 1200, delay = 0.25, range = 900, width = 70, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+45*source:GetSpellData(_Q).level+0.6*source.ap end},
 		[_W] = { name = "VeigarDarkMatter", speed = math.huge, delay = 1.2, range = 900, width = 225, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 70+50*source:GetSpellData(_W).level+source.ap end},
-		[_E] = { speed = math.huge, delay = 0.5, range = 725, width = 275, collision = false, aoe = false, type = "circular"},
-		[_R] = { range = 650, dmgAP = function(source, target) return 125+125*source:GetSpellData(_R).level+source.ap+target.ap end}
+		[_E] = { name = "", speed = math.huge, delay = 0.5, range = 725, width = 275, collision = false, aoe = false, type = "circular"},
+		[_R] = { name = "", range = 650, dmgAP = function(source, target) return 125+125*source:GetSpellData(_R).level+source.ap+target.ap end}
 	},
 	["VelKoz"] = {
 		[_Q] = { name = "VelKozQ", speed = 1300, delay = 0.066, range = 1050, width = 50, collision = true, aoe = false, type = "linear"},
@@ -446,10 +446,10 @@ return {
 	},
 	["Yasuo"] = {
 		[_Q] = { name = "YasuoQ", speed = math.huge, delay = 0.25, range = 475, width = 40, collision = false, aoe = false, type = "linear", dmgAD = function(source, target) return 20*source:GetSpellData(_Q).level+source.totalDamage-10 end},
-		[_W] = { range = 350},
-		[_E] = { range = 475, dmgAP = function(source, target) return 50+20*source:GetSpellData(_E).level+source.ap end},
-		[_R] = { range = 1200, dmgAD = function(source, target) return 100+100*source:GetSpellData(_R).level+1.5*source.totalDamage end},
-		[-2] = { range = 1200, speed = 1200, delay = 0.125, width = 65, type = "linear" }
+		[_W] = { name = "", range = 350},
+		[_E] = { name = "", range = 475, dmgAP = function(source, target) return 50+20*source:GetSpellData(_E).level+source.ap end},
+		[_R] = { name = "", range = 1200, dmgAD = function(source, target) return 100+100*source:GetSpellData(_R).level+1.5*source.totalDamage end},
+		[-2] = { name = "", range = 1200, speed = 1200, delay = 0.125, width = 65, type = "linear" }
 	},
 	["Yorick"] = {
 		[_W] = { name = "", speed = math.huge, delay = 0.25, range = 600, width = 175, collision = false, aoe = true, type = "circular"}
