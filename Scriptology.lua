@@ -27,8 +27,11 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
 
     function LoadSpellData()
       if FileExist(LIB_PATH .. "SpellData.lua") then
-        _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")()
-        _G.myHeroSpellData = spellData[myHero.charName]
+        if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
+          _G.myHeroSpellData = spellData[myHero.charName]
+        else
+          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() LoadSpellData() end)
+        end
       else
         DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() LoadSpellData() end)
       end
