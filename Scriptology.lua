@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.21
+_G.ScriptologyVersion     = 2.211
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -295,7 +295,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
           for m, mode in pairs({Harass = {"Harass", 1.5}, LastHit = {"LastHit", 1.2}, Combo = {"Combo", 2}, LaneClear = {"LaneClear", 1}}) do
             ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
             for _=-2, 3 do
-              if myHeroSpellData[_] and myHeroSpellData[_].type then
+              if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
                 ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
                 ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 1)
                 if _G.HP ~= nil then
@@ -1474,8 +1474,7 @@ class "Yorick"
   end
 
   function Awareness:DeleteObj(obj)
-    local objName = obj.name:lower()
-    if obj and obj.team ~= myHero.team and objName:find("ward") then
+    if obj and obj.team ~= myHero.team and obj.name and obj.name:lower():find("ward") then
       for _, k in pairs(self.enemyWards) do
         if k.object == obj then
           k = nil
