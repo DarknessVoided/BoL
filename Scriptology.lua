@@ -298,7 +298,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
                 HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
               end
             end
-          for m, mode in pairs({Harass = {"Harass", 1.5}, LastHit = {"LastHit", 1.2}, Combo = {"Combo", 2}, LaneClear = {"LaneClear", 1}}) do
+          for m, mode in pairs({Harass = {"Harass", 1.1}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.2}, LaneClear = {"LaneClear", 1}}) do
             ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
             for _=-2, 3 do
               if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
@@ -920,8 +920,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
       return _G.SP:Predict(to, myHeroSpellData[spell].range, myHeroSpellData[spell].speed, myHeroSpellData[spell].delay, myHeroSpellData[spell].width, (from.charName == "Lux" or from.charName == "Veigar") and 1 or myHeroSpellData[spell].collision, from)
     elseif predictionStringTable[activePrediction] == "HPrediction" then
       local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or math.huge
-      local x1, x2, x3 = _G.HP:GetPredict(HPSpells[spell], to, from, col)
-        return x1, x2*2.5, x3
+        return _G.HP:GetPredict(HPSpells[spell], to, from, col)
     elseif predictionStringTable[activePrediction] == "DivinePred" then
       local spell = myHeroSpellData[spell]
       local unit = DPTarget(to)
