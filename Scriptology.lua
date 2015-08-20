@@ -2379,7 +2379,7 @@ class "Yorick"
         if objTimeHolder[_] > os.clock() then 
           local pos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
           if (obj.name:find("Ekko_Base_Q") and Config.Draws.Q) or (obj.name:find("Ekko_Base_W") and Config.Draws.W) then 
-            DrawText((math.floor((objTimeHolder[_]-os.clock())*100)/100).."s", 25, pos.x-35, pos.y-50, ARGB(255, 255, 0, 0)) end 
+            DrawText((math.floor((objTimeHolder[_]-os.clock())*100)/100).."s", 25, pos.x-35, pos.y-50, ARGB(255, 255, 0, 0)) 
           end
         else
           objHolder[_] = nil
@@ -4569,12 +4569,12 @@ class "Yorick"
   function Talon:LastHit()
     if sReady[_W] and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for _, minion in pairs(Mobs.objects) do
-        if minion and not minion.dead and minion.visible then GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
+        if minion and not minion.dead and minion.visible and GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
           CastSpell(_W, minion.x, minion.z)
         end
       end
       for _, minion in pairs(JMobs.objects) do
-        if minion and not minion.dead and minion.visible then GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
+        if minion and not minion.dead and minion.visible and GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
           CastSpell(_W, minion.x, minion.z)
         end
       end
