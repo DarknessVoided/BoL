@@ -5358,15 +5358,17 @@ class "Yorick"
           local eDmg = GetDmg(_E, myHero, minion)
           if not UnitHaveBuff(minion, "YasuoDashWrapper") then
             if sReady[_E] and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
-              Cast(_E, minion)
+              CastSpell(_E, minion)
             end
             if sReady[_Q] and sReady[_E] and GetDistanceSqr(minion) > (475/2)^2 and GetDistance(minion) < 475^2 and health < qDmg+eDmg then
-              Cast(_E, minion)
-              DelayAction(function() Cast(_Q) end, 0.125)
+              CastSpell(_E, minion)
+              DelayAction(function() 
+                CastSpell(_Q)
+              end, 0.125)
             end
           end
           if sReady[_Q] and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 and health < qDmg then
-            Cast(_Q, minion)
+            CastSpell(_Q, minion.x, minion.z)
           end
         end
       end
