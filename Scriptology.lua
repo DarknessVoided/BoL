@@ -3061,9 +3061,9 @@ class "Yorick"
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -3079,7 +3079,7 @@ class "Yorick"
     if Smite ~= nil then Config.Killsteal:addParam("S", "Smite", SCRIPT_PARAM_ONOFF, true) end
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
@@ -3185,7 +3185,7 @@ class "Yorick"
     return myHero:GetSpellData(x).name:find("One")
   end
 
-  function LeeSin:Harrass()
+  function LeeSin:Harass()
     if sReady[_Q] and self:IsFirstCast(_Q) then
       Cast(_Q, Target, 1.5)
     end
@@ -5129,7 +5129,7 @@ class "Yorick"
 
   function WardJump:Load()
     ScriptologyConfig:addSubMenu("WardJump","WardJump")
-    self.Config = ScriptologyConfig.Wardjump
+    self.Config = ScriptologyConfig.WardJump
     self.Config:addParam("wj", "Wardjump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
     self.Config:addParam("d", "Draw", SCRIPT_PARAM_ONOFF, true)
     self.Wards = {}
