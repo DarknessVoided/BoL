@@ -189,6 +189,10 @@ return {
 		[_R] = { name = "", range = 550, dmgAP = function(source, target) return 15+20*source:GetSpellData(_R).level+0.25*source.ap+0.375*source.addDamage end}
 	},
 	["Kayle"] = {
+        [_Q] = { name = "JudicatorReckoning" },
+        [_W] = { name = "JudicatorDivineBlessing" },
+        [_E] = { name = "JudicatorRighteosFury" },
+        [_R] = { name = "JudicatorIntervention" }
 	},
 	["Kennen"] = {
 		[_Q] = { name = "KennenShurikenHurlMissile1", speed = 1700, delay = 0.180, range = 1050, width = 70, collision = true, aoe = false, type = "linear"}
