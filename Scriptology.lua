@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.213
+_G.ScriptologyVersion     = 2.214
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -2086,7 +2086,7 @@ class "Yorick"
         if MinionDmg2 and MinionDmg2 >= health and ValidTarget(winion, 450) then
           CastSpell(_Q)
         elseif MinionDmg1 and MinionDmg1 >= health and ValidTarget(winion, 450) then
-          CastQOuter(winion)
+          self:CastQOuter(winion)
         end
       end
     end
@@ -2104,7 +2104,7 @@ class "Yorick"
         if myHero:GetSpellData(_R).level == 3 and sReady[_R] and health < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
           Cast(_R, enemy)
         elseif myHero:CanUseSpell(_Q) and sReady[_Q] and health < qDmg and Config.Killsteal.Q and ValidTarget(enemy, 450) then
-          self:CastQ(enemy)
+          self:CastQOuter(enemy)
         elseif myHero:CanUseSpell(_Q) and sReady[_Q] and health < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
           Cast(_Q)
         elseif myHero:CanUseSpell(_W) and sReady[_W] and health < wDmg and Config.Killsteal.W then
