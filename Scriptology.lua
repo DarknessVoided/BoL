@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.215
+_G.ScriptologyVersion     = 2.216
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -365,6 +365,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
           end
           if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
           if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
+          if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
           str = {[-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R", [4] = "I", [5] = "S"}
           colors = { 0xDFFFE258, 0xDF8866F4, 0xDF55F855, 0xDFFF5858 }
           gapcloserTable = {
@@ -3091,10 +3092,12 @@ class "Yorick"
 
   function LeeSin:Tick()
     if Config.Misc.Insec then
-      for _, enemy in pairs(GetEnemyHeroes()) do
-        if enemy and not enemy.dead and enemy.visible and GetDistanceSqr(enemy) < 475*475 then
-          CastSpell(_R, enemy)
-          return;
+      if sReady[_R] then
+        for _, enemy in pairs(GetEnemyHeroes()) do
+          if enemy and not enemy.dead and enemy.visible and GetDistanceSqr(enemy) < 475*475 then
+            CastSpell(_R, enemy)
+            return;
+          end
         end
       end
       myHero:MoveTo(mousePos.x, mousePos.z)
@@ -3120,13 +3123,25 @@ class "Yorick"
   end
 
   function LeeSin:ProcessSpell(unit, spell)
-    if unit and spell and unit.isMe and spell.name == "BlindMonkRKick" and Config.Misc.Insec then
-      local pos = Vector(myHero) + Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
-      CastSpell(4, pos.x, pos.z)
-      pos = Vector(myHero) - Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
-      DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.25)
-      DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.33)
-      DelayAction(function() CastSpell(_Q) end, 0.40)
+    if unit and spell and unit.isMe and Config.Misc.Insec then
+      if "blindmonkwtwo" then
+      elseif spell.name == "BlindMonkRKick" then
+        if Flash and myHero:CanUseSpell(Flash) == READY then
+          local pos = Vector(myHero) + Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
+          CastSpell(Flash, pos.x, pos.z)
+          pos = Vector(myHero) - Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
+          DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.25)
+          DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.33)
+          DelayAction(function() CastSpell(_Q) end, 0.67)
+          DelayAction(function() CastSpell(_Q) end, 1.17)
+        else
+          local pos = Vector(myHero) + Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
+          DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.25)
+          DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.33)
+          DelayAction(function() CastSpell(_Q) end, 0.67)
+          DelayAction(function() CastSpell(_Q) end, 1.17)
+        end
+      end
     end
   end
 
@@ -3316,9 +3331,20 @@ class "Yorick"
     Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-    Config.Misc:addParam("Wa", "Shield with W (auto)", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("manaW", "Min Mana % for shield", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
     Config.Misc:addParam("Ea", "Detonate E (auto)", SCRIPT_PARAM_ONOFF, true)
+    DelayAction(function()
+      Config.Misc:addParam("Wa", "Shield with W (auto)", SCRIPT_PARAM_ONOFF, true)
+      for _,k in pairs(GetEnemyHeroes()) do
+        Config.Misc:addParam(k.charName, k.charName, SCRIPT_PARAM_INFO, "")
+        for i=0,3 do
+          if spellData and spellData[k.charName] and spellData[k.charName][i] and spellData[k.charName][i].name and spellData[k.charName][i].name ~= "" then
+            Config.Misc:addParam(k.charName..str[i], "Shield on "..str[i].." Cast", SCRIPT_PARAM_ONOFF, true)
+          end
+        end
+        Config.Misc:addParam("info", "", SCRIPT_PARAM_INFO, "")
+      end
+    end, 3)
     AddGapcloseCallback(_Q, myHeroSpellData[0].range, false, Config.Misc)
   end
 
@@ -3329,16 +3355,31 @@ class "Yorick"
   end
 
   function Lux:ProcessSpell(unit, spell)
-    if unit and spell and not spell.name:lower():find("attack") and Config.Misc.Wa and unit.team ~= myHero.team and unit.type == myHero.type and not UnitHaveBuff(myHero, "recall") and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
-      if spell.target then
-        if sReady[_W] and myHero.health/myHero.maxHealth < 0.85 then
-          Cast(_W, myHero)
-        end
+    if unit and spell and Config.Misc.Wa and unit.team ~= myHero.team and unit.type == myHero.type and not UnitHaveBuff(myHero, "recall") and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
+      if myHero == spell.target and spell.name:lower():find("attack") and unit.range >= 450 and Config.Misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
+        local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
+        Cast(_W, wPos)
       else
-        local makeUpPos = unit + (Vector(spell.endPos) - unit):normalized() * math.min(1000, GetDistance(unit))
-        if GetDistance(spell.endPos) < GetDistance(myHero.pos, myHero.minBBox)*3 or GetDistance(makeUpPos) < GetDistance(myHero.pos, myHero.minBBox)*3 then
-          if sReady[_W] and myHero.health/myHero.maxHealth < 0.85 then
-            Cast(_W, myHero)
+        if Config.Misc.Wa and spellData and spellData[unit.charName] then
+          if spell.endPos and not spell.target and myHero.health/myHero.maxHealth < 0.85 then
+            for _=0, 3 do
+              local data = spellData[unit.charName]
+              if Config.Misc[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and (data[_].name:lower():find(spell.name:lower()) or spell.name:lower():find(data[_].name:lower())) then
+                local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
+                if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
+                  local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
+                  Cast(_W, wPos)
+                end
+              end
+            end
+          elseif spell.target and spell.target.isMe then
+            for _=0, 3 do
+              local data = spellData[unit.charName]
+              if Config.Misc[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and (data[_].name:lower():find(spell.name:lower()) or spell.name:lower():find(data[_].name:lower())) then
+                local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
+                Cast(_W, wPos)
+              end
+            end
           end
         end
       end
@@ -3399,7 +3440,8 @@ class "Yorick"
     if not UnitHaveBuff(Target, "luxilluminati") then
       if Config.Harass.Q and sReady[_Q] and Config.Harass.manaQ <= 100*myHero.mana/myHero.maxMana then
         Cast(_Q, Target)
-      elseif Config.Harass.E and sReady[_E] and Config.Harass.manaE <= 100*myHero.mana/myHero.maxMana then
+      end
+      if Config.Harass.E and sReady[_E] and Config.Harass.manaE <= 100*myHero.mana/myHero.maxMana then
         Cast(_E, Target)
       end
     end
@@ -5356,7 +5398,7 @@ class "Yorick"
         if Config.Windwall and spellData and spellData[unit.charName] then
           for _=0, 3 do
             local data = spellData[unit.charName]
-            if Config.Windwall[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and (data[_].name:lower():find(spell.name) or spell.name:lower():find(data[_].name)) then
+            if Config.Windwall[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and (data[_].name:lower():find(spell.name:lower()) or spell.name:lower():find(data[_].name:lower())) then
               local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
               if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
                 local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
