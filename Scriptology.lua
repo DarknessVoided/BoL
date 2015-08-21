@@ -1,9 +1,9 @@
-_G.ScriptologyVersion     = 2.223
+_G.ScriptologyVersion     = 2.224
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
 _G.ScriptologyAutoUpdate  = true
-_G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
+_G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myHero.charName)
 
 -- { Load
 
@@ -252,6 +252,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
         InitMenu()
         InitVars()
         AddPluginTicks()
+        InitPermaShow()
       end
 
         function SetupPredictionMenu()
@@ -341,12 +342,12 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
             Config.Draws:addParam("E", "Draw E", SCRIPT_PARAM_ONOFF, true)
             Config.Draws:addParam("R", "Draw R", SCRIPT_PARAM_ONOFF, true)
             Config.Draws:addParam("DMG", "Draw DMG", SCRIPT_PARAM_ONOFF, true)
-            Config.Draws:addParam("LFC", "Use LFC", SCRIPT_PARAM_ONOFF, true)
-            Config.Draws:addParam("PermaShow", "Perma Show", SCRIPT_PARAM_ONOFF, true)
-            Config.Draws:addParam("OpacityQ", "Opacity Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-            Config.Draws:addParam("OpacityW", "Opacity W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-            Config.Draws:addParam("OpacityE", "Opacity E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-            Config.Draws:addParam("OpacityR", "Opacity R", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+            Config.Draws:addParam("LFC", "Use LFC", SCRIPT_PARAM_ONOFF, false)
+            Config.Draws:addParam("PermaShow", "- Scriptology Perma Show -", SCRIPT_PARAM_ONOFF, true)
+            Config.Draws:addParam("ColorQ", "Color Q", SCRIPT_PARAM_COLOR, {255, 0x66, 0x33, 0x00})
+            Config.Draws:addParam("ColorW", "Color W", SCRIPT_PARAM_COLOR, {255, 0x33, 0x33, 0x00})
+            Config.Draws:addParam("ColorE", "Color E", SCRIPT_PARAM_COLOR, {255, 0x66, 0x66, 0x00})
+            Config.Draws:addParam("ColorR", "Color R", SCRIPT_PARAM_COLOR, {255, 0x99, 0x33, 0x00})
           Config:addSubMenu("Key Settings","kConfig")
         end
 
@@ -573,6 +574,28 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
           end
         end
 
+        function InitPermaShow()
+          AddTickCallback(function()
+            if Config.Draws.PermaShow then
+              CustomPermaShow(" - Scriptology Perma Show - ", nil, true, nil, nil, nil, 0)
+              if Config.kConfig.LaneClear then
+                CustomPermaShow("LaneClear", Config.kConfig.LaneClear, Config.kConfig.LaneClear, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+              elseif Config.kConfig.LastHit then
+                CustomPermaShow("LastHit", Config.kConfig.LastHit, Config.kConfig.LastHit, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+              elseif Config.kConfig.Harass then
+                CustomPermaShow("Harass", Config.kConfig.Harass, Config.kConfig.Harass, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+              elseif Config.kConfig.Combo then
+                CustomPermaShow("Combo", Config.kConfig.Combo, Config.kConfig.Combo, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+              else
+                CustomPermaShow("", false, false, nil, nil, nil, 1)
+              end
+            else
+              CustomPermaShow("", false, false, nil, nil, nil, 0)
+              CustomPermaShow("", false, false, nil, nil, nil, 1)
+            end
+          end)
+        end
+
     -- }
 
 -- }
@@ -684,19 +707,19 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
   end
 
   function DrawRange()
-    if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or myHero.charName == "Riven" or not myHeroSpellData then return end
+    if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or not myHeroSpellData then return end
     if Config.Draws.Q and sReady[_Q] and myHeroSpellData[0] then
-      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or myHeroSpellData[0].range > 0 and myHeroSpellData[0].range or myHeroSpellData[0].width, ARGB(255*Config.Draws.OpacityQ/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityQ/100)))
+      DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or myHeroSpellData[0].range > 0 and myHeroSpellData[0].range or myHeroSpellData[0].width, ARGB(table.unpack(Config.Draws.ColorQ)))
     end
     if myHero.charName ~= "Orianna" then
       if Config.Draws.W and sReady[_W] and myHeroSpellData[1] then
-        DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[1].range) == "function" and myHeroSpellData[1].range() or myHeroSpellData[1].range > 0 and myHeroSpellData[1].range or myHeroSpellData[1].width, ARGB(255*Config.Draws.OpacityW/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityW/100)))
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[1].range) == "function" and myHeroSpellData[1].range() or myHeroSpellData[1].range > 0 and myHeroSpellData[1].range or myHeroSpellData[1].width, ARGB(table.unpack(Config.Draws.ColorW)))
       end
       if Config.Draws.E and sReady[_E] and myHeroSpellData[2] then
-        DrawLFC(myHero.x, myHero.y, myHero.z, myHeroSpellData[2].range > 0 and myHeroSpellData[2].range or myHeroSpellData[2].width, ARGB(255*Config.Draws.OpacityE/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityE/100)))
+        DrawLFC(myHero.x, myHero.y, myHero.z, myHeroSpellData[2].range > 0 and myHeroSpellData[2].range or myHeroSpellData[2].width, ARGB(table.unpack(Config.Draws.ColorE)))
       end
       if Config.Draws.R and (sReady[_R] or myHero.charName == "Katarina") and myHeroSpellData[3] then
-        DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[3].range) == "function" and myHeroSpellData[3].range() or myHeroSpellData[3].range > 0 and myHeroSpellData[3].range or myHeroSpellData[3].width, ARGB(255*Config.Draws.OpacityR/100, (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100), (Config.Draws.LFC and 255 or 255*Config.Draws.OpacityR/100)))
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[3].range) == "function" and myHeroSpellData[3].range() or myHeroSpellData[3].range > 0 and myHeroSpellData[3].range or myHeroSpellData[3].width, ARGB(table.unpack(Config.Draws.ColorR)))
       end
     end
   end
@@ -736,10 +759,10 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
     if not Config.Draws.DMG then return end
     for i, enemy in pairs(GetEnemyHeroes()) do
       if enemy and not enemy.dead and enemy.visible then
-        local damageQ = not sReady[_Q] and 0 or myHero.charName == "Kalista" and 0 or GetDmg(_Q, myHero, enemy) or 0
-        local damageW = not sReady[_W] and 0 or GetDmg(_W, myHero, enemy) or 0
-        local damageE = not sReady[_E] and 0 or GetDmg(_E, myHero, enemy) or 0
-        local damageR = not sReady[_R] and 0 or GetDmg(_R, myHero, enemy) or 0
+        local damageQ = myHero:CanUseSpell(_Q) ~= READY and 0 or myHero.charName == "Kalista" and 0 or GetDmg(_Q, myHero, enemy) or 0
+        local damageW = myHero:CanUseSpell(_W) ~= READY and 0 or GetDmg(_W, myHero, enemy) or 0
+        local damageE = myHero:CanUseSpell(_E) ~= READY and 0 or GetDmg(_E, myHero, enemy) or 0
+        local damageR = myHero:CanUseSpell(_R) ~= READY and 0 or GetDmg(_R, myHero, enemy) or 0
         killTable[enemy.networkID] = {damageQ, damageW, damageE, damageR}
       end
     end
@@ -1534,6 +1557,15 @@ class "Yorick"
             local nextOffset = 0
             local barPos = GetUnitHPBarPos(k)
             local barOffset = GetUnitHPBarOffset(k)
+            do -- For some reason the x offset never exists
+              local t = {
+                ["Darius"] = -0.05,
+                ["Renekton"] = -0.05,
+                ["Sion"] = -0.05,
+                ["Thresh"] = 0.03,
+              }
+              barOffset.x = t[k.charName] or 0
+            end
             local framePos = {x = barPos.x - 69 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 + 10}
             DrawRectangle(framePos.x, framePos.y - 1, 110, 9, 0xFF000000)
             DrawRectangleOutline(framePos.x, framePos.y - 1, 109, 9, 0xFF737173, 1)
@@ -1565,11 +1597,11 @@ class "Yorick"
               local tSpellData = k:GetSpellData(_+4)
               local spellPos = {x = framePos.x-25, y = framePos.y - 15 + 2 + (_ * 11)}
               if tSpellData.currentCd == 0 then
-                DrawLine(spellPos.x, spellPos.y, spellPos.x + 25, spellPos.y, 3, self.summoners[tSpellData.name][2])
+                DrawLine(spellPos.x, spellPos.y, spellPos.x + 25, spellPos.y, 3, (self.summoners[tSpellData.name] or self.summoners["summonerteleport"])[2])
               else
                 DrawLine(spellPos.x, spellPos.y, spellPos.x + 25, spellPos.y, 3, 0xFF800000)
                 if tSpellData.totalCooldown > 0 then
-                  DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, self.summoners[tSpellData.name][2])--0xFF2E8B57)
+                  DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, (self.summoners[tSpellData.name] or self.summoners["summonerteleport"])[2])--0xFF2E8B57)
                 end
                 local strCooldown = tostring(tSpellData.currentCd < 10 and math.round(tSpellData.currentCd, 1) or math.ceil(tSpellData.currentCd))
                 DrawText(strCooldown, 14, spellPos.x - 1 - GetTextArea(strCooldown, 14).x, spellPos.y - 6, 0xFFFFFFFF)
@@ -1586,6 +1618,15 @@ class "Yorick"
         local nextOffset = 0
         local barPos = GetUnitHPBarPos(k)
         local barOffset = GetUnitHPBarOffset(k)
+        do -- For some reason the x offset never exists
+          local t = {
+            ["Darius"] = -0.05,
+            ["Renekton"] = -0.05,
+            ["Sion"] = -0.05,
+            ["Thresh"] = 0.03,
+          }
+          barOffset.x = t[k.charName] or 0
+        end
         local framePos = {x = barPos.x - 44 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 + 7 + 5}
         DrawRectangle(framePos.x, framePos.y - 1, 110, 9, 0xFF000000)
         DrawRectangleOutline(framePos.x, framePos.y - 1, 109, 9, 0xFF737173, 1)
@@ -1617,11 +1658,11 @@ class "Yorick"
           local tSpellData = k:GetSpellData(_+4)
           local spellPos = {x = framePos.x + 108, y = framePos.y - 12 + 3 + (_ * 11)}
           if tSpellData.currentCd == 0 then
-            DrawLine(spellPos.x, spellPos.y, spellPos.x + 25, spellPos.y, 3, self.summoners[tSpellData.name][2])
+            DrawLine(spellPos.x, spellPos.y, spellPos.x + 25, spellPos.y, 3, (self.summoners[tSpellData.name] or self.summoners["summonerteleport"])[2])
           else
             DrawLine(spellPos.x, spellPos.y, spellPos.x + 25, spellPos.y, 3, 0xFF800000)
             if tSpellData.totalCooldown > 0 then
-              DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, self.summoners[tSpellData.name][2])--0xFF2E8B57)
+              DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, (self.summoners[tSpellData.name] or self.summoners["summonerteleport"])[2])--0xFF2E8B57)
             end
             local strCooldown = tostring(tSpellData.currentCd < 10 and math.round(tSpellData.currentCd, 1) or math.ceil(tSpellData.currentCd))
             DrawText(strCooldown, 14, spellPos.x + 29, spellPos.y - 6, 0xFFFFFFFF)
@@ -2081,7 +2122,7 @@ class "Yorick"
         end
       end
     end
-    if Config.Combo.E and sReady[_E] then
+    if Config.Combo.E and sReady[_E] and (GetDistance(Target) > 450 or not sReady[_Q] and GetDistance(Target) > myHero.range+GetDistance(myHero.minBBox)) then
       Cast(_E, Target)
     end
     if Config.Combo.R and sReady[_R] and GetDmg(_R, myHero, Target) > GetRealHealth(Target) then
@@ -2141,20 +2182,20 @@ class "Yorick"
         local rDmg = ((GetDmg(_R, myHero, enemy)) or 0)
         local iDmg = (50 + 20 * myHero.level)
         local health = GetRealHealth(enemy)
-        if myHero:GetSpellData(_R).level == 3 and sReady[_R] and health < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
+        if myHero:GetSpellData(_R).level == 3 and myHero:CanUseSpell(_R) == READY and health < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
           Cast(_R, enemy)
-        elseif myHero:CanUseSpell(_Q) and sReady[_Q] and health < qDmg and Config.Killsteal.Q and ValidTarget(enemy, 450) then
+        elseif sReady[_Q] and health < qDmg and Config.Killsteal.Q and ValidTarget(enemy, 450) then
           self:CastQOuter(enemy)
-        elseif myHero:CanUseSpell(_Q) and sReady[_Q] and health < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
+        elseif sReady[_Q] and health < q1Dmg and Config.Killsteal.Q and ValidTarget(enemy, 300) then
           Cast(_Q)
-        elseif myHero:CanUseSpell(_W) and sReady[_W] and health < wDmg and Config.Killsteal.W then
+        elseif sReady[_W] and health < wDmg and Config.Killsteal.W then
           if GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
             CastSpell(_W, myHero:Attack(enemy))
           elseif GetDistanceSqr(enemy) < (myHeroSpellData[_E].range)^2 and sReady[_E] then
             Cast(_E, enemy)
             DelayAction(function() CastSpell(_W, myHero:Attack(enemy)) end, 0.38)
           end
-        elseif myHero:CanUseSpell(_R) and sReady[_R] and health < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
+        elseif myHero:CanUseSpell(_R) == READY and health < rDmg and Config.Killsteal.R and ValidTarget(enemy, 450) then
           Cast(_R, enemy)
         elseif health < iDmg and Config.Killsteal.I and ValidTarget(enemy, 600) and myHero:CanUseSpell(Ignite) == READY then
           CastSpell(Ignite, enemy)
@@ -3178,11 +3219,11 @@ class "Yorick"
           local health = GetRealHealth(winion)
           if MinionDmg1 and MinionDmg1 >= health and GetDistance(winion) < 1100 then
             Cast(_Q, winion)
-          elseif MinionDmg2 and UnitHaveBuff(minion, "BlindMonkQOne") and MinionDmg2-MinionDmg1 >= health and GetDistance(winion) < 250 then
-            DelayAction(Cast, 0.33, {_Q})
+          elseif MinionDmg2 and UnitHaveBuff(winion, "BlindMonkQOne") and MinionDmg2-MinionDmg1 >= health and GetDistance(winion) < 250 then
+            DelayAction(CastSpell, 0.33, {_Q})
           elseif MinionDmg2 and MinionDmg2 >= health and GetDistance(winion) < 1100 then
             Cast(_Q, winion)
-            DelayAction(function() if UnitHaveBuff(winion, "BlindMonkQOne") then Cast(_Q) end end, 0.33)
+            DelayAction(function() if UnitHaveBuff(winion, "BlindMonkQOne") then CastSpell(_Q) end end, 0.33)
           end
         end
       end
@@ -3247,7 +3288,7 @@ class "Yorick"
 
   function LeeSin:Harass()
     if sReady[_Q] and self:IsFirstCast(_Q) then
-      Cast(_Q, Target, 1.5)
+      Cast(_Q, Target)
     end
     if not self.oldPos and UnitHaveBuff(Target, "BlindMonkQOne") and sReady[_W] and self:IsFirstCast(_W) then
       self.oldPos = Vector(myHero)
@@ -5420,14 +5461,21 @@ class "Yorick"
     for i = 1, objManager.maxObjects do
       local object = objManager:GetObject(i)
       if object ~= nil and object.valid and (object.name:lower():find("ward") or object.name:lower():find("trinkettotem")) then
-        self.Wards[object.networkID] = object
+        table.insert(self.Wards, object)
       end
     end
     AddTickCallback(function() self:Tick() end)
     AddDrawCallback(function() self:Draw() end)
     AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
     AddDeleteObjCallback(function(obj) self:DeleteObj(obj) end)
+    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
     return self
+  end
+
+  function WardJump:ProcessSpell(unit, spell)
+    if unit and unit.isMe and self.Config.wj and (spell.name:lower():find("ward") or spell.name:lower():find("trinkettotem")) then
+      self.WardNID = spell.projectileID
+    end
   end
 
   function WardJump:Tick()
@@ -5446,8 +5494,8 @@ class "Yorick"
   function WardJump:WardJump()
     if self.casted and self.jumped then 
       DelayAction(function() self.casted, self.jumped = false, false end, 0.25)
-    elseif (myHero:CanUseSpell(toCast[myHero.charName]) == READY and myHero:GetSpellData(_W).name == "BlindMonkWOne") 
-      or (myHero:CanUseSpell(toCast[myHero.charName]) == READY and myHero.charName ~= "LeeSin") then
+    elseif (myHero:CanUseSpell(self.toCast[myHero.charName]) == READY and myHero:GetSpellData(_W).name == "BlindMonkWOne") 
+      or (myHero:CanUseSpell(self.toCast[myHero.charName]) == READY and myHero.charName ~= "LeeSin") then
       local pos = Vector(myHero) - (Vector(myHero) - mousePos):normalized() * (myHero.charName == "LeeSin" and 600 or 700)
       if self:Jump(pos, 250) then return end
       DelayAction(function() self:Jump(pos, 250) end, 0.25)
@@ -5461,23 +5509,24 @@ class "Yorick"
   function WardJump:Jump(pos, range)
     for _,ally in pairs(GetAllyHeroes()) do
       if (GetDistance(ally, pos) <= range) then
-        CastSpell(toCast[myHero.charName], ally)
+        CastSpell(self.toCast[myHero.charName], ally)
         self.jumped = true
         return true
       end
     end
-    for minion,winion in pairs(minionManager(MINION_ALLY, range, pos, MINION_SORT_HEALTH_ASC).objects) do
+    for minion,winion in pairs(Mobs.objects) do
       if (GetDistance(winion, pos) <= range) then
-        CastSpell(toCast[myHero.charName], winion)
+        CastSpell(self.toCast[myHero.charName], winion)
         self.jumped = true
         return true
       end
     end
     local _ = -1
-    for i, ward in ipairs(Wards) do
+    local c = 0
+    for i, ward in ipairs(self.Wards) do
       if _ == -1 then _ = i end
       if (GetDistance(ward, pos) <= range) then
-        CastSpell(toCast[myHero.charName], ward)
+        CastSpell(self.toCast[myHero.charName], ward)
         self.jumped = true
         return true
       end
@@ -5485,7 +5534,7 @@ class "Yorick"
     if _ ~= -1 then
       local ward = self.Wards[_]
       if ward and (GetDistance(ward, pos) <= range) then
-        CastSpell(toCast[myHero.charName], ward)
+        CastSpell(self.toCast[myHero.charName], ward)
         self.jumped = true
         return true
       end
@@ -5496,15 +5545,21 @@ class "Yorick"
   function WardJump:CreateObj(obj)
     if obj ~= nil and obj.valid then
       if obj.name:lower():find("ward") or obj.name:lower():find("trinkettotem") then
-        self.Wards[obj.networkID] = obj
+        table.insert(self.Wards, obj)
+      end
+      if self.WardNID and self.WardNID == obj.networkID then
+        CastSpell(self.toCast[myHero.charName], obj)
+        self.WardNID = nil
       end
     end
   end
 
   function WardJump:DeleteObj(obj)
     if obj ~= nil and obj.valid then
-      if self.Wards[obj.networkID] then
-        self.Wards[obj.networkID] = nil
+      for _, w in pairs(self.Wards) do
+        if w == obj then
+          table.remove(self.Wards, _)
+        end
       end
     end
   end
@@ -5963,3 +6018,168 @@ class "CScriptUpdate" -- {
   end
 
 -- }
+
+
+version = 1.09
+
+if not _G.HidePermaShow then
+  _G.HidePermaShow = {}
+end
+
+if not _G.CPS then
+  _G.CPS = {}
+  _G.CPS.Index = {}
+  _G.CPS.NoIndex = {}
+  _G.CPS.StartY = GetSave("scriptConfig")["Master"].py
+  _G.CPS.LastCheck = 0
+  _G._DrawText = DrawText
+  DelayAction(function()  _G.CPS.OldCountDone = true end, 3)
+  DelayAction(function()  AddDrawCallback(_DrawCustomPermaShow) end, 0.1)
+end
+
+function CustomPermaShow(TextVar, ValueVar, VisibleVar, PermaColorVar, OnColorVar, OffColorVar, IndexVar)
+  if IndexVar then
+    local ItsNew = true
+    for i = 1,#_G.CPS.Index do
+      if _G.CPS.Index[i].IndexVar == IndexVar then
+        ItsNew = false
+        _G.CPS.Index[i].TextVar = TextVar
+        _G.CPS.Index[i].ValueVar = ValueVar
+        _G.CPS.Index[i].VisibleVar = VisibleVar
+        _G.CPS.Index[i].PermaColorVar = PermaColorVar
+        _G.CPS.Index[i].OnColorVar = OnColorVar
+        _G.CPS.Index[i].OffColorVar = OffColorVar
+        break
+      end
+    end
+
+    if ItsNew then
+      table.insert(_G.CPS.Index, {
+      ["TextVar"] = TextVar,
+      ["ValueVar"] = ValueVar,
+      ["VisibleVar"] = VisibleVar,
+      ["PermaColorVar"] = PermaColorVar,
+      ["OnColorVar"] = OnColorVar,
+      ["OffColorVar"] = OffColorVar,
+      ["IndexVar"] = IndexVar,
+      })
+    end
+  else
+    local ItsNew = true
+    for i = 1,#_G.CPS.NoIndex do
+      if _G.CPS.NoIndex[i].TextVar == TextVar then
+        ItsNew = false
+        _G.CPS.NoIndex[i].ValueVar = ValueVar
+        _G.CPS.NoIndex[i].VisibleVar = VisibleVar
+        _G.CPS.NoIndex[i].PermaColorVar = PermaColorVar
+        _G.CPS.NoIndex[i].OnColorVar = OnColorVar
+        _G.CPS.NoIndex[i].OffColorVar = OffColorVar
+        break
+      end
+    end
+
+    if ItsNew then
+      table.insert(_G.CPS.NoIndex, {
+      ["TextVar"] = TextVar,
+      ["ValueVar"] = ValueVar,
+      ["VisibleVar"] = VisibleVar,
+      ["PermaColorVar"] = PermaColorVar,
+      ["OnColorVar"] = OnColorVar,
+      ["OffColorVar"] = OffColorVar,
+      })
+    end
+  end
+end
+
+function _GetPermaColor(PermaTable)
+  if PermaTable.ValueVar == true then
+    if PermaTable.OnColorVar == nil then
+      if PermaTable.PermaColorVar == nil then
+        ColorVar = _CPS_Master.color.green
+      else
+        ColorVar = PermaTable.PermaColorVar
+      end
+    else
+      ColorVar = PermaTable.OnColorVar
+    end
+    TextVar = "      ON"
+  elseif PermaTable.ValueVar == false then
+    if PermaTable.OffColorVar == nil then
+      if PermaTable.PermaColorVar == nil then
+        ColorVar = _CPS_Master.color.lgrey
+      else
+        ColorVar = PermaTable.PermaColorVar
+      end
+    else
+      ColorVar = PermaTable.OffColorVar
+    end
+    TextVar = "      OFF"
+  else
+    if PermaTable.PermaColorVar == nil then
+      ColorVar = _CPS_Master.color.lgrey
+    else
+      ColorVar = PermaTable.PermaColorVar
+    end
+    TextVar = PermaTable.ValueVar
+  end
+  return TextVar,ColorVar
+end
+
+function _DrawCustomPermaShow()
+  _CPS_Master = GetSave("scriptConfig")["Master"]
+  _CPS_Master.py1 = _CPS_Master.py
+  _CPS_Master.py2 = _CPS_Master.py
+  _CPS_Master.color = { lgrey = 1413167931, grey = 4290427578, green = 1409321728}
+  _CPS_Master.fontSize = WINDOW_H and math.round(WINDOW_H / 72) or 10
+  _CPS_Master.midSize = _CPS_Master.fontSize / 2
+  _CPS_Master.cellSize = _CPS_Master.fontSize + 1
+  _CPS_Master.width = WINDOW_W and math.round(WINDOW_W / 6.4) or 160
+  _CPS_Master.row = _CPS_Master.width * 0.7
+  _CPS_Master.py1 = _G.CPS.StartY + _CPS_Master.cellSize
+  for i = 1, #_G.CPS.Index do
+    if _G.CPS.Index[i].VisibleVar and not _G.HidePermaShow[_G.CPS.Index[i].TextVar] then
+      ValueTextVar, ColorVar = _GetPermaColor(_G.CPS.Index[i])
+      DrawLine(_CPS_Master.px - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.row - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, _CPS_Master.color.lgrey)
+      _DrawText(_G.CPS.Index[i].TextVar, _CPS_Master.fontSize, _CPS_Master.px, _CPS_Master.py1, _CPS_Master.color.grey)
+      DrawLine(_CPS_Master.px + _CPS_Master.row, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.width + 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, ColorVar)
+      _DrawText(ValueTextVar, _CPS_Master.fontSize, _CPS_Master.px + _CPS_Master.row + 1, _CPS_Master.py1, _CPS_Master.color.grey)
+      _CPS_Master.py1 = _CPS_Master.py1 + _CPS_Master.cellSize
+    end
+  end
+  for i = 1, #_G.CPS.NoIndex do
+    if _G.CPS.NoIndex[i].VisibleVar and not _G.HidePermaShow[_G.CPS.NoIndex[i].TextVar] then
+      ValueTextVar, ColorVar = _GetPermaColor(_G.CPS.NoIndex[i])
+      DrawLine(_CPS_Master.px - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.row - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, _CPS_Master.color.lgrey)
+      _DrawText(_G.CPS.NoIndex[i].TextVar, _CPS_Master.fontSize, _CPS_Master.px, _CPS_Master.py1, _CPS_Master.color.grey)
+      DrawLine(_CPS_Master.px + _CPS_Master.row, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.width + 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, ColorVar)
+      _DrawText(ValueTextVar, _CPS_Master.fontSize, _CPS_Master.px + _CPS_Master.row + 1, _CPS_Master.py1, _CPS_Master.color.grey)
+      _CPS_Master.py1 = _CPS_Master.py1 + _CPS_Master.cellSize
+    end
+  end
+end
+
+function DrawText(Arg1, Arg2, Arg3, Arg4, Arg5)
+  _G.CPS.GetSaveMenu = GetSave("scriptConfig")["Menu"]
+  if _G.CPS.GetSaveMenu.menuKey then PressingKey = _G.CPS.GetSaveMenu.menuKey else PressingKey = 16 end
+  if IsKeyDown(PressingKey) and IsKeyDown(1) then
+    _G.CPS.WaitForRelease = true
+  end
+
+  if not (IsKeyDown(PressingKey) and IsKeyDown(1)) and _G.CPS.WaitForRelease then
+    _G.CPS.WaitForRelease = false
+    _G.CPS.OldCountDone = false
+    _G.CPS.StartY = GetSave("scriptConfig")["Master"].py
+    DelayAction(function()  _G.CPS.OldCountDone = true end, 0.5)
+  end
+
+  if not _G.CPS.OldCountDone then
+    _CPS_Master = GetSave("scriptConfig")["Master"]
+    if Arg3 == _CPS_Master.px then
+      if Arg4 > _G.CPS.StartY then
+        _G.CPS.StartY = Arg4
+      end
+    end
+  end
+
+  _DrawText(Arg1, Arg2, Arg3, Arg4, Arg5)
+end
