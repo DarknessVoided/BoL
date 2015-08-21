@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.221
+_G.ScriptologyVersion     = 2.222
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -27,7 +27,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
       ToUpdate.SavePath = SCRIPT_PATH.."/Scriptology.lua"
       ToUpdate.CallbackUpdate = function(NewVersion,OldVersion) Msg("Updated from v"..OldVersion.." to "..NewVersion..". Please press F9 twice to reload.") end
       ToUpdate.CallbackNoUpdate = function(OldVersion) end
-      ToUpdate.CallbackNewVersion = function(NewVersion) Msg("New version found v"..OldVersion.." to "..NewVersion..". Please wait until it's downloaded.") end
+      ToUpdate.CallbackNewVersion = function(NewVersion) Msg("New version found v"..NewVersion..". Please wait until it's downloaded.") end
       ToUpdate.CallbackError = function(NewVersion) Msg("There was an error while updating.") end
       CScriptUpdate(_G.ScriptologyVersion,ToUpdate.UseHttps, ToUpdate.Host, ToUpdate.VersionPath, ToUpdate.ScriptPath, ToUpdate.SavePath, ToUpdate.CallbackUpdate,ToUpdate.CallbackNoUpdate, ToUpdate.CallbackNewVersion,ToUpdate.CallbackError)
     end
@@ -198,21 +198,27 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
 
         function UnloadOrb()
           if isNOW then
+            DisableOrbwalker()
             NOW = nil
             package.loaded["Nebelwolfi's Orb Walker"] = false
+            isNOW = false
           end
           if isSxOrb then
+            DisableOrbwalker()
             _G.SxOrb = nil
             package.loaded["SxOrbwalk"] = false
+            isSxOrb = false
           end
           if isSOW then
+            DisableOrbwalker()
             SOWVP = nil
             package.loaded["SOW"] = false
+            isSOW = false
           end
           if isBFW then
-            _G["BigFatOrb_DisableAttacks"] = true
-            _G["BigFatOrb_DisableMove"] = true
+            DisableOrbwalker()
             package.loaded["Big Fat Orbwalker"] = false
+            isBFW = false
           end
           Msg("OrbWalker unloaded!")
           ScriptologyConfig.Orbwalker:clear(true, true)
@@ -388,7 +394,17 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
           tickTable = {
             function() 
               targetSel:update()
-              Target = ValidTarget(Forcetarget) and Forcetarget or targetSel.target
+              if ValidTarget(Forcetarget) and Forcetarget then
+                Target = Forcetarget
+              elseif _G.MMA_Target and _G.MMA_Target.type == myHero.type then 
+                return _G.MMA_Target 
+              elseif _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then 
+                return _G.AutoCarry.Attack_Crosshair.target
+              elseif _G.NebelwolfisOrbWalkerLoaded and _G.NebelwolfisOrbWalker:GetTarget() and _G.NebelwolfisOrbWalker:GetTarget().type == myHero.type then 
+                return _G.NebelwolfisOrbWalker:GetTarget()
+              else
+                Target = targetSel.target
+              end
               Mobs:update()
               JMobs:update()
               for _=0, 12 do
@@ -3981,8 +3997,9 @@ class "Yorick"
   end
 
   function Orianna:CreateObj(obj)
-    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" then
+    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" and self.BallNID and self.BallNID == obj.networkID then
       self.Ball = Vector(obj)
+      self.BallNID = nil
     end
   end
 
@@ -3990,6 +4007,7 @@ class "Yorick"
     if unit and spell and unit.isMe then
       if spell.name == "OrianaIzunaCommand" then
         self.Ball = nil
+        self.BallNID = spell.projectileID
       end
       if spell.name == "OrianaRedactCommand" then
         self.Ball = spell.target
@@ -4393,9 +4411,18 @@ class "Yorick"
   end
 
   function Riven:LoadOrb()
-    self.orbTable = {}
-    ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
-    ScriptologyConfig.Orbwalker:addParam("info1", "RivenWalk", SCRIPT_PARAM_INFO, "")
+    if _G.NebelwolfisOrbWalkerInit then
+      ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
+      isNOW = true
+      NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
+      Msg("Nebelwolfi's Orb Walker loaded!")
+    else
+      if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker") then
+        require "Nebelwolfi's Orb Walker"
+      else
+        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Nebelwolfi%27s%20Orb%20Walker.lua?rand="..math.random(1,10000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() self:LoadOrb() end, function() end, function() end, function() self:LoadOrb() end)
+      end
+    end
   end
 
   function Riven:Load()
@@ -4428,9 +4455,56 @@ class "Yorick"
   end
 
   function Riven:ProcessSpell(unit, spell)
-    if unit and unit.isMe and spell and spell.name then
-
+    if unit and unit.isMe and spell and spell.name and skipWindups then
+      if spell.name:lower():find("attack") then
+        DelayAction(function() 
+          if Target and not Target.dead and Target.visible then
+            CastSpell(_Q, Target.x, Target.z) 
+          end
+        end, spell.windUpTime + GetLatency() / 2000 + 0.07)
+      elseif spell.name == "RivenTriCleave" then
+        _G.NebelwolfisOrbWalker:SetOrb(false)
+      elseif spell.name == "RivenMartyr" then
+      elseif spell.name == "RivenFeint" then
+      elseif spell.name == "RivenFengShuiEngine" then
+      elseif spell.name == "rivenizunablade" then
+      end
     end
+  end
+
+  function Riven:CreateObj(obj)
+    if obj and GetDistance(obj) < 1000 and skipWindups then
+      if obj.name:find("Riven_Base_Q_01_Wpn") then
+        local mPos = myHero + (Vector(Target) - myHero):normalized() * 65
+        myHero:MoveTo(mPos.x, mPos.z)
+        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        _G.NebelwolfisOrbWalker:SetOrb(true)
+      elseif obj.name:find("Riven_Base_Q_02_Wpn") then
+        local mPos = myHero + (Vector(Target) - myHero):normalized() * 65
+        myHero:MoveTo(mPos.x, mPos.z)
+        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        _G.NebelwolfisOrbWalker:SetOrb(true)
+      elseif obj.name:find("Riven_Base_Q_03_Wpn") then
+        if VIP_USER then
+          self:CastDance()
+        else
+          local mPos = Vector(obj) + (Vector(obj) - myHero):normalized() * 65
+          myHero:MoveTo(mPos.x, mPos.z)
+        end
+        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        _G.NebelwolfisOrbWalker:SetOrb(true)
+      end
+    end
+  end
+
+  function Riven:CastDance()
+    p = CLoLPacket(256)
+    p.vTable = 15362356
+    p:EncodeF(myHero.networkID)
+    p:Encode1(0x07)
+    p:Encode2(0x1C24)
+    p:Encode2(0x41EF)
+    SendPacket(p)
   end
 
 -- }
