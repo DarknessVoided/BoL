@@ -1,8 +1,8 @@
-_G.ScriptologyVersion     = 2.217
+_G.ScriptologyVersion     = 2.22
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
-_G.ScriptologyLoadEvade     = true
-_G.ScriptologyAutoUpdate    = true
+_G.ScriptologyLoadEvade   = true
+_G.ScriptologyAutoUpdate  = true
 _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHero.charName)
 
 -- { Load
@@ -19,32 +19,38 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
   end
 
     function Update()
-      local serverdata = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Scriptology.version?no-cache="..math.random(1, 25000))
-      if serverdata and serverdata ~= nil and tonumber(serverdata) ~= nil and type(tonumber(serverdata)) == "number" then
-        if tonumber(serverdata) > ScriptologyVersion then
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Scriptology.lua", function() DelayAction(Msg, 3, {"Updated from v"..ScriptologyVersion.." to "..serverdata..". Please press F9 twice to reload."}) end)
-        end
-      else
-        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Scriptology.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Scriptology.lua", function() DelayAction(Msg, 3, {"Updated from v"..ScriptologyVersion.." to "..serverdata..". Please press F9 twice to reload."}) end)
-      end
+      local ToUpdate = {}
+      ToUpdate.UseHttps = true
+      ToUpdate.Host = "raw.githubusercontent.com"
+      ToUpdate.VersionPath = "/nebelwolfi/BoL/master/Scriptology.version"
+      ToUpdate.ScriptPath =  "/nebelwolfi/BoL/master/Scriptology.lua"
+      ToUpdate.SavePath = SCRIPT_PATH.."/Scriptology.lua"
+      ToUpdate.CallbackUpdate = function(NewVersion,OldVersion) Msg("Updated from v"..OldVersion.." to "..NewVersion..". Please press F9 twice to reload.") end
+      ToUpdate.CallbackNoUpdate = function(OldVersion) end
+      ToUpdate.CallbackNewVersion = function(NewVersion) Msg("New version found v"..OldVersion.." to "..NewVersion..". Please wait until it's downloaded.") end
+      ToUpdate.CallbackError = function(NewVersion) Msg("There was an error while updating.") end
+      CScriptUpdate(_G.ScriptologyVersion,ToUpdate.UseHttps, ToUpdate.Host, ToUpdate.VersionPath, ToUpdate.ScriptPath, ToUpdate.SavePath, ToUpdate.CallbackUpdate,ToUpdate.CallbackNoUpdate, ToUpdate.CallbackNewVersion,ToUpdate.CallbackError)
     end
 
     function LoadSpellData()
       if FileExist(LIB_PATH .. "SpellData.lua") then
         if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
           _G.myHeroSpellData = spellData[myHero.charName]
+          DelayAction(function()
+            CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() end, function() end, function() end, LoadSpellData)
+          end, 5)
         else
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() LoadSpellData() end)
+          CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
         end
       else
-        DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() LoadSpellData() end)
+        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
       end
     end
 
     -- { Awareness 
 
       function LoadAwareness()
-          if _G.PrinceViewVersion == nil then
+        if _G.PrinceViewVersion == nil then
           ScriptologyConfig:addSubMenu("Awareness", "Awareness")
           ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
           ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
@@ -279,23 +285,23 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
               spell = myHeroSpellData[k]
               if not HPSpells then HPSpells = {} end
               if spell.type == "linear" then
-                  if spell.speed ~= math.huge then 
+                if spell.speed ~= math.huge then 
                 if spell.collision then
                   HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
                 else
                   HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
                 end
-                  else
+                else
                 HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = spell.delay})
-                  end
+                end
               elseif spell.type == "circular" then
-                  if spell.speed ~= math.huge then 
+                if spell.speed ~= math.huge then 
                 HPSpells[k] = HPSkillshot({type = "DelayCircle", range = spell.range, speed = spell.speed, radius = spell.width, delay = spell.delay})
-                  else
+                else
                 HPSpells[k] = HPSkillshot({type = "PromptCircle", range = spell.range, radius = spell.width, delay = spell.delay})
-                  end
+                end
               else
-                HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
+              HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
               end
             end
           for m, mode in pairs({Harass = {"Harass", 1.1}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.2}, LaneClear = {"LaneClear", 1}}) do
@@ -662,8 +668,8 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
     DrawRange()
     for _, hero in pairs(GetEnemyHeroes()) do
       DrawDmgOnHpBar(hero)
-      end
-      DrawForcetarget()
+    end
+    DrawForcetarget()
   end
 
   function DrawRange()
@@ -696,15 +702,15 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
         end
       end
     end
-    end
+  end
 
-    function DrawForcetarget()
+  function DrawForcetarget()
     if Forcetarget ~= nil and Forcetarget.visible and not Forcetarget.dead then
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
     end
-    end
+  end
 
   function DrawLFC(x, y, z, radius, color)
     if Config.Draws.LFC then
@@ -755,56 +761,56 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
   end
 
   function GetDmg(spell, source, target)
-      if target == nil or source == nil then
-        return
-      end
-      local ADDmg     = 0
-      local APDmg     = 0
-      local TRUEDmg     = 0
-      local AP         = source.ap
-      local Level     = source.level
-      local TotalDmg     = source.totalDamage
-      local crit         = myHero.critChance
-      local crdm         = myHero.critDmg
-      local ArmorPen     = math.floor(source.armorPen)
-      local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
-      local MagicPen     = math.floor(source.magicPen)
-      local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+    if target == nil or source == nil then
+      return
+    end
+    local ADDmg     = 0
+    local APDmg     = 0
+    local TRUEDmg     = 0
+    local AP         = source.ap
+    local Level     = source.level
+    local TotalDmg     = source.totalDamage
+    local crit         = myHero.critChance
+    local crdm         = myHero.critDmg
+    local ArmorPen     = math.floor(source.armorPen)
+    local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
+    local MagicPen     = math.floor(source.magicPen)
+    local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
 
-      local Armor   = target.armor*ArmorPenPercent-ArmorPen
-      local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or 0--math.ceil(Armor*100/(100-Armor))/100
-      local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-      local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+    local Armor   = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or 0--math.ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
 
-      if spell == "IGNITE" then
-        return 50+20*Level/2
-      elseif spell == "Tiamat" then
-        ADDmg = (GetHydraSlot() and source:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
-      elseif spell == "AD" then
-        ADDmg = TotalDmg
-        if source.charName == "Ashe" then
+    if spell == "IGNITE" then
+      return 50+20*Level/2
+    elseif spell == "Tiamat" then
+      ADDmg = (GetHydraSlot() and source:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+    elseif spell == "AD" then
+      ADDmg = TotalDmg
+      if source.charName == "Ashe" then
       ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
-        elseif source.charName == "Teemo" then
+      elseif source.charName == "Teemo" then
       APDmg = APDmg + myHeroSpellData[_E].dmgAP(source, target)
-        elseif source.charName == "Orianna" then
+      elseif source.charName == "Orianna" then
       APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
-        else
+      else
       ADDmg = ADDmg * (1 + crit)
-        end
-        if source.charName == "Vayne" and GetStacks(target) == 2 then
-      TRUEDmg = TRUEDmg + myHeroSpellData[_W].dmgTRUE(source, target)
-        end
-        if GetMaladySlot() then
-      APDmg = 15 + 0.15*AP
-        end
-      elseif type(spell) == "number" and myHeroSpellData[spell] then
-        if myHeroSpellData[spell].dmgAD then ADDmg = myHeroSpellData[spell].dmgAD(source, target, GetStacks(target)) end
-        if myHeroSpellData[spell].dmgAP then APDmg = myHeroSpellData[spell].dmgAP(source, target, GetStacks(target)) end
-        if myHeroSpellData[spell].dmgTRUE then TRUEDmg = myHeroSpellData[spell].dmgTRUE(source, target, GetStacks(target)) end
       end
-      dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
-      dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
-      return math.floor(dmg) * dmgMod
+      if source.charName == "Vayne" and GetStacks(target) == 2 then
+      TRUEDmg = TRUEDmg + myHeroSpellData[_W].dmgTRUE(source, target)
+      end
+      if GetMaladySlot() then
+      APDmg = 15 + 0.15*AP
+      end
+    elseif type(spell) == "number" and myHeroSpellData[spell] then
+      if myHeroSpellData[spell].dmgAD then ADDmg = myHeroSpellData[spell].dmgAD(source, target, GetStacks(target)) end
+      if myHeroSpellData[spell].dmgAP then APDmg = myHeroSpellData[spell].dmgAP(source, target, GetStacks(target)) end
+      if myHeroSpellData[spell].dmgTRUE then TRUEDmg = myHeroSpellData[spell].dmgTRUE(source, target, GetStacks(target)) end
+    end
+    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
+    return math.floor(dmg) * dmgMod
   end
 
   function GetHydraSlot()
@@ -934,10 +940,10 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
       end
       local State, Position, perc = _G.DP:predict(unit, Spell, 1.2, Vector(from))
       if perc and Position then
-          return Position, perc/33, (Vector(Target)-Position):normalized()
-        else
+        return Position, perc/33, (Vector(Target)-Position):normalized()
+      else
         return Vector(Target), -0.1, Vector(Target)
-        end
+      end
     end
   end
 
@@ -1732,9 +1738,9 @@ class "Yorick"
       local CastPosition, HitChance, HeroPosition = Predict(_Q, myHero, Target, activeMode)
       if CastPosition then
         DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
-        DrawLine3D(myHero.x, myHero.y, myHero.z, Target.x,       Target.y,       Target.z,       1, ARGB(255,55,55,255))
+        DrawLine3D(myHero.x, myHero.y, myHero.z, Target.x,     Target.y,     Target.z,     1, ARGB(255,55,55,255))
         DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
-        DrawLFC(Target.x,       Target.y,       Target.z,     myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
+        DrawLFC(Target.x,    Target.y,     Target.z,    myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
           DrawText("Active Prediction: "..predictionStringTable[activeMode.predQ], 25, WINDOW_W/8, WINDOW_H/4+75, ARGB(255, 255, 255, 255))
           HitChance = math.ceil((HitChance > 3 and 300 or HitChance*100)/3)
           DrawText("Current HitChance: "..(HitChance < 0 and 0 or HitChance).."%", 25, WINDOW_W/8, WINDOW_H/4+100, ARGB(255, 255, 255, 255))
@@ -1924,13 +1930,13 @@ class "Yorick"
 
   function Cassiopeia:LastHit()
     if self.lastE > os.clock() or not Config.kConfig.LastHit then return end
-    if Config.LastHit.E then    
+    if Config.LastHit.E then  
       for i, minion in pairs(Mobs.objects) do 
         if minion and not minion.dead and minion.visible then
           local EMinionDmg = GetDmg(_E, myHero, minion)  
           if (UnitHaveBuff(minion, "poison") or Config.LastHit.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
             CastSpell(_E, minion)
-          end      
+          end   
         end
       end   
       for i, minion in pairs(JMobs.objects) do 
@@ -1939,8 +1945,8 @@ class "Yorick"
           if (UnitHaveBuff(minion, "poison") or Config.LastHit.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
             CastSpell(_E, minion)
           end
-        end      
-      end    
+        end   
+      end 
     end  
   end
 
@@ -2929,7 +2935,7 @@ class "Yorick"
       CastSpell(_E, Target)
     end
     if Config.Combo.R and sReady[_R] and GetDistance(Target) < 225 and GetRealHealth(Target) < GetDmg(_R, myHero, Target)*10 then
-        DisableOrbwalker()
+      DisableOrbwalker()
       Cast(_R)
     end
   end
@@ -3349,7 +3355,7 @@ class "Yorick"
 
   function Lux:Tick()
     if myHero:GetSpellData(_E).name == "luxlightstriketoggle" and Config.Misc.Ea then
-      Cast(_E)
+      CastSpell(_E)
     end
   end
 
@@ -5026,40 +5032,40 @@ class "Yorick"
   end
 
     function Veigar:Menu()
-      Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-      Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-      Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-      Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-      Config.Combo:addParam("WE", "Only E with W", SCRIPT_PARAM_ONOFF, true)
-      Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-      Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-      Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-      Config.Harass:addParam("WE", "Only E with W", SCRIPT_PARAM_ONOFF, true)
-      Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-      Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-      Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-      Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-      Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-      if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
-      Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-      Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-      Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-      Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-      Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-      Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-      Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-      Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-      Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
-      Config.kConfig:addDynamicParam("LastHit2", "Last hit", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
-      Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-      Config.Misc:addDynamicParam("Ea", "Auto E", SCRIPT_PARAM_ONOFF, true)
-      Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("WE", "Only E with W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("WE", "Only E with W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LastHit2", "Last hit", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Ea", "Auto E", SCRIPT_PARAM_ONOFF, true)
+    Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
     end
 
     function Veigar:Tick()
-      if Config.kConfig.LastHit2 then
-        self:LastHit()
-      end
+    if Config.kConfig.LastHit2 then
+      self:LastHit()
+    end
     end
 
   function Veigar:LandE(target)
@@ -5077,38 +5083,38 @@ class "Yorick"
   end
 
     function Veigar:Combo()
-      if sReady[_Q] and Config.Combo.Q then
-        Cast(_Q, Target)
-      end
-      if UnitHaveBuff(Target, "veigareventhorizonstun") and sReady[_W] and Config.Combo.W then
-        Cast(_W, Target.pos)
-      end
-      if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W and Config.Combo.WE then
-        self:LandE(Target)
-      elseif sReady[_W] and Config.Combo.W and not Config.Combo.WE then
-        Cast(_W, Target)
-      end
-      if sReady[_R] and Config.Combo.R and Target.health < GetDmg(_R, myHero, Target) then
-        Cast(_R, Target)
-      end
+    if sReady[_Q] and Config.Combo.Q then
+      Cast(_Q, Target)
+    end
+    if UnitHaveBuff(Target, "veigareventhorizonstun") and sReady[_W] and Config.Combo.W then
+      Cast(_W, Target.pos)
+    end
+    if sReady[_E] and Config.Combo.E and sReady[_W] and Config.Combo.W and Config.Combo.WE then
+      self:LandE(Target)
+    elseif sReady[_W] and Config.Combo.W and not Config.Combo.WE then
+      Cast(_W, Target)
+    end
+    if sReady[_R] and Config.Combo.R and Target.health < GetDmg(_R, myHero, Target) then
+      Cast(_R, Target)
+    end
     end
 
     function Veigar:Harass()
-      if sReady[_Q] and Config.Harass.Q and Config.Harass.manaQ <= 100*myHero.mana/myHero.maxMana then
-        Cast(_Q, Target)
-      end
-      if UnitHaveBuff(Target, "veigareventhorizonstun") and sReady[_W] and Config.Harass.W and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana then
-        Cast(_W, Target.pos)
-      end
-      if sReady[_E] and Config.Harass.E and Config.Harass.WE and Config.Harass.manaE <= 100*myHero.mana/myHero.maxMana and sReady[_W] and Config.Harass.W and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana then
-        self:LandE(Target)
-      elseif sReady[_W] and Config.Harass.W and not Config.Harass.WE and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana and not Config.Harass.WE then
-        Cast(_W, Target)
-      end
+    if sReady[_Q] and Config.Harass.Q and Config.Harass.manaQ <= 100*myHero.mana/myHero.maxMana then
+      Cast(_Q, Target)
+    end
+    if UnitHaveBuff(Target, "veigareventhorizonstun") and sReady[_W] and Config.Harass.W and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana then
+      Cast(_W, Target.pos)
+    end
+    if sReady[_E] and Config.Harass.E and Config.Harass.WE and Config.Harass.manaE <= 100*myHero.mana/myHero.maxMana and sReady[_W] and Config.Harass.W and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana then
+      self:LandE(Target)
+    elseif sReady[_W] and Config.Harass.W and not Config.Harass.WE and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana and not Config.Harass.WE then
+      Cast(_W, Target)
+    end
     end
 
     function Veigar:LastHit()
-      if sReady[_Q] and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana then
+    if sReady[_Q] and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana then
       local BestPos 
       local BestHit = 0
       source = source or myHero
@@ -5127,32 +5133,32 @@ class "Yorick"
       if BestHit > 0 then
         Cast(_Q, BestPos)
       end
-      end
+    end
     end
 
     function Veigar:CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-      local n = 0
-      for i, object in ipairs(objects) do
+    local n = 0
+    for i, object in ipairs(objects) do
     local pointSegment, _, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
     local w = width
     if isOnSegment and object.health <= GetDmg(_Q, myHero, object) and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
       n = n + 1
     end
-      end
-      return n
+    end
+    return n
     end
 
     function Veigar:LaneClear()
-    if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
-      local BestPos, BestHit = GetFarmPosition(myHeroSpellData[1].range, myHeroSpellData[1].width)
-      if BestPos and BestHit > 0 then
+  if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+    local BestPos, BestHit = GetFarmPosition(myHeroSpellData[1].range, myHeroSpellData[1].width)
+    if BestPos and BestHit > 0 then
     Cast(_W, BestPos)
-      end
     end
+  end
     end
 
     function Veigar:Killsteal()
-      for k,enemy in pairs(GetEnemyHeroes()) do
+    for k,enemy in pairs(GetEnemyHeroes()) do
     if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
       local health = GetRealHealth(enemy)
       if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, myHeroSpellData[0].range) and GetDistance(enemy) < myHeroSpellData[0].range then
@@ -5172,7 +5178,7 @@ class "Yorick"
       end
       end
     end
-      end
+    end
     end
 
 -- }
@@ -5555,6 +5561,194 @@ class "Yorick"
 -- }
 
   function Yorick:__init()
+  end
+
+-- }
+
+class "CScriptUpdate" -- {
+
+  function CScriptUpdate:__init(LocalVersion,UseHttps, Host, VersionPath, ScriptPath, SavePath, CallbackUpdate, CallbackNoUpdate, CallbackNewVersion,CallbackError)
+    self.LocalVersion = LocalVersion
+    self.Host = Host
+    self.VersionPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..VersionPath)..'&rand='..math.random(99999999)
+    self.ScriptPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..ScriptPath)..'&rand='..math.random(99999999)
+    self.SavePath = SavePath
+    self.CallbackUpdate = CallbackUpdate
+    self.CallbackNoUpdate = CallbackNoUpdate
+    self.CallbackNewVersion = CallbackNewVersion
+    self.CallbackError = CallbackError
+    self:CreateSocket(self.VersionPath)
+    self.DownloadStatus = 'Connect to Server for VersionInfo'
+    AddTickCallback(function() self:GetOnlineVersion() end)
+    return self
+  end
+
+  function CScriptUpdate:print(str)
+    print('<font color="#FFFFFF">'..os.clock()..': '..str)
+  end
+
+  function CScriptUpdate:CreateSocket(url)
+    if not self.LuaSocket then
+      self.LuaSocket = require("socket")
+    else
+      self.Socket:close()
+      self.Socket = nil
+      self.Size = nil
+      self.RecvStarted = false
+    end
+    self.LuaSocket = require("socket")
+    self.Socket = self.LuaSocket.tcp()
+    self.Socket:settimeout(0, 'b')
+    self.Socket:settimeout(99999999, 't')
+    self.Socket:connect('sx-bol.eu', 80)
+    self.Url = url
+    self.Started = false
+    self.LastPrint = ""
+    self.File = ""
+  end
+
+  function CScriptUpdate:Base64Encode(data)
+    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    return ((data:gsub('.', function(x)
+      local r,b='',x:byte()
+      for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
+      return r;
+    end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
+      if (#x < 6) then return '' end
+      local c=0
+      for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
+      return b:sub(c+1,c+1)
+    end)..({ '', '==', '=' })[#data%3+1])
+  end
+
+  function CScriptUpdate:GetOnlineVersion()
+    if self.GotScriptVersion then return end
+
+    self.Receive, self.Status, self.Snipped = self.Socket:receive(1024)
+    if self.Status == 'timeout' and not self.Started then
+      self.Started = true
+      self.Socket:send("GET "..self.Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
+    end
+    if (self.Receive or (#self.Snipped > 0)) and not self.RecvStarted then
+      self.RecvStarted = true
+      self.DownloadStatus = 'Downloading VersionInfo (0%)'
+    end
+
+    self.File = self.File .. (self.Receive or self.Snipped)
+    if self.File:find('</s'..'ize>') then
+      if not self.Size then
+        self.Size = tonumber(self.File:sub(self.File:find('<si'..'ze>')+6,self.File:find('</si'..'ze>')-1))
+      end
+      if self.File:find('<scr'..'ipt>') then
+        local _,ScriptFind = self.File:find('<scr'..'ipt>')
+        local ScriptEnd = self.File:find('</scr'..'ipt>')
+        if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
+        local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
+        self.DownloadStatus = 'Downloading VersionInfo ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+      end
+    end
+    if self.File:find('</scr'..'ipt>') then
+      self.DownloadStatus = 'Downloading VersionInfo (100%)'
+      local a,b = self.File:find('\r\n\r\n')
+      self.File = self.File:sub(a,-1)
+      self.NewFile = ''
+      for line,content in ipairs(self.File:split('\n')) do
+        if content:len() > 5 then
+          self.NewFile = self.NewFile .. content
+        end
+      end
+      local HeaderEnd, ContentStart = self.File:find('<scr'..'ipt>')
+      local ContentEnd, _ = self.File:find('</sc'..'ript>')
+      if not ContentStart or not ContentEnd then
+        if self.CallbackError and type(self.CallbackError) == 'function' then
+          self.CallbackError()
+        end
+      else
+        self.OnlineVersion = (Base64Decode(self.File:sub(ContentStart + 1,ContentEnd-1)))
+        self.OnlineVersion = tonumber(self.OnlineVersion)
+        if self.OnlineVersion > self.LocalVersion then
+          if self.CallbackNewVersion and type(self.CallbackNewVersion) == 'function' then
+            self.CallbackNewVersion(self.OnlineVersion,self.LocalVersion)
+          end
+          self:CreateSocket(self.ScriptPath)
+          self.DownloadStatus = 'Connect to Server for ScriptDownload'
+          AddTickCallback(function() self:DownloadUpdate() end)
+        else
+          if self.CallbackNoUpdate and type(self.CallbackNoUpdate) == 'function' then
+            self.CallbackNoUpdate(self.LocalVersion)
+          end
+        end
+      end
+      self.GotScriptVersion = true
+    end
+  end
+
+  function CScriptUpdate:DownloadUpdate()
+    if self.GotCScriptUpdate then return end
+    self.Receive, self.Status, self.Snipped = self.Socket:receive(1024)
+    if self.Status == 'timeout' and not self.Started then
+      self.Started = true
+      self.Socket:send("GET "..self.Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
+    end
+    if (self.Receive or (#self.Snipped > 0)) and not self.RecvStarted then
+      self.RecvStarted = true
+      self.DownloadStatus = 'Downloading Script (0%)'
+    end
+
+    self.File = self.File .. (self.Receive or self.Snipped)
+    if self.File:find('</si'..'ze>') then
+      if not self.Size then
+        self.Size = tonumber(self.File:sub(self.File:find('<si'..'ze>')+6,self.File:find('</si'..'ze>')-1))
+      end
+      if self.File:find('<scr'..'ipt>') then
+        local _,ScriptFind = self.File:find('<scr'..'ipt>')
+        local ScriptEnd = self.File:find('</scr'..'ipt>')
+        if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
+        local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
+        self.DownloadStatus = 'Downloading Script ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+      end
+    end
+    if self.File:find('</scr'..'ipt>') then
+      self.DownloadStatus = 'Downloading Script (100%)'
+      local a,b = self.File:find('\r\n\r\n')
+      self.File = self.File:sub(a,-1)
+      self.NewFile = ''
+      for line,content in ipairs(self.File:split('\n')) do
+        if content:len() > 5 then
+          self.NewFile = self.NewFile .. content
+        end
+      end
+      local HeaderEnd, ContentStart = self.NewFile:find('<sc'..'ript>')
+      local ContentEnd, _ = self.NewFile:find('</scr'..'ipt>')
+      if not ContentStart or not ContentEnd then
+        if self.CallbackError and type(self.CallbackError) == 'function' then
+          self.CallbackError()
+        end
+      else
+        local newf = self.NewFile:sub(ContentStart+1,ContentEnd-1)
+        local newf = newf:gsub('\r','')
+        if newf:len() ~= self.Size then
+          if self.CallbackError and type(self.CallbackError) == 'function' then
+            self.CallbackError()
+          end
+          return
+        end
+        local newf = Base64Decode(newf)
+        if type(load(newf)) ~= 'function' then
+          if self.CallbackError and type(self.CallbackError) == 'function' then
+            self.CallbackError()
+          end
+        else
+          local f = io.open(self.SavePath,"w+b")
+          f:write(newf)
+          f:close()
+          if self.CallbackUpdate and type(self.CallbackUpdate) == 'function' then
+            self.CallbackUpdate(self.OnlineVersion,self.LocalVersion)
+          end
+        end
+      end
+      self.GotCScriptUpdate = true
+    end
   end
 
 -- }

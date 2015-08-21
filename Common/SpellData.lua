@@ -5,9 +5,9 @@ return {
 	},
 	["Ahri"] = {
 		[_Q] = { name = "AhriOrbofDeception", speed = 2500, delay = 0.25, range = 880, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(source, target) return 15+25*source:GetSpellData(_Q).level+0.35*source.ap end},
-		[_W] = { name = "", range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
+		[_W] = { name = "AhriFoxFire", range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
 		[_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_E).level+0.5*source.ap end},
-		[_R] = { name = "", range = 750, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
+		[_R] = { name = "AhriTumble", range = 750, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
 	},
 	["Akali"] = {
 		[_E] = { name = "", speed = math.huge, delay = 0.125, range = 0, width = 325, collision = false, aoe = true, type = "circular"}
@@ -232,9 +232,9 @@ return {
 		[_Q] = { name = "LuluQ", speed = 1400, delay = 0.250, range = 925, width = 80, collision = false, aoe = false, type = "linear"}
 	},
 	["Lux"] = {
-		[_Q] = { name = "LuxLightBinding", speed = 1350, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(source, target) return 10+50*source:GetSpellData(_Q).level+0.7*source.ap end},
+		[_Q] = { name = "LuxLightBinding", speed = 1200, delay = 0.25, range = 1300, width = 130, collision = true, type = "linear", dmgAP = function(source, target) return 10+50*source:GetSpellData(_Q).level+0.7*source.ap end},
 		[_W] = { name = "LuxPrismaticWave", speed = 1630, delay = 0.25, range = 1250, width = 210, collision = false, type = "linear"},
-		[_E] = { name = "LuxLightStrikeKugel", speed = 1275, delay = 0.25, range = 1100, width = 325, collision = false, type = "circular", dmgAP = function(source, target) return 15+45*source:GetSpellData(_E).level+0.6*source.ap end},
+		[_E] = { name = "LuxLightStrikeKugel", speed = 1300, delay = 0.25, range = 1100, width = 325, collision = false, type = "circular", dmgAP = function(source, target) return 15+45*source:GetSpellData(_E).level+0.6*source.ap end},
 		[_R] = { name = "LuxMaliceCannon", speed = math.huge, delay = 1, range = 3340, width = 250, collision = false, type = "linear", dmgAP = function(source, target) return 200+100*source:GetSpellData(_R).level+0.75*source.ap end}
 	},
 	["Malphite"] = {
