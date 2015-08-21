@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.222
+_G.ScriptologyVersion     = 2.223
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -4461,6 +4461,34 @@ class "Yorick"
   function Riven:Tick()
     self.skipWindups = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harass and Config.Harass.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q) or (Config.kConfig.LastHit and Config.LastHit.Q)
     self.skipWWindup = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harass and Config.Harass.W) or (Config.kConfig.LaneClear and Config.LaneClear.W) or (Config.kConfig.LastHit and Config.LastHit.W)
+    if Config.Misc.Flee then
+      myHero:MoveTo(mousePos.x, mousePos.z)
+      if sReady[_E] then
+        Cast(_E, mousePos)
+      end
+      if not sReady[_E] and sReady[_Q] and self.EDelay + 350 < GetTickCount() then
+        Cast(_Q, mousePos)
+      end
+    end
+    if Config.Misc.Jump then
+      self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
+      self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
+      if self.QCast < 2 then
+        Cast(_Q, myHero.pos)
+      end
+      if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
+        myHero:MoveTo(self.movePos.x, self.movePos.z)
+      else
+        if sReady[_Q] then
+          Cast(_Q, mousePos)
+        end
+      end
+    end
+    for _,k in pairs(GetEnemyHeroes()) do
+      if sReady[_W] and ValidTarget(k, data[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, data[_W].range)) then
+        Cast(_W)
+      end
+    end
   end
 
   function Riven:ProcessSpell(unit, spell)
@@ -4595,7 +4623,20 @@ class "Yorick"
       end
     end
     --if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,Target)+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)+self:DmgP(Target,myHero.totalDamage*1.2) >= GetRealHealth(Target)) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target.pos) end
-    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,Target) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target.pos) end
+    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,Target)+GetDmg("AD",myHero,Target)+self:DmgP(Target, myHero.totalDamage) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then CastSpell(_R, Target) end
+  end
+
+  function Riven:LaneClear()
+    local minion = GetClosestMinion(myHero)
+    if minion and not minion.dead and minion.visible then
+      if GetDistanceSqr(minion) > (myHero.range+GetDistance(myHero.minBBox))^2 then
+        CastSpell(_E, minion.x, minion.z)
+      end
+    end
+    local minion = GetJMinion(myHero.range+GetDistance(myHero.minBBox))
+    if minion and not minion.dead and minion.visible then
+      CastSpell(_E, minion.x, minion.z)
+    end
   end
 
 -- }
