@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.22
+_G.ScriptologyVersion     = 2.221
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -2056,11 +2056,13 @@ class "Yorick"
 
   function Darius:Combo()
     for _, enemy in pairs(GetEnemyHeroes()) do
-      local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Combo"])
-      if Config.Combo.Qd and HitChance and sReady[_Q] and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
-        CastSpell(_Q)
-      elseif Config.Combo.Qs and HitChance and sReady[_Q] and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
-        CastSpell(_Q)
+      if enemy and not enemy.dead and enemy.visible then
+        local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Combo"])
+        if Config.Combo.Qd and HitChance and sReady[_Q] and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
+          CastSpell(_Q)
+        elseif Config.Combo.Qs and HitChance and sReady[_Q] and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
+          CastSpell(_Q)
+        end
       end
     end
     if Config.Combo.E and sReady[_E] then
