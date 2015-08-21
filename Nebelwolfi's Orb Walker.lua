@@ -34,7 +34,7 @@ class "NebelwolfisOrbWalker" -- {
   end
 
   function NebelwolfisOrbWalker:Update()
-    CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.version", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.lua?rand="..math.random(1,10000), SCRIPT_PATH.."Nebelwolfi's Orb Walker.lua", function() end, function() end, function(NewVersion,OldVersion) print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..OldVersion.." -> v"..NewVersion..")</font>") end, function() print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>") end)
+    CScriptUpdate(_G.NebelwolfisOrbWalkerVersion, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.version", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.lua?rand="..math.random(1,10000), SCRIPT_PATH.."Nebelwolfi's Orb Walker.lua", function() end, function() end, function(NewVersion,OldVersion) print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..OldVersion.." -> v"..NewVersion..")</font>") end, function() print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>") end)
   end
 
   function NebelwolfisOrbWalker:Load(Cfg)
