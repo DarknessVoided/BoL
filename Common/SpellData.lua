@@ -4,10 +4,10 @@ return {
 		[_E] = { name = "AatroxE", speed = 1200, delay = 0.25, range = 1000, width = 150, collision = false, aoe = false, type = "linear"}
 	},
 	["Ahri"] = {
-		[_Q] = { name = "AhriOrbofDeception", speed = 2500, delay = 0.25, range = 880, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(source, target) return 15+25*source:GetSpellData(_Q).level+0.35*source.ap end},
-		[_W] = { name = "AhriFoxFire", range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
-		[_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 900, width = 65, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_E).level+0.5*source.ap end},
-		[_R] = { name = "AhriTumble", range = 750, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
+		[_Q] = { name = "AhriOrbofDeception", speed = 2500, delay = 0.25, range = 975, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(source, target) return 15+25*source:GetSpellData(_Q).level+0.35*source.ap end},
+		[_W] = { name = "AhriFoxFire", range = 700, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
+		[_E] = { name = "AhriSeduce", speed = 1550, delay = 0.25, range = 1075, width = 65, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_E).level+0.5*source.ap end},
+		[_R] = { name = "AhriTumble", range = 450, dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
 	},
 	["Akali"] = {
 		[_E] = { name = "", speed = math.huge, delay = 0.125, range = 0, width = 325, collision = false, aoe = true, type = "circular"}
@@ -76,7 +76,7 @@ return {
 		[_Q] = { name = "", speed = math.huge, delay = 0.75, range = 0, width = 450, type = "circular", dmgAD = function(source, target) return 20*source:GetSpellData(_Q).level+(0.9 + 0.1 * source:GetSpellData(_Q).level)*source.totalDamage end},
 		[_W] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage*1.4 end},
 		[_E] = { name = "", speed = 1500, delay = 0.25, range = 530, width = 0.25, collision = false, aoe = true, type = "cone"},
-		[_R] = { name = "", range = 450, dmgTRUE = function(source, target, stacks) return math.floor(100*source:GetSpellData(_R).level+0.75*source.addDamage+stacks*(20*source:GetSpellData(_R).level+0.15*source.addDamage)) end}
+		[_R] = { name = "", range = 475, dmgTRUE = function(source, target, stacks) return math.floor(100*source:GetSpellData(_R).level+0.75*source.addDamage+stacks*(20*source:GetSpellData(_R).level+0.15*source.addDamage)) end}
 	},
 	["Diana"] = {
 		[_Q] = { name = "DianaArc", speed = 1500, delay = 0.250, range = 835, width = 130, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 35*source:GetSpellData(_Q).level+45+0.2*source.ap end},
@@ -320,7 +320,7 @@ return {
 		[_R] = { name = "RumbleCarpetBomb", speed = 1200, delay = 0.250, range = 1700, width = 90, collision = false, aoe = false, type = "linear"}
 	},
 	["Ryze"] = {
-		[_Q] = { name = "RyzeQ", speed = 1875, delay = 0.25, range = 880, width = 55, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+25*source:GetSpellData(_Q).level+0.55*source.ap+(0.015+0.005*source:GetSpellData(_Q).level)*source.maxMana end},
+		[_Q] = { name = "RyzeQ", speed = 1700, delay = 0.25, range = 900, width = 50, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 35+25*source:GetSpellData(_Q).level+0.55*source.ap+(0.015+0.005*source:GetSpellData(_Q).level)*source.maxMana end},
 		[_W] = { name = "", range = 600, dmgAP = function(source, target) return 60+20*source:GetSpellData(_W).level+0.4*source.ap+0.025*source.maxMana end},
 		[_E] = { name = "", range = 600, dmgAP = function(source, target) return 34+16*source:GetSpellData(_E).level+0.3*source.ap+0.02*source.maxMana end},
 		[_R] = { name = "", range = 900}
