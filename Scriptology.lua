@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.216
+_G.ScriptologyVersion     = 2.217
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -871,7 +871,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
         end
         local CastPosition, HitChance, Position = Predict(spell, source or myHero, target, activeMode)
         if HitChance and HitChance >= activeMode["pred"..str[spell].."val"] then
-          CastSpell(spell, target.x, target.z)
+          CastSpell(spell, CastPosition.x, CastPosition.z)
         end
       else
         CastSpell(spell, target)
