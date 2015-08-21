@@ -796,7 +796,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
     if spell == "IGNITE" then
       return 50+20*Level/2
     elseif spell == "Tiamat" then
-      ADDmg = (GetHydraSlot() and source:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+      ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
     elseif spell == "AD" then
       ADDmg = TotalDmg
       if source.charName == "Ashe" then
@@ -4408,6 +4408,9 @@ class "Yorick"
 
   function Riven:__init()
     self:LoadOrb()
+    self.QCast = 0
+    self.skipWindups = false
+    self.skipWWindup = false
   end
 
   function Riven:LoadOrb()
@@ -4417,8 +4420,9 @@ class "Yorick"
       NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
       Msg("Nebelwolfi's Orb Walker loaded!")
     else
-      if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker") then
+      if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
         require "Nebelwolfi's Orb Walker"
+        self:LoadOrb()
       else
         CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Nebelwolfi%27s%20Orb%20Walker.lua?rand="..math.random(1,10000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() self:LoadOrb() end, function() end, function() end, function() self:LoadOrb() end)
       end
@@ -4454,26 +4458,56 @@ class "Yorick"
     AddGapcloseCallback(_W, myHeroSpellData[1].range, false, Config.Misc)
   end
 
+  function Riven:Tick()
+    self.skipWindups = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harass and Config.Harass.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q) or (Config.kConfig.LastHit and Config.LastHit.Q)
+    self.skipWWindup = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harass and Config.Harass.W) or (Config.kConfig.LaneClear and Config.LaneClear.W) or (Config.kConfig.LastHit and Config.LastHit.W)
+  end
+
   function Riven:ProcessSpell(unit, spell)
-    if unit and unit.isMe and spell and spell.name and skipWindups then
+    if unit and unit.isMe and spell and spell.name then
       if spell.name:lower():find("attack") then
-        DelayAction(function() 
-          if Target and not Target.dead and Target.visible then
-            CastSpell(_Q, Target.x, Target.z) 
-          end
-        end, spell.windUpTime + GetLatency() / 2000 + 0.07)
+        if myHero:CanUseSpell(_Q) == READY and self.skipWindups then
+          DelayAction(function() 
+            if Target and not Target.dead and Target.visible then
+              Cast(_Q, Target) 
+            end
+          end, spell.windUpTime + GetLatency() / 2000)
+        elseif self.skipWWindup then
+          DelayAction(function() 
+            if Target and not Target.dead and Target.visible then
+              CastSpell(_W) 
+            end
+          end, spell.windUpTime + GetLatency() / 2000)
+        end
       elseif spell.name == "RivenTriCleave" then
+        self.QDelay = os.clock()
+        self.QCast = self.QCast + 1
+        DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
         _G.NebelwolfisOrbWalker:SetOrb(false)
       elseif spell.name == "RivenMartyr" then
       elseif spell.name == "RivenFeint" then
+        self.EDelay = GetTickCount()
+        if Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(Target, 0, true)*0.67 <= GetRealHealth(Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+          Cast(_R) 
+          DelayAction(function() 
+            if Target and not Target.dead and Target.visible and GetDistance(Target) < myHeroSpellData[0].range then
+              Cast(_Q, Target) 
+            end
+          end, 0.137)
+        end
       elseif spell.name == "RivenFengShuiEngine" then
       elseif spell.name == "rivenizunablade" then
+        if Target and Config.kConfig.Combo and Config.Combo.Rm > 1 then
+          DelayAction(function() 
+            Cast(_Q, Target)
+          end, spell.windUpTime - GetLatency() / 2000 + 0.07)
+        end
       end
     end
   end
 
   function Riven:CreateObj(obj)
-    if obj and GetDistance(obj) < 1000 and skipWindups then
+    if obj and GetDistance(obj) < 1000 and self.skipWindups then
       if obj.name:find("Riven_Base_Q_01_Wpn") then
         local mPos = myHero + (Vector(Target) - myHero):normalized() * 65
         myHero:MoveTo(mPos.x, mPos.z)
@@ -4505,6 +4539,63 @@ class "Yorick"
     p:Encode2(0x1C24)
     p:Encode2(0x41EF)
     SendPacket(p)
+  end
+
+  function Riven:CalculateDamage()
+    if not Config.Draws.DMG then return end
+    for i, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible then
+        self:CalcComboDmg(enemy, 0, (Config.Combo.Rm == 1), false, true)
+      end
+    end
+  end
+
+  function Riven:CalcComboDmg(target, damage, disableUlt, ignoreCd, insert)
+    local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
+    local dmg = damage or 0
+    local ad = myHero.totalDamage*((disableUlt and (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine")) and 1 or 1.2)
+    local me = {ap = myHero.ap, level = myHero.level, totalDamage = ad, armorPen = myHero.armorPen, armorPenPercent = myHero.armorPenPercent, magicPen = myHero.magicPen, magicPenPercent = myHero.magicPenPercent, addDamage = myHero.addDamage}
+    local damageQ, damageW, damageE, damageR = 0, 0, 0, 0
+    if ignoreCd or (self.QCast > 0 and self.QCast < 3) or (self.QCast == 0 and myHero:CanUseSpell(_Q) == READY) then
+      local d = GetDmg(_Q,me,unit)*(3-self.QCast)+GetDmg("Tiamat",me,unit)+GetDmg("AD",me,unit)*(3-self.QCast)+self:DmgP(target, ad)*(3-self.QCast)
+      damageQ = d
+      dmg = dmg + d
+    end
+    if ignoreCd or myHero:CanUseSpell(_W) == READY then
+      local d = GetDmg(_W,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+      damageW = d
+      dmg = dmg + d
+    end
+    if Ignite and myHero:CanUseSpell(Ignite) == READY then
+      dmg = dmg + GetDmg("IGNITE", myHero, unit)
+    end
+    if ignoreCd or (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine") and not disableUlt then
+      unit.health = unit.health-dmg
+      local d = GetDmg(_R,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+      damageR = d
+      dmg = dmg + d
+    end
+    if insert then
+      killTable[target.networkID] = {damageQ, damageW, damageE, damageR}
+    end
+    return dmg
+  end
+
+  function Riven:DmgP(unit, ad)
+    return myHero:CalcDamage(unit, 5+math.max(5*math.floor((myHero.level+2)/3)+10,10*math.floor((myHero.level+2)/3)-15)*ad/100)
+  end
+
+  function Riven:Combo()
+    if GetDistance(Target) > _G.NebelwolfisOrbWalker.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
+      if Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(Target, 0, true)*0.67 <= GetRealHealth(Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        Cast(_E, Target.pos)
+        DelayAction(function() Cast(_R) end, 0.075) 
+      else
+        Cast(_E, Target.pos)
+      end
+    end
+    --if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,Target)+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)+self:DmgP(Target,myHero.totalDamage*1.2) >= GetRealHealth(Target)) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target.pos) end
+    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,Target) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target.pos) end
   end
 
 -- }
