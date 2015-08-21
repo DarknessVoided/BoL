@@ -309,9 +309,10 @@ return {
 		[_E] = { name = "RengarE", speed = 825, delay = 0.50, range = 1000, width = 80, collision = true, aoe = false, type = "linear"}
 	},
 	["Riven"] = {
-		[_Q] = { name = "RivenTriCleave", speed = math.huge, delay = 0.250, range = 0, width = 225, collision = false, aoe = true, type = "circular"},
-		[_W] = { name = "RivenMartyr", speed = math.huge, delay = 0.250, range = 0, width = 250, collision = false, aoe = true, type = "circular"},
-		[_R] = { name = "rivenizunablade", speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone"}
+		[_Q] = { name = "RivenTriCleave", speed = math.huge, delay = 0.250, range = 310, width = 225, collision = false, aoe = true, type = "circular", dmgAD = function(source, target) return 0-10+20*source:GetSpellData(_Q).level+(0.35+0.05*source:GetSpellData(_Q).level)*source.totalDamage end},
+		[_W] = { name = "RivenMartyr", speed = math.huge, delay = 0.250, range = 0, width = 265, collision = false, aoe = true, type = "circular", dmgAD = function(source, target) return 20+30*source:GetSpellData(_W).level+source.totalDamage end},
+        [_E] = { range = 390},
+		[_R] = { name = "rivenizunablade", speed = 2200, delay = 0.5, range = 1100, width = 200, collision = false, aoe = false, type = "cone", dmgAD = function(source, target) return (40+40*source:GetSpellData(_R).level+0.6*source.addDamage)*(math.min(3,math.max(1,4*(target.maxHealth-target.health)/target.maxHealth))) end}
 	},
 	["Rumble"] = {
 		[_Q] = { name = "RumbleFlameThrower", speed = math.huge, delay = 0.250, range = 600, width = 500, collision = false, aoe = false, type = "cone"},
