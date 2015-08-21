@@ -240,7 +240,6 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
     -- { After Load
 
       function OnAfterLoad()
-        SilentUpdate()
         if not Champerino then return end
         SetupPredictionMenu()
         SetupTargetSelector()
@@ -248,10 +247,6 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
         InitVars()
         AddPluginTicks()
       end
-        
-        function SilentUpdate()
-          DelayAction(function() DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Common/SpellData.lua".."?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() LoadSpellData() end) end, 5)
-        end
 
         function SetupPredictionMenu()
           ScriptologyConfig:addSubMenu("Prediction", "Prediction")
@@ -968,7 +963,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology"..myHe
   function GetJMinion(range)
     local minionTarget = nil
     for i, minion in pairs(JMobs.objects) do
-      if minion and minion.visible and not minion.dead and GetDistanceSqr(minion) < range * range and minion.maxHealth < 1000000 then
+      if minion and minion.visible and not minion.dead and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
         if not minionTarget then
           minionTarget = minion
         elseif minionTarget.maxHealth < minion.maxHealth then
@@ -1326,7 +1321,7 @@ class "Yorick"
       end
     end
     for i, minion in pairs(JMobs.objects) do 
-      if minion and not minion.dead and minion.visible then
+      if minion and not minion.dead and minion.visible and minion.health < 100000 then
         local health = GetRealHealth(minion) 
         for _=0,3 do
           if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -1877,7 +1872,7 @@ class "Yorick"
       end
     end
     for _, minion in pairs(JMobs.objects) do
-      if minion and not minion.dead and minion.visible then   
+      if minion and not minion.dead and minion.visible and minion.health < 100000 then   
         local EMinionDmg = GetDmg(_E, myHero, minion)  
         if (UnitHaveBuff(minion, "poison") or Config.Misc.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
           CastSpell(_E, minion)
@@ -1921,7 +1916,7 @@ class "Yorick"
         end
       end
       for minion,winion in pairs(JMobs.objects) do
-        if winion ~= nil and UnitHaveBuff(winion, "poison") then
+        if winion ~= nil and winion.health < 100000 and UnitHaveBuff(winion, "poison") then
           CastSpell(_E, winion)
         end
       end
@@ -1940,7 +1935,7 @@ class "Yorick"
         end
       end   
       for i, minion in pairs(JMobs.objects) do 
-        if minion and not minion.dead and minion.visible then   
+        if minion and not minion.dead and minion.visible and minion.health < 100000 then   
           local EMinionDmg = GetDmg(_E, myHero, minion)  
           if (UnitHaveBuff(minion, "poison") or Config.LastHit.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
             CastSpell(_E, minion)
@@ -2635,7 +2630,7 @@ class "Yorick"
       end
     end
     for _, minion in pairs(JMobs.objects) do
-      if minion and not minion.dead and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
+      if minion and not minion.dead and minion.visible and minion.health < 100000 and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
         local damageE = GetDmg(_E, myHero, minion)
         local health = GetRealHealth(minion)
         if damageE > health then
@@ -2689,7 +2684,7 @@ class "Yorick"
     local jkillableCount = 0
     if sReady[_E] and Config.Misc.Ej then
       for _, minion in pairs(JMobs.objects) do
-        if minion and not minion.dead and GetStacks(minion) > 0 and GetDistanceSqr(minion) < 1000 * 1000 then
+        if minion and not minion.dead and minion.visible and minion.health < 100000 and GetStacks(minion) > 0 and GetDistanceSqr(minion) < 1000 * 1000 then
           for _, winion in pairs(self.jungleMinions) do
             if minion.charName:lower():find(winion:lower()) and not minion.charName:lower():find("mini") then
               local damageE = GetDmg(_E, myHero, minion)
@@ -3817,7 +3812,7 @@ class "Yorick"
         end
       end
       for _, minion in pairs(JMobs.objects) do
-        if sReady[_Q] and GetDistanceSqr(minion) < self:GetAARange()^2 then
+        if sReady[_Q] and minion.health < 100000 and minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < self:GetAARange()^2 then
           CastSpell(_Q, myHero:Attack(minion))
         end
       end
@@ -4330,7 +4325,7 @@ class "Yorick"
         end
       end
       for _, minion in pairs(JMobs.objects) do
-        if minion and not minion.dead and minion.visible then
+        if minion and not minion.dead and minion.visible and minion.health < 100000 then
           local health = GetRealHealth(minion)
           if ((Config.kConfig.LaneClear and (Config.LaneClear.W and sReady[_W])) or (Config.kConfig.LastHit and (Config.LastHit.W and sReady[_W]))) and health < GetDmg(_W, myHero, minion) then
             Cast(_W)
@@ -4394,6 +4389,7 @@ class "Yorick"
   end
 
   function Riven:LoadOrb()
+    self.orbTable = {}
     ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
     ScriptologyConfig.Orbwalker:addParam("info1", "RivenWalk", SCRIPT_PARAM_INFO, "")
   end
@@ -4425,6 +4421,12 @@ class "Yorick"
     Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
     Config.Misc:addDynamicParam("Jump", "Jump", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
     AddGapcloseCallback(_W, myHeroSpellData[1].range, false, Config.Misc)
+  end
+
+  function Riven:ProcessSpell(unit, spell)
+    if unit and unit.isMe and spell and spell.name then
+
+    end
   end
 
 -- }
@@ -4599,7 +4601,7 @@ class "Yorick"
       end
     end
     for i, minion in pairs(JMobs.objects) do 
-      if minion and not minion.dead and minion.visible then
+      if minion and not minion.dead and minion.visible and minion.health < 100000 then
         local health = GetRealHealth(minion) 
         for _=0,3 do
           if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -4682,7 +4684,7 @@ class "Yorick"
         end
       end
       for _, minion in pairs(JMobs.objects) do
-        if minion and not minion.dead and minion.visible and GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
+        if minion and not minion.dead and minion.visible and minion.health < 100000 and GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
           CastSpell(_W, minion.x, minion.z)
         end
       end

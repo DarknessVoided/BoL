@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.37
+_G.NebelwolfisOrbWalkerVersion = 0.38
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -34,21 +34,7 @@ class "NebelwolfisOrbWalker" -- {
   end
 
   function NebelwolfisOrbWalker:Update()
-    local NebelwolfisOrbWalkerServerData = GetWebResult("raw.github.com", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.version?no-cache="..math.random(1, 25000))
-    if NebelwolfisOrbWalkerServerData then
-      local NebelwolfisOrbWalkerServerVersion = type(tonumber(NebelwolfisOrbWalkerServerData)) == "number" and tonumber(NebelwolfisOrbWalkerServerData) or nil
-      if NebelwolfisOrbWalkerServerVersion then
-        if tonumber(NebelwolfisOrbWalkerVersion) < NebelwolfisOrbWalkerServerVersion then
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.lua?no-cache="..math.random(1, 25000), SCRIPT_PATH.."Nebelwolfi's Orb Walker.lua", function() end)
-          DownloadFile("https://raw.github.com/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.lua?no-cache="..math.random(1, 25000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() end)
-          print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..NebelwolfisOrbWalkerVersion.." -> v"..NebelwolfisOrbWalkerServerVersion..")</font>")
-          return true
-        end
-      end
-    else
-      print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>")
-    end
-    return false
+    CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.version", "/nebelwolfi/BoL/master/Nebelwolfi's Orb Walker.lua?rand="..math.random(1,10000), SCRIPT_PATH.."Nebelwolfi's Orb Walker.lua", function() end, function() end, function(NewVersion,OldVersion) print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Updated. (v"..OldVersion.." -> v"..NewVersion..")</font>") end, function() print("<font color=\"#6699ff\"><b>[Nebelwolfi's Orb Walker]: </b></font> <font color=\"#FFFFFF\">Error downloading version info</font>") end)
   end
 
   function NebelwolfisOrbWalker:Load(Cfg)
@@ -60,6 +46,8 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:LoadVars(Cfg)
     DelayAction(function()
       self.melee = (myHero.range < 450 or myHero.charName == "Rengar") and myHero.charName ~= "Nidalee" and myHero.charName ~= "Jayce" and myHero.charName ~= "Elise"
+      self.Mobs = minionManager(MINION_ENEMY, myHero.range+GetDistance(myHero.minBBox), myHero, MINION_SORT_HEALTH_ASC)
+      self.JMobs = minionManager(MINION_JUNGLE, myHero.range+GetDistance(myHero.minBBox), myHero, MINION_SORT_HEALTH_ASC)
     end, 2)
     self.orbDisabled = false
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
@@ -69,7 +57,7 @@ class "NebelwolfisOrbWalker" -- {
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
     self.Target = nil
     ArrangeTSPriorities()
-      self.Config = Cfg or scriptConfig("NebelwolfisOrbWalker", "SW"..myHero.charName)
+    self.Config = Cfg or scriptConfig("NebelwolfisOrbWalker", "SW"..myHero.charName)
   end
 
   function NebelwolfisOrbWalker:LoadMenu()
@@ -170,9 +158,14 @@ class "NebelwolfisOrbWalker" -- {
     AddProcessSpellCallback(function(x,y) self:ProcessSpell(x,y) end)
   end
 
-  oTick=0;function NebelwolfisOrbWalker:Tick()
+  mTick=0;oTick=0;function NebelwolfisOrbWalker:Tick()
     if self.fPos and GetDistance(self.fPos) < myHero.boundingRadius then
       self.fPos = nil
+    end
+    if mTick < os.clock() and self.Mobs then
+      oTick = os.clock() + 0.05
+      self.Mobs:update()
+      self.JMobs:update()
     end
     if self:DoOrb() and oTick < GetTickCount() then
       oTick = GetTickCount() + self.Config.t.time
@@ -239,34 +232,34 @@ class "NebelwolfisOrbWalker" -- {
       local barPos = WorldToScreen(D3DXVECTOR3(self.Target.x, self.Target.y, self.Target.z))
       DrawText("Target-Lock", 18, barPos.x - 35, barPos.y, ARGB(255, 255, 255, 255))
     end
-    if self.Config.d.md.HPB and self.Config.k.LastHit or self.Config.d.md.HPBa then
-      for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
-        local barPos = GetUnitHPBarPos(minion)
-        local barOffset = GetUnitHPBarOffset(minion)
-        local drawPos = {x = barPos.x + barOffset.x - 32, y = barPos.y + barOffset.y - 2.5}
-        DrawRectangleOutline(drawPos.x, drawPos.y, 63, 5, 0x5f000000, 2)
-        local dmg = self:GetDmg(myHero, minion)
-        local width = 63 * dmg / minion.maxHealth
-        local loss = 63 * (minion.maxHealth - minion.health) / minion.maxHealth
-        for _ = 0, 63 - loss - width, width do
-          DrawRectangleOutline(drawPos.x + _, drawPos.y, width, 5, 0x5f000000, 1)
+    if self.Mobs then
+      for i, minion in pairs(self.Mobs.objects) do
+        if self.Config.d.md.HPB and self.Config.k.LastHit or self.Config.d.md.HPBa then
+          local barPos = GetUnitHPBarPos(minion)
+          local barOffset = GetUnitHPBarOffset(minion)
+          local drawPos = {x = barPos.x + barOffset.x - 32, y = barPos.y + barOffset.y - 2.5}
+          DrawRectangleOutline(drawPos.x, drawPos.y, 63, 5, 0x5f000000, 2)
+          local dmg = self:GetDmg(myHero, minion)
+          local width = 63 * dmg / minion.maxHealth
+          local loss = 63 * (minion.maxHealth - minion.health) / minion.maxHealth
+          for _ = 0, 63 - loss - width, width do
+            DrawRectangleOutline(drawPos.x + _, drawPos.y, width, 5, 0x5f000000, 1)
+          end
         end
-      end
-    end
-    if self.Config.d.md.LHI and self.Config.k.LastHit or self.Config.d.md.LHIa then
-      for i, minion in pairs(minionManager(MINION_ENEMY, 1250, myHero, MINION_SORT_HEALTH_ASC).objects) do
-        local hp = self.HP:PredictHealth(minion, (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-        local hp2 = self.HP:PredictHealth(minion, 2 * (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-        local barPos = GetUnitHPBarPos(minion)
-        local barOffset = GetUnitHPBarOffset(minion)
-        local drawPos = {x = barPos.x + barOffset.x - 62, y = barPos.y + barOffset.y - 15}
-        dmg = self:GetDmg(myHero, minion)
-        if dmg and (hp <= dmg or minion.health <= dmg) then
-          DrawText(">>", 30, drawPos.x, drawPos.y, 0xFF00FF00)
-          DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFF00FF00)
-        elseif dmg and (hp2 <= dmg or minion.health <= dmg*2) then
-          DrawText(">>", 30, drawPos.x, drawPos.y, 0xFFFFFFFF)
-          DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFFFFFFFF)
+        if self.Config.d.md.LHI and self.Config.k.LastHit or self.Config.d.md.LHIa then
+          local hp = self.HP:PredictHealth(minion, (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          local hp2 = self.HP:PredictHealth(minion, 2 * (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          local barPos = GetUnitHPBarPos(minion)
+          local barOffset = GetUnitHPBarOffset(minion)
+          local drawPos = {x = barPos.x + barOffset.x - 62, y = barPos.y + barOffset.y - 15}
+          dmg = self:GetDmg(myHero, minion)
+          if dmg and (hp <= dmg or minion.health <= dmg) then
+            DrawText(">>", 30, drawPos.x, drawPos.y, 0xFF00FF00)
+            DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFF00FF00)
+          elseif dmg and (hp2 <= dmg or minion.health <= dmg*2) then
+            DrawText(">>", 30, drawPos.x, drawPos.y, 0xFFFFFFFF)
+            DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFFFFFFFF)
+          end
         end
       end
     end
@@ -348,7 +341,7 @@ class "NebelwolfisOrbWalker" -- {
       if health < 0 then 
         Target = nil 
       end
-    elseif self.Config.k.LaneClear then
+    elseif self.Config.k.LaneClear and self.Mobs then
       local t = GetTarget()
       if t and ValidTarget(t, self.myRange) and self.Config.s.Buildings and (t.type == "obj_AI_Turret" or t.type == "obj_HQ" or t.type == "obj_BarracksDampener") and t.team ~= myHero.team then
         Target, health = self:GetLowestPMinion(self.myRange)
@@ -358,7 +351,7 @@ class "NebelwolfisOrbWalker" -- {
         end
         if health < 0 then Target = t end
       else
-        Target = GetJMinion(self.myRange)
+        Target = self:GetJMinion(self.myRange)
         if not Target then
           target, health, health2 = self:GetLowestPMinion(self.myRange)
           dmg = self:GetDmg(myHero,target)
@@ -469,17 +462,23 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:GetLowestPMinion(range)
     local minionTarget = nil
     local health, health2 = 0, 0
-    for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-      local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-      if minionTarget == nil and hp > 0 then 
-        minionTarget = minion
-        health = hp
-        health2 = hp2
-      elseif health >= hp and hp > 0 and ValidTarget(minion, range) then
-        minionTarget = minion
-        health = hp
-        health2 = hp2
+    if self.Mobs.range ~= range then
+      self.Mobs.range = range
+      self.Mobs:update()
+    end
+    for i, minion in pairs(self.Mobs.objects) do
+      if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
+        local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+        local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+        if minionTarget == nil and hp > 0 then 
+          minionTarget = minion
+          health = hp
+          health2 = hp2
+        elseif health >= hp and hp > 0 then
+          minionTarget = minion
+          health = hp
+          health2 = hp2
+        end
       end
     end
     return minionTarget, health, health2
@@ -489,18 +488,42 @@ class "NebelwolfisOrbWalker" -- {
     local minionTarget = nil
     local health = 0
     local count = 0
-    for i, minion in pairs(minionManager(MINION_ENEMY, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      count = count + 1
-      local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-      if minionTarget == nil then 
-        minionTarget = minion
-        health = hp
-      elseif health <= hp and hp > 0 and ValidTarget(minion, range) then
-        minionTarget = minion
-        health = hp
+    if self.Mobs.range ~= range then
+      self.Mobs.range = range
+      self.Mobs:update()
+    end
+    for i, minion in pairs(self.Mobs.objects) do
+      if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
+        count = count + 1
+        local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+        if minionTarget == nil then 
+          minionTarget = minion
+          health = hp
+        elseif health <= hp and hp > 0 then
+          minionTarget = minion
+          health = hp
+        end
       end
     end
     return minionTarget, health, count
+  end
+
+  function NebelwolfisOrbWalker:GetJMinion(range)
+    local minionTarget = nil
+    if self.JMobs.range ~= range then
+      self.JMobs.range = range
+      self.JMobs:update()
+    end
+    for i, minion in pairs(self.JMobs.objects) do
+      if minion and minion.visible and not minion.dead and minion.maxHealth < 100000 then
+        if not minionTarget then
+          minionTarget = minion
+        elseif minionTarget.maxHealth < minion.maxHealth then
+          minionTarget = minion
+        end
+      end
+    end
+    return minionTarget
   end
 
   function NebelwolfisOrbWalker:GetDmg(source, target, freeze)
@@ -589,20 +612,6 @@ class 'SCircle' -- {
 
 -- }
 
-  function GetJMinion(range)
-    local minionTarget = nil
-    for i, minion in pairs(minionManager(MINION_JUNGLE, range, myHero, MINION_SORT_HEALTH_ASC).objects) do
-      if minionTarget == nil then
-        if minion.health < 100000 then 
-          minionTarget = minion
-        end
-      elseif minionTarget.maxHealth < minion.maxHealth and ValidTarget(minion, range) and minion.health < 100000 then
-        minionTarget = minion
-      end
-    end
-    return minionTarget
-  end
-
   function ArrangeTSPriorities() -- last seen at "I don't even know who"
     local priorityTable2 = {
         p5 = {"Alistar", "Amumu", "Blitzcrank", "Braum", "ChoGath", "DrMundo", "Garen", "Gnar", "Hecarim", "JarvanIV", "Leona", "Lulu", "Malphite", "Nasus", "Nautilus", "Nunu", "Olaf", "Rammus", "Renekton", "Sejuani", "Shen", "Shyvana", "Singed", "Sion", "Skarner", "Taric", "Thresh", "Volibear", "Warwick", "MonkeyKing", "Yorick", "Zac"},
@@ -655,3 +664,191 @@ class 'SCircle' -- {
     end
     return nil
   end
+
+class "CScriptUpdate" -- {
+
+  function CScriptUpdate:__init(LocalVersion,UseHttps, Host, VersionPath, ScriptPath, SavePath, CallbackUpdate, CallbackNoUpdate, CallbackNewVersion,CallbackError)
+    self.LocalVersion = LocalVersion
+    self.Host = Host
+    self.VersionPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..VersionPath)..'&rand='..math.random(99999999)
+    self.ScriptPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..ScriptPath)..'&rand='..math.random(99999999)
+    self.SavePath = SavePath
+    self.CallbackUpdate = CallbackUpdate
+    self.CallbackNoUpdate = CallbackNoUpdate
+    self.CallbackNewVersion = CallbackNewVersion
+    self.CallbackError = CallbackError
+    self:CreateSocket(self.VersionPath)
+    self.DownloadStatus = 'Connect to Server for VersionInfo'
+    AddTickCallback(function() self:GetOnlineVersion() end)
+    return self
+  end
+
+  function CScriptUpdate:print(str)
+    print('<font color="#FFFFFF">'..os.clock()..': '..str)
+  end
+
+  function CScriptUpdate:CreateSocket(url)
+    if not self.LuaSocket then
+      self.LuaSocket = require("socket")
+    else
+      self.Socket:close()
+      self.Socket = nil
+      self.Size = nil
+      self.RecvStarted = false
+    end
+    self.LuaSocket = require("socket")
+    self.Socket = self.LuaSocket.tcp()
+    self.Socket:settimeout(0, 'b')
+    self.Socket:settimeout(99999999, 't')
+    self.Socket:connect('sx-bol.eu', 80)
+    self.Url = url
+    self.Started = false
+    self.LastPrint = ""
+    self.File = ""
+  end
+
+  function CScriptUpdate:Base64Encode(data)
+    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    return ((data:gsub('.', function(x)
+      local r,b='',x:byte()
+      for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
+      return r;
+    end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
+      if (#x < 6) then return '' end
+      local c=0
+      for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
+      return b:sub(c+1,c+1)
+    end)..({ '', '==', '=' })[#data%3+1])
+  end
+
+  function CScriptUpdate:GetOnlineVersion()
+    if self.GotScriptVersion then return end
+
+    self.Receive, self.Status, self.Snipped = self.Socket:receive(1024)
+    if self.Status == 'timeout' and not self.Started then
+      self.Started = true
+      self.Socket:send("GET "..self.Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
+    end
+    if (self.Receive or (#self.Snipped > 0)) and not self.RecvStarted then
+      self.RecvStarted = true
+      self.DownloadStatus = 'Downloading VersionInfo (0%)'
+    end
+
+    self.File = self.File .. (self.Receive or self.Snipped)
+    if self.File:find('</s'..'ize>') then
+      if not self.Size then
+        self.Size = tonumber(self.File:sub(self.File:find('<si'..'ze>')+6,self.File:find('</si'..'ze>')-1))
+      end
+      if self.File:find('<scr'..'ipt>') then
+        local _,ScriptFind = self.File:find('<scr'..'ipt>')
+        local ScriptEnd = self.File:find('</scr'..'ipt>')
+        if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
+        local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
+        self.DownloadStatus = 'Downloading VersionInfo ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+      end
+    end
+    if self.File:find('</scr'..'ipt>') then
+      self.DownloadStatus = 'Downloading VersionInfo (100%)'
+      local a,b = self.File:find('\r\n\r\n')
+      self.File = self.File:sub(a,-1)
+      self.NewFile = ''
+      for line,content in ipairs(self.File:split('\n')) do
+        if content:len() > 5 then
+          self.NewFile = self.NewFile .. content
+        end
+      end
+      local HeaderEnd, ContentStart = self.File:find('<scr'..'ipt>')
+      local ContentEnd, _ = self.File:find('</sc'..'ript>')
+      if not ContentStart or not ContentEnd then
+        if self.CallbackError and type(self.CallbackError) == 'function' then
+          self.CallbackError()
+        end
+      else
+        self.OnlineVersion = (Base64Decode(self.File:sub(ContentStart + 1,ContentEnd-1)))
+        self.OnlineVersion = tonumber(self.OnlineVersion)
+        if self.OnlineVersion > self.LocalVersion then
+          if self.CallbackNewVersion and type(self.CallbackNewVersion) == 'function' then
+            self.CallbackNewVersion(self.OnlineVersion,self.LocalVersion)
+          end
+          self:CreateSocket(self.ScriptPath)
+          self.DownloadStatus = 'Connect to Server for ScriptDownload'
+          AddTickCallback(function() self:DownloadUpdate() end)
+        else
+          if self.CallbackNoUpdate and type(self.CallbackNoUpdate) == 'function' then
+            self.CallbackNoUpdate(self.LocalVersion)
+          end
+        end
+      end
+      self.GotScriptVersion = true
+    end
+  end
+
+  function CScriptUpdate:DownloadUpdate()
+    if self.GotCScriptUpdate then return end
+    self.Receive, self.Status, self.Snipped = self.Socket:receive(1024)
+    if self.Status == 'timeout' and not self.Started then
+      self.Started = true
+      self.Socket:send("GET "..self.Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
+    end
+    if (self.Receive or (#self.Snipped > 0)) and not self.RecvStarted then
+      self.RecvStarted = true
+      self.DownloadStatus = 'Downloading Script (0%)'
+    end
+
+    self.File = self.File .. (self.Receive or self.Snipped)
+    if self.File:find('</si'..'ze>') then
+      if not self.Size then
+        self.Size = tonumber(self.File:sub(self.File:find('<si'..'ze>')+6,self.File:find('</si'..'ze>')-1))
+      end
+      if self.File:find('<scr'..'ipt>') then
+        local _,ScriptFind = self.File:find('<scr'..'ipt>')
+        local ScriptEnd = self.File:find('</scr'..'ipt>')
+        if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
+        local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
+        self.DownloadStatus = 'Downloading Script ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+      end
+    end
+    if self.File:find('</scr'..'ipt>') then
+      self.DownloadStatus = 'Downloading Script (100%)'
+      local a,b = self.File:find('\r\n\r\n')
+      self.File = self.File:sub(a,-1)
+      self.NewFile = ''
+      for line,content in ipairs(self.File:split('\n')) do
+        if content:len() > 5 then
+          self.NewFile = self.NewFile .. content
+        end
+      end
+      local HeaderEnd, ContentStart = self.NewFile:find('<sc'..'ript>')
+      local ContentEnd, _ = self.NewFile:find('</scr'..'ipt>')
+      if not ContentStart or not ContentEnd then
+        if self.CallbackError and type(self.CallbackError) == 'function' then
+          self.CallbackError()
+        end
+      else
+        local newf = self.NewFile:sub(ContentStart+1,ContentEnd-1)
+        local newf = newf:gsub('\r','')
+        if newf:len() ~= self.Size then
+          if self.CallbackError and type(self.CallbackError) == 'function' then
+            self.CallbackError()
+          end
+          return
+        end
+        local newf = Base64Decode(newf)
+        if type(load(newf)) ~= 'function' then
+          if self.CallbackError and type(self.CallbackError) == 'function' then
+            self.CallbackError()
+          end
+        else
+          local f = io.open(self.SavePath,"w+b")
+          f:write(newf)
+          f:close()
+          if self.CallbackUpdate and type(self.CallbackUpdate) == 'function' then
+            self.CallbackUpdate(self.OnlineVersion,self.LocalVersion)
+          end
+        end
+      end
+      self.GotCScriptUpdate = true
+    end
+  end
+
+-- }
