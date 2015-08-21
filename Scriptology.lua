@@ -3428,15 +3428,14 @@ class "Yorick"
   function Lux:Combo()
     if UnitHaveBuff(Target, "luxilluminati") and Config.Combo.R and sReady[_R] and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= GetRealHealth(Target) then
       Cast(_R, Target)
+    elseif Config.Combo.R and sReady[_R] and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
+      Cast(_R, Target)
     end
     if Config.Combo.E and sReady[_E] then
       Cast(_E, Target)
     else
       if Config.Combo.Q and sReady[_Q] and not sReady[_E] then
         Cast(_Q, Target)
-      end
-      if Config.Combo.R and sReady[_R] and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
-        Cast(_R, Target)
       end
     end
   end
@@ -4349,11 +4348,11 @@ class "Yorick"
       Cast(_W)
     else
       if (Config.LaneClear.W and sReady[_W]) then
-        local pos, hit = GetFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
+        local pos, hit = GetFarmPosition(myHero.range+myHero.boundingRadius*2, myHeroSpellData[1].width)
         if hit and hit > 0 and pos ~= nil and GetDistance(pos) < 150 then
           Cast(_W)
         end
-        local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, data[1].width)
+        local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, myHeroSpellData[1].width)
         if hit and hit > 0 and pos ~= nil and GetDistance(pos) < 150 then
           Cast(_W)
         end
