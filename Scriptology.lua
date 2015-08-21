@@ -2076,11 +2076,13 @@ class "Yorick"
   function Darius:Harass()
     if sReady[_Q] and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100 then
       for _, enemy in pairs(GetEnemyHeroes()) do
-        local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Harass"])
-        if Config.Harass.Qd and sReady[_Q] and GetDistance(Position) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
-          CastSpell(_Q)
-        elseif Config.Harass.Qs and sReady[_Q] and GetDistance(Position) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
-          CastSpell(_Q)
+        if enemy and not enemy.dead and enemy.visible then
+          local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Harass"])
+          if Config.Harass.Qd and sReady[_Q] and GetDistance(Position) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
+            CastSpell(_Q)
+          elseif Config.Harass.Qs and sReady[_Q] and GetDistance(Position) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
+            CastSpell(_Q)
+          end
         end
       end
     end
