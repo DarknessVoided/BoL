@@ -4058,7 +4058,7 @@ class "Yorick"
   end
 
   function Orianna:CreateObj(obj)
-    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" then
+    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" and obj.team == myHero.team then
       self.Ball = Vector(obj)
     end
   end
