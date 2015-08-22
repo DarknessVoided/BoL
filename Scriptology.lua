@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.23
+_G.ScriptologyVersion     = 2.231
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -24,7 +24,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
       ToUpdate.Host = "raw.githubusercontent.com"
       ToUpdate.VersionPath = "/nebelwolfi/BoL/master/Scriptology.version"
       ToUpdate.ScriptPath =  "/nebelwolfi/BoL/master/Scriptology.lua"
-      ToUpdate.SavePath = SCRIPT_PATH.."/Scriptology.lua"
+      ToUpdate.SavePath = SCRIPT_PATH..GetCurrentEnv().FILE_NAME
       ToUpdate.CallbackUpdate = function(NewVersion,OldVersion) Msg("Updated from v"..OldVersion.." to "..NewVersion..". Please press F9 twice to reload.") end
       ToUpdate.CallbackNoUpdate = function(OldVersion) end
       ToUpdate.CallbackNewVersion = function(NewVersion) Msg("New version found v"..NewVersion..". Please wait until it's downloaded.") end
