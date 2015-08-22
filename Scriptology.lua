@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.232
+_G.ScriptologyVersion     = 2.233
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -2126,6 +2126,12 @@ class "Yorick"
       if spell.name:lower():find("attack") and self.doW then
         DelayAction(function() Cast(_W) end, spell.windUpTime + GetLatency() / 2000)
       end
+    end
+  end
+
+  function Darius:Draw()
+    if Config.Draws.Q and sReady[_Q] then
+      DrawLFC(myHero.x, myHero.y, myHero.z, 270, ARGB(table.unpack(Config.Draws.ColorQ)))
     end
   end
 
