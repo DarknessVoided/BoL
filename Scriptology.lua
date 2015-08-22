@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.234
+_G.ScriptologyVersion     = 2.235
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -14,7 +14,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
     LoadEvade()
     LoadOrbwalker()
     LoadChampion()
-    Msg("Loaded!")
+    Msg("Loaded! (v".._G.ScriptologyVersion..")")
     OnAfterLoad()
   end
 
@@ -103,20 +103,9 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
 
       function LoadOrbwalker()
         if myHero.charName == "Riven" then return end
-        if _G.AutoCarry then
-          if _G.Reborn_Initialised then
-            Msg("Found SAC: Reborn")
-          else
-            Msg("Found SAC: Revamped")
-          end
-        elseif _G.Reborn_Loaded then
-          DelayAction(LoadOrbwalker, 1)
+        if _G.Reborn_Loaded or _G.AutoCarry then
         elseif _G.MMA_Loaded then
-          Msg("Found MMA")
-        elseif _G.NebelwolfisOrbWalkerLoaded then
-          Msg("Found NOW")
-        elseif _G.NebelwolfisOrbWalkerInit then
-          DelayAction(LoadOrbwalker, 1)
+        elseif _G.NebelwolfisOrbWalkerInit or _G.NebelwolfisOrbWalkerLoaded then
         else
           ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
           ScriptologyConfig.Orbwalker:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_LIST, 1, {"Nebelwolfi's Orb Walker", "SxOrbWalk", "Simple Orb Walk", "Big Fat Walk"})
@@ -131,12 +120,12 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
             require "Nebelwolfi's Orb Walker"
             isNOW = true
             NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
-            Msg("Nebelwolfi's Orb Walker loaded!")
+            --Msg("Nebelwolfi's Orb Walker loaded!")
           elseif ScriptologyConfig.Orbwalker.info == 2 then
             require "SxOrbwalk"
             isSxOrb = true
             SxOrb:LoadToMenu(ScriptologyConfig.Orbwalker)
-            Msg("SxOrbWalk loaded!")
+            --Msg("SxOrbWalk loaded!")
           elseif ScriptologyConfig.Orbwalker.info == 3 then
             require "SOW"
             require "VPrediction"
@@ -144,13 +133,13 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
             _G.VP = VPrediction()
             SOWVP = SOW(VP)
             SOWVP:LoadToMenu(ScriptologyConfig.Orbwalker)
-            Msg("Loaded Simple Orb Walker!")
+            --Msg("Loaded Simple Orb Walker!")
           elseif ScriptologyConfig.Orbwalker.info == 4 then
             require "Big Fat Orbwalker"
             _G["BigFatOrb_DisableAttacks"] = false
             _G["BigFatOrb_DisableMove"] = false
             isBFW = true
-            Msg("Loaded Big Fat Orbwalker!")
+            --Msg("Loaded Big Fat Orbwalker!")
           end
         end
 
@@ -687,7 +676,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
   end
 
   function Msg(x, skip)
-    local text = "<font color=\"#ff0000\">[</font><font color=\"#ff2a00\">S</font><font color=\"#ff5500\">c</font><font color=\"#ff7f00\">r</font><font color=\"#ff9f00\">i</font><font color=\"#ffbf00\">p</font><font color=\"#ffdf00\">t</font><font color=\"#ffff00\">o</font><font color=\"#aaff00\">l</font><font color=\"#55ff00\">o</font><font color=\"#00ff00\">g</font><font color=\"#00ff55\">y</font><font color=\"#00ffaa\"> </font><font color=\"#00ffff\">L</font><font color=\"#00bfff\">o</font><font color=\"#0080ff\">a</font><font color=\"#0040ff\">d</font><font color=\"#0000ff\">e</font><font color=\"#2e00ff\">r</font><font color=\"#5d00ff\">]</font><font color=\"#8b00ff\">:</font>"
+    local text = "<font color=\"#ff0000\">[</font><font color=\"#ff2a00\">S</font><font color=\"#ff5500\">c</font><font color=\"#ff7f00\">r</font><font color=\"#ff9f00\">i</font><font color=\"#ffbf00\">p</font><font color=\"#ffdf00\">t</font><font color=\"#ffff00\">o</font><font color=\"#aaff00\">l</font><font color=\"#55ff00\">o</font><font color=\"#00ff00\">g</font><font color=\"#00ff55\">y</font><font color=\"#00ffaa\"> </font><font color=\"#00ffff\">L</font><font color=\"#00bfff\">o</font><font color=\"#0080ff\">a</font><font color=\"#0040ff\">d</font><font color=\"#0000ff\">e</font><font color=\"#2e00ff\">r</font><font color=\"#5d00ff\">]</font><font color=\"#8b00ff\">: </font>"
     if not skip and false then
       local num = GetWebResult("random.org", "/integers/?num="..(x:len()*6).."&min=1&max=16&col="..(x:len()*6).."&base=16&format=plain&rnd=new")
       local index = 0
