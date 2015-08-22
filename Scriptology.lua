@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.233
+_G.ScriptologyVersion     = 2.234
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -2139,9 +2139,9 @@ class "Yorick"
     for _, enemy in pairs(GetEnemyHeroes()) do
       if enemy and not enemy.dead and enemy.visible then
         local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Combo"])
-        if Config.Combo.Qd and HitChance and sReady[_Q] and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
+        if Config.Combo.Qd and HitChance and sReady[_Q] and CastPosition and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
           CastSpell(_Q)
-        elseif Config.Combo.Qs and HitChance and sReady[_Q] and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
+        elseif Config.Combo.Qs and HitChance and sReady[_Q] and CastPosition and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
           CastSpell(_Q)
         end
       end
@@ -2159,9 +2159,9 @@ class "Yorick"
       for _, enemy in pairs(GetEnemyHeroes()) do
         if enemy and not enemy.dead and enemy.visible then
           local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Harass"])
-          if Config.Harass.Qd and sReady[_Q] and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
+          if Config.Harass.Qd and sReady[_Q] and CastPosition and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
             CastSpell(_Q)
-          elseif Config.Harass.Qs and sReady[_Q] and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
+          elseif Config.Harass.Qs and sReady[_Q] and CastPosition and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
             CastSpell(_Q)
           end
         end
