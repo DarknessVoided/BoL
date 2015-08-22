@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.42
+_G.NebelwolfisOrbWalkerVersion = 0.425
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -101,6 +101,7 @@ class "NebelwolfisOrbWalker" -- {
         self.Config.i.Combo:addParam("BWC", "Bilgewater Cutlass", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Combo:addParam("HXG", "Hextech Gunblade", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Combo:addParam("HYDRA", "Ravenous Hydra", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Combo:addParam("TITANICHYDRA", "Titanic Hydra", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Combo:addParam("TIAMAT", "Tiamat", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Combo:addParam("ENT", "Entropy", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Combo:addParam("YGB", "Yomuu's Ghostblade", SCRIPT_PARAM_ONOFF, true)
@@ -109,6 +110,7 @@ class "NebelwolfisOrbWalker" -- {
         self.Config.i.Harass:addParam("BWC", "Bilgewater Cutlass", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Harass:addParam("HXG", "Hextech Gunblade", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Harass:addParam("HYDRA", "Ravenous Hydra", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Harass:addParam("TITANICHYDRA", "Titanic Hydra", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Harass:addParam("TIAMAT", "Tiamat", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Harass:addParam("ENT", "Entropy", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Harass:addParam("YGB", "Yomuu's Ghostblade", SCRIPT_PARAM_ONOFF, true)
@@ -117,6 +119,7 @@ class "NebelwolfisOrbWalker" -- {
         self.Config.i.Farm:addParam("BWC", "Bilgewater Cutlass", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Farm:addParam("HXG", "Hextech Gunblade", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Farm:addParam("HYDRA", "Ravenous Hydra", SCRIPT_PARAM_ONOFF, true)
+        self.Config.i.Farm:addParam("TITANICHYDRA", "Titanic Hydra", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Farm:addParam("TIAMAT", "Tiamat", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Farm:addParam("ENT", "Entropy", SCRIPT_PARAM_ONOFF, true)
         self.Config.i.Farm:addParam("YGB", "Yomuu's Ghostblade", SCRIPT_PARAM_ONOFF, true)
@@ -314,6 +317,7 @@ class "NebelwolfisOrbWalker" -- {
       ["OdinEntropicClaymore"]        = { id = 3184, config = "ENT", range = 350, target = false},
       ["ItemTiamatCleave"]            = { id = 3074, config = "HYDRA", range = 350, target = false},
       ["ItemTiamatCleave"]            = { id = 3077, config = "TIAMAT", range = 350, target = false},
+      ["ItemTitanicHydraCleave"]      = { id = 3748, config = "TITANICHYDRA", range = 550, target = false},
       ["YoumusBlade"]                 = { id = 3142, config = "YGB", range = 600, target = false},
     }
     local Config = self.Config.k.Combo and self.Config.i.Combo or self.Config.k.Harass and self.Config.i.Harass or self.Config.k.LastHit and self.Config.i.LastHit or self.Config.k.LaneClear and self.Config.i.LaneClear or nil
