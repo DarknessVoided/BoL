@@ -178,7 +178,7 @@ return {
 		[_Q] = { name = "KarmaQ", speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
 	},
 	["Karthus"] = {
-		[_Q] = { name = "KarthusLayWaste", speed = math.huge, delay = 0.5, range = 875, width = 160, collision = false, aoe = true, type = "circular", dmgAP = function(source, target) return 20+20*source:GetSpellData(_Q).level+0.3*source.ap end},
+		[_Q] = { name = "KarthusLayWaste", speed = math.huge, delay = 0.5, range = 875, width = 160, collision = false, aoe = true, type = "circular", dmgAP = function(source, target) local m=minionManager(MINION_JUNGLE, 160, target, MINION_SORT_HEALTH_ASC); return (#m.objects == 0 and 2 or 1) * (20+20*source:GetSpellData(_Q).level+0.3*source.ap) end},
 		[_W] = { name = "KarthusWallOfPain", speed = math.huge, delay = 0.25, range = 1000, width = 160, collision = false, aoe = true, type = "circular"},
 		[_E] = { name = "KarthusDefile", speed = math.huge, delay = 0.25, range = 550, width = 550, collision = false, aoe = true, type = "circular", dmgAP = function(source, target) return 10+20*source:GetSpellData(_Q).level+0.2*source.ap end},
 		[_R] = { name = "KarthusFallenOne", range = math.huge, dmgAP = function(source, target) return 100+150*source:GetSpellData(_Q).level+0.60*source.ap end}
