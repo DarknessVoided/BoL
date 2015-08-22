@@ -178,7 +178,10 @@ return {
 		[_Q] = { name = "KarmaQ", speed = 1700, delay = 0.250, range = 950, width = 90, collision = true, aoe = false, type = "linear"}
 	},
 	["Karthus"] = {
-		[_Q] = { name = "KarthusLayWaste", speed = math.huge, delay = 0.75, range = 825, width = 120, collision = false, aoe = true, type = "circular"}
+		[_Q] = { name = "KarthusLayWaste", speed = math.huge, delay = 0.625, range = 875, width = 160, collision = false, aoe = true, type = "circular"},
+		[_Q] = { name = "KarthusWallOfPain", speed = math.huge, delay = 0.25, range = 925, width = 160, collision = false, aoe = true, type = "circular"},
+		[_Q] = { name = "KarthusDefile", speed = math.huge, delay = 0.25, range = 475, width = 475, collision = false, aoe = true, type = "circular"},
+		[_Q] = { name = "KarthusFallenOne", range = math.huge}
 	},
 	["Kassadin"] = {
 		[_E] = { name = "", speed = 2200, delay = 0.25, range = 650, width = 80, collision = false, aoe = false, type = "cone"},
