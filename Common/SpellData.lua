@@ -179,8 +179,8 @@ return {
 	},
 	["Karthus"] = {
 		[_Q] = { name = "KarthusLayWaste", speed = math.huge, delay = 0.625, range = 875, width = 160, collision = false, aoe = true, type = "circular"},
-		[_W] = { name = "KarthusWallOfPain", speed = math.huge, delay = 0.25, range = 925, width = 160, collision = false, aoe = true, type = "circular"},
-		[_E] = { name = "KarthusDefile", speed = math.huge, delay = 0.25, range = 475, width = 475, collision = false, aoe = true, type = "circular"},
+		[_W] = { name = "KarthusWallOfPain", speed = math.huge, delay = 0.25, range = 1000, width = 160, collision = false, aoe = true, type = "circular"},
+		[_E] = { name = "KarthusDefile", speed = math.huge, delay = 0.25, range = 550, width = 550, collision = false, aoe = true, type = "circular"},
 		[_R] = { name = "KarthusFallenOne", range = math.huge}
 	},
 	["Kassadin"] = {
