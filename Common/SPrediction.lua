@@ -35,7 +35,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.82
+_G.SPredictionVersion    = 2.83
 
 class 'SPrediction' -- {
 
@@ -63,7 +63,7 @@ class 'SPrediction' -- {
       self:Msg("Loaded the latest version (v"..SPredictionVersion..")")
     end
 
-    function SPrediction:Msg(msg) print("<font color=\"#6699ff\"><b>[SPrediction]: </b></font> <font color=\"#FFFFFF\">"..msg..".</font>")  end
+    function SPrediction:Msg(msg) print("<font color=\"#ff0000\">[</font><font color=\"#ff4000\">S</font><font color=\"#ff7f00\">P</font><font color=\"#ffbf00\">r</font><font color=\"#ffff00\">e</font><font color=\"#aaff00\">d</font><font color=\"#55ff00\">i</font><font color=\"#00ff00\">c</font><font color=\"#00ff80\">t</font><font color=\"#00ffff\">i</font><font color=\"#0080ff\">o</font><font color=\"#0000ff\">n</font><font color=\"#4600ff\">]</font><font color=\"#8b00ff\">:</font> <font color=\"#FFFFFF\">"..msg..".</font>")  end
 
     function SPrediction:Tick()
         for i=1,heroManager.iCount do 
