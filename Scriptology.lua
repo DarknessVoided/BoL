@@ -4543,7 +4543,7 @@ class "Yorick"
       end
     end
     for _,k in pairs(GetEnemyHeroes()) do
-      if sReady[_W] and ValidTarget(k, data[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, data[_W].range)) then
+      if sReady[_W] and ValidTarget(k, myHeroSpellData[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, myHeroSpellData[_W].range)) then
         Cast(_W)
       end
     end
