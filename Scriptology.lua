@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.235
+_G.ScriptologyVersion     = 2.236
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -4058,7 +4058,7 @@ class "Yorick"
   end
 
   function Orianna:CreateObj(obj)
-    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" and obj.spellOwner.isMe then
+    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" then
       self.Ball = Vector(obj)
     end
   end
@@ -4593,7 +4593,7 @@ class "Yorick"
   end
 
   function Riven:CreateObj(obj)
-    if obj and GetDistance(obj) < 1000 and obj.spellOwner.isMe and self.skipWindups then
+    if obj and GetDistance(obj) < 125 and self.skipWindups then
       if obj.name:find("Riven_Base_Q_01_Wpn") then
         local mPos = myHero + (Vector(Target) - myHero):normalized() * 65
         myHero:MoveTo(mPos.x, mPos.z)
