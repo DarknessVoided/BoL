@@ -23,7 +23,9 @@ return {
 		[_R] = { name = "", speed = math.huge, delay = 0.100, range = 615, width = 350, collision = false, aoe = true, type = "circular"}
 	},
 	["Annie"] = {
-		[_W] = { name = "", speed = math.huge, delay = 0.25, range = 625, width = 250, collision = false, aoe = true, type = "cone"},
+		[_Q] = { name = "Disintegrate" },
+		[_W] = { name = "Incinerate", speed = math.huge, delay = 0.25, range = 625, width = 250, collision = false, aoe = true, type = "cone"},
+		[_E] = { name = "MoltenShield" },
 		[_R] = { name = "InfernalGuardian", speed = math.huge, delay = 0.25, range = 600, width = 300, collision = false, aoe = true, type = "circular"}
 	},
 	["Ashe"] = {
