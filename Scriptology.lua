@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.224
+_G.ScriptologyVersion     = 2.225
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -392,6 +392,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
         end
 
         function AddPluginTicks()
+          AddTickCallback(function();for _=0,3 do;sReady[_]=(myHero:CanUseSpell(_)==READY);end;end)
           tickTable = {
             function() 
               targetSel:update()
@@ -408,9 +409,6 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
               end
               Mobs:update()
               JMobs:update()
-              for _=0, 12 do
-                sReady[_] = myHero:CanUseSpell(_) == 0
-              end
             end,
             function()
               if Champerino.CalculateDamage then
@@ -484,7 +482,7 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
             end
             )
           end
-          gTick=0;cTick=0;AddTickCallback(function() 
+          suchTicks={};gTick=0;cTick=0;AddTickCallback(function() 
             local time = os.clock()
             if gTick < time then
               gTick = time + 0.025
@@ -579,15 +577,35 @@ _G.ScriptologyConfig    = scriptConfig("Scriptology Loader", "Scriptology2"..myH
             if Config.Draws.PermaShow then
               CustomPermaShow(" - Scriptology Perma Show - ", nil, true, nil, nil, nil, 0)
               if Config.kConfig.LaneClear then
-                CustomPermaShow("LaneClear", Config.kConfig.LaneClear, Config.kConfig.LaneClear, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+                CustomPermaShow("Active Mode: LaneClear", nil, Config.kConfig.LaneClear, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
+                CustomPermaShow("Use Q", Config.LaneClear.Q, Config.LaneClear.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
+                CustomPermaShow("Use W", Config.LaneClear.W, Config.LaneClear.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
+                CustomPermaShow("Use E", Config.LaneClear.E, Config.LaneClear.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
+                CustomPermaShow("Use R", Config.LaneClear.R, Config.LaneClear.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
               elseif Config.kConfig.LastHit then
-                CustomPermaShow("LastHit", Config.kConfig.LastHit, Config.kConfig.LastHit, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+                CustomPermaShow("Active Mode: LastHit", nil, Config.kConfig.LastHit, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
+                CustomPermaShow("Use Q", Config.LastHit.Q, Config.LastHit.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
+                CustomPermaShow("Use W", Config.LastHit.W, Config.LastHit.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
+                CustomPermaShow("Use E", Config.LastHit.E, Config.LastHit.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
+                CustomPermaShow("Use R", Config.LastHit.R, Config.LastHit.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
               elseif Config.kConfig.Harass then
-                CustomPermaShow("Harass", Config.kConfig.Harass, Config.kConfig.Harass, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+                CustomPermaShow("Active Mode: Harass", nil, Config.kConfig.Harass, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
+                CustomPermaShow("Use Q", Config.Harass.Q, Config.Harass.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
+                CustomPermaShow("Use W", Config.Harass.W, Config.Harass.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
+                CustomPermaShow("Use E", Config.Harass.E, Config.Harass.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
+                CustomPermaShow("Use R", Config.Harass.R, Config.Harass.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
               elseif Config.kConfig.Combo then
-                CustomPermaShow("Combo", Config.kConfig.Combo, Config.kConfig.Combo, ARGB(255, 0, 0, 0), ARGB(255, 0, 0, 0), ARGB(255,255,255,255), 1)
+                CustomPermaShow("Active Mode: Combo", nil, Config.kConfig.Combo, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
+                CustomPermaShow("Use Q", Config.Combo.Q, Config.Combo.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
+                CustomPermaShow("Use W", Config.Combo.W, Config.Combo.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
+                CustomPermaShow("Use E", Config.Combo.E, Config.Combo.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
+                CustomPermaShow("Use R", Config.Combo.R, Config.Combo.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
               else
                 CustomPermaShow("", false, false, nil, nil, nil, 1)
+                CustomPermaShow("", false, false, nil, nil, nil, 2)
+                CustomPermaShow("", false, false, nil, nil, nil, 3)
+                CustomPermaShow("", false, false, nil, nil, nil, 4)
+                CustomPermaShow("", false, false, nil, nil, nil, 5)
               end
             else
               CustomPermaShow("", false, false, nil, nil, nil, 0)
@@ -1311,9 +1329,6 @@ class "Yorick"
 
   function Ahri:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell then
-      if spell.name == "AhriOrbofDeception" then
-        self.tempOrbNID = spell.projectileID
-      end
       if spell.name == "AhriTumble" then
         if self.ultOn < os.clock()-10 then 
           self.ultOn = os.clock()
@@ -1323,7 +1338,7 @@ class "Yorick"
   end
 
   function Ahri:CreateObj(obj)
-    if obj and obj.name == "missile" and obj.spellOwner.isMe and obj.projectileID == self.tempOrbNID then-- and GetDistance(obj) > 175 then
+    if obj and obj.name == "missile" and obj.spellOwner.isMe and GetDistance(obj) > 175 then
       self.Orb = obj
     end
   end
@@ -1395,23 +1410,16 @@ class "Yorick"
 
   function Ahri:Combo()
     if not Target then return end
+    if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < myHeroSpellData[0].range then
+      Cast(_Q, Target)
+    end
+    if sReady[_W] and Config.Combo.W and GetDistance(Target) < myHeroSpellData[1].range then
+      Cast(_W)
+    end
     if sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
       Cast(_E, Target)
     end
-    if UnitHaveBuff(Target, "ahriseduce") then
-      if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < myHeroSpellData[0].range then
-        Cast(_Q, Target)
-      end
-      if sReady[_W] and Config.Combo.W and GetDistance(Target) < myHeroSpellData[1].range then
-        Cast(_W)
-      end
-    else
-      if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < myHeroSpellData[0].range then
-        Cast(_Q, Target)
-      end
-      if sReady[_W] and Config.Combo.W and GetDistance(Target) < myHeroSpellData[1].range then
-        Cast(_W)
-      end
+    if not UnitHaveBuff(Target, "ahriseduce") then
       if Config.Combo.R then
         self:CatchQ()
       end
@@ -1729,11 +1737,21 @@ class "Yorick"
     end
   end
 
-
 -- }
+
+-- { Azir
 
   function Azir:__init()
   end
+
+  function Azir:Load()
+    self:Menu()
+  end
+
+  function Azir:Menu()
+  end
+
+-- }
 
 -- { Blitzcrank
 
@@ -4038,9 +4056,8 @@ class "Yorick"
   end
 
   function Orianna:CreateObj(obj)
-    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" and self.BallNID and self.BallNID == obj.networkID then
+    if obj and obj.name and obj.valid and obj.name == "TheDoomBall" and obj.spellOwner.isMe then
       self.Ball = Vector(obj)
-      self.BallNID = nil
     end
   end
 
@@ -4048,7 +4065,6 @@ class "Yorick"
     if unit and spell and unit.isMe then
       if spell.name == "OrianaIzunaCommand" then
         self.Ball = nil
-        self.BallNID = spell.projectileID
       end
       if spell.name == "OrianaRedactCommand" then
         self.Ball = spell.target
@@ -4576,7 +4592,7 @@ class "Yorick"
   end
 
   function Riven:CreateObj(obj)
-    if obj and GetDistance(obj) < 1000 and self.skipWindups then
+    if obj and GetDistance(obj) < 1000 and obj.spellOwner.isMe and self.skipWindups then
       if obj.name:find("Riven_Base_Q_01_Wpn") then
         local mPos = myHero + (Vector(Target) - myHero):normalized() * 65
         myHero:MoveTo(mPos.x, mPos.z)
@@ -5036,6 +5052,7 @@ class "Yorick"
 
   function Teemo:__init()
     self.doQ = false
+    self.lastR = 0
   end
 
   function Teemo:Load()
@@ -5072,7 +5089,8 @@ class "Yorick"
     if unit and spell and unit.isMe and spell.name then
       if spell.name:lower():find("attack") then
         if self.doQ and sReady[_Q] then
-          DelayAction(function() CastSpell(_Q) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
+          local target = spell.target
+          DelayAction(function() CastSpell(_Q, target) end, spell.windUpTime - GetLatency() / 2000 + 0.07)
         end
       end
     end
@@ -5092,8 +5110,16 @@ class "Yorick"
     if Config.Combo.I and Ignite and myHero:CanUseSpell(Ignite) == READY and GetDistanceSqr(Target) < 600^2 and GetRealHealth(Target) < (50+20*myHero.level+GetDmg("AD",myHero,Target)*5*myHero.attackSpeed) then
       CastSpell(Ignite, Target)
     end
-    if Config.Combo.R and GetDistanceSqr(Target) < myHeroSpellData[_R].range^2 and Config.Harass.manaR <= 100*myHero.mana/myHero.maxMana then
+    if Config.Combo.R and GetDistanceSqr(Target) < myHeroSpellData[_R].range^2 and self.lastR < os.clock() then
       Cast(_R, Target)
+      self.lastR = os.clock() + 2
+    end
+  end
+
+  function Teemo:Harass()
+    if Config.Harass.R and GetDistanceSqr(Target) < myHeroSpellData[_R].range^2 and Config.Harass.manaR <= 100*myHero.mana/myHero.maxMana then
+      Cast(_R, Target)
+      self.lastR = os.clock() + 2
     end
   end
 
@@ -6019,167 +6045,169 @@ class "CScriptUpdate" -- {
 
 -- }
 
+-- { Custom Perma Show
+  version = 1.09
 
-version = 1.09
-
-if not _G.HidePermaShow then
-  _G.HidePermaShow = {}
-end
-
-if not _G.CPS then
-  _G.CPS = {}
-  _G.CPS.Index = {}
-  _G.CPS.NoIndex = {}
-  _G.CPS.StartY = GetSave("scriptConfig")["Master"].py
-  _G.CPS.LastCheck = 0
-  _G._DrawText = DrawText
-  DelayAction(function()  _G.CPS.OldCountDone = true end, 3)
-  DelayAction(function()  AddDrawCallback(_DrawCustomPermaShow) end, 0.1)
-end
-
-function CustomPermaShow(TextVar, ValueVar, VisibleVar, PermaColorVar, OnColorVar, OffColorVar, IndexVar)
-  if IndexVar then
-    local ItsNew = true
-    for i = 1,#_G.CPS.Index do
-      if _G.CPS.Index[i].IndexVar == IndexVar then
-        ItsNew = false
-        _G.CPS.Index[i].TextVar = TextVar
-        _G.CPS.Index[i].ValueVar = ValueVar
-        _G.CPS.Index[i].VisibleVar = VisibleVar
-        _G.CPS.Index[i].PermaColorVar = PermaColorVar
-        _G.CPS.Index[i].OnColorVar = OnColorVar
-        _G.CPS.Index[i].OffColorVar = OffColorVar
-        break
-      end
-    end
-
-    if ItsNew then
-      table.insert(_G.CPS.Index, {
-      ["TextVar"] = TextVar,
-      ["ValueVar"] = ValueVar,
-      ["VisibleVar"] = VisibleVar,
-      ["PermaColorVar"] = PermaColorVar,
-      ["OnColorVar"] = OnColorVar,
-      ["OffColorVar"] = OffColorVar,
-      ["IndexVar"] = IndexVar,
-      })
-    end
-  else
-    local ItsNew = true
-    for i = 1,#_G.CPS.NoIndex do
-      if _G.CPS.NoIndex[i].TextVar == TextVar then
-        ItsNew = false
-        _G.CPS.NoIndex[i].ValueVar = ValueVar
-        _G.CPS.NoIndex[i].VisibleVar = VisibleVar
-        _G.CPS.NoIndex[i].PermaColorVar = PermaColorVar
-        _G.CPS.NoIndex[i].OnColorVar = OnColorVar
-        _G.CPS.NoIndex[i].OffColorVar = OffColorVar
-        break
-      end
-    end
-
-    if ItsNew then
-      table.insert(_G.CPS.NoIndex, {
-      ["TextVar"] = TextVar,
-      ["ValueVar"] = ValueVar,
-      ["VisibleVar"] = VisibleVar,
-      ["PermaColorVar"] = PermaColorVar,
-      ["OnColorVar"] = OnColorVar,
-      ["OffColorVar"] = OffColorVar,
-      })
-    end
+  if not _G.HidePermaShow then
+    _G.HidePermaShow = {}
   end
-end
 
-function _GetPermaColor(PermaTable)
-  if PermaTable.ValueVar == true then
-    if PermaTable.OnColorVar == nil then
-      if PermaTable.PermaColorVar == nil then
-        ColorVar = _CPS_Master.color.green
-      else
-        ColorVar = PermaTable.PermaColorVar
+  if not _G.CPS then
+    _G.CPS = {}
+    _G.CPS.Index = {}
+    _G.CPS.NoIndex = {}
+    _G.CPS.StartY = GetSave("scriptConfig")["Master"].py
+    _G.CPS.LastCheck = 0
+    _G._DrawText = DrawText
+    DelayAction(function()  _G.CPS.OldCountDone = true end, 3)
+    DelayAction(function()  AddDrawCallback(_DrawCustomPermaShow) end, 0.1)
+  end
+
+  function CustomPermaShow(TextVar, ValueVar, VisibleVar, PermaColorVar, OnColorVar, OffColorVar, IndexVar)
+    if IndexVar then
+      local ItsNew = true
+      for i = 1,#_G.CPS.Index do
+        if _G.CPS.Index[i].IndexVar == IndexVar then
+          ItsNew = false
+          _G.CPS.Index[i].TextVar = TextVar
+          _G.CPS.Index[i].ValueVar = ValueVar
+          _G.CPS.Index[i].VisibleVar = VisibleVar
+          _G.CPS.Index[i].PermaColorVar = PermaColorVar
+          _G.CPS.Index[i].OnColorVar = OnColorVar
+          _G.CPS.Index[i].OffColorVar = OffColorVar
+          break
+        end
+      end
+
+      if ItsNew then
+        table.insert(_G.CPS.Index, {
+        ["TextVar"] = TextVar,
+        ["ValueVar"] = ValueVar,
+        ["VisibleVar"] = VisibleVar,
+        ["PermaColorVar"] = PermaColorVar,
+        ["OnColorVar"] = OnColorVar,
+        ["OffColorVar"] = OffColorVar,
+        ["IndexVar"] = IndexVar,
+        })
       end
     else
-      ColorVar = PermaTable.OnColorVar
+      local ItsNew = true
+      for i = 1,#_G.CPS.NoIndex do
+        if _G.CPS.NoIndex[i].TextVar == TextVar then
+          ItsNew = false
+          _G.CPS.NoIndex[i].ValueVar = ValueVar
+          _G.CPS.NoIndex[i].VisibleVar = VisibleVar
+          _G.CPS.NoIndex[i].PermaColorVar = PermaColorVar
+          _G.CPS.NoIndex[i].OnColorVar = OnColorVar
+          _G.CPS.NoIndex[i].OffColorVar = OffColorVar
+          break
+        end
+      end
+
+      if ItsNew then
+        table.insert(_G.CPS.NoIndex, {
+        ["TextVar"] = TextVar,
+        ["ValueVar"] = ValueVar,
+        ["VisibleVar"] = VisibleVar,
+        ["PermaColorVar"] = PermaColorVar,
+        ["OnColorVar"] = OnColorVar,
+        ["OffColorVar"] = OffColorVar,
+        })
+      end
     end
-    TextVar = "      ON"
-  elseif PermaTable.ValueVar == false then
-    if PermaTable.OffColorVar == nil then
+  end
+
+  function _GetPermaColor(PermaTable)
+    if PermaTable.ValueVar == true then
+      if PermaTable.OnColorVar == nil then
+        if PermaTable.PermaColorVar == nil then
+          ColorVar = _CPS_Master.color.green
+        else
+          ColorVar = PermaTable.PermaColorVar
+        end
+      else
+        ColorVar = PermaTable.OnColorVar
+      end
+      TextVar = "      ON"
+    elseif PermaTable.ValueVar == false then
+      if PermaTable.OffColorVar == nil then
+        if PermaTable.PermaColorVar == nil then
+          ColorVar = _CPS_Master.color.lgrey
+        else
+          ColorVar = PermaTable.PermaColorVar
+        end
+      else
+        ColorVar = PermaTable.OffColorVar
+      end
+      TextVar = "      OFF"
+    else
       if PermaTable.PermaColorVar == nil then
         ColorVar = _CPS_Master.color.lgrey
       else
         ColorVar = PermaTable.PermaColorVar
       end
-    else
-      ColorVar = PermaTable.OffColorVar
+      TextVar = PermaTable.ValueVar
     end
-    TextVar = "      OFF"
-  else
-    if PermaTable.PermaColorVar == nil then
-      ColorVar = _CPS_Master.color.lgrey
-    else
-      ColorVar = PermaTable.PermaColorVar
-    end
-    TextVar = PermaTable.ValueVar
-  end
-  return TextVar,ColorVar
-end
-
-function _DrawCustomPermaShow()
-  _CPS_Master = GetSave("scriptConfig")["Master"]
-  _CPS_Master.py1 = _CPS_Master.py
-  _CPS_Master.py2 = _CPS_Master.py
-  _CPS_Master.color = { lgrey = 1413167931, grey = 4290427578, green = 1409321728}
-  _CPS_Master.fontSize = WINDOW_H and math.round(WINDOW_H / 72) or 10
-  _CPS_Master.midSize = _CPS_Master.fontSize / 2
-  _CPS_Master.cellSize = _CPS_Master.fontSize + 1
-  _CPS_Master.width = WINDOW_W and math.round(WINDOW_W / 6.4) or 160
-  _CPS_Master.row = _CPS_Master.width * 0.7
-  _CPS_Master.py1 = _G.CPS.StartY + _CPS_Master.cellSize
-  for i = 1, #_G.CPS.Index do
-    if _G.CPS.Index[i].VisibleVar and not _G.HidePermaShow[_G.CPS.Index[i].TextVar] then
-      ValueTextVar, ColorVar = _GetPermaColor(_G.CPS.Index[i])
-      DrawLine(_CPS_Master.px - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.row - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, _CPS_Master.color.lgrey)
-      _DrawText(_G.CPS.Index[i].TextVar, _CPS_Master.fontSize, _CPS_Master.px, _CPS_Master.py1, _CPS_Master.color.grey)
-      DrawLine(_CPS_Master.px + _CPS_Master.row, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.width + 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, ColorVar)
-      _DrawText(ValueTextVar, _CPS_Master.fontSize, _CPS_Master.px + _CPS_Master.row + 1, _CPS_Master.py1, _CPS_Master.color.grey)
-      _CPS_Master.py1 = _CPS_Master.py1 + _CPS_Master.cellSize
-    end
-  end
-  for i = 1, #_G.CPS.NoIndex do
-    if _G.CPS.NoIndex[i].VisibleVar and not _G.HidePermaShow[_G.CPS.NoIndex[i].TextVar] then
-      ValueTextVar, ColorVar = _GetPermaColor(_G.CPS.NoIndex[i])
-      DrawLine(_CPS_Master.px - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.row - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, _CPS_Master.color.lgrey)
-      _DrawText(_G.CPS.NoIndex[i].TextVar, _CPS_Master.fontSize, _CPS_Master.px, _CPS_Master.py1, _CPS_Master.color.grey)
-      DrawLine(_CPS_Master.px + _CPS_Master.row, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.width + 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, ColorVar)
-      _DrawText(ValueTextVar, _CPS_Master.fontSize, _CPS_Master.px + _CPS_Master.row + 1, _CPS_Master.py1, _CPS_Master.color.grey)
-      _CPS_Master.py1 = _CPS_Master.py1 + _CPS_Master.cellSize
-    end
-  end
-end
-
-function DrawText(Arg1, Arg2, Arg3, Arg4, Arg5)
-  _G.CPS.GetSaveMenu = GetSave("scriptConfig")["Menu"]
-  if _G.CPS.GetSaveMenu.menuKey then PressingKey = _G.CPS.GetSaveMenu.menuKey else PressingKey = 16 end
-  if IsKeyDown(PressingKey) and IsKeyDown(1) then
-    _G.CPS.WaitForRelease = true
+    return TextVar,ColorVar
   end
 
-  if not (IsKeyDown(PressingKey) and IsKeyDown(1)) and _G.CPS.WaitForRelease then
-    _G.CPS.WaitForRelease = false
-    _G.CPS.OldCountDone = false
-    _G.CPS.StartY = GetSave("scriptConfig")["Master"].py
-    DelayAction(function()  _G.CPS.OldCountDone = true end, 0.5)
-  end
-
-  if not _G.CPS.OldCountDone then
+  function _DrawCustomPermaShow()
     _CPS_Master = GetSave("scriptConfig")["Master"]
-    if Arg3 == _CPS_Master.px then
-      if Arg4 > _G.CPS.StartY then
-        _G.CPS.StartY = Arg4
+    _CPS_Master.py1 = _CPS_Master.py
+    _CPS_Master.py2 = _CPS_Master.py
+    _CPS_Master.color = { lgrey = 1413167931, grey = 4290427578, green = 1409321728}
+    _CPS_Master.fontSize = WINDOW_H and math.round(WINDOW_H / 72) or 10
+    _CPS_Master.midSize = _CPS_Master.fontSize / 2
+    _CPS_Master.cellSize = _CPS_Master.fontSize + 1
+    _CPS_Master.width = WINDOW_W and math.round(WINDOW_W / 6.4) or 160
+    _CPS_Master.row = _CPS_Master.width * 0.7
+    _CPS_Master.py1 = _G.CPS.StartY + _CPS_Master.cellSize
+    for i = 1, #_G.CPS.Index do
+      if _G.CPS.Index[i].VisibleVar and not _G.HidePermaShow[_G.CPS.Index[i].TextVar] then
+        ValueTextVar, ColorVar = _GetPermaColor(_G.CPS.Index[i])
+        DrawLine(_CPS_Master.px - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.row - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, _CPS_Master.color.lgrey)
+        _DrawText(_G.CPS.Index[i].TextVar, _CPS_Master.fontSize, _CPS_Master.px, _CPS_Master.py1, _CPS_Master.color.grey)
+        DrawLine(_CPS_Master.px + _CPS_Master.row, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.width + 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, ColorVar)
+        _DrawText(ValueTextVar, _CPS_Master.fontSize, _CPS_Master.px + _CPS_Master.row + 1, _CPS_Master.py1, _CPS_Master.color.grey)
+        _CPS_Master.py1 = _CPS_Master.py1 + _CPS_Master.cellSize
+      end
+    end
+    for i = 1, #_G.CPS.NoIndex do
+      if _G.CPS.NoIndex[i].VisibleVar and not _G.HidePermaShow[_G.CPS.NoIndex[i].TextVar] then
+        ValueTextVar, ColorVar = _GetPermaColor(_G.CPS.NoIndex[i])
+        DrawLine(_CPS_Master.px - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.row - 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, _CPS_Master.color.lgrey)
+        _DrawText(_G.CPS.NoIndex[i].TextVar, _CPS_Master.fontSize, _CPS_Master.px, _CPS_Master.py1, _CPS_Master.color.grey)
+        DrawLine(_CPS_Master.px + _CPS_Master.row, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.px + _CPS_Master.width + 1, _CPS_Master.py1 + _CPS_Master.midSize, _CPS_Master.cellSize, ColorVar)
+        _DrawText(ValueTextVar, _CPS_Master.fontSize, _CPS_Master.px + _CPS_Master.row + 1, _CPS_Master.py1, _CPS_Master.color.grey)
+        _CPS_Master.py1 = _CPS_Master.py1 + _CPS_Master.cellSize
       end
     end
   end
 
-  _DrawText(Arg1, Arg2, Arg3, Arg4, Arg5)
-end
+  function DrawText(Arg1, Arg2, Arg3, Arg4, Arg5)
+    _G.CPS.GetSaveMenu = GetSave("scriptConfig")["Menu"]
+    if _G.CPS.GetSaveMenu.menuKey then PressingKey = _G.CPS.GetSaveMenu.menuKey else PressingKey = 16 end
+    if IsKeyDown(PressingKey) and IsKeyDown(1) then
+      _G.CPS.WaitForRelease = true
+    end
+
+    if not (IsKeyDown(PressingKey) and IsKeyDown(1)) and _G.CPS.WaitForRelease then
+      _G.CPS.WaitForRelease = false
+      _G.CPS.OldCountDone = false
+      _G.CPS.StartY = GetSave("scriptConfig")["Master"].py
+      DelayAction(function()  _G.CPS.OldCountDone = true end, 0.5)
+    end
+
+    if not _G.CPS.OldCountDone then
+      _CPS_Master = GetSave("scriptConfig")["Master"]
+      if Arg3 == _CPS_Master.px then
+        if Arg4 > _G.CPS.StartY then
+          _G.CPS.StartY = Arg4
+        end
+      end
+    end
+
+    _DrawText(Arg1, Arg2, Arg3, Arg4, Arg5)
+  end
+
+-- }
