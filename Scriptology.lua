@@ -1,4 +1,4 @@
-_G.ScriptologyVersion     = 2.231
+_G.ScriptologyVersion     = 2.232
 _G.ScriptologyLoaded      = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -2153,9 +2153,9 @@ class "Yorick"
       for _, enemy in pairs(GetEnemyHeroes()) do
         if enemy and not enemy.dead and enemy.visible then
           local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Harass"])
-          if Config.Harass.Qd and sReady[_Q] and GetDistance(Position) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
+          if Config.Harass.Qd and sReady[_Q] and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
             CastSpell(_Q)
-          elseif Config.Harass.Qs and sReady[_Q] and GetDistance(Position) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
+          elseif Config.Harass.Qs and sReady[_Q] and GetDistance(CastPosition) < 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
             CastSpell(_Q)
           end
         end
