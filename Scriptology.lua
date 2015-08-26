@@ -1,4 +1,4 @@
-_G.ScriptologyVersion  = 2.238
+_G.ScriptologyVersion  = 2.239
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -2438,6 +2438,7 @@ class "Yorick"
     end
     end
   end
+  self:Menu()
   end
 
   function Ekko:Menu()
