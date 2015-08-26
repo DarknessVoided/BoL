@@ -1,4 +1,4 @@
-_G.ScriptologyVersion  = 2.237
+_G.ScriptologyVersion  = 2.238
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -1333,8 +1333,8 @@ class "Yorick"
   end
 
   function Ahri:DeleteObj(obj)
-  if obj.networkID == self.tempOrbNID then
-    self.tempOrbPOS = Vector(obj)
+  if obj.networkID == self.Orb.networkID then
+    self.Orb = nil
   end
   end
 
@@ -1410,20 +1410,20 @@ class "Yorick"
   end
   if not UnitHaveBuff(Target, "ahriseduce") then
     if Config.Combo.R then
-    self:CatchQ()
+      self:CatchQ()
     end
   end
   if Config.Combo.R and GetRealHealth(Target) < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < myHeroSpellData[3].range then
     local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
     Cast(_R, ultPos)
-  elseif Config.Combo.R and self.ultOn > os.clock()-10 and (not self.Orb or self.Orb.time < os.clock()-1.5) and GetDistance(Target) < myHeroSpellData[3].range then
+  elseif Config.Combo.R and self.ultOn > os.clock()-10 and not self.Orb and GetDistance(Target) < myHeroSpellData[3].range then
     local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
     Cast(_R, ultPos)
   end
   end
 
   function Ahri:CatchQ()
-  if Target and self.Orb and self.Orb then
+  if Target and self.Orb then
     local x,y,z = _G.VP:GetLineCastPosition(Target, myHeroSpellData[0].delay, myHeroSpellData[0].width, myHeroSpellData[0].range, myHeroSpellData[0].speed, Vector(Vector(self.Orb.dir)+(Vector(self.Orb)-myHero):normalized()*(myHeroSpellData[0].range-GetDistance(self.Orb))), myHeroSpellData[0].collision)
     local x = Vector(self.Orb)+(x-Vector(self.Orb)):normalized()*(myHeroSpellData[0].range)
     if self.ultOn > os.clock()-10 then
@@ -3008,7 +3008,7 @@ class "Yorick"
   end
   if Config.Combo.R and sReady[_R] and GetDistance(Target) < 225 and GetRealHealth(Target) < GetDmg(_R, myHero, Target)*10 then
     DisableOrbwalker()
-    Cast(_R)
+    CastSpell(_R)
     return;
   end
   end
@@ -3026,7 +3026,7 @@ class "Yorick"
     return;
   end
   if Config.Harass.W and sReady[_W] and GetDistance(Target) < myHeroSpellData[1].range*0.85 then
-    CastS(_W)
+    CastSpell(_W)
     return;
   end
   if Config.Harass.E and sReady[_E] and GetDistance(Target) < myHeroSpellData[2].range then
