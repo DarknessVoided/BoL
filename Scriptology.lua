@@ -1,4 +1,4 @@
-_G.ScriptologyVersion  = 2.239
+_G.ScriptologyVersion  = 2.2391
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -2496,7 +2496,7 @@ class "Yorick"
     end
     end
     if obj.name == "Ekko" and Config.Draws.R then 
-    DrawLFT(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(155, 155, 150, 250)) 
+    DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(155, 155, 150, 250)) 
     DrawLFC(obj.x, obj.y, obj.z, myHeroSpellData[3].width, ARGB(255, 155, 150, 250))
     elseif obj.name:find("Ekko_Base_Q") and Config.Draws.Q then 
     DrawLine3D(myHero.x, myHero.y, myHero.z, obj.x, obj.y, obj.z, 1, ARGB(255, 155, 150, 250)) 
