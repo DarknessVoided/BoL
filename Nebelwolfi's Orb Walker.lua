@@ -215,7 +215,7 @@ class "NebelwolfisOrbWalker" -- {
   end
 
   function NebelwolfisOrbWalker:TimeToMove()
-    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.windUp + self.Config.t.cadj and self:DoMove()
+    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.windUp + self.Config.t.cadj/1000 and self:DoMove()
   end
 
   function NebelwolfisOrbWalker:Draw()
