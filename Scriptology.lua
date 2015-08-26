@@ -1,4 +1,5 @@
-_G.ScriptologyVersion  = 2.2391
+assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
+_G.ScriptologyVersion  = 2.2393
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -933,6 +934,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
     for m, mode in pairs(modes) do
     if Config.kConfig[mode] then
       activeMode = ScriptologyConfig.Prediction[mode]
+      break;
     end
     end
     if not activeMode then
@@ -4018,7 +4020,8 @@ class "Yorick"
   Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config.Misc:addDynamicParam("Ra", "Auto R", SCRIPT_PARAM_ONOFF, true)
-  Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
+  Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes()+1, 0)
+  DelayAction(function() if #GetEnemyHeroes() == 1 then Config.Misc.Re = 2 else Config.Misc.Re = math.ceil(#GetEnemyHeroes()/2) end end, 1)
   end
 
   function Orianna:Tick()
@@ -4026,7 +4029,7 @@ class "Yorick"
     self.Ball = nil
   end
   if Config.Misc.Ra then
-    if Config.Misc.Re >= EnemiesAround(self.Ball or myHero, myHeroSpellData[3].width-myHero.boundingRadius) then
+    if Config.Misc.Re <= EnemiesAround(self.Ball or myHero, myHeroSpellData[3].width-myHero.boundingRadius) then
     CastSpell(_R)
     end   
   end
@@ -4080,7 +4083,7 @@ class "Yorick"
     local CastPosition, HitChance, Pos = Predict(_Q, self.Ball or myHero, Target)
     if HitChance and HitChance >= ScriptologyConfig.Prediction.Combo["pred"..str[_Q].."val"] then
     local tPos = CastPosition + (Vector(CastPosition) - (self.Ball or myHero)):normalized()*(Target.boundingRadius/2)
-    Cast(_Q, tPos)
+    CastSpell(_Q, tPos.x, tPos.z)
     end
   end
   if sReady[_W] and not (Config.Combo.WE == 2 and sReady[_E]) and Config.Combo.W then
@@ -4126,7 +4129,7 @@ class "Yorick"
   if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
     BestPos, BestHit = GetFarmPosition(myHeroSpellData[_Q].range, myHeroSpellData[_W].width)
     if BestHit > 1 and self.Ball and GetDistance(self.Ball, BestPos) < 50 then 
-    Cast(_W)
+    CastSpell(_W)
     end
   end
   end
@@ -4145,11 +4148,11 @@ class "Yorick"
     local MinionDmgQ = GetDmg(_Q, myHero, winion)
     local MinionDmgW = GetDmg(_W, myHero, winion)
     if MinionDmgQ and MinionDmgW >= GetRealHealth(winion) and GetDistance(winion, self.Ball or myHero) < myHeroSpellData[1].width * 0.85 then
-      Cast(_W)
+      CastSpell(_W)
     end
     if sReady[_Q] and MinionDmgQ and MinionDmgW and MinionDmgQ+MinionDmgW >= GetRealHealth(winion) and (self.Ball and GetDistance(winion, self.Ball) < myHeroSpellData[1].width or GetDistance(winion) < myHeroSpellData[1].width) then
-      Cast(_Q, winion.x, winion.z)
-      DelayAction(Cast, 0.25, {_W})
+      CastSpell(_Q, winion.x, winion.z)
+      DelayAction(CastSpell, 0.25, {_W})
     end
     end
   end
@@ -4168,7 +4171,7 @@ class "Yorick"
   local Ball = self.Ball or myHero
   local a, b, c = Predict(_W, Ball, unit)
   if a and b >= ScriptologyConfig.Prediction.Combo["pred"..str[_W].."val"] then  
-    Cast(_W) 
+    CastSpell(_W) 
   end  
   end
 
@@ -4177,7 +4180,7 @@ class "Yorick"
   local Ball = self.Ball or myHero
   local a, b, c = Predict(_R, Ball, unit)
   if a and b >= ScriptologyConfig.Prediction.Combo["pred"..str[_R].."val"] then  
-    Cast(_R) 
+    CastSpell(_R) 
   end  
   end
 
@@ -4187,21 +4190,45 @@ class "Yorick"
     local Ball = self.Ball or myHero
     local health = GetRealHealth(enemy)
     local projPos, _, isOnSegment = nil, nil, false
-    if self.Ball then
-      projPos, _, isOnSegment = VectorPointProjectionOnLineSegment(self.Ball, myHero, enemy)
+    local CastPosition, HitChance, Pos = Predict(_Q, Ball, enemy)
+    print(CastPosition)
+    if Ball ~= myHero then
+      projPos, _, isOnSegment = VectorPointProjectionOnLineSegment(Ball, myHero, enemy)
     end
-    if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, myHeroSpellData[0].range) then
-      Cast(_Q, Target, Ball)
-    elseif sReady[_W] and health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W then
+    if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[0].range^2 then
+      Cast(_Q, enemy, Ball)
+    elseif sReady[_W] and health < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and GetDistanceSqr(enemy) < myHeroSpellData[1].width^2 then
       self:CastW(enemy)
-    elseif sReady[_E] and health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and self.Ball and GetDistance(self.Ball) > 150 and isOnSegment and GetDistance(self.Ball)-self.Ball.boundingRadius > GetDistance(enemy) then
+    elseif sReady[_E] and health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and self.Ball and GetDistance(self.Ball) > 150 and isOnSegment and GetDistance(self.Ball,projPos) <= myHeroSpellData[_E].width then
       CastSpell(_E, myHero)
     elseif sReady[_R] and health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R then
       self:CastR(enemy)
+    elseif sReady[_Q] and sReady[_W] and health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W then
+      Cast(_Q, enemy, Ball)
+      DelayAction(function()  
+        if myHero:CanUseSpell(_Q) ~= READY then
+          CastSpell(_W)
+        end
+      end, GetDistance(Ball,enemy)/myHeroSpellData[0].speed)
+    elseif sReady[_Q] and sReady[_W] and sReady[_E] and health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E then
+      if HitChance and HitChance >= ScriptologyConfig.Prediction.Combo["pred"..str[_Q].."val"] then
+        local tPos = CastPosition + (Vector(CastPosition) - Ball):normalized()*(enemy.boundingRadius/2)
+        CastSpell(_Q, tPos.x, tPos.z)
+        DelayAction(function()  
+          if myHero:CanUseSpell(_Q) ~= READY then
+            CastSpell(_W)
+            CastSpell(_E, myHero)
+          end
+        end, GetDistance(Ball,enemy)/myHeroSpellData[0].speed)
+      end
     elseif sReady[_R] and health < self:CalcRComboDmg(enemy) and Config.Killsteal.R and Config.Killsteal.Q and Config.Killsteal.W then
-      self:CastR(enemy)
-      DelayAction(Cast, myHeroSpellData[3].delay, {_Q, Target, 1.5, Ball})
-      DelayAction(function() self:CastW(enemy) end, myHeroSpellData[3].delay+myHeroSpellData[0].delay+GetDistance(Ball,enemy)/myHeroSpellData[0].speed)
+      Cast(_Q, enemy, Ball)
+      DelayAction(function() 
+        if myHero:CanUseSpell(_Q) ~= READY then
+          CastSpell(_R) 
+          DelayAction(function() CastSpell(_W) end, myHeroSpellData[3].delay)
+        end
+      end, GetDistance(Ball,enemy)/myHeroSpellData[0].speed)
     elseif Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
       CastSpell(Ignite, enemy)
     end
