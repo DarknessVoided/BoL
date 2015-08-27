@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2398
+_G.ScriptologyVersion  = 2.2399
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -3696,7 +3696,7 @@ class "Yorick"
 
   function Lux:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and enemy ~= nil and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistance(enemy) < myHeroSpellData[0].range then
       Cast(_Q, enemy)
@@ -4698,6 +4698,7 @@ class "Yorick"
   Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+  Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
   Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
@@ -4765,23 +4766,24 @@ class "Yorick"
 
   function Riven:ProcessSpell(unit, spell)
   if unit and unit.isMe and spell and spell.name then
+    local target = self:GetTarget()
     if spell.name:lower():find("attack") then
       if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
           DelayAction(function() 
-            if Target and not Target.dead and Target.visible then
+            if target and not target.dead and target.visible then
               CastSpell(_R)
             end
           end, spell.windUpTime + GetLatency() / 2000)
-      elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and Target and self.QCast < 3 and GetDmg(_R, myHero, Target)+GetDmg(_Q, myHero, Target)+self:DmgP(Target, myHero.totalDamage)+GetDmg("AD", myHero, Target) >= Target.health then 
+      elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then 
           DelayAction(function() 
-            if Target and not Target.dead and Target.visible then
-              Cast(_R, Target)
+            if target and not target.dead and target.visible then
+              Cast(_R, target)
             end
           end, spell.windUpTime + GetLatency() / 2000)
       end
       if self.doW and myHero:CanUseSpell(_W) == READY then 
           DelayAction(function() 
-            if Target and not Target.dead and Target.visible then
+            if target and not target.dead and target.visible then
               CastSpell(_W) 
             end
           end, spell.windUpTime + GetLatency() / 2000)
@@ -4789,8 +4791,8 @@ class "Yorick"
       if self.doQ and myHero:CanUseSpell(_Q) == READY then
         _G.NebelwolfisOrbWalker:SetOrb(false)
           DelayAction(function() 
-            if Target and not Target.dead and Target.visible then
-              CastSpell(_Q, Target.x, Target.z)
+            if target and not target.dead and target.visible then
+              CastSpell(_Q, target.x, target.z)
             end
           end, spell.windUpTime + GetLatency() / 2000)
     end
@@ -4799,7 +4801,7 @@ class "Yorick"
     elseif spell.name == "RivenMartyr" then
       if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
           DelayAction(function() 
-            if Target and not Target.dead and Target.visible then
+            if target and not target.dead and target.visible then
               CastSpell(_R)
             end
           end, 0.3 - GetLatency() / 2000)
@@ -4807,60 +4809,76 @@ class "Yorick"
         DelayAction(function()
           CastSpell(GetHydraSlot())
         _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
-          _G.NebelwolfisOrbWalker:WindUp(Target)
-          _G.NebelwolfisOrbWalker:WindUp(Target)
-          _G.NebelwolfisOrbWalker:WindUp(Target)
-          _G.NebelwolfisOrbWalker:WindUp(Target)
+          _G.NebelwolfisOrbWalker:WindUp(target)
+          _G.NebelwolfisOrbWalker:WindUp(target)
+          _G.NebelwolfisOrbWalker:WindUp(target)
+          _G.NebelwolfisOrbWalker:WindUp(target)
         end, 0.3 + GetLatency() / 2000)
       end
     elseif spell.name == "RivenFeint" then
         self.EDelay = GetTickCount()
-        if Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(Target, 0, true)*0.67 <= GetRealHealth(Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        if target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(target, 0, true)*0.67 <= GetRealHealth(target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
           CastSpell(_R) 
           DelayAction(function() 
-            if Target and not Target.dead and Target.visible and GetDistance(Target) < myHeroSpellData[0].range then
-              CastSpell(_Q, Target.x, Target.z)
+            if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[0].range then
+              CastSpell(_Q, target.x, target.z)
             end
           end, 0.137)
         end
     elseif spell.name == "RivenFengShuiEngine" then
     DelayAction(function() 
-          if Target and not Target.dead and Target.visible and GetDistanceSqr(Target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
-        CastSpell(_Q, Target.x, Target.z)
+          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+        CastSpell(_Q, target.x, target.z)
           end
         end, spell.windUpTime + GetLatency() / 2000)
     elseif spell.name == "rivenizunablade" then
     DelayAction(function() 
-          if Target and not Target.dead and Target.visible and GetDistanceSqr(Target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
-              CastSpell(_Q, Target.x, Target.z)
+          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+              CastSpell(_Q, target.x, target.z)
           end
         end, spell.windUpTime + GetLatency() / 2000)
       elseif spell.name == "ItemTiamatCleave" then
     DelayAction(function()
-          if Target and not Target.dead and Target.visible and GetDistanceSqr(Target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
-        CastSpell(_Q, Target.x, Target.z)
+          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+        CastSpell(_Q, target.x, target.z)
       end
         end, spell.windUpTime + GetLatency() / 2000)
     end
   end
   end
 
-  function Riven:Animation(unit, ani)
-  if unit and unit.isMe and ani then
-    if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and not _G.NebelwolfisOrbWalker.doAA then
-      self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or nil
-      DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
-      DelayAction(function() 
-        self.CastDance() 
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
-        _G.NebelwolfisOrbWalker:SetOrb(true)
-      end, (ani:find("c") and 0.475 or 0.34))
-    elseif ani == "Spell2" then
-    elseif ani == "Spell3" then
-    elseif ani == "Spell4a" then
-    elseif ani == "Spell4b" then
+  function Riven:GetTarget()
+    if Config.kConfig.Combo then
+      return Target
+    elseif Config.kConfig.Harass then
+      return Target
+    elseif Config.kConfig.LaneClear then
+      local minion = GetClosestMinion(myHero)
+      return (minion and not minion.dead and minion.visible and minion.bTargetable) and minion or nil
     end
+    return nil
   end
+
+  function Riven:Animation(unit, ani)
+    if unit and unit.isMe and ani then
+      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and not _G.NebelwolfisOrbWalker.doAA then
+        self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or nil
+        DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
+        DelayAction(function() 
+          if VIP_USER then
+            self.CastDance() 
+          else
+            myHero:MoveTo(mousePos.x, mousePos.z)
+          end
+          _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+          _G.NebelwolfisOrbWalker:SetOrb(true)
+        end, (ani:find("c") and 0.475 or 0.34))
+      elseif ani == "Spell2" then
+      elseif ani == "Spell3" then
+      elseif ani == "Spell4a" then
+      elseif ani == "Spell4b" then
+      end
+    end
   end
 
   function Riven:CastDance()
@@ -4945,13 +4963,16 @@ class "Yorick"
   end
 
   function Riven:LastHit()
-  for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.bTargetable then
-      if minion.health <= GetDmg(_W, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_W].range^2 then
-        CastSpell(_W)
+    for _, minion in pairs(Mobs.objects) do
+      if minion and not minion.dead and minion.visible and minion.bTargetable then
+        if Config.LastHit.Q and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
+          CastSpell(_Q, minion.x, minion.z)
+        end
+        if Config.LastHit.W and sReady[_W] and minion.health <= GetDmg(_W, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_W].range^2 then
+          CastSpell(_W)
+        end
       end
     end
-  end
   end
 
 -- }
