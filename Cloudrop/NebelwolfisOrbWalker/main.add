@@ -193,10 +193,10 @@ local Config = MenuConfig("NebelwolfisOrbWalker", "Nebelwolfis Orb Walker")
 		    if unit.type == myHero.type then
 		      	if unit.isMe then
 		        	if spell.name:lower():find("attack") or altAttacks[spell.name:lower()] then
-		          		local windUp = myHero.charName == "Kalista" and 0 or spell.windUpTime
+		          		local windUp = myHero.charName == "Kalista" and 0 or (spell.windUpTime / myHero.attackSpeed + Game.Latency() / 1000 + 0.025)
 		          		orbTable.windUp = windUp
 		          		orbTable.animation = spell.animationTime
-		          		orbTable.lastAA = os.clock() + Game.Latency() / 2000
+		          		orbTable.lastAA = os.clock()
 		        	end
 		        	if resetAttacks[spell.name:lower()] then
 		          		orbTable.lastAA = os.clock() - Game.Latency() / 2000 - orbTable.animation
