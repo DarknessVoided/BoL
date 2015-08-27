@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2397
+_G.ScriptologyVersion  = 2.2398
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -564,43 +564,35 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
 
     function InitPermaShow()
       AddTickCallback(function()
-      if Config.Draws.PermaShow then
-        CustomPermaShow(" - Scriptology Perma Show - ", nil, true, nil, nil, nil, 0)
-        if Config.kConfig.LaneClear then
-        CustomPermaShow("Active Mode: LaneClear", nil, Config.kConfig.LaneClear, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
-        CustomPermaShow("Use Q", Config.LaneClear.Q, Config.LaneClear.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
-        CustomPermaShow("Use W", Config.LaneClear.W, Config.LaneClear.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
-        CustomPermaShow("Use E", Config.LaneClear.E, Config.LaneClear.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
-        CustomPermaShow("Use R", Config.LaneClear.R, Config.LaneClear.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
-        elseif Config.kConfig.LastHit then
-        CustomPermaShow("Active Mode: LastHit", nil, Config.kConfig.LastHit, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
-        CustomPermaShow("Use Q", Config.LastHit.Q, Config.LastHit.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
-        CustomPermaShow("Use W", Config.LastHit.W, Config.LastHit.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
-        CustomPermaShow("Use E", Config.LastHit.E, Config.LastHit.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
-        CustomPermaShow("Use R", Config.LastHit.R, Config.LastHit.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
-        elseif Config.kConfig.Harass then
-        CustomPermaShow("Active Mode: Harass", nil, Config.kConfig.Harass, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
-        CustomPermaShow("Use Q", Config.Harass.Q, Config.Harass.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
-        CustomPermaShow("Use W", Config.Harass.W, Config.Harass.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
-        CustomPermaShow("Use E", Config.Harass.E, Config.Harass.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
-        CustomPermaShow("Use R", Config.Harass.R, Config.Harass.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
-        elseif Config.kConfig.Combo then
-        CustomPermaShow("Active Mode: Combo", nil, Config.kConfig.Combo, nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
-        CustomPermaShow("Use Q", Config.Combo.Q, Config.Combo.Q ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 2)
-        CustomPermaShow("Use W", Config.Combo.W, Config.Combo.W ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 3)
-        CustomPermaShow("Use E", Config.Combo.E, Config.Combo.E ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 4)
-        CustomPermaShow("Use R", Config.Combo.R, Config.Combo.R ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 5)
+        if Config.Draws.PermaShow then
+          CustomPermaShow(" - Scriptology Perma Show - ", nil, true, nil, nil, nil, 0)
+          local activeMode = nil
+          for k, mode in ipairs({"LaneClear", "LastHit", "Harass", "Combo"}) do
+            if Config.kConfig[mode] then
+              activeMode = mode
+              CustomPermaShow("Active Mode: "..mode, nil, Config.kConfig[mode], nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
+              for _, spell in pairs({"Q", "W", "E", "R"}) do
+                if Config[mode][spell] and Config[mode]["mana"..spell] then
+                  if Config[mode]["mana"..spell] <= myHero.mana/myHero.maxMana*100 then
+                   CustomPermaShow("Use "..spell, Config[mode][spell], Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 1+_)
+                  else
+                    CustomPermaShow("Use "..spell.." (oom)", false, Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,255), 1+_)
+                  end
+                else
+                  CustomPermaShow("Use "..spell, Config[mode][spell], Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 1+_)
+                end
+              end
+            end
+          end
+          if not activeMode then
+            for i = 1, 5 do
+              CustomPermaShow("", false, false, nil, nil, nil, i)
+            end
+          end
         else
-        CustomPermaShow("", false, false, nil, nil, nil, 1)
-        CustomPermaShow("", false, false, nil, nil, nil, 2)
-        CustomPermaShow("", false, false, nil, nil, nil, 3)
-        CustomPermaShow("", false, false, nil, nil, nil, 4)
-        CustomPermaShow("", false, false, nil, nil, nil, 5)
+          CustomPermaShow("", false, false, nil, nil, nil, 0)
+          CustomPermaShow("", false, false, nil, nil, nil, 1)
         end
-      else
-        CustomPermaShow("", false, false, nil, nil, nil, 0)
-        CustomPermaShow("", false, false, nil, nil, nil, 1)
-      end
       end)
     end
 
@@ -1481,8 +1473,155 @@ class "Yorick"
 
 -- }
 
+-- { Ashe
+
   function Ashe:__init()
   end
+
+  function Ashe:Load()
+    self:Menu()
+    targetSel._dmgType = DAMAGE_PHYSICAL
+  end
+
+  function Ashe:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("AimR", "Aim R", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+  end
+
+  function Ashe:Tick()
+    if Config.Misc.AimR then
+      for _,k in pairs(GetEnemyHeroes()) do
+        if not k.dead and GetDistance(k,mousePos) < 250 then
+          Cast(_R, k)
+        end
+      end
+    end
+  end
+
+  function Ashe:LastHit()
+    if sReady[_Q] and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
+      for i, minion in pairs(Mobs.objects) do
+        local QMinionDmg = GetDmg(_Q, myHero, minion)
+        if QMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, myHeroSpellData[0].range) then
+          if self:QReady() then
+            Cast(_Q) 
+            myHero:Attack(minion)
+          end
+        end
+      end
+    end
+    if sReady[_W] and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
+      for i, minion in pairs(Mobs.objects) do
+        local WMinionDmg = GetDmg(_W, myHero, minion)
+        if WMinionDmg >= GetRealHealth(minion) and ValidTarget(minion, myHeroSpellData[1].range+myHeroSpellData[1].width) then
+          CastSpell(_W, minion.x, minion.z)
+        end
+      end    
+    end  
+  end
+
+  function Ashe:LaneClear()
+    if sReady[_Q] and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
+      if self:QReady() then
+        Cast(_Q)
+      end
+    end
+    if sReady[_W] and Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+      local minionTarget = GetFarmPosition(myHeroSpellData[_W].range, myHeroSpellData[_W].width)
+      if minionTarget ~= nil then
+        CastSpell(_W, minionTarget.x, minionTarget.z)
+      end
+    end 
+  end
+
+  function Ashe:Combo()
+    if Config.Combo.Q and GetDistanceSqr(Target) < myHeroSpellData[0].range^2 then
+      if self:QReady() then
+        CastSpell(_Q)
+      end
+    end
+    if Config.Combo.W then
+      for k,enemy in pairs(GetEnemyHeroes()) do
+        if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+          if GetDistanceSqr(enemy) < myHeroSpellData[1].range^2 then
+            Cast(_W, enemy)
+          end
+        end
+      end
+    end
+    if Config.Combo.R and GetDistance(Target) < myHero.range*2+myHero.boundingRadius*4 and GetDmg(_R, myHero, Target)+GetDmg("AD", myHero, Target)+GetDmg(_W, myHero, Target) < GetRealHealth(Target) then
+      Cast(_R, Target)
+    end
+  end
+
+  function Ashe:Harass()
+    if Config.Harass.Q and Config.Harass.manaQ <= 100*myHero.mana/myHero.maxMana and myHero:CanUseSpell(_Q) == READY and GetDistanceSqr(Target) < myHeroSpellData[0].range^2 then
+      if self:QReady() then
+        CastSpell(_Q, myHero:Attack(Target))
+      end
+    end
+    if Config.Harass.W and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana then
+      for k,enemy in pairs(GetEnemyHeroes()) do
+        if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+          if GetDistanceSqr(enemy) < myHeroSpellData[1].range^2 then
+            Cast(_W, enemy)
+          end
+        end
+      end
+    end
+  end
+
+  function Ashe:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        if sReady[_Q] and self:QReady() and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[0].range^2 then
+          CastSpell(_Q, myHero:Attack(enemy))
+        elseif sReady[_W] and GetRealHealth(enemy) < GetDmg(_W, myHero, enemy) and Config.Killsteal.W and GetDistanceSqr(enemy) < myHeroSpellData[1].range^2 then
+          Cast(_W, enemy)
+        elseif sReady[_R] and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and GetDistance(enemy) < 2500 then
+          Cast(_R, enemy)
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
+          CastSpell(Ignite, enemy)
+        end
+      end
+    end
+  end
+
+  function Ashe:QReady()
+    return UnitHaveBuff(myHero, "asheqcastready")
+  end
+
+-- }
 
 -- { Awareness
 
