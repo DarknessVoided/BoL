@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.451
+_G.NebelwolfisOrbWalkerVersion = 0.452
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -57,6 +57,7 @@ class "NebelwolfisOrbWalker" -- {
     self.myRange = myHero.range+myHero.boundingRadius*2
     self.ts = TargetSelector(TARGET_LESS_CAST_PRIORITY, self.myRange, DAMAGE_PHYSICAL, false, true)
     self.Target = nil
+    self.soldiers = {}
     ArrangeTSPriorities()
     self.Config = Cfg or scriptConfig("NebelwolfisOrbWalker", "SW"..myHero.charName)
   end
@@ -163,6 +164,7 @@ class "NebelwolfisOrbWalker" -- {
     if VIP_USER then
       AddRecvPacketCallback2(function(p) self:RecvPacket(p) end)
     end
+    AddCreateObjCallback(function(o) self:CreateObj(o) end)
   end
 
   mTick=0;oTick=0;function NebelwolfisOrbWalker:Tick()
@@ -225,6 +227,13 @@ class "NebelwolfisOrbWalker" -- {
     end
     if self.Config.d.AAS then
       SCircle(myHero, myHero.range+GetDistance(myHero.minBBox), self.Config.d.LFC):Draw(0x7F00FF00)
+      if myHero.charName == "Azir" then
+        for _, thing in pairs(self.soldiers) do
+          if thing.time > os.clock() then
+            SCircle(thing.obj, 350, self.Config.d.LFC):Draw(0x7F00FF00)
+          end
+        end
+      end
     end
     if self.Config.d.AAE then
       for _, enemy in pairs(GetEnemyHeroes()) do
@@ -289,6 +298,13 @@ class "NebelwolfisOrbWalker" -- {
         if self.resetAttacks[spell.name:lower()] then
           self.orbTable.lastAA = os.clock() - GetLatency() / 2000 - self.orbTable.animation
         end
+        if spell.name == "AzirQ" then
+          for _, thing in pairs(self.soldiers) do
+            if thing.time > os.clock() then 
+              thing.time = thing.time + 1
+            end
+          end
+        end
       elseif unit.team ~= myHero.team and unit.type == myHero.type then
         if ValidTarget(unit, self.myRange) and self:TimeToAttack() and (spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()]) and spell.target.type ~= myHero.type and self.Config.m.LastHit.AttackE and self.Config.k.LastHit and spell.target.health <= self:GetDmg(unit, spell.target) then
           myHero:Attack(unit)
@@ -311,6 +327,14 @@ class "NebelwolfisOrbWalker" -- {
             self.Config.t:save()
           end
         end
+      end
+    end
+  end
+
+  function NebelwolfisOrbWalker:CreateObj(object)
+    if object and object.valid and object.name then
+      if object.name == "AzirSoldier" then
+        self.soldiers[object.networkID] = { obj = object, time = os.clock() + 9}
       end
     end
   end
@@ -355,7 +379,7 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:AcquireTarget()
     local Target = nil
     self.ts:update()
-    self.ts.range = (self.melee and self.Config.melee and self.Config.melee.wtt) and self.myRange*2 or self.myRange
+    self.ts.range = (self.melee and self.Config.melee and self.Config.melee.wtt) and self.myRange*2 or (myHero.charName == "Azir" and 1230 or self.myRange)
     Target = self.ts.target
     if self.Config.k.Harass then
       target, health = self:GetLowestPMinion(self.myRange)
