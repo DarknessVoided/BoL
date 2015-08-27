@@ -5245,12 +5245,16 @@ class "Yorick"
   end
 
   function Ryze:Draw()
-  if self.passiveTracker then
-    local barPos = WorldToScreen(D3DXVECTOR3(myHero.x, myHero.y, myHero.z))
-    local posX = barPos.x - 35
-    local posY = barPos.y + 50
-    DrawText(""..self.passiveTracker, 25, posX, posY, ARGB(255, 255, 0, 0)) 
-  end
+    if self.passiveTracker then
+      local pos = WorldToScreen(D3DXVECTOR3(myHero.x, myHero.y, myHero.z))
+      local str = self.passiveTracker < 5 and ""..self.passiveTracker or "COMBO!"
+      for i = -1, 1 do
+        for j = -1, 1 do
+          DrawText(str, 35, pos.x - 15 + i - GetTextArea(str, 35).x/2, pos.y + 40 + j, ARGB(255, 0, 0, 0)) 
+        end
+      end
+      DrawText(str, 35, pos.x - 15 - GetTextArea(str, 35).x/2, pos.y + 40, ARGB(255, 255, 0, 0)) 
+    end
   end
 
   function Ryze:Menu()
