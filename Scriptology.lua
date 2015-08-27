@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.24
+_G.ScriptologyVersion  = 2.242
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -704,6 +704,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
     DrawDmgOnHpBar(hero)
   end
   DrawForcetarget()
+  DrawMode()
   end
 
   function DrawRange()
@@ -744,6 +745,35 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
     DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
     DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
   end
+  end
+
+  function DrawMode()
+    if ScriptologyConfig[myHero.charName] and ScriptologyConfig[myHero.charName].Misc then
+      if ScriptologyConfig[myHero.charName].Misc.Insec then
+        for i = -1, 1 do
+          for j = -1, 1 do
+            DrawText("Insec active!", 45, WINDOW_W/2 + i - GetTextArea("Insec active!", 45).x / 2, WINDOW_H/5 + j, 0xFF000000)
+          end
+        end
+        DrawText("Insec active!", 45, WINDOW_W/2 - GetTextArea("Insec active!", 45).x / 2, WINDOW_H/5, 0xFFFF0000)
+      end
+      if ScriptologyConfig[myHero.charName].Misc.Flee then
+        for i = -1, 1 do
+          for j = -1, 1 do
+            DrawText("Flee active!", 45, WINDOW_W/2 + i - GetTextArea("Flee active!", 45).x / 2, WINDOW_H/5 + j, 0xFF000000)
+          end
+        end
+        DrawText("Flee active!", 45, WINDOW_W/2 - GetTextArea("Flee active!", 45).x / 2, WINDOW_H/5, 0xFFFF0000)
+      end
+      if ScriptologyConfig[myHero.charName].Misc.Jump then
+        for i = -1, 1 do
+          for j = -1, 1 do
+            DrawText("Jump active!", 45, WINDOW_W/2 + i - GetTextArea("Jump active!", 45).x / 2, WINDOW_H/5 + j, 0xFF000000)
+          end
+        end
+        DrawText("Jump active!", 45, WINDOW_W/2 - GetTextArea("Jump active!", 45).x / 2, WINDOW_H/5, 0xFFFF0000)
+      end
+    end
   end
 
   function DrawLFC(x, y, z, radius, color)
@@ -1872,13 +1902,227 @@ class "Yorick"
 -- { Azir
 
   function Azir:__init()
+    objHolder = {}
+    objTimeHolder = {}
+    self.soldierToDash = nil
   end
 
   function Azir:Load()
-  self:Menu()
+    self:Menu()
+  end
+
+  function Azir:CreateObj(object)
+    if object and object.valid and object.name then
+      if object.name == "AzirSoldier" then
+        objHolder[object.networkID] = object
+        objTimeHolder[object.networkID] = os.clock() + 9
+      end
+    end
+  end
+
+  function Azir:ProcessSpell(unit, spell)
+    if unit and unit.isMe and spell then
+      if spell.name == "AzirQ" then
+        for _,obj in pairs(objHolder) do
+          if objTimeHolder[obj.networkID] and objTimeHolder[obj.networkID] < math.huge and objTimeHolder[obj.networkID]>os.clock() then 
+            objTimeHolder[obj.networkID] = objTimeHolder[obj.networkID] + 1
+          end
+        end
+      end
+    end
+  end
+
+  function Azir:CountSoldiers(unit)
+    soldiers = 0
+    for _,obj in pairs(objHolder) do
+      if objTimeHolder[obj.networkID] and objTimeHolder[obj.networkID] > os.clock() and (not unit or GetDistance(obj, unit) < 350) then 
+        soldiers = soldiers + 1
+      end
+    end
+    return soldiers
+  end
+
+  function Azir:GetSoldier(i)
+    soldiers = 0
+    for _,obj in pairs(objHolder) do
+      if objTimeHolder[obj.networkID] and objTimeHolder[obj.networkID]>os.clock() then 
+        soldiers = soldiers + 1
+        if i == soldiers then return obj end
+      end
+    end
+  end
+
+  function Azir:GetSoldiers()
+    soldiers = {}
+    for _,obj in pairs(objHolder) do
+      if objTimeHolder[obj.networkID] and objTimeHolder[obj.networkID]>os.clock() then 
+        table.insert(soldiers, obj)
+      end
+    end
+    return soldiers
   end
 
   function Azir:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Insec", "Insec", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+    Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+  end
+
+  function Azir:Tick()
+    if Config.Misc.Flee then
+      self:Flee()
+    end
+    if Config.Misc.Insec then
+      self:Insec()
+    end
+  end
+
+  function Azir:Flee()
+    myHero:MoveTo(mousePos.x, mousePos.z)
+    if self.soldierToDash then
+      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * myHeroSpellData[0].range
+      if movePos then
+        DelayAction(function() CastSpell(_E, self.soldierToDash) end, 0)
+        DelayAction(function() CastSpell(_E, self.soldierToDash) end, 0.1)
+        DelayAction(function() CastSpell(_E, self.soldierToDash) end, 0.2)
+        DelayAction(function() CastSpell(_E, self.soldierToDash) self.soldierToDash = nil end, 0.3)
+        CastSpell(_Q, movePos.x, movePos.z)
+      end
+    elseif self:CountSoldiers() > 0 then
+      for _,k in pairs(self:GetSoldiers()) do
+        if not self.soldierToDash then
+          self.soldierToDash = k
+        elseif self.soldierToDash and GetDistanceSqr(k,mousePos) < GetDistanceSqr(self.soldierToDash,mousePos) then
+          self.soldierToDash = k
+        end
+      end
+    elseif myHero:GetSpellData(_W).currentCd == READY and myHero:GetSpellData(_E).currentCd == 0 and myHero:GetSpellData(_Q).currentCd == 0 then
+      local movePos = myHero + (Vector(mousePos) - myHero):normalized() * myHeroSpellData[1].range
+      CastSpell(_W, movePos.x, movePos.z)
+    end
+  end
+
+  function Azir:Insec()
+    local enemy = GetClosestEnemy(mousePos)
+    if not enemy or GetDistance(enemy) > 750 then
+      myHero:MoveTo(mousePos.x, mousePos.z)
+      return 
+    end
+    if myHero:CanUseSpell(_R) ~= READY then return end
+    if self:CountSoldiers() > 0 then
+      for _,k in pairs(self:GetSoldiers()) do
+        if not self.soldierToDash then
+          self.soldierToDash = k
+        elseif self.soldierToDash and GetDistanceSqr(k,enemy) < GetDistanceSqr(self.soldierToDash,enemy) then
+          self.soldierToDash = k
+        end
+      end
+    end
+    if not self.soldierToDash and sReady[_W] then
+      Cast(_W, enemy)
+    end
+    if self:CountSoldiers() > 0 and self.soldierToDash then
+      local movePos = myHero + (Vector(enemy) - myHero):normalized() * myHeroSpellData[0].range
+      if movePos then
+        CastSpell(_Q, movePos.x, movePos.z)
+        CastSpell(_E, self.soldierToDash)
+        self:DoR(Vector(myHero), enemy)
+        DelayAction(function() self.soldierToDash = nil end, 2)
+      end
+    end
+  end
+
+  function Azir:DoR(pos, obj)
+    if ValidTarget(obj) and GetDistance(obj) < 250 then
+      CastSpell(_R, pos.x, pos.z)
+    else
+      DelayAction(function() self:DoR(pos, obj) end, 0.03)
+    end
+  end
+
+  function Azir:LaneClear()
+    pos, hit = GetLineFarmPosition(myHeroSpellData[0].range,myHeroSpellData[0].width,k)
+    if pos and hit > 0 and self:CountSoldiers() < 2 and sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+      CastSpell(_W, pos.x, pos.z)
+    end
+    if Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana and self:CountSoldiers() > 0 then
+      for _,k in pairs(self:GetSoldiers()) do
+        pos, hit = GetLineFarmPosition(myHeroSpellData[0].range,myHeroSpellData[0].width,k)
+        if pos and hit > 0 then
+          Cast(_Q, pos)
+        end
+      end
+    end
+  end
+
+  function Azir:Combo()
+    if Config.Combo.Q and Config.Combo.W and myHero:GetSpellData(_Q).currentCd == 0 and sReady[_W] and GetDistance(Target) < myHeroSpellData[_Q].range then
+      CastSpell(_W, Target.x, Target.z)
+      DelayAction(function() Cast(_Q, Target) end, 0.25)
+    end
+    if Config.Combo.W then
+      CastSpell(_W, Target.x, Target.z)
+    end
+    if Config.Combo.Q and self:CountSoldiers() > 0 then
+      for _,k in pairs(self:GetSoldiers()) do
+        Cast(_Q, Target, k)
+      end
+    end
+    if Config.Combo.E and GetRealHealth(Target) < GetDmg(_E,myHero,Target)+self:CountSoldiers()*GetDmg(_W,myHero,Target)+GetDmg(_Q,myHero,Target) then
+      for _,k in pairs(self:GetSoldiers()) do
+        local x, y, z = VectorPointProjectionOnLineSegment(myHero, k, Target)
+        if z and GetDistanceSqr(Target, x) < myHeroSpellData[_E].width^2 then
+          Cast(_E, k)
+        end
+      end
+    end
+    if Target and Config.Combo.R and GetRealHealth(Target) < GetDmg(_R, myHero, Target)+GetDmg(_E, myHero, Target)+self:CountSoldiers()*GetDmg(_W, myHero, Target)+GetDmg(_Q, myHero, Target) then
+      Cast(_R,Target)
+    end
+  end
+
+  function Azir:Harass()
+    if Config.Harass.Q and Config.Harass.W and myHero:GetSpellData(_Q).currentCd == 0 and sReady[_W] and GetDistance(Target) < myHeroSpellData[_Q].range then
+      CastSpell(_W, Target.x, Target.z)
+      DelayAction(function() Cast(_Q, Target) end, 0.25)
+    end
+    if Config.Harass.W then
+      CastSpell(_W, Target.x, Target.z)
+    end
+    if Config.Harass.Q and self:CountSoldiers() > 0 then
+      for _,k in pairs(self:GetSoldiers()) do
+        Cast(_Q, Target, k)
+      end
+    end
+  end
+
+  function Azir:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+        if self:CountSoldiers(enemy)*GetDmg(_W,myHero,enemy) > GetRealHealth(enemy) and Config.Killsteal.W and GetDistance(enemy) < myHeroSpellData[1].range+350 then 
+          myHero:Attack(enemy)
+        elseif (self:CountSoldiers(enemy)+1)*GetDmg(_W,myHero,enemy) > GetRealHealth(enemy) and Config.Killsteal.W and GetDistance(enemy) < myHeroSpellData[1].range+350 then 
+          Cast(_W, enemy)
+          myHero:Attack(enemy)
+        elseif GetDmg(_R, myHero, enemy) > GetRealHealth(enemy) and Config.Killsteal.R and GetDistance(enemy) < myHeroSpellData[3].range then
+          Cast(_R, enemy, 1)
+        end
+      end
+    end
   end
 
 -- }
@@ -4354,8 +4598,8 @@ class "Yorick"
     local Ball = self.Ball or myHero
     local health = GetRealHealth(enemy)
     local projPos, _, isOnSegment = nil, nil, false
-    local CastPosition, HitChance, Pos = Predict(_Q, Ball, enemy)
-    print(CastPosition)
+    local CastPosition, HitChance, Pos = Predict(_Q, myHero, enemy)
+    --print(HitChance)
     if Ball ~= myHero then
       projPos, _, isOnSegment = VectorPointProjectionOnLineSegment(Ball, myHero, enemy)
     end
