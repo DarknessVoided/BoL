@@ -4768,25 +4768,27 @@ class "Yorick"
     if unit and unit.isMe and spell and spell.name then
       local target = self:GetTarget()
       if spell.name:lower():find("attack") then
-        if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
-            DelayAction(function() 
-              if target and not target.dead and target.visible then
-                CastSpell(_R)
-              end
-            end, spell.windUpTime + GetLatency() / 2000)
-        elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then 
-            DelayAction(function() 
-              if target and not target.dead and target.visible then
-                Cast(_R, target)
-              end
-            end, spell.windUpTime + GetLatency() / 2000)
+        if Config.kConfig.Combo then
+          if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
+              DelayAction(function() 
+                if target and not target.dead and target.visible then
+                  CastSpell(_R)
+                end
+              end, spell.windUpTime + GetLatency() / 2000)
+          elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then 
+              DelayAction(function() 
+                if target and not target.dead and target.visible then
+                  Cast(_R, target)
+                end
+              end, spell.windUpTime + GetLatency() / 2000)
+          end
         end
         if self.doW and myHero:CanUseSpell(_W) == READY then 
             DelayAction(function() 
               if target and not target.dead and target.visible then
                 CastSpell(_W) 
               end
-            end, spell.windUpTime + GetLatency() / 2000)
+            end, spell.windUpTime + GetLatency() / 2000 + (Config.kConfig.LaneClear and 0.07 or 0))
         end
         if self.doQ and myHero:CanUseSpell(_Q) == READY then
           _G.NebelwolfisOrbWalker:SetOrb(false)
@@ -4794,7 +4796,7 @@ class "Yorick"
             if target and not target.dead and target.visible then
               CastSpell(_Q, target.x, target.z)
             end
-          end, spell.windUpTime + GetLatency() / 2000)
+          end, spell.windUpTime + GetLatency() / 2000 + (Config.kConfig.LaneClear and 0.07 or 0))
         end
       elseif spell.name == "RivenTriCleave" then
           self.QDelay = os.clock()
