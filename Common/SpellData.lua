@@ -36,7 +36,7 @@ return {
 	},
 	["Azir"] = {
 		[_Q] = { name = "AzirQ", speed = 2500, delay = 0.250, range = 880, width = 100, collision = false, aoe = false, type = "linear", dmgAP = function(source, target) return 15+25*source:GetSpellData(_Q).level+0.35*source.ap end},
-		[_W] = { name = "AzirW", range = 600, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
+		[_W] = { name = "AzirW", range = 450, dmgAP = function(source, target) return 15+25*source:GetSpellData(_W).level+0.4*source.ap end},
 		[_E] = { name = "AzirE", range = 975, delay = 0.25, speed = 1200, width = 60, collision = true, aoe = false, type = "linear", dmgAP = function(source, target) return 25+35*source:GetSpellData(_E).level+0.5*source.ap end},
 		[_R] = { name = "AzirR", speed = 1300, delay = 0.2, range = 750, width = 600, collision = false, aoe = true, type = "linear", dmgAP = function(source, target) return 40*source:GetSpellData(_R).level+30+0.3*source.ap end}
 	},
