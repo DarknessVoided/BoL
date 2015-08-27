@@ -45,7 +45,7 @@ return {
 	["Blitzcrank"] = {
 		[_Q] = { name = "RocketGrabMissile", speed = 1800, delay = 0.250, range = 900, width = 70, collision = true, type = "linear", dmgAP = function(source, target) return 55*source:GetSpellData(_Q).level+25+source.ap end},
 		[_W] = { name = "", range = 2500},
-		[_E] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return 2*source.totalDamage end},
+		[_E] = { name = "", range = 225, dmgAD = function(source, target) return 2*source.totalDamage end},
 		[_R] = { name = "StaticField", speed = math.huge, delay = 0.25, range = 0, width = 500, collision = false, aoe = false, type = "circular", dmgAP = function(source, target) return 125*source:GetSpellData(_R).level+125+source.ap end}
 	},
 	["Brand"] = {
@@ -78,7 +78,7 @@ return {
 	},
 	["Darius"] = {
 		[_Q] = { name = "", speed = math.huge, delay = 0.75, range = 450, width = 450, type = "circular", dmgAD = function(source, target) return 20*source:GetSpellData(_Q).level+(0.9 + 0.1 * source:GetSpellData(_Q).level)*source.totalDamage end},
-		[_W] = { name = "", range = myHero.range+myHero.boundingRadius*2, dmgAD = function(source, target) return source.totalDamage*1.4 end},
+		[_W] = { name = "", range = 275, dmgAD = function(source, target) return source.totalDamage*1.4 end},
 		[_E] = { name = "", speed = math.huge, delay = 0.32, range = 570, width = 125, collision = false, aoe = true, type = "cone"},
 		[_R] = { name = "", range = 460, dmgTRUE = function(source, target, stacks) return math.floor(99*source:GetSpellData(_R).level+0.749*source.addDamage+stacks*(19*source:GetSpellData(_R).level+0.149*source.addDamage)) end}
 	},
