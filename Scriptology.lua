@@ -4905,26 +4905,22 @@ class "Yorick"
         end
         if self.passiveTracker + ready < 5 then
           if sReady[_Q] and Config.Combo.Q then
-          Cast(_Q, enemy)
+            Cast(_Q, enemy)
           end
           if sReady[_W] and Config.Combo.W and GetDistanceSqr(enemy) < myHeroSpellData[_W].range^2 then
-          CastSpell(_W, enemy)
+            CastSpell(_W, enemy)
           end
           if sReady[_E] and Config.Combo.E and GetDistanceSqr(enemy) < myHeroSpellData[_E].range^2 then
-          CastSpell(_E, enemy)
+            CastSpell(_E, enemy)
           end
         elseif self.passiveTracker >= 4 and (not sReady[_Q] or not Config.Combo.Q) and sReady[_R] and Config.Combo.R and Config.Combo.Rs then
           Cast(_R)
           return;
         else
-          if sReady[_Q] and Config.Combo[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
-            CastSpell(_Q, enemy.x, enemy.z)
-          else
-            for _=1, 3 do
-              if sReady[_] and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
-                Cast(_, enemy)
-                break;
-              end
+          for _=0, 3 do
+            if myHero:CanUseSpell(_) == READY and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
+              Cast(_, enemy)
+              break;
             end
           end
         end
