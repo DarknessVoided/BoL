@@ -4919,10 +4919,10 @@ class "Yorick"
         else
           for _=0, 3 do
             if myHero:CanUseSpell(_) == READY and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
-              local tempPred = Config.Prediction.Combo.Q
-              Config.Prediction.Combo.Q = 0
+              local tempPred = ScriptologyConfig.Prediction.Combo.Q
+              ScriptologyConfig.Prediction.Combo.Q = 0
               Cast(_, enemy)
-              Config.Prediction.Combo.Q = tempPred
+              ScriptologyConfig.Prediction.Combo.Q = tempPred
               break;
             end
           end
