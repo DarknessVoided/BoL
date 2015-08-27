@@ -4898,7 +4898,7 @@ class "Yorick"
 
   function Ryze:Combo()
     for _, enemy in pairs(GetEnemyHeroes()) do
-      if enemy and not enemy.dead and enemy.visible and GetDistanceSqr(enemy) < 900*900 then
+      if ValidTarget(enemy, 900) then
         local ready = 0
         for _=0, 3 do
           ready = ready + (sReady[_] and 1 or 0)
