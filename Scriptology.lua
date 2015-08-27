@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2393
+_G.ScriptologyVersion  = 2.2394
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -1335,7 +1335,7 @@ class "Yorick"
   end
 
   function Ahri:DeleteObj(obj)
-  if obj.networkID == self.Orb.networkID then
+  if self.Orb and obj.networkID == self.Orb.networkID then
     self.Orb = nil
   end
   end
@@ -2404,8 +2404,32 @@ class "Yorick"
 
 -- }
 
+-- { Draven
+
   function Draven:__init()
   end
+
+  function Draven:Load()
+    targetSel._dmgType = DAMAGE_PHYSICAL
+    targetSel.range = 900
+  end
+
+  function Draven:CreateObj(obj)
+    if obj.name == "Draven_Base_Q_reticle.troy" then
+      self.lastForce = obj
+      _G.NebelwolfisOrbWalker:ForcePos(obj)
+    end
+  end
+
+  function Draven:DeleteObj(obj)
+    if obj.name == "Draven_Base_Q_reticle.troy" then
+      if self.lastForce == obj then
+        _G.NebelwolfisOrbWalker:ForcePos(nil)
+      end
+    end
+  end
+
+-- }
 
   function DrMundo:__init()
   end
@@ -3140,6 +3164,7 @@ class "Yorick"
   end
 
   function LeeSin:Load()
+  targetSel._dmgType = DAMAGE_PHYSICAL
   self:Menu()
   end
 
@@ -4255,6 +4280,7 @@ class "Yorick"
   end
 
   function Rengar:Menu()
+  targetSel._dmgType = DAMAGE_PHYSICAL
   Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
   Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
   Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -4518,6 +4544,7 @@ class "Yorick"
 
   function Riven:Load()
   self:Menu()
+  targetSel._dmgType = DAMAGE_PHYSICAL
   end
 
   function Riven:Menu()
@@ -4801,6 +4828,7 @@ class "Yorick"
 
   function Ryze:Load()
   self:Menu()
+  targetSel._range = 900
   end
 
   function Ryze:Draw()
@@ -4869,31 +4897,35 @@ class "Yorick"
   end
 
   function Ryze:Combo()
-  local ready = 0
-  for _=0, 3 do
-    ready = ready + (sReady[_] and 1 or 0)
-  end
-  if self.passiveTracker + ready < 5 then
-    if sReady[_Q] and Config.Combo.Q then
-    Cast(_Q, Target)
+    for _, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and GetDistanceSqr(enemy) < 900*900 then
+        local ready = 0
+        for _=0, 3 do
+          ready = ready + (sReady[_] and 1 or 0)
+        end
+        if self.passiveTracker + ready < 5 then
+          if sReady[_Q] and Config.Combo.Q then
+          Cast(_Q, enemy)
+          end
+          if sReady[_W] and Config.Combo.W and GetDistanceSqr(enemy) < myHeroSpellData[_W].range^2 then
+          CastSpell(_W, enemy)
+          end
+          if sReady[_E] and Config.Combo.E and GetDistanceSqr(enemy) < myHeroSpellData[_E].range^2 then
+          CastSpell(_E, enemy)
+          end
+        elseif self.passiveTracker >= 4 and (not sReady[_Q] or not Config.Combo.Q) and sReady[_R] and Config.Combo.R and Config.Combo.Rs then
+          Cast(_R)
+          return;
+        else
+          for _=0, 3 do
+          if sReady[_] and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
+            Cast(_, enemy)
+            break;
+          end
+          end
+        end
+      end
     end
-    if sReady[_W] and Config.Combo.W and GetDistanceSqr(Target) < myHeroSpellData[_W].range^2 then
-    CastSpell(_W, Target)
-    end
-    if sReady[_E] and Config.Combo.E and GetDistanceSqr(Target) < myHeroSpellData[_E].range^2 then
-    CastSpell(_E, Target)
-    end
-  elseif self.passiveTracker >= 4 and (not sReady[_Q] or not Config.Combo.Q) and sReady[_R] and Config.Combo.R and Config.Combo.Rs then
-    Cast(_R)
-    return;
-  else
-    for _=0, 4 do
-    if sReady[_] and Config.Combo[str[_]] and GetDistanceSqr(Target) < myHeroSpellData[_].range^2 then
-      Cast(_, Target)
-      break;
-    end
-    end
-  end
   end
 
   function Ryze:Harass()
@@ -4912,7 +4944,7 @@ class "Yorick"
     CastSpell(_E, Target)
     end
   else
-    for _=0, 3 do
+    for _=0, 2 do
     if sReady[_] and Config.Harass[str[_]] and GetDistanceSqr(Target) < myHeroSpellData[_].range^2 then
       Cast(_, Target)
       break;
@@ -4922,54 +4954,79 @@ class "Yorick"
   end
 
   function Ryze:LaneClear()
-  local ready = 0
-  for _=0, 3 do
-    ready = ready + (sReady[_] and 1 or 0)
-  end
-  local target = GetClosestMinion(900)
-  if self.passiveTracker + ready < 5 then
-    if sReady[_Q] and Config.LaneClear.Q then
-    Cast(_Q, target)
-    end
-    if sReady[_W] and Config.LaneClear.W and GetDistanceSqr(target) < myHeroSpellData[_W].range^2 then
-    CastSpell(_W, target)
-    end
-    if sReady[_E] and Config.LaneClear.E and GetDistanceSqr(target) < myHeroSpellData[_E].range^2 then
-    CastSpell(_E, target)
-    end
-  else
+    local ready = 0
     for _=0, 3 do
-    if sReady[_] and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] < myHero.mana/myHero.maxMana*100 and GetDistanceSqr(target) < myHeroSpellData[_].range^2 then
-      Cast(_, target)
-      break;
+      ready = ready + (sReady[_] and 1 or 0)
     end
+    for _, target in pairs(Mobs.objects) do
+      if target and not target.dead and target.visible then
+        if self.passiveTracker + ready < 5 then
+          if sReady[_Q] and Config.LaneClear.Q then
+            Cast(_Q, target)
+          end
+          if sReady[_W] and Config.LaneClear.W and GetDistanceSqr(target) < myHeroSpellData[_W].range^2 then
+            CastSpell(_W, target)
+          end
+          if sReady[_E] and Config.LaneClear.E and GetDistanceSqr(target) < myHeroSpellData[_E].range^2 then
+            CastSpell(_E, target)
+          end
+        else
+          for _=0, 3 do
+            if sReady[_] and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] < myHero.mana/myHero.maxMana*100 and GetDistanceSqr(target) < myHeroSpellData[_].range^2 then
+              Cast(_, target)
+              break;
+            end
+          end
+        end
+      end
     end
-  end
+    for _, target in pairs(JMobs.objects) do
+      if target and not target.dead and target.visible then
+        if self.passiveTracker + ready < 5 then
+          if sReady[_Q] and Config.LaneClear.Q then
+            Cast(_Q, target)
+          end
+          if sReady[_W] and Config.LaneClear.W and GetDistanceSqr(target) < myHeroSpellData[_W].range^2 then
+            CastSpell(_W, target)
+          end
+          if sReady[_E] and Config.LaneClear.E and GetDistanceSqr(target) < myHeroSpellData[_E].range^2 then
+            CastSpell(_E, target)
+          end
+        else
+          for _=0, 3 do
+            if sReady[_] and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] < myHero.mana/myHero.maxMana*100 and GetDistanceSqr(target) < myHeroSpellData[_].range^2 then
+              Cast(_, target)
+              break;
+            end
+          end
+        end
+      end
+    end
   end
 
   function Ryze:LastHit()
-  for i, minion in pairs(Mobs.objects) do 
-    if minion and not minion.dead and minion.visible then
-    local health = GetRealHealth(minion) 
-    for _=0,3 do
-      if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
-      Cast(_, minion)
-      return;
+    for i, minion in pairs(Mobs.objects) do 
+      if minion and not minion.dead and minion.visible then
+        local health = GetRealHealth(minion) 
+        for _=0,3 do
+          if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
+          Cast(_, minion)
+          return;
+          end
+        end
       end
     end
-    end
-  end
-  for i, minion in pairs(JMobs.objects) do 
-    if minion and not minion.dead and minion.visible and minion.health < 100000 then
-    local health = GetRealHealth(minion) 
-    for _=0,3 do
-      if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
-      Cast(_, minion)
-      return;
+    for i, minion in pairs(JMobs.objects) do 
+      if minion and not minion.dead and minion.visible and minion.health < 100000 then
+        local health = GetRealHealth(minion) 
+        for _=0,3 do
+          if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
+          Cast(_, minion)
+          return;
+          end
+        end
       end
     end
-    end
-  end
   end
 
 -- }
