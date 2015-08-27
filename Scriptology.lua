@@ -4789,7 +4789,7 @@ class "Yorick"
             if target and not target.dead and target.visible then
               CastSpell(_Q, target.x, target.z)
             end
-          end, spell.windUpTime + GetLatency() / 2000 + (Config.kConfig.LaneClear and 0.07 or 0))
+          end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.07 or 0))
           return;
         end
         if self.doW and myHero:CanUseSpell(_W) == READY then 
@@ -4797,7 +4797,7 @@ class "Yorick"
               if target and not target.dead and target.visible then
                 CastSpell(_W) 
               end
-            end, spell.windUpTime + GetLatency() / 2000 + (Config.kConfig.LaneClear and 0.07 or 0))
+            end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.07 or 0))
         end
       elseif spell.name == "RivenTriCleave" then
           self.QDelay = os.clock()
