@@ -487,22 +487,24 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:GetLowestPMinion(range)
     local minionTarget = nil
     local health, health2 = 0, 0
-    if self.Mobs and self.Mobs.range ~= range then
-      self.Mobs.range = range
-      self.Mobs:update()
-    end
-    for i, minion in pairs(self.Mobs.objects) do
-      if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
-        local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-        local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-        if minionTarget == nil and hp > 0 then 
-          minionTarget = minion
-          health = hp
-          health2 = hp2
-        elseif health >= hp and hp > 0 then
-          minionTarget = minion
-          health = hp
-          health2 = hp2
+    if self.Mobs then
+      if self.Mobs.range ~= range then
+        self.Mobs.range = range
+        self.Mobs:update()
+      end
+      for i, minion in pairs(self.Mobs.objects) do
+        if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
+          local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          if minionTarget == nil and hp > 0 then 
+            minionTarget = minion
+            health = hp
+            health2 = hp2
+          elseif health >= hp and hp > 0 then
+            minionTarget = minion
+            health = hp
+            health2 = hp2
+          end
         end
       end
     end
@@ -513,20 +515,22 @@ class "NebelwolfisOrbWalker" -- {
     local minionTarget = nil
     local health = 0
     local count = 0
-    if self.Mobs.range ~= range then
-      self.Mobs.range = range
-      self.Mobs:update()
-    end
-    for i, minion in pairs(self.Mobs.objects) do
-      if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
-        count = count + 1
-        local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-        if minionTarget == nil then 
-          minionTarget = minion
-          health = hp
-        elseif health <= hp and hp > 0 then
-          minionTarget = minion
-          health = hp
+    if self.Mobs then
+      if self.Mobs.range ~= range then
+        self.Mobs.range = range
+        self.Mobs:update()
+      end
+      for i, minion in pairs(self.Mobs.objects) do
+        if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
+          count = count + 1
+          local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          if minionTarget == nil then 
+            minionTarget = minion
+            health = hp
+          elseif health <= hp and hp > 0 then
+            minionTarget = minion
+            health = hp
+          end
         end
       end
     end
@@ -535,16 +539,18 @@ class "NebelwolfisOrbWalker" -- {
 
   function NebelwolfisOrbWalker:GetJMinion(range)
     local minionTarget = nil
-    if self.JMobs.range ~= range then
-      self.JMobs.range = range
-      self.JMobs:update()
-    end
-    for i, minion in pairs(self.JMobs.objects) do
-      if minion and minion.visible and not minion.dead and minion.maxHealth < 100000 then
-        if not minionTarget then
-          minionTarget = minion
-        elseif minionTarget.maxHealth < minion.maxHealth then
-          minionTarget = minion
+    if self.JMobs then
+      if self.JMobs.range ~= range then
+        self.JMobs.range = range
+        self.JMobs:update()
+      end
+      for i, minion in pairs(self.JMobs.objects) do
+        if minion and minion.visible and not minion.dead and minion.maxHealth < 100000 then
+          if not minionTarget then
+            minionTarget = minion
+          elseif minionTarget.maxHealth < minion.maxHealth then
+            minionTarget = minion
+          end
         end
       end
     end
