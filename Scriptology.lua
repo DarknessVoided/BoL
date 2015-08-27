@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2396
+_G.ScriptologyVersion  = 2.2397
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -388,8 +388,8 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
         targetSel:update()
         if ValidTarget(Forcetarget) and Forcetarget then
         Target = Forcetarget
-        elseif _G.MMA_Target and _G.MMA_Target.type == myHero.type then 
-        return _G.MMA_Target 
+        elseif _G.MMA_Loaded and _G.MMA_Target() and _G.MMA_Target().type == myHero.type then 
+        return _G.MMA_Target()
         elseif _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then 
         return _G.AutoCarry.Attack_Crosshair.target
         elseif _G.NebelwolfisOrbWalkerLoaded and _G.NebelwolfisOrbWalker:GetTarget() and _G.NebelwolfisOrbWalker:GetTarget().type == myHero.type then 
@@ -734,7 +734,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
 
   function DrawDmgOnHpBar(hero)
   if not Config.Draws.DMG then return end
-  if hero and not hero.dead and hero.visible then
+  if hero and not hero.dead and hero.visible and hero.bTargetable then
     local kdt = killDrawTable[hero.networkID]
     for _=1, #kdt do
     local vars = kdt[_]
@@ -747,7 +747,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   end
 
   function DrawForcetarget()
-  if Forcetarget ~= nil and Forcetarget.visible and not Forcetarget.dead then
+  if Forcetarget ~= nil and Forcetarget.visible and not Forcetarget.dead and Forcetarget.bTargetable then
     DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
     DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
     DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
@@ -766,7 +766,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   function CalculateDamage()
   if not Config.Draws.DMG then return end
   for i, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local damageQ = myHero:CanUseSpell(_Q) ~= READY and 0 or myHero.charName == "Kalista" and 0 or GetDmg(_Q, myHero, enemy) or 0
     local damageW = myHero:CanUseSpell(_W) ~= READY and 0 or GetDmg(_W, myHero, enemy) or 0
     local damageE = myHero:CanUseSpell(_E) ~= READY and 0 or GetDmg(_E, myHero, enemy) or 0
@@ -997,7 +997,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   function GetClosestMinion(pos)
   local minionTarget = nil
   for i, minion in pairs(Mobs.objects) do
-    if minion and minion.visible and not minion.dead then
+    if minion and minion.visible and not minion.dead and minion.bTargetable then
     if minionTarget == nil then 
       minionTarget = minion
     elseif GetDistanceSqr(minionTarget,pos) > GetDistanceSqr(minion,pos) then
@@ -1011,7 +1011,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   function GetJMinion(range)
   local minionTarget = nil
   for i, minion in pairs(JMobs.objects) do
-    if minion and minion.visible and not minion.dead and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
+    if minion and minion.visible and not minion.dead and minion.bTargetable and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
     if not minionTarget then
       minionTarget = minion
     elseif minionTarget.maxHealth < minion.maxHealth then
@@ -1355,7 +1355,7 @@ class "Yorick"
 
   function Ahri:LastHit()
   for i, minion in pairs(Mobs.objects) do 
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
     local health = GetRealHealth(minion) 
     for _=0,3 do
       if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -1366,7 +1366,7 @@ class "Yorick"
     end
   end
   for i, minion in pairs(JMobs.objects) do 
-    if minion and not minion.dead and minion.visible and minion.health < 100000 then
+    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then
     local health = GetRealHealth(minion) 
     for _=0,3 do
       if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -1437,7 +1437,7 @@ class "Yorick"
 
   function Ahri:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local ultPos = Vector(enemy.x, enemy.y, enemy.z) - ( Vector(enemy.x, enemy.y, enemy.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[0].range^2 then
@@ -1552,7 +1552,7 @@ class "Yorick"
     for i=1,heroManager.iCount do 
     k = heroManager:GetHero(i)
     if not k.isMe and (k.team == myHero.team and self.Config.cd.cda) or (k.team ~= myHero.team and self.Config.cd.cde) then
-      if k.visible and not k.dead then
+      if k and k.visible and not k.dead and k.bTargetable then
       local nextOffset = 0
       local barPos = GetUnitHPBarPos(k)
       local barOffset = GetUnitHPBarOffset(k)
@@ -1831,7 +1831,7 @@ class "Yorick"
 
   function Blitzcrank:GrabSomeone()
   for _, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible and not Config.Misc[enemy.charName] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and not Config.Misc[enemy.charName] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
     Cast(_Q, enemy)
     end
   end
@@ -1868,7 +1868,7 @@ class "Yorick"
 
   function Blitzcrank:Killsteal()
   for _, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and GetDistanceSqr(Target) <= myHeroSpellData[_Q].range^2 then
       Cast(_Q, enemy)
@@ -1930,7 +1930,7 @@ class "Yorick"
   function Cassiopeia:Tick()
   if self.lastE > os.clock() or not sReady[_E] or not Config.Misc.E or Config.kConfig.Combo or Config.kConfig.Harass then return end
   for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible then   
+    if minion and not minion.dead and minion.visible and minion.bTargetable then  
     local EMinionDmg = GetDmg(_E, myHero, minion)  
     if (UnitHaveBuff(minion, "poison") or Config.Misc.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
       CastSpell(_E, minion)
@@ -1938,7 +1938,7 @@ class "Yorick"
     end
   end
   for _, minion in pairs(JMobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.health < 100000 then   
+    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then   
     local EMinionDmg = GetDmg(_E, myHero, minion)  
     if (UnitHaveBuff(minion, "poison") or Config.Misc.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
       CastSpell(_E, minion)
@@ -1993,7 +1993,7 @@ class "Yorick"
   if self.lastE > os.clock() or not Config.kConfig.LastHit then return end
   if Config.LastHit.E then  
     for i, minion in pairs(Mobs.objects) do 
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
       local EMinionDmg = GetDmg(_E, myHero, minion)  
       if (UnitHaveBuff(minion, "poison") or Config.LastHit.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
       CastSpell(_E, minion)
@@ -2001,7 +2001,7 @@ class "Yorick"
     end
     end   
     for i, minion in pairs(JMobs.objects) do 
-    if minion and not minion.dead and minion.visible and minion.health < 100000 then   
+    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then   
       local EMinionDmg = GetDmg(_E, myHero, minion)  
       if (UnitHaveBuff(minion, "poison") or Config.LastHit.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
       CastSpell(_E, minion)
@@ -2045,7 +2045,7 @@ class "Yorick"
 
   function Cassiopeia:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistance(enemy) < myHeroSpellData[0].range then
       CastSpell(_Q, enemy)
@@ -2128,7 +2128,7 @@ class "Yorick"
 
   function Darius:Combo()
   for _, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Combo"])
     if Config.Combo.Qd and HitChance and sReady[_Q] and CastPosition and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Combo"]["pred"..str[_Q].."val"] then
       CastSpell(_Q)
@@ -2148,7 +2148,7 @@ class "Yorick"
   function Darius:Harass()
   if sReady[_Q] and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100 then
     for _, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
       local CastPosition, HitChance, Position = Predict(_Q, myHero, enemy, ScriptologyConfig.Prediction["Harass"])
       if Config.Harass.Qd and sReady[_Q] and CastPosition and GetDistance(CastPosition) >= 250 and HitChance >= ScriptologyConfig.Prediction["Harass"]["pred"..str[_Q].."val"] then
       CastSpell(_Q)
@@ -2190,7 +2190,7 @@ class "Yorick"
 
   function Darius:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local qDmg = ((GetDmg(_Q, myHero, enemy)*1.5) or 0) 
     local q1Dmg = ((GetDmg(_Q, myHero, enemy)) or 0)  
     local wDmg = ((GetDmg(_W, myHero, enemy)) or 0)   
@@ -2347,7 +2347,7 @@ class "Yorick"
   function Diana:LastHit()
   if sReady[_Q] and Config.Harass.Q and Config.kConfig.LastHit and Config.LastHit.manaQ < myHero.mana/myHero.maxMana*100 then
     for minion,winion in pairs(Mobs.objects) do
-    if winion and not winion.dead and winion.visible then
+    if winion and not winion.dead and winion.visible and winion.bTargetable then
       local MinionDmg = GetDmg(_Q, myHero, winion)
       if MinionDmg and MinionDmg >= GetRealHealth(winion) and GetDistance(winion) < myHeroSpellData[0].range then
       Cast(_Q, winion)
@@ -2382,7 +2382,7 @@ class "Yorick"
 
   function Diana:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[0].range^2 then
       Cast(_Q, enemy)
@@ -2546,7 +2546,7 @@ class "Yorick"
   function Ekko:LastHit()
   if sReady[_Q] and ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana)) then
     for minion,winion in pairs(Mobs.objects) do
-    if winion and not winion.dead and winion.visible then
+    if winion and not winion.dead and winion.visible and winion.bTargetable then
       local QMinionDmg = GetDmg(_Q, myHero, winion)
       if QMinionDmg and QMinionDmg >= GetRealHealth(winion) and GetDistanceSqr(winion) < myHeroSpellData[0].range^2 then
       Cast(_Q, winion)
@@ -2606,7 +2606,7 @@ class "Yorick"
 
   function Ekko:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < (myHeroSpellData[0].range)^2 then
       Cast(_Q, enemy)
@@ -2720,7 +2720,7 @@ class "Yorick"
   end
   if not Config.Draws.DMG or not sReady[_E] then return end
   for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
+    if minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
     local damageE = GetDmg(_E, myHero, minion)
     local health = GetRealHealth(minion)
     if damageE > health then
@@ -2972,7 +2972,7 @@ class "Yorick"
     end
   end
   for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
     local health = GetRealHealth(minion)
     if sReady[_Q] and Config.LastHit.Q and health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
       CastSpell(_Q, minion)
@@ -2999,7 +2999,7 @@ class "Yorick"
     end
   end
   for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
     local health = GetRealHealth(minion)
     if sReady[_Q] and Config.LastHit.Q and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
       CastSpell(_Q, minion)
@@ -3261,7 +3261,7 @@ class "Yorick"
   function LeeSin:LastHit()
   if ((Config.kConfig.LastHit and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) and sReady[_Q] then
     for minion,winion in pairs(Mobs.objects) do
-    if winion and not winion.dead and winion.visible then
+    if winion and not winion.dead and winion.visible and winion.bTargetable then
       local MinionDmg1 = GetDmg(_Q, myHero, winion)
       local MinionDmg2 = self:QDmg(winion)
       local health = GetRealHealth(winion)
@@ -3382,7 +3382,7 @@ class "Yorick"
 
   function LeeSin:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[0].range^2 then
       Cast(_Q, enemy)
@@ -3770,7 +3770,7 @@ class "Yorick"
   function Nidalee:CalculateDamage()
   if not Config.Draws.DMG then return end
   for i, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     self:GetRWEQComboDmg(enemy, 0, true)
     end
   end
@@ -3951,7 +3951,7 @@ class "Yorick"
 
   function Nidalee:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and self:IsHuman() and health < self:GetDmg(_Q, enemy, true)+self:GetDmg("Ludens", enemy) and Config.Killsteal.Q and ValidTarget(enemy, self.data.Human[0].range) then
       Cast(_Q, enemy)
@@ -4211,7 +4211,7 @@ class "Yorick"
 
   function Orianna:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local Ball = self.Ball or myHero
     local health = GetRealHealth(enemy)
     local projPos, _, isOnSegment = nil, nil, false
@@ -4448,7 +4448,7 @@ class "Yorick"
   function Rengar:LastHit()
   if (Config.kConfig.LaneClear and ((Config.LaneClear.W and sReady[_W]) or (Config.LaneClear.E and sReady[_E]))) or (Config.kConfig.LastHit and ((Config.LastHit.W and sReady[_W]) or (Config.LastHit.E and sReady[_E]))) then
     for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
       local health = GetRealHealth(minion)
       if ((Config.kConfig.LaneClear and (Config.LaneClear.W and sReady[_W])) or (Config.kConfig.LastHit and (Config.LastHit.W and sReady[_W]))) and health < GetDmg(_W, myHero, minion) then
       Cast(_W)
@@ -4459,7 +4459,7 @@ class "Yorick"
     end
     end
     for _, minion in pairs(JMobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.health < 100000 then
+    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then
       local health = GetRealHealth(minion)
       if ((Config.kConfig.LaneClear and (Config.LaneClear.W and sReady[_W])) or (Config.kConfig.LastHit and (Config.LastHit.W and sReady[_W]))) and health < GetDmg(_W, myHero, minion) then
       Cast(_W)
@@ -4488,7 +4488,7 @@ class "Yorick"
     end
     if (Config.LaneClear.E and sReady[_E]) then
     local minion = GetJMinion(myHeroSpellData[_E].range) or GetClosestMinion(myHero)
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
       CastSpell(_E, minion.x, minion.z)
     end
     end
@@ -4497,7 +4497,7 @@ class "Yorick"
 
   function Rengar:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
       CastSpell(_Q, myHero:Attack(enemy))
@@ -4737,7 +4737,7 @@ class "Yorick"
   function Riven:CalculateDamage()
   if not Config.Draws.DMG then return end
   for i, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     self:CalcComboDmg(enemy, 0, (Config.Combo.Rm == 1), false, true)
     end
   end
@@ -4794,20 +4794,20 @@ class "Yorick"
 
   function Riven:LaneClear()
   local minion = GetClosestMinion(myHero)
-  if minion and not minion.dead and minion.visible then
+  if minion and not minion.dead and minion.visible and minion.bTargetable then
     if GetDistanceSqr(minion) > (myHero.range+GetDistance(myHero.minBBox))^2 then
     CastSpell(_E, minion.x, minion.z)
     end
   end
   local minion = GetJMinion(myHero.range+GetDistance(myHero.minBBox))
-  if minion and not minion.dead and minion.visible then
+  if minion and not minion.dead and minion.visible and minion.bTargetable then
     CastSpell(_E, minion.x, minion.z)
   end
   end
 
   function Riven:LastHit()
   for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
       if minion.health <= GetDmg(_W, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_W].range^2 then
         CastSpell(_W)
       end
@@ -5009,7 +5009,7 @@ class "Yorick"
 
   function Ryze:LastHit()
     for i, minion in pairs(Mobs.objects) do 
-      if minion and not minion.dead and minion.visible then
+      if minion and not minion.dead and minion.visible and minion.bTargetable then
         local health = GetRealHealth(minion) 
         for _=0,3 do
           if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -5020,7 +5020,7 @@ class "Yorick"
       end
     end
     for i, minion in pairs(JMobs.objects) do 
-      if minion and not minion.dead and minion.visible and minion.health < 100000 then
+      if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then
         local health = GetRealHealth(minion) 
         for _=0,3 do
           if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -5143,7 +5143,7 @@ class "Yorick"
 
   function Talon:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local dmg = 0
     local c = 0
     if Config.Killsteal.Q and sReady[_Q] then
@@ -5277,7 +5277,7 @@ class "Yorick"
 
   function Teemo:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
       CastSpell(_Q, enemy)
@@ -5431,7 +5431,7 @@ class "Yorick"
 
   function Vayne:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy)+GetDmg("AD", myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.Q and ValidTarget(enemy, myHeroSpellData[0].range + myHero.range) then
       Cast(_Q, enemy.pos)
@@ -5588,7 +5588,7 @@ class "Yorick"
 
   function Veigar:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-  if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+  if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, myHeroSpellData[0].range) and GetDistance(enemy) < myHeroSpellData[0].range then
     Cast(_Q, enemy)
@@ -5902,7 +5902,7 @@ class "Yorick"
   function Yasuo:LastHit()
   if ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.E)) or ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) then
     for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible then
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
       local health = GetRealHealth(minion)
       local qDmg = GetDmg(_Q, myHero, minion)
       local eDmg = GetDmg(_E, myHero, minion)
@@ -5979,7 +5979,7 @@ class "Yorick"
 
   function Yasuo:Killsteal()
   for k,enemy in pairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) and enemy ~= nil and not enemy.dead then
+    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
     local health = GetRealHealth(enemy)
     if (enemy.y > myHero.y or enemy.y < myHero.y) and Config.Killsteal.R and GetDmg(_R,myHero,enemy) > health and GetDistance(enemy) < myHeroSpellData[3].range then
       Cast(_R, enemy)
