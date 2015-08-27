@@ -4598,8 +4598,6 @@ class "Yorick"
     local Ball = self.Ball or myHero
     local health = GetRealHealth(enemy)
     local projPos, _, isOnSegment = nil, nil, false
-    local CastPosition, HitChance, Pos = Predict(_Q, myHero, enemy)
-    --print(HitChance)
     if Ball ~= myHero then
       projPos, _, isOnSegment = VectorPointProjectionOnLineSegment(Ball, myHero, enemy)
     end
@@ -4619,6 +4617,7 @@ class "Yorick"
         end
       end, GetDistance(Ball,enemy)/myHeroSpellData[0].speed)
     elseif sReady[_Q] and sReady[_W] and sReady[_E] and health < GetDmg(_Q, myHero, enemy)+GetDmg(_W, myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.Q and Config.Killsteal.W and Config.Killsteal.E then
+      local CastPosition, HitChance, Pos = Predict(_Q, Ball, enemy, ScriptologyConfig.Prediction.Combo)
       if HitChance and HitChance >= ScriptologyConfig.Prediction.Combo["pred"..str[_Q].."val"] then
         local tPos = CastPosition + (Vector(CastPosition) - Ball):normalized()*(enemy.boundingRadius/2)
         CastSpell(_Q, tPos.x, tPos.z)
