@@ -379,7 +379,7 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:AcquireTarget()
     local Target = nil
     self.ts:update()
-    self.ts.range = (self.melee and self.Config.melee and self.Config.melee.wtt) and self.myRange*2 or (myHero.charName == "Azir" and 1230 or self.myRange)
+    self.ts.range = (self.melee and self.Config.melee and self.Config.melee.wtt) and self.myRange*2 or (myHero.charName == "Azir" and 1100 or self.myRange)
     Target = self.ts.target
     if self.Config.k.Harass then
       target, health = self:GetLowestPMinion(self.myRange)
