@@ -4917,11 +4917,15 @@ class "Yorick"
           Cast(_R)
           return;
         else
-          for _=0, 3 do
-          if sReady[_] and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
-            Cast(_, enemy)
-            break;
-          end
+          if sReady[_Q] and Config.Combo[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+            CastSpell(_Q, enemy.x, enemy.z)
+          else
+            for _=1, 3 do
+              if sReady[_] and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
+                Cast(_, enemy)
+                break;
+              end
+            end
           end
         end
       end
