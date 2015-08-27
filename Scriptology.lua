@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2399
+_G.ScriptologyVersion  = 2.24
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -4725,136 +4725,133 @@ class "Yorick"
   end
 
   function Riven:Tick()
-  self.doQ = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harass and Config.Harass.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
-  self.doW = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harass and Config.Harass.W) or (Config.kConfig.LaneClear and Config.LaneClear.W)
-  self.doR = Config.kConfig.Combo and (Config.Combo.Rm > 1 or Config.Combo.Rf)
-  if Config.Misc.Flee then
-    myHero:MoveTo(mousePos.x, mousePos.z)
-    if sReady[_E] then
-    Cast(_E, mousePos)
+    self.doQ = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harass and Config.Harass.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)
+    self.doW = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harass and Config.Harass.W) or (Config.kConfig.LaneClear and Config.LaneClear.W)
+    self.doR = Config.kConfig.Combo and (Config.Combo.Rm > 1 or Config.Combo.Rf)
+    if Config.Misc.Flee then
+      myHero:MoveTo(mousePos.x, mousePos.z)
+      if sReady[_E] then
+        Cast(_E, mousePos)
+      end
+      if not sReady[_E] and sReady[_Q] and self.EDelay + 350 < GetTickCount() then
+        Cast(_Q, mousePos)
+      end
     end
-    if not sReady[_E] and sReady[_Q] and self.EDelay + 350 < GetTickCount() then
-    Cast(_Q, mousePos)
+    if Config.Misc.Jump then
+      self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
+      self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
+      if self.QCast < 2 then
+        Cast(_Q, myHero.pos)
+      end
+      if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
+        myHero:MoveTo(self.movePos.x, self.movePos.z)
+      else
+        if sReady[_Q] then
+          Cast(_Q, mousePos)
+        end
+      end
     end
-  end
-  if Config.Misc.Jump then
-    self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
-    self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
-    if self.QCast < 2 then
-    Cast(_Q, myHero.pos)
+    for _,k in pairs(GetEnemyHeroes()) do
+      if sReady[_W] and ValidTarget(k, myHeroSpellData[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, myHeroSpellData[_W].range)) then
+        Cast(_W)
+      end
     end
-    if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
-    myHero:MoveTo(self.movePos.x, self.movePos.z)
-    else
-    if sReady[_Q] then
-      Cast(_Q, mousePos)
+    if Config.Combo.Rf and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then
+      Config.Combo.Rf = false
     end
+    if not (Config.kConfig.Combo or Config.kConfig.Harass or Config.kConfig.LastHit or Config.kConfig.LaneClear) then
+      _G.NebelwolfisOrbWalker:SetOrb(true)
     end
-  end
-  for _,k in pairs(GetEnemyHeroes()) do
-    if sReady[_W] and ValidTarget(k, myHeroSpellData[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, myHeroSpellData[_W].range)) then
-    Cast(_W)
-    end
-  end
-  if Config.Combo.Rf and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then
-    Config.Combo.Rf = false
-  end
-  if not (Config.kConfig.Combo or Config.kConfig.Harass or Config.kConfig.LastHit or Config.kConfig.LaneClear) then
-    _G.NebelwolfisOrbWalker:SetOrb(true)
-  end
   end
 
   function Riven:ProcessSpell(unit, spell)
-  if unit and unit.isMe and spell and spell.name then
-    local target = self:GetTarget()
-    if spell.name:lower():find("attack") then
-      if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
-          DelayAction(function() 
-            if target and not target.dead and target.visible then
-              CastSpell(_R)
-            end
-          end, spell.windUpTime + GetLatency() / 2000)
-      elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then 
-          DelayAction(function() 
-            if target and not target.dead and target.visible then
-              Cast(_R, target)
-            end
-          end, spell.windUpTime + GetLatency() / 2000)
-      end
-      if self.doW and myHero:CanUseSpell(_W) == READY then 
-          DelayAction(function() 
-            if target and not target.dead and target.visible then
-              CastSpell(_W) 
-            end
-          end, spell.windUpTime + GetLatency() / 2000)
-      end
-      if self.doQ and myHero:CanUseSpell(_Q) == READY then
-        _G.NebelwolfisOrbWalker:SetOrb(false)
-          DelayAction(function() 
-            if target and not target.dead and target.visible then
-              CastSpell(_Q, target.x, target.z)
-            end
-          end, spell.windUpTime + GetLatency() / 2000)
-    end
-    elseif spell.name == "RivenTriCleave" then
-        self.QDelay = os.clock()
-    elseif spell.name == "RivenMartyr" then
-      if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
-          DelayAction(function() 
-            if target and not target.dead and target.visible then
-              CastSpell(_R)
-            end
-          end, 0.3 - GetLatency() / 2000)
-      elseif GetHydraSlot() ~= nil and myHero:CanUseSpell(GetHydraSlot()) == READY then
-        DelayAction(function()
-          CastSpell(GetHydraSlot())
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
-          _G.NebelwolfisOrbWalker:WindUp(target)
-          _G.NebelwolfisOrbWalker:WindUp(target)
-          _G.NebelwolfisOrbWalker:WindUp(target)
-          _G.NebelwolfisOrbWalker:WindUp(target)
-        end, 0.3 + GetLatency() / 2000)
-      end
-    elseif spell.name == "RivenFeint" then
-        self.EDelay = GetTickCount()
-        if target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(target, 0, true)*0.67 <= GetRealHealth(target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
-          CastSpell(_R) 
-          DelayAction(function() 
-            if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[0].range then
-              CastSpell(_Q, target.x, target.z)
-            end
-          end, 0.137)
+    if unit and unit.isMe and spell and spell.name then
+      local target = self:GetTarget()
+      if spell.name:lower():find("attack") then
+        if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
+            DelayAction(function() 
+              if target and not target.dead and target.visible then
+                CastSpell(_R)
+              end
+            end, spell.windUpTime + GetLatency() / 2000)
+        elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then 
+            DelayAction(function() 
+              if target and not target.dead and target.visible then
+                Cast(_R, target)
+              end
+            end, spell.windUpTime + GetLatency() / 2000)
         end
-    elseif spell.name == "RivenFengShuiEngine" then
-    DelayAction(function() 
-          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
-        CastSpell(_Q, target.x, target.z)
-          end
-        end, spell.windUpTime + GetLatency() / 2000)
-    elseif spell.name == "rivenizunablade" then
-    DelayAction(function() 
-          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+        if self.doW and myHero:CanUseSpell(_W) == READY then 
+            DelayAction(function() 
+              if target and not target.dead and target.visible then
+                CastSpell(_W) 
+              end
+            end, spell.windUpTime + GetLatency() / 2000)
+        end
+        if self.doQ and myHero:CanUseSpell(_Q) == READY then
+          _G.NebelwolfisOrbWalker:SetOrb(false)
+          DelayAction(function() 
+            if target and not target.dead and target.visible then
               CastSpell(_Q, target.x, target.z)
+            end
+          end, spell.windUpTime + GetLatency() / 2000)
+        end
+      elseif spell.name == "RivenTriCleave" then
+          self.QDelay = os.clock()
+      elseif spell.name == "RivenMartyr" then
+        if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
+            DelayAction(function() 
+              if target and not target.dead and target.visible then
+                CastSpell(_R)
+              end
+            end, 0.3 - GetLatency() / 2000)
+        elseif GetHydraSlot() ~= nil and myHero:CanUseSpell(GetHydraSlot()) == READY then
+          DelayAction(function()
+            CastSpell(GetHydraSlot())
+          _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+            _G.NebelwolfisOrbWalker:WindUp(target)
+            _G.NebelwolfisOrbWalker:WindUp(target)
+            _G.NebelwolfisOrbWalker:WindUp(target)
+            _G.NebelwolfisOrbWalker:WindUp(target)
+          end, 0.3 + GetLatency() / 2000)
+        end
+      elseif spell.name == "RivenFeint" then
+          self.EDelay = GetTickCount()
+          if target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(target, 0, true)*0.67 <= GetRealHealth(target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+            CastSpell(_R) 
+            DelayAction(function() 
+              if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[0].range then
+                CastSpell(_Q, target.x, target.z)
+              end
+            end, 0.137)
           end
-        end, spell.windUpTime + GetLatency() / 2000)
-      elseif spell.name == "ItemTiamatCleave" then
-    DelayAction(function()
-          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
-        CastSpell(_Q, target.x, target.z)
+      elseif spell.name == "RivenFengShuiEngine" then
+      DelayAction(function() 
+            if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+          CastSpell(_Q, target.x, target.z)
+            end
+          end, spell.windUpTime + GetLatency() / 2000)
+      elseif spell.name == "rivenizunablade" then
+      DelayAction(function() 
+            if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+                CastSpell(_Q, target.x, target.z)
+            end
+          end, spell.windUpTime + GetLatency() / 2000)
+        elseif spell.name == "ItemTiamatCleave" then
+      DelayAction(function()
+            if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+          CastSpell(_Q, target.x, target.z)
+        end
+          end, spell.windUpTime + GetLatency() / 2000)
       end
-        end, spell.windUpTime + GetLatency() / 2000)
     end
-  end
   end
 
   function Riven:GetTarget()
-    if Config.kConfig.Combo then
-      return Target
-    elseif Config.kConfig.Harass then
+    if Config.kConfig.Combo or Config.kConfig.Harass then
       return Target
     elseif Config.kConfig.LaneClear then
-      local minion = GetClosestMinion(myHero)
-      return (minion and not minion.dead and minion.visible and minion.bTargetable) and minion or nil
+      return GetClosestMinion(myHero)
     end
     return nil
   end
@@ -4882,88 +4879,98 @@ class "Yorick"
   end
 
   function Riven:CastDance()
-  p = CLoLPacket(256)
-  p.vTable = 15362356
-  p:EncodeF(myHero.networkID)
-  p:Encode1(0x07)
-  p:Encode2(0x1C24)
-  p:Encode2(0x41EF)
-  SendPacket(p)
+    p = CLoLPacket(256)
+    p.vTable = 15362356
+    p:EncodeF(myHero.networkID)
+    p:Encode1(0x07)
+    p:Encode2(0x1C24)
+    p:Encode2(0x41EF)
+    SendPacket(p)
   end
 
   function Riven:CalculateDamage()
-  if not Config.Draws.DMG then return end
-  for i, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
-    self:CalcComboDmg(enemy, 0, (Config.Combo.Rm == 1), false, true)
+    if not Config.Draws.DMG then return end
+    for i, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+      self:CalcComboDmg(enemy, 0, (Config.Combo.Rm == 1), false, true)
+      end
     end
-  end
   end
 
   function Riven:CalcComboDmg(target, damage, disableUlt, ignoreCd, insert)
-  local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
-  local dmg = damage or 0
-  local ad = myHero.totalDamage*((disableUlt and (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine")) and 1 or 1.2)
-  local me = {ap = myHero.ap, level = myHero.level, totalDamage = ad, armorPen = myHero.armorPen, armorPenPercent = myHero.armorPenPercent, magicPen = myHero.magicPen, magicPenPercent = myHero.magicPenPercent, addDamage = myHero.addDamage}
-  local damageQ, damageW, damageE, damageR = 0, 0, 0, 0
-  if ignoreCd or (self.QCast > 0 and self.QCast < 3) or (self.QCast == 0 and myHero:CanUseSpell(_Q) == READY) then
-    local d = GetDmg(_Q,me,unit)*(3-self.QCast)+GetDmg("Tiamat",me,unit)+GetDmg("AD",me,unit)*(3-self.QCast)+self:DmgP(target, ad)*(3-self.QCast)
-    damageQ = d
-    dmg = dmg + d
-  end
-  if ignoreCd or myHero:CanUseSpell(_W) == READY then
-    local d = GetDmg(_W,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
-    damageW = d
-    dmg = dmg + d
-  end
-  if Ignite and myHero:CanUseSpell(Ignite) == READY then
-    dmg = dmg + GetDmg("IGNITE", myHero, unit)
-  end
-  if ignoreCd or (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine") and not disableUlt then
-    unit.health = unit.health-dmg
-    local d = GetDmg(_R,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
-    damageR = d
-    dmg = dmg + d
-  end
-  if insert then
-    killTable[target.networkID] = {damageQ, damageW, damageE, damageR}
-  end
-  return dmg
+    local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
+    local dmg = damage or 0
+    local ad = myHero.totalDamage*((disableUlt and (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine")) and 1 or 1.2)
+    local me = {ap = myHero.ap, level = myHero.level, totalDamage = ad, armorPen = myHero.armorPen, armorPenPercent = myHero.armorPenPercent, magicPen = myHero.magicPen, magicPenPercent = myHero.magicPenPercent, addDamage = myHero.addDamage}
+    local damageQ, damageW, damageE, damageR = 0, 0, 0, 0
+    if ignoreCd or (self.QCast > 0 and self.QCast < 3) or (self.QCast == 0 and myHero:CanUseSpell(_Q) == READY) then
+      local d = GetDmg(_Q,me,unit)*(3-self.QCast)+GetDmg("Tiamat",me,unit)+GetDmg("AD",me,unit)*(3-self.QCast)+self:DmgP(target, ad)*(3-self.QCast)
+      damageQ = d
+      dmg = dmg + d
+    end
+    if ignoreCd or myHero:CanUseSpell(_W) == READY then
+      local d = GetDmg(_W,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+      damageW = d
+      dmg = dmg + d
+    end
+    if Ignite and myHero:CanUseSpell(Ignite) == READY then
+      dmg = dmg + GetDmg("IGNITE", myHero, unit)
+    end
+    if ignoreCd or (sReady[_R] or myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine") and not disableUlt then
+      unit.health = unit.health-dmg
+      local d = GetDmg(_R,me,unit)+GetDmg("AD",me,unit)+self:DmgP(target, ad)
+      damageR = d
+      dmg = dmg + d
+    end
+    if insert then
+      killTable[target.networkID] = {damageQ, damageW, damageE, damageR}
+    end
+    return dmg
   end
 
   function Riven:DmgP(unit, ad)
-  return myHero:CalcDamage(unit, 5+math.max(5*math.floor((myHero.level+2)/3)+10,10*math.floor((myHero.level+2)/3)-15)*ad/100)
+    return myHero:CalcDamage(unit, 5+math.max(5*math.floor((myHero.level+2)/3)+10,10*math.floor((myHero.level+2)/3)-15)*ad/100)
   end
 
   function Riven:Combo()
-  if GetDistance(Target) > _G.NebelwolfisOrbWalker.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
-    if Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(Target, 0, true)*0.67 <= GetRealHealth(Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
-    CastSpell(_E, Target.x, Target.z)
-    DelayAction(function() CastSpell(_R) end, 0.075) 
-    else
-    CastSpell(_E, Target.x, Target.z)
-    DelayAction(function() CastSpell(_W) end, 0.075) 
+    if GetDistance(Target) > _G.NebelwolfisOrbWalker.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
+      if Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(Target, 0, true)*0.67 <= GetRealHealth(Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+        CastSpell(_E, Target.x, Target.z)
+        DelayAction(function() CastSpell(_R) end, 0.075) 
+      else
+        CastSpell(_E, Target.x, Target.z)
+        DelayAction(function() CastSpell(_W) end, 0.075) 
+      end
     end
-  end
-  --if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,Target)+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)+self:DmgP(Target,myHero.totalDamage*1.2) >= GetRealHealth(Target)) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target.pos) end
-  if Config.Combo.Rm > 1 and GetDmg(_R,myHero,Target) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target) end
+    --if Config.Combo.Rm > 1 and (GetDmg(_R,myHero,Target)+GetDmg(_Q,myHero,Target)+GetDmg("AD",myHero,Target)+self:DmgP(Target,myHero.totalDamage*1.2) >= GetRealHealth(Target)) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target.pos) end
+    if Config.Combo.Rm > 1 and GetDmg(_R,myHero,Target) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then Cast(_R, Target) end
   end
 
   function Riven:LaneClear()
-  local minion = GetClosestMinion(myHero)
-  if minion and not minion.dead and minion.visible and minion.bTargetable then
-    if GetDistanceSqr(minion) > (myHero.range+GetDistance(myHero.minBBox))^2 then
-    CastSpell(_E, minion.x, minion.z)
+    local minion = GetClosestMinion(myHero)
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
+      if GetDistanceSqr(minion) > (myHero.range+GetDistance(myHero.minBBox))^2 then
+        CastSpell(_E, minion.x, minion.z)
+      end
     end
-  end
-  local minion = GetJMinion(myHero.range+GetDistance(myHero.minBBox))
-  if minion and not minion.dead and minion.visible and minion.bTargetable then
-    CastSpell(_E, minion.x, minion.z)
-  end
+    local minion = GetJMinion(myHero.range+GetDistance(myHero.minBBox))
+    if minion and not minion.dead and minion.visible and minion.bTargetable then
+      CastSpell(_E, minion.x, minion.z)
+    end
   end
 
   function Riven:LastHit()
     for _, minion in pairs(Mobs.objects) do
+      if minion and not minion.dead and minion.visible and minion.bTargetable then
+        if Config.LastHit.Q and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
+          CastSpell(_Q, minion.x, minion.z)
+        end
+        if Config.LastHit.W and sReady[_W] and minion.health <= GetDmg(_W, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_W].range^2 then
+          CastSpell(_W)
+        end
+      end
+    end
+    for _, minion in pairs(JMobs.objects) do
       if minion and not minion.dead and minion.visible and minion.bTargetable then
         if Config.LastHit.Q and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
           CastSpell(_Q, minion.x, minion.z)
