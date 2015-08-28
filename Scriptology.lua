@@ -1644,7 +1644,7 @@ class "Yorick"
   self.Config.wp:addParam("wps", "Self:", SCRIPT_PARAM_ONOFF, false)
   self.Config:addSubMenu("Wards & Other", "wt")
   self.Config.wt:addParam("ward", "Wards:", SCRIPT_PARAM_ONOFF, true)
-    AddDrawCallback(function() self:Draw() end)
+  AddDrawCallback(function() self:Draw() end)
   AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
   AddDeleteObjCallback(function(obj) self:DeleteObj(obj) end)
   UpdateWindow()
