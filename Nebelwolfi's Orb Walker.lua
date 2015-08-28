@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.454
+_G.NebelwolfisOrbWalkerVersion = 0.455
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -47,9 +47,8 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:LoadVars(Cfg)
     DelayAction(function()
       self.melee = (myHero.range < 450 or myHero.charName == "Rengar") and myHero.charName ~= "Nidalee" and myHero.charName ~= "Jayce" and myHero.charName ~= "Elise"
-      self.Mobs = minionManager(MINION_ENEMY, myHero.range+GetDistance(myHero.minBBox), myHero, MINION_SORT_HEALTH_ASC)
-      self.JMobs = minionManager(MINION_JUNGLE, myHero.range+GetDistance(myHero.minBBox), myHero, MINION_SORT_HEALTH_ASC)
     end, 2)
+    self.Mobs = MinionManager()
     self.orbDisabled = false
     self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
     self.doAA = true
@@ -168,12 +167,7 @@ class "NebelwolfisOrbWalker" -- {
     AddCreateObjCallback(function(o) self:CreateObj(o) end)
   end
 
-  mTick=0;oTick=0;function NebelwolfisOrbWalker:Tick()
-    if mTick < os.clock() and self.Mobs then
-      mTick = os.clock() + 0.33
-      self.Mobs:update()
-      self.JMobs:update()
-    end
+  oTick=0;function NebelwolfisOrbWalker:Tick()
     if self:DoOrb() and oTick <= os.clock() then
       oTick = os.clock() + self.Config.t.time / 1000
       self.Target = self:AcquireTarget()
@@ -522,12 +516,8 @@ class "NebelwolfisOrbWalker" -- {
     local minionTarget = nil
     local health, health2 = 0, 0
     if self.Mobs then
-      if self.Mobs.range ~= range then
-        self.Mobs.range = range
-        self.Mobs:update()
-      end
       for i, minion in pairs(self.Mobs.objects) do
-        if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
+        if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 and (minion.team == 100 or minion.team == 200) and GetDistanceSqr(minion) < range^2 then
           local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
           local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
           if minionTarget == nil and hp > 0 then 
@@ -550,12 +540,8 @@ class "NebelwolfisOrbWalker" -- {
     local health = 0
     local count = 0
     if self.Mobs then
-      if self.Mobs.range ~= range then
-        self.Mobs.range = range
-        self.Mobs:update()
-      end
       for i, minion in pairs(self.Mobs.objects) do
-        if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 then
+        if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 and (minion.team == 100 or minion.team == 200) and GetDistanceSqr(minion) < range^2 then
           count = count + 1
           local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
           if minionTarget == nil then 
@@ -573,13 +559,9 @@ class "NebelwolfisOrbWalker" -- {
 
   function NebelwolfisOrbWalker:GetJMinion(range)
     local minionTarget = nil
-    if self.JMobs then
-      if self.JMobs.range ~= range then
-        self.JMobs.range = range
-        self.JMobs:update()
-      end
-      for i, minion in pairs(self.JMobs.objects) do
-        if minion and minion.visible and not minion.dead and minion.maxHealth < 100000 then
+    if self.Mobs then
+      for i, minion in pairs(self.Mobs.objects) do
+        if minion and minion.visible and not minion.dead and minion.maxHealth < 100000 and minion.team > 200 and GetDistanceSqr(minion) < range^2 then
           if not minionTarget then
             minionTarget = minion
           elseif minionTarget.maxHealth < minion.maxHealth then
@@ -729,6 +711,39 @@ class 'SCircle' -- {
     end
     return nil
   end
+
+-- { MinionManager
+
+  class "MinionManager"
+
+  function MinionManager:__init()
+    self.objects = {}
+    for k=1,objManager.maxObjects,1 do
+      local object = objManager:getObject(k)
+      if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
+        self.objects[#self.objects+1] = object
+      end
+    end
+    AddCreateObjCallback(function(o) self:CreateObj(o) end)
+    return self
+  end
+
+  function MinionManager:CreateObj(object)
+    if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
+      self.objects[self:FindDeadPlace() or #self.objects+1] = object
+    end
+  end
+
+  function MinionManager:FindDeadPlace()
+    for i=1, #self.objects do
+      local object = self.objects[i]
+      if not object or not object.valid or object.dead then
+        return i
+      end
+    end
+  end
+
+-- }
 
 class "CScriptUpdate" -- {
 
