@@ -38,7 +38,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 
 function UPL:__init()
   if not _G.UPLloaded then
-    _G.UPLversion = 2.65
+    _G.UPLversion = 2.7
     _G.UPLautoupdate = true
     _G.UPLloaded = false
     self.ActiveP = 1
@@ -165,7 +165,7 @@ function UPL:Predict(spell, source, Target)
         return Vector(Target), 0, Vector(Target)
       end
   elseif self:ActivePred(spell) == "DivinePrediction" then
-      local State, Position, perc = self:DPredict(Target, self.spellData[spell], source)
+      local State, Position, perc = self:DPredict(Target, spell, source)
       if perc and Position then
         return Position, perc/33, (Vector(Target)-Position):normalized()
       else
@@ -195,6 +195,7 @@ function UPL:AddSpell(spell, array)
   else
     self.spellData[spell] = {speed = array.speed, delay = array.delay, range = array.range, width = array.width, collision = array.collision, aoe = array.aoe, type = array.type}
     if self.HP ~= nil then self:SetupHPredSpell(spell) end
+    if self.DP ~= nil then self:SetupDPredSpell(spell) end
     if self.addToMenu2 then
       str = {[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
       DelayAction(function() self.Config:addParam(str[spell], str[spell].." Prediction", SCRIPT_PARAM_LIST, self.ActiveP, self.predTable) end, 1)
@@ -236,8 +237,10 @@ function UPL:SetupHPredSpell(spell)
   end
 end
 
-function UPL:DPredict(Target, spell, source)
-  local unit = DPTarget(Target)
+function UPL:SetupDPredSpell(spell)
+  local str = (({[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"})[spell])
+  local Spell = nil
+  local spell = self.spellData[spell]
   local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
   if spell.type == "linear" then
     Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
@@ -246,7 +249,12 @@ function UPL:DPredict(Target, spell, source)
   elseif spell.type == "cone" then
     Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
   end
-  return self.DP:predict(unit, Spell, 1.2, Vector(source))
+  self.DP:bindSS(str, Spell, 1)
+end
+
+function UPL:DPredict(Target, spell, source)
+  str = {[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+  return self.DP:predict(str[spell], Target, Vector(source))
 end
 
 --[[function UPL:DPredict(Target, spell, source) -- @Salt-Override-Desu
