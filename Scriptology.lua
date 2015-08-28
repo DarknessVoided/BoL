@@ -1,10 +1,9 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2425
+_G.ScriptologyVersion  = 2.2426
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
 _G.ScriptologyAutoUpdate  = true
-_G.ScriptologyLoadDivinePrediction = false
 _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHero.charName)
 
 -- { Load
@@ -267,15 +266,13 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
       end
       table.sort(predictionStringTable)
       table.sort(Prediction)
-      if _G.ScriptologyLoadDivinePrediction then
-        if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
-          require "DivinePred"
-          _G.DP = DivinePred()
-          Prediction["DP"] = _G.DP
-          table.insert(predictionStringTable, "DivinePred")
-        end
+      if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+        require "DivinePred"
+        _G.DP = DivinePred()
+        Prediction["DP"] = _G.DP
+        table.insert(predictionStringTable, "DivinePred")
       end
-      local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R", [-1] = "Q2", [-2] = "Q3"}
+      str = {[-3] = "P", [-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R", [4] = "I", [5] = "S"}
       local SetupHPredSpell = function(k)
         spell = myHeroSpellData[k]
         if not HPSpells then HPSpells = {} end
@@ -299,17 +296,36 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
         HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
         end
       end
-      for m, mode in pairs({Harass = {"Harass", 1.1}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.2}, LaneClear = {"LaneClear", 1}}) do
-      ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
-      for _=-2, 3 do
-        if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
-        ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
-        ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 1)
-        if _G.HP ~= nil then
-          SetupHPredSpell(_)
+      local SetupDPredSpell = function(k)
+        local spell = myHeroSpellData[k]
+        local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
+        if spell.type == "linear" then
+          Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+        elseif spell.type == "circular" then
+          Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
+        elseif spell.type == "cone" then
+          Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
         end
+        _G.DP:bindSS(str[k], Spell, 1)
+      end
+      for m, mode in pairs({Harass = {"Harass", 1.1}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.2}, LaneClear = {"LaneClear", 1}}) do
+        ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
+        for _=-2, 3 do
+          if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
+          ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
+          ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 1)
+            if _G.HP ~= nil then
+              SetupHPredSpell(_)
+            end
+          end
         end
       end
+      for _=-2, 3 do
+        if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
+          if _G.DP ~= nil then
+            SetupDPredSpell(_)
+          end
+        end
       end
     end
 
@@ -366,7 +382,6 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
       if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
       if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
       if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
-      str = {[-2] = "Q3", [-1] = "Q2", [_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R", [4] = "I", [5] = "S"}
       colors = { 0xDFFFE258, 0xDF8866F4, 0xDF55F855, 0xDFFF5858 }
       gapcloserTable = {
       ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Ahri"] = _R, ["Amumu"] = _Q, ["Corki"] = _W,
@@ -921,95 +936,89 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   end
 
   function Cast(spell, target, source)
-  if not spell then return end
-  if not target then
-    CastSpell(spell)
-  elseif target and type(target) ~= "number" and not target.networkID then
-    CastSpell(spell, target.x, target.z)
-  elseif target and type(target) ~= "number" and target.networkID then
-    if myHeroSpellData[spell] and myHeroSpellData[spell].type then
-    local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R", [-1] = "Q2", [-2] = "Q3"}
-    local activeMode = nil
-    local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
-    for m, mode in pairs(modes) do
-      if Config.kConfig[mode] then
-      activeMode = ScriptologyConfig.Prediction[mode]
+    if not spell or spell < 0 then return end
+    if not target then
+      CastSpell(spell)
+      return true;
+    elseif target and not target.networkID then
+      CastSpell(spell, target.x, target.z)
+      return true;
+    elseif target and target.networkID then
+      if myHeroSpellData[spell] and myHeroSpellData[spell].type then
+        local activeMode = nil
+        local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
+        for m, mode in pairs(modes) do
+          if Config.kConfig[mode] then
+            activeMode = ScriptologyConfig.Prediction[mode]
+          end
+        end
+        if activeMode == nil then
+          activeMode = ScriptologyConfig.Prediction["Combo"]
+        end
+        local CastPosition, HitChance, Position = Predict(spell, source or myHero, target, activeMode)
+        if HitChance and HitChance >= activeMode["pred"..str[spell].."val"] then
+          CastSpell(spell, CastPosition.x, CastPosition.z)
+          return true;
+        end
+      else
+        CastSpell(spell, target)
+        return true;
       end
     end
-    if activeMode == nil then
-      activeMode = ScriptologyConfig.Prediction["Combo"]
-    end
-    local CastPosition, HitChance, Position = Predict(spell, source or myHero, target, activeMode)
-    if HitChance and HitChance >= activeMode["pred"..str[spell].."val"] then
-      CastSpell(spell, CastPosition.x, CastPosition.z)
-    end
-    else
-    CastSpell(spell, target)
-    end
-  end
+    return false;
   end
 
   function Predict(spell, from, to, mode)
-  local activeMode = nil
-  if not mode then
-    local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
-    for m, mode in pairs(modes) do
-    if Config.kConfig[mode] then
-      activeMode = ScriptologyConfig.Prediction[mode]
-      break;
-    end
-    end
-    if not activeMode then
-      activeMode = ScriptologyConfig.Prediction["Combo"]
-    end
-  else
-    activeMode = mode
-  end
-  local activePrediction = activeMode["pred"..str[spell]]
-  if predictionStringTable[activePrediction] == "VPrediction" then
-    local spell = myHeroSpellData[spell]
-    if spell.type == "linear" then
-    if spell.aoe then
-      return _G.VP:GetLineAOECastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from)
+    local activeMode = nil
+    if not mode then
+      local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
+      for m, mode in pairs(modes) do
+      if Config.kConfig[mode] then
+        activeMode = ScriptologyConfig.Prediction[mode]
+        break;
+      end
+      end
+      if not activeMode then
+        activeMode = ScriptologyConfig.Prediction["Combo"]
+      end
     else
-      return _G.VP:GetLineCastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from, spell.collision)
+      activeMode = mode
     end
-    elseif spell.type == "circular" then
-    if spell.aoe then
-      return _G.VP:GetCircularAOECastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from)
-    else
-      return _G.VP:GetCircularCastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from, spell.collision)
+    local activePrediction = activeMode["pred"..str[spell]]
+    if predictionStringTable[activePrediction] == "VPrediction" then
+      local spell = myHeroSpellData[spell]
+      if spell.type == "linear" then
+        if spell.aoe then
+          return _G.VP:GetLineAOECastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from)
+        else
+          return _G.VP:GetLineCastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from, spell.collision)
+        end
+      elseif spell.type == "circular" then
+        if spell.aoe then
+          return _G.VP:GetCircularAOECastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from)
+        else
+          return _G.VP:GetCircularCastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from, spell.collision)
+        end
+      elseif spell.type == "cone" then
+        if spell.aoe then
+          return _G.VP:GetConeAOECastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from)
+        else
+          return _G.VP:GetLineCastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from, spell.collision)
+        end
+      end
+    elseif predictionStringTable[activePrediction] == "SPrediction" then
+      return _G.SP:Predict(to, myHeroSpellData[spell].range, myHeroSpellData[spell].speed, myHeroSpellData[spell].delay, myHeroSpellData[spell].width, (from.charName == "Lux" or from.charName == "Veigar") and 1 or myHeroSpellData[spell].collision, from)
+    elseif predictionStringTable[activePrediction] == "HPrediction" then
+      local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or math.huge
+      return _G.HP:GetPredict(HPSpells[spell], to, from, col)
+    elseif predictionStringTable[activePrediction] == "DivinePred" then
+      local State, Position, perc = _G.DP:predict(str[spell], to, Vector(from))
+      if perc and Position then
+        return Position, perc/33, (Vector(Target)-Position):normalized()
+      else
+        return Vector(Target), -0.1, Vector(Target)
+      end
     end
-    elseif spell.type == "cone" then
-    if spell.aoe then
-      return _G.VP:GetConeAOECastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from)
-    else
-      return _G.VP:GetLineCastPosition(to, spell.delay, spell.width, spell.range, spell.speed, from, spell.collision)
-    end
-    end
-  elseif predictionStringTable[activePrediction] == "SPrediction" then
-    return _G.SP:Predict(to, myHeroSpellData[spell].range, myHeroSpellData[spell].speed, myHeroSpellData[spell].delay, myHeroSpellData[spell].width, (from.charName == "Lux" or from.charName == "Veigar") and 1 or myHeroSpellData[spell].collision, from)
-  elseif predictionStringTable[activePrediction] == "HPrediction" then
-    local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or math.huge
-    return _G.HP:GetPredict(HPSpells[spell], to, from, col)
-  elseif predictionStringTable[activePrediction] == "DivinePred" then
-    local spell = myHeroSpellData[spell]
-    local unit = DPTarget(to)
-    local col = spell.collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or math.huge
-    if spell.type == "linear" then
-    Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-    elseif spell.type == "circular" then
-    Spell = CircleSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-    elseif spell.type == "cone" then
-    Spell = ConeSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
-    end
-    local State, Position, perc = _G.DP:predict(unit, Spell, 1.2, Vector(from))
-    if perc and Position then
-    return Position, perc/33, (Vector(Target)-Position):normalized()
-    else
-    return Vector(Target), -0.1, Vector(Target)
-    end
-  end
   end
 
   function GetRealHealth(unit)
@@ -1179,7 +1188,6 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   GapcloseUnit = nil
   GapcloseTargeted = targeted
   GapcloseRange = range
-  str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R", [-1] = "Q2", [-2] = "Q3"}
   config:addDynamicParam("antigap", "Auto "..str[spell].." on gapclose", SCRIPT_PARAM_ONOFF, true)
   for _,k in pairs(GetEnemyHeroes()) do
     if gapcloserTable[k.charName] then
@@ -3826,18 +3834,14 @@ class "Yorick"
   end
 
   function Lux:Combo()
-  if UnitHaveBuff(Target, "luxilluminati") and Config.Combo.R and sReady[_R] and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= GetRealHealth(Target) then
-    Cast(_R, Target)
-  elseif Config.Combo.R and sReady[_R] and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) then
-    Cast(_R, Target)
-  end
-  if Config.Combo.E and sReady[_E] then
-    Cast(_E, Target)
-  else
-    if Config.Combo.Q and sReady[_Q] and not sReady[_E] then
-    Cast(_Q, Target)
+    if Cast((Config.Combo.E and sReady[_E]) and _E or (Config.Combo.Q and sReady[_Q]) and _Q or -1, Target) and Config.Combo.R and sReady[_R] and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= GetRealHealth(Target) and GetRealHealth(Target) >= GetDmg((Config.Combo.E and sReady[_E]) and _Q or (Config.Combo.Q and sReady[_Q]) and _W or "AD", myHero, Target) then
+      DelayAction(function() Cast(_R, Target) end, 0.25)
     end
-  end
+    if UnitHaveBuff(Target, "luxilluminati") and Config.Combo.R and sReady[_R] and myHero:CalcMagicDamage(Target, 200+150*myHero:GetSpellData(_R).level+0.75*myHero.ap) >= GetRealHealth(Target) and (GetDistance(Target) > myHero.range+myHero.boundingRadius*2 or GetDmg("AD", myHero, Target)+myHero:CalcMagicDamage(Target, 10+8*myHero.level+0.2*myHero.ap) < GetRealHealth(Target)) then
+      Cast(_R, Target)
+    elseif Config.Combo.R and sReady[_R] and GetDmg(_R, myHero, Target) >= GetRealHealth(Target) and (GetDistance(Target) > myHero.range+myHero.boundingRadius*2 or (UnitHaveBuff(Target, "luxilluminati") and GetDmg("AD", myHero, Target)*2 < GetRealHealth(Target))) then
+      Cast(_R, Target)
+    end
   end
 
   function Lux:Harass()
