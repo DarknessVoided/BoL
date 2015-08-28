@@ -5097,7 +5097,7 @@ class "Yorick"
     if Config.kConfig.Combo or Config.kConfig.Harass then
       return Target
     elseif Config.kConfig.LaneClear then
-      return GetClosestMinion(myHero)
+      return GetClosestMinion(myHero) or GetJMinion(myHero.range+GetDistance(myHero.minBBox))
     end
     return nil
   end
