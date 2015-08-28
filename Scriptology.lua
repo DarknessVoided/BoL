@@ -6384,7 +6384,7 @@ class "CScriptUpdate" -- {
     else
     self.OnlineVersion = (Base64Decode(self.File:sub(ContentStart + 1,ContentEnd-1)))
     self.OnlineVersion = tonumber(self.OnlineVersion)
-    if self.OnlineVersion > self.LocalVersion then
+    if self.OnlineVersion and self.LocalVersion and self.OnlineVersion > self.LocalVersion then
       if self.CallbackNewVersion and type(self.CallbackNewVersion) == 'function' then
       self.CallbackNewVersion(self.OnlineVersion,self.LocalVersion)
       end
