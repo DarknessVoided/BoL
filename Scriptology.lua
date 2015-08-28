@@ -725,17 +725,17 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
   function DrawRange()
   if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or not myHeroSpellData then return end
   if Config.Draws.Q and sReady[_Q] and myHeroSpellData[0] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or myHeroSpellData[0].range > 0 and myHeroSpellData[0].range or myHeroSpellData[0].width, ARGB(table.unpack(Config.Draws.ColorQ)))
+    DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or myHeroSpellData[0].range > 0 and myHeroSpellData[0].range or myHeroSpellData[0].width, ARGB(Config.Draws.ColorQ[1],Config.Draws.ColorQ[2],Config.Draws.ColorQ[3],Config.Draws.ColorQ[4]))
   end
   if myHero.charName ~= "Orianna" then
     if Config.Draws.W and sReady[_W] and myHeroSpellData[1] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[1].range) == "function" and myHeroSpellData[1].range() or myHeroSpellData[1].range > 0 and myHeroSpellData[1].range or myHeroSpellData[1].width, ARGB(table.unpack(Config.Draws.ColorW)))
+    DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[1].range) == "function" and myHeroSpellData[1].range() or myHeroSpellData[1].range > 0 and myHeroSpellData[1].range or myHeroSpellData[1].width, ARGB(Config.Draws.ColorW[1],Config.Draws.ColorW[2],Config.Draws.ColorW[3],Config.Draws.ColorW[4]))
     end
     if Config.Draws.E and sReady[_E] and myHeroSpellData[2] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, myHeroSpellData[2].range > 0 and myHeroSpellData[2].range or myHeroSpellData[2].width, ARGB(table.unpack(Config.Draws.ColorE)))
+    DrawLFC(myHero.x, myHero.y, myHero.z, myHeroSpellData[2].range > 0 and myHeroSpellData[2].range or myHeroSpellData[2].width, ARGB(Config.Draws.ColorE[1],Config.Draws.ColorE[2],Config.Draws.ColorE[3],Config.Draws.ColorE[4]))
     end
     if Config.Draws.R and (sReady[_R] or myHero.charName == "Katarina") and myHeroSpellData[3] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[3].range) == "function" and myHeroSpellData[3].range() or myHeroSpellData[3].range > 0 and myHeroSpellData[3].range or myHeroSpellData[3].width, ARGB(table.unpack(Config.Draws.ColorR)))
+    DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[3].range) == "function" and myHeroSpellData[3].range() or myHeroSpellData[3].range > 0 and myHeroSpellData[3].range or myHeroSpellData[3].width, ARGB(Config.Draws.ColorR[1],Config.Draws.ColorR[2],Config.Draws.ColorR[3],Config.Draws.ColorR[4]))
     end
   end
   end
