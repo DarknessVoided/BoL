@@ -1432,6 +1432,19 @@ class "Yorick"
   end
   end
 
+  function Ahri:Harass()
+    if not Target then return end
+    if sReady[_Q] and Config.Harass.Q and Config.Harass.manaQ <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < myHeroSpellData[0].range then
+      Cast(_Q, Target)
+    end
+    if sReady[_W] and Config.Harass.W and Config.Harass.manaW <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < myHeroSpellData[1].range then
+      CastSpell(_W)
+    end
+    if sReady[_E] and Config.Harass.E and Config.Harass.manaE <= 100*myHero.mana/myHero.maxMana and GetDistance(Target) < myHeroSpellData[2].range then
+      Cast(_E, Target)
+    end
+  end
+
   function Ahri:CatchQ()
   if Target and self.Orb then
     local x,y,z = _G.VP:GetLineCastPosition(Target, myHeroSpellData[0].delay, myHeroSpellData[0].width, myHeroSpellData[0].range, myHeroSpellData[0].speed, Vector(Vector(self.Orb.dir)+(Vector(self.Orb)-myHero):normalized()*(myHeroSpellData[0].range-GetDistance(self.Orb))), myHeroSpellData[0].collision)
