@@ -1,11 +1,11 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion       = 2.2426
+_G.ScriptologyVersion       = 2.243
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
 _G.ScriptologyAutoUpdate    = true
-_G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2"..myHero.charName)
-
+_G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology24"..myHero.charName)
+local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
 -- { Load
 
   function OnLoad()
@@ -38,25 +38,25 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
     if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
       _G.myHeroSpellData = spellData[myHero.charName]
       DelayAction(function()
-      CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", function() end, function() end, function() end, LoadSpellData)
+      CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", function() end, function() end, function() end, LoadSpellData)
       end, 5)
     else
-      CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
+      CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
     end
     else
-    CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..math.random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
+    CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
     end
   end
 
   -- { Awareness 
 
     function LoadAwareness()
-    if _G.PrinceViewVersion == nil then
-      ScriptologyConfig:addSubMenu("Awareness", "Awareness")
-      ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-      ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
-      if ScriptologyConfig.Awareness.activate then LoadAwareness2() end
-    end
+      if _G.PrinceViewVersion == nil then
+        ScriptologyConfig:addSubMenu("Awareness", "Awareness")
+        ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
+        ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
+        if ScriptologyConfig.Awareness.activate then LoadAwareness2() end
+      end
     end
 
     function LoadAwareness2()
@@ -277,7 +277,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
         spell = myHeroSpellData[k]
         if not HPSpells then HPSpells = {} end
         if spell.type == "linear" then
-        if spell.speed ~= math.huge then 
+        if spell.speed ~= huge then 
         if spell.collision then
           HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
         else
@@ -287,7 +287,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
         HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = spell.delay})
         end
         elseif spell.type == "circular" then
-        if spell.speed ~= math.huge then 
+        if spell.speed ~= huge then 
         HPSpells[k] = HPSkillshot({type = "DelayCircle", range = spell.range, speed = spell.speed, radius = spell.width, delay = spell.delay})
         else
         HPSpells[k] = HPSkillshot({type = "PromptCircle", range = spell.range, radius = spell.width, delay = spell.delay})
@@ -298,7 +298,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
       end
       local SetupDPredSpell = function(k)
         local spell = myHeroSpellData[k]
-        local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or math.huge
+        local col = spell.collision and ((myHero.charName=="Lux" or myHero.charName=="Veigar") and 1 or 0) or huge
         if spell.type == "linear" then
           Spell = LineSS(spell.speed, spell.range, spell.width, spell.delay * 1000, col)
         elseif spell.type == "circular" then
@@ -308,15 +308,12 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
         end
         _G.DP:bindSS(str[k], Spell, 1)
       end
-      for m, mode in pairs({Harass = {"Harass", 1.1}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.2}, LaneClear = {"LaneClear", 1}}) do
+      for m, mode in pairs({Harass = {"Harass", 1.5}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.55}, LaneClear = {"LaneClear", 1}}) do
         ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
         for _=-2, 3 do
           if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
           ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
-          ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 1)
-            if _G.HP ~= nil then
-              SetupHPredSpell(_)
-            end
+          ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 2)
           end
         end
       end
@@ -324,6 +321,9 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
         if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
           if _G.DP ~= nil then
             SetupDPredSpell(_)
+          end
+          if _G.HP ~= nil then
+            SetupHPredSpell(_)
           end
         end
       end
@@ -403,16 +403,16 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
       tickTable = {
       function() 
         targetSel:update()
-        if ValidTarget(Forcetarget) and Forcetarget then
-        Target = Forcetarget
+        if ValidTarget(Forcetarget) then
+          Target = Forcetarget
         elseif _G.MMA_Loaded and _G.MMA_Target() and _G.MMA_Target().type == myHero.type then 
-        return _G.MMA_Target()
+          Target = _G.MMA_Target()
         elseif _G.AutoCarry and _G.AutoCarry.Crosshair and _G.AutoCarry.Attack_Crosshair and _G.AutoCarry.Attack_Crosshair.target and _G.AutoCarry.Attack_Crosshair.target.type == myHero.type then 
-        return _G.AutoCarry.Attack_Crosshair.target
+          Target = _G.AutoCarry.Attack_Crosshair.target
         elseif _G.NebelwolfisOrbWalkerLoaded and _G.NebelwolfisOrbWalker:GetTarget() and _G.NebelwolfisOrbWalker:GetTarget().type == myHero.type then 
-        return _G.NebelwolfisOrbWalker:GetTarget()
+          Target = _G.NebelwolfisOrbWalker:GetTarget()
         else
-        Target = targetSel.target
+          Target = targetSel.target
         end
       end,
       function()
@@ -582,19 +582,23 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
         if Config.Draws.PermaShow then
           CustomPermaShow(" - Scriptology Perma Show - ", nil, true, nil, nil, nil, 0)
           local activeMode = nil
-          for k, mode in ipairs({"LaneClear", "LastHit", "Harass", "Combo"}) do
+          local modes = {"LaneClear", "LastHit", "Harass", "Combo"}
+          for i = 1, 4 do
+            local mode = modes[i]
             if Config.kConfig[mode] then
               activeMode = mode
               CustomPermaShow("Active Mode: "..mode, nil, Config.kConfig[mode], nil, ARGB(255,0,255,0), ARGB(255,255,0,0), 1)
-              for _, spell in pairs({"Q", "W", "E", "R"}) do
+              local spells = {"Q", "W", "E", "R"}
+              for j = 1, 4 do
+                local spell = spells[j]
                 if Config[mode][spell] and Config[mode]["mana"..spell] then
                   if Config[mode]["mana"..spell] <= myHero.mana/myHero.maxMana*100 then
-                   CustomPermaShow("Use "..spell, Config[mode][spell], Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 1+_)
+                   CustomPermaShow("Use "..spell, Config[mode][spell], Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 1+j)
                   else
-                    CustomPermaShow("Use "..spell.." (oom)", false, Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,255), 1+_)
+                    CustomPermaShow("Use "..spell.." (oom)", false, Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,255), 1+j)
                   end
                 else
-                  CustomPermaShow("Use "..spell, Config[mode][spell], Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 1+_)
+                  CustomPermaShow("Use "..spell, Config[mode][spell], Config[mode][spell] ~= nil, ARGB(255, 0, 0, 0), ARGB(255,0,255,0), ARGB(255,255,0,0), 1+j)
                 end
               end
             end
@@ -851,15 +855,15 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
   local TotalDmg   = source.totalDamage
   local crit     = myHero.critChance
   local crdm     = myHero.critDmg
-  local ArmorPen   = math.floor(source.armorPen)
-  local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
-  local MagicPen   = math.floor(source.magicPen)
-  local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+  local ArmorPen   = floor(source.armorPen)
+  local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
+  local MagicPen   = floor(source.magicPen)
+  local MagicPenPercent  = floor(source.magicPenPercent*100)/100
 
   local Armor   = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or 0--math.ceil(Armor*100/(100-Armor))/100
+  local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
   local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-  local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+  local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
 
   if spell == "IGNITE" then
     return 50+20*Level/2
@@ -872,7 +876,7 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
     elseif source.charName == "Teemo" then
     APDmg = APDmg + myHeroSpellData[_E].dmgAP(source, target)
     elseif source.charName == "Orianna" then
-    APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
+    APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
     else
     ADDmg = ADDmg * (1 + crit)
     end
@@ -887,9 +891,9 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
     if myHeroSpellData[spell].dmgAP then APDmg = myHeroSpellData[spell].dmgAP(source, target, GetStacks(target)) end
     if myHeroSpellData[spell].dmgTRUE then TRUEDmg = myHeroSpellData[spell].dmgTRUE(source, target, GetStacks(target)) end
   end
-  dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+  dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
   dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
-  return math.floor(dmg) * dmgMod
+  return floor(dmg) * dmgMod
   end
 
   function GetHydraSlot()
@@ -1009,8 +1013,9 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
     elseif predictionStringTable[activePrediction] == "SPrediction" then
       return _G.SP:Predict(to, myHeroSpellData[spell].range, myHeroSpellData[spell].speed, myHeroSpellData[spell].delay, myHeroSpellData[spell].width, (from.charName == "Lux" or from.charName == "Veigar") and 1 or myHeroSpellData[spell].collision, from)
     elseif predictionStringTable[activePrediction] == "HPrediction" then
-      local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or math.huge
-      return _G.HP:GetPredict(HPSpells[spell], to, from, col)
+      local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or huge
+      local x, y, z = _G.HP:GetPredict(HPSpells[spell], to, from, col)
+      return x, y*1.67, z
     elseif predictionStringTable[activePrediction] == "DivinePred" then
       local State, Position, perc = _G.DP:predict(str[spell], to, Vector(from))
       if perc and Position then
@@ -1138,11 +1143,11 @@ _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology2".
   local enemies = #GetEnemyHeroes()
   if priorityTable2~=nil and type(priorityTable2) == "table" and enemies > 0 then
     for i, enemy in ipairs(GetEnemyHeroes()) do
-    _SetPriority(priorityTable2.p1, enemy, math.min(1, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p2, enemy, math.min(2, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p3,  enemy, math.min(3, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p4,  enemy, math.min(4, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p5,  enemy, math.min(5, #GetEnemyHeroes()))
+    _SetPriority(priorityTable2.p1, enemy, min(1, #GetEnemyHeroes()))
+    _SetPriority(priorityTable2.p2, enemy, min(2, #GetEnemyHeroes()))
+    _SetPriority(priorityTable2.p3,  enemy, min(3, #GetEnemyHeroes()))
+    _SetPriority(priorityTable2.p4,  enemy, min(4, #GetEnemyHeroes()))
+    _SetPriority(priorityTable2.p5,  enemy, min(5, #GetEnemyHeroes()))
     end
   end
   end
@@ -1676,7 +1681,7 @@ class "Yorick"
     if objName:find("sight") or (objName:find("vision") and obj.maxMana == 180) then
     table.insert(self.enemyWards, {object = obj, time = os.clock()})
     elseif objName:find("vision") and obj.maxMana == 5 then
-    table.insert(self.enemyWards, {object = obj, time = math.huge})
+    table.insert(self.enemyWards, {object = obj, time = huge})
     end
   end
   end
@@ -1732,7 +1737,7 @@ class "Yorick"
           if tSpellData.totalCooldown > 0 then
           DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, 0xFF2E8B57)
           end
-          local strCooldown = tostring(tSpellData.currentCd < 10 and math.round(tSpellData.currentCd, 1) or math.ceil(tSpellData.currentCd))
+          local strCooldown = tostring(tSpellData.currentCd < 10 and round(tSpellData.currentCd, 1) or ceil(tSpellData.currentCd))
           DrawText(strCooldown, 14, spellPos.x - GetTextArea(strCooldown, 14).x / 2 + 12.5, spellPos.y + 5, 0xFFFFFFFF)
         end
         else
@@ -1752,7 +1757,7 @@ class "Yorick"
         if tSpellData.totalCooldown > 0 then
           DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, (self.summoners[tSpellData.name] or self.summoners["summonerteleport"])[2])--0xFF2E8B57)
         end
-        local strCooldown = tostring(tSpellData.currentCd < 10 and math.round(tSpellData.currentCd, 1) or math.ceil(tSpellData.currentCd))
+        local strCooldown = tostring(tSpellData.currentCd < 10 and round(tSpellData.currentCd, 1) or ceil(tSpellData.currentCd))
         DrawText(strCooldown, 14, spellPos.x - 1 - GetTextArea(strCooldown, 14).x, spellPos.y - 6, 0xFFFFFFFF)
         end
         DrawLine(spellPos.x, spellPos.y + 1, spellPos.x + 25, spellPos.y + 1, 1, 0x3F000000)
@@ -1793,7 +1798,7 @@ class "Yorick"
         if tSpellData.totalCooldown > 0 then
         DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, 0xFF2E8B57)
         end
-        local strCooldown = tostring(tSpellData.currentCd < 10 and math.round(tSpellData.currentCd, 1) or math.ceil(tSpellData.currentCd))
+        local strCooldown = tostring(tSpellData.currentCd < 10 and round(tSpellData.currentCd, 1) or ceil(tSpellData.currentCd))
         DrawText(strCooldown, 14, spellPos.x - GetTextArea(strCooldown, 14).x / 2 + 12.5, spellPos.y + 5, 0xFFFFFFFF)
       end
       end
@@ -1813,7 +1818,7 @@ class "Yorick"
       if tSpellData.totalCooldown > 0 then
         DrawLine(spellPos.x, spellPos.y, spellPos.x + (tSpellData.totalCooldown - tSpellData.currentCd) / tSpellData.totalCooldown * 25, spellPos.y, 3, (self.summoners[tSpellData.name] or self.summoners["summonerteleport"])[2])--0xFF2E8B57)
       end
-      local strCooldown = tostring(tSpellData.currentCd < 10 and math.round(tSpellData.currentCd, 1) or math.ceil(tSpellData.currentCd))
+      local strCooldown = tostring(tSpellData.currentCd < 10 and round(tSpellData.currentCd, 1) or ceil(tSpellData.currentCd))
       DrawText(strCooldown, 14, spellPos.x + 29, spellPos.y - 6, 0xFFFFFFFF)
       end
       DrawLine(spellPos.x, spellPos.y + 1, spellPos.x + 25, spellPos.y + 1, 1, 0x3F000000)
@@ -1849,7 +1854,7 @@ class "Yorick"
         local posX = barPos.x
         local posY = barPos.y
         DrawText(""..k.charName, 15, posX, posY-10, ARGB(155, 255, 255, 255))
-        DrawText((math.floor(travelDistance/k.ms*10)/10).."s", 15, posX, posY+10, ARGB(155, 255, 255, 255))
+        DrawText((floor(travelDistance/k.ms*10)/10).."s", 15, posX, posY+10, ARGB(155, 255, 255, 255))
         DrawCircle3D(endPath.x, endPath.y, endPath.z, 18, 1, ARGB(105,255,255,255), 32)
       end
       end
@@ -1861,11 +1866,11 @@ class "Yorick"
   function Awareness:DrawWAR()
   if self.Config.war and self.enemyWards then
     for _, k in pairs(self.enemyWards) do
-    if k.time ~= math.huge then
+    if k.time ~= huge then
       if k.time + 180 >= os.clock() then
       DrawCircle3D(k.object.x, k.object.y, k.object.z, 100, 1, ARGB(105,255,255,255), 32)
       local pos = WorldToScreen(D3DXVECTOR3(k.object.x, k.object.y, k.object.z))
-      DrawText((math.floor((k.time+180-os.clock()))).."s", 25, pos.x, pos.y, ARGB(255, 255, 0, 0))
+      DrawText((floor((k.time+180-os.clock()))).."s", 25, pos.x, pos.y, ARGB(255, 255, 0, 0))
       else
       k = nil
       end
@@ -1905,7 +1910,7 @@ class "Yorick"
     if unit and unit.isMe and spell then
       if spell.name == "AzirQ" then
         for _,obj in pairs(objHolder) do
-          if objTimeHolder[obj.networkID] and objTimeHolder[obj.networkID] < math.huge and objTimeHolder[obj.networkID]>os.clock() then 
+          if objTimeHolder[obj.networkID] and objTimeHolder[obj.networkID] < huge and objTimeHolder[obj.networkID]>os.clock() then 
             objTimeHolder[obj.networkID] = objTimeHolder[obj.networkID] + 1
           end
         end
@@ -2167,12 +2172,12 @@ class "Yorick"
     DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
     DrawLFC(Target.x, Target.y,  Target.z,  myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
       DrawText("Active Prediction: "..predictionStringTable[activeMode.predQ], 25, WINDOW_W/8, WINDOW_H/4+75, ARGB(255, 255, 255, 255))
-      HitChance = math.ceil((HitChance > 3 and 300 or HitChance*100)/3)
+      HitChance = ceil((HitChance > 3 and 300 or HitChance*100)/3)
       DrawText("Current HitChance: "..(HitChance < 0 and 0 or HitChance).."%", 25, WINDOW_W/8, WINDOW_H/4+100, ARGB(255, 255, 255, 255))
     end
   end
   if self.grabsThrown > 0 and self.grabsLanded > 0 then
-    DrawText("Total HitChance: "..(math.ceil(100*self.grabsLanded/self.grabsThrown)).."%", 25, WINDOW_W/8, WINDOW_H/4, ARGB(255, 255, 255, 255))
+    DrawText("Total HitChance: "..(ceil(100*self.grabsLanded/self.grabsThrown)).."%", 25, WINDOW_W/8, WINDOW_H/4, ARGB(255, 255, 255, 255))
   end
   DrawText("Grabs thrown: "..self.grabsThrown, 25, WINDOW_W/8, WINDOW_H/4 + 25, ARGB(255, 255, 255, 255))
   DrawText("Grabs landed: "..self.grabsLanded, 25, WINDOW_W/8, WINDOW_H/4 + 50, ARGB(255, 255, 255, 255))
@@ -2768,7 +2773,7 @@ class "Yorick"
     "Ekko_Base_W_Cas.troy"
   }
   objTimeTrackList = { 
-    math.huge,
+    huge,
     1.565, 
     1.70, 
     3, 
@@ -2833,11 +2838,11 @@ class "Yorick"
 
   function Ekko:Draw()
   for _, obj in pairs(objHolder) do
-    if objTimeHolder[_] and objTimeHolder[_] < math.huge then
+    if objTimeHolder[_] and objTimeHolder[_] < huge then
     if objTimeHolder[_] > os.clock() then 
       local pos = WorldToScreen(D3DXVECTOR3(obj.x, obj.y, obj.z))
       if (obj.name:find("Ekko_Base_Q") and Config.Draws.Q) or (obj.name:find("Ekko_Base_W") and Config.Draws.W) then 
-      DrawText((math.floor((objTimeHolder[_]-os.clock())*100)/100).."s", 25, pos.x-35, pos.y-50, ARGB(255, 255, 0, 0)) 
+      DrawText((floor((objTimeHolder[_]-os.clock())*100)/100).."s", 25, pos.x-35, pos.y-50, ARGB(255, 255, 0, 0)) 
       end
     else
       objHolder[_] = nil
@@ -3049,7 +3054,7 @@ class "Yorick"
     if damageE > health then
       DrawText3D("E Kill", minion.x-45, minion.y-45, minion.z+45, 20, ARGB(255,250,250,250), 0)
     else
-      DrawText3D(math.floor(damageE/health*100).."%", minion.x-45, minion.y-45, minion.z+45, 20, ARGB(255,250,250,250), 0)
+      DrawText3D(floor(damageE/health*100).."%", minion.x-45, minion.y-45, minion.z+45, 20, ARGB(255,250,250,250), 0)
     end
     end
   end
@@ -3122,7 +3127,7 @@ class "Yorick"
       local health = GetRealHealth(minion)
       if (Config.Misc.Ea and sReady[_E]) then
       if _G.HP then
-        local hp1 = _G.HP:PredictHealth(minion, (math.min(myHero.range+GetDistance(myHero.minBBox), GetDistance(myHero, minion)) / (2000) + 0.07))
+        local hp1 = _G.HP:PredictHealth(minion, (min(myHero.range+GetDistance(myHero.minBBox), GetDistance(myHero, minion)) / (2000) + 0.07))
         local hp2 = _G.HP:PredictHealth(minion, (0.125))
         if damageE > health and hp1 < 0 and hp2 > 0 then
         killableCount = killableCount + 1
@@ -3608,7 +3613,7 @@ class "Yorick"
   if Config.LaneClear.Q and sReady[_Q] then
     local minion = GetJMinion(1100)
     if minion ~= nil and Config.LaneClear.Qf then
-    if self:QDmg(minion)+((Smite and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY) and math.max(20*myHero.level+370,30*myHero.level+330,40*myHero.level+240,50*myHero.level+100) or 0) > GetRealHealth(minion) then
+    if self:QDmg(minion)+((Smite and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY) and max(20*myHero.level+370,30*myHero.level+330,40*myHero.level+240,50*myHero.level+100) or 0) > GetRealHealth(minion) then
       Cast(_Q, minion)
       if not self:IsFirstCast(_Q) and Config.LaneClear.S and myHero:CanUseSpell(Smite) == READY then
       DelayAction(function() 
@@ -3893,10 +3898,12 @@ class "Yorick"
 
   function MinionManager:__init()
     self.objects = {}
+    self.maxObjects = 0
     for k=1,objManager.maxObjects,1 do
       local object = objManager:getObject(k)
       if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
-        self.objects[#self.objects+1] = object
+        self.maxObjects = self.maxObjects + 1
+        self.objects[self.maxObjects] = object
       end
     end
     AddCreateObjCallback(function(o) self:CreateObj(o) end)
@@ -3905,12 +3912,18 @@ class "Yorick"
 
   function MinionManager:CreateObj(object)
     if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
-      self.objects[self:FindDeadPlace() or #self.objects+1] = object
+      local deadPlace = self:FindDeadPlace()
+      if deadPlace then
+        self.objects[deadPlace] = object
+      else
+        self.maxObjects = self.maxObjects + 1
+        self.objects[self.maxObjects] = object
+      end
     end
   end
 
   function MinionManager:FindDeadPlace()
-    for i=1, #self.objects do
+    for i=1, self.maxObjects do
       local object = self.objects[i]
       if not object or not object.valid or object.dead then
         return i
@@ -4144,15 +4157,15 @@ class "Yorick"
   local AP     = source.ap
   local Level  = source.level
   local TotalDmg   = source.totalDamage
-  local ArmorPen   = math.floor(source.armorPen)
-  local ArmorPenPercent  = math.floor(source.armorPenPercent*100)/100
-  local MagicPen   = math.floor(source.magicPen)
-  local MagicPenPercent  = math.floor(source.magicPenPercent*100)/100
+  local ArmorPen   = floor(source.armorPen)
+  local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
+  local MagicPen   = floor(source.magicPen)
+  local MagicPenPercent  = floor(source.magicPenPercent*100)/100
 
   local Armor   = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+  local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or ceil(Armor*100/(100-Armor))/100
   local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-  local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+  local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
 
   local QLevel, WLevel, ELevel, RLevel = source:GetSpellData(_Q).level, source:GetSpellData(_W).level, source:GetSpellData(_E).level, source:GetSpellData(_R).level
   if source ~= myHero then
@@ -4168,7 +4181,7 @@ class "Yorick"
     APDmg = (GetLichSlot() and source.damage*0.75+0.5*AP or 0)
   elseif human then
     if spell == _Q then
-    APDmg = (30+20*QLevel+0.4*AP)*math.max(1,math.min(3,GetDistance(target.pos)/1250*3))--kanker
+    APDmg = (30+20*QLevel+0.4*AP)*max(1,min(3,GetDistance(target.pos)/1250*3))--kanker
     elseif spell == _W then
     elseif spell == _E then
     end
@@ -4181,8 +4194,8 @@ class "Yorick"
     APDmg = 10+60*RLevel+0.45*AP
     end
   end
-  dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
-  return math.floor(dmg)
+  dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))
+  return floor(dmg)
   end
 
   function Nidalee:Combo()
@@ -4365,8 +4378,8 @@ class "Yorick"
   Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config.Misc:addDynamicParam("Ra", "Auto R", SCRIPT_PARAM_ONOFF, true)
-  Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes()+1, 0)
-  DelayAction(function() if #GetEnemyHeroes() == 1 then Config.Misc.Re = 2 else Config.Misc.Re = math.ceil(#GetEnemyHeroes()/2) end end, 1)
+  Config.Misc:addParam("Re", "Enemies around ball to R", SCRIPT_PARAM_SLICE, ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes()+1, 0)
+  DelayAction(function() if #GetEnemyHeroes() == 1 then Config.Misc.Re = 2 else Config.Misc.Re = ceil(#GetEnemyHeroes()/2) end end, 1)
   end
 
   function Orianna:Tick()
@@ -4384,7 +4397,7 @@ class "Yorick"
   if self.Ball then
     DrawCircle(self.Ball.x-8, self.Ball.y, self.Ball.z+87, myHeroSpellData[0].width-50, 0x111111)
     for i=0,2 do
-    self:LagFree(self.Ball.x-8, self.Ball.y, self.Ball.z+87, myHeroSpellData[0].width-50, 3, ARGB(255, 75, 0, 230), 3, (math.pi/4.5)*(i))
+    self:LagFree(self.Ball.x-8, self.Ball.y, self.Ball.z+87, myHeroSpellData[0].width-50, 3, ARGB(255, 75, 0, 230), 3, (pi/4.5)*(i))
     end 
     self:LagFree(self.Ball.x-8, self.Ball.y, self.Ball.z+87, myHeroSpellData[0].width-50, 3, ARGB(255, 75, 0, 230), 9, 0)
   end
@@ -4395,11 +4408,11 @@ class "Yorick"
   local screenMin = WorldToScreen(D3DXVECTOR3(x - radius, y, z + radius))
   if OnScreen({x = screenMin.x + 200, y = screenMin.y + 200}, {x = screenMin.x + 200, y = screenMin.y + 200}) then
     radius = radius*.92
-    local quality = quality and 2 * math.pi / quality or 2 * math.pi / math.floor(radius / 10)
+    local quality = quality and 2 * pi / quality or 2 * pi / floor(radius / 10)
     local width = width and width or 1
-    local a = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(degree), y, z - radius * math.sin(degree)))
-    for theta = quality, 2 * math.pi + quality, quality do
-    local b = WorldToScreen(D3DXVECTOR3(x + radius * math.cos(theta+degree), y, z - radius * math.sin(theta+degree)))
+    local a = WorldToScreen(D3DXVECTOR3(x + radius * cos(degree), y, z - radius * sin(degree)))
+    for theta = quality, 2 * pi + quality, quality do
+    local b = WorldToScreen(D3DXVECTOR3(x + radius * cos(theta+degree), y, z - radius * sin(theta+degree)))
     DrawLine(a.x, a.y, b.x, b.y, width, color)
     a = b
     end
@@ -4840,7 +4853,7 @@ class "Yorick"
         require "Nebelwolfi's Orb Walker"
         self:LoadOrb()
       else
-        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Nebelwolfi%27s%20Orb%20Walker.lua?rand="..math.random(1,10000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() self:LoadOrb() end, function() end, function() end, function() self:LoadOrb() end)
+        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Nebelwolfi%27s%20Orb%20Walker.lua?rand="..random(1,10000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() self:LoadOrb() end, function() end, function() end, function() self:LoadOrb() end)
       end
     end
   end
@@ -5096,7 +5109,7 @@ class "Yorick"
   end
 
   function Riven:DmgP(unit, ad)
-    return myHero:CalcDamage(unit, 5+math.max(5*math.floor((myHero.level+2)/3)+10,10*math.floor((myHero.level+2)/3)-15)*ad/100)
+    return myHero:CalcDamage(unit, 5+max(5*floor((myHero.level+2)/3)+10,10*floor((myHero.level+2)/3)-15)*ad/100)
   end
 
   function Riven:Combo()
@@ -5718,7 +5731,7 @@ class "Yorick"
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy)+GetDmg("AD", myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.Q and ValidTarget(enemy, myHeroSpellData[0].range + myHero.range) then
       Cast(_Q, enemy.pos)
       DelayAction(function() myHero:Attack(enemy) end, 0.25)
-    elseif sReady[_E] and self.HP and self.HP:PredictHealth(enemy, (math.min(myHeroSpellData[2].range, GetDistance(myHero, enemy)) / (2000) + 0.25)) < GetDmg(_E, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E and ValidTarget(enemy, myHeroSpellData[2].range) then
+    elseif sReady[_E] and self.HP and self.HP:PredictHealth(enemy, (min(myHeroSpellData[2].range, GetDistance(myHero, enemy)) / (2000) + 0.25)) < GetDmg(_E, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E and ValidTarget(enemy, myHeroSpellData[2].range) then
       CastSpell(_E, enemy)
     elseif sReady[_E] and health < GetDmg(_E, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E and ValidTarget(enemy, myHeroSpellData[2].range) then
       CastSpell(_E, enemy)
@@ -5770,7 +5783,7 @@ class "Yorick"
   Config.kConfig:addDynamicParam("LastHit2", "Last hit", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
   Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
   Config.Misc:addDynamicParam("Ea", "Auto E", SCRIPT_PARAM_ONOFF, true)
-  Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, math.ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
+  Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
   end
 
   function Veigar:Tick()
@@ -5785,7 +5798,7 @@ class "Yorick"
     local ep  = Vector(target) + (Vector(CastPosition) - myHero):normalized() * 350
     local epl = (Vector(myHero) - ep):len()
     local ept = ep
-    ep = myHero - (Vector(myHero) - ep):normalized() * math.min(epl, myHeroSpellData[_E].range*0.75)
+    ep = myHero - (Vector(myHero) - ep):normalized() * min(epl, myHeroSpellData[_E].range*0.75)
     ep = GetDistance(ep) == 0 and ept or ep
     Cast(_E, ep)
     return true
@@ -6086,7 +6099,7 @@ class "Yorick"
     myHeroSpellData[0].range = 500
   end
   if loadedEvade then
-    if sReady[_W] and (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and _G.Evade and loadedEvade.m and loadedEvade.m.speed ~= math.huge and Config.Windwall[loadedEvade.m.source.charName..loadedEvade.str[loadedEvade.m.slot]] then
+    if sReady[_W] and (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and _G.Evade and loadedEvade.m and loadedEvade.m.speed ~= huge and Config.Windwall[loadedEvade.m.source.charName..loadedEvade.str[loadedEvade.m.slot]] then
     _G.Evade = false
     local wPos = myHero + (Vector(loadedEvade.m.startPos) - myHero):normalized() * myHeroSpellData[1].range 
     loadedEvade.m = nil
@@ -6295,8 +6308,8 @@ class "CScriptUpdate" -- {
   function CScriptUpdate:__init(LocalVersion,UseHttps, Host, VersionPath, ScriptPath, SavePath, CallbackUpdate, CallbackNoUpdate, CallbackNewVersion,CallbackError)
   self.LocalVersion = LocalVersion
   self.Host = Host
-  self.VersionPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..VersionPath)..'&rand='..math.random(99999999)
-  self.ScriptPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..ScriptPath)..'&rand='..math.random(99999999)
+  self.VersionPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..VersionPath)..'&rand='..random(99999999)
+  self.ScriptPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..ScriptPath)..'&rand='..random(99999999)
   self.SavePath = SavePath
   self.CallbackUpdate = CallbackUpdate
   self.CallbackNoUpdate = CallbackNoUpdate
@@ -6369,7 +6382,7 @@ class "CScriptUpdate" -- {
     local ScriptEnd = self.File:find('</scr'..'ipt>')
     if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
     local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
-    self.DownloadStatus = 'Downloading VersionInfo ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+    self.DownloadStatus = 'Downloading VersionInfo ('..round(100/self.Size*DownloadedSize,2)..'%)'
     end
   end
   if self.File:find('</scr'..'ipt>') then
@@ -6430,7 +6443,7 @@ class "CScriptUpdate" -- {
     local ScriptEnd = self.File:find('</scr'..'ipt>')
     if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
     local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
-    self.DownloadStatus = 'Downloading Script ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+    self.DownloadStatus = 'Downloading Script ('..round(100/self.Size*DownloadedSize,2)..'%)'
     end
   end
   if self.File:find('</scr'..'ipt>') then
@@ -6589,10 +6602,10 @@ class "CScriptUpdate" -- {
   _CPS_Master.py1 = _CPS_Master.py
   _CPS_Master.py2 = _CPS_Master.py
   _CPS_Master.color = { lgrey = 1413167931, grey = 4290427578, green = 1409321728}
-  _CPS_Master.fontSize = WINDOW_H and math.round(WINDOW_H / 72) or 10
+  _CPS_Master.fontSize = WINDOW_H and round(WINDOW_H / 72) or 10
   _CPS_Master.midSize = _CPS_Master.fontSize / 2
   _CPS_Master.cellSize = _CPS_Master.fontSize + 1
-  _CPS_Master.width = WINDOW_W and math.round(WINDOW_W / 6.4) or 160
+  _CPS_Master.width = WINDOW_W and round(WINDOW_W / 6.4) or 160
   _CPS_Master.row = _CPS_Master.width * 0.7
   _CPS_Master.py1 = _G.CPS.StartY + _CPS_Master.cellSize
   for i = 1, #_G.CPS.Index do
