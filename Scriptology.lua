@@ -1,10 +1,10 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion       = 2.243
+_G.ScriptologyVersion       = 2.2431
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
 _G.ScriptologyAutoUpdate    = true
-_G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology24"..myHero.charName)
+_G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology")
 local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
 -- { Load
 
@@ -2150,102 +2150,102 @@ class "Yorick"
   end
 
   function Blitzcrank:Draw()
-  if Config.Draws.Q and Config.Draws.Qhc and sReady[_Q] and Target ~= nil then
-    local activeMode = nil
-    if not mode then
-    local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
-    for m, mode in pairs(modes) do
-      if Config.kConfig[mode] then
-      activeMode = ScriptologyConfig.Prediction[mode]
+    if Config.Draws.Q and Config.Draws.Qhc and sReady[_Q] and Target ~= nil then
+      local activeMode = nil
+      if not mode then
+      local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
+      for m, mode in pairs(modes) do
+        if Config.kConfig[mode] then
+        activeMode = ScriptologyConfig.Prediction[mode]
+        end
+      end
+      if not activeMode then
+        activeMode = "Combo"
+      end
+      else
+      activeMode = mode
+      end
+      local CastPosition, HitChance, HeroPosition = Predict(_Q, myHero, Target, activeMode)
+      if CastPosition then
+      DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
+      DrawLine3D(myHero.x, myHero.y, myHero.z, Target.x,   Target.y,   Target.z,   1, ARGB(255,55,55,255))
+      DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
+      DrawLFC(Target.x, Target.y,  Target.z,  myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
+        DrawText("Active Prediction: "..predictionStringTable[activeMode.predQ], 25, WINDOW_W/8, WINDOW_H/4+75, ARGB(255, 255, 255, 255))
+        HitChance = ceil((HitChance > 3 and 300 or HitChance*100)/3)
+        DrawText("Current HitChance: "..(HitChance < 0 and 0 or HitChance).."%", 25, WINDOW_W/8, WINDOW_H/4+100, ARGB(255, 255, 255, 255))
       end
     end
-    if not activeMode then
-      activeMode = "Combo"
+    if self.grabsThrown > 0 and self.grabsLanded > 0 then
+      DrawText("Total HitChance: "..(ceil(100*self.grabsLanded/self.grabsThrown)).."%", 25, WINDOW_W/8, WINDOW_H/4, ARGB(255, 255, 255, 255))
     end
-    else
-    activeMode = mode
-    end
-    local CastPosition, HitChance, HeroPosition = Predict(_Q, myHero, Target, activeMode)
-    if CastPosition then
-    DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
-    DrawLine3D(myHero.x, myHero.y, myHero.z, Target.x,   Target.y,   Target.z,   1, ARGB(255,55,55,255))
-    DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
-    DrawLFC(Target.x, Target.y,  Target.z,  myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
-      DrawText("Active Prediction: "..predictionStringTable[activeMode.predQ], 25, WINDOW_W/8, WINDOW_H/4+75, ARGB(255, 255, 255, 255))
-      HitChance = ceil((HitChance > 3 and 300 or HitChance*100)/3)
-      DrawText("Current HitChance: "..(HitChance < 0 and 0 or HitChance).."%", 25, WINDOW_W/8, WINDOW_H/4+100, ARGB(255, 255, 255, 255))
-    end
-  end
-  if self.grabsThrown > 0 and self.grabsLanded > 0 then
-    DrawText("Total HitChance: "..(ceil(100*self.grabsLanded/self.grabsThrown)).."%", 25, WINDOW_W/8, WINDOW_H/4, ARGB(255, 255, 255, 255))
-  end
-  DrawText("Grabs thrown: "..self.grabsThrown, 25, WINDOW_W/8, WINDOW_H/4 + 25, ARGB(255, 255, 255, 255))
-  DrawText("Grabs landed: "..self.grabsLanded, 25, WINDOW_W/8, WINDOW_H/4 + 50, ARGB(255, 255, 255, 255))
+    DrawText("Grabs thrown: "..self.grabsThrown, 25, WINDOW_W/8, WINDOW_H/4 + 25, ARGB(255, 255, 255, 255))
+    DrawText("Grabs landed: "..self.grabsLanded, 25, WINDOW_W/8, WINDOW_H/4 + 50, ARGB(255, 255, 255, 255))
   end
 
   function Blitzcrank:ProcessSpell(unit, spell)
-  if unit and unit.isMe and spell and spell.name:lower():find("rocketgrabmissile") then
-    self.grabsThrown = self.grabsThrown + 1
-  end
+    if unit and unit.isMe and spell and spell.name:lower():find("rocketgrabmissile") then
+      self.grabsThrown = self.grabsThrown + 1
+    end
   end
 
   function Blitzcrank:ApplyBuff(unit, source, buff)
-  if unit and buff and unit.team == myHero.team and unit.type == myHero.type and buff.name:lower():find("grab") then
-    self.grabsLanded = self.grabsLanded + 1
-    if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harass and Config.Harass.E and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100) then
-    Cast(_E)
+    if unit and buff and unit.team == myHero.team and unit.type == myHero.type and buff.name:lower():find("rocketgrab2") then
+      self.grabsLanded = self.grabsLanded + 1
+      if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harass and Config.Harass.E and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100) then
+        Cast(_E)
+      end
     end
-  end
   end
 
   function Blitzcrank:GrabSomeone()
-  for _, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and not Config.Misc[enemy.charName] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
-    Cast(_Q, enemy)
+    for _, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and not Config.Misc[enemy.charName] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+        Cast(_Q, enemy)
+      end
     end
-  end
   end
 
   function Blitzcrank:Combo()
-  if sReady[_Q] and Config.Combo.Q then
-    if Target == Forcetarget then
-    Cast(_Q, Target)
-    else
-    self:GrabSomeone()
+    if sReady[_Q] and Config.Combo.Q then
+      if Target == Forcetarget then
+        Cast(_Q, Target)
+      else
+        self:GrabSomeone()
+      end
     end
-  end
-  if sReady[_W] and Config.Combo.W and GetDistanceSqr(Target) > myHeroSpellData[_Q].range^2 then
-    Cast(_W)
-  end
-  if sReady[_R] and Config.Combo.R and GetDistanceSqr(Target) < (myHeroSpellData[_R].width*0.85)^2 then
-    Cast(_R)
-  end
+    if sReady[_W] and Config.Combo.W and GetDistanceSqr(Target) > myHeroSpellData[_Q].range^2 then
+      Cast(_W)
+    end
+    if sReady[_R] and Config.Combo.R and GetDistanceSqr(Target) < (myHeroSpellData[_R].width*0.85)^2 then
+      Cast(_R)
+    end
   end
 
   function Blitzcrank:Harass()
-  if sReady[_Q] and Config.Combo.Q then
-    if Target == Forcetarget then
-    Cast(_Q, Target)
-    else
-    self:GrabSomeone()
+    if sReady[_Q] and Config.Combo.Q then
+      if Target == Forcetarget then
+        Cast(_Q, Target)
+      else
+        self:GrabSomeone()
+      end
     end
-  end
-  if sReady[_W] and Config.Combo.W and GetDistanceSqr(Target) > myHeroSpellData[_Q].range^2 then
-    Cast(_W)
-  end
+    if sReady[_W] and Config.Combo.W and GetDistanceSqr(Target) > myHeroSpellData[_Q].range^2 then
+      Cast(_W)
+    end
   end
 
   function Blitzcrank:Killsteal()
-  for _, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
-    local health = GetRealHealth(enemy)
-    if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and GetDistanceSqr(Target) <= myHeroSpellData[_Q].range^2 then
-      Cast(_Q, enemy)
-    elseif sReady[_R] and health < GetDmg(_R, myHero, enemy) and GetDistanceSqr(enemy) <= (myHeroSpellData[_R].width*0.85)^2 then
-      Cast(_R)
+    for _, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        local health = GetRealHealth(enemy)
+        if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and GetDistanceSqr(Target) <= myHeroSpellData[_Q].range^2 then
+          Cast(_Q, enemy)
+        elseif sReady[_R] and health < GetDmg(_R, myHero, enemy) and GetDistanceSqr(enemy) <= (myHeroSpellData[_R].width*0.85)^2 then
+          Cast(_R)
+        end
+      end
     end
-    end
-  end
   end
 
 -- }
