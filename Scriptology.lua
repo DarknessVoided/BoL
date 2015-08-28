@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion  = 2.2421
+_G.ScriptologyVersion  = 2.2422
 _G.ScriptologyLoaded    = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade   = true
@@ -120,7 +120,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
       if ScriptologyConfig.Orbwalker.info == 1 then
       require "Nebelwolfi's Orb Walker"
       isNOW = true
-      NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
+      --NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
       --Msg("Nebelwolfi's Orb Walker loaded!")
       elseif ScriptologyConfig.Orbwalker.info == 2 then
       require "SxOrbwalk"
@@ -346,8 +346,7 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
       for _=0, 3 do
       sReady[_] = myHero:CanUseSpell(_) == 0
       end
-      Mobs = minionManager(MINION_ENEMY, 1500, myHero, MINION_SORT_HEALTH_ASC)
-      JMobs = minionManager(MINION_JUNGLE, 750, myHero, MINION_SORT_HEALTH_ASC)
+      Mobs = MinionManager()
       buffStackTrackList = { ["Darius"] = "dariushemo", ["Kalista"] = "kalistaexpungemarker", ["TahmKench"] = "tahmpassive", ["Vayne"] = "vaynesilvereddebuff" }
       if buffStackTrackList[myHero.charName] then
       buffToTrackForStacks = buffStackTrackList[myHero.charName]
@@ -397,8 +396,6 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
         else
         Target = targetSel.target
         end
-        Mobs:update()
-        JMobs:update()
       end,
       function()
         if Champerino.CalculateDamage then
@@ -1032,8 +1029,8 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
 
   function GetJMinion(range)
   local minionTarget = nil
-  for i, minion in pairs(JMobs.objects) do
-    if minion and minion.visible and not minion.dead and minion.bTargetable and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
+  for i, minion in pairs(Mobs.objects) do
+    if minion and minion.visible and not minion.dead and minion.bTargetable and minion.team > 200 and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
     if not minionTarget then
       minionTarget = minion
     elseif minionTarget.maxHealth < minion.maxHealth then
@@ -1051,23 +1048,6 @@ _G.ScriptologyConfig  = scriptConfig("Scriptology Loader", "Scriptology2"..myHer
   for i, object in ipairs(objects) do
     local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
     if hit > BestHit and GetDistanceSqr(object) < range * range then
-    BestHit = hit
-    BestPos = Vector(object)
-    if BestHit == #objects then
-      break
-    end
-    end
-  end
-  return BestPos, BestHit
-  end
-
-  function GetJFarmPosition(range, width)
-  local BestPos 
-  local BestHit = 0
-  local objects = JMobs.objects
-  for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
-    if hit > BestHit and object.health < 100000 and GetDistanceSqr(object) < range * range then
     BestHit = hit
     BestPos = Vector(object)
     if BestHit == #objects then
@@ -1264,6 +1244,7 @@ class "LeeSin"
 class "Lissandra"
 class "Lux"
 class "Malzahar"
+class "MinionManager"
 class "Nidalee"
 class "Olaf"
 class "Orianna"
@@ -1378,17 +1359,6 @@ class "Yorick"
   function Ahri:LastHit()
   for i, minion in pairs(Mobs.objects) do 
     if minion and not minion.dead and minion.visible and minion.bTargetable then
-    local health = GetRealHealth(minion) 
-    for _=0,3 do
-      if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
-      Cast(_, minion)
-      return;
-      end
-    end
-    end
-  end
-  for i, minion in pairs(JMobs.objects) do 
-    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then
     local health = GetRealHealth(minion) 
     for _=0,3 do
       if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -2320,14 +2290,6 @@ class "Yorick"
     end
     end
   end
-  for _, minion in pairs(JMobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then   
-    local EMinionDmg = GetDmg(_E, myHero, minion)  
-    if (UnitHaveBuff(minion, "poison") or Config.Misc.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
-      CastSpell(_E, minion)
-    end
-    end
-  end
   end
 
   function Cassiopeia:ProcessSpell(unit, spell)
@@ -2342,17 +2304,9 @@ class "Yorick"
     if BestHit > 0 then 
     CastSpell(_Q, BestPos.x, BestPos.z)
     end
-    BestPos, BestHit = GetJFarmPosition(myHeroSpellData[_Q].range, myHeroSpellData[_Q].width)
-    if BestHit > 0 then 
-    CastSpell(_Q, BestPos.x, BestPos.z)
-    end
   end
   if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
     local BestPos, BestHit = GetFarmPosition(myHeroSpellData[_W].range, myHeroSpellData[_W].width)
-    if BestHit > 0 then 
-    CastSpell(_W, BestPos.x, BestPos.z)
-    end
-    BestPos, BestHit = GetJFarmPosition(myHeroSpellData[_W].range, myHeroSpellData[_W].width)
     if BestHit > 0 then 
     CastSpell(_W, BestPos.x, BestPos.z)
     end
@@ -2361,11 +2315,6 @@ class "Yorick"
     if sReady[_E] and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
     for minion,winion in pairs(Mobs.objects) do
     if winion ~= nil and UnitHaveBuff(winion, "poison") then
-      CastSpell(_E, winion)
-    end
-    end
-    for minion,winion in pairs(JMobs.objects) do
-    if winion ~= nil and winion.health < 100000 and UnitHaveBuff(winion, "poison") then
       CastSpell(_E, winion)
     end
     end
@@ -2382,15 +2331,7 @@ class "Yorick"
       CastSpell(_E, minion)
       end   
     end
-    end   
-    for i, minion in pairs(JMobs.objects) do 
-    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then   
-      local EMinionDmg = GetDmg(_E, myHero, minion)  
-      if (UnitHaveBuff(minion, "poison") or Config.LastHit.Enp) and EMinionDmg >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[2].range^2 then
-      CastSpell(_E, minion)
-      end
-    end   
-    end 
+    end
   end  
   end
 
@@ -2546,10 +2487,6 @@ class "Yorick"
   function Darius:LaneClear()
   if sReady[_Q] and Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
     BestPos, BestHit = GetFarmPosition(myHeroSpellData[0].width, myHeroSpellData[0].width)
-    if BestHit > 0 and GetDistance(BestPos) < myHero.ms*0.75 then 
-    CastSpell(_Q)
-    end
-    BestPos, BestHit = GetJFarmPosition(myHeroSpellData[0].width, myHeroSpellData[0].width)
     if BestHit > 0 and GetDistance(BestPos) < myHero.ms*0.75 then 
     CastSpell(_Q)
     end
@@ -2746,17 +2683,9 @@ class "Yorick"
     if BestHit > 0 then 
     CastSpell(_Q, BestPos.x, BestPos.z)
     end
-    BestPos, BestHit = GetJFarmPosition(myHeroSpellData[_Q].range, myHeroSpellData[_Q].width)
-    if BestHit > 0 then 
-    CastSpell(_Q, BestPos.x, BestPos.z)
-    end
   end
   if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100 then
     BestPos, BestHit = GetFarmPosition(myHeroSpellData[_W].range, myHeroSpellData[_W].range)
-    if BestHit > 0 and BestPos and GetDistance(BestPos) < 250 then 
-    CastSpell(_W)
-    end
-    BestPos, BestHit = GetJFarmPosition(myHeroSpellData[_W].range, myHeroSpellData[_W].range)
     if BestHit > 0 and BestPos and GetDistance(BestPos) < 250 then 
     CastSpell(_W)
     end
@@ -3104,17 +3033,6 @@ class "Yorick"
   if not Config.Draws.DMG or not sReady[_E] then return end
   for _, minion in pairs(Mobs.objects) do
     if minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
-    local damageE = GetDmg(_E, myHero, minion)
-    local health = GetRealHealth(minion)
-    if damageE > health then
-      DrawText3D("E Kill", minion.x-45, minion.y-45, minion.z+45, 20, ARGB(255,250,250,250), 0)
-    else
-      DrawText3D(math.floor(damageE/health*100).."%", minion.x-45, minion.y-45, minion.z+45, 20, ARGB(255,250,250,250), 0)
-    end
-    end
-  end
-  for _, minion in pairs(JMobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.health < 100000 and GetDistanceSqr(minion) < 1000 * 1000 and GetStacks(minion) > 0 then
     local damageE = GetDmg(_E, myHero, minion)
     local health = GetRealHealth(minion)
     if damageE > health then
@@ -3696,18 +3614,10 @@ class "Yorick"
     if BestHit >= 1 and GetDistance(BestPos) < 250 then 
     Cast(_E)
     end
-    local minion = GetJMinion(myHeroSpellData[2].width)
-    if minion and GetDistance(minion) < myHeroSpellData[2].width then 
-    Cast(_E)
-    end
   end
   if Config.LaneClear.W and sReady[_W] and self.passiveTracker == 0 then
     local minion = GetClosestMinion(myHero)
     if minion ~= nil and GetDistance(minion) < myHero.range+GetDistance(myHero.minBBox) then
-    Cast(_W, myHero)
-    end
-    local minion = GetJMinion(myHeroSpellData[2].width)
-    if minion and GetDistance(minion) < myHeroSpellData[2].width then 
     Cast(_W, myHero)
     end
   end
@@ -3971,6 +3881,37 @@ class "Yorick"
 
   function Malzahar:__init()
   end
+
+-- { MinionManager
+
+  function MinionManager:__init()
+    self.objects = {}
+    for k=1,objManager.maxObjects,1 do
+      local object = objManager:getObject(k)
+      if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
+        self.objects[#self.objects+1] = object
+      end
+    end
+    AddCreateObjCallback(function(o) self:CreateObj(o) end)
+    return self
+  end
+
+  function MinionManager:CreateObj(object)
+    if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
+      self.objects[self:FindDeadPlace() or #self.objects+1] = object
+    end
+  end
+
+  function MinionManager:FindDeadPlace()
+    for i=1, #self.objects do
+      local object = self.objects[i]
+      if not object or not object.valid or object.dead then
+        return i
+      end
+    end
+  end
+
+-- }
 
 -- { Nidalee
 
@@ -4289,7 +4230,7 @@ class "Yorick"
   function Nidalee:LaneClear()
   if self:IsHuman() then
     if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ < myHero.mana/myHero.maxMana*100 then
-    local minion = GetJMinion(self.data.Human[0].range) or GetClosestMinion(myHero)
+    local minion = GetClosestMinion(myHero)
     if minion and GetDistanceSqr(minion) < self.data.Human[_Q].range^2 then
       Cast(_Q, minion)
     end
@@ -4303,25 +4244,14 @@ class "Yorick"
       CastSpell(_Q, myHero:Attack(minion))
     end
     end
-    for _, minion in pairs(JMobs.objects) do
-    if sReady[_Q] and minion.health < 100000 and minion and not minion.dead and minion.visible and GetDistanceSqr(minion) < self:GetAARange()^2 then
-      CastSpell(_Q, myHero:Attack(minion))
-    end
-    end
     if sReady[_W] and Config.LaneClear.W then
     local pos, hit = GetFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
-    if hit == 0 then
-      pos, hit = GetJFarmPosition(self.data.Cougar[1].range, self.data.Cougar[1].width)
-    end
     if pos and GetDistance(pos) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(pos) <= self.data.Cougar[1].range+self.data.Cougar[1].width and hit > 0 then
       CastSpell(_W, pos.x, pos.z)
     end
     end
     if sReady[_E] and Config.LaneClear.E then
     local pos, hit = GetFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
-    if pos and hit == 0 then
-      pos, hit = GetJFarmPosition(self.data.Cougar[2].range, self.data.Cougar[2].range)
-    end
     if pos and GetDistanceSqr(pos) < 275^2 and hit > 0 then
       CastSpell(_E, pos.x, pos.z)
     end
@@ -4840,17 +4770,6 @@ class "Yorick"
       end
     end
     end
-    for _, minion in pairs(JMobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then
-      local health = GetRealHealth(minion)
-      if ((Config.kConfig.LaneClear and (Config.LaneClear.W and sReady[_W])) or (Config.kConfig.LastHit and (Config.LastHit.W and sReady[_W]))) and health < GetDmg(_W, myHero, minion) then
-      Cast(_W)
-      end
-      if ((Config.kConfig.LaneClear and (Config.LaneClear.E and sReady[_E])) or (Config.kConfig.LastHit and (Config.LastHit.E and sReady[_E]))) and health < GetDmg(_E, myHero, minion) then
-      Cast(_E, minion)
-      end
-    end
-    end
   end
   end
 
@@ -4863,13 +4782,9 @@ class "Yorick"
     if hit and hit > 0 and pos ~= nil and GetDistance(pos) < 150 then
       Cast(_W)
     end
-    local pos, hit = GetJFarmPosition(myHero.range+myHero.boundingRadius*2, myHeroSpellData[1].width)
-    if hit and hit > 0 and pos ~= nil and GetDistance(pos) < 150 then
-      Cast(_W)
-    end
     end
     if (Config.LaneClear.E and sReady[_E]) then
-    local minion = GetJMinion(myHeroSpellData[_E].range) or GetClosestMinion(myHero)
+    local minion = GetClosestMinion(myHero)
     if minion and not minion.dead and minion.visible and minion.bTargetable then
       CastSpell(_E, minion.x, minion.z)
     end
@@ -4912,8 +4827,7 @@ class "Yorick"
     if _G.NebelwolfisOrbWalkerInit then
       ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
       isNOW = true
-      NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
-      Msg("Nebelwolfi's Orb Walker loaded!")
+      --NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
     else
       if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
         require "Nebelwolfi's Orb Walker"
@@ -5032,7 +4946,7 @@ class "Yorick"
             if target and not target.dead and target.visible then
               CastSpell(_Q, target.x, target.z)
             end
-          end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.07 or 0))
+          end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.11 or 0))
           return;
         end
         if self.doW and myHero:CanUseSpell(_W) == READY then 
@@ -5040,7 +4954,7 @@ class "Yorick"
               if target and not target.dead and target.visible then
                 CastSpell(_W) 
               end
-            end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.07 or 0))
+            end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.11 or 0))
         end
       elseif spell.name == "RivenTriCleave" then
           self.QDelay = os.clock()
@@ -5097,7 +5011,7 @@ class "Yorick"
     if Config.kConfig.Combo or Config.kConfig.Harass then
       return Target
     elseif Config.kConfig.LaneClear then
-      return GetClosestMinion(myHero) or GetJMinion(myHero.range+GetDistance(myHero.minBBox))
+      return GetClosestMinion(myHero)
     end
     return nil
   end
@@ -5199,24 +5113,10 @@ class "Yorick"
         CastSpell(_E, minion.x, minion.z)
       end
     end
-    local minion = GetJMinion(myHero.range+GetDistance(myHero.minBBox))
-    if minion and not minion.dead and minion.visible and minion.bTargetable then
-      CastSpell(_E, minion.x, minion.z)
-    end
   end
 
   function Riven:LastHit()
     for _, minion in pairs(Mobs.objects) do
-      if minion and not minion.dead and minion.visible and minion.bTargetable then
-        if Config.LastHit.Q and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
-          CastSpell(_Q, minion.x, minion.z)
-        end
-        if Config.LastHit.W and sReady[_W] and minion.health <= GetDmg(_W, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_W].range^2 then
-          CastSpell(_W)
-        end
-      end
-    end
-    for _, minion in pairs(JMobs.objects) do
       if minion and not minion.dead and minion.visible and minion.bTargetable then
         if Config.LastHit.Q and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
           CastSpell(_Q, minion.x, minion.z)
@@ -5400,44 +5300,11 @@ class "Yorick"
         end
       end
     end
-    for _, target in pairs(JMobs.objects) do
-      if target and not target.dead and target.visible then
-        if self.passiveTracker + ready < 5 then
-          if sReady[_Q] and Config.LaneClear.Q then
-            Cast(_Q, target)
-          end
-          if sReady[_W] and Config.LaneClear.W and GetDistanceSqr(target) < myHeroSpellData[_W].range^2 then
-            CastSpell(_W, target)
-          end
-          if sReady[_E] and Config.LaneClear.E and GetDistanceSqr(target) < myHeroSpellData[_E].range^2 then
-            CastSpell(_E, target)
-          end
-        else
-          for _=0, 3 do
-            if sReady[_] and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] < myHero.mana/myHero.maxMana*100 and GetDistanceSqr(target) < myHeroSpellData[_].range^2 then
-              Cast(_, target)
-              break;
-            end
-          end
-        end
-      end
-    end
   end
 
   function Ryze:LastHit()
     for i, minion in pairs(Mobs.objects) do 
       if minion and not minion.dead and minion.visible and minion.bTargetable then
-        local health = GetRealHealth(minion) 
-        for _=0,3 do
-          if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
-          Cast(_, minion)
-          return;
-          end
-        end
-      end
-    end
-    for i, minion in pairs(JMobs.objects) do 
-      if minion and not minion.dead and minion.visible and minion.bTargetable and minion.health < 100000 then
         local health = GetRealHealth(minion) 
         for _=0,3 do
           if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
@@ -5519,21 +5386,12 @@ class "Yorick"
       CastSpell(_W, minion.x, minion.z)
     end
     end
-    for _, minion in pairs(JMobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.health < 100000 and GetDmg(_W, myHero, minion) >= GetRealHealth(minion) and GetDistanceSqr(minion) < myHeroSpellData[1].range^2 then
-      CastSpell(_W, minion.x, minion.z)
-    end
-    end
   end
   end
 
   function Talon:LaneClear()
   if sReady[_W] and Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
     pos, hit = GetFarmPosition(myHeroSpellData[1].range, myHeroSpellData[1].width)
-    if pos and hit > 0 then
-    CastSpell(_W, pos.x, pos.z)
-    end
-    pos, hit = GetJFarmPosition(myHeroSpellData[1].range, myHeroSpellData[1].width)
     if pos and hit > 0 then
     CastSpell(_W, pos.x, pos.z)
     end
