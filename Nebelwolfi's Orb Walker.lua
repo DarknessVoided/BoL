@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.455
+_G.NebelwolfisOrbWalkerVersion = 0.456
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -248,31 +248,33 @@ class "NebelwolfisOrbWalker" -- {
     if self.Mobs then
       if (self.Config.d.md.HPB and self.Config.k.LastHit or self.Config.d.md.HPBa) or (self.Config.d.md.LHI and self.Config.k.LastHit or self.Config.d.md.LHIa) then
         for i, minion in pairs(self.Mobs.objects) do
-          if self.Config.d.md.HPB and self.Config.k.LastHit or self.Config.d.md.HPBa then
-            local barPos = GetUnitHPBarPos(minion)
-            local barOffset = GetUnitHPBarOffset(minion)
-            local drawPos = {x = barPos.x + barOffset.x - 32, y = barPos.y + barOffset.y - 2.5}
-            DrawRectangleOutline(drawPos.x, drawPos.y, 63, 5, 0x5f000000, 2)
-            local dmg = self:GetDmg(myHero, minion)
-            local width = 63 * dmg / minion.maxHealth
-            local loss = 63 * (minion.maxHealth - minion.health) / minion.maxHealth
-            for _ = 0, 63 - loss - width, width do
-              DrawRectangleOutline(drawPos.x + _, drawPos.y, width, 5, 0x5f000000, 1)
+          if minion and not minion.dead and minion.visible then
+            if self.Config.d.md.HPB and self.Config.k.LastHit or self.Config.d.md.HPBa then
+              local barPos = GetUnitHPBarPos(minion)
+              local barOffset = GetUnitHPBarOffset(minion)
+              local drawPos = {x = barPos.x + barOffset.x - 32, y = barPos.y + barOffset.y - 2.5}
+              DrawRectangleOutline(drawPos.x, drawPos.y, 63, 5, 0x5f000000, 2)
+              local dmg = self:GetDmg(myHero, minion)
+              local width = 63 * dmg / minion.maxHealth
+              local loss = 63 * (minion.maxHealth - minion.health) / minion.maxHealth
+              for _ = 0, 63 - loss - width, width do
+                DrawRectangleOutline(drawPos.x + _, drawPos.y, width, 5, 0x5f000000, 1)
+              end
             end
-          end
-          if self.Config.d.md.LHI and self.Config.k.LastHit or self.Config.d.md.LHIa then
-            local hp = self.HP:PredictHealth(minion, (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-            local hp2 = self.HP:PredictHealth(minion, 2 * (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-            local barPos = GetUnitHPBarPos(minion)
-            local barOffset = GetUnitHPBarOffset(minion)
-            local drawPos = {x = barPos.x + barOffset.x - 62, y = barPos.y + barOffset.y - 15}
-            dmg = self:GetDmg(myHero, minion)
-            if dmg and (hp <= dmg or minion.health <= dmg) then
-              DrawText(">>", 30, drawPos.x, drawPos.y, 0xFF00FF00)
-              DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFF00FF00)
-            elseif dmg and (hp2 <= dmg or minion.health <= dmg*2) then
-              DrawText(">>", 30, drawPos.x, drawPos.y, 0xFFFFFFFF)
-              DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFFFFFFFF)
+            if self.Config.d.md.LHI and self.Config.k.LastHit or self.Config.d.md.LHIa then
+              local hp = self.HP:PredictHealth(minion, (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+              local hp2 = self.HP:PredictHealth(minion, 2 * (math.min(self.myRange, GetDistance(myHero, minion)) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+              local barPos = GetUnitHPBarPos(minion)
+              local barOffset = GetUnitHPBarOffset(minion)
+              local drawPos = {x = barPos.x + barOffset.x - 62, y = barPos.y + barOffset.y - 15}
+              dmg = self:GetDmg(myHero, minion)
+              if dmg and (hp <= dmg or minion.health <= dmg) then
+                DrawText(">>", 30, drawPos.x, drawPos.y, 0xFF00FF00)
+                DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFF00FF00)
+              elseif dmg and (hp2 <= dmg or minion.health <= dmg*2) then
+                DrawText(">>", 30, drawPos.x, drawPos.y, 0xFFFFFFFF)
+                DrawText("<<", 30, drawPos.x+63+30, drawPos.y, 0xFFFFFFFF)
+              end
             end
           end
         end
