@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.4567
+_G.NebelwolfisOrbWalkerVersion = 0.457
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -50,7 +50,47 @@ class "NebelwolfisOrbWalker" -- {
     end, 2)
     self.Mobs = MinionManager()
     self.orbDisabled = false
-    self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37 }
+    local delay = 0
+    if (Set {"Akali", "Maokai", "Olaf", "Shaco"})[myHero.charName] then
+      delay = -0.1
+    elseif (Set {"Kennen", "Teemo"})[myHero.charName] then
+      delay = -0.0947
+    elseif (Set {"Draven", "MasterYi", "Pantheon", "Rengar", "Sion", "Twitch", "Warwick"})[myHero.charName] then
+      delay = -0.08
+    elseif (Set {"Fiora", "XinZhao"})[myHero.charName] then
+      delay = -0.07
+    elseif (Set {"Hecarim", "Sejuani", "Trundle", "Tryndamere"})[myHero.charName] then
+      delay = -0.0672
+    elseif (Set {"Ahri", "KhaZix", "Nocturne", "Quinn", "Talon"})[myHero.charName] then
+      delay = -0.065
+    elseif (Set {"RekSai"})[myHero.charName] then
+      delay = -0.063
+    elseif (Set {"Irelia", "KogMaw", "Renekton"})[myHero.charName] then
+      delay = -0.06
+    elseif (Set {"Ashe", "Fizz", "JarvanIV", "Jayce", "Kalista", "Katarina", "Orianna", "Shyvana", "Sivir", "Udyr", "Varus", "Vayne", "Viktor", "Vladimir", "Volibear", "Wukong", "Yasuo", "Zed"})[myHero.charName] then
+      delay = -0.05
+    elseif (Set {"MissFortune", "Tristana", "Ziggs"})[myHero.charName] then
+      delay = -0.04734
+    elseif (Set {"Aatrox", "Gangplank", "Gragas", "LeeSin", "Shen", "TwistedFate"})[myHero.charName] then
+      delay = -0.04
+    elseif (Set {"Cassiopeia"})[myHero.charName] then
+      delay = -0.034
+    elseif (Set {"Braum", "Ekko", "Nami", "Rumble", "Sona", "Urgot", "Vi"})[myHero.charName] then
+      delay = -0.03
+    elseif (Set {"Kassadin"})[myHero.charName] then
+      delay = -0.025
+    elseif (Set {"Amumu", "Galio", "Jax", "Kayle", "Lucian", "Malphite", "Nasus", "Nidalee", "Poppy", "Zac"})[myHero.charName] then
+      delay = -0.02
+    elseif (Set {"Olaf", "Shaco"})[myHero.charName] then
+      delay = -0.01
+    elseif (Set {"Nautilus", "Singed", "TahmKench"})[myHero.charName] then
+      delay = 0.02
+    elseif (Set {"Mordekaiser"})[myHero.charName] then
+      delay = 0.04
+    elseif (Set {"Annie"})[myHero.charName] then
+      delay = 0.08
+    end
+    self.orbTable = { lastAA = 0, windUp = 13.37, animation = 13.37, aaDelay = delay }
     self.doAA = true
     self.doMove = true
     self.myRange = myHero.range+myHero.boundingRadius*2
@@ -150,7 +190,7 @@ class "NebelwolfisOrbWalker" -- {
       self.Config.d:addParam("LFC", "Lag Free Circles", SCRIPT_PARAM_ONOFF, true)
       self.Config.d:addParam("d", "Draw - General toggle", SCRIPT_PARAM_ONOFF, true)
     self.Config:addSubMenu("Timing Settings", "t")
-      self.Config.t:addParam("cadj", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
+      self.Config.t:addParam("cad", "Cancel AA adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
       self.Config.t:addParam("lhadj", "Lasthit adjustment", SCRIPT_PARAM_SLICE, 0, -100, 100, 0)
       self.Config.t:addParam("time", "Humanizer", SCRIPT_PARAM_SLICE, 0, 0, 1000, 0)
     self.Config:addParam("info1", "", SCRIPT_PARAM_INFO, "")
@@ -213,7 +253,7 @@ class "NebelwolfisOrbWalker" -- {
   end
 
   function NebelwolfisOrbWalker:TimeToMove()
-    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.windUp + self.Config.t.cadj/1000 and self:DoMove()
+    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.windUp + self.Config.t.cad/1000 and self:DoMove()
   end
 
   function NebelwolfisOrbWalker:Draw()
@@ -222,11 +262,11 @@ class "NebelwolfisOrbWalker" -- {
       DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/6, ARGB(255,255,255,255))
     end
     if self.Config.d.AAS then
-      SCircle(myHero, myHero.range+GetDistance(myHero.minBBox), self.Config.d.LFC):Draw(0x7F00FF00)
+      SCircle(myHero, myHero.range+GetDistance(myHero.minBBox), self.Config.d.LFC, 0x7F00FF00)
       if myHero.charName == "Azir" then
         for _, thing in pairs(self.soldiers) do
           if thing.time > os.clock() then
-            SCircle(thing.obj, 350, self.Config.d.LFC):Draw(0x7F00FF00)
+            SCircle(thing.obj, 350, self.Config.d.LFC, 0x7F00FF00)
           end
         end
       end
@@ -234,14 +274,14 @@ class "NebelwolfisOrbWalker" -- {
     if self.Config.d.AAE then
       for _, enemy in pairs(GetEnemyHeroes()) do
         if enemy and not enemy.dead and enemy.visible and GetDistanceSqr(enemy) < (self.myRange*2)^2 then
-          SCircle(enemy, enemy.range+GetDistance(enemy,enemy.minBBox), self.Config.d.LFC):Draw(0x7FFF0000)
+          SCircle(enemy, enemy.range+GetDistance(enemy,enemy.minBBox), self.Config.d.LFC, 0x7FFF0000)
         end
       end
     end
     if (self.Forcetarget or self.Locktarget) and self.Target then
-      SCircle(self.Target, self.Target.boundingRadius*2-10, self.Config.d.LFC):Draw(0xFFFF0000)
-      SCircle(self.Target, self.Target.boundingRadius*2-5, self.Config.d.LFC):Draw(0xFFFF0000)
-      SCircle(self.Target, self.Target.boundingRadius*2, self.Config.d.LFC):Draw(0xFFFF0000)
+      SCircle(self.Target, self.Target.boundingRadius*2-10, self.Config.d.LFC, 0xFFFF0000)
+      SCircle(self.Target, self.Target.boundingRadius*2-5, self.Config.d.LFC, 0xFFFF0000)
+      SCircle(self.Target, self.Target.boundingRadius*2, self.Config.d.LFC, 0xFFFF0000)
       local barPos = WorldToScreen(D3DXVECTOR3(self.Target.x, self.Target.y, self.Target.z))
       DrawText("Target-Lock", 18, barPos.x - 35, barPos.y, ARGB(255, 255, 255, 255))
     end
@@ -282,14 +322,17 @@ class "NebelwolfisOrbWalker" -- {
     end
   end
 
+  function NebelwolfisOrbWalker:GetAttackSpeed()
+    return myHero.attackSpeed/(1/(0.625/(1+self.orbTable.aaDelay)))
+  end
+
   function NebelwolfisOrbWalker:ProcessSpell(unit, spell)
     if unit and spell and spell.name then
       if unit.isMe then
         if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
-          local windUp = (spell.windUpTime / myHero.attackSpeed + GetLatency() / 1000 + 0.025)
-          local windDown = (spell.animationTime)
-          self.orbTable.windUp = windUp
-          self.orbTable.animation = windDown
+          local windUp = 1 / (1.6 * (0.3 + self.Config.t.cad))*myHero.attackSpeed
+          self.orbTable.windUp = spell.windUpTime
+          self.orbTable.animation = 1 / self:GetAttackSpeed()
           self.orbTable.lastAA = os.clock()
           DelayAction(function()
             self:WindUp(self.Target) 
@@ -317,15 +360,9 @@ class "NebelwolfisOrbWalker" -- {
     if p.header == 0x00F4 then
       p.pos=2
       if p:DecodeF() == myHero.networkID then
-        p.pos=6
-        local isAttack = p:Decode1()==0xCA
         p.pos=16
         if p:Decode1() == 0xEE then
           self.orbTable.lastAA = os.clock() - GetLatency() / 2000 - self.orbTable.animation
-          if self.Config.t.cadj < 25 and self:DoOrb() then
-            self.Config.t.cadj = self.Config.t.cadj + 1
-            self.Config.t:save()
-          end
         end
       end
     end
@@ -607,6 +644,9 @@ class "NebelwolfisOrbWalker" -- {
     elseif source.charName == "Orianna" then
       APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
     end
+    if crit >= 0.9 then
+      ADDmg = ADDmg*2
+    end
     if GetMaladySlot() then
       APDmg = 15 + 0.15*AP
     end
@@ -642,20 +682,11 @@ class "NebelwolfisOrbWalker" -- {
 
 class 'SCircle' -- {
 
-  function SCircle:__init(x, y, z, r, LFC)
-    local pos = type(x) ~= "number" and x or nil
-    self.x = pos and pos.x or x
-    self.y = pos and pos.y or y
-    self.z = pos and pos.z or z
-    self.r = pos and y or r
-    self.LFC = pos and z or LFC
-  end
-
-  function SCircle:Draw(color)
-    if self.LFC then
-      DrawCircle3D(self.x, self.y, self.z, self.r, 1, color or 0xffffffff, 32)
+  function SCircle:__init(obj, r, LFC, color)
+    if LFC then
+      DrawCircle3D(obj.x, obj.y, obj.z, r, 1, color or 0xffffffff, 32)
     else
-      DrawCircle(self.x, self.y, self.z, self.r, color or 0xffffffff)
+      DrawCircle(obj.x, obj.y, obj.z, r, color or 0xffffffff)
     end
   end
 
