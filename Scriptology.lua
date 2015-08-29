@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion       = 2.2433
+_G.ScriptologyVersion       = 2.2434
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -2825,38 +2825,38 @@ class "Yorick"
   function Diana:Combo()
   if sReady[_Q] and sReady[_R] then
     if GetDistance(Target,myHero) < 790+Target.boundingRadius and GetDistance(Target,myHero) > 825-Target.boundingRadius then
-    local target, cPos, CastPosition, HitChance, Position
-    local LessToKill, LessToKilli = 100, 0
-    for _,enemy in pairs(GetEnemyHeroes()) do
-      if ValidTarget(enemy) and GetDistance(enemy, Target) < myHeroSpellData[0].range and enemy ~= Target then
-      DamageToHero = GetDmg(_Q, myHero, enemy)
-      ToKill = GetRealHealth(enemy) / DamageToHero
-      if ((ToKill < LessToKill) or (LessToKilli == 0)) then
-        LessToKill = ToKill
-        LessToKilli = i
-        target = enemy
+      local target, cPos, CastPosition, HitChance, Position
+      local LessToKill, LessToKilli = 100, 0
+      for _,enemy in pairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy) and GetDistance(enemy, Target) < myHeroSpellData[0].range and enemy ~= Target then
+        DamageToHero = GetDmg(_Q, myHero, enemy)
+        ToKill = GetRealHealth(enemy) / DamageToHero
+        if ((ToKill < LessToKill) or (LessToKilli == 0)) then
+          LessToKill = ToKill
+          LessToKilli = i
+          target = enemy
+        end
+        end
       end
+      if target then
+        CastPosition, HitChance, Position = Predict(_Q, Target, target, ScriptologyConfig.Prediction["Combo"])
+        cPos = Target+(Vector(CastPosition)-Target):normalized()*GetDistance(Target,target)
+      else
+        HitChance = 2
+        cPos = Target
       end
-    end
-    if target then
-      CastPosition, HitChance, Position = Predict(_Q, Target, target, ScriptologyConfig.Prediction["Combo"])
-      cPos = Target+(Vector(CastPosition)-Target):normalized()*GetDistance(Target,target)
-    else
-      HitChance = 2
-      cPos = Target
-    end
-    if HitChance and HitChance >= 1 then
-      Cast(_R, Target)
-      Cast(_Q, cPos.pos)
-    end
-    elseif sReady[_Q] and GetDistance(Target) < 830-Target.boundingRadius then
-    local CastPosition, HitChance, Position = Predict(_Q, myHero, Target, ScriptologyConfig.Prediction["Combo"])
-    if HitChance and HitChance >= 1 then
-      CastSpell(_Q, CastPosition.x, CastPosition.z)
-    end
-    if HitChance and HitChance >= 2 then
-      DelayAction(function() Cast(_R, Target) end, 0.25 + GetLatency() / 2000)
-    end
+      if HitChance and HitChance >= 1 then
+        Cast(_R, Target)
+        Cast(_Q, cPos.pos)
+      end
+      elseif sReady[_Q] and GetDistance(Target) < 830-Target.boundingRadius then
+      local CastPosition, HitChance, Position = Predict(_Q, myHero, Target, ScriptologyConfig.Prediction["Combo"])
+      if HitChance and HitChance >= 1 then
+        CastSpell(_Q, CastPosition.x, CastPosition.z)
+      end
+      if HitChance and HitChance >= 2 then
+        DelayAction(function() Cast(_R, Target) end, 0.25 + GetLatency() / 2000)
+      end
     end
   elseif sReady[_Q] and GetDistance(Target) < 830-Target.boundingRadius then
     Cast(_Q, Target)
@@ -2868,7 +2868,7 @@ class "Yorick"
     Cast(_W)
   end
   if sReady[_E] and GetDistance(Target) < myHeroSpellData[_E].range then
-    Cast(_E)
+    Cast(_E, Target)
   end
   end
 
@@ -2880,7 +2880,7 @@ class "Yorick"
     Cast(_W)
   end
   if sReady[_E] and Config.Harass.E and Config.Harass.manaE < myHero.mana/myHero.maxMana*100 and GetDistance(Target) < myHeroSpellData[_E].range then
-    Cast(_E)
+    Cast(_E, Target)
   end
   end
 
