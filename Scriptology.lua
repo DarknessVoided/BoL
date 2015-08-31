@@ -1,5 +1,5 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion       = 2.2434
+_G.ScriptologyVersion       = 2.244
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyLoadEvade     = true
@@ -347,6 +347,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       Config:addSubMenu("Harass","Harass")
       Config:addSubMenu("LastHit","LastHit")
       Config:addSubMenu("LaneClear","LaneClear")
+      Config.LaneClear:addParam("J", "Attack Jungle Mobs", SCRIPT_PARAM_ONOFF, true)
       Config:addSubMenu("Killsteal","Killsteal")
       Config:addSubMenu("Misc","Misc")
       Config:addSubMenu("Draws","Draws")
@@ -1019,7 +1020,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     elseif predictionStringTable[activePrediction] == "HPrediction" then
       local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or huge
       local x, y, z = _G.HP:GetPredict(HPSpells[spell], to, from, col)
-      return x, y*1.67, z
+      return x, y*2, z
     elseif predictionStringTable[activePrediction] == "DivinePred" then
       local State, Position, perc = _G.DP:predict(str[spell], to, Vector(from))
       if perc and Position then
@@ -2557,7 +2558,7 @@ class "Yorick"
 
   function Cassiopeia:Combo()
   if myHero:CanUseSpell(_Q) == READY and Config.Combo.Q and GetDistance(Target) < myHeroSpellData[0].range then
-    Cast(_Q, Target)
+    print(Cast(_Q, Target))
   end
   if UnitHaveBuff(Target, "poison") then
     if myHero:CanUseSpell(_E) == READY and self.lastE < os.clock() and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
@@ -3487,7 +3488,7 @@ class "Yorick"
   function Katarina:LastHit()
   if ultOn >= os.clock() then
     if ultTarget and not ultTarget.dead and ultTarget.visible then 
-    return
+    return;
     else
     EnableOrbwalker()
     end
@@ -3514,7 +3515,7 @@ class "Yorick"
   function Katarina:LaneClear()
   if ultOn >= os.clock() then
     if ultTarget and not ultTarget.dead and ultTarget.visible then 
-    return
+    return;
     else
     EnableOrbwalker()
     end
@@ -3535,36 +3536,37 @@ class "Yorick"
   end
 
   function Katarina:Combo()
-  if ultOn >= os.clock() then
-    if ultTarget and not ultTarget.dead and ultTarget.visible then 
-    return
-    else
-    EnableOrbwalker()
+    if ultOn >= os.clock() then
+      if ultTarget and not ultTarget.dead and ultTarget.visible then 
+      return;
+      else
+      EnableOrbwalker()
+      end
     end
-  end
-  if Config.Combo.Q and sReady[_Q] and GetDistance(Target) < myHeroSpellData[0].range then
-    CastSpell(_Q, Target)
-    return;
-  end
-  if Config.Combo.W and sReady[_W] and GetDistance(Target) < myHeroSpellData[1].range*0.85 then
-    CastSpell(_W)
-    return;
-  end
-  if Config.Combo.E and sReady[_E] and GetDistance(Target) < myHeroSpellData[2].range then
-    CastSpell(_E, Target)
-    return;
-  end
-  if Config.Combo.R and sReady[_R] and GetDistance(Target) < 225 and GetRealHealth(Target) < GetDmg(_R, myHero, Target)*10 then
-    DisableOrbwalker()
-    CastSpell(_R)
-    return;
-  end
+    if Config.Combo.R and sReady[_R] and GetDistance(Target) < 225 then
+      ultTarget = Target
+      DisableOrbwalker()
+      CastSpell(_R)
+      return;
+    end
+    if Config.Combo.Q and sReady[_Q] and GetDistance(Target) < myHeroSpellData[0].range then
+      CastSpell(_Q, Target)
+      return;
+    end
+    if Config.Combo.E and sReady[_E] and GetDistance(Target) < myHeroSpellData[2].range then
+      CastSpell(_E, Target)
+      return;
+    end
+    if Config.Combo.W and sReady[_W] and GetDistance(Target) < myHeroSpellData[1].range*0.85 then
+      CastSpell(_W)
+      return;
+    end
   end
 
   function Katarina:Harass()
   if ultOn >= os.clock() then
     if ultTarget and not ultTarget.dead and ultTarget.visible then 
-    return
+    return;
     else
     EnableOrbwalker()
     end
@@ -3621,6 +3623,7 @@ class "Yorick"
           DelayAction(function() 
           DisableOrbwalker()
           Cast(_R) 
+          ultTarget = enemy
           end, 0.75)
         end
         end
@@ -3631,6 +3634,7 @@ class "Yorick"
           DelayAction(function() 
           DisableOrbwalker() 
           Cast(_R) 
+          ultTarget = enemy
           end, 0.5)
         end
         end
@@ -3643,6 +3647,7 @@ class "Yorick"
         DelayAction(function() 
           DisableOrbwalker() 
           Cast(_R) 
+          ultTarget = enemy
         end, 0.5)
         end
       end
@@ -3653,12 +3658,14 @@ class "Yorick"
         DelayAction(function() 
           DisableOrbwalker() 
           Cast(_R) 
+          ultTarget = enemy
         end, 0.25)
         end
       end
       elseif dist < 250 and Config.Killsteal.R and (myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level > 0) then
       DisableOrbwalker()
       Cast(_R)
+      ultTarget = enemy
       end
     end
     end
@@ -5653,8 +5660,8 @@ class "Yorick"
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
     Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
@@ -5664,7 +5671,7 @@ class "Yorick"
     Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
     if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
     Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Wa", "Auto Shield with W", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
@@ -5747,12 +5754,12 @@ class "Yorick"
     end
   end
 
-  function Rumble:Harrass()
-    if myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and ValidTarget(Target, myHeroSpellData[0].range) then
+  function Rumble:Harass()
+    if myHero:CanUseSpell(_Q) == READY and Config.Harass.Q and ValidTarget(Target, myHeroSpellData[0].range) then
       Cast(_Q, Target)
     end
-    if Config.Harrass.W then Cast(_W) end
-    if myHero:CanUseSpell(_E) == READY and Config.Harrass.E and ValidTarget(Target, myHeroSpellData[2].range) then
+    if Config.Harass.W then Cast(_W) end
+    if myHero:CanUseSpell(_E) == READY and Config.Harass.E and ValidTarget(Target, myHeroSpellData[2].range) then
       Cast(_E, Target)
     end
   end
@@ -6261,6 +6268,7 @@ class "Yorick"
   Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
   if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
   Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+  Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
   Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
@@ -6820,29 +6828,29 @@ class "Yorick"
   end
 
   function Yasuo:LastHit()
-  if ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.E)) or ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) then
-    for _, minion in pairs(Mobs.objects) do
-    if minion and not minion.dead and minion.visible and minion.bTargetable then
-      local health = GetRealHealth(minion)
-      local qDmg = GetDmg(_Q, myHero, minion)
-      local eDmg = GetDmg(_E, myHero, minion)
-      if not UnitHaveBuff(minion, "YasuoDashWrapper") then
-      if sReady[_E] and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
-        CastSpell(_E, minion)
+    if ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.E)) or ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) then
+      for _, minion in pairs(Mobs.objects) do
+      if minion and not minion.dead and minion.visible and minion.bTargetable then
+        local health = GetRealHealth(minion)
+        local qDmg = GetDmg(_Q, myHero, minion)
+        local eDmg = GetDmg(_E, myHero, minion)
+        if not UnitHaveBuff(minion, "YasuoDashWrapper") then
+        if sReady[_E] and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
+          CastSpell(_E, minion)
+        end
+        if sReady[_Q] and sReady[_E] and GetDistanceSqr(minion) > (475/2)^2 and GetDistance(minion) < 475^2 and health < qDmg+eDmg then
+          CastSpell(_E, minion)
+          DelayAction(function() 
+          CastSpell(_Q)
+          end, 0.125)
+        end
+        end
+        if sReady[_Q] and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 and health < qDmg then
+          CastSpell(_Q, minion.x, minion.z)
+        end
       end
-      if sReady[_Q] and sReady[_E] and GetDistanceSqr(minion) > (475/2)^2 and GetDistance(minion) < 475^2 and health < qDmg+eDmg then
-        CastSpell(_E, minion)
-        DelayAction(function() 
-        CastSpell(_Q)
-        end, 0.125)
-      end
-      end
-      if sReady[_Q] and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 and health < qDmg then
-      CastSpell(_Q, minion.x, minion.z)
       end
     end
-    end
-  end
   end
 
   function Yasuo:Combo()
