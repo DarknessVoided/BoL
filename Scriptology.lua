@@ -1,7 +1,8 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion       = 2.244
+_G.ScriptologyVersion       = 2.2441
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadAwareness = true
+_G.ScriptologyFixBugsplats  = true
 _G.ScriptologyLoadEvade     = true
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology")
@@ -266,7 +267,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       end
       table.sort(predictionStringTable)
       table.sort(Prediction)
-      if VIP_USER and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+      if VIP_USER and not _G.ScriptologyFixBugsplats and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
         require "DivinePred"
         _G.DP = DivinePred()
         Prediction["DP"] = _G.DP
@@ -371,7 +372,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       sReady[_] = myHero:CanUseSpell(_) == 0
       end
       Mobs = MinionManager()
-      buffStackTrackList = { ["Darius"] = "dariushemo", ["Kalista"] = "kalistaexpungemarker", ["TahmKench"] = "tahmpassive", ["Vayne"] = "vaynesilvereddebuff" }
+      buffStackTrackList = { ["Darius"] = "dariushemo", ["Kalista"] = "kalistaexpungemarker", ["TahmKench"] = "tahmpassive", ["Tristana"] = "tristanaecharge", ["Vayne"] = "vaynesilvereddebuff" }
       if buffStackTrackList[myHero.charName] then
       buffToTrackForStacks = buffStackTrackList[myHero.charName]
       end
@@ -1281,6 +1282,7 @@ class "Syndra"
 class "Talon"
 class "Teemo"
 class "Thresh"
+class "Tristana"
 class "Vayne"
 class "Veigar"
 class "Viktor"
@@ -6225,6 +6227,107 @@ class "Yorick"
   function Thresh:__init()
   end
 
+-- { Tristana
+
+  function Tristana:__init()
+  end
+
+  function Tristana:Load()
+    self:Menu()
+  end
+
+  function Tristana:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
+  end
+
+  function Tristana:Tick()
+    myHeroSpellData[_Q].range = 543 + 7 * myHero.level + myHero.boundingRadius
+    myHeroSpellData[_E].range = 543 + 7 * myHero.level + myHero.boundingRadius
+    myHeroSpellData[_R].range = 543 + 7 * myHero.level + myHero.boundingRadius
+    if Config.Misc.Flee then
+      self:Flee()
+    end
+  end
+
+  function Tristana:Flee()
+    myHero:MoveTo(mousePos.x, mousePos.z)
+    local movePos = myHero + (Vector(mousePos) - myHero):normalized() * 900
+    Cast(_W, movePos)
+    for _, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and GetDistanceSqr(enemy) < myHeroSpellData[_R].range^2 then
+        Cast(_R, enemy)
+      end
+    end
+  end
+
+  function Tristana:Killsteal()
+    for _, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        local health = GetRealHealth(enemy)
+        local lDmg = (UnitHaveBuff(myHero, "itemmagicshankcharge") and myHero:CalcMagicDamage(enemy, 100+0.1*myHero.ap) or 0)
+        --print(GetDmg(_W, myHero, enemy) + lDmg)
+        if health < GetDmg(_E, myHero, enemy) and sReady[_E] and Config.Killsteal.E then
+          Cast(_E, enemy)
+        elseif health < GetDmg(_W, myHero, enemy) + lDmg and sReady[_W] and Config.Killsteal.W then
+          self:JumpBack(enemy, Vector(myHero), os.clock())
+          Cast(_W, enemy)
+        elseif health < GetDmg(_W, myHero, enemy) + GetDmg(_E, myHero, enemy) + lDmg and sReady[_W] and Config.Killsteal.W then
+          self:JumpBack(enemy, Vector(myHero), os.clock())
+          Cast(_W, enemy)
+          Cast(_E, enemy)
+        elseif health < GetDmg(_R, myHero, enemy) + lDmg and sReady[_R] and Config.Killsteal.R then
+          Cast(_R, enemy)
+        elseif health < GetDmg(_W, myHero, enemy) + GetDmg(_R, myHero, enemy) + lDmg and sReady[_W] and sReady[_R] and Config.Killsteal.W and Config.Killsteal.R then
+          self:JumpBack(enemy, Vector(myHero), os.clock())
+          Cast(_W, enemy)
+          Cast(_R, enemy)
+        end
+      end
+    end
+  end
+
+  function Tristana:JumpBack(t, pos, time)
+    if time + 2.5 < os.clock() then return end
+    if t.dead then
+      if myHero:CanUseSpell(_W) == READY then
+        for i = 0.05, 0.5, 0.05 do
+          DelayAction(function() CastSpell(_W, pos.x, pos.z) end, i)
+        end
+      else
+        DelayAction(function() self:JumpBack(t, pos, time) end, 0.07)
+      end
+    else
+      DelayAction(function() self:JumpBack(t, pos, time) end, 0.07)
+    end
+  end
+
+-- }
+
 -- { Vayne
 
   function Vayne:__init()
@@ -6452,7 +6555,7 @@ class "Yorick"
     Cast(_W, Target)
   end
   if sReady[_R] and Config.Combo.R and Target.health < GetDmg(_R, myHero, Target) then
-    Cast(_R, Target)
+    CastSpell(_R, Target)
   end
   end
 
@@ -6521,7 +6624,7 @@ class "Yorick"
     if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and ValidTarget(enemy, myHeroSpellData[0].range) and GetDistance(enemy) < myHeroSpellData[0].range then
     Cast(_Q, enemy)
     elseif sReady[_R] and health < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and ValidTarget(enemy, myHeroSpellData[3].range) and GetDistance(enemy) < myHeroSpellData[3].range then
-    Cast(_R, enemy)
+    CastSpell(_R, enemy)
     elseif Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) / 5 and Config.Killsteal.I and ValidTarget(enemy, 600) then
     CastSpell(Ignite, enemy)
     elseif Smite and myHero:CanUseSpell(Smite) == READY and GetRealHealth(enemy) < 20+8*myHero.level and Config.Killsteal.S and ValidTarget(enemy, 600) then
@@ -6531,7 +6634,7 @@ class "Yorick"
     if self:LandE(enemy) then
     Cast(_W, enemy.pos)
     DelayAction(function() Cast(_Q, enemy.pos) end, 0.25)
-    DelayAction(function() Cast(_R, enemy) end, 0.5)
+    DelayAction(function() CastSpell(_R, enemy) end, 0.5)
     end
     end
   end
