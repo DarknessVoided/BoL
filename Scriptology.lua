@@ -947,7 +947,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     if GetMaladySlot() then
     APDmg = 15 + 0.15*AP
     end
-  elseif type(spell) == "number" and myHeroSpellData[spell] then
+  elseif type(spell) == "number" and spellData[source.charName][spell] then
     if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
     if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
     if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
