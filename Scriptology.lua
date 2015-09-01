@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2446
+_G.ScriptologyVersion       = 2.2447
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -4813,39 +4813,39 @@ class "Yorick"
   end
 
   function Nidalee:DoRWEQCombo(unit)
-  if not unit then return end
-  if unit and sReady[_R] and UnitHaveBuff(unit, "nidaleepassivehunted") and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.R then
-    Cast(_R)
-  end
-  if unit and sReady[_W] and UnitHaveBuff(unit, "nidaleepassivehunted") and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.W then
-    CastSpell(_W, unit.x, unit.z)
-  end
-  if unit and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
-    if self:GetDmg(_Q,unit) >= unit.health and sReady[_Q] and Config.Combo.Q and not Config.Combo.E then
-    CastSpell(_Q)
-    elseif self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
-    if sReady[_E] and Config.Combo.E then
-      CastSpell(_E, unit.x, unit.z)
+    if not unit then return end
+    if unit and sReady[_R] and UnitHaveBuff(unit, "nidaleepassivehunted") and self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.R then
+      Cast(_R)
     end
-    if sReady[_Q] and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
-      Cast(_Q)
-    end
-    if sReady[_Q] and Config.Combo.Q and not Config.Combo.E then
-      Cast(_Q)
-    end
-    else
-    if sReady[_E] and Config.Combo.E then
-      CastSpell(_E, unit.x, unit.z)
-    elseif sReady[_Q] and Config.Combo.Q then
-      Cast(_Q)
-    end
-    end
-    if unit and sReady[_W] and Config.Combo.W then
-    if unit and GetDistance(unit) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(unit) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
+    if unit and sReady[_W] and UnitHaveBuff(unit, "nidaleepassivehunted") and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[1].range*2 < 0 and Config.Combo.W then
       CastSpell(_W, unit.x, unit.z)
     end
+    if unit and not self:IsHuman() and GetDistance(unit)-self.data.Cougar[2].range <= 0 then
+      if self:GetDmg(_Q,unit) >= unit.health and sReady[_Q] and Config.Combo.Q and not Config.Combo.E then
+        CastSpell(_Q)
+      elseif self:GetRWEQComboDmg(unit,-self:GetDmg(_W,unit)) >= unit.health then
+        if sReady[_E] and Config.Combo.E then
+          CastSpell(_E, unit.x, unit.z)
+        end
+        if sReady[_Q] and myHero:CanUseSpell(_E) ~= READY and Config.Combo.Q and Config.Combo.E then
+          Cast(_Q)
+        end
+        if sReady[_Q] and Config.Combo.Q and not Config.Combo.E then
+          Cast(_Q)
+        end
+      else
+        if sReady[_E] and Config.Combo.E then
+          CastSpell(_E, unit.x, unit.z)
+        elseif sReady[_Q] and Config.Combo.Q then
+          Cast(_Q)
+        end
+      end
+      if unit and sReady[_W] and Config.Combo.W then
+        if unit and GetDistance(unit) >= self.data.Cougar[1].range-self.data.Cougar[1].width and GetDistance(unit) <= self.data.Cougar[1].range+self.data.Cougar[1].width then
+          CastSpell(_W, unit.x, unit.z)
+        end
+      end
     end
-  end
   end
 
   function Nidalee:CalculateDamage()
@@ -4858,30 +4858,30 @@ class "Yorick"
   end
 
   function Nidalee:GetRWEQComboDmg(target,damage,insert)
-  if not target then return end
-  local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
-  local dmg = damage or 0
-  local damageQ, damageW, damageE, damageR = 0, 0, 0, 0
-  if sReady[_W] then
-    local d = self:GetDmg(_W, unit)
-    damageW = d
-    dmg = dmg + d
-  end
-  if sReady[_E] then
-    local d = self:GetDmg(_E, unit)
-    damageE = d
-    dmg = dmg + d
-  end
-  if sReady[_Q] then
-    unit.health = unit.health-dmg
-    local d = self:GetDmg(_Q,unit)+self:GetDmg("Lichbane", unit)
-    damageQ = d + (self.spearCooldownUntil < os.clock() and self:GetDmg(_Q, unit, true) or 0)
-    dmg = dmg + d
-  end
-  if insert then
-    killTable[target.networkID] = {damageQ, damageW, damageE, damageR}
-  end
-  return dmg
+    if not target then return end
+    local unit = {pos = target.pos, armor = target.armor, magicArmor = target.magicArmor, maxHealth = target.maxHealth, health = target.health}
+    local dmg = damage or 0
+    local damageQ, damageW, damageE, damageR = 0, 0, 0, 0
+    if sReady[_W] then
+      local d = self:GetDmg(_W, unit)
+      damageW = d
+      dmg = dmg + d
+    end
+    if sReady[_E] then
+      local d = self:GetDmg(_E, unit)
+      damageE = d
+      dmg = dmg + d
+    end
+    if sReady[_Q] then
+      unit.health = unit.health-dmg
+      local d = self:GetDmg(_Q,unit)+self:GetDmg("Lichbane", unit)
+      damageQ = d + (self.spearCooldownUntil < os.clock() and self:GetDmg(_Q, unit, true) or 0)
+      dmg = dmg + d
+    end
+    if insert then
+      killTable[target.networkID] = {damageQ, damageW, damageE, damageR}
+    end
+    return dmg
   end
 
   function Nidalee:GetDmg(spell, target, human)
@@ -4936,19 +4936,19 @@ class "Yorick"
   end
 
   function Nidalee:Combo()
-  if sReady[_Q] and self:IsHuman() and Config.Combo.Q and GetDistanceSqr(Target) < myHeroSpellData[0].range^2 then
-    Cast(_Q, Target)
-  end
-  if sReady[_W] and UnitHaveBuff(Target, "nidaleepassivehunted") and self:IsHuman() and Config.Combo.W and GetDistanceSqr(Target) < myHeroSpellData[0].range^2 then
-    Cast(_W, Target)
-  end
-  self:DoRWEQCombo(Target)
-  if not self:IsHuman() and GetDistance(Target) > 425 then
-    Cast(_R)
-  end
-  if not self:IsHuman() and self.spearCooldownUntil < os.clock() then
-    Cast(_R)
-  end
+    if sReady[_Q] and self:IsHuman() and Config.Combo.Q and GetDistanceSqr(Target) < myHeroSpellData[0].range^2 then
+      Cast(_Q, Target)
+    end
+    if sReady[_W] and UnitHaveBuff(Target, "nidaleepassivehunted") and self:IsHuman() and Config.Combo.W and GetDistanceSqr(Target) < myHeroSpellData[0].range^2 then
+      Cast(_W, Target)
+    end
+    self:DoRWEQCombo(Target)
+    if not self:IsHuman() and GetDistance(Target) > 425 then
+      Cast(_R)
+    end
+    if not self:IsHuman() and self.spearCooldownUntil < os.clock() then
+      Cast(_R)
+    end
   end
 
   function Nidalee:Harass()
@@ -5720,7 +5720,6 @@ class "Yorick"
           end
         end
         if self.doQ and myHero:CanUseSpell(_Q) == READY then
-          _G.NebelwolfisOrbWalker:SetOrb(false)
           DelayAction(function() 
             if target and not target.dead and target.visible then
               CastSpell(_Q, target.x, target.z)
@@ -5807,7 +5806,6 @@ class "Yorick"
             myHero:MoveTo(mousePos.x, mousePos.z)
           end
           _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
-          _G.NebelwolfisOrbWalker:SetOrb(true)
         end, (ani:find("c") and 0.475 or 0.34))
       elseif ani == "Spell2" then
       elseif ani == "Spell3" then
