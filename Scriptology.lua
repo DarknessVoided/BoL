@@ -1,23 +1,32 @@
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("SFIHGHMGEEK") 
-_G.ScriptologyVersion       = 2.2441
+_G.ScriptologyVersion       = 2.2442
 _G.ScriptologyLoaded        = false
+_G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
 _G.ScriptologyFixBugsplats  = true
 _G.ScriptologyLoadEvade     = true
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology")
 local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerheal") then Heal = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerheal") then Heal = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerbarrier") then Barrier = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerbarrier") then Barrier = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerboost") then Cleanse = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerboost") then Cleanse = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonermana") then Clarity = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonermana") then Clarity = SUMMONER_2 end
 -- { Load
 
   function OnLoad()
-  Update()
-  LoadSpellData()
-  LoadAwareness()
-  LoadEvade()
-  LoadOrbwalker()
-  LoadChampion()
-  Msg("Loaded! (v".._G.ScriptologyVersion..")")
-  OnAfterLoad()
+    Update()
+    LoadSpellData()
+    LoadActivator()
+    LoadAwareness()
+    LoadEvade()
+    LoadOrbwalker()
+    LoadChampion()
+    Msg("Loaded! (v".._G.ScriptologyVersion..")")
+    OnAfterLoad()
   end
 
   function Update()
@@ -49,11 +58,33 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     end
   end
 
+  -- { Activator
+
+    function LoadActivator()
+      ScriptologyConfig:addSubMenu("Activator", "Activator")
+      ScriptologyConfig.Activator:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
+      ScriptologyConfig.Activator:setCallback("activate", function(var) if var then LoadActivator2() else UnloadActivator() end end)
+      if ScriptologyConfig.Activator.activate then LoadActivator2() end
+    end
+
+    function LoadActivator2()
+      if not Activerino then
+        Activerino = Activator()
+        Msg("Plugin: 'Activator' loaded")
+      end
+    end
+
+    function UnloadActivator()
+      Msg("Plugin: 'Activator' un-ticked. Press 2x F9 to unload.")
+    end
+
+  -- }
+
   -- { Awareness 
 
-    function LoadAwareness()
+    function LoadAwareness(b)
       if _G.PrinceViewVersion == nil then
-        ScriptologyConfig:addSubMenu("Awareness", "Awareness")
+        if not b then ScriptologyConfig:addSubMenu("Awareness", "Awareness") end
         ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
         ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
         if ScriptologyConfig.Awareness.activate then LoadAwareness2() end
@@ -61,14 +92,14 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     end
 
     function LoadAwareness2()
-      Awarerino = Awareness()
-      Msg("Plugin: 'Awareness' loaded")
+      if not Awarerino then
+        Awarerino = Awareness()
+        Msg("Plugin: 'Awareness' loaded")
+      end
     end
 
     function UnloadAwareness()
-      Awarerino = nil
-      package.loaded["Awareness"] = false
-      Msg("Plugin: 'Awareness' unloaded")
+      Msg("Plugin: 'Awareness' un-ticked. Press 2x F9 to unload.")
     end
 
   -- }
@@ -385,9 +416,6 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       for i, enemy in pairs(GetEnemyHeroes()) do
       killDrawTable[enemy.networkID] = {}
       end
-      if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
-      if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
-      if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
       colors = { 0xDFFFE258, 0xDF8866F4, 0xDF55F855, 0xDFFF5858 }
       gapcloserTable = {
       ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Ahri"] = _R, ["Amumu"] = _Q, ["Corki"] = _W,
@@ -627,6 +655,10 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
 -- { Global functions
 
+  function DrawRectangle(x, y, width, height, color)
+    DrawLine(x, y+height*0.5, x+width, y+height*0.5, height, color)
+  end
+
   function EnableOrbwalker()
   if _G.AutoCarry then
     _G.AutoCarry.MyHero:MovementEnabled(true)
@@ -859,8 +891,8 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   local AP     = source.ap
   local Level  = source.level
   local TotalDmg   = source.totalDamage
-  local crit     = myHero.critChance
-  local crdm     = myHero.critDmg
+  local crit     = source.critChance
+  local crdm     = source.critDmg
   local ArmorPen   = floor(source.armorPen)
   local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
   local MagicPen   = floor(source.magicPen)
@@ -893,9 +925,9 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     APDmg = 15 + 0.15*AP
     end
   elseif type(spell) == "number" and myHeroSpellData[spell] then
-    if myHeroSpellData[spell].dmgAD then ADDmg = myHeroSpellData[spell].dmgAD(source, target, GetStacks(target)) end
-    if myHeroSpellData[spell].dmgAP then APDmg = myHeroSpellData[spell].dmgAP(source, target, GetStacks(target)) end
-    if myHeroSpellData[spell].dmgTRUE then TRUEDmg = myHeroSpellData[spell].dmgTRUE(source, target, GetStacks(target)) end
+    if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
+    if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
+    if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
   end
   dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
   dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
@@ -1292,8 +1324,156 @@ class "WardJump"
 class "Yasuo"
 class "Yorick"
 
+-- { Activator
+
   function Activator:__init()
+    self.toCleanse = {
+      [5] = true, [8] = true, [10] = true, [11] = true, [21] = true, [22] = true, [24] = true,--   24, 5, 11, 22, 21, 8, 10
+    }
+    self.tick = 0
+    self:Load()
+    self:AddCallbacks()
   end
+
+  function Activator:Load()
+    self.Config = ScriptologyConfig.Activator
+    self.Config:addSubMenu("Summoners", "s")
+    if Flash and false then
+      self.Config.s:addParam("Flash", "Flash", SCRIPT_PARAM_ONOFF, false)
+    end
+    if Smite then
+      self.Config.s:addParam("Smite", "Smite", SCRIPT_PARAM_ONOFF, true)
+    end
+    if Barrier then
+      self.Config.s:addParam("Barrier", "Barrier", SCRIPT_PARAM_ONOFF, true)
+    end
+    if Heal then
+      self.Config.s:addParam("Heal", "Heal", SCRIPT_PARAM_ONOFF, true)
+      self.Config.s:addParam("SaveAlly", "Save Ally", SCRIPT_PARAM_ONOFF, false)
+    end
+    if Cleanse then
+      self.Config.s:addParam("Cleanse", "Cleanse", SCRIPT_PARAM_ONOFF, true)
+    end
+    if Clarity then
+      self.Config.s:addParam("Clarity", "Clarity", SCRIPT_PARAM_ONOFF, true)
+    end
+    self.Config:addSubMenu("Items", "i")
+    self.Config.i:addParam("Cleanse", "Cleanse", SCRIPT_PARAM_ONOFF, true)
+  end
+
+  function Activator:AddCallbacks()
+    AddTickCallback(function() self:Tick() end)
+    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+  end
+
+  function Activator:Tick()
+    if self.tick > os.clock() then return end
+    self.tick = os.clock() + 0.125
+    if self.Config.s.Clarity then
+      for _=0,3 do
+        if myHero:CanUseSpell(_) == 6 then
+          CastSpell(Clarity)
+        end
+      end
+    end
+    if self.Config.s.Cleanse then
+      for i = 1, myHero.buffCount do
+        local buff = myHero:getBuff(i)
+        if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() 
+        and buff.name ~= nil and (buff.name:lower():find("summonerexhaust") or self.toCleanse[buff.type]) then 
+          if self.Config.s.Cleanse and myHero:CanUseSpell(Cleanse) == READY then
+            CastSpell(Cleanse)
+          elseif self.Config.i.Cleanse then
+            for _ = ITEM_1, ITEM_7 do
+              if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "ItemDervishBlade" or myHero:GetSpellData(_).name == "QuicksilverSash") then
+                CastSpell(_)
+                return;
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  function Activator:ProcessSpell(unit, spell)
+    --spellData
+    if unit and spell and unit.team ~= myHero.team and spell.name then
+      if spell.target then
+        local dmg = 0
+        if spell.name:lower():find("attack") then
+          dmg = GetDmg("AD", unit, spell.target)*1.25
+        else
+          for _, s in pairs(spellData[unit.charName]) do
+            if s.name and s.name ~= "" and (s.name:lower():find(spell.name:lower()) or spell.name:lower():find(s.name:lower())) then
+              local d = GetDmg(_, unit, spell.target)
+              dmg = d > 0 and d or 150
+            end
+          end
+        end
+        local thp = GetRealHealth(spell.target)
+        if dmg >= thp then
+          if spell.target.isMe then
+            if Heal and self.Config.s.Heal then
+              if myHero:CanUseSpell(Heal) == READY then
+                CastSpell(Heal)
+                return;
+              end
+            end
+            if Barrier and self.Config.s.Barrier and spell.target.isMe then
+              if myHero:CanUseSpell(Barrier) == READY then
+                CastSpell(Barrier)
+                return;
+              end
+            end
+          elseif self.Config.s.SaveAlly and spell.target.team == myHero.team and spell.target.type == myHero.type then
+            if Heal and self.Config.s.Heal then
+              if myHero:CanUseSpell(Heal) == READY and GetDistance(spell.target) < 600 then
+                CastSpell(Heal)
+                return;
+              end
+            end
+          end
+        end
+      else
+        local dmg = 0
+        local sp = nil
+        local p, _, b = nil, nil, nil --
+        for _, s in pairs(spellData[unit.charName]) do
+          if s.name and s.name ~= "" and (s.name:lower():find(spell.name:lower()) or spell.name:lower():find(s.name:lower())) then
+            local d = GetDmg(_, unit, myHero) * 1.1
+            if s.type then
+              if s.type == "linear" then
+                local pos = unit + (Vector(spell.endPos) - unit):normalized()*s.range
+                p, _, b = VectorPointProjectionOnLineSegment(unit, pos, myHero)
+              elseif s.type == "circular" then
+                p, _, b = spell.endPos, _, true
+              end
+            end
+            sp = s
+            dmg = d > 0 and d or myHero.maxHealth*0.15
+          end
+        end
+        local thp = GetRealHealth(myHero)
+        if dmg >= thp and b and sp and GetDistanceSqr(p) < sp.width^2 then
+          if Heal and self.Config.s.Heal then
+            if myHero:CanUseSpell(Heal) == READY then
+              CastSpell(Heal)
+              return;
+            end
+          end
+          if Barrier and self.Config.s.Barrier then
+            if myHero:CanUseSpell(Barrier) == READY then
+              CastSpell(Barrier)
+              return;
+            end
+          end
+        end
+      end
+    end
+  end
+
+-- }
 
 -- { Ahri
 
@@ -1666,33 +1846,33 @@ class "Yorick"
   end
 
   function Awareness:Load()
-  self.Config = ScriptologyConfig.Awareness
-  self.Config:addSubMenu("Cooldowns", "cd")
-  self.Config.cd:addParam("cde", "Enemies:", SCRIPT_PARAM_ONOFF, true)
-  self.Config.cd:addParam("cda", "Allies:", SCRIPT_PARAM_ONOFF, true)
-  self.Config.cd:addParam("cds", "Self:", SCRIPT_PARAM_ONOFF, true)
-  self.Config:addSubMenu("Waypoints", "wp")
-  self.Config.wp:addParam("wpe", "Enemies:", SCRIPT_PARAM_ONOFF, true)
-  self.Config.wp:addParam("wpa", "Allies:", SCRIPT_PARAM_ONOFF, false)
-  self.Config.wp:addParam("wps", "Self:", SCRIPT_PARAM_ONOFF, false)
-  self.Config:addSubMenu("Wards & Other", "wt")
-  self.Config.wt:addParam("ward", "Wards:", SCRIPT_PARAM_ONOFF, true)
-  AddDrawCallback(function() self:Draw() end)
-  AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
-  AddDeleteObjCallback(function(obj) self:DeleteObj(obj) end)
-  UpdateWindow()
-  self.offset = 18
-  self.enemyWards = {}
-  self.summoners = {  ["summonerbarrier"]   = {"Barrier", 0xFFFFFF00},
-        ["summonerboost"]  = {"Cleanse", 0xFF0000FF},
-        ["summonerdot"]  = {"Ignite", 0xFFFF0000},
-        ["summonerexhaust"]   = {"Exhaust", 0xFFFFA500},
-        ["summonerflash"]  = {"Flash", 0xFFFFFF00},
-        ["summonerhaste"]  = {"Ghost", 0xFF0000FF},
-        ["summonerheal"]  = {"Heal", 0xFF00FF00},
-        ["summonerteleport"]  = {"Teleport", 0xFFFF00FF},
-        }
-  self.Sprites = {}
+    self.Config = ScriptologyConfig.Awareness
+    self.Config:addSubMenu("Cooldowns", "cd")
+    self.Config.cd:addParam("cde", "Enemies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config.cd:addParam("cda", "Allies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config.cd:addParam("cds", "Self:", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addSubMenu("Waypoints", "wp")
+    self.Config.wp:addParam("wpe", "Enemies:", SCRIPT_PARAM_ONOFF, true)
+    self.Config.wp:addParam("wpa", "Allies:", SCRIPT_PARAM_ONOFF, false)
+    self.Config.wp:addParam("wps", "Self:", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addSubMenu("Wards & Other", "wt")
+    self.Config.wt:addParam("ward", "Wards:", SCRIPT_PARAM_ONOFF, true)
+    AddDrawCallback(function() self:Draw() end)
+    AddCreateObjCallback(function(obj) self:CreateObj(obj) end)
+    AddDeleteObjCallback(function(obj) self:DeleteObj(obj) end)
+    UpdateWindow()
+    self.offset = 18
+    self.enemyWards = {}
+    self.summoners = {  ["summonerbarrier"]   = {"Barrier", 0xFFFFFF00},
+          ["summonerboost"]  = {"Cleanse", 0xFF0000FF},
+          ["summonermana"]  = {"Clarity", 0xFF0000FF},
+          ["summonerdot"]  = {"Ignite", 0xFFFF0000},
+          ["summonerexhaust"]   = {"Exhaust", 0xFFFFA500},
+          ["summonerflash"]  = {"Flash", 0xFFFFFF00},
+          ["summonerhaste"]  = {"Ghost", 0xFF0000FF},
+          ["summonerheal"]  = {"Heal", 0xFF00FF00},
+          ["summonerteleport"]  = {"Teleport", 0xFFFF00FF},
+          }
   end
 
   function Awareness:CreateObj(obj)
@@ -1742,8 +1922,8 @@ class "Yorick"
       end
       local framePos = {x = barPos.x - 69 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 + 10}
       DrawRectangle(framePos.x, framePos.y - 1, 110, 9, 0xFF000000)
-      DrawRectangleOutline(framePos.x, framePos.y - 1, 109, 9, 0xFF737173, 1)
-      DrawRectangleOutline(framePos.x + 1, framePos.y, 107, 7, 0xFF4A494A, 1)
+      self:DrawRectangleOutline(framePos.x, framePos.y - 1, 109, 9, 0xFF737173, 1)
+      self:DrawRectangleOutline(framePos.x + 1, framePos.y, 107, 7, 0xFF4A494A, 1)
       for _=0, 3 do
         local tSpellData = k:GetSpellData(_)
         local spellPos = {x = framePos.x + 3 + (_ * 26), y = framePos.y + 3}
@@ -1766,8 +1946,8 @@ class "Yorick"
       end
       for _=0, 1 do
         DrawRectangle(framePos.x-25, framePos.y - 17 + (_ * 11), 28, 9, 0xFF000000)
-        DrawRectangleOutline(framePos.x-25, framePos.y - 17 + (_ * 11), 27, 9, 0xFF737173, 1)
-        DrawRectangleOutline(framePos.x-25, framePos.y - 16 + (_ * 11), 25, 7, 0xFF4A494A, 1)
+        self:DrawRectangleOutline(framePos.x-25, framePos.y - 17 + (_ * 11), 27, 9, 0xFF737173, 1)
+        self:DrawRectangleOutline(framePos.x-25, framePos.y - 16 + (_ * 11), 25, 7, 0xFF4A494A, 1)
         local tSpellData = k:GetSpellData(_+4)
         local spellPos = {x = framePos.x-25, y = framePos.y - 15 + 2 + (_ * 11)}
         if tSpellData.currentCd == 0 then
@@ -1803,8 +1983,8 @@ class "Yorick"
     end
     local framePos = {x = barPos.x - 44 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 + 7 + 5}
     DrawRectangle(framePos.x, framePos.y - 1, 110, 9, 0xFF000000)
-    DrawRectangleOutline(framePos.x, framePos.y - 1, 109, 9, 0xFF737173, 1)
-    DrawRectangleOutline(framePos.x + 1, framePos.y, 107, 7, 0xFF4A494A, 1)
+    self:DrawRectangleOutline(framePos.x, framePos.y - 1, 109, 9, 0xFF737173, 1)
+    self:DrawRectangleOutline(framePos.x + 1, framePos.y, 107, 7, 0xFF4A494A, 1)
     for _=0, 3 do
       local tSpellData = k:GetSpellData(_)
       local spellPos = {x = framePos.x + 3 + (_ * 26), y = framePos.y + 3}
@@ -1827,8 +2007,8 @@ class "Yorick"
     framePos = {x = barPos.x - 44 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 + 7}
     for _=0, 1 do
       DrawRectangle(framePos.x + 107, framePos.y - 13 + (_ * 11), 28, 9, 0xFF000000)
-      DrawRectangleOutline(framePos.x + 107, framePos.y - 13 + (_ * 11), 27, 9, 0xFF737173, 1)
-      DrawRectangleOutline(framePos.x + 108, framePos.y - 12 + (_ * 11), 25, 7, 0xFF4A494A, 1)
+      self:DrawRectangleOutline(framePos.x + 107, framePos.y - 13 + (_ * 11), 27, 9, 0xFF737173, 1)
+      self:DrawRectangleOutline(framePos.x + 108, framePos.y - 12 + (_ * 11), 25, 7, 0xFF4A494A, 1)
       local tSpellData = k:GetSpellData(_+4)
       local spellPos = {x = framePos.x + 108, y = framePos.y - 12 + 3 + (_ * 11)}
       if tSpellData.currentCd == 0 then
@@ -1845,6 +2025,17 @@ class "Yorick"
     end
     end
   end
+  end
+
+  function Awareness:DrawRectangleOutline(x, y, width, height, color, borderWidth)
+    local x = math.min(x, x + width)
+    local y = math.min(y, y + width)
+    local width = math.abs(width)
+    local height = math.abs(height)-1
+    DrawLine(x, y, x+width, y, borderWidth, color)
+    DrawLine(x, y, x, y+height, borderWidth, color)
+    DrawLine(x+width, y, x+width, y+height, borderWidth, color)
+    DrawLine(x+width, y+height, x, y+height, borderWidth, color)
   end
 
   function Awareness:DrawWP()
@@ -1888,14 +2079,14 @@ class "Yorick"
     for _, k in pairs(self.enemyWards) do
     if k.time ~= huge then
       if k.time + 180 >= os.clock() then
-      DrawCircle3D(k.object.x, k.object.y, k.object.z, 100, 1, ARGB(105,255,255,255), 32)
+      DrawCircle(k.object.x, k.object.y, k.object.z, 100, ARGB(105,255,255,255))
       local pos = WorldToScreen(D3DXVECTOR3(k.object.x, k.object.y, k.object.z))
       DrawText((floor((k.time+180-os.clock()))).."s", 25, pos.x, pos.y, ARGB(255, 255, 0, 0))
       else
       k = nil
       end
     else
-      DrawCircle3D(k.object.x, k.object.y, k.object.z, 100, 1, ARGB(105,255,255,255), 32)
+      DrawCircle(k.object.x, k.object.y, k.object.z, 100, ARGB(105,255,255,255))
       local pos = WorldToScreen(D3DXVECTOR3(k.object.x, k.object.y, k.object.z))
       DrawText("Vision Ward", 20, pos.x, pos.y, ARGB(255, 255, 0, 0))
     end
