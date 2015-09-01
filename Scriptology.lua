@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2447
+_G.ScriptologyVersion       = 2.2448
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5640,7 +5640,8 @@ class "Yorick"
   Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
   Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
   Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-  Config.Misc:addDynamicParam("QAA", "Manual QAA", SCRIPT_PARAM_ONOFF, false)
+  Config.Misc:addParam("QAA", "QAA Adjustment", SCRIPT_PARAM_SLICE, 0.037, 0, 0.05, 3)
+  Config.Misc:addParam("info", "^Increase if one AA is missing during QAA^", SCRIPT_PARAM_INFO, "")
   Config.Misc:addDynamicParam("Wa", "Auto stun with W", SCRIPT_PARAM_ONOFF, true)
   Config.Misc:addParam("Wae", "Auto stun if X enemies", SCRIPT_PARAM_SLICE, 2, 1, 5, 0)
   Config.Misc:addDynamicParam("Flee", "Flee", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("G"))
@@ -5724,7 +5725,7 @@ class "Yorick"
             if target and not target.dead and target.visible then
               CastSpell(_Q, target.x, target.z)
             end
-          end, spell.windUpTime + GetLatency() / 1000 + (Config.kConfig.LaneClear and 0.11 or 0))
+          end, spell.windUpTime + (self.QCast>0 and 0.09 or 0) + (myHero.level <= 11 and 0.013 or GetLatency() / 1000 + Config.Misc.QAA) + (Config.kConfig.LaneClear and 0.11 or 0))
           return;
         end
         if self.doW and myHero:CanUseSpell(_W) == READY then 
@@ -5796,11 +5797,11 @@ class "Yorick"
 
   function Riven:Animation(unit, ani)
     if unit and unit.isMe and ani then
-      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and not _G.NebelwolfisOrbWalker.doAA then
+      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and self.doQ then
         self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or nil
         DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
         DelayAction(function() 
-          if VIP_USER then
+          if VIP_USER and myHero.level >= 5 then
             self.CastDance() 
           else
             myHero:MoveTo(mousePos.x, mousePos.z)
