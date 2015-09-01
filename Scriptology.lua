@@ -37,16 +37,16 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
   function LoadSpellData()
     if FileExist(LIB_PATH .. "SpellData.lua") then
-    if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
-      _G.myHeroSpellData = spellData[myHero.charName]
-      DelayAction(function()
-      CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", function() end, function() end, function() end, LoadSpellData)
-      end, 5)
+      if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
+        _G.myHeroSpellData = spellData[myHero.charName]
+        DelayAction(function()
+        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", function() end, function() end, function() end, LoadSpellData)
+        end, 5)
+      else
+        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
+      end
     else
       CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
-    end
-    else
-    CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", LoadSpellData, function() end, function() end, LoadSpellData)
     end
   end
 
@@ -103,16 +103,16 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   -- { Evade
 
     function LoadEvade()
-    ScriptologyConfig:addSubMenu("Evade", "Evade")
-    DelayAction(function()
-      if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil and _G.ScriptologyLoadEvade then
-      ScriptologyConfig.Evade:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-      ScriptologyConfig.Evade:setCallback("activate", function(var) if var then LoadEvade2() else UnloadEvade() end end)
-      if ScriptologyConfig.Evade.activate then LoadEvade2() end
-      else
-      ScriptologyConfig.Evade:addParam("info", "Evade script found!", SCRIPT_PARAM_INFO, "")
-      end
-    end, 10)
+      ScriptologyConfig:addSubMenu("Evade", "Evade")
+      DelayAction(function()
+        if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil and _G.ScriptologyLoadEvade then
+          ScriptologyConfig.Evade:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
+          ScriptologyConfig.Evade:setCallback("activate", function(var) if var then LoadEvade2() else UnloadEvade() end end)
+          if ScriptologyConfig.Evade.activate then LoadEvade2() end
+        else
+          ScriptologyConfig.Evade:addParam("info", "Evade script found!", SCRIPT_PARAM_INFO, "")
+        end
+      end, 10)
     end
 
     function LoadEvade2()
@@ -131,44 +131,44 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   -- { Orbwalker
 
     function LoadOrbwalker()
-    if myHero.charName == "Riven" then return end
-    if _G.Reborn_Loaded or _G.AutoCarry then
-    elseif _G.MMA_Loaded then
-    elseif _G.NebelwolfisOrbWalkerInit or _G.NebelwolfisOrbWalkerLoaded then
-    else
-      ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
-      ScriptologyConfig.Orbwalker:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_LIST, 1, {"Nebelwolfi's Orb Walker", "SxOrbWalk", "Simple Orb Walk", "Big Fat Walk"})
-      ScriptologyConfig.Orbwalker:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-      ScriptologyConfig.Orbwalker:setCallback("activate", function(var) if var and not (isNOW or isSOW or isBFW or isSxOrb) then LoadOrb() else UnloadOrb() Msg("Reload now. Press 2xF9.") end end)
-      if ScriptologyConfig.Orbwalker.activate then LoadOrb() end
-    end
+      if myHero.charName == "Riven" then return end
+      if _G.Reborn_Loaded or _G.AutoCarry then
+      elseif _G.MMA_Loaded then
+      elseif _G.NebelwolfisOrbWalkerInit or _G.NebelwolfisOrbWalkerLoaded then
+      else
+        ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
+        ScriptologyConfig.Orbwalker:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_LIST, 1, {"Nebelwolfi's Orb Walker", "SxOrbWalk", "Simple Orb Walk", "Big Fat Walk"})
+        ScriptologyConfig.Orbwalker:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
+        ScriptologyConfig.Orbwalker:setCallback("activate", function(var) if var and not (isNOW or isSOW or isBFW or isSxOrb) then LoadOrb() else UnloadOrb() Msg("Reload now. Press 2xF9.") end end)
+        if ScriptologyConfig.Orbwalker.activate then LoadOrb() end
+      end
     end
 
     function LoadOrb()
       if ScriptologyConfig.Orbwalker.info == 1 then
-      require "Nebelwolfi's Orb Walker"
-      isNOW = true
-      --NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
-      --Msg("Nebelwolfi's Orb Walker loaded!")
+        require "Nebelwolfi's Orb Walker"
+        isNOW = true
+        --NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
+        --Msg("Nebelwolfi's Orb Walker loaded!")
       elseif ScriptologyConfig.Orbwalker.info == 2 then
-      require "SxOrbwalk"
-      isSxOrb = true
-      SxOrb:LoadToMenu(ScriptologyConfig.Orbwalker)
-      --Msg("SxOrbWalk loaded!")
+        require "SxOrbwalk"
+        isSxOrb = true
+        SxOrb:LoadToMenu(ScriptologyConfig.Orbwalker)
+        --Msg("SxOrbWalk loaded!")
       elseif ScriptologyConfig.Orbwalker.info == 3 then
-      require "SOW"
-      require "VPrediction"
-      isSOW = true
-      _G.VP = VPrediction()
-      SOWVP = SOW(VP)
-      SOWVP:LoadToMenu(ScriptologyConfig.Orbwalker)
-      --Msg("Loaded Simple Orb Walker!")
+        require "SOW"
+        require "VPrediction"
+        isSOW = true
+        _G.VP = VPrediction()
+        SOWVP = SOW(VP)
+        SOWVP:LoadToMenu(ScriptologyConfig.Orbwalker)
+        --Msg("Loaded Simple Orb Walker!")
       elseif ScriptologyConfig.Orbwalker.info == 4 then
-      require "Big Fat Orbwalker"
-      _G["BigFatOrb_DisableAttacks"] = false
-      _G["BigFatOrb_DisableMove"] = false
-      isBFW = true
-      --Msg("Loaded Big Fat Orbwalker!")
+        require "Big Fat Orbwalker"
+        _G["BigFatOrb_DisableAttacks"] = false
+        _G["BigFatOrb_DisableMove"] = false
+        isBFW = true
+        --Msg("Loaded Big Fat Orbwalker!")
       end
     end
 
@@ -216,36 +216,36 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
     function UnloadOrb()
       if isNOW then
-      DisableOrbwalker()
-      NOW = nil
-      package.loaded["Nebelwolfi's Orb Walker"] = false
-      isNOW = false
+        DisableOrbwalker()
+        NOW = nil
+        package.loaded["Nebelwolfi's Orb Walker"] = false
+        isNOW = false
       end
       if isSxOrb then
-      DisableOrbwalker()
-      _G.SxOrb = nil
-      package.loaded["SxOrbwalk"] = false
-      isSxOrb = false
+        DisableOrbwalker()
+        _G.SxOrb = nil
+        package.loaded["SxOrbwalk"] = false
+        isSxOrb = false
       end
       if isSOW then
-      DisableOrbwalker()
-      SOWVP = nil
-      package.loaded["SOW"] = false
-      isSOW = false
+        DisableOrbwalker()
+        SOWVP = nil
+        package.loaded["SOW"] = false
+        isSOW = false
       end
       if isBFW then
-      DisableOrbwalker()
-      package.loaded["Big Fat Orbwalker"] = false
-      isBFW = false
+        DisableOrbwalker()
+        package.loaded["Big Fat Orbwalker"] = false
+        isBFW = false
       end
-      Msg("OrbWalker unloaded!")
-      ScriptologyConfig.Orbwalker:clear(true, true)
-      --pcall(function() ScriptologyConfig:removeSubMenu2("Orbwalker") end)
-      DelayAction(function()
-      --ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
-      ScriptologyConfig.Orbwalker:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_LIST, 1, {"Nebelwolfi's Orb Walker", "SxOrbWalk", "Simple Orb Walk", "Big Fat Walk"})
-      ScriptologyConfig.Orbwalker:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-      ScriptologyConfig.Orbwalker:setCallback("activate", function(var) if var then LoadOrb() else UnloadOrb() end end)
+        Msg("OrbWalker unloaded!")
+        ScriptologyConfig.Orbwalker:clear(true, true)
+        --pcall(function() ScriptologyConfig:removeSubMenu2("Orbwalker") end)
+        DelayAction(function()
+        --ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
+        ScriptologyConfig.Orbwalker:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_LIST, 1, {"Nebelwolfi's Orb Walker", "SxOrbWalk", "Simple Orb Walk", "Big Fat Walk"})
+        ScriptologyConfig.Orbwalker:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
+        ScriptologyConfig.Orbwalker:setCallback("activate", function(var) if var then LoadOrb() else UnloadOrb() end end)
       end, 0.5)
     end
 
@@ -254,9 +254,9 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   -- { Champion
 
     function LoadChampion()
-    if _G[myHero.charName] then
-      Champerino = _G[myHero.charName]()
-    end
+      if _G[myHero.charName] then
+        Champerino = _G[myHero.charName]()
+      end
     end
 
   -- }
@@ -264,13 +264,13 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   -- { After Load
 
     function OnAfterLoad()
-    if not Champerino then return end
-    SetupPredictionMenu()
-    SetupTargetSelector()
-    InitMenu()
-    InitVars()
-    AddPluginTicks()
-    InitPermaShow()
+      if not Champerino then return end
+      SetupPredictionMenu()
+      SetupTargetSelector()
+      InitMenu()
+      InitVars()
+      AddPluginTicks()
+      InitPermaShow()
     end
 
     function SetupPredictionMenu()
@@ -305,23 +305,23 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         spell = myHeroSpellData[k]
         if not HPSpells then HPSpells = {} end
         if spell.type == "linear" then
-        if spell.speed ~= huge then 
-        if spell.collision then
-          HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
+          if spell.speed ~= huge then 
+            if spell.collision then
+              HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay, collisionM = spell.collision, collisionH = spell.collision})
+            else
+              HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
+            end
+          else
+            HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = spell.delay})
+          end
+        elseif spell.type == "circular" then
+          if spell.speed ~= huge then 
+            HPSpells[k] = HPSkillshot({type = "DelayCircle", range = spell.range, speed = spell.speed, radius = spell.width, delay = spell.delay})
+          else
+            HPSpells[k] = HPSkillshot({type = "PromptCircle", range = spell.range, radius = spell.width, delay = spell.delay})
+          end
         else
           HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
-        end
-        else
-        HPSpells[k] = HPSkillshot({type = "PromptLine", range = spell.range, width = 2*spell.width, delay = spell.delay})
-        end
-        elseif spell.type == "circular" then
-        if spell.speed ~= huge then 
-        HPSpells[k] = HPSkillshot({type = "DelayCircle", range = spell.range, speed = spell.speed, radius = spell.width, delay = spell.delay})
-        else
-        HPSpells[k] = HPSkillshot({type = "PromptCircle", range = spell.range, radius = spell.width, delay = spell.delay})
-        end
-        else
-        HPSpells[k] = HPSkillshot({type = "DelayLine", range = spell.range, speed = spell.speed, width = 2*spell.width, delay = spell.delay})
         end
       end
       local SetupDPredSpell = function(k)
@@ -396,35 +396,35 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     function InitVars()
       sReady = {}
       for _=0, 3 do
-      sReady[_] = myHero:CanUseSpell(_) == 0
+        sReady[_] = myHero:CanUseSpell(_) == 0
       end
       Mobs = MinionManager()
       buffStackTrackList = { ["Darius"] = "dariushemo", ["Kalista"] = "kalistaexpungemarker", ["TahmKench"] = "tahmpassive", ["Tristana"] = "tristanaecharge", ["Vayne"] = "vaynesilvereddebuff" }
       if buffStackTrackList[myHero.charName] then
-      buffToTrackForStacks = buffStackTrackList[myHero.charName]
+        buffToTrackForStacks = buffStackTrackList[myHero.charName]
       end
       stackTable = {}
       killTable = {}
       for i, enemy in pairs(GetEnemyHeroes()) do
-      killTable[enemy.networkID] = {0, 0, 0, 0, 0, 0}
+        killTable[enemy.networkID] = {0, 0, 0, 0, 0, 0}
       end
       killDrawTable = {}
       for i, enemy in pairs(GetEnemyHeroes()) do
-      killDrawTable[enemy.networkID] = {}
+        killDrawTable[enemy.networkID] = {}
       end
       colors = { 0xDFFFE258, 0xDF8866F4, 0xDF55F855, 0xDFFF5858 }
       gapcloserTable = {
-      ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Ahri"] = _R, ["Amumu"] = _Q, ["Corki"] = _W,
-      ["Diana"] = _R, ["Elise"] = _Q, ["Elise"] = _E, ["Fiddlesticks"] = _R, ["Fiora"] = _Q,
-      ["Fizz"] = _Q, ["Gnar"] = _E, ["Grags"] = _E, ["Graves"] = _E, ["Hecarim"] = _R,
-      ["Irelia"] = _Q, ["JarvanIV"] = _Q, ["Jax"] = _Q, ["Jayce"] = "JayceToTheSkies", ["Katarina"] = _E, 
-      ["Kassadin"] = _R, ["Kennen"] = _E, ["KhaZix"] = _E, ["Lissandra"] = _E, ["LeBlanc"] = _W, 
-      ["LeeSin"] = "blindmonkqtwo", ["Leona"] = _E, ["Lucian"] = _E, ["Malphite"] = _R, ["MasterYi"] = _Q, 
-      ["MonkeyKing"] = _E, ["Nautilus"] = _Q, ["Nocturne"] = _R, ["Olaf"] = _R, ["Pantheon"] = _W, 
-      ["Poppy"] = _E, ["RekSai"] = _E, ["Renekton"] = _E, ["Riven"] = _Q, ["Sejuani"] = _Q, 
-      ["Sion"] = _R, ["Shen"] = _E, ["Shyvana"] = _R, ["Talon"] = _E, ["Thresh"] = _Q, 
-      ["Tristana"] = _W, ["Tryndamere"] = "Slash", ["Udyr"] = _E, ["Volibear"] = _Q, ["Vi"] = _Q, 
-      ["XinZhao"] = _E, ["Yasuo"] = _E, ["Zac"] = _E, ["Ziggs"] = _W
+        ["Aatrox"] = _E, ["Akali"] = _R, ["Alistar"] = _W, ["Ahri"] = _R, ["Amumu"] = _Q, ["Corki"] = _W,
+        ["Diana"] = _R, ["Elise"] = _Q, ["Elise"] = _E, ["Fiddlesticks"] = _R, ["Fiora"] = _Q,
+        ["Fizz"] = _Q, ["Gnar"] = _E, ["Grags"] = _E, ["Graves"] = _E, ["Hecarim"] = _R,
+        ["Irelia"] = _Q, ["JarvanIV"] = _Q, ["Jax"] = _Q, ["Jayce"] = "JayceToTheSkies", ["Katarina"] = _E, 
+        ["Kassadin"] = _R, ["Kennen"] = _E, ["KhaZix"] = _E, ["Lissandra"] = _E, ["LeBlanc"] = _W, 
+        ["LeeSin"] = "blindmonkqtwo", ["Leona"] = _E, ["Lucian"] = _E, ["Malphite"] = _R, ["MasterYi"] = _Q, 
+        ["MonkeyKing"] = _E, ["Nautilus"] = _Q, ["Nocturne"] = _R, ["Olaf"] = _R, ["Pantheon"] = _W, 
+        ["Poppy"] = _E, ["RekSai"] = _E, ["Renekton"] = _E, ["Riven"] = _Q, ["Sejuani"] = _Q, 
+        ["Sion"] = _R, ["Shen"] = _E, ["Shyvana"] = _R, ["Talon"] = _E, ["Thresh"] = _Q, 
+        ["Tristana"] = _W, ["Tryndamere"] = "Slash", ["Udyr"] = _E, ["Volibear"] = _Q, ["Vi"] = _Q, 
+        ["XinZhao"] = _E, ["Yasuo"] = _E, ["Zac"] = _E, ["Ziggs"] = _W
       }
     end
 
@@ -447,163 +447,163 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       end,
       function()
         if Champerino.CalculateDamage then
-        Champerino:CalculateDamage()
+          Champerino:CalculateDamage()
         else
-        CalculateDamage()
+          CalculateDamage()
         end
       end
       }
       if Champerino.Combo then
-      table.insert(tickTable,
-        function()
-        if Config.kConfig.Combo and (ValidTarget(Target) or myHero.charName == "Ryze") then
-          Champerino:Combo()
-        end
-        end
-      )
+        table.insert(tickTable,
+          function()
+            if Config.kConfig.Combo and (ValidTarget(Target) or myHero.charName == "Ryze") then
+              Champerino:Combo()
+            end
+          end
+        )
       end
       if Champerino.Harass then
-      table.insert(tickTable,
-      function()
-        if Config.kConfig.Harass and ValidTarget(Target) then
-        Champerino:Harass()
-        end
-      end
-      )
+        table.insert(tickTable,
+          function()
+            if Config.kConfig.Harass and ValidTarget(Target) then
+              Champerino:Harass()
+            end
+          end
+        )
       end
       if Champerino.LaneClear then
-      table.insert(tickTable,
-      function()
-        if Config.kConfig.LaneClear then
-        Champerino:LaneClear()
-        end
-      end
-      )
+        table.insert(tickTable,
+          function()
+            if Config.kConfig.LaneClear then
+              Champerino:LaneClear()
+            end
+          end
+        )
       end
       if Champerino.LastHit then
-      table.insert(tickTable,
-      function()
-        if Config.kConfig.LastHit or Config.kConfig.LaneClear then
-        Champerino:LastHit()
+        table.insert(tickTable,
+        function()
+          if Config.kConfig.LastHit or Config.kConfig.LaneClear then
+            Champerino:LastHit()
+          end
         end
-      end
-      )
+        )
       end
       if Champerino.Tick and Champerino.Killsteal then
-      table.insert(tickTable,
-      function()
-        if Champerino.Tick then 
-        Champerino:Tick() 
+        table.insert(tickTable,
+        function()
+          if Champerino.Tick then 
+            Champerino:Tick() 
+          end
+          if Champerino.Killsteal then 
+            Champerino:Killsteal() 
+          end
         end
-        if Champerino.Killsteal then 
-        Champerino:Killsteal() 
-        end
-      end
-      )
+        )
       elseif Champerino.Killsteal then
-      table.insert(tickTable,
-      function()
-        if Champerino.Killsteal then 
-        Champerino:Killsteal() 
+        table.insert(tickTable,
+        function()
+          if Champerino.Killsteal then 
+            Champerino:Killsteal() 
+          end
         end
-      end
-      )
+        )
       elseif Champerino.Tick then
-      table.insert(tickTable,
-      function()
-        if Champerino.Tick then 
-        Champerino:Tick() 
+        table.insert(tickTable,
+        function()
+          if Champerino.Tick then 
+            Champerino:Tick() 
+          end
         end
+        )
       end
-      )
-      end
-      suchTicks={};gTick=0;cTick=0;AddTickCallback(function() 
-      local time = os.clock()
-      if gTick < time then
-        gTick = time + 0.025
-        cTick = cTick + 1
-        if cTick > #tickTable then cTick = 1 end
-        tickTable[cTick]()
-      end
-      CalculateDamageOffsets()
+      gTick=0;cTick=0;AddTickCallback(function() 
+        local time = os.clock()
+        if gTick < time then
+          gTick = time + 0.025
+          cTick = cTick + 1
+          if cTick > #tickTable then cTick = 1 end
+          tickTable[cTick]()
+        end
+        CalculateDamageOffsets()
       end)
       if buffToTrackForStacks then
-      AddApplyBuffCallback(function(unit, source, buff)
-        if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
-        stackTable[unit.networkID] = 1
-        end
-      end)
-      AddUpdateBuffCallback(function(unit, buff, stacks)
-        if unit and buff and stacks and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
-        stackTable[unit.networkID] = stacks
-        end
-      end)
-      AddRemoveBuffCallback(function(unit, buff)
-        if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
-        stackTable[unit.networkID] = 0
-        end
-      end)
+        AddApplyBuffCallback(function(unit, source, buff)
+          if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
+            stackTable[unit.networkID] = 1
+          end
+        end)
+        AddUpdateBuffCallback(function(unit, buff, stacks)
+          if unit and buff and stacks and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
+            stackTable[unit.networkID] = stacks
+          end
+        end)
+        AddRemoveBuffCallback(function(unit, buff)
+          if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
+            stackTable[unit.networkID] = 0
+          end
+        end)
       end
       if Champerino.ApplyBuff ~= nil then
-      AddApplyBuffCallback(function(unit, source, buff)
-        Champerino:ApplyBuff(unit, source, buff)
-      end)
+        AddApplyBuffCallback(function(unit, source, buff)
+          Champerino:ApplyBuff(unit, source, buff)
+        end)
       end
       if Champerino.UpdateBuff ~= nil then
-      AddUpdateBuffCallback(function(unit, buff, stacks)
-        Champerino:UpdateBuff(unit, buff, stacks)
-      end)
+        AddUpdateBuffCallback(function(unit, buff, stacks)
+          Champerino:UpdateBuff(unit, buff, stacks)
+        end)
       end
       if Champerino.RemoveBuff ~= nil then
-      AddRemoveBuffCallback(function(unit, buff)
-        Champerino:RemoveBuff(unit, buff)
-      end)
+        AddRemoveBuffCallback(function(unit, buff)
+          Champerino:RemoveBuff(unit, buff)
+        end)
       end
       if Champerino.ProcessSpell ~= nil then
-      AddProcessSpellCallback(function(unit, spell)
-        Champerino:ProcessSpell(unit, spell)
-      end)
+        AddProcessSpellCallback(function(unit, spell)
+          Champerino:ProcessSpell(unit, spell)
+        end)
       end
       if Champerino.Animation ~= nil then
-      AddAnimationCallback(function(unit, ani)
-        Champerino:Animation(unit, ani)
-      end)
+        AddAnimationCallback(function(unit, ani)
+          Champerino:Animation(unit, ani)
+        end)
       end
       if Champerino.CreateObj ~= nil then
-      AddCreateObjCallback(function(obj)
-        Champerino:CreateObj(obj)
-      end)
+        AddCreateObjCallback(function(obj)
+          Champerino:CreateObj(obj)
+        end)
       end
       if Champerino.DeleteObj ~= nil then
-      AddDeleteObjCallback(function(obj)
-        Champerino:DeleteObj(obj)
-      end)
+        AddDeleteObjCallback(function(obj)
+          Champerino:DeleteObj(obj)
+        end)
       end
       if Champerino and Champerino.WndMsg then
-      AddMsgCallback(function(msg, key)
-        Champerino:WndMsg(msg, key)
-      end)
+        AddMsgCallback(function(msg, key)
+          Champerino:WndMsg(msg, key)
+        end)
       end
       if Champerino and Champerino.Msg then
-      AddMsgCallback(function(msg, key)
-        Champerino:Msg(msg, key)
-      end)
+        AddMsgCallback(function(msg, key)
+          Champerino:Msg(msg, key)
+        end)
       end
       if Champerino and Champerino.Draw then
-      AddDrawCallback(function()
-        Champerino:Draw()
-      end)
+        AddDrawCallback(function()
+          Champerino:Draw()
+        end)
       end
       if Champerino then
-      AddMsgCallback(function(msg, key)
-        ForcetargetMsg(msg, key)
-      end)
+        AddMsgCallback(function(msg, key)
+          ForcetargetMsg(msg, key)
+        end)
       end
       AddDrawCallback(function()
-      Draw()
+        Draw()
       end)
       if Champerino.Load then
-      Champerino:Load()
+        Champerino:Load()
       end
     end
 
@@ -683,148 +683,148 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   end
 
   function EnableOrbwalker()
-  if _G.AutoCarry then
-    _G.AutoCarry.MyHero:MovementEnabled(true)
-    _G.AutoCarry.MyHero:AttacksEnabled(true)
-  elseif _G.NebelwolfisOrbWalkerLoaded then
-    _G.NebelwolfisOrbWalker:SetOrb(true)
-  elseif isSxOrb then
-    SxOrb:EnableMove()
-    SxOrb:EnableAttacks()
-  elseif isSOW then
-    SOWi.Attacks = true
-  elseif isBFW then
-    _G["BigFatOrb_DisableMove"] = false
-    _G["BigFatOrb_DisableAttacks"] = false
-  elseif _G.MMA_Loaded then
-    _G.MMA_AvoidMovement(false)
-    _G.MMA_StopAttacks(false)
-  end
+    if _G.AutoCarry then
+      _G.AutoCarry.MyHero:MovementEnabled(true)
+      _G.AutoCarry.MyHero:AttacksEnabled(true)
+    elseif _G.NebelwolfisOrbWalkerLoaded then
+      _G.NebelwolfisOrbWalker:SetOrb(true)
+    elseif isSxOrb then
+      SxOrb:EnableMove()
+      SxOrb:EnableAttacks()
+    elseif isSOW then
+      SOWi.Attacks = true
+    elseif isBFW then
+      _G["BigFatOrb_DisableMove"] = false
+      _G["BigFatOrb_DisableAttacks"] = false
+    elseif _G.MMA_Loaded then
+      _G.MMA_AvoidMovement(false)
+      _G.MMA_StopAttacks(false)
+    end
   end
 
   function DisableOrbwalker()
-  if _G.AutoCarry then
-    _G.AutoCarry.MyHero:AttacksEnabled(false)
-    _G.AutoCarry.MyHero:MovementEnabled(false)
-  elseif _G.NebelwolfisOrbWalkerLoaded then
-    _G.NebelwolfisOrbWalker:SetOrb(false)
-  elseif isSxOrb then
-    SxOrb:DisableAttacks()
-    SxOrb:DisableMove()
-  elseif isSOW then
-    SOWi.Move = false
-    SOWi.Attacks = false
-  elseif isBFW then
-    _G["BigFatOrb_DisableMove"] = true
-    _G["BigFatOrb_DisableAttacks"] = true
-  elseif _G.MMA_Loaded then
-    _G.MMA_AvoidMovement(true)
-    _G.MMA_StopAttacks(true)
-  end
+    if _G.AutoCarry then
+      _G.AutoCarry.MyHero:AttacksEnabled(false)
+      _G.AutoCarry.MyHero:MovementEnabled(false)
+    elseif _G.NebelwolfisOrbWalkerLoaded then
+      _G.NebelwolfisOrbWalker:SetOrb(false)
+    elseif isSxOrb then
+      SxOrb:DisableAttacks()
+      SxOrb:DisableMove()
+    elseif isSOW then
+      SOWi.Move = false
+      SOWi.Attacks = false
+    elseif isBFW then
+      _G["BigFatOrb_DisableMove"] = true
+      _G["BigFatOrb_DisableAttacks"] = true
+    elseif _G.MMA_Loaded then
+      _G.MMA_AvoidMovement(true)
+      _G.MMA_StopAttacks(true)
+    end
   end
 
   function ForcetargetMsg(msg, Key)
-  if msg == WM_LBUTTONDOWN then
-    local minD = 0
-    local starget = nil
-    for i, enemy in ipairs(GetEnemyHeroes()) do
-    if ValidTarget(enemy) then
-      if GetDistance(enemy, mousePos) <= minD or starget == nil then
-      minD = GetDistance(enemy, mousePos)
-      starget = enemy
+    if msg == WM_LBUTTONDOWN then
+      local minD = 0
+      local starget = nil
+      for i, enemy in ipairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy) then
+          if GetDistance(enemy, mousePos) <= minD or starget == nil then
+            minD = GetDistance(enemy, mousePos)
+            starget = enemy
+          end
+        end
+      end
+
+      if starget and minD < starget.boundingRadius*2 then
+        if Forcetarget and starget.charName == Forcetarget.charName then
+          Forcetarget = nil
+          Msg("Target un-selected.", true)
+        else
+          Forcetarget = starget
+          Msg("New target selected: "..starget.charName.."", true)
+        end
       end
     end
-    end
-
-    if starget and minD < starget.boundingRadius*2 then
-    if Forcetarget and starget.charName == Forcetarget.charName then
-      Forcetarget = nil
-      Msg("Target un-selected.", true)
-    else
-      Forcetarget = starget
-      Msg("New target selected: "..starget.charName.."", true)
-    end
-    end
-  end
   end
 
   function Msg(x, skip)
-  local text = "<font color=\"#ff0000\">[</font><font color=\"#ff2a00\">S</font><font color=\"#ff5500\">c</font><font color=\"#ff7f00\">r</font><font color=\"#ff9f00\">i</font><font color=\"#ffbf00\">p</font><font color=\"#ffdf00\">t</font><font color=\"#ffff00\">o</font><font color=\"#aaff00\">l</font><font color=\"#55ff00\">o</font><font color=\"#00ff00\">g</font><font color=\"#00ff55\">y</font><font color=\"#00ffaa\"> </font><font color=\"#00ffff\">L</font><font color=\"#00bfff\">o</font><font color=\"#0080ff\">a</font><font color=\"#0040ff\">d</font><font color=\"#0000ff\">e</font><font color=\"#2e00ff\">r</font><font color=\"#5d00ff\">]</font><font color=\"#8b00ff\">: </font>"
-  if not skip and false then
-    local num = GetWebResult("random.org", "/integers/?num="..(x:len()*6).."&min=1&max=16&col="..(x:len()*6).."&base=16&format=plain&rnd=new")
-    local index = 0
-    if num then
-    for _=0, x:len() do
-      local color = ""
-      for c=0,5 do
-      local inum = num:find("0",_*6+c)
-      local lnum = num:sub(inum+1,inum+1)
-      if lnum then
-        color = color..lnum
+    local text = "<font color=\"#ff0000\">[</font><font color=\"#ff2a00\">S</font><font color=\"#ff5500\">c</font><font color=\"#ff7f00\">r</font><font color=\"#ff9f00\">i</font><font color=\"#ffbf00\">p</font><font color=\"#ffdf00\">t</font><font color=\"#ffff00\">o</font><font color=\"#aaff00\">l</font><font color=\"#55ff00\">o</font><font color=\"#00ff00\">g</font><font color=\"#00ff55\">y</font><font color=\"#00ffaa\"> </font><font color=\"#00ffff\">L</font><font color=\"#00bfff\">o</font><font color=\"#0080ff\">a</font><font color=\"#0040ff\">d</font><font color=\"#0000ff\">e</font><font color=\"#2e00ff\">r</font><font color=\"#5d00ff\">]</font><font color=\"#8b00ff\">: </font>"
+    if not skip and false then
+      local num = GetWebResult("random.org", "/integers/?num="..(x:len()*6).."&min=1&max=16&col="..(x:len()*6).."&base=16&format=plain&rnd=new")
+      local index = 0
+      if num then
+        for _=0, x:len() do
+          local color = ""
+          for c=0,5 do
+          local inum = num:find("0",_*6+c)
+          local lnum = num:sub(inum+1,inum+1)
+          if lnum then
+            color = color..lnum
+          end
+          end
+          text = text.."<font color=\"#"..color.."\">"..x:sub(_,_).."</font>"
+        end
+      else
+        for _=0, x:len() do
+          text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
+        end
       end
-      end
-      text = text.."<font color=\"#"..color.."\">"..x:sub(_,_).."</font>"
-    end
     else
-    for _=0, x:len() do
-      text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
+      for _=0, x:len() do
+        text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
+      end
     end
-    end
-  else
-    for _=0, x:len() do
-    text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
-    end
-  end
-  print(text)
+    print(text)
   end
 
   function Draw()
-  DrawRange()
-  for _, hero in pairs(GetEnemyHeroes()) do
-    DrawDmgOnHpBar(hero)
-  end
-  DrawForcetarget()
-  DrawMode()
+    DrawRange()
+    for _, hero in pairs(GetEnemyHeroes()) do
+      DrawDmgOnHpBar(hero)
+    end
+    DrawForcetarget()
+    DrawMode()
   end
 
   function DrawRange()
-  if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or not myHeroSpellData then return end
-  if Config.Draws.Q and sReady[_Q] and myHeroSpellData[0] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or myHeroSpellData[0].range > 0 and myHeroSpellData[0].range or myHeroSpellData[0].width, ARGB(Config.Draws.ColorQ[1],Config.Draws.ColorQ[2],Config.Draws.ColorQ[3],Config.Draws.ColorQ[4]))
-  end
-  if myHero.charName ~= "Orianna" then
-    if Config.Draws.W and sReady[_W] and myHeroSpellData[1] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[1].range) == "function" and myHeroSpellData[1].range() or myHeroSpellData[1].range > 0 and myHeroSpellData[1].range or myHeroSpellData[1].width, ARGB(Config.Draws.ColorW[1],Config.Draws.ColorW[2],Config.Draws.ColorW[3],Config.Draws.ColorW[4]))
+    if myHero.charName == "Jayce" or myHero.charName == "Nidalee" or not myHeroSpellData then return end
+      if Config.Draws.Q and sReady[_Q] and myHeroSpellData[0] then
+        DrawLFC(myHero.x, myHero.y, myHero.z, myHero.charName == "Rengar" and myHero.range+myHero.boundingRadius*2 or myHeroSpellData[0].range > 0 and myHeroSpellData[0].range or myHeroSpellData[0].width, ARGB(Config.Draws.ColorQ[1],Config.Draws.ColorQ[2],Config.Draws.ColorQ[3],Config.Draws.ColorQ[4]))
+      end
+    if myHero.charName ~= "Orianna" then
+      if Config.Draws.W and sReady[_W] and myHeroSpellData[1] then
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[1].range) == "function" and myHeroSpellData[1].range() or myHeroSpellData[1].range > 0 and myHeroSpellData[1].range or myHeroSpellData[1].width, ARGB(Config.Draws.ColorW[1],Config.Draws.ColorW[2],Config.Draws.ColorW[3],Config.Draws.ColorW[4]))
+      end
+      if Config.Draws.E and sReady[_E] and myHeroSpellData[2] then
+        DrawLFC(myHero.x, myHero.y, myHero.z, myHeroSpellData[2].range > 0 and myHeroSpellData[2].range or myHeroSpellData[2].width, ARGB(Config.Draws.ColorE[1],Config.Draws.ColorE[2],Config.Draws.ColorE[3],Config.Draws.ColorE[4]))
+      end
+      if Config.Draws.R and (sReady[_R] or myHero.charName == "Katarina") and myHeroSpellData[3] then
+        DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[3].range) == "function" and myHeroSpellData[3].range() or myHeroSpellData[3].range > 0 and myHeroSpellData[3].range or myHeroSpellData[3].width, ARGB(Config.Draws.ColorR[1],Config.Draws.ColorR[2],Config.Draws.ColorR[3],Config.Draws.ColorR[4]))
+      end
     end
-    if Config.Draws.E and sReady[_E] and myHeroSpellData[2] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, myHeroSpellData[2].range > 0 and myHeroSpellData[2].range or myHeroSpellData[2].width, ARGB(Config.Draws.ColorE[1],Config.Draws.ColorE[2],Config.Draws.ColorE[3],Config.Draws.ColorE[4]))
-    end
-    if Config.Draws.R and (sReady[_R] or myHero.charName == "Katarina") and myHeroSpellData[3] then
-    DrawLFC(myHero.x, myHero.y, myHero.z, type(myHeroSpellData[3].range) == "function" and myHeroSpellData[3].range() or myHeroSpellData[3].range > 0 and myHeroSpellData[3].range or myHeroSpellData[3].width, ARGB(Config.Draws.ColorR[1],Config.Draws.ColorR[2],Config.Draws.ColorR[3],Config.Draws.ColorR[4]))
-    end
-  end
   end
 
   function DrawDmgOnHpBar(hero)
-  if not Config.Draws.DMG then return end
-  if hero and not hero.dead and hero.visible and hero.bTargetable then
-    local kdt = killDrawTable[hero.networkID]
-    for _=1, #kdt do
-    local vars = kdt[_]
-    if vars and vars[1] then
-      DrawRectangle(vars[1], vars[2], vars[3], vars[4], vars[5])
-      DrawText(vars[6], vars[7], vars[8], vars[9], vars[10])
+    if not Config.Draws.DMG then return end
+    if hero and not hero.dead and hero.visible and hero.bTargetable then
+      local kdt = killDrawTable[hero.networkID]
+      for _=1, #kdt do
+        local vars = kdt[_]
+        if vars and vars[1] then
+          DrawRectangle(vars[1], vars[2], vars[3], vars[4], vars[5])
+          DrawText(vars[6], vars[7], vars[8], vars[9], vars[10])
+        end
+      end
     end
-    end
-  end
   end
 
   function DrawForcetarget()
-  if Forcetarget ~= nil and Forcetarget.visible and not Forcetarget.dead and Forcetarget.bTargetable then
-    DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
-    DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
-    DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
-  end
+    if Forcetarget ~= nil and Forcetarget.visible and not Forcetarget.dead and Forcetarget.bTargetable then
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
+      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
+    end
   end
 
   function DrawMode()
@@ -857,146 +857,146 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   end
 
   function DrawLFC(x, y, z, radius, color)
-  if Config.Draws.LFC then
-    DrawCircle3D(x, y, z, radius, 1, color, 32)
-  else
-    local radius = radius or 300
-    DrawCircle(x, y, z, radius, color)
-  end
+    if Config.Draws.LFC then
+      DrawCircle3D(x, y, z, radius, 1, color, 32)
+    else
+      local radius = radius or 300
+      DrawCircle(x, y, z, radius, color)
+    end
   end
 
   function CalculateDamage()
-  if not Config.Draws.DMG then return end
-  for i, enemy in pairs(GetEnemyHeroes()) do
-    if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
-    local damageQ = myHero:CanUseSpell(_Q) ~= READY and 0 or myHero.charName == "Kalista" and 0 or GetDmg(_Q, myHero, enemy) or 0
-    local damageW = myHero:CanUseSpell(_W) ~= READY and 0 or GetDmg(_W, myHero, enemy) or 0
-    local damageE = myHero:CanUseSpell(_E) ~= READY and 0 or GetDmg(_E, myHero, enemy) or 0
-    local damageR = myHero:CanUseSpell(_R) ~= READY and 0 or GetDmg(_R, myHero, enemy) or 0
-    killTable[enemy.networkID] = {damageQ, damageW, damageE, damageR}
+    if not Config.Draws.DMG then return end
+    for i, enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        local damageQ = myHero:CanUseSpell(_Q) ~= READY and 0 or myHero.charName == "Kalista" and 0 or GetDmg(_Q, myHero, enemy) or 0
+        local damageW = myHero:CanUseSpell(_W) ~= READY and 0 or GetDmg(_W, myHero, enemy) or 0
+        local damageE = myHero:CanUseSpell(_E) ~= READY and 0 or GetDmg(_E, myHero, enemy) or 0
+        local damageR = myHero:CanUseSpell(_R) ~= READY and 0 or GetDmg(_R, myHero, enemy) or 0
+        killTable[enemy.networkID] = {damageQ, damageW, damageE, damageR}
+      end
     end
-  end
   end
 
   function CalculateDamageOffsets()
-  if not Config.Draws.DMG then return end
-  for i, enemy in pairs(GetEnemyHeroes()) do
-    local nextOffset = 0
-    local barPos = GetUnitHPBarPos(enemy)
-    local barOffset = GetUnitHPBarOffset(enemy)
-    pos = {x = barPos.x - 67 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 - 4}
-    local totalDmg = 0
-    killDrawTable[enemy.networkID] = {}
-    for _, dmg in pairs(killTable[enemy.networkID]) do
-    if dmg > 0 then
-      local perc1 = dmg / enemy.maxHealth
-      local perc2 = totalDmg / enemy.maxHealth
-      totalDmg = totalDmg + dmg
-      local offs = 1-(enemy.maxHealth - enemy.health) / enemy.maxHealth
-      killDrawTable[enemy.networkID][_] = {
-      offs*105+pos.x-perc2*105, pos.y, -perc1*105, 9, colors[_],
-      str[_-1], 15, offs*105+pos.x-perc1*105-perc2*105, pos.y-20, colors[_]
-      }
-    else
-      killDrawTable[enemy.networkID][_] = {}
+    if not Config.Draws.DMG then return end
+    for i, enemy in pairs(GetEnemyHeroes()) do
+      local nextOffset = 0
+      local barPos = GetUnitHPBarPos(enemy)
+      local barOffset = GetUnitHPBarOffset(enemy)
+      pos = {x = barPos.x - 67 + barOffset.x * 150, y = barPos.y + barOffset.y * 50 - 4}
+      local totalDmg = 0
+      killDrawTable[enemy.networkID] = {}
+      for _, dmg in pairs(killTable[enemy.networkID]) do
+        if dmg > 0 then
+          local perc1 = dmg / enemy.maxHealth
+          local perc2 = totalDmg / enemy.maxHealth
+          totalDmg = totalDmg + dmg
+          local offs = 1-(enemy.maxHealth - enemy.health) / enemy.maxHealth
+          killDrawTable[enemy.networkID][_] = {
+          offs*105+pos.x-perc2*105, pos.y, -perc1*105, 9, colors[_],
+          str[_-1], 15, offs*105+pos.x-perc1*105-perc2*105, pos.y-20, colors[_]
+          }
+        else
+          killDrawTable[enemy.networkID][_] = {}
+        end
+      end
     end
-    end
-  end
   end
 
   function GetDmg(spell, source, target)
-  if target == nil or source == nil then
-    return
-  end
-  local ADDmg  = 0
-  local APDmg  = 0
-  local TRUEDmg  = 0
-  local AP     = source.ap
-  local Level  = source.level
-  local TotalDmg   = source.totalDamage
-  local crit     = source.critChance
-  local crdm     = source.critDmg
-  local ArmorPen   = floor(source.armorPen)
-  local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
-  local MagicPen   = floor(source.magicPen)
-  local MagicPenPercent  = floor(source.magicPenPercent*100)/100
+    if target == nil or source == nil then
+      return
+    end
+    local ADDmg  = 0
+    local APDmg  = 0
+    local TRUEDmg  = 0
+    local AP     = source.ap
+    local Level  = source.level
+    local TotalDmg   = source.totalDamage
+    local crit     = source.critChance
+    local crdm     = source.critDmg
+    local ArmorPen   = floor(source.armorPen)
+    local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
+    local MagicPen   = floor(source.magicPen)
+    local MagicPenPercent  = floor(source.magicPenPercent*100)/100
 
-  local Armor   = target.armor*ArmorPenPercent-ArmorPen
-  local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
-  local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-  local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
-  if spell == "IGNITE" then
-    return 50+20*Level/2
-  elseif spell == "Tiamat" then
-    ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
-  elseif spell == "AD" then
-    ADDmg = TotalDmg
-    if source.charName == "Ashe" and crit then
-    ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
-    elseif source.charName == "Teemo" then
-    APDmg = APDmg + myHeroSpellData[_E].dmgAP(source, target)
-    elseif source.charName == "Orianna" then
-    APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
-    elseif crit then
-    ADDmg = ADDmg * (1 + crit)
+    local Armor   = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
+    if spell == "IGNITE" then
+      return 50+20*Level/2
+    elseif spell == "Tiamat" then
+      ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+    elseif spell == "AD" then
+      ADDmg = TotalDmg
+      if source.charName == "Ashe" and crit then
+        ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
+      elseif source.charName == "Teemo" then
+        APDmg = APDmg + myHeroSpellData[_E].dmgAP(source, target)
+      elseif source.charName == "Orianna" then
+        APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
+      elseif crit then
+        ADDmg = ADDmg * (1 + crit)
+      end
+      if source.charName == "Vayne" and GetStacks(target) == 2 then
+        TRUEDmg = TRUEDmg + myHeroSpellData[_W].dmgTRUE(source, target)
+      end
+      if GetMaladySlot() then
+        APDmg = 15 + 0.15*AP
+      end
+    elseif type(spell) == "number" and spellData[source.charName] and spellData[source.charName][spell] then
+      if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
+      if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
+      if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
     end
-    if source.charName == "Vayne" and GetStacks(target) == 2 then
-    TRUEDmg = TRUEDmg + myHeroSpellData[_W].dmgTRUE(source, target)
-    end
-    if GetMaladySlot() then
-    APDmg = 15 + 0.15*AP
-    end
-  elseif type(spell) == "number" and spellData[source.charName] and spellData[source.charName][spell] then
-    if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
-    if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
-    if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
-  end
-  dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
-  dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
-  return floor(dmg) * dmgMod
+    dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
+    return floor(dmg) * dmgMod
   end
 
   function GetHydraSlot()
-  for slot = ITEM_1, ITEM_7, 1 do
-    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "tiamat")) then
-    return slot
+    for slot = ITEM_1, ITEM_7, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "tiamat")) then
+        return slot
+      end
     end
-  end
-  return nil
+    return nil
   end
 
   function GetMaladySlot()
-  for slot = ITEM_1, ITEM_7, 1 do
-    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "malady")) then
-    return slot
+    for slot = ITEM_1, ITEM_7, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "malady")) then
+        return slot
+      end
     end
-  end
-  return nil
+    return nil
   end
 
   function GetLichSlot()
-  for slot = ITEM_1, ITEM_7, 1 do
-    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell")) then
-    return slot
+    for slot = ITEM_1, ITEM_7, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "atmasimpalerdummyspell")) then
+        return slot
+      end
     end
-  end
-  return nil
+    return nil
   end
 
   function UnitHaveBuff(unit, buffName)
-  if unit and buffName and unit.buffCount then
-    for i = 1, unit.buffCount do
-    local buff = unit:getBuff(i)
-    if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
-      return true
+    if unit and buffName and unit.buffCount then
+      for i = 1, unit.buffCount do
+        local buff = unit:getBuff(i)
+        if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
+          return true
+        end
+      end
     end
-    end
-  end
-  return false
+    return false
   end
 
   function GetStacks(unit)
-  return stackTable[unit.networkID] or 0
+    return stackTable[unit.networkID] or 0
   end
 
   function Cast(spell, target, source)
@@ -1087,202 +1087,202 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   end
 
   function GetRealHealth(unit)
-  return unit.health
+    return unit.health
   end
 
   function GetClosestMinion(pos)
-  local minionTarget = nil
-  for i, minion in pairs(Mobs.objects) do
-    if minion and minion.visible and not minion.dead and minion.bTargetable then
-    if minionTarget == nil then 
-      minionTarget = minion
-    elseif GetDistanceSqr(minionTarget,pos) > GetDistanceSqr(minion,pos) then
-      minionTarget = minion
+    local minionTarget = nil
+    for i, minion in pairs(Mobs.objects) do
+      if minion and minion.visible and not minion.dead and minion.bTargetable then
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif GetDistanceSqr(minionTarget,pos) > GetDistanceSqr(minion,pos) then
+          minionTarget = minion
+        end
+      end
     end
-    end
-  end
-  return minionTarget
+    return minionTarget
   end
 
   function GetJMinion(range)
-  local minionTarget = nil
-  for i, minion in pairs(Mobs.objects) do
-    if minion and minion.visible and not minion.dead and minion.bTargetable and minion.team > 200 and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
-    if not minionTarget then
-      minionTarget = minion
-    elseif minionTarget.maxHealth < minion.maxHealth then
-      minionTarget = minion
+    local minionTarget = nil
+    for i, minion in pairs(Mobs.objects) do
+      if minion and minion.visible and not minion.dead and minion.bTargetable and minion.team > 200 and GetDistanceSqr(minion) < range * range and minion.maxHealth < 100000 then
+        if not minionTarget then
+          minionTarget = minion
+        elseif minionTarget.maxHealth < minion.maxHealth then
+          minionTarget = minion
+        end
+      end
     end
-    end
-  end
-  return minionTarget
+    return minionTarget
   end
 
   function GetFarmPosition(range, width)
-  local BestPos 
-  local BestHit = 0
-  local objects = Mobs.objects
-  for i, object in ipairs(objects) do
-    local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
-    if hit > BestHit and GetDistanceSqr(object) < range * range then
-    BestHit = hit
-    BestPos = Vector(object)
-    if BestHit == #objects then
-      break
+    local BestPos 
+    local BestHit = 0
+    local objects = Mobs.objects
+    for i, object in ipairs(objects) do
+      local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
+      if hit > BestHit and GetDistanceSqr(object) < range * range then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+          break
+        end
+      end
     end
-    end
-  end
-  return BestPos, BestHit
+    return BestPos, BestHit
   end
 
   function GetLineFarmPosition(range, width, source)
-  local BestPos 
-  local BestHit = 0
-  source = source or myHero
-  local objects = Mobs.objects
-  for i, object in ipairs(objects) do
-    local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
-    local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
-    if hit > BestHit and GetDistanceSqr(object) < range * range then
-    BestHit = hit
-    BestPos = Vector(object)
-    if BestHit == #objects then
-      break
+    local BestPos 
+    local BestHit = 0
+    source = source or myHero
+    local objects = Mobs.objects
+    for i, object in ipairs(objects) do
+      local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
+      local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
+      if hit > BestHit and GetDistanceSqr(object) < range * range then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+          break
+        end
+      end
     end
-    end
-  end
-  return BestPos, BestHit
+    return BestPos, BestHit
   end
 
   function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-  local n = 0
-  for i, object in ipairs(objects) do
-    local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
-    local w = width
-    if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
-    n = n + 1
+    local n = 0
+    for i, object in ipairs(objects) do
+      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
+      local w = width
+      if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+        n = n + 1
+      end
     end
-  end
-  return n
+    return n
   end
 
   function CountObjectsNearPos(pos, range, radius, objects)
-  local n = 0
-  for i, object in ipairs(objects) do
-    if GetDistance(pos, object) <= radius then
-    n = n + 1
+    local n = 0
+    for i, object in ipairs(objects) do
+      if GetDistance(pos, object) <= radius then
+        n = n + 1
+      end
     end
-  end
-  return n
+    return n
   end
 
   function ArrangeTSPriorities()
-  local priorityTable2 = {
-    p5 = {"Alistar", "Amumu", "Blitzcrank", "Braum", "ChoGath", "DrMundo", "Garen", "Gnar", "Hecarim", "JarvanIV", "Leona", "Lulu", "Malphite", "Nasus", "Nautilus", "Nunu", "Olaf", "Rammus", "Renekton", "Sejuani", "Shen", "Shyvana", "Singed", "Sion", "Skarner", "Taric", "Thresh", "Volibear", "Warwick", "MonkeyKing", "Yorick", "Zac"},
-    p4 = {"Aatrox", "Darius", "Elise", "Evelynn", "Galio", "Gangplank", "Gragas", "Irelia", "Jax","LeeSin", "Maokai", "Morgana", "Nocturne", "Pantheon", "Poppy", "Rengar", "Rumble", "Ryze", "Swain","Trundle", "Tryndamere", "Udyr", "Urgot", "Vi", "XinZhao", "RekSai"},
-    p3 = {"Akali", "Diana", "Fiddlesticks", "Fiora", "Fizz", "Heimerdinger", "Janna", "Jayce", "Kassadin","Kayle", "KhaZix", "Lissandra", "Mordekaiser", "Nami", "Nidalee", "Riven", "Shaco", "Sona", "Soraka", "TahmKench", "Vladimir", "Yasuo", "Zilean", "Zyra"},
-    p2 = {"Ahri", "Anivia", "Annie",  "Brand",  "Cassiopeia", "Ekko", "Karma", "Karthus", "Katarina", "Kennen", "LeBlanc",  "Lux", "Malzahar", "MasterYi", "Orianna", "Syndra", "Talon", "TwistedFate", "Veigar", "VelKoz", "Viktor", "Xerath", "Zed", "Ziggs" },
-    p1 = {"Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jinx", "Kalista", "KogMaw", "Lucian", "MissFortune", "Quinn", "Sivir", "Teemo", "Tristana", "Twitch", "Varus", "Vayne"},
-  }
-  local priorityOrder = {
-    [1] = {1,1,1,1,1},
-    [2] = {1,1,2,2,2},
-    [3] = {1,1,2,3,3},
-    [4] = {1,2,3,4,4},
-    [5] = {1,2,3,4,5},
-  }
-  local function _SetPriority(table, hero, priority)
-    if table ~= nil and hero ~= nil and priority ~= nil and type(table) == "table" then
-    for i=1, #table, 1 do
-      if hero.charName:find(table[i]) ~= nil and type(priority) == "number" then
-      TS_SetHeroPriority(priority, hero.charName)
+    local priorityTable2 = {
+      p5 = {"Alistar", "Amumu", "Blitzcrank", "Braum", "ChoGath", "DrMundo", "Garen", "Gnar", "Hecarim", "JarvanIV", "Leona", "Lulu", "Malphite", "Nasus", "Nautilus", "Nunu", "Olaf", "Rammus", "Renekton", "Sejuani", "Shen", "Shyvana", "Singed", "Sion", "Skarner", "Taric", "Thresh", "Volibear", "Warwick", "MonkeyKing", "Yorick", "Zac"},
+      p4 = {"Aatrox", "Darius", "Elise", "Evelynn", "Galio", "Gangplank", "Gragas", "Irelia", "Jax","LeeSin", "Maokai", "Morgana", "Nocturne", "Pantheon", "Poppy", "Rengar", "Rumble", "Ryze", "Swain","Trundle", "Tryndamere", "Udyr", "Urgot", "Vi", "XinZhao", "RekSai"},
+      p3 = {"Akali", "Diana", "Fiddlesticks", "Fiora", "Fizz", "Heimerdinger", "Janna", "Jayce", "Kassadin","Kayle", "KhaZix", "Lissandra", "Mordekaiser", "Nami", "Nidalee", "Riven", "Shaco", "Sona", "Soraka", "TahmKench", "Vladimir", "Yasuo", "Zilean", "Zyra"},
+      p2 = {"Ahri", "Anivia", "Annie",  "Brand",  "Cassiopeia", "Ekko", "Karma", "Karthus", "Katarina", "Kennen", "LeBlanc",  "Lux", "Malzahar", "MasterYi", "Orianna", "Syndra", "Talon", "TwistedFate", "Veigar", "VelKoz", "Viktor", "Xerath", "Zed", "Ziggs" },
+      p1 = {"Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jinx", "Kalista", "KogMaw", "Lucian", "MissFortune", "Quinn", "Sivir", "Teemo", "Tristana", "Twitch", "Varus", "Vayne"},
+    }
+    local priorityOrder = {
+      [1] = {1,1,1,1,1},
+      [2] = {1,1,2,2,2},
+      [3] = {1,1,2,3,3},
+      [4] = {1,2,3,4,4},
+      [5] = {1,2,3,4,5},
+    }
+    local function _SetPriority(table, hero, priority)
+      if table ~= nil and hero ~= nil and priority ~= nil and type(table) == "table" then
+        for i=1, #table, 1 do
+          if hero.charName:find(table[i]) ~= nil and type(priority) == "number" then
+            TS_SetHeroPriority(priority, hero.charName)
+          end
+        end
       end
     end
+    local enemies = #GetEnemyHeroes()
+    if priorityTable2~=nil and type(priorityTable2) == "table" and enemies > 0 then
+      for i, enemy in ipairs(GetEnemyHeroes()) do
+        _SetPriority(priorityTable2.p1, enemy, min(1, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p2, enemy, min(2, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p3,  enemy, min(3, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p4,  enemy, min(4, #GetEnemyHeroes()))
+        _SetPriority(priorityTable2.p5,  enemy, min(5, #GetEnemyHeroes()))
+      end
     end
-  end
-  local enemies = #GetEnemyHeroes()
-  if priorityTable2~=nil and type(priorityTable2) == "table" and enemies > 0 then
-    for i, enemy in ipairs(GetEnemyHeroes()) do
-    _SetPriority(priorityTable2.p1, enemy, min(1, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p2, enemy, min(2, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p3,  enemy, min(3, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p4,  enemy, min(4, #GetEnemyHeroes()))
-    _SetPriority(priorityTable2.p5,  enemy, min(5, #GetEnemyHeroes()))
-    end
-  end
   end
 
   function AlliesAround(Unit, range)
-  local c=0
-  if Unit == nil then return 0 end
-  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
+    local c=0
+    if Unit == nil then return 0 end
+    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero.team == myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
   end
 
   function EnemiesAround(Unit, range)
-  local c=0
-  if Unit == nil then return 0 end
-  for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
+    local c=0
+    if Unit == nil then return 0 end
+    for i=1,heroManager.iCount do hero = heroManager:GetHero(i) if hero ~= nil and hero.team ~= myHero.team and hero.x and hero.y and hero.z and GetDistance(hero, Unit) < range then c=c+1 end end return c
   end
 
   function GetClosestAlly()
-  local ally = nil
-  for v,k in pairs(GetAllyHeroes()) do
-    if not ally then ally = k end
-    if GetDistanceSqr(k) < GetDistanceSqr(ally) then
-    ally = k
+    local ally = nil
+    for v,k in pairs(GetAllyHeroes()) do
+      if not ally then ally = k end
+      if GetDistanceSqr(k) < GetDistanceSqr(ally) then
+        ally = k
+      end
     end
-  end
-  return ally
+    return ally
   end
 
   function GetClosestEnemy(pos)
-  local enemy = nil
-  pos = pos or myHero
-  for v,k in pairs(GetEnemyHeroes()) do
-    if not enemy then enemy = k end
-    if GetDistanceSqr(k, pos) < GetDistanceSqr(enemy, pos) then
-    enemy = k
+    local enemy = nil
+    pos = pos or myHero
+    for v,k in pairs(GetEnemyHeroes()) do
+      if not enemy then enemy = k end
+      if GetDistanceSqr(k, pos) < GetDistanceSqr(enemy, pos) then
+        enemy = k
+      end
     end
-  end
-  return enemy
+    return enemy
   end
 
   function AddGapcloseCallback(spell, range, targeted, config)
-  GapcloseSpell = spell
-  GapcloseTime = 0
-  GapcloseUnit = nil
-  GapcloseTargeted = targeted
-  GapcloseRange = range
-  config:addDynamicParam("antigap", "Auto "..str[spell].." on gapclose", SCRIPT_PARAM_ONOFF, true)
-  for _,k in pairs(GetEnemyHeroes()) do
-    if gapcloserTable[k.charName] then
-    config:addParam(k.charName, "Use "..str[spell].." on "..k.charName.." "..(type(gapcloserTable[k.charName]) == 'number' and str[gapcloserTable[k.charName]] or (k.charName == "LeeSin" and "Q" or "E")), SCRIPT_PARAM_ONOFF, true)
-    end
-  end
-  AddProcessSpellCallback(function(unit, spell)
-    if not config.antigap or not gapcloserTable[unit.charName] or not config[unit.charName] or not unit then return end
-    if spell.name == (type(gapcloserTable[unit.charName]) == 'number' and unit:GetSpellData(gapcloserTable[unit.charName]).name or gapcloserTable[unit.charName]) and (spell.target == myHero or GetDistanceSqr(spell.endPos) < GapcloseRange*GapcloseRange*4) then
-    GapcloseTime = os.clock() + 2
-    GapcloseUnit = unit
-    end
-  end)
-  AddTickCallback(function()
-    if sReady[GapcloseSpell] and GapcloseTime and GapcloseUnit and GapcloseTime > os.clock() then
-    if GapcloseTargeted then
-      if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
-      if myHero.charName == "Jayce" and loadedClass:IsRange() then Cast(_R) end
-      Cast(GapcloseSpell, GapcloseUnit)
-      end
-    else 
-      if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
-      Cast(GapcloseSpell)
-      end
-    end
-    else
+    GapcloseSpell = spell
     GapcloseTime = 0
     GapcloseUnit = nil
+    GapcloseTargeted = targeted
+    GapcloseRange = range
+    config:addDynamicParam("antigap", "Auto "..str[spell].." on gapclose", SCRIPT_PARAM_ONOFF, true)
+    for _,k in pairs(GetEnemyHeroes()) do
+      if gapcloserTable[k.charName] then
+        config:addParam(k.charName, "Use "..str[spell].." on "..k.charName.." "..(type(gapcloserTable[k.charName]) == 'number' and str[gapcloserTable[k.charName]] or (k.charName == "LeeSin" and "Q" or "E")), SCRIPT_PARAM_ONOFF, true)
+      end
     end
-  end)
+    AddProcessSpellCallback(function(unit, spell)
+      if not config.antigap or not gapcloserTable[unit.charName] or not config[unit.charName] or not unit then return end
+        if spell.name == (type(gapcloserTable[unit.charName]) == 'number' and unit:GetSpellData(gapcloserTable[unit.charName]).name or gapcloserTable[unit.charName]) and (spell.target == myHero or GetDistanceSqr(spell.endPos) < GapcloseRange*GapcloseRange*4) then
+        GapcloseTime = os.clock() + 2
+        GapcloseUnit = unit
+      end
+    end)
+    AddTickCallback(function()
+      if sReady[GapcloseSpell] and GapcloseTime and GapcloseUnit and GapcloseTime > os.clock() then
+        if GapcloseTargeted then
+          if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
+            if myHero.charName == "Jayce" and loadedClass:IsRange() then Cast(_R) end
+            Cast(GapcloseSpell, GapcloseUnit)
+          end
+        else 
+          if GetDistanceSqr(GapcloseUnit,myHero) < GapcloseRange*GapcloseRange then
+            Cast(GapcloseSpell)
+          end
+        end
+      else
+        GapcloseTime = 0
+        GapcloseUnit = nil
+      end
+    end)
   end
   -- Vars
   if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
@@ -1525,145 +1525,145 @@ class "Yorick"
 -- { Ahri
 
   function Ahri:__init()
-  self.Orb = nil
-  self.tempOrbNID = nil
-  self.tempOrbPOS = nil
-  self.ultOn = 0
+    self.Orb = nil
+    self.tempOrbNID = nil
+    self.tempOrbPOS = nil
+    self.ultOn = 0
   end
 
   function Ahri:Load()
-  self:Menu()
+    self:Menu()
   end
 
   function Ahri:Menu()
-  Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-  Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-  Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-  Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-  Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-  if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
-  Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-  Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
-  Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-  Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-  Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
-  Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-  Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-  Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
-  Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
-  Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
-  Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
-  Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
-  Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
-  Config.Misc:addDynamicParam("Qc", "Catch Q", SCRIPT_PARAM_ONOFF, true)
-  AddGapcloseCallback(_E, myHeroSpellData[2].range, false, Config.Misc)
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.Harass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LaneClear:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 65, 0, 100, 0)
+    Config.LastHit:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    Config.Misc:addDynamicParam("Qc", "Catch Q", SCRIPT_PARAM_ONOFF, true)
+    AddGapcloseCallback(_E, myHeroSpellData[2].range, false, Config.Misc)
   end
 
   function Ahri:ProcessSpell(unit, spell)
-  if unit and unit.isMe and spell then
-    if spell.name == "AhriTumble" then
-    if self.ultOn < os.clock()-10 then 
-      self.ultOn = os.clock()
+    if unit and unit.isMe and spell then
+      if spell.name == "AhriTumble" then
+        if self.ultOn < os.clock()-10 then 
+          self.ultOn = os.clock()
+        end
+      end
     end
-    end
-  end
   end
 
   function Ahri:CreateObj(obj)
-  if obj and obj.name == "missile" and obj.spellOwner.isMe and GetDistance(obj) > 175 then
-    self.Orb = obj
-  end
+    if obj and obj.name == "missile" and obj.spellOwner.isMe and GetDistance(obj) > 175 then
+      self.Orb = obj
+    end
   end
 
   function Ahri:DeleteObj(obj)
-  if self.Orb and obj.networkID == self.Orb.networkID then
-    self.Orb = nil
-  end
+    if self.Orb and obj.networkID == self.Orb.networkID then
+      self.Orb = nil
+    end
   end
 
   function Ahri:Tick()
-  if Config.Misc.Qc then
-    self:CatchQ()
-  end
-  end
-
-  function Ahri:Draw()
-  if self.Orb then
-    DrawCircle3D(self.Orb.x, self.Orb.y, self.Orb.z, myHero.boundingRadius, 2, 0xFFFF0000, 32)
-    DrawLine3D(self.Orb.x, self.Orb.y, self.Orb.z,myHero.x,myHero.y,myHero.z,1,ARGB(55, 255, 255, 255))
-  end
-  end
-
-  function Ahri:LastHit()
-  for i, minion in pairs(Mobs.objects) do 
-    if minion and not minion.dead and minion.visible and minion.bTargetable then
-    local health = GetRealHealth(minion) 
-    for _=0,3 do
-      if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
-      Cast(_, minion)
-      return;
-      end
-    end
-    end
-  end
-  end
-
-  function Ahri:LaneClear()
-  if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
-    BestPos, BestHit = GetLineFarmPosition(myHeroSpellData[_Q].range, myHeroSpellData[_Q].width)
-    if BestPos and BestHit > 0 then 
-    CastSpell(_Q, BestPos.x, BestPos.z)
-    end
-  end
-  if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
-    minion = GetClosestMinion(myHero)
-    if minion and GetRealHealth(minion) < GetDmg(_W, myHero, minion) then 
-    Cast(_W)
-    end
-  end
-  if sReady[_E] and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
-    minion = GetClosestMinion(myHero)
-    if minion and GetRealHealth(minion) < GetDmg(_E, myHero, minion) then 
-    Cast(_E, minion)
-    end
-  end
-  end
-
-  function Ahri:Combo()
-  if not Target then return end
-  if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < myHeroSpellData[0].range then
-    Cast(_Q, Target)
-  end
-  if sReady[_W] and Config.Combo.W and GetDistance(Target) < myHeroSpellData[1].range then
-    CastSpell(_W)
-  end
-  if sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
-    Cast(_E, Target)
-  end
-  if not UnitHaveBuff(Target, "ahriseduce") then
-    if Config.Combo.R then
+    if Config.Misc.Qc then
       self:CatchQ()
     end
   end
-  if Config.Combo.R and GetRealHealth(Target) < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < myHeroSpellData[3].range then
-    local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
-    Cast(_R, ultPos)
-  elseif Config.Combo.R and self.ultOn > os.clock()-10 and not self.Orb and GetDistance(Target) < myHeroSpellData[3].range then
-    local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
-    Cast(_R, ultPos)
+
+  function Ahri:Draw()
+    if self.Orb then
+      DrawCircle3D(self.Orb.x, self.Orb.y, self.Orb.z, myHero.boundingRadius, 2, 0xFFFF0000, 32)
+      DrawLine3D(self.Orb.x, self.Orb.y, self.Orb.z,myHero.x,myHero.y,myHero.z,1,ARGB(55, 255, 255, 255))
+    end
   end
+
+  function Ahri:LastHit()
+    for i, minion in pairs(Mobs.objects) do 
+      if minion and not minion.dead and minion.visible and minion.bTargetable then
+        local health = GetRealHealth(minion) 
+        for _=0,3 do
+          if sReady[_] and GetDmg(_, myHero, minion) >= health and GetDistanceSqr(minion) < myHeroSpellData[_].range^2 and ((Config.kConfig.LastHit and Config.LastHit[str[_]] and Config.LastHit["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] <= 100*myHero.mana/myHero.maxMana)) then
+            Cast(_, minion)
+            return;
+          end
+        end
+      end
+    end
+  end
+
+  function Ahri:LaneClear()
+    if sReady[_Q] and Config.LaneClear.Q and Config.LaneClear.manaQ <= 100*myHero.mana/myHero.maxMana then
+      BestPos, BestHit = GetLineFarmPosition(myHeroSpellData[_Q].range, myHeroSpellData[_Q].width)
+      if BestPos and BestHit > 0 then 
+        CastSpell(_Q, BestPos.x, BestPos.z)
+      end
+    end
+    if sReady[_W] and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana then
+      minion = GetClosestMinion(myHero)
+      if minion and GetRealHealth(minion) < GetDmg(_W, myHero, minion) then 
+        Cast(_W)
+      end
+    end
+    if sReady[_E] and Config.LaneClear.E and Config.LaneClear.manaE <= 100*myHero.mana/myHero.maxMana then
+      minion = GetClosestMinion(myHero)
+      if minion and GetRealHealth(minion) < GetDmg(_E, myHero, minion) then 
+        Cast(_E, minion)
+      end
+    end
+  end
+
+  function Ahri:Combo()
+    if not Target then return end
+    if sReady[_Q] and Config.Combo.Q and GetDistance(Target) < myHeroSpellData[0].range then
+      Cast(_Q, Target)
+    end
+    if sReady[_W] and Config.Combo.W and GetDistance(Target) < myHeroSpellData[1].range then
+      CastSpell(_W)
+    end
+    if sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
+      Cast(_E, Target)
+    end
+    if not UnitHaveBuff(Target, "ahriseduce") then
+      if Config.Combo.R then
+        self:CatchQ()
+      end
+    end
+    if Config.Combo.R and GetRealHealth(Target) < GetDmg(_Q,myHero,Target)+GetDmg(_W,myHero,Target)+GetDmg(_E,myHero,Target)+GetDmg(_R,myHero,Target) and GetDistance(Target) < myHeroSpellData[3].range then
+      local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
+      Cast(_R, ultPos)
+    elseif Config.Combo.R and self.ultOn > os.clock()-10 and not self.Orb and GetDistance(Target) < myHeroSpellData[3].range then
+      local ultPos = Vector(Target.x, Target.y, Target.z) - ( Vector(Target.x, Target.y, Target.z) - Vector(myHero.x, myHero.y, myHero.z)):perpendicular():normalized() * 350
+      Cast(_R, ultPos)
+    end
   end
 
   function Ahri:Harass()
