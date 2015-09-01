@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2445
+_G.ScriptologyVersion       = 2.2446
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -925,20 +925,19 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
   local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
   local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
-
   if spell == "IGNITE" then
     return 50+20*Level/2
   elseif spell == "Tiamat" then
     ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
   elseif spell == "AD" then
     ADDmg = TotalDmg
-    if source.charName == "Ashe" then
+    if source.charName == "Ashe" and crit then
     ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
     elseif source.charName == "Teemo" then
     APDmg = APDmg + myHeroSpellData[_E].dmgAP(source, target)
     elseif source.charName == "Orianna" then
     APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
-    else
+    elseif crit then
     ADDmg = ADDmg * (1 + crit)
     end
     if source.charName == "Vayne" and GetStacks(target) == 2 then
@@ -947,7 +946,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     if GetMaladySlot() then
     APDmg = 15 + 0.15*AP
     end
-  elseif type(spell) == "number" and spellData[source.charName][spell] then
+  elseif type(spell) == "number" and spellData[source.charName] and spellData[source.charName][spell] then
     if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
     if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
     if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
@@ -1442,49 +1441,53 @@ class "Yorick"
 
   function Activator:ProcessSpell(unit, spell)
     --spellData
-    if unit and spell and unit.team ~= myHero.team and spell.name then
-      if spell.target then
-        local dmg = 0
-        if spell.name:lower():find("attack") then
-          dmg = GetDmg("AD", unit, spell.target)*1.25
-        else
-          for _, s in pairs(spellData[unit.charName]) do
-            if s.name and s.name ~= "" and (s.name:lower():find(spell.name:lower()) or spell.name:lower():find(s.name:lower())) then
-              local d = GetDmg(_, unit, spell.target)
-              dmg = d > 0 and d or 150
-            end
-          end
-        end
-        local thp = GetRealHealth(spell.target)
-        if dmg >= thp then
-          if spell.target.isMe then
-            if Heal and self.Config.s.Heal then
-              if myHero:CanUseSpell(Heal) == READY then
-                CastSpell(Heal)
-                return;
-              end
-            end
-            if Barrier and self.Config.s.Barrier and spell.target.isMe then
-              if myHero:CanUseSpell(Barrier) == READY then
-                CastSpell(Barrier)
-                return;
-              end
-            end
-          elseif self.Config.s.SaveAlly and spell.target.team == myHero.team and spell.target.type == myHero.type then
-            if Heal and self.Config.s.Heal then
-              if myHero:CanUseSpell(Heal) == READY and GetDistance(spell.target) < 600 then
-                CastSpell(Heal)
-                return;
+    if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type then
+      local sName = spell.name
+      local target = spell.target
+      if target then
+        if not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+          local dmg = 0
+          if spell.name:lower():find("attack") then
+            dmg = GetDmg("AD", unit, target)*1.25
+          elseif spellData[unit.charName] then
+            for _, s in pairs(spellData[unit.charName]) do
+              if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
+                local d = GetDmg(_, unit, target)
+                dmg = d > 0 and d or 150
               end
             end
           end
+          local thp = GetRealHealth(target)
+          if dmg >= thp then
+            if target.isMe then
+              if Heal and self.Config.s.Heal then
+                if myHero:CanUseSpell(Heal) == READY then
+                  CastSpell(Heal)
+                  return;
+                end
+              end
+              if Barrier and self.Config.s.Barrier and target.isMe then
+                if myHero:CanUseSpell(Barrier) == READY then
+                  CastSpell(Barrier)
+                  return;
+                end
+              end
+            elseif self.Config.s.SaveAlly and target.team == myHero.team and target.type == myHero.type then
+              if Heal and self.Config.s.Heal then
+                if myHero:CanUseSpell(Heal) == READY and GetDistance(target) < 600 then
+                  CastSpell(Heal)
+                  return;
+                end
+              end
+            end
+          end
         end
-      else
+      elseif not target then
         local dmg = 0
         local sp = nil
         local p, _, b = nil, nil, nil --
         for _, s in pairs(spellData[unit.charName]) do
-          if s.name and s.name ~= "" and (s.name:lower():find(spell.name:lower()) or spell.name:lower():find(s.name:lower())) then
+          if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
             local d = GetDmg(_, unit, myHero) * 1.1
             if s.type then
               if s.type == "linear" then
