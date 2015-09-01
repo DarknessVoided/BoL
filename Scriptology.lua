@@ -1331,6 +1331,7 @@ class "Yorick"
       [5] = true, [8] = true, [10] = true, [11] = true, [21] = true, [22] = true, [24] = true,--   24, 5, 11, 22, 21, 8, 10
     }
     self.tick = 0
+    self.tick2 = 0
     self:Load()
     self:AddCallbacks()
   end
@@ -1384,6 +1385,8 @@ class "Yorick"
         end
       end
     end
+    if self.tick2 > os.clock() then return end
+    self.tick2 = os.clock() + 0.25
     if self.Config.s.Cleanse then
       for i = 1, myHero.buffCount do
         local buff = myHero:getBuff(i)
@@ -1391,6 +1394,7 @@ class "Yorick"
         and buff.name ~= nil and (buff.name:lower():find("summonerexhaust") or self.toCleanse[buff.type]) then 
           if self.Config.s.Cleanse and myHero:CanUseSpell(Cleanse) == READY then
             CastSpell(Cleanse)
+            return;
           elseif self.Config.i.Cleanse then
             for _ = ITEM_1, ITEM_7 do
               if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "ItemDervishBlade" or myHero:GetSpellData(_).name == "QuicksilverSash") then
