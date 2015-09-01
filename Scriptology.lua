@@ -1338,11 +1338,19 @@ class "Yorick"
   function Activator:Load()
     self.Config = ScriptologyConfig.Activator
     self.Config:addSubMenu("Summoners", "s")
-    if Flash and false then
-      self.Config.s:addParam("Flash", "Flash", SCRIPT_PARAM_ONOFF, false)
-    end
-    if Smite then
-      self.Config.s:addParam("Smite", "Smite", SCRIPT_PARAM_ONOFF, true)
+    if false then
+      if Flash then
+        self.Config.s:addParam("Flash", "Flash", SCRIPT_PARAM_ONOFF, false)
+      end
+      if Ignite then
+        self.Config.s:addParam("Ignite", "Ignite", SCRIPT_PARAM_ONOFF, true)
+      end
+      if Exhaust then
+        self.Config.s:addParam("Exhaust", "Exhaust", SCRIPT_PARAM_ONOFF, true)
+      end
+      if Smite then
+        self.Config.s:addParam("Smite", "Smite", SCRIPT_PARAM_ONOFF, true)
+      end
     end
     if Barrier then
       self.Config.s:addParam("Barrier", "Barrier", SCRIPT_PARAM_ONOFF, true)
