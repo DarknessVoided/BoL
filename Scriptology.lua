@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2444
+_G.ScriptologyVersion       = 2.2445
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -77,12 +77,14 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   -- { Awareness 
 
     function LoadAwareness(b)
-      if _G.PrinceViewVersion == nil and _G.ScriptologyLoadAwareness then
-        if not b then ScriptologyConfig:addSubMenu("Awareness", "Awareness") end
-        ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-        ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
-        if ScriptologyConfig.Awareness.activate then LoadAwareness2() end
-      end
+      DelayAction(function() 
+        if _G.PrinceViewVersion == nil and _G.DA_LOADED == nil and _G.ScriptologyLoadAwareness then
+          if not b then ScriptologyConfig:addSubMenu("Awareness", "Awareness") end
+          ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
+          ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
+          if ScriptologyConfig.Awareness.activate then LoadAwareness2() end
+        end
+      end, 0.25)
     end
 
     function LoadAwareness2()
@@ -651,6 +653,33 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
   function DrawRectangle(x, y, width, height, color)
     DrawLine(x, y+height*0.5, x+width, y+height*0.5, height, color)
+  end
+
+  local cwhileActions, cwhileActionsExecuter, maxcwhileActions = {}, nil, 0
+  function cwhile(cond, func)
+    if not cwhileActionsExecuter then
+      function cwhileActionsExecuter()
+        for _ = 1, maxcwhileActions do
+          local stuff = cwhileActions[_]
+          if stuff then
+            if stuff.cond() then
+              stuff.func()
+            else
+              cwhileActions[_] = nil
+            end
+          end
+        end
+      end
+      AddTickCallback(cwhileActionsExecuter)
+    end
+    for _ = 1, maxcwhileActions do
+      if cwhileActions[maxcwhileActions] == nil then
+        cwhileActions[_] = { cond = cond, func = func }
+        return;
+      end
+    end
+    maxcwhileActions = maxcwhileActions + 1
+    cwhileActions[spotToAdd or maxcwhileActions] = { cond = cond, func = func, args = args }
   end
 
   function EnableOrbwalker()
@@ -5364,44 +5393,66 @@ class "Yorick"
   end
 
   function Rengar:Animation(unit, ani)
-  if unit and unit.isMe and ani then
-    if ani == "Spell5" and (Config.kConfig.Combo or Config.kConfig.Harass) then
-    if Target and Smite ~= nil and Config.Combo.S and Config.kConfig.Combo then CastSpell(Smite, Target) end
-    if Target and Ignite ~= nil and Config.Combo.I and Config.kConfig.Combo then CastSpell(Ignite, Target) end
-    if Target then DelayAction(function() self:CastHydra() end, 0.125 - GetLatency() / 2000) end
-    if Target then DelayAction(function() self:CastYomuus() end, 0.125 - GetLatency() / 2000) end
-    if Target then 
-      self:LeapCombo()
+    if unit and unit.isMe and ani then
+      if ani == "Spell5" and (Config.kConfig.Combo or Config.kConfig.Harass) then
+        if Target and Smite ~= nil and Config.Combo.S and Config.kConfig.Combo then CastSpell(Smite, Target) end
+        if Target and Ignite ~= nil and Config.Combo.I and Config.kConfig.Combo then CastSpell(Ignite, Target) end
+        if Target then DelayAction(function() self:CastHydra() end, 0.125 - GetLatency() / 2000) end
+        if Target then DelayAction(function() self:CastYomuus() end, 0.125 - GetLatency() / 2000) end
+        if Target then 
+          cwhile(function() 
+            return Target and not Target.dead and Target.visible and Target.bTargetable and GetDistanceSqr(Target) < 1337^2
+          end, function()
+            if myHero.mana == 5 then
+              if Config.Misc.Empower2 == 1 then
+                CastSpell(_Q)
+              elseif Config.Misc.Empower2 == 2 then
+                if GetDistance(Target) < myHeroSpellData[1].width then
+                  CastSpell(_W)
+                end
+              elseif Config.Misc.Empower2 == 3 then
+                CastSpell(_E, Target.x, Target.z)
+              end
+            else
+              if qReady then
+                CastSpell(_Q)
+              elseif wReady then
+                CastSpell(_W)
+              elseif eReady then
+                CastSpell(_E, Target.x, Target.z)
+              end
+            end
+          end)
+        end
+      end
     end
-    end
-  end
   end
 
-  function Rengar:LeapCombo()
-  local qReady, wReady, eReady = (myHero:CanUseSpell(_Q) == READY), (myHero:CanUseSpell(_W) == READY), (myHero:CanUseSpell(_E) == READY)
-  if myHero.mana == 5 then
-    if Config.Misc.Empower2 == 1 then
-    Cast(_Q)
-    elseif Config.Misc.Empower2 == 2 then
-    if GetDistance(Target) < myHeroSpellData[1].width then
-      CastSpell(_W)
+  --[[function Rengar:LeapCombo()
+    local qReady, wReady, eReady = (myHero:CanUseSpell(_Q) == READY), (myHero:CanUseSpell(_W) == READY), (myHero:CanUseSpell(_E) == READY)
+    if myHero.mana == 5 then
+      if Config.Misc.Empower2 == 1 then
+        Cast(_Q)
+      elseif Config.Misc.Empower2 == 2 then
+        if GetDistance(Target) < myHeroSpellData[1].width then
+          CastSpell(_W)
+        end
+      elseif Config.Misc.Empower2 == 3 then
+        CastSpell(_E, Target.x, Target.z)
+      end
+    else
+      if qReady then
+        Cast(_Q)
+      elseif wReady then
+        CastSpell(_W)
+      elseif eReady then
+        CastSpell(_E, Target.x, Target.z)
+      end
     end
-    elseif Config.Misc.Empower2 == 3 then
-    CastSpell(_E, Target.x, Target.z)
+    if Target and not Target.dead and Target.visible and (qReady or wReady or eReady) then
+      DelayAction(function() self:LeapCombo() end, 0.07)
     end
-  else
-    if qReady then
-    Cast(_Q)
-    elseif wReady then
-    CastSpell(_W)
-    elseif eReady then
-    CastSpell(_E, Target.x, Target.z)
-    end
-  end
-  if Target and not Target.dead and Target.visible and (qReady or wReady or eReady) then
-    DelayAction(function() self:LeapCombo() end, 0.07)
-  end
-  end
+  end]]--
 
   function Rengar:CastHydra()
   for slot = ITEM_1, ITEM_6 do
@@ -5422,7 +5473,7 @@ class "Yorick"
   function Rengar:ProcessSpell(unit, spell)
   if unit and spell and unit.isMe and spell.name then
     if spell.name:lower():find("attack") and self.doQ then
-    DelayAction(function() Cast(_Q) end, spell.windUpTime + GetLatency() / 2000)
+    DelayAction(function() CastSpell(_Q) end, spell.windUpTime + GetLatency() / 2000)
     end
   end
   end
@@ -5464,7 +5515,7 @@ class "Yorick"
   end
   if myHero.mana == 5 then
     if Config.Misc.Empower2 == 1 then
-    Cast(_Q)
+    CastSpell(_Q)
     elseif Config.Misc.Empower2 == 2 then
     if GetDistance(Target) < myHeroSpellData[1].range then
       CastSpell(_W)
@@ -7205,7 +7256,7 @@ class "Yorick"
     end
     elseif GetDistance(Target) < 500 then
     if not myHero.isWindingUp then
-      Cast(_Q, Target, 1)
+      Cast(_Q, Target)
     end
     end
   end
