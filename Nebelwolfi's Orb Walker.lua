@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.4641
+_G.NebelwolfisOrbWalkerVersion = 0.4642
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -50,6 +50,7 @@ class "NebelwolfisOrbWalker" -- {
     end, 2)
     self.Mobs = MinionManager()
     self.orbDisabled = false
+    self.windUpPred = 0
     local delay = 0
     if (Set {"Akali", "Maokai", "Olaf", "Shaco"})[myHero.charName] then
       delay = -0.1
@@ -367,6 +368,7 @@ class "NebelwolfisOrbWalker" -- {
             self.orbTable.windUp = 0
             self:WindUp(self.Target)
           end, self.Config.t.cad/1000)
+          self.windUpPred = os.clock() - self.windUpPred + self.Config.t.cad/1000
         end
       end
       if object.name == "AzirSoldier" then
@@ -501,6 +503,7 @@ class "NebelwolfisOrbWalker" -- {
     myHero:Attack(unit)
     self.orbTable.lastAA = os.clock()
     self.orbTable.windUp = 1
+    self.windUpPred = os.clock()
   end
 
   function NebelwolfisOrbWalker:Move(pos)
@@ -555,8 +558,13 @@ class "NebelwolfisOrbWalker" -- {
     if self.Mobs then
       for i, minion in pairs(self.Mobs.objects) do
         if minion and not minion.dead and minion.visible and minion.maxHealth < 100000 and (minion.team == 100 or minion.team == 200) and GetDistanceSqr(minion) < range^2 then
-          local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
-          local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          if self.orbTable.windUp == 0 then
+            local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+            local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.orbTable.windUp + self.Config.t.lhadj/100 - 0.07))
+          else 
+            local hp = self.HP:PredictHealth(minion, (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charNae] or 1800) + self.windUpPred + self.Config.t.lhadj/100 - 0.07))
+            local hp2 = self.HP:PredictHealth(minion, 2 * (GetDistance(myHero, minion) / (self.VP.projectilespeeds[myHero.charName] or 1800) + self.windUpPred + self.Config.t.lhadj/100 - 0.07))
+          end
           if minionTarget == nil and hp > 0 then 
             minionTarget = minion
             health = hp
