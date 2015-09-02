@@ -1,4 +1,4 @@
-_G.NebelwolfisOrbWalkerVersion = 0.463
+_G.NebelwolfisOrbWalkerVersion = 0.464
 _G.NebelwolfisOrbWalkerInit    = true
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("VILKPOHMQNO") 
 
@@ -249,7 +249,7 @@ class "NebelwolfisOrbWalker" -- {
   end
 
   function NebelwolfisOrbWalker:TimeToAttack()
-    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + self.orbTable.animation and self:DoAA()
+    return os.clock() - GetLatency() / 2000 > self.orbTable.lastAA + 1 / self:GetAttackSpeed() and self:DoAA()
   end
 
   function NebelwolfisOrbWalker:TimeToMove()
@@ -332,7 +332,6 @@ class "NebelwolfisOrbWalker" -- {
         if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
           local windUp = 1 / (1.6 * (0.3 + self.Config.t.cad))*myHero.attackSpeed
           self.orbTable.windUp = spell.windUpTime + GetLatency() / 2000
-          self.orbTable.animation = 1 / self:GetAttackSpeed()
           self.orbTable.lastAA = os.clock()
           DelayAction(function()
             self:WindUp(self.Target) 
@@ -370,6 +369,11 @@ class "NebelwolfisOrbWalker" -- {
 
   function NebelwolfisOrbWalker:CreateObj(object)
     if object and object.valid and object.name then
+      if object.name == "missile" then
+        if object.spellOwner.isMe and object.spellName:lower():find("attack") then
+          self.orbTable.windUp = 0
+        end
+      end
       if object.name == "AzirSoldier" then
         self.soldiers[object.networkID] = { obj = object, time = os.clock() + 9}
       end
@@ -500,6 +504,8 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:Attack(unit)
     if _G.Evade or _G.Evading or _G.evade or _G.evading or not self:DoAA() or not ValidTarget(unit) then return end
     myHero:Attack(unit)
+    self.orbTable.lastAA = os.clock()
+    self.orbTable.windUp = 1
   end
 
   function NebelwolfisOrbWalker:Move(pos)
