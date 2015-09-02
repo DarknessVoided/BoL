@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.245
+_G.ScriptologyVersion       = 2.2451
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -3147,25 +3147,65 @@ class "Yorick"
 -- { Draven
 
   function Draven:__init()
+    self.axes = { nil, nil, nil}
   end
 
   function Draven:Load()
     targetSel._dmgType = DAMAGE_PHYSICAL
     targetSel.range = 900
+    self:Menu()
+  end
+
+  function Draven:Menu()
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+  end
+
+  function Draven:Tick()
+    for _, axe in pairs(self.axes) do
+      if axe[2] + 1.2 < os.clock() then
+        table.remove(self.axes, _)
+      end
+    end
+  end
+
+  function Draven:Draw()
+    for _, axe in pairs(self.axes) do
+      if axe[2] + 1.2 > os.clock() then
+        DrawCircle3D(axe[1].x, axe[1].y, axe[1].z, 125, 1, 0xFFFFFFFF, 32)
+      end
+    end
+  end
+
+  function Draven:Combo()
+    if sReady[_Q] then
+      --CastSpell(_Q)
+    end
+    if sReady[_W] then
+      --CastSpell(_W)
+    end
+    local axew = nil
+    for _, axe in pairs(self.axes) do if not axew then axew = axe[1] end end
+    if axew then
+      if GetDistance(axew) > 135 then
+        _G.NebelwolfisOrbWalker:ForcePos(axew)
+        _G.NebelwolfisOrbWalker:SetMove(true)
+      else
+        _G.NebelwolfisOrbWalker:ForcePos(axew)
+        _G.NebelwolfisOrbWalker:SetMove(false)
+      end
+    else
+      if GetDistance(Target) < myHero.range+myHero.boundingRadius+Target.boundingRadius then
+        _G.NebelwolfisOrbWalker:ForcePos(myHero + (Vector(mousePos) - myHero):normalized()*75)
+      else
+        _G.NebelwolfisOrbWalker:ForcePos(nil)
+      end
+      _G.NebelwolfisOrbWalker:SetMove(true)
+    end
   end
 
   function Draven:CreateObj(obj)
     if obj.name == "Draven_Base_Q_reticle.troy" then
-      self.lastForce = obj
-      _G.NebelwolfisOrbWalker:ForcePos(obj)
-    end
-  end
-
-  function Draven:DeleteObj(obj)
-    if obj.name == "Draven_Base_Q_reticle.troy" then
-      if self.lastForce == obj then
-        _G.NebelwolfisOrbWalker:ForcePos(nil)
-      end
+      table.insert( self.axes, { obj, os.clock() })
     end
   end
 
@@ -3184,10 +3224,14 @@ class "Yorick"
     self.Config:addDynamicParam("dance", "Dance", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("laugh", "Laugh", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("toggle", "Toggle", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addParam("time", "Time between", SCRIPT_PARAM_SLICE, 0, 0, 5, 2)
+    self.tick = 0
     AddTickCallback(function() self:Tick() end)
   end
 
   function EmoteSpammer:Tick()
+    if self.tick + self.Config.time > os.clock() then return end
+    self.tick = os.clock()
     local emote = 0
     if self.Config.joke then
       emote = 1
