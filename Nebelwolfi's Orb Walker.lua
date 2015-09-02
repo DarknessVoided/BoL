@@ -348,7 +348,7 @@ class "NebelwolfisOrbWalker" -- {
             end
           end
         end
-      elseif unit.team ~= myHero.team and unit.type == myHero.type then
+      elseif unit.team ~= myHero.team and unit.type == myHero.type and spell.target then
         if ValidTarget(unit, self.myRange) and self:TimeToAttack() and (spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()]) and spell.target.type ~= myHero.type and self.Config.m.LastHit.AttackE and self.Config.k.LastHit and spell.target.health <= self:GetDmg(unit, spell.target) then
           myHero:Attack(unit)
         end
