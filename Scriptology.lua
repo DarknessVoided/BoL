@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2449
+_G.ScriptologyVersion       = 2.245
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -17,6 +17,9 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     LoadEvade()
     LoadOrbwalker()
     LoadChampion()
+    if VIP_USER then
+      EmoteSpammer()
+    end
     Msg("Loaded! (v".._G.ScriptologyVersion..")")
     OnAfterLoad()
   end
@@ -1311,6 +1314,7 @@ class "Diana"
 class "Draven"
 class "DrMundo"
 class "Ekko"
+class "EmoteSpammer"
 class "EvadeS"
 class "Gangplank"
 class "Gnar"
@@ -3169,6 +3173,49 @@ class "Yorick"
 
   function DrMundo:__init()
   end
+
+-- {
+
+  function EmoteSpammer:__init()
+    self.offsets = { 0x97, 0xFD, 0x7D, 0x8B, 0xDC, }
+    self.Config = scriptConfig("EmoteSpammer", "EmoteSpammer")
+    self.Config:addDynamicParam("joke", "Joke", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addDynamicParam("taunt", "Taunt", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addDynamicParam("dance", "Dance", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addDynamicParam("laugh", "Laugh", SCRIPT_PARAM_ONOFF, false)
+    self.Config:addDynamicParam("toggle", "Toggle", SCRIPT_PARAM_ONOFF, false)
+    AddTickCallback(function() self:Tick() end)
+  end
+
+  function EmoteSpammer:Tick()
+    local emote = 0
+    if self.Config.joke then
+      emote = 1
+    elseif self.Config.taunt then
+      emote = 2
+    elseif self.Config.dance then
+      emote = 3
+    elseif self.Config.laugh then
+      emote = 4
+    elseif self.Config.toggle then
+      emote = 5
+    end
+    if emote > 0 then
+      self:Cast(emote)
+    end
+  end
+
+  function EmoteSpammer:Cast(emote)
+    local p = CLoLPacket(0x003B)
+    p.vTable = 0xE44CBC
+    p:EncodeF(myHero.networkID)
+    p:Encode1(self.offsets[emote])
+    p:Encode2(0x2807)
+    p:Encode2(0xA5EF)
+    SendPacket(p)
+  end
+
+-- }
 
 -- { Ekko
 
@@ -5781,12 +5828,12 @@ class "Yorick"
   end
 
   function Riven:CastDance()
-    p = CLoLPacket(256)
-    p.vTable = 15362356
+    local p = CLoLPacket(0x003B)
+    p.vTable = 0xE44CBC
     p:EncodeF(myHero.networkID)
-    p:Encode1(0x07)
-    p:Encode2(0x1C24)
-    p:Encode2(0x41EF)
+    p:Encode1(0x7D)
+    p:Encode2(0x2807)
+    p:Encode2(0xA5EF)
     SendPacket(p)
   end
 
