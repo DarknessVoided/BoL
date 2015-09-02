@@ -514,11 +514,8 @@ class "NebelwolfisOrbWalker" -- {
         myHero:MoveTo(movePos.x, movePos.z)
       end
     else
-      local movePos = myHero + (Vector(pos) - myHero):normalized() * 250
+      local movePos = myHero + (Vector(pos) - myHero):normalized() * 125
       if GetDistance(pos) > myHero.boundingRadius then
-        myHero:MoveTo(movePos.x, movePos.z)
-      else
-        local movePos = myHero + (Vector(pos) - myHero):normalized() * 250
         myHero:MoveTo(movePos.x, movePos.z)
       end
     end
