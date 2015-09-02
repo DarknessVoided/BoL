@@ -371,7 +371,10 @@ class "NebelwolfisOrbWalker" -- {
     if object and object.valid and object.name then
       if object.name == "missile" then
         if object.spellOwner.isMe and object.spellName:lower():find("attack") then
-          self.orbTable.windUp = 0
+          DelayAction(function()
+            self.orbTable.windUp = 0
+            self:WindUp(self.Target)
+          end, self.Config.t.cad/1000)
         end
       end
       if object.name == "AzirSoldier" then
