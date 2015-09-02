@@ -363,7 +363,7 @@ class "NebelwolfisOrbWalker" -- {
   function NebelwolfisOrbWalker:CreateObj(object)
     if object and object.valid and object.name then
       if object.name == "missile" then
-        if object.spellOwner.isMe and object.spellName:lower():find("attack") then
+        if object.spellOwner.isMe and (object.spellName:lower():find("attack") or self.altAttacks[object.spellName:lower()]) then
           DelayAction(function()
             self.orbTable.windUp = 0
             self:WindUp(self.Target)
