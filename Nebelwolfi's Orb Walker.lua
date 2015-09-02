@@ -259,7 +259,7 @@ class "NebelwolfisOrbWalker" -- {
 
   function NebelwolfisOrbWalker:Draw()
     if not self.Config.d.d then return end
-    if (self.orbTable.windUp == 13.37 or self.orbTable.animation == 13.37) and self.Config.s.WindUpNoticeStart then
+    if self.orbTable.windUp == 13.37 and self.orbTable.animation == 13.37 and self.Config.s.WindUpNoticeStart then
       DrawText("Please attack something with an unbuffed autoattack", 20, WINDOW_W/3, WINDOW_H/6, ARGB(255,255,255,255))
     end
     if self.Config.d.AAS then
