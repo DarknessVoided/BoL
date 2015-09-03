@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2452
+_G.ScriptologyVersion       = 2.2453
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -124,9 +124,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     end
 
     function UnloadEvade()
-      Dodgerino = nil
-      package.loaded["EvadeS"] = false
-      Msg("Plugin: 'Evade' unloaded")
+      Msg("Plugin: 'Evade' un-ticked. Press 2x F9 to unload.")
     end
 
   -- }
@@ -175,81 +173,8 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       end
     end
 
-    local TICKER = Ticker()
-    function scriptConfig:clear(clearParams, clearSubMenus, clearTargetSelectors)
-      assert(type(clearParams) == "boolean" and type(clearSubMenus) == "boolean", "ImprovedScriptConfig: wrong argument types (<boolean>, <boolean> expected)")
-
-      if clearParams then
-      while #self._param > 0 do
-        self:removeParam(self._param[1].var)
-      end
-      end
-
-      if clearTargetSelectors then
-      self._tsInstances = {}
-      end
-
-      if clearSubMenus then
-      while #self._subInstances > 0 do
-        local subMenu = self._subInstances[1]
-        subMenu:clear(clearParams, clearSubMenus, clearTargetSelectors)
-        subMenu._parent = nil
-        table.remove(self._subInstances, self:getSubMenuIndex(subMenu.name))
-      end
-      end
-    end
-
-    function scriptConfig:removeSubMenu2(name)
-      assert(type(name) == "string", "ImprovedScriptConfig: wrong argument types (<string> expected)")
-
-      local subMenu = self[name]
-      local subMenuName = self.name .. "_" .. name
-      
-      for _, k in pairs(subMenu._parent._subInstances) do
-      if k.name:lower():find(name:lower()) then
-        k:clear(true,true,true)
-        k = nil
-      end
-      end
-
-      subMenu = nil
-      self[name] = nil
-      return true
-    end
-
     function UnloadOrb()
-      if isNOW then
-        DisableOrbwalker()
-        NOW = nil
-        package.loaded["Nebelwolfi's Orb Walker"] = false
-        isNOW = false
-      end
-      if isSxOrb then
-        DisableOrbwalker()
-        _G.SxOrb = nil
-        package.loaded["SxOrbwalk"] = false
-        isSxOrb = false
-      end
-      if isSOW then
-        DisableOrbwalker()
-        SOWVP = nil
-        package.loaded["SOW"] = false
-        isSOW = false
-      end
-      if isBFW then
-        DisableOrbwalker()
-        package.loaded["Big Fat Orbwalker"] = false
-        isBFW = false
-      end
-        Msg("OrbWalker unloaded!")
-        ScriptologyConfig.Orbwalker:clear(true, true)
-        --pcall(function() ScriptologyConfig:removeSubMenu2("Orbwalker") end)
-        DelayAction(function()
-        --ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
-        ScriptologyConfig.Orbwalker:addParam("info", "Choose your Orbwalker", SCRIPT_PARAM_LIST, 1, {"Nebelwolfi's Orb Walker", "SxOrbWalk", "Simple Orb Walk", "Big Fat Walk"})
-        ScriptologyConfig.Orbwalker:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-        ScriptologyConfig.Orbwalker:setCallback("activate", function(var) if var then LoadOrb() else UnloadOrb() end end)
-      end, 0.5)
+        Msg("OrbWalker un-ticked. Press 2x F9 to unload.")
     end
 
   -- }
@@ -3219,7 +3144,7 @@ class "Yorick"
   function EmoteSpammer:__init()
     self.offsets = { 0x97, 0xFD, 0x7D, 0x8B, 0xDC, }
     ScriptologyConfig:addSubMenu("EmoteSpammer", "EmoteSpammer")
-    self.Config = ScriptologyConfig.EmoteSpammer("EmoteSpammer", "EmoteSpammer")
+    self.Config = ScriptologyConfig.EmoteSpammer
     self.Config:addDynamicParam("joke", "Joke", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("taunt", "Taunt", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("dance", "Dance", SCRIPT_PARAM_ONOFF, false)
