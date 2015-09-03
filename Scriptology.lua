@@ -16,10 +16,10 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     LoadAwareness()
     LoadEvade()
     LoadOrbwalker()
-    LoadChampion()
     if VIP_USER then
       EmoteSpammer()
     end
+    LoadChampion()
     Msg("Loaded! (v".._G.ScriptologyVersion..")")
     OnAfterLoad()
   end
