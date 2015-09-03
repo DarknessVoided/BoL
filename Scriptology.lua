@@ -786,7 +786,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
   function DrawLFC(x, y, z, radius, color)
     if Config.Draws.LFC then
-      DrawCircle3D(x, y, z, radius, 1, color, 32)
+      DrawCircle3D(x, y, z, radius, 2, color, 32)
     else
       local radius = radius or 300
       DrawCircle(x, y, z, radius, color)
