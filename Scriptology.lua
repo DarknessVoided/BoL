@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2451
+_G.ScriptologyVersion       = 2.2452
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -3178,10 +3178,10 @@ class "Yorick"
 
   function Draven:Combo()
     if sReady[_Q] then
-      --CastSpell(_Q)
+      CastSpell(_Q)
     end
     if sReady[_W] then
-      --CastSpell(_W)
+      CastSpell(_W)
     end
     local axew = nil
     for _, axe in pairs(self.axes) do if not axew then axew = axe[1] end end
@@ -3218,7 +3218,8 @@ class "Yorick"
 
   function EmoteSpammer:__init()
     self.offsets = { 0x97, 0xFD, 0x7D, 0x8B, 0xDC, }
-    self.Config = scriptConfig("EmoteSpammer", "EmoteSpammer")
+    ScriptologyConfig:addSubMenu("EmoteSpammer", "EmoteSpammer")
+    self.Config = ScriptologyConfig.EmoteSpammer("EmoteSpammer", "EmoteSpammer")
     self.Config:addDynamicParam("joke", "Joke", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("taunt", "Taunt", SCRIPT_PARAM_ONOFF, false)
     self.Config:addDynamicParam("dance", "Dance", SCRIPT_PARAM_ONOFF, false)
