@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2454
+_G.ScriptologyVersion       = 2.2455
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -3190,7 +3190,7 @@ class "Yorick"
 
   function EmoteSpammer:Cast(emote)
     local p = CLoLPacket(0x003B)
-    p.vTable = 0xE44CBC
+    p.vTable = 0xE432B0
     p:EncodeF(myHero.networkID)
     p:Encode1(self.offsets[emote])
     p:Encode2(0x2807)
@@ -5821,7 +5821,7 @@ class "Yorick"
 
   function Riven:CastDance()
     local p = CLoLPacket(0x003B)
-    p.vTable = 0xE44CBC
+    p.vTable = 0xE432B0
     p:EncodeF(myHero.networkID)
     p:Encode1(0x7D)
     p:Encode2(0x2807)
