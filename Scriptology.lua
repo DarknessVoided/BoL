@@ -5706,7 +5706,7 @@ class "Yorick"
   function Riven:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       local target = self:GetTarget()
-      local windUp = _G.NebelwolfisOrbWalker:GetWindUp()
+      local windUp = 1/_G.NebelwolfisOrbWalker:GetWindUp()
       if spell.name:lower():find("attack") then
         DelayAction(function() 
           if Config.kConfig.Combo then
