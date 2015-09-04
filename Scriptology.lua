@@ -3174,16 +3174,22 @@ class "Yorick"
     local emote = 0
     if self.Config.joke then
       emote = 1
-    elseif self.Config.taunt then
-      emote = 2
-    elseif self.Config.dance then
-      emote = 3
-    elseif self.Config.laugh then
-      emote = 4
-    elseif self.Config.toggle then
-      emote = 5
+      self:Cast(emote)
     end
-    if emote > 0 then
+    if self.Config.taunt then
+      emote = 2
+      self:Cast(emote)
+    end
+    if self.Config.dance then
+      emote = 3
+      self:Cast(emote)
+    end
+    if self.Config.laugh then
+      emote = 4
+      self:Cast(emote)
+    end
+    if self.Config.toggle then
+      emote = 5
       self:Cast(emote)
     end
   end
