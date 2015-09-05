@@ -4596,6 +4596,7 @@ class "Yorick"
       Cast(_E, Target)
     end
     if Config.Combo.R and myHero:CanUseSpell(_R) == READY then
+      DisableOrbwalker()
       CastSpell(_R, Target)
     end
   end
@@ -4623,6 +4624,7 @@ class "Yorick"
         elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and ValidTarget(enemy, myHeroSpellData[2].range) then
           Cast(_E, enemy)
         elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy)*2.5 and Config.Killsteal.R and ValidTarget(enemy, myHeroSpellData[3].range) then
+          DisableOrbwalker()
           CastSpell(_R, enemy)
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and ValidTarget(enemy, 600) then
           CastSpell(Ignite, enemy)
