@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2456
+_G.ScriptologyVersion       = 2.2457
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -6637,12 +6637,16 @@ class "Yorick"
   function Vayne:Draw()
     if not Config.Draws.E or not sReady[_E] then return end
     for k,enemy in pairs(GetEnemyHeroes()) do
-      local pos1 = enemy
-      local pos2 = enemy - (Vector(myHero) - enemy):normalized()*(450*Config.Misc.offsetE/100)
-      local a = WorldToScreen(D3DXVECTOR3(pos1.x, pos1.y, pos1.z))
-      local b = WorldToScreen(D3DXVECTOR3(pos2.x, pos2.y, pos2.z))
-      DrawLine(a.x, a.y, b.x, b.y, 1, 0xFFFFFFFF)
-      DrawCircle(pos2.x, pos2.y, pos2.z, 50, 0xFFFFFFFF)
+      if enemy and enemy.visible and not enemy.dead and enemy.bTargetable then
+        local pos1 = enemy
+        local pos2 = enemy - (Vector(myHero) - enemy):normalized()*(450*Config.Misc.offsetE/100)
+        local a = WorldToScreen(D3DXVECTOR3(pos1.x, pos1.y, pos1.z))
+        local b = WorldToScreen(D3DXVECTOR3(pos2.x, pos2.y, pos2.z))
+        if OnScreen(a.x, a.y, a.z) and OnScreen(b.x, b.y, b.z) then
+          DrawLine(a.x, a.y, b.x, b.y, 1, 0xFFFFFFFF)
+          DrawCircle(pos2.x, pos2.y, pos2.z, 50, 0xFFFFFFFF)
+        end
+      end
     end
   end
 
@@ -6660,11 +6664,11 @@ class "Yorick"
     if unit and spell and unit.isMe and spell.name then
       if spell.name:lower():find("attack") then
         if self.roll and sReady[_Q] then
-          DelayAction(function() CastSpell(_Q, mousePos.x, mousePos.z) end, spell.windUpTime + GetLatency() / 2000)
+          DelayAction(function() CastSpell(_Q, mousePos.x, mousePos.z) end, spell.windUpTime + GetLatency() / 2000 + 0.07)
         end
         if spell.target and spell.target.type == myHero.type and Config.Killsteal.E and sReady[_E] and EnemiesAround(spell.target, 750) == 1 and GetRealHealth(spell.target) < GetDmg(_E, myHero, spell.target)+GetDmg("AD", myHero, spell.target)+(GetStacks(spell.target) >= 1 and GetDmg(_W, myHero, spell.target) or 0) and GetDistance(spell.target) < 650 then
           local t = spell.target
-          DelayAction(function() CastSpell(_E, t) end, spell.windUpTime + GetLatency() / 2000)
+          DelayAction(function() CastSpell(_E, t) end, spell.windUpTime + GetLatency() / 2000 + 0.07)
         end
       end
     end
