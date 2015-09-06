@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2459
+_G.ScriptologyVersion       = 2.246
 _G.ScriptologyLoaded        = false
 _G.ScriptologyAuth          = true
 _G.ScriptologyLoadActivator = true
@@ -7223,7 +7223,7 @@ class "Yorick"
         local qDmg = GetDmg(_Q, myHero, minion)
         local eDmg = GetDmg(_E, myHero, minion)
         if not UnitHaveBuff(minion, "YasuoDashWrapper") then
-        if sReady[_E] and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and GetDistanceSqr(minion) < myHeroSpellData[_E].range^2 and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
+        if sReady[_E] and GetDistance(minion) < myHeroSpellData[_E].range^2 and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and GetDistanceSqr(minion) < myHeroSpellData[_E].range^2 and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
           CastSpell(_E, minion)
         end
         if sReady[_Q] and sReady[_E] and GetDistanceSqr(minion) > (475/2)^2 and GetDistance(minion) < 475^2 and health < qDmg+eDmg then
