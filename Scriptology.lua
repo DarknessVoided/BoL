@@ -5233,9 +5233,10 @@ class "Yorick"
         end
       end
     end
-    if sReady[_R] and GetRealHealth(Target) < self:CalcRComboDmg(Target) and Config.Combo.R then
-      self:CastR(Target)
-    end
+    -- this is shit.
+    --if sReady[_R] and GetRealHealth(Target) < self:CalcRComboDmg(Target) and Config.Combo.R then
+    --  self:CastR(Target)
+    --end
   end
 
   function Orianna:Harass()
