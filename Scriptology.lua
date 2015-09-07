@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2461
+_G.ScriptologyVersion       = 2.2462
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5756,32 +5756,7 @@ class "Yorick"
     if unit and unit.isMe and spell and spell.name then
       local target = self:GetTarget()
       local windUp = 1/_G.NebelwolfisOrbWalker:GetWindUp()
-      if spell.name:lower():find("attack") then
-        DelayAction(function() 
-          if Config.kConfig.Combo then
-            if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
-              if target and not target.dead and target.visible then
-                CastSpell(_R)
-              end
-            elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
-              if target and not target.dead and target.visible then
-                Cast(_R, target)
-              end
-            end
-          end
-          if self.doQ and myHero:CanUseSpell(_Q) == READY then
-            if target and not target.dead and target.visible then
-              CastSpell(_Q, target.x, target.z)
-            end
-            return;
-          end
-          if self.doW and myHero:CanUseSpell(_W) == READY then 
-            if target and not target.dead and target.visible then
-              CastSpell(_W) 
-            end
-          end
-        end, windUp + GetLatency() / 2000)
-      elseif spell.name == "RivenMartyr" then
+      if spell.name == "RivenMartyr" then
         DelayAction(function() 
           if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
             if target and not target.dead and target.visible then
@@ -5838,7 +5813,34 @@ class "Yorick"
 
   function Riven:Animation(unit, ani)
     if unit and unit.isMe and ani then
-      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and self.doQ then
+      local target = self:GetTarget()
+      local windUp = 1/_G.NebelwolfisOrbWalker:GetWindUp()
+      if ani:lower():find("attack") then
+        DelayAction(function() 
+          if Config.kConfig.Combo then
+            if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+              if target and not target.dead and target.visible then
+                CastSpell(_R)
+              end
+            elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
+              if target and not target.dead and target.visible then
+                Cast(_R, target)
+              end
+            end
+          end
+          if self.doQ and myHero:CanUseSpell(_Q) == READY then
+            if target and not target.dead and target.visible then
+              CastSpell(_Q, target.x, target.z)
+            end
+            return;
+          end
+          if self.doW and myHero:CanUseSpell(_W) == READY then 
+            if target and not target.dead and target.visible then
+              CastSpell(_W) 
+            end
+          end
+        end, windUp - GetLatency()/2000 + 0.07)
+      elseif (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and self.doQ then
         self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or nil
         DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
         DelayAction(function() 
