@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2464
+_G.ScriptologyVersion       = 2.2465
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5706,6 +5706,8 @@ class "Yorick"
       ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
       isNOW = true
       --NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
+      _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return self.doQ and myHero:CanUseSpell(_Q) == 0 end)
+      _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
     else
       if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
         require "Nebelwolfi's Orb Walker"
@@ -5914,17 +5916,6 @@ class "Yorick"
               if target and not target.dead and target.visible then
                 Cast(_R, target)
               end
-            end
-          end
-          if self.doQ and myHero:CanUseSpell(_Q) == READY then
-            if target and not target.dead and target.visible then
-              CastSpell(_Q, target.x, target.z)
-            end
-            return;
-          end
-          if self.doW and myHero:CanUseSpell(_W) == READY then 
-            if target and not target.dead and target.visible then
-              CastSpell(_W) 
             end
           end
         end, windUp - GetLatency()/2000 + 0.07)
