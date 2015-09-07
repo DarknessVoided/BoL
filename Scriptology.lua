@@ -5705,8 +5705,7 @@ class "Yorick"
     if _G.NebelwolfisOrbWalkerInit then
       ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
       isNOW = true
-      --NOW = NebelwolfisOrbWalker(ScriptologyConfig.Orbwalker)
-      _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return self.doQ and myHero:CanUseSpell(_Q) == 0 end)
+      _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
       _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
     else
       if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
