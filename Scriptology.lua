@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2463
+_G.ScriptologyVersion       = 2.2464
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -498,7 +498,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
           Champerino:RemoveBuff(unit, buff)
         end)
       end
-      if GetGameRegion():lower():find("NA") then
+      if GetGameRegion():lower():find("na") then
         if Champerino.ProcessAttack ~= nil then
           AddProcessAttackCallback(function(unit, spell)
             Champerino:ProcessAttack(unit, spell)
