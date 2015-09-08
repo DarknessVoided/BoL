@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2465
+_G.ScriptologyVersion       = 2.2466
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5704,6 +5704,8 @@ class "Yorick"
   function Riven:LoadOrb()
     if _G.NebelwolfisOrbWalkerInit then
       ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
+      ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
+      ScriptologyConfig.Orbwalker:addParam("info2", "Do not use any other Orbwalker!", SCRIPT_PARAM_INFO, "")
       isNOW = true
       _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
       _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
