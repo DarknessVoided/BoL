@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2466
+_G.ScriptologyVersion       = 2.2467
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -145,7 +145,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     function LoadOrbwalker()
       if myHero.charName == "Riven" then return end
       if _G.Reborn_Loaded or _G.AutoCarry then
-      elseif _G.MMA_Loaded then
+      elseif _G.MMA_Loaded or _G.MMA_Version then
       elseif _G.NebelwolfisOrbWalkerInit or _G.NebelwolfisOrbWalkerLoaded then
       else
         ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
@@ -504,12 +504,16 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
             Champerino:ProcessAttack(unit, spell)
           end)
         end
-      else
         if Champerino.ProcessSpell ~= nil then
-          AddProcessSpellCallback(function(unit, spell)
+          AddProcessSpellNACallback(function(unit, spell)
             Champerino:ProcessSpell(unit, spell)
           end)
         end
+      end
+      if Champerino.ProcessSpell ~= nil then
+        AddProcessSpellCallback(function(unit, spell)
+          Champerino:ProcessSpell(unit, spell)
+        end)
       end
       if Champerino.Animation ~= nil then
         AddAnimationCallback(function(unit, ani)
@@ -5702,21 +5706,37 @@ class "Yorick"
   end
 
   function Riven:LoadOrb()
-    if _G.NebelwolfisOrbWalkerInit then
-      ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker")
-      ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
-      ScriptologyConfig.Orbwalker:addParam("info2", "Do not use any other Orbwalker!", SCRIPT_PARAM_INFO, "")
-      isNOW = true
-      _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
-      _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
-    else
-      if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
-        require "Nebelwolfi's Orb Walker"
-        self:LoadOrb()
+    if not ScriptologyConfig.Orbwalker then ScriptologyConfig:addSubMenu("Orbwalker", "Orbwalker") end
+    DelayAction(function()
+      if _G.Reborn_Loaded or _G.AutoCarry then
+        ScriptologyConfig.Orbwalker:addParam("info1", "SAC Support loaded!", SCRIPT_PARAM_INFO, "")
+        Msg("Please wait 10 seconds for SAC:R implementation to load!")
+        DelayAction(function()
+          _G.AutoCarry.Plugins:RegisterOnAttacked(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) _G.AutoCarry.Orbwalker:ResetAttackTimer() end end)
+          _G.AutoCarry.Plugins:RegisterOnAttacked(function() if self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) _G.AutoCarry.Orbwalker:ResetAttackTimer() end end)
+        end, 10)
+      elseif _G.MMA_IsLoaded then
+        ScriptologyConfig.Orbwalker:addParam("info1", "MMA Support loaded!", SCRIPT_PARAM_INFO, "")
+        _G.MMA_RegisterCallback('AfterAttackCallbacks', function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) _G.MMA_ResetAutoAttack() end end)
+        _G.MMA_RegisterCallback('AfterAttackCallbacks', function() if self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) _G.MMA_ResetAutoAttack() end end)
+      elseif _G.SxOrb then
+        ScriptologyConfig.Orbwalker:addParam("info1", "SxOrbWalk Support loaded!", SCRIPT_PARAM_INFO, "")
+        SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) _G.SxOrb:ResetAA() end end)
+        SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) _G.SxOrb:ResetAA() end end)
+      elseif _G.NebelwolfisOrbWalkerInit then
+        ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
+        isNOW = true
+        _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
+        _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
       else
-        CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Nebelwolfi%27s%20Orb%20Walker.lua?rand="..random(1,10000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() self:LoadOrb() end, function() end, function() end, function() self:LoadOrb() end)
+        if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
+          require "Nebelwolfi's Orb Walker"
+          self:LoadOrb()
+        else
+          CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Nebelwolfi%27s%20Orb%20Walker.lua?rand="..random(1,10000), LIB_PATH.."Nebelwolfi's Orb Walker.lua", function() self:LoadOrb() end, function() end, function() end, function() self:LoadOrb() end)
+        end
       end
-    end
+    end, 1)
   end
 
   function Riven:Load()
@@ -5797,9 +5817,6 @@ class "Yorick"
     if Config.Combo.Rf and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then
       Config.Combo.Rf = false
     end
-    if not (Config.kConfig.Combo or Config.kConfig.Harass or Config.kConfig.LastHit or Config.kConfig.LaneClear) then
-      _G.NebelwolfisOrbWalker:SetOrb(true)
-    end
   end
 
   function Riven:ProcessAttack(unit, spell)
@@ -5811,7 +5828,7 @@ class "Yorick"
             CastSpell(_R)
           end
         end
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
       elseif spell.name == "RivenTriCleave" then
         self.QDelay = os.clock()
       elseif spell.name == "RivenFeint" then
@@ -5825,17 +5842,17 @@ class "Yorick"
           end, 0.137)
         end
       elseif spell.name == "RivenFengShuiEngine" then
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
         if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
           CastSpell(_Q, target.x, target.z)
         end
       elseif spell.name == "rivenizunablade" then
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
         if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
           CastSpell(_Q, target.x, target.z)
         end
       elseif spell.name == "ItemTiamatCleave" then
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
         if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
           CastSpell(_Q, target.x, target.z)
         end
@@ -5846,8 +5863,22 @@ class "Yorick"
   function Riven:ProcessSpell(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       local target = self:GetTarget()
-      local windUp = 1/_G.NebelwolfisOrbWalker:GetWindUp()
-      if spell.name == "RivenMartyr" then
+      local windUp = _G.NebelwolfisOrbWalkerLoaded and 1/_G.NebelwolfisOrbWalker:GetWindUp() or spell.windUpTime
+      if spell.name:lower():find("attack") then
+        DelayAction(function() 
+          if Config.kConfig.Combo then
+            if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+              if target and not target.dead and target.visible then
+                CastSpell(_R)
+              end
+            elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
+              if target and not target.dead and target.visible then
+                Cast(_R, target)
+              end
+            end
+          end
+        end, windUp - GetLatency()/2000 + 0.07)
+      elseif spell.name == "RivenMartyr" then
         DelayAction(function() 
           if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
             if target and not target.dead and target.visible then
@@ -5855,7 +5886,7 @@ class "Yorick"
             end
           end
         end, windUp + GetLatency() / 2000)
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
       elseif spell.name == "RivenTriCleave" then
         self.QDelay = os.clock()
       elseif spell.name == "RivenFeint" then
@@ -5869,27 +5900,39 @@ class "Yorick"
           end, 0.137)
         end
       elseif spell.name == "RivenFengShuiEngine" then
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
         DelayAction(function() 
           if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
             CastSpell(_Q, target.x, target.z)
           end
         end, windUp + GetLatency() / 2000)
       elseif spell.name == "rivenizunablade" then
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
         DelayAction(function() 
           if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
             CastSpell(_Q, target.x, target.z)
           end
         end, windUp + GetLatency() / 2000)
       elseif spell.name == "ItemTiamatCleave" then
-        _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+        self:ResetAA()
         DelayAction(function()
           if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
             CastSpell(_Q, target.x, target.z)
           end
         end, windUp + GetLatency() / 2000)
       end
+    end
+  end
+
+  function Riven:ResetAA()
+    if _G.NebelwolfisOrbWalkerLoaded then
+      _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+    elseif _G.MMA_Loaded and _G.MMA_ResetAutoAttack then
+      _G.MMA_ResetAutoAttack()
+    elseif _G.AutoCarry then
+      _G.AutoCarry.Orbwalker:ResetAttackTimer()
+    elseif _G.SxOrb then
+      _G.SxOrb:ResetAA()
     end
   end
 
@@ -5905,22 +5948,7 @@ class "Yorick"
   function Riven:Animation(unit, ani)
     if unit and unit.isMe and ani then
       local target = self:GetTarget()
-      local windUp = 1/_G.NebelwolfisOrbWalker:GetWindUp()
-      if ani:lower():find("attack") then
-        DelayAction(function() 
-          if Config.kConfig.Combo then
-            if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
-              if target and not target.dead and target.visible then
-                CastSpell(_R)
-              end
-            elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
-              if target and not target.dead and target.visible then
-                Cast(_R, target)
-              end
-            end
-          end
-        end, windUp - GetLatency()/2000 + 0.07)
-      elseif (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and self.doQ then
+      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and self.doQ then
         self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or nil
         DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
         DelayAction(function() 
@@ -5929,7 +5957,11 @@ class "Yorick"
           else
             myHero:MoveTo(mousePos.x, mousePos.z)
           end
-          _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+          if _G.NebelwolfisOrbWalkerLoaded then
+            _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+          elseif _G.MMA_Loaded then
+            _G.MMA_ResetAutoAttack()
+          end
         end, (ani:find("c") and 0.475 or 0.34))
       elseif ani == "Spell2" then
       elseif ani == "Spell3" then
@@ -5994,7 +6026,7 @@ class "Yorick"
   end
 
   function Riven:Combo()
-    if GetDistance(Target) > _G.NebelwolfisOrbWalker.myRange + 30 and sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
+    if GetDistance(Target) > (_G.NebelwolfisOrbWalkerLoaded and _G.NebelwolfisOrbWalker.myRange or myHero.range+myHero.boundingRadius*2) + 30 and sReady[_E] and Config.Combo.E and GetDistance(Target) < myHeroSpellData[2].range then
       if Target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(Target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(Target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(Target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(Target, 0, true)*0.67 <= GetRealHealth(Target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
         CastSpell(_E, Target.x, Target.z)
         DelayAction(function() CastSpell(_R) end, 0.075) 
