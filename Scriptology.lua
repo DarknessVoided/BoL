@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2467
+_G.ScriptologyVersion       = 2.247
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -57,22 +57,8 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
     function LoadActivator()
       ScriptologyConfig:addSubMenu("Activator", "Activator")
-      if _G.ScriptologyLoadActivator then
-        ScriptologyConfig.Activator:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
-        ScriptologyConfig.Activator:setCallback("activate", function(var) if var then LoadActivator2() else UnloadActivator() end end)
-        if ScriptologyConfig.Activator.activate then LoadActivator2() end
-      end
-    end
-
-    function LoadActivator2()
-      if not Activerino then
-        Activerino = Activator()
-        Msg("Plugin: 'Activator' loaded")
-      end
-    end
-
-    function UnloadActivator()
-      Msg("Plugin: 'Activator' un-ticked. Press 2x F9 to unload.")
+      Activerino = Activator()
+      ScriptologyConfig.Activator:addParam("activate", "Activate", SCRIPT_PARAM_ONOFF, true)
     end
 
   -- }
@@ -609,6 +595,19 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     DrawLine(x, y+height*0.5, x+width, y+height*0.5, height, color)
   end
 
+  function GetDistanceSqr(p1, p2)
+    if not p1 then return math.huge end
+    p2 = p2 or myHero
+    local dx = p1.x - p2.x
+    local dz = (p1.z or p1.y) - (p2.z or p2.y)
+    return dx*dx + dz*dz
+  end
+
+  function GetDistance(p1, p2)
+    p2 = p2 or myHero
+    return math.sqrt(GetDistanceSqr(p1, p2))
+  end
+
   local cwhileActions, cwhileActionsExecuter, maxcwhileActions = {}, nil, 0
   function cwhile(cond, func)
     if not cwhileActionsExecuter then
@@ -776,7 +775,6 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   function DrawForcetarget()
     if Forcetarget ~= nil and Forcetarget.visible and not Forcetarget.dead and Forcetarget.bTargetable then
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2-5, ARGB(255,255,50,50))
-      DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2, ARGB(255,255,50,50))
       DrawLFC(Forcetarget.x, Forcetarget.y, Forcetarget.z, Forcetarget.boundingRadius*2+5, ARGB(255,255,50,50))
     end
   end
@@ -1346,7 +1344,7 @@ class "Yorick"
 
   function Activator:__init()
     self.toCleanse = {
-      [5] = true, [8] = true, [10] = true, [11] = true, [21] = true, [22] = true, [24] = true,--   24, 5, 11, 22, 21, 8, 10
+      [5] = true, [8] = true, [10] = true, [11] = true, [21] = true, [22] = true, [24] = true,
     }
     self.tick = 0
     self.tick2 = 0
@@ -1380,49 +1378,84 @@ class "Yorick"
     end
     if Cleanse then
       self.Config.s:addParam("Cleanse", "Cleanse", SCRIPT_PARAM_ONOFF, true)
+      self.Config.s:addParam("Cleansed", "^ Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
     end
     if Clarity then
       self.Config.s:addParam("Clarity", "Clarity", SCRIPT_PARAM_ONOFF, true)
     end
     self.Config:addSubMenu("Items", "i")
-    self.Config.i:addParam("Cleanse", "Cleanse", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Cleansedb", "Cleanse (Self, Dervish Blade)", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Cleansems", "Cleanse (Self, Mercurial Scimitar)", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Cleanseqss", "Cleanse (Self, Quicksilver Sash)", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Cleansea", "Cleanse (Ally, Mikaels)", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
+    self.Config.i:addParam("Zhonyas", "Auto Zhonyas", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Heals", "Auto Heal (Self)", SCRIPT_PARAM_ONOFF, true)
+    self.Config.i:addParam("Heala", "Auto Heal (Ally)", SCRIPT_PARAM_ONOFF, true)
+    self.Config:addSubMenu("Other", "o")
+    if myHero.charName == "Alistar" then
+      self.Config.o:addParam("CleanseR", "Cleanse (Self, Unbreakable Will)", SCRIPT_PARAM_ONOFF, true)
+      self.Config.o:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
+    elseif myHero.charName == "Gangplank" then
+      self.Config.o:addParam("CleanseW", "Cleanse (Self, Remove Scurvy)", SCRIPT_PARAM_ONOFF, true)
+      self.Config.o:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
+    elseif myHero.charName == "Olaf" then
+      self.Config.o:addParam("CleanseR", "Cleanse (Self, Ragnarok)", SCRIPT_PARAM_ONOFF, true)
+      self.Config.o:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
+    end
   end
 
   function Activator:AddCallbacks()
     AddTickCallback(function() self:Tick() end)
-    if GetGameRegion():lower():find("NA") then
+    if GetGameRegion():lower():find("na") then
       AddProcessAttackCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-    else
-      AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+      AddProcessSpellNACallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
     end
+    AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
+    AddApplyBuffCallback(function(x,y,z) self:ApplyBuff(x,y,z) end)
   end
 
   function Activator:Tick()
+    if not ScriptologyConfig.Activator.activate then return end
     if self.tick > os.clock() then return end
-    self.tick = os.clock() + 0.125
     if self.Config.s.Clarity then
+      self.tick = os.clock() + 0.125
       for _=0,3 do
         if myHero:CanUseSpell(_) == 6 then
           CastSpell(Clarity)
         end
       end
     end
-    if self.tick2 > os.clock() then return end
-    self.tick2 = os.clock() + 0.25
-    if self.Config.s.Cleanse then
-      for i = 1, myHero.buffCount do
-        local buff = myHero:getBuff(i)
-        if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() 
-        and buff.name ~= nil and (buff.name:lower():find("summonerexhaust") or self.toCleanse[buff.type]) then 
-          if self.Config.s.Cleanse and myHero:CanUseSpell(Cleanse) == READY then
-            CastSpell(Cleanse)
+  end
+
+  function Activator:ApplyBuff(source, unit, buff)
+    if not ScriptologyConfig.Activator.activate then return end
+    if unit and unit.team == myHero.team and (self.Config.s.Cleanse or self.Config.i.Cleanse) then
+      if buff and buff.name ~= nil and (buff.name:lower():find("summonerexhaust") or self.toCleanse[buff.type]) then
+        if unit.isMe then
+          if self.Config.o.CleanseW then
+            DelayAction(function() CastSpell(_W) end, self.Config.o.Cleansed)
             return;
-          elseif self.Config.i.Cleanse then
-            for _ = ITEM_1, ITEM_7 do
-              if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "ItemDervishBlade" or myHero:GetSpellData(_).name == "QuicksilverSash") then
-                CastSpell(_)
-                return;
-              end
+          end
+          if self.Config.o.CleanseR then
+            DelayAction(function() CastSpell(_R) end, self.Config.o.Cleansed)
+            return;
+          end
+          for _ = ITEM_1, ITEM_7 do
+            if myHero:CanUseSpell(_) == READY and ((myHero:GetSpellData(_).name == "ItemDervishBlade" and self.Config.i.Cleansedb) or (myHero:GetSpellData(_).name == "QuicksilverSash" and self.Config.i.Cleanseqss) or (myHero:GetSpellData(_).name == "itemmercurial" and self.Config.i.Cleansems)) then
+              DelayAction(function() CastSpell(_) end, self.Config.i.Cleansed)
+              return;
+            end
+          end
+          if self.Config.s.Cleanse and myHero:CanUseSpell(Cleanse) == READY then
+            DelayAction(function() CastSpell(Cleanse) end, self.Config.s.Cleansed)
+            return;
+          end
+        elseif self.Config.s.Cleansea then
+          for _ = ITEM_1, ITEM_7 do
+            if myHero:CanUseSpell(_) == READY and myHero:GetSpellData(_).name == "ItemMorellosBane" then
+              DelayAction(function() CastSpell(_, unit) end, self.Config.i.Cleansed)
+              return;
             end
           end
         end
@@ -1431,7 +1464,7 @@ class "Yorick"
   end
 
   function Activator:ProcessSpell(unit, spell)
-    --spellData
+    if not ScriptologyConfig.Activator.activate then return end
     if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type then
       local sName = spell.name
       local target = spell.target
@@ -1463,24 +1496,48 @@ class "Yorick"
                   return;
                 end
               end
-            elseif self.Config.s.SaveAlly and target.team == myHero.team and target.type == myHero.type then
+              if self.Config.i.Zhonyas then
+                for _ = ITEM_1, ITEM_7 do
+                  if myHero:CanUseSpell(_) == READY and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
+                    CastSpell(_)
+                    return;
+                  end
+                end
+              end
+              if self.Config.i.Heals then
+                for _ = ITEM_1, ITEM_7 do
+                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                    CastSpell(_, myHero)
+                    return;
+                  end
+                end
+              end
+            elseif (self.Config.s.SaveAlly or self.Config.i.Heala) and target.team == myHero.team and target.type == myHero.type then
               if Heal and self.Config.s.Heal then
                 if myHero:CanUseSpell(Heal) == READY and GetDistance(target) < 600 then
                   CastSpell(Heal)
                   return;
                 end
               end
+              if self.Config.i.Heala and GetDistance(target) < 600 then
+                for _ = ITEM_1, ITEM_7 do
+                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                    CastSpell(_, target)
+                    return;
+                  end
+                end
+              end
             end
           end
         end
-      elseif not target then
+      elseif not target and spell.endPos then
         local dmg = 0
         local sp = nil
         local p, _, b = nil, nil, nil --
         for _, s in pairs(spellData[unit.charName]) do
           if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
             local d = GetDmg(_, unit, myHero) * 1.1
-            if s.type then
+            if s.type and spell.endPos then
               if s.type == "linear" then
                 local pos = unit + (Vector(spell.endPos) - unit):normalized()*s.range
                 p, _, b = VectorPointProjectionOnLineSegment(unit, pos, myHero)
@@ -1504,6 +1561,14 @@ class "Yorick"
             if myHero:CanUseSpell(Barrier) == READY then
               CastSpell(Barrier)
               return;
+            end
+          end
+          if self.Config.i.Zhonyas then
+            for _ = ITEM_1, ITEM_7 do
+              if myHero:CanUseSpell(_) == READY and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
+                CastSpell(_)
+                return;
+              end
             end
           end
         end
@@ -2331,6 +2396,7 @@ class "Yorick"
     UpdateWindow()
     self.grabsThrown = 0
     self.grabsLanded = 0
+    self.countNow = 0
   end
 
   function Blitzcrank:Load()
@@ -2356,36 +2422,44 @@ class "Yorick"
     Config.Draws:addParam("Qhc", "Draw Q HitChance", SCRIPT_PARAM_ONOFF, true)
     if Smite ~= nil then Config.Misc:addParam("S", "Smitegrab", SCRIPT_PARAM_ONOFF, true) end
     for _, enemy in pairs(GetEnemyHeroes()) do
-      Config.Misc:addParam(enemy.charName, "Don't Grab "..enemy.charName, SCRIPT_PARAM_ONOFF, false)
+      Config.Misc:addParam("dont"..enemy.charName, "Don't Grab "..enemy.charName, SCRIPT_PARAM_ONOFF, false)
     end
     AddGapcloseCallback(_Q, myHeroSpellData[0].range, false, Config.Misc)
   end
 
   function Blitzcrank:Draw()
-    if Config.Draws.Q and Config.Draws.Qhc and sReady[_Q] and Target ~= nil then
+    if Config.Draws.Q and Config.Draws.Qhc and sReady[_Q] then
       local activeMode = nil
-      if not mode then
-        local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
-        for m, mode in pairs(modes) do
-          if Config.kConfig[mode] then
+      local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
+      for i=1, 4 do
+        local mode = modes[i]
+        if Config.kConfig[mode] then
           activeMode = ScriptologyConfig.Prediction[mode]
-          end
         end
-        if not activeMode then
-          activeMode = "Combo"
-        end
-      else
-        activeMode = mode
       end
-      local CastPosition, HitChance, HeroPosition = Predict(_Q, myHero, Target, activeMode)
-      if CastPosition then
-        DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
-        DrawLine3D(myHero.x, myHero.y, myHero.z, Target.x,   Target.y,   Target.z,   1, ARGB(255,55,55,255))
-        DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
-        DrawLFC(Target.x, Target.y,  Target.z,  myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
+      if not activeMode then
+        activeMode = ScriptologyConfig.Prediction.Combo
+      else
         DrawText("Active Prediction: "..predictionStringTable[activeMode.predQ], 25, WINDOW_W/8, WINDOW_H/4+75, ARGB(255, 255, 255, 255))
-        HitChance = ceil((HitChance > 3 and 300 or HitChance*100)/3)
-        DrawText("Current HitChance: "..(HitChance < 0 and 0 or HitChance).."%", 25, WINDOW_W/8, WINDOW_H/4+100, ARGB(255, 255, 255, 255))
+      end
+      for _, enemy in pairs(GetEnemyHeroes()) do
+        if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and GetDistanceSqr(enemy) < (myHeroSpellData[_Q].range+250)^2 then
+          local CastPosition, HitChance, HeroPosition = Predict(_Q, myHero, enemy, activeMode)
+          if CastPosition then
+            DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
+            DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
+            if predictionStringTable[activeMode.predQ] == "HPrediction" then
+              HitChance = HitChance < 0 and 0 or HitChance / 9
+            elseif predictionStringTable[activeMode.predQ] == "SPrediction" then
+              HitChance = HitChance < 0 and 0 or HitChance / 3
+            elseif predictionStringTable[activeMode.predQ] == "VPrediction" then
+              HitChance = HitChance < 0 and 0 or HitChance / 3
+            end
+            DrawText3D("Current HitChance: "..floor(HitChance*100).."%", enemy.x, enemy.y, enemy.z, 25, ARGB(255, 255, 255, 255), true)
+          end
+          DrawLFC(enemy.x, enemy.y, enemy.z, myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
+          DrawLine3D(myHero.x, myHero.y, myHero.z, enemy.x, enemy.y, enemy.z, 1, ARGB(255,55,55,255))
+        end
       end
     end
     if self.grabsThrown > 0 and self.grabsLanded > 0 then
@@ -2402,17 +2476,22 @@ class "Yorick"
   end
 
   function Blitzcrank:ApplyBuff(unit, source, buff)
-    if unit and buff and unit.team == myHero.team and unit.type == myHero.type and buff.name:lower():find("rocketgrab2") then
-      self.grabsLanded = self.grabsLanded + 1
-      if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harass and Config.Harass.E and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100) then
-        Cast(_E)
+    if unit and buff and unit.team == myHero.team and unit.type == myHero.type then
+      if buff.name:find("Stun") then
+        self.countNow = os.clock()
+      end
+      if buff.name:lower():find("rocketgrab2") and self.countNow < os.clock()+0.5 then
+        self.grabsLanded = self.grabsLanded + 1
+        if (Config.kConfig.Combo and Config.Combo.E) or (Config.kConfig.Harass and Config.Harass.E and Config.Harass.manaQ < myHero.mana/myHero.maxMana*100) then
+          Cast(_E)
+        end
       end
     end
   end
 
   function Blitzcrank:GrabSomeone()
     for _, enemy in pairs(GetEnemyHeroes()) do
-      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and not Config.Misc[enemy.charName] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and not Config.Misc["dont"..enemy.charName] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
         Cast(_Q, enemy)
       end
     end
@@ -5796,16 +5875,17 @@ class "Yorick"
       end
     end
     if Config.Misc.Jump then
-      self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 50
-      self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 225
+      self.jumpPos = myHero + (Vector(mousePos) - myHero):normalized() * 75
+      self.jumpPos2 = myHero + (Vector(mousePos) - myHero):normalized() * 165
+      self.movePos = myHero + (Vector(mousePos) - myHero):normalized() * 450
       if self.QCast < 2 then
-        Cast(_Q, myHero.pos)
+        Cast(_Q, self.jumpPos2)
       end
       if not IsWall(D3DXVECTOR3(self.jumpPos.x,self.jumpPos.y,self.jumpPos.z)) then
-        myHero:MoveTo(self.movePos.x, self.movePos.z)
+        myHero:MoveTo(self.jumpPos2.x, self.jumpPos2.z)
       else
-        if sReady[_Q] then
-          Cast(_Q, mousePos)
+        if not IsWall(D3DXVECTOR3(self.movePos.x,self.movePos.y,self.movePos.z)) then
+          CastSpell(_Q, self.movePos.x, self.movePos.z)
         end
       end
     end
@@ -5816,6 +5896,13 @@ class "Yorick"
     end
     if Config.Combo.Rf and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then
       Config.Combo.Rf = false
+    end
+  end
+
+  function Riven:Draw()
+    if Config.Misc.Jump then
+      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 450
+      DrawLFC(movePos2.x, movePos2.y, movePos2.z, 150, ARGB(255,255,255,255))
     end
   end
 
@@ -5948,21 +6035,23 @@ class "Yorick"
   function Riven:Animation(unit, ani)
     if unit and unit.isMe and ani then
       local target = self:GetTarget()
-      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") and self.doQ then
-        self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or nil
+      if (ani == "Spell1a" or ani == "Spell1b" or ani == "Spell1c") then
+        self.QCast = ani:find("a") and 1 or ani:find("b") and 2 or ani:find("c") and 3 or 0
         DelayAction(function() if myHero:CanUseSpell(_Q) ~= READY then self.QCast = 0 end end, 4)
-        DelayAction(function() 
-          if VIP_USER and myHero.level >= 5 then
-            self.CastDance() 
-          else
-            myHero:MoveTo(mousePos.x, mousePos.z)
-          end
-          if _G.NebelwolfisOrbWalkerLoaded then
-            _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
-          elseif _G.MMA_Loaded then
-            _G.MMA_ResetAutoAttack()
-          end
-        end, (ani:find("c") and 0.475 or 0.34))
+        if self.doQ then
+          DelayAction(function() 
+            if VIP_USER and myHero.level >= 5 then
+              self.CastDance() 
+            else
+              myHero:MoveTo(mousePos.x, mousePos.z)
+            end
+            if _G.NebelwolfisOrbWalkerLoaded then
+              _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+            elseif _G.MMA_Loaded then
+              _G.MMA_ResetAutoAttack()
+            end
+          end, (ani:find("c") and 0.475 or 0.34))
+        end
       elseif ani == "Spell2" then
       elseif ani == "Spell3" then
       elseif ani == "Spell4a" then
@@ -6724,7 +6813,6 @@ class "Yorick"
       if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
         local health = GetRealHealth(enemy)
         local lDmg = (UnitHaveBuff(myHero, "itemmagicshankcharge") and myHero:CalcMagicDamage(enemy, 100+0.1*myHero.ap) or 0)
-        --print(GetDmg(_W, myHero, enemy) + lDmg)
         if health < GetDmg(_E, myHero, enemy) and sReady[_E] and Config.Killsteal.E then
           Cast(_E, enemy)
         elseif health < GetDmg(_W, myHero, enemy) + lDmg and sReady[_W] and Config.Killsteal.W then
