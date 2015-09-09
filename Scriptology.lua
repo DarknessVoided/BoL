@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.247
+_G.ScriptologyVersion       = 2.2471
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -918,14 +918,14 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       if source.charName == "Ashe" and crit then
         ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
       elseif source.charName == "Teemo" then
-        APDmg = APDmg + myHeroSpellData[_E].dmgAP(source, target)
+        APDmg = APDmg + spellData["Teemo"][_E].dmgAP(source, target)
       elseif source.charName == "Orianna" then
         APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
       elseif crit then
         ADDmg = ADDmg * (1 + crit)
       end
-      if source.charName == "Vayne" and GetStacks(target) == 2 then
-        TRUEDmg = TRUEDmg + myHeroSpellData[_W].dmgTRUE(source, target)
+      if myHero.charName == "Vayne" and source.isMe and GetStacks(target) == 2 then
+        TRUEDmg = TRUEDmg + spellData["Vayne"][_W].dmgTRUE(source, target)
       end
       if GetMaladySlot() then
         APDmg = 15 + 0.15*AP
