@@ -1,7 +1,7 @@
-_G.ScriptologyVersion       = 2.2471
+_G.ScriptologyVersion       = 2.2472
 _G.ScriptologyLoaded        = false
-_G.ScriptologyLoadActivator = true
-_G.ScriptologyLoadAwareness = true
+_G.ScriptologyLoadActivator = false
+_G.ScriptologyLoadAwareness = false
 _G.ScriptologyFixBugsplats  = true
 _G.ScriptologyLoadEvade     = false
 _G.ScriptologyAutoUpdate    = true
@@ -1530,7 +1530,7 @@ class "Yorick"
             end
           end
         end
-      elseif not target and spell.endPos then
+      elseif not target and spell.endPos and spellData[unit.charName] then
         local dmg = 0
         local sp = nil
         local p, _, b = nil, nil, nil --
