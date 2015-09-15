@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.249
+_G.ScriptologyVersion       = 2.25
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -2448,9 +2448,7 @@ class "Yorick"
             DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
             if predictionStringTable[activeMode.predQ] == "HPrediction" then
               HitChance = HitChance < 0 and 0 or HitChance / 9
-            elseif predictionStringTable[activeMode.predQ] == "SPrediction" then
-              HitChance = HitChance < 0 and 0 or HitChance / 3
-            elseif predictionStringTable[activeMode.predQ] == "VPrediction" then
+            elseif predictionStringTable[activeMode.predQ] == "SPrediction" or predictionStringTable[activeMode.predQ] == "VPrediction" then
               HitChance = HitChance < 0 and 0 or HitChance / 3
             end
             DrawText3D("Current HitChance: "..floor(HitChance*100).."%", enemy.x, enemy.y, enemy.z, 25, ARGB(255, 255, 255, 255), true)
@@ -6767,8 +6765,123 @@ class "Yorick"
 
 -- }
 
+-- { Thresh
+
   function Thresh:__init()
   end
+
+  function Thresh:Load()
+    self:Menu()
+  end
+
+  function Thresh:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harrass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harrass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.Harrass:addParam("manaE", "Mana E", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harrass", "Harrass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    AddGapcloseCallback(_Q, myHeroSpellData[0].range, false, Config.Misc)
+  end
+
+  function Thresh:Combo()
+    for i, target in pairs(GetEnemyHeroes()) do
+      if target and myHero:CanUseSpell(_E) == READY and Config.Combo.E and GetDistance(target,myHero) < myHeroSpellData[2].range then
+        local flayTowards = nil
+        if #GetAllyHeroes() > 0 then
+          for _,unit in pairs(GetAllyHeroes()) do
+            if GetDistance(unit) < 1000 then
+              flayTowards = unit
+            end
+          end
+        end
+        if flayTowards then
+          Cast(_E, flayTowards, target)
+        else
+          Cast(_E, myHero, target)
+        end
+      end
+      if target and myHero:CanUseSpell(_R) == READY and Config.Combo.R then
+        if GetDistance(target, myHero) <= myHero.range+myHero.boundingRadius+target.boundingRadius or (GetStacks(target) > 0 and GetDistance(target, myHero) < myHeroSpellData[0].range) then
+          CastSpell(_R)
+        end
+      end
+      if target and myHero:CanUseSpell(_Q) == READY and Config.Combo.Q then
+        Cast(_Q, target)
+      end
+    end
+  end
+
+  function Thresh:Harrass()
+    for i, target in pairs(GetEnemyHeroes()) do
+      if target and myHero:CanUseSpell(_E) == READY and Config.Harrass.E and Config.Harrass.manaE <= 100*myHero.mana/myHero.maxMana and GetDistance(target,myHero) < myHeroSpellData[2].range then
+        Cast(_E, target)
+      end
+      if target and myHero:CanUseSpell(_Q) == READY and Config.Harrass.Q and Config.Harrass.manaQ <= 100*myHero.mana/myHero.maxMana then
+        Cast(_Q, target)
+      end
+    end
+  end
+
+  function Thresh:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        if myHero:CanUseSpell(_Q) == READY and GetRealHealth(enemy) < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[0].range^2 then
+          Cast(_Q, enemy)
+        elseif myHero:CanUseSpell(_E) == READY and GetRealHealth(enemy) < GetDmg(_E, myHero, enemy) and Config.Killsteal.E and GetDistanceSqr(enemy) < myHeroSpellData[2].range^2 then
+          Cast(_E, enemy)
+        elseif myHero:CanUseSpell(_R) == READY and GetRealHealth(enemy) < GetDmg(_R, myHero, enemy) and Config.Killsteal.R and GetDistanceSqr(enemy) < (myHeroSpellData[3].range-enemy.boundingRadius)^2 then
+          Cast(_R)
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and GetRealHealth(enemy) < (50 + 20 * myHero.level) and Config.Killsteal.I and GetDistanceSqr(enemy) < 600^2 then
+          CastSpell(Ignite, enemy)
+        end
+      end
+    end
+  end
+
+  function Thresh:Draw()
+    if Config.Draws.Q and Config.Draws.Qhc and sReady[_Q] then
+      local activeMode = nil
+      local modes = {"Combo", "Harass", "LaneClear", "LastHit"}
+      for i=1, 4 do
+        local mode = modes[i]
+        if Config.kConfig[mode] then
+          activeMode = ScriptologyConfig.Prediction[mode]
+        end
+      end
+      if not activeMode then
+        activeMode = ScriptologyConfig.Prediction.Combo
+      else
+        DrawText("Active Prediction: "..predictionStringTable[activeMode.predQ], 25, WINDOW_W/8, WINDOW_H/4+75, ARGB(255, 255, 255, 255))
+      end
+      for _, enemy in pairs(GetEnemyHeroes()) do
+        if enemy and not enemy.dead and enemy.visible and enemy.bTargetable and GetDistanceSqr(enemy) < (myHeroSpellData[_Q].range+250)^2 then
+          local CastPosition, HitChance, HeroPosition = Predict(_Q, myHero, enemy, activeMode)
+          if CastPosition then
+            DrawLine3D(myHero.x, myHero.y, myHero.z, CastPosition.x, CastPosition.y, CastPosition.z, 1, ARGB(155,55,255,55))
+            DrawLFC(CastPosition.x, CastPosition.y, CastPosition.z, myHeroSpellData[0].width, ARGB(255, 0, 255, 0))
+            if predictionStringTable[activeMode.predQ] == "HPrediction" then
+              HitChance = HitChance < 0 and 0 or HitChance / 9
+            elseif predictionStringTable[activeMode.predQ] == "SPrediction" or predictionStringTable[activeMode.predQ] == "VPrediction" then
+              HitChance = HitChance < 0 and 0 or HitChance / 3
+            end
+            DrawText3D("Current HitChance: "..floor(HitChance*100).."%", enemy.x, enemy.y, enemy.z, 25, ARGB(255, 255, 255, 255), true)
+          end
+          DrawLFC(enemy.x, enemy.y, enemy.z, myHeroSpellData[0].width, ARGB(255, 255, 0, 0))
+          DrawLine3D(myHero.x, myHero.y, myHero.z, enemy.x, enemy.y, enemy.z, 1, ARGB(255,55,55,255))
+        end
+      end
+    end
+  end
+
+-- }
 
 -- { Tristana
 
