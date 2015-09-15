@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.2473
+_G.ScriptologyVersion       = 2.248
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -6,6 +6,7 @@ _G.ScriptologyFixBugsplats  = true
 _G.ScriptologyLoadEvade     = false
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology")
+_G._Q, _G._W, _G._E, _G._R  = 0, 1, 2, 3
 local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
 -- { Load
 
@@ -484,7 +485,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
           Champerino:RemoveBuff(unit, buff)
         end)
       end
-      if GetGameRegion():lower():find("na") then
+      --if GetGameRegion():lower():find("na") then
         if Champerino.ProcessAttack ~= nil then
           AddProcessAttackCallback(function(unit, spell)
             Champerino:ProcessAttack(unit, spell)
@@ -495,7 +496,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
             Champerino:ProcessSpell(unit, spell)
           end)
         end
-      end
+      --end
       if Champerino.ProcessSpell ~= nil then
         AddProcessSpellCallback(function(unit, spell)
           Champerino:ProcessSpell(unit, spell)
@@ -980,7 +981,11 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   end
 
   function GetStacks(unit)
-    return stackTable[unit.networkID] or 0
+    if myHero.charName == "Syndra" then
+      return Champerino.stacks
+    else
+      return stackTable[unit.networkID] or 0
+    end
   end
 
   function Cast(spell, target, source)
@@ -6481,8 +6486,88 @@ class "Yorick"
   function Shyvana:__init()
   end
 
+--{ Syndra
+
   function Syndra:__init()
+    self.stacks = 0
+    self.lastBallPos = Vector(0,0,0)
   end
+
+  function Syndra:Load()
+    self:Menu()
+  end
+
+  function Syndra:Menu()
+    Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Combo:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LaneClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.LastHit:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+    Config.Killsteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+    if Ignite ~= nil then Config.Killsteal:addParam("I", "Ignite", SCRIPT_PARAM_ONOFF, true) end
+    Config.Harass:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.Harass:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+    Config.LaneClear:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LaneClear:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaQ", "Mana Q", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.LastHit:addParam("manaW", "Mana W", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    Config.kConfig:addDynamicParam("Combo", "Combo", SCRIPT_PARAM_ONKEYDOWN, false, 32)
+    Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
+    Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
+    Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
+    AddGapcloseCallback(_E, 730, false, Config.Misc)
+  end
+
+  function Syndra:Combo()
+    Cast(_Q, Target)
+    if self.lastBallPos then
+      local x,_,z = VectorPointProjectionOnLineSegment(myHero,Target,self.lastBallPos)
+      if z and GetDistance(x,Target) < 125 then
+        Cast(_E, Target)
+      end
+    end
+    if GetDmg(_R, myHero, Target) > Target.health then
+      CastSpell(_R, Target)
+    end
+  end
+
+  function Syndra:Harass()
+    Cast(_Q, Target)
+  end
+
+  function Syndra:CreateObj(obj)
+    if obj and obj.valid then
+      if obj.name:find("Seed") then
+        self.lastBallPos = Vector(obj)
+        self.stacks = self.stacks + 1
+        DelayAction(function() self.stacks = self.stacks - 1 end, 6.9)
+      end
+    end
+  end
+
+  function Syndra:Killsteal()
+    for k,enemy in pairs(GetEnemyHeroes()) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        if GetDmg(_Q, myHero, enemy) > enemy.health and GetDistance(enemy) < 1000 then
+          Cast(_Q, enemy)
+        elseif GetDmg(_E, myHero, enemy) > enemy.health and GetDistance(enemy) < 1000 then
+          Cast(_E, enemy)
+        elseif GetDmg(_R, myHero, enemy) > enemy.health and GetDistance(enemy) < 1000 then
+          CastSpell(_R, enemy)
+        end
+      end
+    end
+  end
+
+-- }
 
 -- { Talon
 
@@ -6949,11 +7034,11 @@ class "Yorick"
     if unit and spell and unit.isMe and spell.name then
       if spell.name:lower():find("attack") then
         if self.roll and sReady[_Q] then
-          DelayAction(function() CastSpell(_Q, mousePos.x, mousePos.z) end, spell.windUpTime + GetLatency() / 2000 + 0.07)
+          DelayAction(function() CastSpell(_Q, mousePos.x, mousePos.z) end, spell.windUpTime + GetLatency() / 1000 + 0.07)
         end
         if spell.target and spell.target.type == myHero.type and Config.Killsteal.E and sReady[_E] and EnemiesAround(spell.target, 750) == 1 and GetRealHealth(spell.target) < GetDmg(_E, myHero, spell.target)+GetDmg("AD", myHero, spell.target)+(GetStacks(spell.target) >= 1 and GetDmg(_W, myHero, spell.target) or 0) and GetDistance(spell.target) < 650 then
           local t = spell.target
-          DelayAction(function() CastSpell(_E, t) end, spell.windUpTime + GetLatency() / 2000 + 0.07)
+          DelayAction(function() CastSpell(_E, t) end, spell.windUpTime + GetLatency() / 1000 + 0.07)
         end
       end
     end
