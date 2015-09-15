@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.248
+_G.ScriptologyVersion       = 2.249
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -485,18 +485,11 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
           Champerino:RemoveBuff(unit, buff)
         end)
       end
-      --if GetGameRegion():lower():find("na") then
-        if Champerino.ProcessAttack ~= nil then
-          AddProcessAttackCallback(function(unit, spell)
-            Champerino:ProcessAttack(unit, spell)
-          end)
-        end
-        if Champerino.ProcessSpell ~= nil then
-          AddProcessSpellNACallback(function(unit, spell)
-            Champerino:ProcessSpell(unit, spell)
-          end)
-        end
-      --end
+      if Champerino.ProcessAttack ~= nil then
+        AddProcessAttackCallback(function(unit, spell)
+          Champerino:ProcessAttack(unit, spell)
+        end)
+      end
       if Champerino.ProcessSpell ~= nil then
         AddProcessSpellCallback(function(unit, spell)
           Champerino:ProcessSpell(unit, spell)
@@ -4295,29 +4288,6 @@ class "Yorick"
     end
   end
 
-  function LeeSin:ProcessAttack(unit, spell)
-    if unit and spell and unit.isMe and Config.Misc.Insec then
-      if "blindmonkwtwo" then
-      elseif spell.name == "BlindMonkRKick" then
-        if Flash and myHero:CanUseSpell(Flash) == READY then
-          local pos = Vector(myHero) + Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
-          CastSpell(Flash, pos.x, pos.z)
-          pos = Vector(myHero) - Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
-          CastSpell(_Q, pos.x, pos.z)
-          DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.08)
-          DelayAction(function() CastSpell(_Q) end, 0.42)
-          DelayAction(function() CastSpell(_Q) end, 0.92)
-        else
-          local pos = Vector(myHero) + Vector(Vector(spell.target.x, spell.target.y, spell.target.z) - Vector(myHero)):normalized()*550
-          CastSpell(_Q, pos.x, pos.z)
-          DelayAction(function() CastSpell(_Q, pos.x, pos.z) end, 0.08)
-          DelayAction(function() CastSpell(_Q) end, 0.42)
-          DelayAction(function() CastSpell(_Q) end, 0.92)
-        end
-      end
-    end
-  end
-
   function LeeSin:QDmg(unit)
     return 2*GetDmg(_Q, myHero, unit)+myHero:CalcDamage(unit,(unit.maxHealth-unit.health)*0.08)
   end
@@ -5336,10 +5306,6 @@ class "Yorick"
     end
   end
 
-  function Orianna:ProcessAttack(unit, spell)
-    self:ProcessSpell(unit, spell)
-  end
-
   function Orianna:ProcessSpell(unit, spell)
     if unit and spell and unit.isMe then
       if spell.name == "OrianaIzunaCommand" then
@@ -5660,14 +5626,6 @@ class "Yorick"
     end
   end
 
-  function Rengar:ProcessSpell(unit, spell)
-    if unit and spell and unit.isMe and spell.name then
-      if spell.name:lower():find("attack") and self.doQ then
-        DelayAction(function() CastSpell(_Q) end, spell.windUpTime + GetLatency() / 2000)
-      end
-    end
-  end
-
   function Rengar:Combo()
     if UnitHaveBuff(myHero, "rengarpassivebuff") then 
       if IsWallOfGrass(D3DXVECTOR3(myHero.x, myHero.y, myHero.z)) and not IsWallOfGrass(D3DXVECTOR3(Target.x,Target.y,Target.z)) then
@@ -5914,7 +5872,19 @@ class "Yorick"
   function Riven:ProcessAttack(unit, spell)
     if unit and unit.isMe and spell and spell.name then
       local target = self:GetTarget()
-      if spell.name == "RivenMartyr" then
+      if spell.name:lower():find("attack") then
+        if Config.kConfig.Combo then
+          if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
+            if target and not target.dead and target.visible then
+              CastSpell(_R)
+            end
+          elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
+            if target and not target.dead and target.visible then
+              Cast(_R, target)
+            end
+          end
+        end
+      elseif spell.name == "RivenMartyr" then
         if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
           if target and not target.dead and target.visible then
             CastSpell(_R)
@@ -5956,21 +5926,7 @@ class "Yorick"
     if unit and unit.isMe and spell and spell.name then
       local target = self:GetTarget()
       local windUp = _G.NebelwolfisOrbWalkerLoaded and 1/_G.NebelwolfisOrbWalker:GetWindUp() or spell.windUpTime
-      if spell.name:lower():find("attack") then
-        DelayAction(function() 
-          if Config.kConfig.Combo then
-            if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
-              if target and not target.dead and target.visible then
-                CastSpell(_R)
-              end
-            elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
-              if target and not target.dead and target.visible then
-                Cast(_R, target)
-              end
-            end
-          end
-        end, windUp - GetLatency()/2000 + 0.07)
-      elseif spell.name == "RivenMartyr" then
+      if spell.name == "RivenMartyr" then
         DelayAction(function() 
           if Config.Combo.Rf and myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then
             if target and not target.dead and target.visible then
@@ -6621,16 +6577,6 @@ class "Yorick"
     end
   end
 
-  function Talon:ProcessSpell(unit, spell)
-    if unit and spell and unit.isMe and spell.name then
-      if spell.name:lower():find("attack") then
-        if self.doQ and sReady[_Q] then
-          DelayAction(function() CastSpell(_Q) end, spell.windUpTime + GetLatency() / 2000)
-        end
-      end
-    end
-  end
-
   function Talon:LastHit()
     if sReady[_W] and ((Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW <= 100*myHero.mana/myHero.maxMana)) then
       for _, minion in pairs(Mobs.objects) do
@@ -6762,17 +6708,6 @@ class "Yorick"
   function Teemo:Tick()
     self.doQ = (Config.kConfig.Combo and Config.Combo.Q) or (Config.kConfig.Harass and Config.Harass.Q) or (Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.manaQ/100 < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.manaQ/100 < myHero.mana/myHero.maxMana)
     myHeroSpellData[_R].range = 300*myHero:GetSpellData(_R).level
-  end
-
-  function Teemo:ProcessSpell(unit, spell)
-    if unit and spell and unit.isMe and spell.name then
-      if spell.name:lower():find("attack") then
-        if self.doQ and sReady[_Q] then
-          local target = spell.target
-          DelayAction(function() CastSpell(_Q, target) end, spell.windUpTime + GetLatency() / 2000)
-        end
-      end
-    end
   end
 
   function Teemo:ProcessAttack(unit, spell)
@@ -7025,20 +6960,6 @@ class "Yorick"
         if spell.target and spell.target.type == myHero.type and Config.Killsteal.E and sReady[_E] and EnemiesAround(spell.target, 750) == 1 and GetRealHealth(spell.target) < GetDmg(_E, myHero, spell.target)+GetDmg("AD", myHero, spell.target)+(GetStacks(spell.target) >= 1 and GetDmg(_W, myHero, spell.target) or 0) and GetDistance(spell.target) < 650 then
           local t = spell.target
           CastSpell(_E, spell.target)
-        end
-      end
-    end
-  end
-
-  function Vayne:ProcessSpell(unit, spell)
-    if unit and spell and unit.isMe and spell.name then
-      if spell.name:lower():find("attack") then
-        if self.roll and sReady[_Q] then
-          DelayAction(function() CastSpell(_Q, mousePos.x, mousePos.z) end, spell.windUpTime + GetLatency() / 1000 + 0.07)
-        end
-        if spell.target and spell.target.type == myHero.type and Config.Killsteal.E and sReady[_E] and EnemiesAround(spell.target, 750) == 1 and GetRealHealth(spell.target) < GetDmg(_E, myHero, spell.target)+GetDmg("AD", myHero, spell.target)+(GetStacks(spell.target) >= 1 and GetDmg(_W, myHero, spell.target) or 0) and GetDistance(spell.target) < 650 then
-          local t = spell.target
-          DelayAction(function() CastSpell(_E, t) end, spell.windUpTime + GetLatency() / 1000 + 0.07)
         end
       end
     end
@@ -7486,7 +7407,11 @@ class "Yorick"
   end
 
   function Yasuo:ProcessAttack(unit, spell)
-    self:ProcessSpell(unit, spell)
+    if unit and spell and unit.isMe and spell.name and spell.name:lower():find("attack") and spell.target and not spell.target.dead and ((Config.kConfig.LastHit and GetDmg(_Q, myHero, spell.target) > spell.target.health and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
+      CastSpell(_Q, spell.target.x, spell.target.z)
+    else
+      self:ProcessSpell(unit, spell)
+    end
   end
 
   function Yasuo:ProcessSpell(unit, spell)
@@ -7508,10 +7433,6 @@ class "Yorick"
           end
         end
       end
-    end
-    if unit and spell and unit.isMe and spell.name and spell.name:lower():find("attack") and spell.target and not spell.target.dead and ((Config.kConfig.LastHit and GetDmg(_Q, myHero, spell.target) > spell.target.health and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
-      local t = spell.target
-      DelayAction(function() CastSpell(_Q, t.x, t.z) end, spell.windUpTime + GetLatency() / 2000)
     end
   end
 
