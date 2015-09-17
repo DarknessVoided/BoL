@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.25
+_G.ScriptologyVersion       = 2.26
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -3279,7 +3279,7 @@ class "Yorick"
 -- {
 
   function EmoteSpammer:__init()
-    self.offsets = { 0x97, 0xFD, 0x7D, 0x8B, 0xDC, }
+    self.offsets = { 0xCB, 0xEB, 0xFB, 0xD8, 0xB4, }
     ScriptologyConfig:addSubMenu("EmoteSpammer", "EmoteSpammer")
     self.Config = ScriptologyConfig.EmoteSpammer
     self.Config:addDynamicParam("joke", "Joke", SCRIPT_PARAM_ONOFF, false)
@@ -3295,36 +3295,30 @@ class "Yorick"
   function EmoteSpammer:Tick()
     if self.tick + self.Config.time > os.clock() then return end
     self.tick = os.clock()
-    local emote = 0
     if self.Config.joke then
-      emote = 1
-      self:Cast(emote)
+      self:Cast(1)
     end
     if self.Config.taunt then
-      emote = 2
-      self:Cast(emote)
+      self:Cast(2)
     end
     if self.Config.dance then
-      emote = 3
-      self:Cast(emote)
+      self:Cast(3)
     end
     if self.Config.laugh then
-      emote = 4
-      self:Cast(emote)
+      self:Cast(4)
     end
     if self.Config.toggle then
-      emote = 5
-      self:Cast(emote)
+      self:Cast(5)
     end
   end
 
   function EmoteSpammer:Cast(emote)
-    local p = CLoLPacket(0x003B)
-    p.vTable = 0xE432B0
+    local p = CLoLPacket(0x134)
+    p.vTable = 0xE0DABC
     p:EncodeF(myHero.networkID)
     p:Encode1(self.offsets[emote])
-    p:Encode2(0x2807)
-    p:Encode2(0xA5EF)
+    p:Encode2(0xDC06)
+    p:Encode2(0xF192)
     SendPacket(p)
   end
 
@@ -6020,12 +6014,12 @@ class "Yorick"
   end
 
   function Riven:CastDance()
-    local p = CLoLPacket(0x003B)
-    p.vTable = 0xE432B0
+    local p = CLoLPacket(0x134)
+    p.vTable = 0xE0DABC
     p:EncodeF(myHero.networkID)
-    p:Encode1(0x7D)
-    p:Encode2(0x2807)
-    p:Encode2(0xA5EF)
+    p:Encode1(0xFB)
+    p:Encode2(0xDC06)
+    p:Encode2(0xF192)
     SendPacket(p)
   end
 
