@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.26
+_G.ScriptologyVersion       = 2.261
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -270,8 +270,8 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
         for _=-2, 3 do
           if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
-          ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
-          ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 2)
+            ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
+            ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 2)
           end
         end
       end
@@ -1405,10 +1405,7 @@ class "Yorick"
 
   function Activator:AddCallbacks()
     AddTickCallback(function() self:Tick() end)
-    if GetGameRegion():lower():find("na") then
-      AddProcessAttackCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-      AddProcessSpellNACallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
-    end
+    AddProcessAttackCallback(function(unit, spell) self:ProcessAttack(unit, spell) end)
     AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
     AddApplyBuffCallback(function(x,y,z) self:ApplyBuff(x,y,z) end)
   end
@@ -1461,22 +1458,79 @@ class "Yorick"
     end
   end
 
+  function Activator:ProcessAttack(unit, spell)
+    if not ScriptologyConfig.Activator.activate then return end
+    if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spell.name:lower():find("attack") then
+      local sName = spell.name
+      local target = spell.target
+      if target then
+        if not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+          local dmg = GetDmg("AD", unit, target)*1.25
+          local thp = GetRealHealth(target)
+          if dmg >= thp then
+            if target.isMe then
+              if Heal and self.Config.s.Heal then
+                if myHero:CanUseSpell(Heal) == READY then
+                  CastSpell(Heal)
+                  return;
+                end
+              end
+              if Barrier and self.Config.s.Barrier and target.isMe then
+                if myHero:CanUseSpell(Barrier) == READY then
+                  CastSpell(Barrier)
+                  return;
+                end
+              end
+              if self.Config.i.Zhonyas then
+                for _ = ITEM_1, ITEM_7 do
+                  if myHero:CanUseSpell(_) == READY and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
+                    CastSpell(_)
+                    return;
+                  end
+                end
+              end
+              if self.Config.i.Heals then
+                for _ = ITEM_1, ITEM_7 do
+                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                    CastSpell(_, myHero)
+                    return;
+                  end
+                end
+              end
+            elseif (self.Config.s.SaveAlly or self.Config.i.Heala) and target.team == myHero.team and target.type == myHero.type then
+              if Heal and self.Config.s.Heal then
+                if myHero:CanUseSpell(Heal) == READY and GetDistance(target) < 600 then
+                  CastSpell(Heal)
+                  return;
+                end
+              end
+              if self.Config.i.Heala and GetDistance(target) < 600 then
+                for _ = ITEM_1, ITEM_7 do
+                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                    CastSpell(_, target)
+                    return;
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   function Activator:ProcessSpell(unit, spell)
     if not ScriptologyConfig.Activator.activate then return end
-    if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type then
+    if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spellData[unit.charName] then
       local sName = spell.name
       local target = spell.target
       if target then
         if not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
           local dmg = 0
-          if spell.name:lower():find("attack") then
-            dmg = GetDmg("AD", unit, target)*1.25
-          elseif spellData[unit.charName] then
-            for _, s in pairs(spellData[unit.charName]) do
-              if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
-                local d = GetDmg(_, unit, target)
-                dmg = d > 0 and d or 150
-              end
+          for _, s in pairs(spellData[unit.charName]) do
+            if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
+              local d = GetDmg(_, unit, target)
+              dmg = d > 0 and d or 150
             end
           end
           local thp = GetRealHealth(target)
@@ -6344,12 +6398,13 @@ class "Yorick"
           Cast(_R)
           return;
         else
-          for _=0, 3 do
+            if myHero:CanUseSpell(_Q) == READY and Config.Combo[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+              Cast(_Q, enemy.pos)
+              break;
+            end
+          for _=1, 3 do
             if myHero:CanUseSpell(_) == READY and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
-              local tempPred = ScriptologyConfig.Prediction.Combo.Q
-              ScriptologyConfig.Prediction.Combo.Q = 0
               Cast(_, enemy)
-              ScriptologyConfig.Prediction.Combo.Q = tempPred
               break;
             end
           end
