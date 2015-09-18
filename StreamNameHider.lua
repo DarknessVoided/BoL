@@ -22,7 +22,7 @@ function OnDraw()
 end
 
 function DrawRectangle(x, y, width, height, color)
-  DrawLine(x, y+height*0.5, x+width, y+height*0.5, height*0.5, color)
+  DrawLine(x, y, x+width, y, height*0.5, color)
 end
 
 function OnWndMsg(msg,key)
