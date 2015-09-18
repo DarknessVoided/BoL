@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.262
+_G.ScriptologyVersion       = 2.263
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -7532,7 +7532,6 @@ class "Yorick"
     end
   end
 
-
   function Yasuo:Tick()
     if Config.Misc.Flee then
       myHero:MoveTo(mousePos.x,mousePos.z)
@@ -7570,27 +7569,49 @@ class "Yorick"
   end
 
   function Yasuo:ProcessAttack(unit, spell)
-    if unit and spell and unit.isMe and spell.name and spell.name:lower():find("attack") and spell.target and not spell.target.dead and ((Config.kConfig.LastHit and GetDmg(_Q, myHero, spell.target) > spell.target.health and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
-      CastSpell(_Q, spell.target.x, spell.target.z)
-    else
-      self:ProcessSpell(unit, spell)
+    if unit and spell and unit.isMe and spell.name then
+      if spell.name:lower():find("attack") and spell.target and not spell.target.dead and ((Config.kConfig.LastHit and GetDmg(_Q, myHero, spell.target) > spell.target.health and Config.LastHit.Q) or (Config.kConfig.LaneClear and Config.LaneClear.Q)) then
+        CastSpell(_Q, spell.target.x, spell.target.z)
+      else
+        self:ProcessSpell(unit, spell)
+      end
     end
   end
 
   function Yasuo:ProcessSpell(unit, spell)
     if (Config.Misc.Wa or (Config.kConfig.Combo and Config.Combo.W)) and unit and unit.team ~= myHero.team and GetDistance(unit) < 1500 then
-      if myHero == spell.target and spell.name:lower():find("attack") and unit.range >= 450 and Config.Misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
-        local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
-        Cast(_W, wPos)
-        elseif spell.endPos and not spell.target then
-        if Config.Windwall and spellData and spellData[unit.charName] then
-          for _=0, 3 do
+      if spell.target and myHero == spell.target then
+        if spell.name:lower():find("attack") and unit.range >= 450 and Config.Misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
+          local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
+          Cast(_W, wPos)
+        else
+          if Config.Windwall and spellData and spellData[unit.charName] then
             local data = spellData[unit.charName]
-            if Config.Windwall[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and (data[_].name:lower():find(spell.name:lower()) or spell.name:lower():find(data[_].name:lower())) then
-              local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*GetDistance(unit)
-              if GetDistance(makeUpPos) < myHero.boundingRadius*3 or GetDistance(spell.endPos) < myHero.boundingRadius*3 then
+            for _=0, 3 do
+              if Config.Windwall[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and (data[_].name:lower():find(spell.name:lower()) or spell.name:lower():find(data[_].name:lower())) then
                 local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
                 Cast(_W, wPos)
+              end
+            end
+          end
+        end
+      elseif spell.endPos and spell.target == nil then
+        if Config.Windwall and spellData and spellData[unit.charName] then
+          local data = spellData[unit.charName]
+          for _=0, 3 do
+            if Config.Windwall[unit.charName..str[_]] and data[_] and data[_].name and data[_].name ~= "" and data[_].width and (data[_].name:lower():find(spell.name:lower()) or spell.name:lower():find(data[_].name:lower())) then
+              if data[_].type == "circular" then
+                if GetDistance(spell.endPos) < data[_].width then
+                  local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
+                  Cast(_W, wPos)
+                end
+              elseif data[_].type == "linear" then
+                local makeUpPos = unit + (Vector(spell.endPos)-unit):normalized()*data[_].range
+                local x,_,z = VectorPointProjectionOnLineSegment(makeUpPos,unit,myHero)
+                if z and GetDistance(x) < data[_].width then
+                  local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
+                  Cast(_W, wPos)
+                end
               end
             end
           end
@@ -7637,26 +7658,27 @@ class "Yorick"
 
   function Yasuo:LastHit()
     if ((Config.kConfig.LastHit and Config.LastHit.Q and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.Q and Config.LaneClear.E)) or ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) then
-      for _, minion in pairs(Mobs.objects) do
-      if minion and not minion.dead and minion.visible and minion.bTargetable then
-        local health = GetRealHealth(minion)
-        local qDmg = GetDmg(_Q, myHero, minion)
-        local eDmg = GetDmg(_E, myHero, minion)
-        if not UnitHaveBuff(minion, "YasuoDashWrapper") then
-        if sReady[_E] and GetDistance(minion) < myHeroSpellData[_E].range^2 and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and GetDistanceSqr(minion) < myHeroSpellData[_E].range^2 and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
-          CastSpell(_E, minion)
+      for _=1, #Mobs.objects do
+        local minion = Mobs.objects[_]
+        if minion and not minion.dead and minion.visible and minion.bTargetable then
+          local health = GetRealHealth(minion)
+          local qDmg = GetDmg(_Q, myHero, minion)
+          local eDmg = GetDmg(_E, myHero, minion)
+          if not UnitHaveBuff(minion, "YasuoDashWrapper") then
+            if sReady[_E] and GetDistanceSqr(minion) < myHeroSpellData[_E].range^2 and ((Config.kConfig.LastHit and Config.LastHit.E) or (Config.kConfig.LaneClear and Config.LaneClear.E)) and GetDistanceSqr(minion) < myHeroSpellData[_E].range^2 and not UnitHaveBuff(minion, "YasuoDashWrapper") and health < eDmg then
+              CastSpell(_E, minion)
+            end
+            if sReady[_Q] and sReady[_E] and GetDistanceSqr(minion) > (475/2)^2 and GetDistanceSqr(minion) < 475^2 and health < qDmg+eDmg then
+              CastSpell(_E, minion)
+              DelayAction(function() 
+                CastSpell(_Q)
+              end, 0.125)
+            end
+          end
+          if sReady[_Q] and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 and health < qDmg then
+            CastSpell(_Q, minion.x, minion.z)
+          end
         end
-        if sReady[_Q] and sReady[_E] and GetDistanceSqr(minion) > (475/2)^2 and GetDistance(minion) < 475^2 and health < qDmg+eDmg then
-          CastSpell(_E, minion)
-          DelayAction(function() 
-          CastSpell(_Q)
-          end, 0.125)
-        end
-        end
-        if sReady[_Q] and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 and health < qDmg then
-          CastSpell(_Q, minion.x, minion.z)
-        end
-      end
       end
     end
   end

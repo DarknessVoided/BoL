@@ -127,8 +127,8 @@ return {
 	},
 	["Gangplank"] = {
 		[_Q] = { name = "GangplankQWrapper", range = 900},
-		[_E] = { name = "GangplankE", speed = 1300, delay = 0.25, range = 900, width = 250, collision = false, aoe = true, type = "circular"},
-		[_R] = { name = "GangplankR", speed = math.huge, delay = 0.25, range = 25000, width = 575, collision = false, aoe = true, type = "circular"}
+		[_E] = { name = "", speed = math.huge, delay = 0.25, range = 900, width = 250, collision = false, aoe = true, type = "circular"},
+		[_R] = { name = "", speed = math.huge, delay = 0.25, range = 25000, width = 575, collision = false, aoe = true, type = "circular"}
 	},
 	["Garen"] = {
 	},
