@@ -8,8 +8,8 @@ Config:addSubMenu("Lines", "Lines")
 
 for i=1, 10 do
   local num = #lines
-  Config.Lines:addParam("X"..num, "Line "..num.." XPos", SCRIPT_PARAM_SLICE, WINDOW_W/2, 0, WINDOW_W, 0)
-  Config.Lines:addParam("Y"..num, "Line "..num.." YPos", SCRIPT_PARAM_SLICE, WINDOW_H/2, 0, WINDOW_H, 0)
+  Config.Lines:addParam("X"..num, "Line "..num.." XPos", SCRIPT_PARAM_SLICE, WINDOW_W/2, WINDOW_W/3, 2*WINDOW_W/3, 0)
+  Config.Lines:addParam("Y"..num, "Line "..num.." YPos", SCRIPT_PARAM_SLICE, WINDOW_H/2, WINDOW_W/8, 7*WINDOW_H/8, 0)
   table.insert(lines, {x = function() return Config.Lines["X"..num] end, y = function() return Config.Lines["Y"..num] end})
 end
 
