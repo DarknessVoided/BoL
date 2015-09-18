@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.261
+_G.ScriptologyVersion       = 2.262
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -13,9 +13,9 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   function OnLoad()
     Update()
     LoadSpellData()
-    LoadActivator()
-    LoadAwareness()
-    LoadEvade()
+    if _G.ScriptologyLoadActivator then LoadActivator() end
+    if _G.ScriptologyLoadAwareness then LoadAwareness() end
+    if _G.ScriptologyLoadEvade then LoadEvade() end
     LoadOrbwalker()
     if VIP_USER then
       EmoteSpammer()
@@ -59,7 +59,8 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     function LoadActivator()
       ScriptologyConfig:addSubMenu("Activator", "Activator")
       Activerino = Activator()
-      ScriptologyConfig.Activator:addParam("activate", "Activate", SCRIPT_PARAM_ONOFF, true)
+      ScriptologyConfig.Activator:addParam("activate", "Activate", SCRIPT_PARAM_ONOFF, false)
+      DelayAction(function() ScriptologyConfig.Activator.activate = false end, 0.1)
     end
 
   -- }
@@ -69,7 +70,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     function LoadAwareness(b)
       if not b then ScriptologyConfig:addSubMenu("Awareness", "Awareness") end
       DelayAction(function() 
-        if _G.PrinceViewVersion == nil and _G.DA_LOADED == nil and _G.ScriptologyLoadAwareness then
+        if _G.PrinceViewVersion == nil and _G.DA_LOADED == nil then
           ScriptologyConfig.Awareness:addParam("info", "Choose your Awareness", SCRIPT_PARAM_LIST, 1, {"Xawareness", "Inbuilt Awareness"})
           ScriptologyConfig.Awareness:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
           ScriptologyConfig.Awareness:setCallback("activate", function(var) if var then LoadAwareness2() else UnloadAwareness() end end)
