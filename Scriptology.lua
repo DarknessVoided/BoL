@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.263
+_G.ScriptologyVersion       = 2.264
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5587,6 +5587,17 @@ class "Yorick"
     self.doQ = (myHero.mana == 5 and (Config.Misc.Empower2 == 1 and self.doQ) or self.doQ)
   end
 
+  function Rengar:Draw()
+    if self.jumpCombo then
+      for i=-1,1,1 do
+        for j=-1,1,1 do
+          DrawText("Jump Combo Active!", 30, WINDOW_W/2+i-GetTextArea("Jump Combo Active!", 30).x/2, WINDOW_H/4+j, ARGB(255,0,0,0))
+        end
+      end
+      DrawText("Jump Combo Active!", 30, WINDOW_W/2-GetTextArea("Jump Combo Active!", 30).x/2, WINDOW_H/4, ARGB(255,255,0,0))
+    end
+  end
+
   function Rengar:Animation(unit, ani)
     if unit and unit.isMe and ani then
       if ani == "Spell5" and (Config.kConfig.Combo or Config.kConfig.Harass) then
@@ -5594,10 +5605,14 @@ class "Yorick"
         if Target and Ignite ~= nil and Config.Combo.I and Config.kConfig.Combo then CastSpell(Ignite, Target) end
         if Target then DelayAction(function() self:CastHydra() end, 0.125 - GetLatency() / 2000) end
         if Target then DelayAction(function() self:CastYomuus() end, 0.125 - GetLatency() / 2000) end
-        if Target then 
+        if Target then
+          self.jumpComboOver = false
+          DelayAction(function() self.jumpComboOver = true end, 1.5)
           cwhile(function() 
-            return Target and not Target.dead and Target.visible and Target.bTargetable and GetDistanceSqr(Target) < 1337^2
+            self.jumpCombo = not self.jumpComboOver and Target and not Target.dead and Target.visible and Target.bTargetable and GetDistanceSqr(Target) < 1337^2 and (Config.kConfig.Combo or Config.kConfig.Harass)
+            return self.jumpCombo
           end, function()
+            local qReady, wReady, eReady = (myHero:CanUseSpell(_Q) == READY), (myHero:CanUseSpell(_W) == READY), (myHero:CanUseSpell(_E) == READY)
             if myHero.mana == 5 then
               if Config.Misc.Empower2 == 1 then
                 CastSpell(_Q)
@@ -5702,7 +5717,7 @@ class "Yorick"
 
   function Rengar:Harass()
     if UnitHaveBuff(myHero, "rengarpassivebuff") then 
-      if IsWallOfGrass(D3DXVECTOR3(myHero.x, myHero.y, myHero.z)) and not IsWallOfGrass(D3DXVECTOR3(Target.x,Target.y,Target.z)) then
+      if IsWallOfGrass(D3DXVECTOR3(myHero.x, myHero.y, myHero.z)) and (not IsWallOfGrass(D3DXVECTOR3(Target.x,Target.y,Target.z)) or GetDistance(Target) > 200) then
         return 
       elseif TargetHaveBuff("RengarR", myHero) then
         return 
