@@ -9,7 +9,7 @@
 
 ]]--
 
-_G.ScriptologyVersion       = 2.12
+_G.ScriptologyVersion       = 2
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyConfig        = MenuConfig("Scriptology", "Scriptology Loader")
 _G.ScriptologyConfig:Section("MenuHeader", "Scriptology")
@@ -96,16 +96,14 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
               end
            end
         end 
-        if minionManager then
-          for _, minion in pairs(minionManager.GetAllMinions()) do
-            if minion and minion.team ~= myHero.team and not minion.dead and minion.visible and GetStacks(minion) > 0 and GetDistance(minion) <= 1000 then
-              local damageE = GetDmg(_E, myHero, minion)
-              local pos = Graphics.WorldToScreen(minion.pos)
-              if damageE > minion.health then
-                Graphics.DrawText("E Kill", 20, pos.x, pos.y, Graphics.ARGB(255,255,255,255))
-              else
-                Graphics.DrawText(math.floor(damageE/minion.health*100).."%", 20, pos.x, pos.y, Graphics.ARGB(255,255,255,255))
-              end
+        for _, minion in pairs(Mobs.objects) do
+          if minion and minion.team ~= myHero.team and not minion.dead and minion.visible and GetStacks(minion) > 0 and GetDistance(minion) <= 1000 then
+            local damageE = GetDmg(_E, myHero, minion)
+            local pos = Graphics.WorldToScreen(minion.pos)
+            if damageE > minion.health then
+              Graphics.DrawText("E Kill", 20, pos.x, pos.y, Graphics.ARGB(255,255,255,255))
+            else
+              Graphics.DrawText(math.floor(damageE/minion.health*100).."%", 20, pos.x, pos.y, Graphics.ARGB(255,255,255,255))
             end
           end
         end
@@ -113,6 +111,19 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     end
   end)
 
+  function GetClosestMinion(pos)
+    local minionTarget = nil
+    for i, minion in pairs(Mobs.objects) do
+      if minion and minion.visible and not minion.dead and minion.bTargetable then
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif GetDistanceSqr(minionTarget,pos) > GetDistanceSqr(minion,pos) then
+          minionTarget = minion
+        end
+      end
+    end
+    return minionTarget
+  end
 
   function DmgCalc()
     for i = 0,Game.HeroCount() do
@@ -230,10 +241,18 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
 
   function AfterLoad()
     if loadedSPlugin then
+      ScriptologyConfig:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/rKrEPeu.gif'>")
       ScriptologyConfig:Menu(myHero.charName, myHero.charName)
     end
     if ScriptologyConfig[myHero.charName] then
+      Mobs = MinionManager()
+      local laneTable = {
+        Set {"Kalista"}
+      }
       _G.Config = ScriptologyConfig[myHero.charName]
+      if laneTable[1][myHero.charName] then
+        Config:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/82ZXel7.gif'>")
+      end
       Config:Menu("Combo","Combo")
       Config.Combo:Section("MenuHeader", "Combo")
       Config:Menu("Harrass","Harrass")
@@ -410,6 +429,40 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     return false
   end
 
+
+-- { MinionManager
+
+  Class "MinionManager"
+
+  function MinionManager:__init()
+    self.objects = {}
+    for k=1,Game.ObjectCount(),1 do
+      local object = Game.Object(k)
+      if object and object.valid and object.team ~= myHero.team and object.name and (object.name == "Barrel" or (object.type == "obj_AI_Minion" and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == 300 or object.name:find('Bilge') or object.name:find('BW')))) then
+        self.objects[#self.objects+1] = object
+      end
+    end
+    Callback.Bind("CreateObj", function(o) self:CreateObj(o) end)
+    return self
+  end
+
+  function MinionManager:CreateObj(object)
+    if object and object.valid and object.team ~= myHero.team and object.name and (object.name == "Barrel" or (object.type == "obj_AI_Minion" and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == 300 or object.name:find('Bilge') or object.name:find('BW')))) then
+      self.objects[self:FindDeadPlace() or #self.objects+1] = object
+    end
+  end
+
+  function MinionManager:FindDeadPlace()
+    for i=1, #self.objects do
+      local object = self.objects[i]
+      if not object or not object.valid or object.dead then
+        return i
+      end
+    end
+  end
+
+-- }
+
 Class "Hecarim"
   function Hecarim:__init()
     data = {
@@ -534,13 +587,13 @@ Class "Kalista"
     if sReady[_E] and ((Config.kConfig.LastHit:Value() and Config.LastHit.E:Value()) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.E:Value()) or Config.Misc.Ej:Value() or Config.Misc.Ea:Value()) then
       local killableCounter = 0
       local killableCounterJ = 0 
-      for minion,winion in pairs(_G.minionManager.GetMinions(MINION_ENEMY)) do
+      for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
         if winion ~= nil and winion.health > 0 and EMinionDmg-5 > winion.health and myHero.pos:DistanceTo(winion.pos) < data[2].range then    
           killableCounter = killableCounter + 1
         end
       end
-      for minion,winion in pairs(_G.minionManager.GetMinions(MINION_JUNGLE)) do
+      for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)  
         if winion ~= nil and winion.health > 0 and EMinionDmg-15 > winion.health and myHero.pos:DistanceTo(winion.pos) < data[2].range then
           if (string.find(winion.charName, "Crab") or string.find(winion.charName, "Rift") or string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
@@ -560,7 +613,7 @@ Class "Kalista"
       self.saveAlly = false
     end
     if Target and Config.kConfig.Combo:Value() and Config.Misc.AAGap:Value() and myHero.pos:DistanceTo(Target.pos) > myHero.range+myHero.pos:DistanceTo(myHero.minBBox) then
-      local winion = _G.minionManager.ClosestMinion(myHero.pos, MINION_ENEMY)  
+      local winion = ClosestMinion(myHero.pos)  
       if winion ~= nil then
         myHero:Attack(winion)
         myHero:Move(mousePos.x, mousePos.z)
@@ -570,7 +623,7 @@ Class "Kalista"
 
   function Kalista:LastHit()
     if sReady[_Q] and ((Config.kConfig.LastHit:Value() and Config.LastHit.Q:Value() and Config.LastHit.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.Q:Value() and Config.LaneClear.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana)) then
-      for minion,winion in pairs(_G.minionManager.GetMinions(MINION_ENEMY)) do
+      for minion,winion in pairs(Mobs.objects) do
         local MinionDmg = GetDmg(_Q, myHero, winion)
         if winion and MinionDmg and MinionDmg >= winion.health+winion.shield and not winion.dead and myHero.pos:DistanceTo(winion.pos) < data[0].range then
           Cast(_Q, winion, 1.2)
@@ -588,7 +641,7 @@ Class "Kalista"
         Cast(_E)
       end
       local killableCounter = 0
-      for minion,winion in pairs(_G.minionManager.GetMinions(MINION_ENEMY)) do
+      for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
         if winion ~= nil and winion.health > 0 and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and myHero.pos:DistanceTo(winion.pos) < data[2].range then
           killableCounter = killableCounter +1
@@ -607,7 +660,7 @@ Class "Kalista"
     if sReady[_E] and Config.Harrass.E:Value() and ValidTarget(self.Target, data[2].range) then
       local harrassUnit = nil
       local killableCounter = 0
-      for minion,winion in pairs(_G.minionManager.GetMinions(MINION_ENEMY)) do
+      for minion,winion in pairs(Mobs.objects) do
         local EMinionDmg = GetDmg(_E, myHero, winion)      
         if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and myHero.pos:DistanceTo(winion.pos) < data[2].range then
           killableCounter = killableCounter +1
