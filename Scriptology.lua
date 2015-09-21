@@ -13,7 +13,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   function OnLoad()
     Update()
     LoadSpellData()
-    if _G.ScriptologyLoadActivator or _G.SActivatorVersion ~= nil then LoadActivator() end
+    if _G.ScriptologyLoadActivator and _G.SActivatorVersion ~= nil then LoadActivator() end
     if _G.ScriptologyLoadAwareness then LoadAwareness() end
     if _G.ScriptologyLoadEvade then LoadEvade() end
     LoadOrbwalker()
