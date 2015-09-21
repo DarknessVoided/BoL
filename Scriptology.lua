@@ -1070,7 +1070,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   end
 
   function GetRealHealth(unit)
-    return unit.health
+    return unit.health--+unit.shield <- TODO: Spam bilbao
   end
 
   function GetClosestMinion(pos)
@@ -1105,7 +1105,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     local BestPos 
     local BestHit = 0
     local objects = Mobs.objects
-    for i, object in ipairs(objects) do
+    for i, object in pairs(objects) do
       local hit = CountObjectsNearPos(object.pos or object, range, width, objects)
       if hit > BestHit and GetDistanceSqr(object) < range * range then
         BestHit = hit
@@ -1123,7 +1123,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     local BestHit = 0
     source = source or myHero
     local objects = Mobs.objects
-    for i, object in ipairs(objects) do
+    for i, object in pairs(objects) do
       local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
       local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
       if hit > BestHit and GetDistanceSqr(object) < range * range then
@@ -1139,7 +1139,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
   function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     local n = 0
-    for i, object in ipairs(objects) do
+    for i, object in pairs(objects) do
       local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
       local w = width
       if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
@@ -1151,7 +1151,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
   function CountObjectsNearPos(pos, range, radius, objects)
     local n = 0
-    for i, object in ipairs(objects) do
+    for i, object in pairs(objects) do
       if GetDistance(pos, object) <= radius then
         n = n + 1
       end
@@ -1461,30 +1461,30 @@ class "Yorick"
 
   function Activator:ProcessAttack(unit, spell)
     if not ScriptologyConfig.Activator.activate then return end
-    if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spell.name:lower():find("attack") then
+    if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spell.name:lower():find("attack") then
       local sName = spell.name
       local target = spell.target
       if target then
-        if not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
           local dmg = GetDmg("AD", unit, target)*1.25
           local thp = GetRealHealth(target)
           if dmg >= thp then
             if target.isMe then
               if Heal and self.Config.s.Heal then
-                if myHero:CanUseSpell(Heal) == READY then
+                if myHero:CanUseSpell(Heal) == 0 then
                   CastSpell(Heal)
                   return;
                 end
               end
               if Barrier and self.Config.s.Barrier and target.isMe then
-                if myHero:CanUseSpell(Barrier) == READY then
+                if myHero:CanUseSpell(Barrier) == 0 then
                   CastSpell(Barrier)
                   return;
                 end
               end
               if self.Config.i.Zhonyas then
                 for _ = ITEM_1, ITEM_7 do
-                  if myHero:CanUseSpell(_) == READY and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
+                  if myHero:CanUseSpell(_) == 0 and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
                     CastSpell(_)
                     return;
                   end
@@ -1492,7 +1492,8 @@ class "Yorick"
               end
               if self.Config.i.Heals then
                 for _ = ITEM_1, ITEM_7 do
-                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                  local sdname = myHero:GetSpellData(_).name
+                  if myHero:CanUseSpell(_) == 0 and (sdname == "HealthBomb" or sdname == "IronStylus" or sdname == "ItemMorellosBane") then
                     CastSpell(_, myHero)
                     return;
                   end
@@ -1500,14 +1501,15 @@ class "Yorick"
               end
             elseif (self.Config.s.SaveAlly or self.Config.i.Heala) and target.team == myHero.team and target.type == myHero.type then
               if Heal and self.Config.s.Heal then
-                if myHero:CanUseSpell(Heal) == READY and GetDistance(target) < 600 then
+                if myHero:CanUseSpell(Heal) == 0 and GetDistance(target) < 600 then
                   CastSpell(Heal)
                   return;
                 end
               end
               if self.Config.i.Heala and GetDistance(target) < 600 then
                 for _ = ITEM_1, ITEM_7 do
-                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                  local sdname = myHero:GetSpellData(_).name
+                  if myHero:CanUseSpell(_) == 0 and (sdname == "HealthBomb" or sdname == "IronStylus" or sdname == "ItemMorellosBane") then
                     CastSpell(_, target)
                     return;
                   end
@@ -1538,20 +1540,20 @@ class "Yorick"
           if dmg >= thp then
             if target.isMe then
               if Heal and self.Config.s.Heal then
-                if myHero:CanUseSpell(Heal) == READY then
+                if myHero:CanUseSpell(Heal) == 0 then
                   CastSpell(Heal)
                   return;
                 end
               end
               if Barrier and self.Config.s.Barrier and target.isMe then
-                if myHero:CanUseSpell(Barrier) == READY then
+                if myHero:CanUseSpell(Barrier) == 0 then
                   CastSpell(Barrier)
                   return;
                 end
               end
               if self.Config.i.Zhonyas then
                 for _ = ITEM_1, ITEM_7 do
-                  if myHero:CanUseSpell(_) == READY and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
+                  if myHero:CanUseSpell(_) == 0 and myHero:GetSpellData(_).name == "ZhonyasHourglass" then
                     CastSpell(_)
                     return;
                   end
@@ -1559,7 +1561,8 @@ class "Yorick"
               end
               if self.Config.i.Heals then
                 for _ = ITEM_1, ITEM_7 do
-                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                  local sdname = myHero:GetSpellData(_).name
+                  if myHero:CanUseSpell(_) == 0 and (sdname == "HealthBomb" or sdname == "IronStylus" or sdname == "ItemMorellosBane") then
                     CastSpell(_, myHero)
                     return;
                   end
@@ -1567,14 +1570,15 @@ class "Yorick"
               end
             elseif (self.Config.s.SaveAlly or self.Config.i.Heala) and target.team == myHero.team and target.type == myHero.type then
               if Heal and self.Config.s.Heal then
-                if myHero:CanUseSpell(Heal) == READY and GetDistance(target) < 600 then
+                if myHero:CanUseSpell(Heal) == 0 and GetDistance(target) < 600 then
                   CastSpell(Heal)
                   return;
                 end
               end
               if self.Config.i.Heala and GetDistance(target) < 600 then
                 for _ = ITEM_1, ITEM_7 do
-                  if myHero:CanUseSpell(_) == READY and (myHero:GetSpellData(_).name == "HealthBomb" or myHero:GetSpellData(_).name == "IronStylus" or myHero:GetSpellData(_).name == "ItemMorellosBane") then
+                  local sdname = myHero:GetSpellData(_).name
+                  if myHero:CanUseSpell(_) == 0 and (sdname == "HealthBomb" or sdname == "IronStylus" or sdname == "ItemMorellosBane") then
                     CastSpell(_, target)
                     return;
                   end
@@ -1587,15 +1591,15 @@ class "Yorick"
         local dmg = 0
         local sp = nil
         local p, _, b = nil, nil, nil --
-        for _, s in pairs(spellData[unit.charName]) do
+        for x, s in pairs(spellData[unit.charName]) do
           if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
-            local d = GetDmg(_, unit, myHero) * 1.1
-            if s.type and spell.endPos then
+            local d = GetDmg(x, unit, myHero) * 1.1
+            if s.type then
               if s.type == "linear" then
                 local pos = unit + (Vector(spell.endPos) - unit):normalized()*s.range
                 p, _, b = VectorPointProjectionOnLineSegment(unit, pos, myHero)
               elseif s.type == "circular" then
-                p, _, b = spell.endPos, _, true
+                p, _, b = Vector(spell.endPos), _, true
               end
             end
             sp = s
@@ -5591,10 +5595,10 @@ class "Yorick"
     if self.jumpCombo then
       for i=-1,1,1 do
         for j=-1,1,1 do
-          DrawText("Jump Combo Active!", 30, WINDOW_W/2+i-GetTextArea("Jump Combo Active!", 30).x/2, WINDOW_H/4+j, ARGB(255,0,0,0))
+          DrawText("Jump Combo Active!", 35, WINDOW_W/2+i-GetTextArea("Jump Combo Active!", 35).x/2, WINDOW_H/4+j, ARGB(255,0,0,0))
         end
       end
-      DrawText("Jump Combo Active!", 30, WINDOW_W/2-GetTextArea("Jump Combo Active!", 30).x/2, WINDOW_H/4, ARGB(255,255,0,0))
+      DrawText("Jump Combo Active!", 35, WINDOW_W/2-GetTextArea("Jump Combo Active!", 35).x/2, WINDOW_H/4, ARGB(255,255,0,0))
     end
   end
 
@@ -6414,10 +6418,10 @@ class "Yorick"
           Cast(_R)
           return;
         else
-            if myHero:CanUseSpell(_Q) == READY and Config.Combo[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
-              Cast(_Q, enemy.pos)
-              break;
-            end
+          if myHero:CanUseSpell(_Q) == READY and Config.Combo[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+            Cast(_Q, enemy.pos)
+            break;
+          end
           for _=1, 3 do
             if myHero:CanUseSpell(_) == READY and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
               Cast(_, enemy)
@@ -6445,7 +6449,11 @@ class "Yorick"
         CastSpell(_E, Target)
       end
     else
-      for _=0, 2 do
+      if myHero:CanUseSpell(_Q) == READY and Config.Harass[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+        Cast(_Q, Target.pos)
+        break;
+      end
+      for _=1, 2 do
         if sReady[_] and Config.Harass[str[_]] and GetDistanceSqr(Target) < myHeroSpellData[_].range^2 then
           Cast(_, Target)
           break;
@@ -6472,7 +6480,11 @@ class "Yorick"
             CastSpell(_E, target)
           end
         else
-          for _=0, 3 do
+          if myHero:CanUseSpell(_Q) == READY and Config.LaneClear[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+            Cast(_Q, target.pos)
+            break;
+          end
+          for _=1, 3 do
             if sReady[_] and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] < myHero.mana/myHero.maxMana*100 and GetDistanceSqr(target) < myHeroSpellData[_].range^2 then
               Cast(_, target)
               break;
@@ -6682,17 +6694,11 @@ class "Yorick"
       if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
         local dmg = 0
         local c = 0
-        if Config.Killsteal.Q and sReady[_Q] then
-          dmg = dmg + GetDmg(_Q, myHero, enemy)
-          c = c + 1
-        end
-        if Config.Killsteal.W and sReady[_W] then
-          dmg = dmg + GetDmg(_W, myHero, enemy)
-          c = c + 1
-        end
-        if Config.Killsteal.E and sReady[_E] then
-          dmg = dmg + GetDmg(_E, myHero, enemy)
-          c = c + 1
+        for i,_ in pairs({Q=0,W=1,E=2}) do
+          if Config.Killsteal[i] and sReady[_] then
+            dmg = dmg + GetDmg(_, myHero, enemy)
+            c = c + 1
+          end
         end
         dmg = dmg + (c > 0 and GetDmg("AD", myHero, enemy) or 0)
         dmg = dmg*((sReady[_E]) and 1+0.03*myHero:GetSpellData(_E).level or 1)+((sReady[_R] or myHero:GetSpellData(_R).name == "talonshadowassaulttoggle") and Config.Killsteal.R and GetDmg(_R, myHero, enemy)*2 or 0)
@@ -6814,11 +6820,13 @@ class "Yorick"
     for k,enemy in pairs(GetEnemyHeroes()) do
       if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
         local health = GetRealHealth(enemy)
-        if sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
+        local qdmg = GetDmg(_Q, myHero, enemy)
+        local addmg = GetDmg("AD", myHero, enemy)
+        if sReady[_Q] and health < qdmg and Config.Killsteal.Q and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
           CastSpell(_Q, enemy)
-        elseif health < GetDmg("AD", myHero, enemy)+GetDmg(_E, myHero, enemy) and Config.Killsteal.E and GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
+        elseif health < addmg+GetDmg(_E, myHero, enemy) and Config.Killsteal.E and GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
           myHero:Attack(enemy)
-        elseif sReady[_Q] and health < GetDmg(_Q, myHero, enemy)+GetDmg("AD", myHero, enemy) and Config.Killsteal.E and Config.Killsteal.Q and GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
+        elseif sReady[_Q] and health < qdmg+addmg and Config.Killsteal.E and Config.Killsteal.Q and GetDistanceSqr(enemy) < (myHero.range+GetDistance(myHero.minBBox))^2 then
           myHero:Attack(enemy)
           DelayAction(CastSpell, 0.25, {_Q, enemy})
         elseif Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) and Config.Killsteal.I and GetDistanceSqr(enemy) < (600)^2 then
