@@ -59,8 +59,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     function LoadActivator()
       ScriptologyConfig:addSubMenu("Activator", "Activator")
       Activerino = Activator()
-      ScriptologyConfig.Activator:addParam("activate", "Activate", SCRIPT_PARAM_ONOFF, false)
-      DelayAction(function() ScriptologyConfig.Activator.activate = false end, 0.1)
+      ScriptologyConfig.Activator:addParam("activate", "Activate", SCRIPT_PARAM_ONOFF, true)
     end
 
   -- }
@@ -1528,7 +1527,7 @@ class "Yorick"
       local sName = spell.name
       local target = spell.target
       if target then
-        if not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+        if not target.dead and not unit.dead and target.visible and unit.visible then
           local dmg = 0
           for _, s in pairs(spellData[unit.charName]) do
             if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
