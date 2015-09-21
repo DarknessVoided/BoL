@@ -1,6 +1,15 @@
 _G.SActivatorVersion = 0.1
 assert(load(Base64Decode("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"), nil, "bt", _ENV))() ScriptStatus("REHGLKDMKFG") 
-
+local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
+-- Vars
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerdot") then Ignite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerdot") then Ignite = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonersmite") then Smite = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonersmite") then Smite = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerheal") then Heal = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerheal") then Heal = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerbarrier") then Barrier = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerbarrier") then Barrier = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerflash") then Flash = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerflash") then Flash = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonerboost") then Cleanse = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonerboost") then Cleanse = SUMMONER_2 end
+if myHero:GetSpellData(SUMMONER_1).name:find("summonermana") then Clarity = SUMMONER_1 elseif myHero:GetSpellData(SUMMONER_2).name:find("summonermana") then Clarity = SUMMONER_2 end
+-- Vars
 function OnLoad()
   DelayAction(function()
     if not _G.SActivatorLoaded then
@@ -9,9 +18,9 @@ function OnLoad()
   end, 0.25)
 end
 
--- { Activator
-
-  function Activator:__init(Cfg)
+-- { SActivator
+  class "SActivator"
+  function SActivator:__init(Cfg)
     self.toCleanse = {
       [5] = true, [8] = true, [10] = true, [11] = true, [21] = true, [22] = true, [24] = true,
     }
@@ -21,16 +30,16 @@ end
     self:LoadSpellData()
     self:Load(Cfg)
     self:AddCallbacks()
-    _G.SActivatorLoaded
+    _G.SActivatorLoaded = true
     return self
   end
 
-  function Activator:Update()
+  function SActivator:Update()
     CScriptUpdate(_G.SActivatorVersion, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/SActivator.version", "/nebelwolfi/BoL/master/SActivator.lua?rand="..random(1,10000), SCRIPT_PATH.."SActivator.lua", function(NewVersion,OldVersion) Msg("Updated from v"..OldVersion.." to "..NewVersion..". Please press F9 twice to reload.") end, function() end, function() end, function() end)
     CScriptUpdate(_G.SActivatorVersion, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/SActivator.version", "/nebelwolfi/BoL/master/SActivator.lua?rand="..random(1,10000), LIB_PATH.."SActivator.lua", function() end, function() end, function() end, function() end)
   end
 
-  function Activator:LoadSpellData()
+  function SActivator:LoadSpellData()
     if FileExist(LIB_PATH .. "SpellData.lua") then
       if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
         _G.myHeroSpellData = spellData[myHero.charName]
@@ -45,7 +54,7 @@ end
     end
   end
 
-  function Activator:Load(Cfg)
+  function SActivator:Load(Cfg)
     self.Config = Cfg or scriptConfig("SActivator", "SActivator")
     self.Config:addSubMenu("Summoners", "s")
     if false then
@@ -85,28 +94,29 @@ end
     self.Config.i:addParam("Zhonyas", "Auto Zhonyas", SCRIPT_PARAM_ONOFF, true)
     self.Config.i:addParam("Heals", "Auto Heal (Self)", SCRIPT_PARAM_ONOFF, true)
     self.Config.i:addParam("Heala", "Auto Heal (Ally)", SCRIPT_PARAM_ONOFF, true)
-    self.Config:addSubMenu("Other", "o")
     if myHero.charName == "Alistar" then
+      self.Config:addSubMenu("Other", "o")
       self.Config.o:addParam("CleanseR", "Cleanse (Self, Unbreakable Will)", SCRIPT_PARAM_ONOFF, true)
       self.Config.o:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
     elseif myHero.charName == "Gangplank" then
+      self.Config:addSubMenu("Other", "o")
       self.Config.o:addParam("CleanseW", "Cleanse (Self, Remove Scurvy)", SCRIPT_PARAM_ONOFF, true)
       self.Config.o:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
     elseif myHero.charName == "Olaf" then
+      self.Config:addSubMenu("Other", "o")
       self.Config.o:addParam("CleanseR", "Cleanse (Self, Ragnarok)", SCRIPT_PARAM_ONOFF, true)
       self.Config.o:addParam("Cleansed", "^ Cleanse Delay ^", SCRIPT_PARAM_SLICE, 0, 0, 0.25, 2)
     end
   end
 
-  function Activator:AddCallbacks()
+  function SActivator:AddCallbacks()
     AddTickCallback(function() self:Tick() end)
     AddProcessAttackCallback(function(unit, spell) self:ProcessAttack(unit, spell) end)
     AddProcessSpellCallback(function(unit, spell) self:ProcessSpell(unit, spell) end)
     AddApplyBuffCallback(function(x,y,z) self:ApplyBuff(x,y,z) end)
   end
 
-  function Activator:Tick()
-    if not ScriptologyConfig.Activator.activate then return end
+  function SActivator:Tick()
     if self.tick > os.clock() then return end
     if self.Config.s.Clarity then
       self.tick = os.clock() + 0.125
@@ -118,7 +128,7 @@ end
     end
   end
 
-  function Activator:ApplyBuff(source, unit, buff)
+  function SActivator:ApplyBuff(source, unit, buff)
     if unit and unit.team == myHero.team and (self.Config.s.Cleanse or self.Config.i.Cleanse) then
       if buff and buff.name ~= nil and (buff.name:lower():find("summonerexhaust") or self.toCleanse[buff.type]) then
         if unit.isMe then
@@ -152,12 +162,12 @@ end
     end
   end
 
-  function Activator:ProcessAttack(unit, spell)
+  function SActivator:ProcessAttack(unit, spell)
     if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spell.name:lower():find("attack") then
-      local sName = spell.name
+    local sName = spell.name
       local target = spell.target
       if target then
-        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible then
           local dmg = GetDmg("AD", unit, target)*1.25
           local thp = GetRealHealth(target)
           if dmg >= thp then
@@ -214,12 +224,12 @@ end
     end
   end
 
-  function Activator:ProcessSpell(unit, spell)
-    if unit and spell and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spellData[unit.charName] then
+  function SActivator:ProcessSpell(unit, spell)
+    if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spellData[unit.charName] then
       local sName = spell.name
       local target = spell.target
       if target then
-        if not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
           local dmg = 0
           for _, s in pairs(spellData[unit.charName]) do
             if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
@@ -325,6 +335,92 @@ end
   end
 
 -- }
+
+function GetDmg(spell, source, target)
+  if target == nil or source == nil then
+    return
+  end
+  local ADDmg  = 0
+  local APDmg  = 0
+  local TRUEDmg  = 0
+  local AP     = source.ap
+  local Level  = source.level
+  local TotalDmg   = source.totalDamage
+  local crit     = source.critChance
+  local crdm     = source.critDmg
+  local ArmorPen   = floor(source.armorPen)
+  local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
+  local MagicPen   = floor(source.magicPen)
+  local MagicPenPercent  = floor(source.magicPenPercent*100)/100
+
+  local Armor   = target.armor*ArmorPenPercent-ArmorPen
+  local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
+  local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+  local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
+  if spell == "IGNITE" then
+    return 50+20*Level/2
+  elseif spell == "Tiamat" then
+    ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+  elseif spell == "AD" then
+    ADDmg = TotalDmg
+    if source.charName == "Ashe" and crit then
+      ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
+    elseif source.charName == "Teemo" then
+      APDmg = APDmg + spellData["Teemo"][_E].dmgAP(source, target)
+    elseif source.charName == "Orianna" then
+      APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
+    elseif crit then
+      ADDmg = ADDmg * (1 + crit)
+    end
+    if myHero.charName == "Vayne" and source.isMe and GetStacks(target) == 2 then
+      TRUEDmg = TRUEDmg + spellData["Vayne"][_W].dmgTRUE(source, target)
+    end
+    if GetMaladySlot() then
+      APDmg = 15 + 0.15*AP
+    end
+  elseif type(spell) == "number" and spellData[source.charName] and spellData[source.charName][spell] then
+    if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
+    if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
+    if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
+  end
+  dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+  dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
+  return floor(dmg) * dmgMod
+end
+
+function UnitHaveBuff(unit, buffName)
+  if unit and buffName and unit.buffCount then
+    for i = 1, unit.buffCount do
+      local buff = unit:getBuff(i)
+      if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
+        return true
+      end
+    end
+  end
+  return false
+end
+
+function GetHydraSlot()
+  for slot = ITEM_1, ITEM_7, 1 do
+    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "tiamat")) then
+      return slot
+    end
+  end
+  return nil
+end
+
+function GetMaladySlot()
+  for slot = ITEM_1, ITEM_7, 1 do
+    if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "malady")) then
+      return slot
+    end
+  end
+  return nil
+end
+
+function GetRealHealth(unit)
+  return unit.health--+unit.shield <- TODO: Spam bilbao
+end
 
 class "CScriptUpdate" -- {
 

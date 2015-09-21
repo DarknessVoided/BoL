@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.264
+_G.ScriptologyVersion       = 2.265
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -13,7 +13,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
   function OnLoad()
     Update()
     LoadSpellData()
-    if _G.ScriptologyLoadActivator then LoadActivator() end
+    if _G.ScriptologyLoadActivator or _G.SActivatorVersion ~= nil then LoadActivator() end
     if _G.ScriptologyLoadAwareness then LoadAwareness() end
     if _G.ScriptologyLoadEvade then LoadEvade() end
     LoadOrbwalker()
@@ -966,7 +966,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     if unit and buffName and unit.buffCount then
       for i = 1, unit.buffCount do
         local buff = unit:getBuff(i)
-        if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
+        if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:lower():find(buffName:lower()) or buffName:lower():find(buff.name:lower()) or buffName:lower() == buff.name:lower()) then 
           return true
         end
       end
@@ -1465,7 +1465,7 @@ class "Yorick"
       local sName = spell.name
       local target = spell.target
       if target then
-        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible then
           local dmg = GetDmg("AD", unit, target)*1.25
           local thp = GetRealHealth(target)
           if dmg >= thp then
@@ -4545,7 +4545,7 @@ class "Yorick"
   end
 
   function Lux:ProcessSpell(unit, spell)
-    if unit and spell and Config.Misc.Wa and unit.team ~= myHero.team and unit.type == myHero.type and not UnitHaveBuff(myHero, "recall") and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
+    if unit and spell and Config.Misc.Wa and unit.team ~= myHero.team and unit.type == myHero.type and not UnitHaveBuff(myHero, "recall") and not UnitHaveBuff(myHero, "teleport") and Config.Misc.manaW <= 100*myHero.mana/myHero.maxMana then
       if myHero == spell.target and spell.name:lower():find("attack") and unit.range >= 450 and Config.Misc.Waa and GetDmg("AD",unit,myHero)/myHero.maxHealth > 0.1337 then
         local wPos = myHero + (Vector(unit) - myHero):normalized() * myHeroSpellData[1].range 
         Cast(_W, wPos)
@@ -4935,10 +4935,10 @@ class "Yorick"
   end
 
   function Nidalee:Tick()
-    if not UnitHaveBuff(myHero, "recall") and self:IsHuman() and Config.Misc.Eas and Config.Misc.manaEs <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and myHero.health/myHero.maxHealth <= Config.Misc.healthEs/100 then
+    if not UnitHaveBuff(myHero, "recall") and not UnitHaveBuff(myHero, "teleport") and self:IsHuman() and Config.Misc.Eas and Config.Misc.manaEs <= myHero.mana/myHero.maxMana*100 and myHero.maxHealth-myHero.health > 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and myHero.health/myHero.maxHealth <= Config.Misc.healthEs/100 then
       Cast(_E, myHero)
     end
-    if not UnitHaveBuff(myHero, "recall") and self:IsHuman() and Config.Misc.Eaa and Config.Misc.manaEa <= myHero.mana/myHero.maxMana*100 then
+    if not UnitHaveBuff(myHero, "recall") and not UnitHaveBuff(myHero, "teleport") and self:IsHuman() and Config.Misc.Eaa and Config.Misc.manaEa <= myHero.mana/myHero.maxMana*100 then
       for _,k in pairs(GetAllyHeroes()) do
         if GetDistance(k) < self.data.Human[2].range and k.maxHealth-GetRealHealth(k) < 5+40*myHero:GetSpellData(_E).level+0.5*myHero.ap and GetRealHealth(k)/k.maxHealth <= Config.Misc.healthEa/100 then
           Cast(_E, k)
@@ -6420,7 +6420,7 @@ class "Yorick"
         else
           if myHero:CanUseSpell(_Q) == READY and Config.Combo[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
             Cast(_Q, enemy.pos)
-            break;
+            return;
           end
           for _=1, 3 do
             if myHero:CanUseSpell(_) == READY and Config.Combo[str[_]] and GetDistanceSqr(enemy) < myHeroSpellData[_].range^2 then
@@ -6451,7 +6451,7 @@ class "Yorick"
     else
       if myHero:CanUseSpell(_Q) == READY and Config.Harass[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
         Cast(_Q, Target.pos)
-        break;
+        return;
       end
       for _=1, 2 do
         if sReady[_] and Config.Harass[str[_]] and GetDistanceSqr(Target) < myHeroSpellData[_].range^2 then
@@ -6482,7 +6482,7 @@ class "Yorick"
         else
           if myHero:CanUseSpell(_Q) == READY and Config.LaneClear[str[_Q]] and GetDistanceSqr(enemy) < myHeroSpellData[_Q].range^2 then
             Cast(_Q, target.pos)
-            break;
+            return;
           end
           for _=1, 3 do
             if sReady[_] and Config.LaneClear[str[_]] and Config.LaneClear["mana"..str[_]] < myHero.mana/myHero.maxMana*100 and GetDistanceSqr(target) < myHeroSpellData[_].range^2 then
