@@ -1,42 +1,23 @@
---[[
-     ____        _      __       __                 ___   ___ 
-    / __/_______(_)__  / /____  / /__  ___ ___ __  |_  | / _ \
-   _\ \/ __/ __/ / _ \/ __/ _ \/ / _ \/ _ `/ // / / __/_/ // /
-  /___/\__/_/ /_/ .__/\__/\___/_/\___/\_, /\_, / /____(_)___/ 
-               /_/                   /___//___/               
-               
-    By Nebelwolfi
-
-]]--
-
 _G.ScriptologyVersion       = 2
 _G.ScriptologyAutoUpdate    = true
 _G.ScriptologyConfig        = MenuConfig("Scriptology", "Scriptology Loader")
-_G.ScriptologyConfig:Section("MenuHeader", "Scriptology")
+--_G.ScriptologyConfig:Section("MenuHeader", "Scriptology")
 
 _G.ScriptologyLoadAwareness = false
 _G.ScriptologyLoadEvade     = true
 
 _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
+local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
 -- { Scriptology Loader
 
-  function Class(name)
-    _G[name] = {}
-    _G[name].__index = _G[name]
-    local mt = {  __call = function(self, ...) local b = {} setmetatable(b, _G[name]) b:__init(b,...) return b end }
-    setmetatable(_G[name], mt)
-  end
-
   Callback.Bind("GameStart", function()
-    _G.enemyHeroes              = {}
-    _G.allyHeroes               = {}
+    _G.spellData = loadstring(Utility.ReadFile(path.."SpellData.lua"))()
+    myHeroSpellData = spellData[myHero.charName]
+    _G.enemyHeroes = {}
+    _G.allyHeroes = {}
     LoadEnemyHeroes()
     LoadAllyHeroes()
-    if Update() then
-      DelayAction(Load, 2)
-    else
-      PreLoad()
-    end
+    PreLoad()
   end)
 
   Callback.Bind("Tick", function()
@@ -63,16 +44,16 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
   Callback.Bind("Draw", function()
     if loadedSPlugin then
       if Config.Draws.Q:Value() and sReady[_Q] then
-        Graphics.DrawCircle(myHero.x, myHero.y, myHero.z, data[0].range, Graphics.ARGB(0x7F, 0x00, 0xFF, 0x00))
+        DrawCircle2(myHero, myHeroSpellData[0].range, 2, Config.Draws.ColorQ:Value(), 24)
       end
       if Config.Draws.W:Value() and sReady[_W] then
-        Graphics.DrawCircle(myHero.x, myHero.y, myHero.z, data[1].range, Graphics.ARGB(0x7F, 0x00, 0xFF, 0x00))
+        DrawCircle2(myHero, myHeroSpellData[1].range, 2, Config.Draws.ColorW:Value(), 24)
       end
       if Config.Draws.E:Value() and sReady[_E] then
-        Graphics.DrawCircle(myHero.x, myHero.y, myHero.z, data[2].range, Graphics.ARGB(0x7F, 0x00, 0xFF, 0x00))
+        DrawCircle2(myHero, myHeroSpellData[2].range, 2, Config.Draws.ColorE:Value(), 24)
       end
       if Config.Draws.R:Value() and sReady[_R] then
-        Graphics.DrawCircle(myHero.x, myHero.y, myHero.z, data[3].range, Graphics.ARGB(0x7F, 0x00, 0xFF, 0x00))
+        DrawCircle2(myHero, myHeroSpellData[3].range, 2, Config.Draws.ColorR:Value(), 24)
       end
       if Config.Draws.DMG:Value() then
         local colors = {Graphics.ARGB(155,255,255,255), Graphics.ARGB(155,55,255,255), Graphics.ARGB(155,255,55,255), Graphics.ARGB(155,255,255,55)}
@@ -111,18 +92,19 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     end
   end)
 
-  function GetClosestMinion(pos)
-    local minionTarget = nil
-    for i, minion in pairs(Mobs.objects) do
-      if minion and minion.visible and not minion.dead and minion.bTargetable then
-        if minionTarget == nil then 
-          minionTarget = minion
-        elseif GetDistanceSqr(minionTarget,pos) > GetDistanceSqr(minion,pos) then
-          minionTarget = minion
-        end
+  function DrawCircle2(position, radius, width, color, quality)
+      local screenMin = Graphics.WorldToScreen(Geometry.Vector3(position.x, position.y, position.z))
+      if (screenMin.x >= 0 and screenMin.x <= WINDOW_W) and (screenMin.y >= 0 and screenMin.y <= WINDOW_H) then
+          radius = radius*.92
+          local quality = quality and 2 * math.pi / quality or 2 * math.pi / math.floor(radius / 10)
+          local width = width and width or 1
+          local a = Graphics.WorldToScreen(Geometry.Vector3(position.x + radius * math.cos(0), position.y, position.z - radius * math.sin(0)))
+          for theta = quality, 2 * math.pi + quality * 0.5, quality do
+              local b = Graphics.WorldToScreen(Geometry.Vector3(position.x + radius * math.cos(theta), position.y, position.z - radius * math.sin(theta)))
+              Graphics.DrawLine(Geometry.Vector2(a.x, a.y), Geometry.Vector2(b.x, b.y), tonumber(width), color)
+              a = b
+          end
       end
-    end
-    return minionTarget
   end
 
   function DmgCalc()
@@ -139,15 +121,15 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
   end
 
   function GetTarget(range)
-      local target, steps = nil, 10000
-      for _, k in pairs(enemyHeroes) do
-          local step = k.health / myHero:CalcDamage(k, 100)
-          if k and k.valid and k.pos:DistanceTo(myHero.pos) < range and step < steps then
-              target = k
-              steps = step
-          end
+    local target, steps = nil, 10000
+    for _, k in pairs(enemyHeroes) do
+      local step = k.health / (damageType == 1 and myHero:CalcDamage(k, 100) or myHero:CalcMagicDamage(k, 100))
+      if k and k.valid and k.pos:DistanceTo(myHero.pos) < range and step < steps then
+        target = k
+        steps = step
       end
-      return target
+    end
+    return target
   end
 
   function LoadEnemyHeroes()
@@ -212,13 +194,13 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
   end
 
   function Load()
-    if pcall(function() loadedSPlugin = _G[myHero.charName]() end) then
+    if pcall(function() loadedSPlugin = _ENV[myHero.charName]() end) then
       Vars()
-      ScriptologyMsg("Plugin: '"..myHero.charName.."' loaded")
+      Msg("Plugin: '"..myHero.charName.."' loaded")
       _G.ScriptologyLoaded = true
       AfterLoad()
     else
-      ScriptologyMsg("Failed to load! (Champion not supported?)")
+      Msg("Failed to load! (Champion not supported?)")
       ScriptologyConfig:Section("info", "Champion not supported")
     end
   end
@@ -230,28 +212,42 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
       local enemy = Game.Hero(i)
       killTable[enemy.networkID] = {0, 0, 0, 0}
     end
+    Mobs = MinionManager()
+    buffStackTrackList = { ["Darius"] = "dariushemo", ["Kalista"] = "kalistaexpungemarker", ["TahmKench"] = "tahmpassive", ["Tristana"] = "tristanaecharge", ["Vayne"] = "vaynesilvereddebuff" }
+    if buffStackTrackList[myHero.charName] then
+      buffToTrackForStacks = buffStackTrackList[myHero.charName]
+    end
     _G.Target = nil
     _G.sReady = {[_Q] = false, [_W] = false, [_E] = false, [_R] = false}
-    Callback.Bind("Tick", function()for _=0,5 do;sReady[_]=(myHero:CanUseSpell(_)==0)end;end)
+    Callback.Bind("Tick", function() for _=0,5 do sReady[_] = (myHero:CanUseSpell(_)==0) end end)
   end
 
-  function ScriptologyMsg(msg) 
-    Game.Chat.Print("<font color=\"#6699ff\"><b>[Scriptology Loader]: "..myHero.charName.." - </b></font> <font color=\"#FFFFFF\">"..msg..".</font>") 
+  function Msg(msg) 
+    Game.Chat.Print("<font color=\"#ff0000\">[</font><font color=\"#ff2a00\">S</font><font color=\"#ff5500\">c</font><font color=\"#ff7f00\">r</font><font color=\"#ff9f00\">i</font><font color=\"#ffbf00\">p</font><font color=\"#ffdf00\">t</font><font color=\"#ffff00\">o</font><font color=\"#aaff00\">l</font><font color=\"#55ff00\">o</font><font color=\"#00ff00\">g</font><font color=\"#00ff55\">y</font><font color=\"#00ffaa\"> </font><font color=\"#00ffff\">L</font><font color=\"#00bfff\">o</font><font color=\"#0080ff\">a</font><font color=\"#0040ff\">d</font><font color=\"#0000ff\">e</font><font color=\"#2e00ff\">r</font><font color=\"#5d00ff\">]</font><font color=\"#8b00ff\">: </font><font color=\"#FFFFFF\">"..msg..".</font>") 
   end
 
   function AfterLoad()
-    if loadedSPlugin then
+    if loadedSPlugin ~= nil then
       ScriptologyConfig:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/rKrEPeu.gif'>")
       ScriptologyConfig:Menu(myHero.charName, myHero.charName)
-    end
-    if ScriptologyConfig[myHero.charName] then
-      Mobs = MinionManager()
       local laneTable = {
-        Set {"Kalista"}
-      }
+        Set {"Ashe","Caitlyn","Corki","Draven","Ezreal","Graves","Jinx","Kalista","KogMaw","Lucian","MissFortune","Quinn","Sivir","Teemo","Tristana","Urgot","Varus","Vayne"},
+        Set {"Alistar","Annie","Bard","Blitzcrank","Braum","Janna","Karma","Leona","Lulu","Morgana","Nami","Sona","Soraka","TahmKench","Taric","Thresh","Zilean","Zyra"},
+        Set {"Ahri","Akali","Anivia","Annie","Azir","Brand","Cassiopea","Diana","Ekko","Ezreal","Fizz","Galio","Heimerdinger","Karthus","Kassadin","Katarina","Kayle","Kennen","LeBlanc","Lissandra","Lux","Malzahar","Nidalee","Orianna","Swain","Syndra","Talon","TwistedFate","Veigar","VelKoz","Viktor","Xerath","Yasuo","Zed","Ziggz"},
+        Set {"Amumu","Cho'Gath","Elise","Evelynn","Fiddlesticks","Gragas","Hecarim","JarvanIV","KhaZix","LeeSin","MasterYi","Maokai","Nautilus","Nocturne","Nunu","Rammus","RekSai","Rengar","Sejuani","Shaco","Shyvana","Sion","Skarner","Trundle","Udyr","Vi","Volibear","Warwick","XinZhao","Zac"},
+        Set {"Aatrox","Darius","DrMundo","Fiora","Gangplank","Garen","Gnar","Irelia","Jax","Jayce","Kennen","Malphite","Nasus","Olaf","Pantheon","Poppy","Renekton","Riven","Rumble","Ryze","Se","Shen","Singed","Sion","Teemo","Tryndamere","Urgot","Vladimir","Wukong","Yoric"},
+      } -- adc, support, mid, jungle, top
       _G.Config = ScriptologyConfig[myHero.charName]
-      if laneTable[1][myHero.charName] then
+      if laneTable[1][myHero.charName] then -- laziness strikes again
         Config:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/82ZXel7.gif'>")
+      elseif laneTable[2][myHero.charName] then
+        Config:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/1DoPHDK.png'>")
+      elseif laneTable[3][myHero.charName] then
+        Config:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/3lvgnxi.png'>")
+      elseif laneTable[4][myHero.charName] then
+        Config:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/5zLH7AZ.png'>")
+      elseif laneTable[5][myHero.charName] then
+        Config:Empty("empty", "<img style=' width:300px;height:auto;' src='http://i.imgur.com/6CgsSOF.png'>")
       end
       Config:Menu("Combo","Combo")
       Config.Combo:Section("MenuHeader", "Combo")
@@ -272,12 +268,48 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
       Config.Draws:Boolean("E", "Draw E", true)
       Config.Draws:Boolean("R", "Draw R", true)
       Config.Draws:Boolean("DMG", "Draw DMG", true)
+      Config.Draws:ColorPick("ColorQ", "Color Q", Graphics.ARGB(255, 0x66, 0x33, 0x00))
+      Config.Draws:ColorPick("ColorW", "Color W", Graphics.ARGB(255, 0x33, 0x33, 0x00))
+      Config.Draws:ColorPick("ColorE", "Color E", Graphics.ARGB(255, 0x66, 0x66, 0x00))
+      Config.Draws:ColorPick("ColorR", "Color R", Graphics.ARGB(255, 0x99, 0x33, 0x00))
       Config:Menu("kConfig","Key Settings")
       Config.kConfig:Section("MenuHeader", "Key Settings")
-    end
-    if loadedSPlugin then
+  
       if loadedSPlugin.Load then
         loadedSPlugin:Load()
+      end
+
+      if loadedSPlugin.Tick ~= nil then
+        Callback.Bind("Tick", function()
+          loadedSPlugin:Tick()
+        end)
+      end
+
+      if loadedSPlugin.Draw ~= nil then
+        Callback.Bind("Draw", function()
+          loadedSPlugin:Draw()
+        end)
+      end
+
+      if buffToTrackForStacks then
+        Callback.Bind("ApplyBuff", function(unit, source, buff)
+          if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
+            stackTable[unit.networkID] = 1
+          end
+        end)
+        Callback.Bind("UpdateBuff", function(unit, buff, stacks)
+          if unit and buff and stacks and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
+            stackTable[unit.networkID] = stacks
+          end
+          if not unit and AATarget and buff.name:lower() == buffToTrackForStacks then
+            stackTable[AATarget.networkID] = stacks
+          end
+        end)
+        Callback.Bind("RemoveBuff", function(unit, buff)
+          if unit and buff and unit.team ~= myHero.team and buff.name:lower() == buffToTrackForStacks then
+            stackTable[unit.networkID] = 0
+          end
+        end)
       end
 
       if loadedSPlugin.ApplyBuff ~= nil then
@@ -295,6 +327,12 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
       if loadedSPlugin.RemoveBuff ~= nil then
         Callback.Bind("RemoveBuff", function(unit, buff)
           loadedSPlugin:RemoveBuff(unit, buff)
+        end)
+      end
+
+      if loadedSPlugin.ProcessAttack ~= nil then
+        Callback.Bind("ProcessAttack", function(unit, spell)
+          loadedSPlugin:ProcessAttack(unit, spell)
         end)
       end
 
@@ -340,49 +378,65 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     return stackTable[x.networkID] or 0
   end
 
-  function Update()
-    return false
-  end
-
   function GetDmg(spell, source, target)
     if target == nil or source == nil then
       return
     end
-    local ADDmg            = 0
-    local APDmg            = 0
-    local TRUEDmg          = 0
-    local AP               = source.ap
-    local Level            = source.level
-    local TotalDmg         = source.totalDamage
-    local crit             = myHero.critChance
-    local crdm             = myHero.critDmg
+    local ADDmg  = 0
+    local APDmg  = 0
+    local TRUEDmg  = 0
+    local AP     = source.ap
+    local Level  = source.level
+    local TotalDmg   = source.totalDamage
+    local crit     = source.critChance
+    local crdm     = source.critDmg
+    local ArmorPen   = floor(source.armorPen)
+    local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
+    local MagicPen   = floor(source.magicPen)
+    local MagicPenPercent  = floor(source.magicPenPercent*100)/100
 
-    if source ~= myHero then
-      return TotalDmg*(1-ArmorPercent)
-    end
+    local Armor   = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
     if spell == "IGNITE" then
       return 50+20*Level/2
+    elseif spell == "Tiamat" then
+      ADDmg = (GetHydraSlot() and myHero:CanUseSpell(GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
     elseif spell == "AD" then
       ADDmg = TotalDmg
-      if source.charName == "Ashe" then
+      if source.charName == "Ashe" and crit then
         ADDmg = TotalDmg*1.1+(1+crit)*(1+crdm)
-      elseif source.charName == "Kalista" then
-        ADDmg = ADDmg * 0.9
       elseif source.charName == "Teemo" then
-        APDmg = APDmg + 9 * level + 0.3 * AP
+        APDmg = APDmg + spellData["Teemo"][_E].dmgAP(source, target)
       elseif source.charName == "Orianna" then
-        APDmg = APDmg + 2 + 8 * math.ceil(Level/3) + 0.15*AP
-      else
+        APDmg = APDmg + 2 + 8 * ceil(Level/3) + 0.15*AP
+      elseif crit then
         ADDmg = ADDmg * (1 + crit)
       end
-    elseif type(spell) == "number" then
-      if data[spell].dmgAD then ADDmg = data[spell].dmgAD(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-      if data[spell].dmgAP then APDmg = data[spell].dmgAP(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
-      if data[spell].dmgTRUE then TRUEDmg = data[spell].dmgTRUE(AP, source:GetSpellData(spell).level, Level, TotalDmg, source, target) end
+      if myHero.charName == "Vayne" and source.isMe and GetStacks(target) == 2 then
+        TRUEDmg = TRUEDmg + spellData["Vayne"][_W].dmgTRUE(source, target)
+      end
+      if GetMaladySlot() then
+        APDmg = 15 + 0.15*AP
+      end
+    elseif type(spell) == "number" and spellData[source.charName] and spellData[source.charName][spell] then
+      if spellData[source.charName][spell].dmgAD then ADDmg = spellData[source.charName][spell].dmgAD(source, target, GetStacks(target)) end
+      if spellData[source.charName][spell].dmgAP then APDmg = spellData[source.charName][spell].dmgAP(source, target, GetStacks(target)) end
+      if spellData[source.charName][spell].dmgTRUE then TRUEDmg = spellData[source.charName][spell].dmgTRUE(source, target, GetStacks(target)) end
     end
-    dmg = source:CalcDamage(target, ADDmg)+source:CalcMagicDamage(target, APDmg)+TRUEDmg
-    --dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
-    return math.floor(dmg) --* dmgMod
+    dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    dmgMod = (UnitHaveBuff(source, "summonerexhaust") and 0.6 or 1) * (UnitHaveBuff(target, "meditate") and 1-(target:GetSpellData(_W).level * 0.05 + 0.5) or 1)
+    return floor(dmg) * dmgMod
+  end
+
+  function GetMaladySlot()
+    for slot = 6, 13, 1 do
+      if myHero:GetSpellData(slot).name and (string.find(string.lower(myHero:GetSpellData(slot).name), "malady")) then
+        return slot
+      end
+    end
+    return nil
   end
 
   function kalE(x) if x <= 1 then return 10 else return kalE(x-1) + 2 + x end end
@@ -391,16 +445,16 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     if unit and buffName and unit.buffCount then
       for _=1, 64 do
         local buff = unit:GetBuff(_)
-        --if buff and buff.valid and buff.startT <= GetGameTimer() and buff.endT >= GetGameTimer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
-        --  return true
-        --end
+        if buff and buff.valid and buff.startT <= Game.Timer() and buff.endT >= Game.Timer() and buff.name ~= nil and (buff.name:find(buffName) or buffName:find(buff.name) or buffName:lower() == buff.name:lower()) then 
+          return true
+        end
       end
     end
     return false
   end
 
   function ValidTarget(unit, range)
-    if unit and unit.valid and unit.visible and not unit.dead and unit.team ~= myHero.team then
+    if unit and unit.valid and not unit.dead and unit.visible and unit.team ~= myHero.team then
       return (not range or myHero.pos:DistanceTo(unit.pos) < range)
     end
     return false
@@ -412,7 +466,33 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     return unit1:DistanceTo(unit2)
   end
 
-  function Cast(Spell, target, hitchance, source) -- maybe the packetcast gets some functionality somewhen?
+  function GetClosestMinion(pos)
+    local minionTarget = nil
+    for i, minion in pairs(Mobs.objects) do
+      if minion and not minion.dead and minion.visible and minion.bTargetable then
+        if minionTarget == nil then 
+          minionTarget = minion
+        elseif GetDistance(minionTarget,pos) > GetDistance(minion,pos) then
+          minionTarget = minion
+        end
+      end
+    end
+    return minionTarget
+  end
+
+  function AlliesAround(Unit, range)
+    local c=0
+    if Unit == nil then return 0 end
+    for i=1,Game.HeroCount() do local hero = Game.Hero(i) if hero.team == myHero.team and GetDistance(hero, Unit) < range then c=c+1 end end return c
+  end
+
+  function EnemiesAround(Unit, range)
+    local c=0
+    if Unit == nil then return 0 end
+    for i=1,Game.HeroCount() do local hero = Game.Hero(i) if hero ~= nil and hero.team ~= myHero.team and GetDistance(hero, Unit) < range then c=c+1 end end return c
+  end
+
+  function Cast(Spell, target, hitchance, source)
     local pred = (hitchance and type(hitchance) == "number")
     if not target and not pred then
       myHero:CastSpell(Spell)
@@ -429,10 +509,204 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
     return false
   end
 
+class "Kalista"
+class "MinionManager"
+class "Vayne"
+
+  function Kalista:__init()
+    damageType = 1
+    self.Target = nil
+    self.soulMate = nil
+    self.saveAlly = false
+    self:FindMate()
+  end
+
+  function Kalista:Load()
+    self:Menu()
+  end
+
+  function Kalista:FindMate()
+    if myHero then
+      for k,v in pairs(allyHeroes) do
+        for _=0, v.buffCount do
+          local buff = v:GetBuff(_)
+          if buff and buff.valid and buff.name == "kalistacoopstrikeally" then
+            self.soulMate = v
+            Config.Misc:Boolean("R", "Save ally with R ("..self.soulMate.charName..")", true)
+          end
+        end
+      end
+    else
+      DelayAction(FindMate, 1)
+    end
+  end
+
+  function Kalista:Menu()
+    Config.Combo:Boolean("Q", "Use Q", true)
+    Config.Combo:Boolean("E", "Use E", true)
+    Config.Harrass:Boolean("Q", "Use Q", true)
+    Config.Harrass:Boolean("E", "Use E", true)
+    Config.LaneClear:Boolean("Q", "Use Q", true)
+    Config.LaneClear:Boolean("E", "Use E", true)
+    Config.LastHit:Boolean("Q", "Use Q", true)
+    Config.LastHit:Boolean("E", "Use E", true)
+    Config.Killsteal:Boolean("Q", "Use Q", true)
+    Config.Killsteal:Boolean("E", "Use E", true)
+    Config.Harrass:DropDown("manaQ", "Min Mana for Q", 5, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    Config.Harrass:DropDown("manaE", "Min Mana for E", 3, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    Config.LaneClear:DropDown("manaQ", "Min Mana for Q", 5, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    Config.LaneClear:DropDown("manaE", "Min Mana for E", 3, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    Config.LaneClear:DropDown("Ea", "Execute X Minions", 2, {1, 2, 3, 4, 5})
+    Config.LastHit:DropDown("manaQ", "Min Mana for Q", 5, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    Config.LastHit:DropDown("manaE", "Min Mana for E", 3, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    Config.LastHit:DropDown("Ea", "Execute X Minions", 2, {1, 2, 3, 4, 5})
+    Config.kConfig:KeyBinding("Combo", "Combo", " ", false, false)
+    Config.kConfig:KeyBinding("Harrass", "Harrass", "C", false, false)
+    Config.kConfig:KeyBinding("LastHit", "Last hit", "X", false, false)
+    Config.kConfig:KeyBinding("LaneClear", "Lane Clear", "V", false, false)
+    Config.Misc:Boolean("Ej", "Use E to steal Jungle", true)
+    Config.Misc:Boolean("Ea", "Use E always if it", true)
+    Config.Misc:DropDown("Eaa", "executes X Minions", 4, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    Config.Misc:Boolean("Ed", "Use E if you are about to die", true)
+    Config.Misc:Boolean("AAGap", "AAs as Gapcloser on minions", true)
+    Config.Misc:Boolean("R", "Save ally with R (none bound)", true)
+    Config.Misc:Slider("Rhp", "Save ally under X% hp", 0, 0, 100, 0)
+  end
+
+  function Kalista:ProcessAttack(unit, spell)
+    if not unit or not spell then return end
+    if spell.name and spell.name:lower():find("kalistabasicattack") then
+      AATarget = spell.target
+    end
+  end
+
+  function Kalista:ProcessSpell(unit, spell)
+    if not unit or not spell then return end
+    if spell.name == "KalistaPSpellCast" and spell.target.pos:DistanceTo(myHero.pos) < 1000 then 
+      self.soulMate = spell.target
+      Config.Misc:Boolean("R", "Save ally with R ("..self.soulMate.charName..")", true)
+      Msg("Soulmate found: "..spell.target.charName)
+    end
+    if Config.Misc.Ed:Value() and unit.team ~= myHero.team and myHero.health/myHero.maxHealth < 0.125 and (myHero == spell.target or myHero.pos:DistanceTo(spell.endPos) < myHero.boundingRadius*3) then
+      Cast(_E)    
+    end
+    if not self.soulMate or unit.type ~= myHero.type then return end
+    if Config.Misc.R:Value() and self.saveAlly and myHero.pos:DistanceTo(self.soulMate.pos) < myHeroSpellData[3].range and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or self.soulMate.pos:DistanceTo(spell.endPos) < self.soulMate.boundingRadius*3) then
+      Cast(_R)
+      Msg("Saving soulmate from spell: "..spell.name)
+      self.saveAlly = false
+    end
+  end
+
+  function Kalista:Killsteal()
+    for k,enemy in pairs(enemyHeroes) do
+      if enemy and enemy.valid and not enemy.dead then
+        local health = enemy.health
+        if sReady[_E] and GetStacks(enemy) > 0 and health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E:Value() and enemy.pos:DistanceTo(myHero.pos) < myHeroSpellData[2].range then
+          Cast(_E)
+        elseif sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q:Value() and enemy.pos:DistanceTo(myHero.pos) < myHeroSpellData[0].range then
+          Cast(_Q, enemy, 2)
+        end
+      end
+    end
+  end
+
+  function Kalista:Tick()
+    if sReady[_E] and ((Config.kConfig.LastHit:Value() and Config.LastHit.E:Value()) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.E:Value()) or Config.Misc.Ej:Value() or Config.Misc.Ea:Value()) then
+      local killableCounter = 0
+      local killableCounterJ = 0 
+      for minion,winion in pairs(Mobs.objects) do
+        local EMinionDmg = GetDmg(_E, myHero, winion)  
+        if winion ~= nil and winion.health > 0 and EMinionDmg-5 > winion.health and myHero.pos:DistanceTo(winion.pos) < myHeroSpellData[2].range then    
+          killableCounter = killableCounter + 1
+        end
+      end
+      for minion,winion in pairs(Mobs.objects) do
+        local EMinionDmg = GetDmg(_E, myHero, winion)  
+        if winion ~= nil and winion.health > 0 and EMinionDmg-15 > winion.health and myHero.pos:DistanceTo(winion.pos) < myHeroSpellData[2].range then
+          if (string.find(winion.charName, "Crab") or string.find(winion.charName, "Rift") or string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
+            if not string.find(winion.charName, "Mini") then       
+              killableCounterJ = killableCounterJ + 1
+            end
+          end
+        end
+      end
+      if (Config.kConfig.LaneClear:Value() and killableCounter >= Config.LaneClear.Ea:Value()) or (Config.kConfig.LastHit:Value() and killableCounter >= Config.LastHit.Ea:Value()) or (Config.Misc.Ej:Value() and killableCounterJ >= 1) or (Config.Misc.Ea:Value() and killableCounter+killableCounterJ >= Config.Misc.Eaa:Value()) then
+        Cast(_E)
+      end
+    end
+    if self.soulMate and self.soulMate.health/self.soulMate.maxHealth < Config.Misc.Rhp:Value()/100 then
+      self.saveAlly = true
+    else
+      self.saveAlly = false
+    end
+    if Target and Config.kConfig.Combo:Value() and Config.Misc.AAGap:Value() and myHero.pos:DistanceTo(Target.pos) > myHero.range+myHero.pos:DistanceTo(myHero.minBBox) then
+      local winion = ClosestMinion(myHero.pos)  
+      if winion ~= nil then
+        myHero:Attack(winion)
+        myHero:Move(mousePos.x, mousePos.z)
+      end    
+    end
+  end
+
+  function Kalista:LastHit()
+    if sReady[_Q] and ((Config.kConfig.LastHit:Value() and Config.LastHit.Q:Value() and Config.LastHit.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.Q:Value() and Config.LaneClear.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana)) then
+      for minion,winion in pairs(Mobs.objects) do
+        local MinionDmg = GetDmg(_Q, myHero, winion)
+        if winion and MinionDmg and MinionDmg >= winion.health+winion.shield and not winion.dead and myHero.pos:DistanceTo(winion.pos) < myHeroSpellData[0].range then
+          Cast(_Q, winion, 1.2)
+        end
+      end
+    end
+  end
+
+  function Kalista:Combo()
+    if sReady[_Q] and Config.Combo.Q:Value() and ValidTarget(self.Target, myHeroSpellData[0].range) and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
+      Cast(_Q, self.Target, 2)
+    end
+    if sReady[_E] and Config.Combo.E:Value() and ValidTarget(self.Target, myHeroSpellData[2].range) then
+      if GetDmg(_E, myHero, self.Target) >= self.Target.health then
+        Cast(_E)
+      end
+      local killableCounter = 0
+      for minion,winion in pairs(Mobs.objects) do
+        local EMinionDmg = GetDmg(_E, myHero, winion)      
+        if winion ~= nil and winion.health > 0 and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHeroSpellData[2].range) and myHero.pos:DistanceTo(winion.pos) < myHeroSpellData[2].range then
+          killableCounter = killableCounter +1
+        end    
+      end   
+      if killableCounter > 0 and GetStacks(self.Target) > 0 and self.Target.health > 0 then
+        Cast(_E)
+      end
+    end
+  end
+  
+  function Kalista:Harrass()
+    if sReady[_Q] and Config.Harrass.Q:Value() and Config.Harrass.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
+      Cast(_Q, self.Target, 2)
+    end
+    if sReady[_E] and Config.Harrass.E:Value() and ValidTarget(self.Target, myHeroSpellData[2].range) then
+      local harrassUnit = nil
+      local killableCounter = 0
+      for minion,winion in pairs(Mobs.objects) do
+        local EMinionDmg = GetDmg(_E, myHero, winion)      
+        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, myHeroSpellData[2].range) and myHero.pos:DistanceTo(winion.pos) < myHeroSpellData[2].range then
+          killableCounter = killableCounter +1
+        end   
+      end 
+      for i, unit in pairs(enemyHeroes) do    
+        local EChampDmg = GetDmg(_E, myHero, unit)      
+        if unit ~= nil and EChampDmg and EChampDmg > 0 and ValidTarget(unit, myHeroSpellData[2].range) and GetDistance(unit) < myHeroSpellData[2].range then
+          harrassUnit = unit
+        end      
+      end    
+      if killableCounter >= 1 and harrassUnit ~= nil then
+        Cast(_E)
+      end
+    end
+  end
 
 -- { MinionManager
-
-  Class "MinionManager"
 
   function MinionManager:__init()
     self.objects = {}
@@ -463,235 +737,145 @@ _G._Q, _G._W, _G._E, _G._R = 0, 1, 2, 3
 
 -- }
 
-Class "Hecarim"
-  function Hecarim:__init()
-    data = {
-      [_Q] = { speed = 1200, delay = 0.5, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 1000 end},
-      [_W] = { delay = 1.5, range = 5000},
-      [_E] = { range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return 1000 end},
-      [_R] = { range = 2000}
-    }
+-- { Vayne
+
+  function Vayne:__init()
   end
 
-  function Hecarim:Load()
-    Config.kConfig:KeyBinding("Combo", "Combo", " ", false, false)
-    Config.kConfig:KeyBinding("Harrass", "Harrass", "C", false, false)
-    Config.kConfig:KeyBinding("LastHit", "Last hit", "X", false, false)
-    Config.kConfig:KeyBinding("LaneClear", "Lane Clear", "V", false, false)
-  end
-
-Class "Kalista"
-
-  function Kalista:__init()
-    data = {
-      [_Q] = { speed = 1200, delay = 0.5, range = 1150, width = 40, collision = true, aoe = false, type = "linear", dmgAD = function(AP, level, Level, TotalDmg, source, target) return 0-50+60*level+TotalDmg end},
-      [_W] = { delay = 1.5, range = 5000},
-      [_E] = { range = 1000, dmgAD = function(AP, level, Level, TotalDmg, source, target) return GetStacks(target) > 0 and (10 + (10 * level) + (TotalDmg * 0.6)) + (GetStacks(target)-1) * (kalE(level) + (0.175 + 0.025 * level)*TotalDmg) or 0 end},
-      [_R] = { range = 2000}
-    }
-    stackTable = {}
-    self.Target = nil
-    self.soulMate = nil
-    self.saveAlly = false
-    --self:FindMate()
-  end
-
-  function Kalista:Load()
+  function Vayne:Load()
+    damageType = 1
     self:Menu()
+    self.roll = false
   end
 
-  function Kalista:FindMate()
-    if myHero then
-      for k,v in pairs(allyHeroes) do
-        for _=0, v.buffCount do
-          local buff = v:GetBuff(_)
-          if buff and buff.valid and buff.name == "kalistacoopstrikeally" then
-          self.soulMate = v
-          Config.Misc:Boolean("R", "Save ally with R ("..self.soulMate.charName..")", true)
-          end
-        end
-      end
-    else
-      DelayAction(FindMate, 1)
-    end
-  end
-
-  function Kalista:Menu()
+  function Vayne:Menu()
     Config.Combo:Boolean("Q", "Use Q", true)
     Config.Combo:Boolean("E", "Use E", true)
+    Config.Combo:Boolean("R", "Use R -> Stun", true)
+    Config.Combo:Boolean("Rtf", "Use Rtf", true)
+    Config.Combo:DropDown("Ree", "-> X Enemies Around", 2, {1, 2, 3, 4, 5})
+    Config.Combo:DropDown("Raa", "-> X Allies Around", 1, {1, 2, 3, 4, 5})
     Config.Harrass:Boolean("Q", "Use Q", true)
     Config.Harrass:Boolean("E", "Use E", true)
     Config.LaneClear:Boolean("Q", "Use Q", true)
-    Config.LaneClear:Boolean("E", "Use E", true)
-    Config.LastHit:Boolean("Q", "Use Q", true)
-    Config.LastHit:Boolean("E", "Use E", true)
+    Config.LaneClear:Boolean("E", "Use E (jungle)", true)
     Config.Killsteal:Boolean("Q", "Use Q", true)
     Config.Killsteal:Boolean("E", "Use E", true)
-    Config.Harrass:DropDown("manaQ", "Mana Q", 5, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
-    Config.Harrass:DropDown("manaE", "Mana E", 3, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
-    Config.LaneClear:DropDown("manaQ", "Mana Q", 5, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
-    Config.LaneClear:DropDown("manaE", "Mana E", 3, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
-    Config.LaneClear:DropDown("Ea", "Execute X Minions", 2, {1, 2, 3, 4, 5})
-    Config.LastHit:DropDown("manaQ", "Mana Q", 5, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
-    Config.LastHit:DropDown("manaE", "Mana E", 3, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
-    Config.LastHit:DropDown("Ea", "Execute X Minions", 2, {1, 2, 3, 4, 5})
-    Config.kConfig:KeyBinding("Combo", "Combo", " ", false, false)
-    Config.kConfig:KeyBinding("Harrass", "Harrass", "C", false, false)
-    Config.kConfig:KeyBinding("LastHit", "Last hit", "X", false, false)
-    Config.kConfig:KeyBinding("LaneClear", "Lane Clear", "V", false, false)
-    Config.Misc:Boolean("Ej", "Use E to steal Jungle", true)
-    Config.Misc:Boolean("Ea", "Use E always if it", true)
-    Config.Misc:DropDown("Eaa", "executes X Minions", 4, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-    Config.Misc:Boolean("Ed", "Use E if you are about to die", true)
-    Config.Misc:Boolean("AAGap", "AAs as Gapcloser on minions", true)
-    Config.Misc:Boolean("R", "Save ally with R (none bound)", true)
-    Config.Misc:DropDown("Rhp", "Save ally under X% hp", 2, {10, 20, 30, 40, 50, 60, 70, 80, 90, 100})
+    if Ignite ~= nil then Config.Killsteal:Boolean("I", "Ignite", true) end
+    Config.Harrass:Slider("manaQ", "Mana Q", 30, 0, 100, 0)
+    Config.Harrass:Slider("manaE", "Mana E", 30, 0, 100, 0)
+    Config.LaneClear:Slider("manaQ", "Mana Q", 30, 0, 100, 0)
+    Config.LaneClear:Slider("manaE", "Mana E", 30, 0, 100, 0)
+    Config.kConfig:KeyBinding("Combo", "Combo", " ")
+    Config.kConfig:KeyBinding("Harrass", "Harrass", "C")
+    Config.kConfig:KeyBinding("LastHit", "Last hit", "X")
+    Config.kConfig:KeyBinding("LaneClear", "Lane Clear", "V")
+    Config.Misc:Slider("offsetE", "Max E range %", 100, 0, 100, 0)
+    Config.Misc:Boolean("Ea", "Auto E if can stun", true)
+    --AddGapcloseCallback(_E, 500, true, Config.Misc)
   end
 
-  function Kalista:ProcessSpell(unit, spell)
-    if not unit or not spell then return end
-    if spell.name == "KalistaPSpellCast" and spell.target.pos:DistanceTo(myHero.pos) < 1000 then 
-      self.soulMate = spell.target
-      Config.Misc:Boolean("R", "Save ally with R ("..self.soulMate.charName..")", true)
-      ScriptologyMsg("Soulmate found: "..spell.target.charName)
-    end
-    if spell.name:lower():find("attack") and GetStacks(spell.target) > 0 and spell.target and unit == myHero then
-      stackTable[spell.target.networkID] = GetStacks(spell.target) + 1
-      Game.Chat.Print(""..GetStacks(spell.target))
-    end
-    if Config.Misc.Ed:Value() and unit.team ~= myHero.team and myHero.health/myHero.maxHealth < 0.125 and (myHero == spell.target or myHero.pos:DistanceTo(spell.endPos) < myHero.boundingRadius*3) then
-      Cast(_E)    
-    end
-    if not self.soulMate or unit.type ~= myHero.type then return end
-    if Config.Misc.R:Value() and self.saveAlly and myHero.pos:DistanceTo(self.soulMate.pos) < data[3].range and unit.team ~= self.soulMate.team and (self.soulMate == spell.target or self.soulMate.pos:DistanceTo(spell.endPos) < self.soulMate.boundingRadius*3) then
-      Cast(_R)
-      ScriptologyMsg("Saving soulmate from spell: "..spell.name)
-      self.saveAlly = false
-    end
-  end
-
-  function Kalista:Killsteal()
+  function Vayne:Draw()
+    if not Config.Draws.E:Value() or not sReady[_E] then return end
     for k,enemy in pairs(enemyHeroes) do
-      if enemy and enemy.valid and not enemy.dead then
-        local health = enemy.health
-        if sReady[_E] and GetStacks(enemy) > 0 and health < GetDmg(_E, myHero, enemy) and Config.Killsteal.E:Value() and enemy.pos:DistanceTo(myHero.pos) < data[2].range then
-          Cast(_E)
-        elseif sReady[_Q] and health < GetDmg(_Q, myHero, enemy) and Config.Killsteal.Q:Value() and enemy.pos:DistanceTo(myHero.pos) < data[0].range then
-          Cast(_Q, enemy, 2)
+      if enemy and not enemy.dead and enemy.visible then
+        local pos1 = enemy.pos
+        local pos2 = pos1 - (Geometry.Vector3(myHero.pos) - pos1):Normalize()*(450*Config.Misc.offsetE:Value()/100)
+        local a = Graphics.WorldToScreen(pos1)
+        local b = Graphics.WorldToScreen(pos2)
+        if (b.x >= 0 and b.x <= WINDOW_W and b.y >= 0 and b.y <= WINDOW_H) then
+          DrawCircle2(pos2, 50, 2, Graphics.Color(0xFFFFFFFF), 24)
+          Graphics.DrawLine(Geometry.Vector2(a.x, a.y), Geometry.Vector2(b.x, b.y), 1, Graphics.Color(0xFFFFFFFF))
+        elseif (a.x >= 0 and a.x <= WINDOW_W and a.y >= 0 and a.y <= WINDOW_H) then
+          Graphics.DrawLine(Geometry.Vector2(a.x, a.y), Geometry.Vector2(b.x, b.y), 1, Graphics.Color(0xFFFFFFFF))
         end
       end
     end
   end
 
-  function Kalista:Tick()
-    if sReady[_E] and ((Config.kConfig.LastHit:Value() and Config.LastHit.E:Value()) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.E:Value()) or Config.Misc.Ej:Value() or Config.Misc.Ea:Value()) then
-      local killableCounter = 0
-      local killableCounterJ = 0 
-      for minion,winion in pairs(Mobs.objects) do
-        local EMinionDmg = GetDmg(_E, myHero, winion)  
-        if winion ~= nil and winion.health > 0 and EMinionDmg-5 > winion.health and myHero.pos:DistanceTo(winion.pos) < data[2].range then    
-          killableCounter = killableCounter + 1
-        end
-      end
-      for minion,winion in pairs(Mobs.objects) do
-        local EMinionDmg = GetDmg(_E, myHero, winion)  
-        if winion ~= nil and winion.health > 0 and EMinionDmg-15 > winion.health and myHero.pos:DistanceTo(winion.pos) < data[2].range then
-          if (string.find(winion.charName, "Crab") or string.find(winion.charName, "Rift") or string.find(winion.charName, "Baron") or string.find(winion.charName, "Dragon") or string.find(winion.charName, "Gromp") or ((string.find(winion.charName, "Krug") or string.find(winion.charName, "Murkwolf") or string.find(winion.charName, "Razorbeak") or string.find(winion.charName, "Red") or string.find(winion.charName, "Blue")))) then
-            if not string.find(winion.charName, "Mini") then       
-              killableCounterJ = killableCounterJ + 1
-            end
-          end
-        end
-      end
-      if (Config.kConfig.LaneClear:Value() and killableCounter >= Config.LaneClear.Ea:Value()) or (Config.kConfig.LastHit:Value() and killableCounter >= Config.LastHit.Ea:Value()) or (Config.Misc.Ej:Value() and killableCounterJ >= 1) or (Config.Misc.Ea:Value() and killableCounter+killableCounterJ >= Config.Misc.Eaa:Value()) then
-        Cast(_E)
+  function Vayne:Tick()
+    self.roll = (Config.kConfig.Combo:Value() and Config.Combo.Q:Value()) or (Config.kConfig.Harrass:Value() and Config.Harrass.Q and Config.Harrass.manaQ/100 < myHero.mana/myHero.maxMana) or (Config.kConfig.LastHit:Value() and Config.LastHit.Q:Value() and Config.LastHit.manaQ:Value()/100 < myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.Q:Value() and Config.LaneClear.manaQ:Value()/100 < myHero.mana/myHero.maxMana)
+    if not Config.Misc.Ea:Value() or not sReady[_E] then return end
+    for k,enemy in pairs(enemyHeroes) do
+      if ValidTarget(enemy, 650) then
+        self:MakeUnitHugTheWall(enemy)
       end
     end
-    if self.soulMate and self.soulMate.health/self.soulMate.maxHealth < Config.Misc.Rhp/100 then
-      self.saveAlly = true
+  end
+
+  function Vayne:ProcessAttack(unit, spell)
+    if unit and spell and unit.isMe and spell.name then
+      if spell.name:lower():find("attack") then
+        if self.roll and sReady[_Q] then
+          DelayAction(function() myHero:CastSpell(_Q, mousePos.x, mousePos.z) end, Game.Latency()/1000+0.07)
+        end
+        if spell.target and spell.target.type == myHero.type and Config.Killsteal.E:Value() and sReady[_E] and EnemiesAround(spell.target, 750) == 1 and spell.target.health < GetDmg(_E, myHero, spell.target)+GetDmg("AD", myHero, spell.target)+(GetStacks(spell.target) >= 1 and GetDmg(_W, myHero, spell.target) or 0) and GetDistance(spell.target) < 650 then
+          local t = spell.target
+          DelayAction(function() myHero:CastSpell(_E, spell.target) end, Game.Latency()/1000+0.07)
+        end
+      end
+    end
+  end
+
+  function Vayne:MakeUnitHugTheWall(unit)
+    if not unit or unit.dead or not unit.visible or GetDistance(unit) > 650 or not sReady[_E] then return end
+    local x = unit.pos
+    for _=0,(450)*Config.Misc.offsetE:Value()/100,(450/25)*Config.Misc.offsetE:Value()/100 do
+      local dir = x+(x-myHero.pos):Normalize()*_
+      if Game.IsWall(dir) then
+        myHero:CastSpell(_E, unit)
+        return true
+      end
+    end
+    return false
+  end
+
+  function Vayne:LaneClear()
+    target = GetJMinion(myHeroSpellData[2].range)
+    if sReady[_E] and target and target.team > 200 and Config.LaneClear.E:Value() and Config.LaneClear.manaQ:Value()/100 < myHero.mana/myHero.maxMana then
+      self:MakeUnitHugTheWall(target)
+    end
+  end
+
+  function Vayne:Combo()
+    if Config.Combo.E:Value() and sReady[_E] then
+      if self:MakeUnitHugTheWall(Target) and Config.Combo.R:Value() then
+        Cast(_R)
+      end
     else
-      self.saveAlly = false
+      if Config.Combo.R:Value() and GetDistance(Target) < 450 then
+        Cast(_R)
+      end
     end
-    if Target and Config.kConfig.Combo:Value() and Config.Misc.AAGap:Value() and myHero.pos:DistanceTo(Target.pos) > myHero.range+myHero.pos:DistanceTo(myHero.minBBox) then
-      local winion = ClosestMinion(myHero.pos)  
-      if winion ~= nil then
-        myHero:Attack(winion)
-        myHero:Move(mousePos.x, mousePos.z)
-      end    
+    if Config.Combo.Rtf:Value() and EnemiesAround(myHero, 750) >= Config.Combo.Ree:Value() and AlliesAround(myHero, 750) >= Config.Combo.Raa:Value() then
+      Cast(_R)
     end
   end
 
-  function Kalista:LastHit()
-    if sReady[_Q] and ((Config.kConfig.LastHit:Value() and Config.LastHit.Q:Value() and Config.LastHit.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana) or (Config.kConfig.LaneClear:Value() and Config.LaneClear.Q:Value() and Config.LaneClear.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana)) then
-      for minion,winion in pairs(Mobs.objects) do
-        local MinionDmg = GetDmg(_Q, myHero, winion)
-        if winion and MinionDmg and MinionDmg >= winion.health+winion.shield and not winion.dead and myHero.pos:DistanceTo(winion.pos) < data[0].range then
-          Cast(_Q, winion, 1.2)
+  function Vayne:Harrass()
+    if sReady[_E] and Config.Harrass.E:Value() and Config.Harrass.manaE:Value() <= 100*myHero.mana/myHero.maxMana then
+      self:MakeUnitHugTheWall(Target)
+    end
+  end
+
+  function Vayne:Killsteal()
+    for k,enemy in pairs(enemyHeroes) do
+      if enemy and not enemy.dead and enemy.visible and enemy.bTargetable then
+        local health = GetRealHealth(enemy)
+        if sReady[_Q] and health < GetDmg(_Q, myHero, enemy)+GetDmg("AD", myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.Q:Value() and ValidTarget(enemy, myHeroSpellData[0].range + myHero.range) then
+          Cast(_Q, enemy.pos)
+          DelayAction(function() myHero:Attack(enemy) end, 0.32)
+        elseif sReady[_E] and self.HP and self.HP:PredictHealth(enemy, (min(myHeroSpellData[2].range, GetDistance(myHero, enemy)) / (2000) + 0.25)) < GetDmg(_E, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E:Value() and ValidTarget(enemy, myHeroSpellData[2].range) then
+          myHero:CastSpell(_E, enemy)
+        elseif sReady[_E] and health < GetDmg(_E, myHero, enemy)+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E:Value() and ValidTarget(enemy, myHeroSpellData[2].range) then
+          myHero:CastSpell(_E, enemy)
+        elseif sReady[_E] and health < GetDmg(_E, myHero, enemy)*2+(GetStacks(enemy) == 2 and GetDmg(_W, myHero, enemy) or 0) and Config.Killsteal.E:Value() and ValidTarget(enemy, myHeroSpellData[2].range) then
+          self:MakeUnitHugTheWall(enemy)
+        elseif Ignite and myHero:CanUseSpell(Ignite) == READY and health < (50 + 20 * myHero.level) and Config.Killsteal.I:Value() and ValidTarget(enemy, 600) then
+          myHero:CastSpell(Ignite, enemy)
         end
-      end
-    end
-  end
-
-  function Kalista:Combo()
-    if sReady[_Q] and Config.Combo.Q:Value() and ValidTarget(self.Target, data[0].range) and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, self.Target, 2)
-    end
-    if sReady[_E] and Config.Combo.E:Value() and ValidTarget(self.Target, data[2].range) then
-      if GetDmg(_E, myHero, self.Target) >= self.Target.health then
-        Cast(_E)
-      end
-      local killableCounter = 0
-      for minion,winion in pairs(Mobs.objects) do
-        local EMinionDmg = GetDmg(_E, myHero, winion)      
-        if winion ~= nil and winion.health > 0 and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and myHero.pos:DistanceTo(winion.pos) < data[2].range then
-          killableCounter = killableCounter +1
-        end   
-      end   
-      if killableCounter > 0 and GetStacks(self.Target) > 0 and self.Target.health > 0 then
-        Cast(_E)
       end
     end
   end
   
-  function Kalista:Harrass()
-    if sReady[_Q] and Config.Harrass.Q:Value() and Config.Harrass.manaQ:Value()*10 <= 100*myHero.mana/myHero.maxMana and myHero.mana >= 75+myHero:GetSpellData(_Q).level*5 then
-      Cast(_Q, self.Target, 2)
-    end
-    if sReady[_E] and Config.Harrass.E:Value() and ValidTarget(self.Target, data[2].range) then
-      local harrassUnit = nil
-      local killableCounter = 0
-      for minion,winion in pairs(Mobs.objects) do
-        local EMinionDmg = GetDmg(_E, myHero, winion)      
-        if winion ~= nil and EMinionDmg and EMinionDmg >= winion.health+winion.shield and ValidTarget(winion, data[2].range) and myHero.pos:DistanceTo(winion.pos) < data[2].range then
-          killableCounter = killableCounter +1
-        end   
-      end 
-      for i, unit in pairs(enemyHeroes) do    
-        local EChampDmg = GetDmg(_E, myHero, unit)      
-        if unit ~= nil and EChampDmg and EChampDmg > 0 and ValidTarget(unit, data[2].range) and GetDistance(unit) < data[2].range then
-          harrassUnit = unit
-        end      
-      end    
-      if killableCounter >= 1 and harrassUnit ~= nil then
-        Cast(_E)
-      end
-    end
-  end
-
-  function Kalista:ApplyBuff(source, unit, buff)
-    if unit and source and source == myHero and buff and buff.name == "kalistaexpungemarker" then
-      stackTable[unit.networkID] = 1
-    end
-  end
-
-  function Kalista:UpdateBuff(unit, buff, stacks)
-    if unit and buff and stacks and buff.name == "kalistaexpungemarker" then
-      stackTable[unit.networkID] = stacks
-    end
-  end
-
-  function Kalista:RemoveBuff(unit, buff)
-    if unit and buff and buff.name == "kalistaexpungemarker" then
-      stackTable[unit.networkID] = 0
-    end
-  end
+-- }
