@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.265
+_G.ScriptologyVersion       = 2.266
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -1460,22 +1460,22 @@ class "Yorick"
 
   function Activator:ProcessAttack(unit, spell)
     if not ScriptologyConfig.Activator.activate then return end
-    if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spell.name:lower():find("attack") then
+    local target = spell.target
+    if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and target and target.type == myHero.type and spell.name:lower():find("attack") then
       local sName = spell.name
-      local target = spell.target
       if target then
         if target.valid and not target.dead and not unit.dead and target.visible and unit.visible then
           local dmg = GetDmg("AD", unit, target)*1.25
           local thp = GetRealHealth(target)
           if dmg >= thp then
-            if target.isMe then
+            if target == myHero then
               if Heal and self.Config.s.Heal then
                 if myHero:CanUseSpell(Heal) == 0 then
                   CastSpell(Heal)
                   return;
                 end
               end
-              if Barrier and self.Config.s.Barrier and target.isMe then
+              if Barrier and self.Config.s.Barrier and target == myHero then
                 if myHero:CanUseSpell(Barrier) == 0 then
                   CastSpell(Barrier)
                   return;
@@ -1527,7 +1527,7 @@ class "Yorick"
       local sName = spell.name
       local target = spell.target
       if target then
-        if not target.dead and not unit.dead and target.visible and unit.visible then
+        if target.type == myHero.type and not target.dead and not unit.dead and target.visible and unit.visible then
           local dmg = 0
           for _, s in pairs(spellData[unit.charName]) do
             if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then

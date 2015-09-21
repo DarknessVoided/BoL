@@ -163,9 +163,9 @@ end
   end
 
   function SActivator:ProcessAttack(unit, spell)
-    if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and spell.name:lower():find("attack") then
-    local sName = spell.name
-      local target = spell.target
+    local target = spell.target
+    if unit and spell and unit.valid and unit.team ~= myHero.team and spell.name and unit.type == myHero.type and target and target.type == myHero.type and spell.name:lower():find("attack") then
+      local sName = spell.name
       if target then
         if target.valid and not target.dead and not unit.dead and target.visible and unit.visible then
           local dmg = GetDmg("AD", unit, target)*1.25
@@ -229,7 +229,7 @@ end
       local sName = spell.name
       local target = spell.target
       if target then
-        if target.valid and not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
+        if target.type == myHero.type and target.valid and not target.dead and not unit.dead and target.visible and unit.visible and target.bTargetable then
           local dmg = 0
           for _, s in pairs(spellData[unit.charName]) do
             if s.name and s.name ~= "" and (s.name:lower():find(sName:lower()) or sName:lower():find(s.name:lower())) then
