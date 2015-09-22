@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.268
+_G.ScriptologyVersion       = 2.269
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -691,7 +691,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
           Forcetarget = starget
           Msg("New target selected: "..starget.charName.."", true)
         end
-      else
+      elseif Forcetarget ~= nil then
         Forcetarget = nil
         Msg("Target un-selected.", true)
       end
