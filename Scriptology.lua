@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.267
+_G.ScriptologyVersion       = 2.268
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -1195,6 +1195,14 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         _SetPriority(priorityTable2.p5,  enemy, min(5, #GetEnemyHeroes()))
       end
     end
+  end
+
+  function Set(list)
+    local set = {}
+    for _, l in ipairs(list) do 
+      set[l] = true 
+    end
+    return set
   end
 
   function AlliesAround(Unit, range)
