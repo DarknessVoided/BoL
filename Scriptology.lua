@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.266
+_G.ScriptologyVersion       = 2.267
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -691,36 +691,17 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
           Forcetarget = starget
           Msg("New target selected: "..starget.charName.."", true)
         end
+      else
+        Forcetarget = nil
+        Msg("Target un-selected.", true)
       end
     end
   end
 
   function Msg(x, skip)
     local text = "<font color=\"#ff0000\">[</font><font color=\"#ff2a00\">S</font><font color=\"#ff5500\">c</font><font color=\"#ff7f00\">r</font><font color=\"#ff9f00\">i</font><font color=\"#ffbf00\">p</font><font color=\"#ffdf00\">t</font><font color=\"#ffff00\">o</font><font color=\"#aaff00\">l</font><font color=\"#55ff00\">o</font><font color=\"#00ff00\">g</font><font color=\"#00ff55\">y</font><font color=\"#00ffaa\"> </font><font color=\"#00ffff\">L</font><font color=\"#00bfff\">o</font><font color=\"#0080ff\">a</font><font color=\"#0040ff\">d</font><font color=\"#0000ff\">e</font><font color=\"#2e00ff\">r</font><font color=\"#5d00ff\">]</font><font color=\"#8b00ff\">: </font>"
-    if not skip and false then
-      local num = GetWebResult("random.org", "/integers/?num="..(x:len()*6).."&min=1&max=16&col="..(x:len()*6).."&base=16&format=plain&rnd=new")
-      local index = 0
-      if num then
-        for _=0, x:len() do
-          local color = ""
-          for c=0,5 do
-          local inum = num:find("0",_*6+c)
-          local lnum = num:sub(inum+1,inum+1)
-          if lnum then
-            color = color..lnum
-          end
-          end
-          text = text.."<font color=\"#"..color.."\">"..x:sub(_,_).."</font>"
-        end
-      else
-        for _=0, x:len() do
-          text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
-        end
-      end
-    else
-      for _=0, x:len() do
-        text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
-      end
+    for _=0, x:len() do
+      text = text.."<font color=\"#FFFFFF\">"..x:sub(_,_).."</font>"
     end
     print(text)
   end
@@ -1166,6 +1147,28 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       p2 = {"Ahri", "Anivia", "Annie",  "Brand",  "Cassiopeia", "Ekko", "Karma", "Karthus", "Katarina", "Kennen", "LeBlanc",  "Lux", "Malzahar", "MasterYi", "Orianna", "Syndra", "Talon", "TwistedFate", "Veigar", "VelKoz", "Viktor", "Xerath", "Zed", "Ziggs" },
       p1 = {"Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jinx", "Kalista", "KogMaw", "Lucian", "MissFortune", "Quinn", "Sivir", "Teemo", "Tristana", "Twitch", "Varus", "Vayne"},
     }
+    local mixed = Set {"Akali","Corki","Evelynn","Ezreal","Kayle","KogMaw","Mordekaiser","Poppy","Skarner","Teemo","Tristana","Yorick"}
+    local ad = Set {"Aatrox","Darius","Draven","Ezreal","Fiora","Gangplank","Garen","Gnar","Graves","Hecarim","Irelia","JarvanIV","Jax","Jayce","Jinx","Kalista","KhaZix","LeeSin","Lucian","MasterYi","MissFortune","Nasus","Nocturne","Olaf","Pantheon","Quinn","RekSai","Renekton","Rengar","Riven","Shaco","Shyvana","Sion","Sivir","Talon","Trundle","Tryndamere","Twitch","Udyr","Urgot","Varus","Vayne","Vi","Warwick","Wukong","XinZhao","Yasuo","Zed"}
+    local ap = Set {"Ahri","Alistar","Amumu","Anivia","Annie","Azir","Bard","Blitzcrank","Brand","Braum","Cassiopeia","ChoGath","Diana","DrMundo","Ekko","Elise","Fiddlesticks","Fizz","Galio","Gragas","Heimerdinger","Janna","Karma","Karthus","Kassadin","Katarina","Kennen","LeBlanc","Leona","Lissandra","Lulu","Lux","Malphite","Malzahar","Maokai","Morgana","Nami","Nautilus","Nidalee","Nunu","Orianna","Rammus","Rumble","Ryze","Sejuani","Shen","Singed","Sona","Soraka","Swain","Syndra","TahmKench","Taric","Thresh","TwistedFate","Veigar","VelKoz","Viktor","Vladimir","Volibear","Xerath","Zac","Ziggz","Zilean","Zyra"}
+    targetSel:SetDamages((ad[myHero.charName] or mixed[myHero.charName]) and 100 or 0, (ap[myHero.charName] or mixed[myHero.charName]) and 100 or 0, 0)
+    do
+      local r = 0
+      for i=0,3 do
+        if myHeroSpellData[i] and (myHeroSpellData[i].dmgAP or myHeroSpellData[i].dmgAD or myHeroSpellData[i].dmgTRUE) then
+          if myHeroSpellData[i].range and myHeroSpellData[i].range > 0 then
+            if myHeroSpellData[i].range > r then
+              r = myHeroSpellData[i].range
+            end
+          elseif myHeroSpellData[i].width and myHeroSpellData[i].width > 0 then
+            if myHeroSpellData[i].width > r then
+              r = myHeroSpellData[i].width
+            end
+          end
+        end
+      end
+      targetSel.range = max(r, myHero.range+myHero.boundingRadius)
+      Msg("TargetSelector range set to: "..targetSel.range..". Damage type: "..(ad[myHero.charName] and "AD" or ap[myHero.charName] and "AP" or mixed[myHero.charName] and "MIXED" or "NOT FOUND"))
+    end
     local priorityOrder = {
       [1] = {1,1,1,1,1},
       [2] = {1,1,2,2,2},
@@ -1855,7 +1858,6 @@ class "Yorick"
 
   function Ashe:Load()
     self:Menu()
-    targetSel._dmgType = DAMAGE_PHYSICAL
   end
 
   function Ashe:Menu()
@@ -2792,6 +2794,7 @@ class "Yorick"
   end
 
   function Cassiopeia:Load()
+    targetSel._range = 900
     self:Menu()
   end
 
@@ -2945,7 +2948,6 @@ class "Yorick"
   end
 
   function Darius:Load()
-    targetSel._dmgType = DAMAGE_PHYSICAL
     self:Menu()
   end
 
@@ -3271,8 +3273,6 @@ class "Yorick"
   end
 
   function Draven:Load()
-    targetSel._dmgType = DAMAGE_PHYSICAL
-    targetSel.range = 900
     self:Menu()
   end
 
@@ -3607,7 +3607,6 @@ class "Yorick"
   end
 
   function Kalista:Load()
-    targetSel._dmgType = DAMAGE_PHYSICAL
     self:Menu()
     for k,v in pairs(GetAllyHeroes()) do
       if UnitHaveBuff(v, "kalistacoopstrikeally") then
@@ -4248,7 +4247,6 @@ class "Yorick"
   end
 
   function LeeSin:Load()
-    targetSel._dmgType = DAMAGE_PHYSICAL
     self:Menu()
   end
 
@@ -5544,7 +5542,6 @@ class "Yorick"
   end
 
   function Rengar:Menu()
-    targetSel._dmgType = DAMAGE_PHYSICAL
     Config.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
     Config.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -5848,7 +5845,6 @@ class "Yorick"
 
   function Riven:Load()
     self:Menu()
-    targetSel._dmgType = DAMAGE_PHYSICAL
   end
 
   function Riven:Menu()
@@ -6324,7 +6320,6 @@ class "Yorick"
 
   function Ryze:Load()
     self:Menu()
-    targetSel._range = 900
   end
 
   function Ryze:Draw()
@@ -7061,7 +7056,6 @@ class "Yorick"
   end
 
   function Vayne:Load()
-    targetSel._dmgType = DAMAGE_PHYSICAL
     self:Menu()
     self.roll = false
     if not UPLloaded then 
@@ -7532,7 +7526,6 @@ class "Yorick"
   end
 
   function Yasuo:Load()
-    targetSel._dmgType = DAMAGE_PHYSICAL
     self:Menu()
   end
 
