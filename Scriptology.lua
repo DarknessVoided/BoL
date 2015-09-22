@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.27
+_G.ScriptologyVersion       = 2.271
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -785,7 +785,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
   function DrawLFC(x, y, z, radius, color)
     if Config.Draws.LFC then
-      DrawCircle3D(x, y, z, radius, 3, color, 16)
+      DrawCircle3D(x, y, z, radius, 1, color, 16)
     else
       local radius = radius or 300
       DrawCircle(x, y, z, radius, color)
@@ -5921,10 +5921,8 @@ class "Yorick"
         end
       end
     end
-    for _,k in pairs(GetEnemyHeroes()) do
-      if sReady[_W] and ValidTarget(k, myHeroSpellData[_W].range) and (Config.Misc.Wae <= EnemiesAround(k, myHeroSpellData[_W].range)) then
-        Cast(_W)
-      end
+    if sReady[_W] and (Config.Misc.Wae <= EnemiesAround(myHero, myHeroSpellData[_W].width)) then
+      Cast(_W)
     end
     if Config.Combo.Rf and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then
       Config.Combo.Rf = false
