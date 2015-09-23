@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.279
+_G.ScriptologyVersion       = 2.28
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5835,7 +5835,7 @@ class "Yorick"
       elseif _G.NebelwolfisOrbWalkerInit then
         ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
         _G.NebelwolfisOrbWalker:RegisterWindUp(function() DelayAction(function() CastSpell(_W) end, GetLatency()/2000) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
-        _G.NebelwolfisOrbWalker:RegisterWindUp(function() DelayAction(function() CastSpell(_Q, Target.x, Target.z) end, GetLatency()/2000) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
+        _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
       else
         if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
           require "Nebelwolfi's Orb Walker"
