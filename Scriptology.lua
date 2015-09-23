@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.272
+_G.ScriptologyVersion       = 2.273
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5835,8 +5835,8 @@ class "Yorick"
       elseif _G.NebelwolfisOrbWalkerInit then
         ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
         isNOW = true
-        _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
         _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
+        _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
       else
         if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
           require "Nebelwolfi's Orb Walker"
@@ -5953,6 +5953,9 @@ class "Yorick"
           if target and not target.dead and target.visible then
             CastSpell(_R)
           end
+        end
+        if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then
+          CastSpell(_Q, Target.x, Target.z)
         end
         self:ResetAA()
       elseif spell.name == "RivenTriCleave" then
