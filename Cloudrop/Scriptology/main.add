@@ -919,17 +919,17 @@ class "Vayne"
         end
       elseif spell.name == "RivenFengShuiEngine" then
         _G.NebelwolfisOrbWalker:ResetAA()
-        if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+        if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[_Q].range and self.doQ and myHero:CanUseSpell(_Q) == READY then
           myHero:CastSpell(_Q, target.x, target.z)
         end
       elseif spell.name == "rivenizunablade" then
         _G.NebelwolfisOrbWalker:ResetAA()
-        if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+        if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[_Q].range and self.doQ and myHero:CanUseSpell(_Q) == READY then
           myHero:CastSpell(_Q, target.x, target.z)
         end
       elseif spell.name == "ItemTiamatCleave" then
         _G.NebelwolfisOrbWalker:ResetAA()
-        if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+        if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[_Q].range and self.doQ and myHero:CanUseSpell(_Q) == READY then
           myHero:CastSpell(_Q, target.x, target.z)
         end
       end
@@ -964,21 +964,21 @@ class "Vayne"
       elseif spell.name == "RivenFengShuiEngine" then
         _G.NebelwolfisOrbWalker:ResetAA()
         DelayAction(function() 
-          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+          if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[_Q].range and self.doQ and myHero:CanUseSpell(_Q) == READY then
             myHero:CastSpell(_Q, target.x, target.z)
           end
         end, windUp + Game.Latency() / 2000)
       elseif spell.name == "rivenizunablade" then
         _G.NebelwolfisOrbWalker:ResetAA()
         DelayAction(function() 
-          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+          if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[_Q].range and self.doQ and myHero:CanUseSpell(_Q) == READY then
             myHero:CastSpell(_Q, target.x, target.z)
           end
         end, windUp + Game.Latency() / 2000)
       elseif spell.name == "ItemTiamatCleave" then
         _G.NebelwolfisOrbWalker:ResetAA()
         DelayAction(function()
-          if target and not target.dead and target.visible and GetDistanceSqr(target) < myHeroSpellData[_Q].range^2 and self.doQ and myHero:CanUseSpell(_Q) == READY then
+          if target and not target.dead and target.visible and GetDistance(target) < myHeroSpellData[_Q].range and self.doQ and myHero:CanUseSpell(_Q) == READY then
             myHero:CastSpell(_Q, target.x, target.z)
           end
         end, windUp + Game.Latency() / 2000)
@@ -1066,7 +1066,7 @@ class "Vayne"
     if not Config.LaneClear.E:Value() then return end
     local minion = GetClosestMinion(myHero)
     if minion and not minion.dead and minion.visible and minion.bTargetable then
-      if GetDistanceSqr(minion) > (myHero.range+GetDistance(myHero.minBBox))^2 then
+      if GetDistance(minion) > myHero.range+GetDistance(myHero.minBBox) then
         myHero:CastSpell(_E, minion.x, minion.z)
       end
     end
@@ -1075,10 +1075,10 @@ class "Vayne"
   function Riven:LastHit()
     for _, minion in pairs(Mobs.objects) do
       if minion and not minion.dead and minion.visible and minion.bTargetable then
-        if Config.LastHit.Q:Value() and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_Q].range^2 then
+        if Config.LastHit.Q:Value() and sReady[_Q] and minion.health <= GetDmg(_Q, myHero, minion) and GetDistance(minion) < myHeroSpellData[_Q].range then
           myHero:CastSpell(_Q, minion.x, minion.z)
         end
-        if Config.LastHit.W:Value() and sReady[_W] and minion.health <= GetDmg(_W, myHero, minion) and GetDistanceSqr(minion) < myHeroSpellData[_W].range^2 then
+        if Config.LastHit.W:Value() and sReady[_W] and minion.health <= GetDmg(_W, myHero, minion) and GetDistance(minion) < myHeroSpellData[_W].range then
           myHero:CastSpell(_W)
         end
       end
