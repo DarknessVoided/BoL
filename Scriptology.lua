@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.28
+_G.ScriptologyVersion       = 2.281
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5887,6 +5887,10 @@ class "Yorick"
       end
       DrawText("Force R on!", 25, pos.x-45, pos.y, 0xFFFF0000)
     end
+    if Config.Misc.Jump then
+      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 450
+      DrawLFC(movePos2.x, movePos2.y, movePos2.z, 150, ARGB(255,255,255,255))
+    end
   end
 
   function Riven:Tick()
@@ -5922,13 +5926,6 @@ class "Yorick"
     end
     if Config.Combo.Rf and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then
       Config.Combo.Rf = false
-    end
-  end
-
-  function Riven:Draw()
-    if Config.Misc.Jump then
-      local movePos2 = myHero + (Vector(mousePos) - myHero):normalized() * 450
-      DrawLFC(movePos2.x, movePos2.y, movePos2.z, 150, ARGB(255,255,255,255))
     end
   end
 
@@ -6075,7 +6072,7 @@ class "Yorick"
               myHero:MoveTo(mousePos.x, mousePos.z)
             end
             self:ResetAA()
-          end, (ani:find("c") and 0.475 or 0.34) + GetLatency() / 2000)
+          end, (ani:find("c") and 0.475 or 0.34) - GetLatency() / 2000)
         end
       elseif ani == "Spell2" then
       elseif ani == "Spell3" then
