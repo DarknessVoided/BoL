@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.281
+_G.ScriptologyVersion       = 2.282
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -1167,6 +1167,9 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         end
       end
       targetSel.range = max(r, myHero.range+myHero.boundingRadius)
+      if myHero.charName == "Nidalee" then
+        targetSel.range = 1625
+      end
       Msg("TargetSelector range set to: "..targetSel.range..". Damage type: "..(ad[myHero.charName] and "AD" or ap[myHero.charName] and "AP" or mixed[myHero.charName] and "MIXED" or "NOT FOUND"))
     end
     local priorityOrder = {
