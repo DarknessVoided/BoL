@@ -656,7 +656,7 @@ function Aimbot:SendPacket(p)
                             self:CastCharged(i)
                         else
                             p:Block()
-                            p.skip(p, 1)
+                            p:skip(1)
                             self.toCast[i] = true
                         end
                     end

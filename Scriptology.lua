@@ -6005,6 +6005,7 @@ class "Yorick"
         self:ResetAA()
       elseif spell.name == "RivenTriCleave" then
         self.QDelay = os.clock()
+        self:ResetAA()
       elseif spell.name == "RivenFeint" then
         self.EDelay = GetTickCount()
         if target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(target, 0, true)*0.67 <= GetRealHealth(target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
