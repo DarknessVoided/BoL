@@ -924,7 +924,7 @@ class "Vayne"
             end
           elseif myHero:CanUseSpell(_R) == READY and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" and target and self.QCast < 3 and GetDmg(_R, myHero, target)+GetDmg(_Q, myHero, target)+self:DmgP(target, myHero.totalDamage)+GetDmg("AD", myHero, target) >= target.health then  
             if target and not target.dead and target.visible then
-              myHero:Cast(_R, target)
+              myHero:CastSpell(_R, target.pos.x, target.pos.z)
             end
           end
         end
@@ -1089,7 +1089,7 @@ class "Vayne"
         DelayAction(function() myHero:CastSpell(_W) end, 0.075) 
       end
     end
-    if Config.Combo.Rm:Value() > 1 and GetDmg(_R,myHero,Target) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then myHero:Cast(_R, Target) end
+    if Config.Combo.Rm:Value() > 1 and GetDmg(_R,myHero,Target) >= GetRealHealth(Target) and myHero:GetSpellData(_R).name ~= "RivenFengShuiEngine" then myHero:CastSpell(_R, Target) end
   end
 
   function Riven:LaneClear()
