@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.273
+_G.ScriptologyVersion       = 2.274
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5821,22 +5821,22 @@ class "Yorick"
         ScriptologyConfig.Orbwalker:addParam("info1", "SAC Support loaded!", SCRIPT_PARAM_INFO, "")
         Msg("Please wait 10 seconds for SAC:R implementation to load!")
         DelayAction(function()
-          _G.AutoCarry.Plugins:RegisterOnAttacked(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) _G.AutoCarry.Orbwalker:ResetAttackTimer() end end)
-          _G.AutoCarry.Plugins:RegisterOnAttacked(function() if self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) _G.AutoCarry.Orbwalker:ResetAttackTimer() end end)
+          _G.AutoCarry.Plugins:RegisterOnAttacked(function() if self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) end end)
+          _G.AutoCarry.Plugins:RegisterOnAttacked(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then DelayAction(function() CastSpell(_Q, Target.x, Target.z) end, GetLatency()/2000) end end)
         end, 10)
       elseif _G.MMA_IsLoaded then
         ScriptologyConfig.Orbwalker:addParam("info1", "MMA Support loaded!", SCRIPT_PARAM_INFO, "")
-        _G.MMA_RegisterCallback('AfterAttackCallbacks', function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) _G.MMA_ResetAutoAttack() end end)
-        _G.MMA_RegisterCallback('AfterAttackCallbacks', function() if self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) _G.MMA_ResetAutoAttack() end end)
+        _G.MMA_RegisterCallback('AfterAttackCallbacks', function() if self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) end end)
+        _G.MMA_RegisterCallback('AfterAttackCallbacks', function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then DelayAction(function() CastSpell(_Q, Target.x, Target.z) end, GetLatency()/2000) end end)
       elseif _G.SxOrb then
         ScriptologyConfig.Orbwalker:addParam("info1", "SxOrbWalk Support loaded!", SCRIPT_PARAM_INFO, "")
-        SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) _G.SxOrb:ResetAA() end end)
-        SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) _G.SxOrb:ResetAA() end end)
+        SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doW and myHero:CanUseSpell(_W) == 0 then CastSpell(_W) end end)
+        SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then DelayAction(function() CastSpell(_Q, Target.x, Target.z) end, GetLatency()/2000) end end)
       elseif _G.NebelwolfisOrbWalkerInit then
         ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
         isNOW = true
         _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
-        _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
+        _G.NebelwolfisOrbWalker:RegisterWindUp(function() DelayAction(function() CastSpell(_Q, Target.x, Target.z) end, GetLatency()/2000) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
       else
         if FileExist(LIB_PATH.."Nebelwolfi's Orb Walker.lua") then
           require "Nebelwolfi's Orb Walker"
@@ -5960,6 +5960,7 @@ class "Yorick"
         self:ResetAA()
       elseif spell.name == "RivenTriCleave" then
         self.QDelay = os.clock()
+        self:ResetAA()
       elseif spell.name == "RivenFeint" then
         self.EDelay = GetTickCount()
         if target and Config.kConfig.Combo and myHero:CanUseSpell(_R) == READY and Config.Combo.Rm > 1 and (EnemiesAround(target, 450) > 1 or Config.Combo.Rm == 4 or self:CalcComboDmg(target, 0) * (Config.Combo.Rm == 2 and 1.67 or 1) >= GetRealHealth(target)) and (Config.Combo.Rm ~= 3 or self:CalcComboDmg(target, 0, true)*0.67 <= GetRealHealth(target)) and myHero:GetSpellData(_R).name == "RivenFengShuiEngine" then 
@@ -6041,7 +6042,7 @@ class "Yorick"
 
   function Riven:ResetAA()
     if _G.NebelwolfisOrbWalkerLoaded then
-      _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
+      _G.NebelwolfisOrbWalker:ResetAA()
     elseif _G.MMA_Loaded and _G.MMA_ResetAutoAttack then
       _G.MMA_ResetAutoAttack()
     elseif _G.AutoCarry then
@@ -6076,10 +6077,6 @@ class "Yorick"
             self:ResetAA()
           end, (ani:find("c") and 0.475 or 0.34))
         end
-      elseif ani == "Spell2" then
-      elseif ani == "Spell3" then
-      elseif ani == "Spell4a" then
-      elseif ani == "Spell4b" then
       end
     end
   end
