@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.277
+_G.ScriptologyVersion       = 2.278
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -5834,7 +5834,6 @@ class "Yorick"
         SxOrb:RegisterAfterAttackCallback(function() if ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 then CastSpell(_Q, Target.x, Target.z) end end)
       elseif _G.NebelwolfisOrbWalkerInit then
         ScriptologyConfig.Orbwalker:addParam("info1", "Nebelwolfi's Orbwalker loaded!", SCRIPT_PARAM_INFO, "")
-        isNOW = true
         _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_W) end, function() return self.doW and myHero:CanUseSpell(_W) == 0 end)
         _G.NebelwolfisOrbWalker:RegisterWindUp(function() CastSpell(_Q, Target.x, Target.z) end, function() return ValidTarget(Target) and self.doQ and myHero:CanUseSpell(_Q) == 0 end)
       else
@@ -6076,7 +6075,7 @@ class "Yorick"
               myHero:MoveTo(mousePos.x, mousePos.z)
             end
             self:ResetAA()
-          end, (ani:find("c") and 0.475 or 0.34))
+          end, (ani:find("c") and 0.475 or 0.34) + GetLatency() / 2000)
         end
       elseif ani == "Spell2" then
       elseif ani == "Spell3" then
