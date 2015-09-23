@@ -6073,11 +6073,7 @@ class "Yorick"
             else
               myHero:MoveTo(mousePos.x, mousePos.z)
             end
-            if _G.NebelwolfisOrbWalkerLoaded then
-              _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
-            elseif _G.MMA_Loaded then
-              _G.MMA_ResetAutoAttack()
-            end
+            self:ResetAA()
           end, (ani:find("c") and 0.475 or 0.34))
         end
       elseif ani == "Spell2" then
