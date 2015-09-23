@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.271
+_G.ScriptologyVersion       = 2.272
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -2325,10 +2325,7 @@ class "Yorick"
     if self.soldierToDash then
       local movePos = myHero + (Vector(mousePos) - myHero):normalized() * myHeroSpellData[0].range
       if movePos then
-        DelayAction(function() CastSpell(_E, self.soldierToDash) end, 0)
-        DelayAction(function() CastSpell(_E, self.soldierToDash) end, 0.1)
-        DelayAction(function() CastSpell(_E, self.soldierToDash) end, 0.2)
-        DelayAction(function() CastSpell(_E, self.soldierToDash) self.soldierToDash = nil end, 0.3)
+        CastSpell(_E, self.soldierToDash)
         CastSpell(_Q, movePos.x, movePos.z)
       end
     elseif self:CountSoldiers() > 0 then
