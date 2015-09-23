@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.274
+_G.ScriptologyVersion       = 2.275
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -6042,7 +6042,7 @@ class "Yorick"
 
   function Riven:ResetAA()
     if _G.NebelwolfisOrbWalkerLoaded then
-      _G.NebelwolfisOrbWalker:ResetAA()
+      _G.NebelwolfisOrbWalker.orbTable.lastAA = 0
     elseif _G.MMA_Loaded and _G.MMA_ResetAutoAttack then
       _G.MMA_ResetAutoAttack()
     elseif _G.AutoCarry then
@@ -6077,6 +6077,10 @@ class "Yorick"
             self:ResetAA()
           end, (ani:find("c") and 0.475 or 0.34))
         end
+      elseif ani == "Spell2" then
+      elseif ani == "Spell3" then
+      elseif ani == "Spell4a" then
+      elseif ani == "Spell4b" then
       end
     end
   end
