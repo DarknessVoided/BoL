@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.282
+_G.ScriptologyVersion       = 2.283
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -1153,10 +1153,10 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     targetSel:SetDamages((ad[myHero.charName] or mixed[myHero.charName]) and 100 or 0, (ap[myHero.charName] or mixed[myHero.charName]) and 100 or 0, 0)
     do
       local r = 0
-      for i=0,3 do
+      for i=0, 3 do
         if myHeroSpellData[i] and (myHeroSpellData[i].dmgAP or myHeroSpellData[i].dmgAD or myHeroSpellData[i].dmgTRUE) then
           if myHeroSpellData[i].range and myHeroSpellData[i].range > 0 then
-            if myHeroSpellData[i].range > r then
+            if myHeroSpellData[i].range > r and myHeroSpellData[i].range < 2000 then
               r = myHeroSpellData[i].range
             end
           elseif myHeroSpellData[i].width and myHeroSpellData[i].width > 0 then
