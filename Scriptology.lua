@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.289
+ScriptologyVersion       = 2.29
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
@@ -220,7 +220,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       end
       table.sort(predictionStringTable)
       table.sort(Prediction)
-      if VIP_USER and not _G.ScriptologyFixBugsplats and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
+      if VIP_USER and not ScriptologyFixBugsplats and FileExist(LIB_PATH.."DivinePred.lua") and FileExist(LIB_PATH.."DivinePred.luac") then
         require "DivinePred"
         _G.DP = DivinePred()
         Prediction["DP"] = _G.DP
@@ -298,7 +298,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
 
     function InitMenu()
       ScriptologyConfig:addSubMenu(myHero.charName, myHero.charName)
-      _G.Config = ScriptologyConfig[myHero.charName]
+      Config = ScriptologyConfig[myHero.charName]
       Config:addSubMenu("Combo","Combo")
       Config:addSubMenu("Harass","Harass")
       Config:addSubMenu("LastHit","LastHit")
@@ -7815,7 +7815,7 @@ class "Yorick"
 class "CScriptUpdate" -- {
 
   function CScriptUpdate:__init(LocalVersion,UseHttps, Host, VersionPath, ScriptPath, SavePath, CallbackUpdate, CallbackNoUpdate, CallbackNewVersion,CallbackError)
-    if not _G.ScriptologyAutoUpdate then return end
+    if not ScriptologyAutoUpdate then return end
     self.LocalVersion = LocalVersion
     self.Host = Host
     self.VersionPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..self:Base64Encode(self.Host..VersionPath)..'&rand='..random(99999999)
