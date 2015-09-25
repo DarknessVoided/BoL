@@ -1,27 +1,27 @@
-_G.ScriptologyVersion       = 2.285
-_G.ScriptologyLoaded        = false
-_G.ScriptologyLoadActivator = true
-_G.ScriptologyLoadAwareness = true
-_G.ScriptologyFixBugsplats  = true
-_G.ScriptologyLoadEvade     = false
-_G.ScriptologyAutoUpdate    = true
-_G.ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology")
-_G._Q, _G._W, _G._E, _G._R  = 0, 1, 2, 3
+ScriptologyVersion       = 2.286
+ScriptologyLoaded        = false
+ScriptologyLoadActivator = true
+ScriptologyLoadAwareness = true
+ScriptologyFixBugsplats  = true
+ScriptologyLoadEvade     = false
+ScriptologyAutoUpdate    = true
+ScriptologyConfig        = scriptConfig("Scriptology Loader", "Scriptology")
+_Q, _W, _E, _R  = 0, 1, 2, 3
 local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, acos = math.min, math.max, math.cos, math.sin, math.pi, math.huge, math.ceil, math.floor, math.round, math.random, math.abs, math.deg, math.asin, math.acos
 -- { Load
 
   function OnLoad()
     Update()
     LoadSpellData()
-    if _G.ScriptologyLoadActivator and _G.SActivatorVersion == nil then LoadActivator() end
-    if _G.ScriptologyLoadAwareness then LoadAwareness() end
-    if _G.ScriptologyLoadEvade then LoadEvade() end
+    if ScriptologyLoadActivator and SActivatorVersion == nil then LoadActivator() end
+    if ScriptologyLoadAwareness then LoadAwareness() end
+    if ScriptologyLoadEvade then LoadEvade() end
     LoadOrbwalker()
     if VIP_USER then
       EmoteSpammer()
     end
     LoadChampion()
-    Msg("Loaded! (v".._G.ScriptologyVersion..")")
+    Msg("Loaded! (v"..ScriptologyVersion..")")
     OnAfterLoad()
   end
 
@@ -36,13 +36,13 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     ToUpdate.CallbackNoUpdate = function(OldVersion) end
     ToUpdate.CallbackNewVersion = function(NewVersion) Msg("New version found v"..NewVersion..". Please wait until it's downloaded.") end
     ToUpdate.CallbackError = function(NewVersion) Msg("There was an error while updating.") end
-    CScriptUpdate(_G.ScriptologyVersion,ToUpdate.UseHttps, ToUpdate.Host, ToUpdate.VersionPath, ToUpdate.ScriptPath, ToUpdate.SavePath, ToUpdate.CallbackUpdate,ToUpdate.CallbackNoUpdate, ToUpdate.CallbackNewVersion,ToUpdate.CallbackError)
+    CScriptUpdate(ScriptologyVersion,ToUpdate.UseHttps, ToUpdate.Host, ToUpdate.VersionPath, ToUpdate.ScriptPath, ToUpdate.SavePath, ToUpdate.CallbackUpdate,ToUpdate.CallbackNoUpdate, ToUpdate.CallbackNewVersion,ToUpdate.CallbackError)
   end
 
   function LoadSpellData()
     if FileExist(LIB_PATH .. "SpellData.lua") then
-      if pcall(function() _G.spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
-        _G.myHeroSpellData = spellData[myHero.charName]
+      if pcall(function() spellData = loadfile(LIB_PATH .. "SpellData.lua")() end) then
+        myHeroSpellData = spellData[myHero.charName]
         DelayAction(function()
         CScriptUpdate(0, true, "raw.githubusercontent.com", "/nebelwolfi/BoL/master/Scriptology.version", "/nebelwolfi/BoL/master/Common/SpellData.lua?rand="..random(1,10000), LIB_PATH.."SpellData.lua", function() end, function() end, function() end, LoadSpellData)
         end, 5)
@@ -106,7 +106,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     function LoadEvade()
       ScriptologyConfig:addSubMenu("Evade", "Evade")
       DelayAction(function()
-        if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil and _G.ScriptologyLoadEvade then
+        if _G.Evadeee_Loaded == nil and _G.Evade == nil and _G.Evading == nil and _G.evade == nil and _G.evading == nil and ScriptologyLoadEvade then
           ScriptologyConfig.Evade:addParam("activate", "Activate the chosen one", SCRIPT_PARAM_ONOFF, false)
           ScriptologyConfig.Evade:setCallback("activate", function(var) if var then LoadEvade2() else UnloadEvade() end end)
           if ScriptologyConfig.Evade.activate then LoadEvade2() end
@@ -1169,9 +1169,6 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         end
       end
       targetSel.range = max(r, myHero.range+myHero.boundingRadius)
-      if myHero.charName == "Nidalee" then
-        targetSel.range = 1625
-      end
       Msg("TargetSelector range set to: "..targetSel.range..". Damage type: "..(ad[myHero.charName] and "AD" or ap[myHero.charName] and "AP" or mixed[myHero.charName] and "MIXED" or "NOT FOUND"))
     end
     local priorityOrder = {
@@ -1243,6 +1240,23 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
       end
     end
     return enemy
+  end
+
+  function ComputeCollision(spell, mode, startP, endP, width)
+    local collisions = {}
+    for i=1, #Mobs.objects do
+      local minion = Mobs.objects[i]
+      if minion and not minion.dead and minion.visible and minion.team ~= startP.team and minion.networkID ~= startP.networkID then
+        local predP = Predict(spell, myHero, minion, mode) or Vector(minion)
+        local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
+        if OnSegment then
+          if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius * 2 + width) ^ 2 then
+            collisions[#collisions+1] = minion
+          end
+        end
+      end
+    end
+    return #collisions==0, collisions
   end
 
   function AddGapcloseCallback(spell, range, targeted, config)
@@ -4839,7 +4853,7 @@ class "Yorick"
     self.maxObjects = 0
     for k=1,objManager.maxObjects,1 do
       local object = objManager:getObject(k)
-      if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
+      if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or (object.team == TEAM_NEUTRAL and object.health < 100000 and not object.name:find("Guardian") and not object.name:find("Shield")) or object.name:find('Bilge') or object.name:find('BW')) then
         self.maxObjects = self.maxObjects + 1
         self.objects[self.maxObjects] = object
       end
@@ -4849,7 +4863,7 @@ class "Yorick"
   end
 
   function MinionManager:CreateObj(object)
-    if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or object.team == TEAM_NEUTRAL or object.name:find('Bilge') or object.name:find('BW')) then
+    if object and object.valid and object.type == "obj_AI_Minion" and object.team ~= myHero.team and object.name and (object.name:find('Minion_T') or object.name:find('Blue') or object.name:find('Red') or (object.team == TEAM_NEUTRAL and object.health < 100000 and not object.name:find("Guardian") and not object.name:find("Shield")) or object.name:find('Bilge') or object.name:find('BW')) then
       local deadPlace = self:FindDeadPlace()
       if deadPlace then
         self.objects[deadPlace] = object
@@ -7305,37 +7319,49 @@ class "Yorick"
 
   function Veigar:LastHit()
     if sReady[_Q] and Config.LastHit.Q and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana then
-      local BestPos 
+      local BestPos
       local BestHit = 0
-      source = source or myHero
-      local objects = Mobs.objects
-      for i, object in ipairs(objects) do
-        local EndPos = Vector(source) + myHeroSpellData[0].range * (Vector(object) - Vector(source)):normalized()
-        local hit = self:CountObjectsOnLineSegment(source, EndPos, myHeroSpellData[0].width, objects)
-        if hit > BestHit then
-          BestHit = hit
-          BestPos = object
-          if BestHit == #objects then
-            break
+      for i=1, #Mobs.objects do
+        local minion = Mobs.objects[i]
+        if minion and not minion.dead and minion.visible and minion.team ~= myHero.team then
+          local qdmg = GetDmg(_Q, myHero, minion)-7.5
+          if qdmg >= minion.health then
+            local coll, num = ComputeCollision(_Q, ScriptologyConfig.Prediction["LastHit"], myHero, minion, myHeroSpellData[_Q].width)
+            if not coll then
+              BestHit = 1
+              BestPos = Predict(_Q, myHero, minion, ScriptologyConfig.Prediction["LastHit"]) or Vector(minion)
+              local EndPos = Vector(myHero) + myHeroSpellData[0].range * (Vector(BestPos) - Vector(myHero)):normalized()
+              for I=1, #Mobs.objects do
+                local Minion = Mobs.objects[I]
+                if Minion and not Minion.dead and Minion.visible and Minion.team ~= myHero.team then
+                  local qdmg = GetDmg(_Q, myHero, Minion)-7.5
+                  if qdmg >= Minion.health then
+                    local x,y,z = VectorPointProjectionOnLineSegment(myHero, EndPos, Minion)
+                    if z and GetDistanceSqr(x, Minion) < (Minion.boundingRadius*2 + myHeroSpellData[0].width) ^ 2 and GetDistanceSqr(Minion) < myHeroSpellData[0].range^2 then
+                      local coll, num = ComputeCollision(_Q, ScriptologyConfig.Prediction["LastHit"], myHero, Minion, myHeroSpellData[_Q].width)
+                      if not coll then
+                        BestHit = 2
+                      elseif #num == 1 then
+                        if num:contains(minion) then
+                          BestHit = 2
+                        end
+                      end
+                    end
+                  end
+                end
+              end
+            elseif #num == 1 then
+              BestHit = 1
+              BestPos = Predict(_Q, myHero, minion, ScriptologyConfig.Prediction["LastHit"]) or Vector(minion)
+            end
           end
+          if BestHit > 1 then break end
         end
       end
       if BestHit > 0 then
-        Cast(_Q, BestPos)
+        CastSpell(_Q, BestPos.x, BestPos.z)
       end
     end
-  end
-
-  function Veigar:CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-    local n = 0
-    for i, object in ipairs(objects) do
-      local pointSegment, _, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
-      local w = width
-      if isOnSegment and object.health <= GetDmg(_Q, myHero, object) and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
-        n = n + 1
-      end
-    end
-    return n
   end
 
   function Veigar:LaneClear()
