@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.288
+ScriptologyVersion       = 2.289
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
@@ -1036,7 +1036,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         end
       end
     elseif predictionStringTable[activePrediction] == "SPrediction" then
-      return _G.SP:Predict(to, myHeroSpellData[spell].range, myHeroSpellData[spell].speed, myHeroSpellData[spell].delay, myHeroSpellData[spell].width, (from.charName == "Lux" or from.charName == "Veigar") and 1 or myHeroSpellData[spell].collision, from)
+      return _G.SP:Predict(to, myHeroSpellData[spell].range, myHeroSpellData[spell].speed, myHeroSpellData[spell].delay, myHeroSpellData[spell].width, (myHeroSpellData[spell].collision and (from.charName == "Lux" or from.charName == "Veigar")) and 1 or myHeroSpellData[spell].collision, from)
     elseif predictionStringTable[activePrediction] == "HPrediction" then
       local col = myHeroSpellData[spell].collision and ((from.charName=="Lux" or from.charName=="Veigar") and 1 or 0) or huge
       local x, y, z = _G.HP:GetPredict(HPSpells[spell], to, from, col)
