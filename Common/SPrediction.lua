@@ -35,7 +35,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.83
+_G.SPredictionVersion    = 2.84
 
 class 'SPrediction' -- {
 
@@ -154,7 +154,7 @@ class 'SPrediction' -- {
         end
         if pos then
             baitLevel = self:GetBaitLevel(target)/100
-            if target.isMoving then pos = pos-(pos-target)*baitLevel end
+            if target.isMoving then pos = pos-(target-pos)*baitLevel end
             return pos, HitBox
         end
     end
