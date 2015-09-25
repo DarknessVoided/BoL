@@ -286,7 +286,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
             end
           end
         end
-      end, 1)
+      end, 0.1)
     end
 
     function SetupTargetSelector()
