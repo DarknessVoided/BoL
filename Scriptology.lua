@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.287
+ScriptologyVersion       = 2.288
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
@@ -290,7 +290,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     end
 
     function SetupTargetSelector()
-      targetSel = TargetSelector(TARGET_LESS_CAST_PRIORITY, 1250, DAMAGE_MAGIC, false, true)
+      targetSel = TargetSelector(TARGET_LESS_CAST, 1250, DAMAGE_MAGIC, false, true)
       ScriptologyConfig:addSubMenu("Target Selector", "ts")
       ScriptologyConfig.ts:addTS(targetSel)
       ArrangeTSPriorities()
