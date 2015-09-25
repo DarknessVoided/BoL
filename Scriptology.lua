@@ -1,4 +1,4 @@
-_G.ScriptologyVersion       = 2.284
+_G.ScriptologyVersion       = 2.285
 _G.ScriptologyLoaded        = false
 _G.ScriptologyLoadActivator = true
 _G.ScriptologyLoadAwareness = true
@@ -266,25 +266,27 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
           print("Your DivinePrediction is outdated.")
         end
       end
-      for m, mode in pairs({Harass = {"Harass", 1.5}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.55}, LaneClear = {"LaneClear", 1}}) do
-        ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
+      DelayAction(function()
+        for m, mode in pairs({Harass = {"Harass", 1.5}, LastHit = {"LastHit", 1}, Combo = {"Combo", 1.55}, LaneClear = {"LaneClear", 1}}) do
+          ScriptologyConfig.Prediction:addSubMenu(mode[1].." Settings", mode[1])
+          for _=-2, 3 do
+            if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type and Config[mode[1]][str[_]] ~= nil then
+              ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
+              ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 2)
+            end
+          end
+        end
         for _=-2, 3 do
-          if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type and Config[mode[1]][str[_]] ~= nil then
-            ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_], str[_].." Settings", SCRIPT_PARAM_LIST, 1, predictionStringTable)
-            ScriptologyConfig.Prediction[mode[1]]:addParam("pred"..str[_].."val", "-> Accuracy", SCRIPT_PARAM_SLICE, mode[2], 0, 3, 2)
+          if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
+            if _G.DP ~= nil then
+              SetupDPredSpell(_)
+            end
+            if _G.HP ~= nil then
+              SetupHPredSpell(_)
+            end
           end
         end
-      end
-      for _=-2, 3 do
-        if myHeroSpellData and myHeroSpellData[_] and myHeroSpellData[_].type then
-          if _G.DP ~= nil then
-            SetupDPredSpell(_)
-          end
-          if _G.HP ~= nil then
-            SetupHPredSpell(_)
-          end
-        end
-      end
+      end, 1)
     end
 
     function SetupTargetSelector()
