@@ -35,7 +35,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.85
+_G.SPredictionVersion    = 2.9
 
 class 'SPrediction' -- {
 
@@ -69,7 +69,7 @@ class 'SPrediction' -- {
         for i=1,heroManager.iCount do 
             unit = heroManager:GetHero(i)
             if unit ~= nil then
-                while self.tickTable[unit.networkID] and self.tickTable[unit.networkID][1] and self.tickTable[unit.networkID][1].time < GetInGameTimer() - 1.25 do
+                while self.tickTable[unit.networkID] and self.tickTable[unit.networkID][1] and self.tickTable[unit.networkID][1].time < GetInGameTimer() - 1 do
                     table.remove(self.tickTable[unit.networkID], 1)
                 end
             end
@@ -154,7 +154,9 @@ class 'SPrediction' -- {
         end
         if pos then
             baitLevel = self:GetBaitLevel(target)/100
-            if target.isMoving then pos = pos-(pos-target)*baitLevel end
+            if target.isMoving and baitLevel and baitLevel > 0 and baitLevel < 200 then
+                pos = pos+(target-pos)*baitLevel
+            end
             return pos, HitBox
         end
     end
@@ -165,10 +167,11 @@ class 'SPrediction' -- {
         collision = type(collision) == 'number' and collision or collision and 0 or math.huge
         if target.type ~= "AIHeroClient" then
             local Position, HitBox = self:PredictPos(target, GetDistance(source,target)/speed+delay, source)
-            return (target.isMoving and Position) and Vector(target)+(Vector(Position)-target)/4 or Vector(target), 2, Position
+            return (target.isMoving and Position) and Position or Vector(target), 2, Position
         end
-        local hitChance, PredictedPos = 0, nil
+        local hitChance = 0
         local Position, HitBox = self:PredictPos(target, GetDistance(source,target)/speed+delay, source)
+        local Position = Position+(Vector(target)-Position):normalized()*(0.25*width)
         local baitLevel = self:GetBaitLevel(target)
         local rangeOffset = range+width/2-(self:UnitFacingUnit(target, source) and HitBox or 0)
         local col1, col2, Mcol, mcol, Hcol, hcol, Mcol2, mcol2, Hcol2, hcol2, Mcol3, mcol3, Hcol3, hcol3 = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
