@@ -35,7 +35,7 @@ assert(load(Base64Decode("G0x1YVIAAQQEBAgAGZMNChoKAAAAAAAAAAAAAQIKAAAABgBAAEFAAA
 --Scriptstatus Tracker
 
 _G.SPredictionAutoUpdate = true
-_G.SPredictionVersion    = 2.84
+_G.SPredictionVersion    = 2.85
 
 class 'SPrediction' -- {
 
@@ -140,21 +140,21 @@ class 'SPrediction' -- {
         return dx*dx + dz*dz
     end
 
-    function SPrediction:PredictPos(target, speed, delay, source)
+    function SPrediction:PredictPos(target, delay, source)
         speed = speed or target.ms
-        delay = delay or 0
+        delay = delay or 0.125
         source = source or myHero
         local dir = self:GetTargetDirection(target)
         local pos = nil
         local HitBox = target.boundingRadius
         if dir and target.isMoving then
-            pos = Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*(speed ~= target.ms and GetDistance(target,source)*target.ms/speed or speed/8)+Vector(dir.x, dir.y, dir.z):normalized()*delay*target.ms
+            pos = Vector(target)+Vector(dir.x, dir.y, dir.z):normalized()*delay*target.ms
         elseif not target.isMoving then
             pos = Vector(target)
         end
         if pos then
             baitLevel = self:GetBaitLevel(target)/100
-            if target.isMoving then pos = pos-(target-pos)*baitLevel end
+            if target.isMoving then pos = pos-(pos-target)*baitLevel end
             return pos, HitBox
         end
     end
@@ -164,11 +164,11 @@ class 'SPrediction' -- {
         source = source or myHero
         collision = type(collision) == 'number' and collision or collision and 0 or math.huge
         if target.type ~= "AIHeroClient" then
-            local Position, HitBox = self:PredictPos(target, speed, delay, source)
+            local Position, HitBox = self:PredictPos(target, GetDistance(source,target)/speed+delay, source)
             return (target.isMoving and Position) and Vector(target)+(Vector(Position)-target)/4 or Vector(target), 2, Position
         end
         local hitChance, PredictedPos = 0, nil
-        local Position, HitBox = self:PredictPos(target, speed, delay, source)
+        local Position, HitBox = self:PredictPos(target, GetDistance(source,target)/speed+delay, source)
         local baitLevel = self:GetBaitLevel(target)
         local rangeOffset = range+width/2-(self:UnitFacingUnit(target, source) and HitBox or 0)
         local col1, col2, Mcol, mcol, Hcol, hcol, Mcol2, mcol2, Hcol2, hcol2, Mcol3, mcol3, Hcol3, hcol3 = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
