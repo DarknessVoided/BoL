@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.291
+ScriptologyVersion       = 2.292
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
@@ -3010,10 +3010,10 @@ class "Yorick"
     self.doW = (Config.kConfig.Combo and Config.Combo.W) or (Config.kConfig.Harass and Config.Harass.W and Config.Harass.manaW < myHero.mana/myHero.maxMana*100) or (Config.kConfig.LastHit and Config.LastHit.W and Config.LastHit.manaW < myHero.mana/myHero.maxMana*100) or (Config.kConfig.LaneClear and Config.LaneClear.W and Config.LaneClear.manaW < myHero.mana/myHero.maxMana*100)
   end
 
-  function Darius:ProcessSpell(unit, spell)
+  function Darius:ProcessAttack(unit, spell)
     if unit and spell and unit.isMe and spell.name then
       if spell.name:lower():find("attack") and self.doW then
-        DelayAction(function() Cast(_W) end, spell.windUpTime + GetLatency() / 2000)
+        Cast(_W)
       end
     end
   end
