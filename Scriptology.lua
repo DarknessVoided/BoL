@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.286
+ScriptologyVersion       = 2.287
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
