@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.293
+ScriptologyVersion       = 2.294
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
@@ -1250,7 +1250,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         local predP = Vector(minion)
         local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
         if OnSegment then
-          if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius * 2 + width) ^ 2 then
+          if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius + width) ^ 2 then
             collisions[#collisions+1] = minion
           end
         end
@@ -7261,6 +7261,7 @@ class "Yorick"
     Config.kConfig:addDynamicParam("Harass", "Harass", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("C"))
     Config.kConfig:addDynamicParam("LastHit", "Last hit", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("X"))
     Config.kConfig:addDynamicParam("LastHit2", "Last hit", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+    Config.kConfig:addParam("LastHit2Draw", "Draw Last hit toggle", SCRIPT_PARAM_ONOFF, true)
     Config.kConfig:addDynamicParam("LaneClear", "Lane Clear", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("V"))
     Config.Misc:addDynamicParam("Ea", "Auto E", SCRIPT_PARAM_ONOFF, true)
     Config.Misc:addParam("Ee", "Enemies to E (stun)", SCRIPT_PARAM_SLICE, ceil(#GetEnemyHeroes()/2), 0, #GetEnemyHeroes(), 0)
@@ -7269,6 +7270,17 @@ class "Yorick"
   function Veigar:Tick()
     if Config.kConfig.LastHit2 then
       self:LastHit()
+    end
+  end
+
+  function Veigar:Draw()
+    if Config.kConfig.LastHit2 and Config.kConfig.LastHit2Draw and Config.LastHit.manaQ <= 100*myHero.mana/myHero.maxMana then
+      for i=-1,1,1 do
+        for j=-1,1,1 do
+          DrawText("Lasthit Toggle Active!", 25, WINDOW_W/2+i-GetTextArea("Lasthit Toggle Active!", 35).x/2, WINDOW_H/6+j, ARGB(255,0,0,0))
+        end
+      end
+      DrawText("Lasthit Toggle Active!", 25, WINDOW_W/2-GetTextArea("Lasthit Toggle Active!", 35).x/2, WINDOW_H/6, ARGB(255,255,0,0))
     end
   end
 
