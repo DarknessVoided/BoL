@@ -1,4 +1,4 @@
-ScriptologyVersion       = 2.292
+ScriptologyVersion       = 2.293
 ScriptologyLoaded        = false
 ScriptologyLoadActivator = true
 ScriptologyLoadAwareness = true
@@ -1242,12 +1242,12 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
     return enemy
   end
 
-  function ComputeCollision(spell, mode, startP, endP, width)
+  function ComputeCollision(spell, startP, endP, width)
     local collisions = {}
     for i=1, #Mobs.objects do
       local minion = Mobs.objects[i]
       if minion and not minion.dead and minion.visible and minion.team ~= startP.team and minion.networkID ~= startP.networkID then
-        local predP = Predict(spell, myHero, minion, mode) or Vector(minion)
+        local predP = Vector(minion)
         local ProjPoint,_,OnSegment = VectorPointProjectionOnLineSegment(startP, endP, predP)
         if OnSegment then
           if GetDistanceSqr(ProjPoint, predP) < (minion.boundingRadius * 2 + width) ^ 2 then
@@ -1256,7 +1256,7 @@ local min, max, cos, sin, pi, huge, ceil, floor, round, random, abs, deg, asin, 
         end
       end
     end
-    return #collisions==0, collisions
+    return #collisions, collisions
   end
 
   function AddGapcloseCallback(spell, range, targeted, config)
@@ -7323,26 +7323,25 @@ class "Yorick"
       local BestHit = 0
       for i=1, #Mobs.objects do
         local minion = Mobs.objects[i]
-        if minion and not minion.dead and minion.visible and minion.team ~= myHero.team then
-          local qdmg = GetDmg(_Q, myHero, minion)-7.5
+        if minion and not minion.dead and minion.visible and minion.team ~= myHero.team and GetDistance(minion) < myHeroSpellData[0].range then
+          local qdmg = GetDmg(_Q, myHero, minion)*0.94
           if qdmg >= minion.health then
-            local coll, num = ComputeCollision(_Q, ScriptologyConfig.Prediction["LastHit"], myHero, minion, myHeroSpellData[_Q].width)
-            if not coll then
+            local coll, num = ComputeCollision(_Q, myHero, minion, myHeroSpellData[_Q].width)
+            if coll <= 1 then
               BestHit = 1
-              BestPos = Predict(_Q, myHero, minion, ScriptologyConfig.Prediction["LastHit"]) or Vector(minion)
-              local EndPos = Vector(myHero) + myHeroSpellData[0].range * (Vector(BestPos) - Vector(myHero)):normalized()
+              BestPos = Vector(minion)
               for I=1, #Mobs.objects do
                 local Minion = Mobs.objects[I]
-                if Minion and not Minion.dead and Minion.visible and Minion.team ~= myHero.team then
-                  local qdmg = GetDmg(_Q, myHero, Minion)-7.5
+                if Minion and not Minion.dead and Minion.visible and Minion.team ~= myHero.team and GetDistance(Minion) < myHeroSpellData[0].range then
+                  local qdmg = GetDmg(_Q, myHero, Minion)*0.94
                   if qdmg >= Minion.health then
-                    local x,y,z = VectorPointProjectionOnLineSegment(myHero, EndPos, Minion)
-                    if z and GetDistanceSqr(x, Minion) < (Minion.boundingRadius*2 + myHeroSpellData[0].width) ^ 2 and GetDistanceSqr(Minion) < myHeroSpellData[0].range^2 then
-                      local coll, num = ComputeCollision(_Q, ScriptologyConfig.Prediction["LastHit"], myHero, Minion, myHeroSpellData[_Q].width)
-                      if not coll then
+                    local x,y,z = VectorPointProjectionOnLineSegment(myHero, Minion, BestPos)
+                    if z and GetDistanceSqr(x, BestPos) < (minion.boundingRadius*2 + myHeroSpellData[0].width) ^ 2 then
+                      local coll, num = ComputeCollision(_Q, myHero, Minion, myHeroSpellData[_Q].width)
+                      if coll <= 1 then
                         BestHit = 2
-                      elseif #num == 1 then
-                        if num:contains(minion) then
+                      elseif #num == 2 then
+                        if table.contains(num, minion) then
                           BestHit = 2
                         end
                       end
@@ -7350,9 +7349,9 @@ class "Yorick"
                   end
                 end
               end
-            elseif #num == 1 then
+            elseif #num == 2 and table.contains(num, minion) then
               BestHit = 1
-              BestPos = Predict(_Q, myHero, minion, ScriptologyConfig.Prediction["LastHit"]) or Vector(minion)
+              BestPos = Vector(minion)
             end
           end
           if BestHit > 1 then break end
